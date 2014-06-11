@@ -1,0 +1,13 @@
+tableau quick filter ~= animint showSelected
+quick filters are worksheet-specific but showSelected is layer-specific
+
+tableau worksheet = animint ggplot
+
+tableau dashboard = animint list of ggplots and options
+
+tableau actions ~= clickSelects/href
+
+tableau create group ~= add a label annotation column
+
+tableau lasso ~= drawing a rectangle around data
+
