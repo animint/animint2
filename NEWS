@@ -1,0 +1,18 @@
+TODO
+
+support variable mapping and scales that can the user can interactively update.
+
+list(
+ lines=aplot(first_mapping=aes(x=year, y=life.expectancy, color=region),
+  geom_line(data=WorldBank, size=4, first_mapping=aes(clickSelects=country)), # 4 pixels -- not passed through a scale.
+  geom_tallrect(data=years), # needs year_xmax and year_xmin columns,
+  # ignores aes(color) since there is no color column
+  # aes(x) is plot-specific but aes(clickSelects) is layer-specific.
+ points=aplot(first_mapping=aes(x=birth.rate, y=life.expectancy, color=region, size=population),
+  # aes generate axes or guides.
+  geom_point(data=WorldBank, showSelected(year), encode=vars(color, size)),
+  # points always take x and y, this one also takes optional data color, size
+  geom_text(data=WorldBank, showSelected(year, country), first_mapping=aes(label=country)), # takes x, y, label
+  geom_text(data=years, showSelected(year), x=0.5, y=1, first_mapping=aes(label=sprintf("year = %d")))
+ )
+)
