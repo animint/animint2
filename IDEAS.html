@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>IDEAS</title>
+<!-- 2014-06-12 Thu 11:22 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Toby Dylan Hocking" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">IDEAS</h1>
+<p>
+defaults could be specified as follows.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-R">list(
+ lines=aplot(first_mapping=aes(x=year, y=life.expectancy, color=region),
+  geom_line(data=WorldBank, size=4, first_mapping=aes(clickSelects=country)), <span style="color: #b22222;"># </span><span style="color: #b22222;">4 pixels -- not passed through a scale.</span>
+  geom_tallrect(data=years), <span style="color: #b22222;"># </span><span style="color: #b22222;">needs year_xmax and year_xmin columns,</span>
+  <span style="color: #b22222;"># </span><span style="color: #b22222;">ignores aes(color) since there is no color column</span>
+  <span style="color: #b22222;"># </span><span style="color: #b22222;">aes(x) is plot-specific but aes(clickSelects) is layer-specific.</span>
+ points=aplot(first_mapping=aes(x=birth.rate, y=life.expectancy, color=region, size=population),
+  <span style="color: #b22222;"># </span><span style="color: #b22222;">aes generate axes or guides.</span>
+  geom_point(data=WorldBank, showSelected(year), encode=vars(color, size)),
+  <span style="color: #b22222;"># </span><span style="color: #b22222;">points always take x and y, this one also takes optional data color, size</span>
+  geom_text(data=WorldBank, showSelected(year, country), first_mapping=aes(label=country)), <span style="color: #b22222;"># </span><span style="color: #b22222;">takes x, y, label</span>
+  geom_text(data=years, showSelected(year), x=0.5, y=1, first_mapping=aes(label=sprintf(<span style="color: #8b2252;">"year = %d"</span>)))
+ )
+)
+</pre>
+</div>
+
+<p>
+but minimally we just specify the data sets and maybe some common
+scales
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-R">animint(data=list(years=years, WorldBank=WorldBank),
+        scales=list(region.colors=region.colors))
+</pre>
+</div>
+
+<p>
+and then on the web page we could interactively define the linked
+plots by filling in the following 2 tables (1 for each plot).
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="right" />
+</colgroup>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">scale=region.colors</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="right">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+</tr>
+
+<tr>
+<th scope="col" class="left">data</th>
+<th scope="col" class="left">geom</th>
+<th scope="col" class="left">x=year</th>
+<th scope="col" class="left">y=life.expectancy</th>
+<th scope="col" class="left">stroke=region</th>
+<th scope="col" class="left">fill</th>
+<th scope="col" class="left">stroke-width</th>
+<th scope="col" class="right">opacity</th>
+<th scope="col" class="left">group</th>
+<th scope="col" class="left">label</th>
+<th scope="col" class="left">clickSelects</th>
+<th scope="col" class="left">showSelected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">WorldBank</td>
+<td class="left">line</td>
+<td class="left">encoded</td>
+<td class="left">encoded</td>
+<td class="left">encoded</td>
+<td class="left">-</td>
+<td class="left">4</td>
+<td class="right">1</td>
+<td class="left">country</td>
+<td class="left">-</td>
+<td class="left">country</td>
+<td class="left">[]</td>
+</tr>
+
+<tr>
+<td class="left">(not selected)</td>
+<td class="left">-</td>
+<td class="left">-</td>
+<td class="left">-</td>
+<td class="left">same</td>
+<td class="left">-</td>
+<td class="left">same</td>
+<td class="right">0.5</td>
+<td class="left">-</td>
+<td class="left">-</td>
+<td class="left">-</td>
+<td class="left">-</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">years</td>
+<td class="left">tallrect</td>
+<td class="left">encoded</td>
+<td class="left">-</td>
+<td class="left">"black"</td>
+<td class="left">"black"</td>
+<td class="left">1</td>
+<td class="right">0.5</td>
+<td class="left">-</td>
+<td class="left">-</td>
+<td class="left">year</td>
+<td class="left">[]</td>
+</tr>
+
+<tr>
+<td class="left">(not selected)</td>
+<td class="left">-</td>
+<td class="left">-</td>
+<td class="left">-</td>
+<td class="left">same</td>
+<td class="left">same</td>
+<td class="left">same</td>
+<td class="right">0</td>
+<td class="left">-</td>
+<td class="left">-</td>
+<td class="left">-</td>
+<td class="left">-</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+and for the scatterplot,
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="right" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">scale=region.colors</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="right">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">&#xa0;</th>
+</tr>
+
+<tr>
+<th scope="col" class="left">data</th>
+<th scope="col" class="left">geom</th>
+<th scope="col" class="left">x=birth.rate</th>
+<th scope="col" class="left">y=life.expectancy</th>
+<th scope="col" class="left">stroke</th>
+<th scope="col" class="left">fill=region</th>
+<th scope="col" class="left">size=population</th>
+<th scope="col" class="left">stroke-width</th>
+<th scope="col" class="right">opacity</th>
+<th scope="col" class="left">label</th>
+<th scope="col" class="left">clickSelects</th>
+<th scope="col" class="left">showSelected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">WorldBank</td>
+<td class="left">circle</td>
+<td class="left">encoded</td>
+<td class="left">encoded</td>
+<td class="left">"black"</td>
+<td class="left">encoded</td>
+<td class="left">encoded</td>
+<td class="left">1</td>
+<td class="right">1</td>
+<td class="left">-</td>
+<td class="left">country</td>
+<td class="left">[year]</td>
+</tr>
+
+<tr>
+<td class="left">(not selected)</td>
+<td class="left">-</td>
+<td class="left">-</td>
+<td class="left">-</td>
+<td class="left">same</td>
+<td class="left">same</td>
+<td class="left">-</td>
+<td class="left">0</td>
+<td class="right">1/2</td>
+<td class="left">-</td>
+<td class="left">-</td>
+<td class="left">-</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">WorldBank</td>
+<td class="left">text</td>
+<td class="left">encoded</td>
+<td class="left">encoded</td>
+<td class="left">-</td>
+<td class="left">"black"</td>
+<td class="left">12</td>
+<td class="left">-</td>
+<td class="right">1</td>
+<td class="left">country</td>
+<td class="left">(none)</td>
+<td class="left">[year, country]</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">years</td>
+<td class="left">text</td>
+<td class="left">0.5</td>
+<td class="left">1</td>
+<td class="left">-</td>
+<td class="left">"black"</td>
+<td class="left">12</td>
+<td class="left">-</td>
+<td class="right">1</td>
+<td class="left">yearLabel</td>
+<td class="left">(none)</td>
+<td class="left">[year]</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+The main idea is that there are two kinds of aesthetics:
+</p>
+<ul class="org-ul">
+<li>some plot-specific, each need an axis/legend to decode: x, y, stroke, fill, size, stroke-width, opacity.
+</li>
+<li>some geom-specific: clickSelects, showSelected, group, label.
+</li>
+</ul>
+
+<p>
+size aesthetic controls &lt;text style="font-size: $(size)px"&gt; and &lt;circle r="$(size*2)"&gt;
+</p>
+
+<p>
+x=year with geom line assumes that WorldBank has a year column and with geom tallrect looks for columns named year<sub>min</sub> and year<sub>max</sub> in years.
+</p>
+
+<p>
+x, y, size have 3 kinds of values:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">unit type</th>
+<th scope="col" class="left">x</th>
+<th scope="col" class="left">size</th>
+<th scope="col" class="left">constant?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">data</td>
+<td class="left">year 1996</td>
+<td class="left">1e8 people</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">canonical</td>
+<td class="left">[0, 1]</td>
+<td class="left">30px circle diameter</td>
+<td class="left">yes</td>
+</tr>
+
+<tr>
+<td class="left">svg</td>
+<td class="left">x=243 (px)</td>
+<td class="left">r=15 (px)</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+but stroke-width, stroke, fill, opacity only have 2 kinds of values
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">unit type</th>
+<th scope="col" class="left">stroke</th>
+<th scope="col" class="left">constant?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">data</td>
+<td class="left">region Europe</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">svg</td>
+<td class="left">"red"</td>
+<td class="left">yes</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+if we specify constants for these aesthetics, they should be interpreted as
+canonical (x, y, size) or svg (stroke-width, stroke, fill, opacity) values.
+</p>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Toby Dylan Hocking</p>
+<p class="date">Created: 2014-06-12 Thu 11:22</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 23.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5c)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
