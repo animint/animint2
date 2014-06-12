@@ -37,6 +37,8 @@ plots by filling in the following 2 tables (1 for each plot).
 | years          | tallrect | encoded | -                 | "black"             | "black" | 1            |     0.5 | -       | -     | year         | []           |
 | (not selected) | -        | -       | -                 | same                | same    | same         |       0 | -       | -     | -            | -            |
 
+and for the scatterplot,
+
 |                |        |              |                   |         | scale=region.colors |                 |              |         |           |              |                 |
 | data           | geom   | x=birth.rate | y=life.expectancy | stroke  | fill=region         | size=population | stroke-width | opacity | label     | clickSelects | showSelected    |
 |----------------+--------+--------------+-------------------+---------+---------------------+-----------------+--------------+---------+-----------+--------------+-----------------|
