@@ -1,0 +1,74 @@
+defaults could be specified as follows.
+
+#+BEGIN_SRC R
+list(
+ lines=aplot(first_mapping=aes(x=year, y=life.expectancy, color=region),
+  geom_line(data=WorldBank, size=4, first_mapping=aes(clickSelects=country)), # 4 pixels -- not passed through a scale.
+  geom_tallrect(data=years), # needs year_xmax and year_xmin columns,
+  # ignores aes(color) since there is no color column
+  # aes(x) is plot-specific but aes(clickSelects) is layer-specific.
+ points=aplot(first_mapping=aes(x=birth.rate, y=life.expectancy, color=region, size=population),
+  # aes generate axes or guides.
+  geom_point(data=WorldBank, showSelected(year), encode=vars(color, size)),
+  # points always take x and y, this one also takes optional data color, size
+  geom_text(data=WorldBank, showSelected(year, country), first_mapping=aes(label=country)), # takes x, y, label
+  geom_text(data=years, showSelected(year), x=0.5, y=1, first_mapping=aes(label=sprintf("year = %d")))
+ )
+)
+#+END_SRC
+
+but minimally we just specify the data sets and maybe some common
+scales
+
+#+BEGIN_SRC R
+  animint(data=list(years=years, WorldBank=WorldBank),
+          scales=list(region.colors=region.colors))
+#+END_SRC
+
+and then on the web page we could interactively define the linked
+plots by filling in the following 2 tables (1 for each plot).
+
+|                |          |         |                   | scale=region.colors |         |              |         |         |       |              |              |
+| data           | geom     | x=year  | y=life.expectancy | stroke=region       | fill    | stroke-width | opacity | group   | label | clickSelects | showSelected |
+|----------------+----------+---------+-------------------+---------------------+---------+--------------+---------+---------+-------+--------------+--------------|
+| WorldBank      | line     | encoded | encoded           | encoded             | -       | 4            |       1 | country | -     | country      | []           |
+| (not selected) | -        | -       | -                 | same                | -       | same         |     0.5 | -       | -     | -            | -            |
+|----------------+----------+---------+-------------------+---------------------+---------+--------------+---------+---------+-------+--------------+--------------|
+| years          | tallrect | encoded | -                 | "black"             | "black" | 1            |     0.5 | -       | -     | year         | []           |
+| (not selected) | -        | -       | -                 | same                | same    | same         |       0 | -       | -     | -            | -            |
+
+|                |        |              |                   |         | scale=region.colors |                 |              |         |           |              |                 |
+| data           | geom   | x=birth.rate | y=life.expectancy | stroke  | fill=region         | size=population | stroke-width | opacity | label     | clickSelects | showSelected    |
+|----------------+--------+--------------+-------------------+---------+---------------------+-----------------+--------------+---------+-----------+--------------+-----------------|
+| WorldBank      | circle | encoded      | encoded           | "black" | encoded             | encoded         | 1            |       1 | -         | country      | [year]          |
+| (not selected) | -      | -            | -                 | same    | same                | -               | 0            |     1/2 | -         | -            | -               |
+|----------------+--------+--------------+-------------------+---------+---------------------+-----------------+--------------+---------+-----------+--------------+-----------------|
+| WorldBank      | text   | encoded      | encoded           | -       | "black"             | 12              | -            |       1 | country   | (none)       | [year, country] |
+|----------------+--------+--------------+-------------------+---------+---------------------+-----------------+--------------+---------+-----------+--------------+-----------------|
+| years          | text   | 0.5          | 1                 | -       | "black"             | 12              | -            |       1 | yearLabel | (none)       | [year]          |
+
+The main idea is that there are two kinds of aesthetics:
+- some plot-specific, each need an axis/legend to decode: x, y, stroke, fill, size, stroke-width, opacity.
+- some geom-specific: clickSelects, showSelected, group, label.
+
+size aesthetic controls <text style="font-size: $(size)px"> and <circle r="$(size*2)">
+
+x=year with geom line assumes that WorldBank has a year column and with geom tallrect looks for columns named year_min and year_max in years.
+
+x, y, size have 3 kinds of values:
+
+| unit type | x          | size                 | constant? |
+|-----------+------------+----------------------+-----------|
+| data      | year 1996  | 1e8 people           |           |
+| canonical | [0, 1]     | 30px circle diameter | yes       |
+| svg       | x=243 (px) | r=15 (px)            |           |
+
+but stroke-width, stroke, fill, opacity only have 2 kinds of values
+
+| unit type | stroke        | constant? |
+|-----------+---------------+-----------|
+| data      | region Europe |           |
+| svg       | "red"         | yes       |
+
+if we specify constants for these aesthetics, they should be interpreted as
+canonical (x, y, size) or svg (stroke-width, stroke, fill, opacity) values.
