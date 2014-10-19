@@ -1,4 +1,5 @@
-defaults could be specified as follows.
+defaults could be specified as follows (should be specified in a JSON file, maybe extend Vega format?)
+for sharing we could store this file in a git repos (on github? http://fitzgen.github.io/github-api/)
 
 #+BEGIN_SRC R
 list(
@@ -18,7 +19,7 @@ list(
 #+END_SRC
 
 but minimally we just specify the data sets and maybe some common
-scales
+scales... actually we could specify just a href to the data set
 
 #+BEGIN_SRC R
   animint(data=list(years=years, WorldBank=WorldBank),
