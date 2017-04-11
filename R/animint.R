@@ -333,6 +333,11 @@ saveLayer <- function(l, d, meta){
   g$classed <-
     sprintf("geom%d_%s_%s",
             meta$geom.count, g$geom, meta$plot.name)
+
+  ## Remove "animint" from geom names, eg: pointanimint -> point
+  g$classed <- gsub("animint", "", g$classed)
+  g$geom <- gsub("animint", "", g$geom)
+  
   ## For each geom, save the nextgeom to preserve drawing order.
   if(is.character(meta$prev.class)){
     meta$geoms[[meta$prev.class]]$nextgeom <- g$classed
@@ -1866,7 +1871,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   }
   
   ## Finally, copy html/js/json files to out.dir.
-  src.dir <- system.file("htmljs",package="animint")
+  src.dir <- system.file("htmljs",package="animint2")
   to.copy <- Sys.glob(file.path(src.dir, "*"))
   if(file.exists(paste0(out.dir, "styles.css")) | css.file != "default.file"){
     to.copy <- to.copy[!grepl("styles.css", to.copy, fixed=TRUE)]
@@ -1880,7 +1885,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       file.copy(css.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
     }
   } else {
-    style.file <- system.file("htmljs", "styles.css", package = "animint")
+    style.file <- system.file("htmljs", "styles.css", package = "animint2")
     file.copy(style.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
   }
   file.copy(to.copy, out.dir, overwrite=TRUE, recursive=TRUE)
