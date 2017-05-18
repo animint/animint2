@@ -1317,14 +1317,9 @@ gg2animint <- function(...){
 animint2dir <- function(plot.list, out.dir = tempfile(),
                         json.file = "plot.json", open.browser = interactive(),
                         css.file = "") {
-  ## Check that plot.list is a list and every element is named.
-  if (!is.list(plot.list))
-    stop("plot.list must be a list of ggplots")
-  if (is.null(names(plot.list)))
-    stop("plot.list must be a named list")
-  if (any(names(plot.list)==""))
-    stop("plot.list must have names with non-empty strings")
-
+  ## Check plot.list for errors
+  checkPlotList(plot.list)
+  
   ## Store meta-data in this environment, so we can alter state in the
   ## lower-level functions.
   meta <- newEnvironment()
@@ -1336,19 +1331,11 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   ## process each geom.
   # CPS (7-22-14): What if the user doesn't specify milliseconds? Could we provide a reasonable default?
   if(is.list(plot.list[["time"]])){
-    if(!all(c("ms", "variable") %in% names(plot.list$time))){
-      stop("time option list needs ms, variable")
-    }
+    # Check animation variable for errors
+    checkAnimationTimeVar(plot.list$time)
     meta$time <- plot.list$time
     ms <- meta$time$ms
-    stopifnot(is.numeric(ms))
-    stopifnot(length(ms)==1)
-    ## NOTE: although we do not use olist$ms for anything in the R
-    ## code, it is used to control the number of milliseconds between
-    ## animation frames in the JS code.
     time.var <- meta$time$variable
-    stopifnot(is.character(time.var))
-    stopifnot(length(time.var)==1)
   }
 
   ## The title option should just be a character, not a list.
