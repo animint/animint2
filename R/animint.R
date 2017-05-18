@@ -1327,14 +1327,10 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
 
   ## Store meta-data in this environment, so we can alter state in the
   ## lower-level functions.
-  meta <- new.env()
-  meta$plots <- list()
-  meta$geoms <- list()
-  meta$selectors <- list()
+  meta <- newEnvironment()
   meta$selector.types <- plot.list$selector.types
   dir.create(out.dir,showWarnings=FALSE)
   meta$out.dir <- out.dir
-  meta$geom.count <- 1
 
   ## Save the animation variable so we can treat it specially when we
   ## process each geom.
