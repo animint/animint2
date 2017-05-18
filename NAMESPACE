@@ -3,7 +3,6 @@
 export(animint2dir)
 export(animint2gist)
 export(animintOutput)
-export(geom_point_animint)
 export(geom_tallrect)
 export(geom_widerect)
 export(getLegendList)

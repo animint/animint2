@@ -29,7 +29,7 @@ geom_tallrect <- function(mapping = NULL, data = NULL,
 }
 
 GeomTallRect <- ggplot2::ggproto("GeomTallRect", ggplot2::Geom,
-                                 default_aes = aes(colour = "grey35",
+                                 default_aes = ggplot2::aes(colour = "grey35",
                                                    fill = "grey35", 
                                                    size = 0.5, 
                                                    linetype = 1,
@@ -59,7 +59,7 @@ GeomTallRect <- ggplot2::ggproto("GeomTallRect", ggplot2::Geom,
                                    )
                                  },
                                  
-                                 draw_key = draw_key_rect
+                                 draw_key = ggplot2::draw_key_rect
 )
 
 
@@ -97,7 +97,7 @@ geom_widerect <- function(mapping = NULL, data = NULL,
 }
 
 GeomWideRect <- ggplot2::ggproto("GeomWideRect", ggplot2::Geom,
-                                 default_aes = aes(colour = "grey35", 
+                                 default_aes = ggplot2::aes(colour = "grey35", 
                                                    fill = "grey35", 
                                                    size = 0.5, 
                                                    linetype = 1,
@@ -127,7 +127,7 @@ GeomWideRect <- ggplot2::ggproto("GeomWideRect", ggplot2::Geom,
                                    )
                                  },
                                  
-                                 draw_key = draw_key_rect
+                                 draw_key = ggplot2::draw_key_rect
 )
 
 #' Make a clickSelects geom_tallrect that completely tiles the x

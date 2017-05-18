@@ -334,10 +334,6 @@ saveLayer <- function(l, d, meta){
     sprintf("geom%d_%s_%s",
             meta$geom.count, g$geom, meta$plot.name)
 
-  ## Remove "animint" from geom names, eg: pointanimint -> point
-  g$classed <- gsub("animint", "", g$classed)
-  g$geom <- gsub("animint", "", g$geom)
-  
   ## For each geom, save the nextgeom to preserve drawing order.
   if(is.character(meta$prev.class)){
     meta$geoms[[meta$prev.class]]$nextgeom <- g$classed
