@@ -1457,21 +1457,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
 
   ## Now that selectors are all defined, go back through geoms to
   ## check if there are any warnings to issue.
-  for(g.name in names(meta$geoms)){
-    g.info <- meta$geoms[[g.name]]
-    g.selectors <- meta$selector.aes[[g.name]]
-    show.vars <- g.info$aes[g.selectors$showSelected$one]
-    duration.vars <- names(meta$duration)
-    show.with.duration <- show.vars[show.vars %in% duration.vars]
-    no.key <- ! "key" %in% names(g.info$aes)
-    if(length(show.with.duration) && no.key){
-      warning(
-        "to ensure that smooth transitions are interpretable, ",
-        "aes(key) should be specifed for geoms with aes(showSelected=",
-        show.with.duration[1],
-        "), problem: ", g.name)
-    }
-  }
+  issueSelectorWarnings(meta$geoms, meta$selector.aes, meta$duration)
   
   ## For a static data viz with no interactive aes, no need to check
   ## for trivial showSelected variables with only 1 level.

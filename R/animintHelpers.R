@@ -108,6 +108,31 @@ checkPlotForAnimintExtensions <- function(p, plot_name){
 }
 
 
+#' Issue warnings for selectors
+#' @param geoms \code{geoms} to check for warnings
+#' @param selector.aes selectors for each geom
+#' @param duration animation variable information to check for \code{key} value
+#' @return \code{NULL}
+issueSelectorWarnings <- function(geoms, selector.aes, duration){
+  for(g.name in names(geoms)){
+    g.info <- geoms[[g.name]]
+    g.selectors <- selector.aes[[g.name]]
+    show.vars <- g.info$aes[g.selectors$showSelected$one]
+    duration.vars <- names(duration)
+    show.with.duration <- show.vars[show.vars %in% duration.vars]
+    no.key <- ! "key" %in% names(g.info$aes)
+    if(length(show.with.duration) && no.key){
+      warning(
+        "to ensure that smooth transitions are interpretable, ",
+        "aes(key) should be specifed for geoms with aes(showSelected=",
+        show.with.duration[1],
+        "), problem: ", g.name)
+    }
+  }
+  return(NULL)
+}
+
+
 #' Merge a list of data frames.
 #' @param dfs list of data frames
 #' @return data frame
