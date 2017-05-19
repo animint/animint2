@@ -45,56 +45,7 @@ parsePlot <- function(meta){
     ## This is the layer from the original ggplot object.
     L <- meta$plot$layers[[layer.i]]
     ## If any legends are specified, add showSelected aesthetic
-    for(legend.i in seq_along(plot.meta$legend)) {
-      one.legend <- plot.meta$legend[[legend.i]]
-      ## the name of the selection variable used in this legend.
-      s.name <- one.legend$selector
-      is.variable.name <- is.character(s.name) && length(s.name) == 1
-      layer.has.variable <- s.name %in% names(L$data)
-      
-      if(is.variable.name && layer.has.variable) {
-        ## grabbing the variable from the data
-        var <- L$data[, s.name]
-        is.interactive.aes <-
-          grepl("showSelected|clickSelects", names(L$mapping))
-        is.legend.var <- L$mapping == s.name
-        ## If s.name is used with another interactive aes, then do
-        ## not add any showSelected aesthetic for it.
-        var.is.interactive <- any(is.interactive.aes & is.legend.var)
-        if(!var.is.interactive){
-          ## only add showSelected aesthetic if the variable is
-          ## used by the geom
-          type.vec <- one.legend$legend_type
-          if(any(type.vec %in% names(L$mapping))){
-            type.str <- paste(type.vec, collapse="")
-            a.name <- paste0("showSelectedlegend", type.str)
-            L$mapping[[a.name]] <- as.symbol(s.name)
-          }
-        }
-        ## if selector.types has not been specified, create it
-        if(is.null(meta$selector.types)) {
-          meta$selector.types <- list()
-        }
-        ## if selector.types is not specified for this variable, set
-        ## it to multiple.
-        if(is.null(meta$selector.types[[s.name]])) {
-          meta$selector.types[[s.name]] <- "multiple"
-          meta$selectors[[s.name]]$type <- "multiple"
-        }
-        ## if first is not specified, create it
-        if(is.null(meta$first)) {
-          meta$first <- list()
-        }
-        ## if first is not specified, add all to first
-        if(is.null(meta$first[[s.name]])) {
-          u.vals <- unique(var)
-        }
-        ## Tell this selector that it has a legend somewhere in the
-        ## viz. (if the selector has no interactive legend and no
-        ## clickSelects, then we show the widgets by default).
-        meta$selectors[[s.name]]$legend <- TRUE
-      }#length(s.name)
-    }#legend.i
+    L <- addShowSelectedForLegend(meta, plot.meta$legend, L)
   }#layer.i
 
   ## need to call ggplot_build again because we've added to the plot.
