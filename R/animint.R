@@ -2116,18 +2116,3 @@ getLegend <- function(mb){
          entries = data)
   }
 }
-
-#' Merge a list of data frames.
-#' @param dfs list of data frames
-#' @return data frame
-merge_recurse <- function(dfs){
-  label.vec <- unique(unlist(lapply(dfs, function(df)paste(df$label))))
-  result <- data.frame(row.names=label.vec)
-  for(df in dfs){
-    df.label <- paste(df$label)
-    for(col.name in names(df)){
-      result[df.label, col.name] <- df[[col.name]]
-    }
-  }
-  result
-}
