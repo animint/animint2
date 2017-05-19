@@ -1468,29 +1468,8 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
     meta$selectors[[v.name]]$duration <- meta$duration[[v.name]]
   }
   ## Set plot sizes.
-  for(d in c("width","height")){
-    size <- meta[[d]]
-    if(is.list(size)){
-      warning("option ", d, " is deprecated, ",
-              "use ggplot()+theme_animint(", d,
-              "=", size[[1]],
-              ") instead")
-      if(is.null(names(size))){ #use this size for all plots.
-        for(plot.name in names(meta$plots)){
-          meta$plots[[plot.name]]$options[[d]] <- size[[1]]
-        }
-      }else{ #use the size specified for the named plot.
-        for(plot.name in names(size)){
-          if(plot.name %in% names(meta$plots)){
-            meta$plots[[plot.name]]$options[[d]] <- size[[plot.name]]
-          }else{
-            stop("no ggplot named ", plot.name)
-          }
-        }
-      }
-    }
-  }
-
+  setPlotSizes(meta)
+  
   ## These geoms need to be updated when the time.var is animated, so
   ## let's make a list of all possible values to cycle through, from
   ## all the values used in those geoms.

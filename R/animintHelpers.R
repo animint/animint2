@@ -156,6 +156,38 @@ checkSingleShowSelectedValue <- function(selectors){
 }
 
 
+#' Set plot width and height for all plots
+#' @param meta meta object with all information
+#' @return \code{NULL}. Sizes are stored in meta object
+setPlotSizes <- function(meta){
+  # Set both width and height
+  for(d in c("width","height")){
+    size <- meta[[d]]
+    if(is.list(size)){
+      warning("option ", d, " is deprecated, ",
+              "use ggplot()+theme_animint(", d,
+              "=", size[[1]],
+              ") instead")
+      if(is.null(names(size))){ #use this size for all plots.
+        for(plot.name in names(meta$plots)){
+          meta$plots[[plot.name]]$options[[d]] <- size[[1]]
+        }
+      }else{ #use the size specified for the named plot.
+        for(plot.name in names(size)){
+          if(plot.name %in% names(meta$plots)){
+            meta$plots[[plot.name]]$options[[d]] <- size[[plot.name]]
+          }else{
+            stop("no ggplot named ", plot.name)
+          }
+        }
+      }
+    }
+  }
+  return(NULL)
+}
+
+
+
 #' Merge a list of data frames.
 #' @param dfs list of data frames
 #' @return data frame
