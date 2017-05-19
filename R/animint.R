@@ -1352,47 +1352,11 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   for(list.name in names(plot.list)){
     p <- plot.list[[list.name]]
     if(is.ggplot(p)){
-      pattern <- "^[a-zA-Z][a-zA-Z0-9]*$"
-      if(!grepl(pattern, list.name)){
-        stop("ggplot names must match ", pattern)
-      }
       ## Before calling ggplot_build, we do some error checking for
       ## some animint extensions.
-      for(L in p$layers){
-        ## This code assumes that the layer has the complete aesthetic
-        ## mapping and data. TODO: Do we need to copy any global
-        ## values to this layer?
-        name.counts <- table(names(L$mapping))
-        is.dup <- 1 < name.counts
-        if(any(is.dup)){
-          print(L)
-          stop("aes names must be unique, problems: ",
-               paste(names(name.counts)[is.dup], collapse=", "))
-        }
-        iaes <- selector.aes(L$mapping)
-        one.names <- with(iaes, c(clickSelects$one, showSelected$one))
-        update.vars <- as.character(L$mapping[one.names])
-        # if the layer has a defined data set
-        if(length(L$data) > 0) {
-          # check whether the variable is in that layer
-          has.var <- update.vars %in% names(L$data)
-        } else {
-          # check whether the variable is in the global data
-          has.var <- update.vars %in% names(p$data)
-        }
-        
-        if(!all(has.var)){
-          print(L)
-          print(list(problem.aes=update.vars[!has.var],
-                     data.variables=names(L$data)))
-          stop("data does not have interactive variables")
-        }
-        has.cs <- 0 < with(iaes$clickSelects, nrow(several) + length(one))
-        has.href <- "href" %in% names(L$mapping)
-        if(has.cs && has.href){
-          stop("aes(clickSelects) can not be used with aes(href)")
-        }
-      }
+      checkPlotForAnimintExtensions(p, list.name)
+      
+      ## If plot is correct, save to meta for further processing
       meta$plot <- p
       meta$plot.name <- list.name
       ggplot.list[[list.name]] <- parsePlot(meta) # calls ggplot_build.
