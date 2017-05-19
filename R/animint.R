@@ -65,70 +65,10 @@ parsePlot <- function(meta){
   plot.meta$layout <- with(meta$built, train_layout(
     plot$facet, plot$coordinates, plot.meta$layout, panel$ranges))
   
-  ## extract panel background and borders from theme.pars
-  get_bg <- function(pars) {
-    # if pars is not an empty list - occurs when using element_blank()
-    if(length(pars) > 0) {
-      
-      ## if elements are not specified, they inherit from theme.pars$rect
-      for(i in 1:length(pars)) {
-        if(is.null(pars[[i]])) pars[[i]] <- unname(theme.pars$rect[[i]])
-      }
-      
-      # convert fill to RGB if necessary
-      if(!(is.rgb(pars$fill))) pars$fill <- unname(toRGB(pars$fill))
-      # convert color to RGB if necessary
-      if(!(is.rgb(pars$colour))) pars$colour <- unname(toRGB(pars$colour))
-      
-      # remove names (JSON file was getting confused)
-      pars <- lapply(pars, unname)
-      
-    }
-    pars
-  }
   # saving background info
   plot.meta$panel_background <- get_bg(theme.pars$panel.background)
   plot.meta$panel_border <- get_bg(theme.pars$panel.border)
   
-  ### function to extract grid info
-  get_grid <- function(pars, major = T) {
-    # if pars is not an empty list - occurs when using element_blank()
-    if(length(pars) > 0) {
-      
-      ## if elements are not specified, they inherit from 
-      ##    theme.pars$panel.grid then from theme.pars$line
-      for(i in names(pars)) {
-        if(is.null(pars[[i]])) pars[[i]] <- 
-          if(!is.null(theme.pars$panel.grid[[i]])) {
-            theme.pars$panel.grid[[i]]
-          } else {
-            theme.pars$line[[i]]
-          }
-      }
-      # convert colour to RGB if necessary
-      if(!is.rgb(pars$colour)) pars$colour <- unname(toRGB(pars$colour))
-      
-      # remove names (JSON file was getting confused)
-      pars <- lapply(pars, unname)
-    }
-    
-    ## x and y locations
-    if(major) {
-      pars$loc$x <- as.list(meta$built$panel$ranges[[1]]$x.major_source)
-      pars$loc$y <- as.list(meta$built$panel$ranges[[1]]$y.major_source)
-    } else {
-      pars$loc$x <- as.list(meta$built$panel$ranges[[1]]$x.minor_source)
-      pars$loc$y <- as.list(meta$built$panel$ranges[[1]]$y.minor_source)
-      ## remove minor lines when major lines are already drawn
-      pars$loc$x <- pars$loc$x[
-        !(pars$loc$x %in% plot.meta$grid_major$loc$x)
-        ]
-      pars$loc$y <- pars$loc$y[
-        !(pars$loc$y %in% plot.meta$grid_major$loc$y)
-        ]
-    }
-    pars
-  }
   # extract major grid lines
   plot.meta$grid_major <- get_grid(theme.pars$panel.grid.major)
   # extract minor grid lines
