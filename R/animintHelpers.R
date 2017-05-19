@@ -133,6 +133,29 @@ issueSelectorWarnings <- function(geoms, selector.aes, duration){
 }
 
 
+#' Issue warnings for non interactive plots where there is only one
+#' showSelected value
+#' @param selectors selectors to check for warnings
+#' @return \code{NULL}
+checkSingleShowSelectedValue <- function(selectors){
+  if(length(selectors) > 0){
+    n.levels <- sapply(selectors, function(s.info)length(s.info$levels))
+    one.level <- n.levels == 1
+    has.legend <- sapply(selectors, function(s.info)isTRUE(s.info$legend))
+    is.trivial <- one.level & (!has.legend)
+    if(any(is.trivial)){
+      ## With the current compiler that has already saved the tsv files
+      ## by now, we can't really make this data viz more efficient by
+      ## ignoring this trivial selector. However we can warn the user so
+      ## that they can remove this inefficient showSelected.
+      warning("showSelected variables with only 1 level: ",
+              paste(names(selectors)[is.trivial], collapse=", "))
+    }
+  }
+  return(NULL)
+}
+
+
 #' Merge a list of data frames.
 #' @param dfs list of data frames
 #' @return data frame
