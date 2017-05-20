@@ -255,6 +255,22 @@ checkForNonIdentityAndSS <- function(stat.type, has.show, is.show, l,
 }
 
 
+#' Flip axes in case of coord_flip
+#' Switches column names. Eg. xmin to ymin, yntercept to xintercept etc.
+#' @param col.names Column names which need to be switched
+#' @return Column names with x and y axes switched
+switch_axes <- function(col.names){
+  for(elem in seq_along(col.names)){
+    if(grepl("^x", col.names[elem])){
+      col.names[elem] <- sub("^x", "y", col.names[elem])
+    } else if(grepl("^y", col.names[elem])){
+      col.names[elem] <- sub("^y", "x", col.names[elem])
+    }
+  }
+  col.names
+}
+
+
 #' Check plot.list for errors
 #' 
 #' Check that plot.list is a list and every element is named

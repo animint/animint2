@@ -501,20 +501,8 @@ saveLayer <- function(l, d, meta){
   ## best to just ignore this, but you can look at the source of
   ## e.g. geom-rect.r in ggplot2 to see how they deal with this by
   ## doing a piecewise linear interpolation of the shape.
-
-  # Flip axes in case of coord_flip
-  # Switches column names. Eg. xmin to ymin, yntercept to xintercept etc.
-  switch_axes <- function(col.names){
-    for(elem in seq_along(col.names)){
-      if(grepl("^x", col.names[elem])){
-        col.names[elem] <- sub("^x", "y", col.names[elem])
-      } else if(grepl("^y", col.names[elem])){
-        col.names[elem] <- sub("^y", "x", col.names[elem])
-      }
-    }
-    col.names
-  }
-
+  
+  ## Flip axes in case of coord_flip
   if(inherits(meta$plot$coordinates, "CoordFlip")){
     names(g.data) <- switch_axes(names(g.data))
   }
