@@ -237,6 +237,24 @@ colsNotToCopy <- function(g, s.aes){
 }
 
 
+## Generate error for non-Identity Stat + showSelected
+checkForNonIdentityAndSS <- function(stat.type, has.show, is.show, l,
+                                     g_classed, g_data_names,
+                                     aes_names){
+  if(has.show && stat.type != "StatIdentity"){
+    show.names <- aes_names[is.show]
+    data.has.show <- show.names %in% names(g.data)
+    signal <- if(all(data.has.show))warning else stop
+    print(l)
+    signal(
+      "showSelected does not work with ",
+      stat.type,
+      ", problem: ",
+      g$classed)
+  }
+}
+
+
 #' Check plot.list for errors
 #' 
 #' Check that plot.list is a list and every element is named

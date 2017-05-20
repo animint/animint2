@@ -312,17 +312,9 @@ saveLayer <- function(l, d, meta){
   ## sense with clickSelects/showSelected, since two
   ## clickSelects/showSelected values may show up in the same bin.
   stat.type <- class(l$stat)[[1]]
-  if(has.show && stat.type != "StatIdentity"){
-    show.names <- names(g$aes)[is.show]
-    data.has.show <- show.names %in% names(g.data)
-    signal <- if(all(data.has.show))warning else stop
-    print(l)
-    signal(
-      "showSelected does not work with ",
-      stat.type,
-      ", problem: ",
-      g$classed)
-  }
+  checkForNonIdentityAndSS(stat.type, has.show, is.show, l,
+                           g$classed, names(g.data), names(g$aes))
+  
   ## Warn if non-identity position is used with animint aes.
   position.type <- class(l$position)[[1]]
   if(has.show && position.type != "PositionIdentity"){
