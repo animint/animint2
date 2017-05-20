@@ -144,6 +144,25 @@ getPlotTitle <- function(plot.title, meta.title){
 }
 
 
+hjust2anchor <- function(hjust){
+  if(is.null(hjust))return(NULL)
+  stopifnot(is.numeric(hjust))
+  trans <-
+    c("0"="start",
+      "0.5"="middle",
+      "1"="end")
+  hjust.str <- as.character(hjust)
+  is.valid <- hjust.str %in% names(trans)
+  if(all(is.valid)){
+    ## as.character removes names.
+    as.character(trans[hjust.str])
+  }else{
+    print(hjust[!is.valid])
+    stop("animint only supports hjust values 0, 0.5, 1")
+  }
+}
+
+
 #' Check plot.list for errors
 #' 
 #' Check that plot.list is a list and every element is named
