@@ -186,6 +186,26 @@ hjust2anchor <- function(hjust){
 }
 
 
+#' Get all parameters for a layer
+#' 
+#' @param l A single layer of the plot
+#' @return All parameters in the layer
+getLayerParams <- function(l){
+  params <- c(l$geom_params, l$stat_params, l$aes_params, l$extra_params)
+  for(p.name in names(params)){
+    if("chunk_vars" %in% names(params) && is.null(params[["chunk_vars"]])){
+      params[["chunk_vars"]] <- character()
+    }
+    names(params[[p.name]]) <- NULL
+    ## Ignore functions.
+    if(is.function(params[[p.name]])){
+      params[[p.name]] <- NULL
+    }
+  }
+  params
+}
+
+
 #' Check plot.list for errors
 #' 
 #' Check that plot.list is a list and every element is named
