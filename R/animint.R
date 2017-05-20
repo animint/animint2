@@ -235,28 +235,9 @@ saveLayer <- function(l, d, meta){
 
   ## Do not copy group unless it is specified in aes, and do not copy
   ## showSelected variables which are specified multiple times.
-  group.not.specified <- ! "group" %in% names(g$aes)
-  n.groups <- length(unique(NULL))
-  need.group <- c("violin", "step", "hex")
-  group.meaningless <- g$geom %in% c(
-    "abline", "blank",
-    ##"crossbar", "pointrange", #documented as unsupported
-    ## "rug", "dotplot", "quantile", "smooth", "boxplot",
-    ## "bin2d", "map"
-    "errorbar", "errorbarh",
-    ##"bar", "histogram", #?
-    "hline", "vline",
-    "jitter", "linerange",
-    "point", 
-    "rect", "segment")
-  dont.need.group <- ! g$geom %in% need.group
-  remove.group <- group.meaningless ||
-    group.not.specified && 1 < n.groups && dont.need.group
-  do.not.copy <- c(
-    if(remove.group)"group",
-    s.aes$showSelected$ignored,
-    s.aes$clickSelects$ignored)
+  do.not.copy <- colsNotToCopy(g, s.aes)
   copy.cols <- ! names(d) %in% do.not.copy
+  
   g.data <- d[copy.cols]
   
   is.ss <- names(g$aes) %in% s.aes$showSelected$one

@@ -206,6 +206,37 @@ getLayerParams <- function(l){
 }
 
 
+#' Filter out columns that do not need to be copied
+#' 
+#' @param g Geom with columns
+#' @param s.aes Selector aesthetics
+#' @return Character vector of columns not to be copied
+colsNotToCopy <- function(g, s.aes){
+  group.not.specified <- ! "group" %in% names(g$aes)
+  n.groups <- length(unique(NULL))
+  need.group <- c("violin", "step", "hex")
+  group.meaningless <- g$geom %in% c(
+    "abline", "blank",
+    ##"crossbar", "pointrange", #documented as unsupported
+    ## "rug", "dotplot", "quantile", "smooth", "boxplot",
+    ## "bin2d", "map"
+    "errorbar", "errorbarh",
+    ##"bar", "histogram", #?
+    "hline", "vline",
+    "jitter", "linerange",
+    "point", 
+    "rect", "segment")
+  dont.need.group <- ! g$geom %in% need.group
+  remove.group <- group.meaningless ||
+    group.not.specified && 1 < n.groups && dont.need.group
+  do.not.copy <- c(
+    if(remove.group)"group",
+    s.aes$showSelected$ignored,
+    s.aes$clickSelects$ignored)
+  do.not.copy
+}
+
+
 #' Check plot.list for errors
 #' 
 #' Check that plot.list is a list and every element is named
