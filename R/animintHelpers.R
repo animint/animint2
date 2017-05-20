@@ -271,6 +271,19 @@ switch_axes <- function(col.names){
 }
 
 
+## Check if output type is linetype
+is.linetype <- function(x){
+  x <- tolower(x)
+  namedlinetype <-
+    x%in%c("blank", "solid", "dashed",
+           "dotted", "dotdash", "longdash", "twodash")
+  xsplit <- sapply(x, function(i){
+    sum(is.na(strtoi(strsplit(i,"")[[1]],16)))==0
+  })
+  namedlinetype | xsplit
+}
+
+
 #' Check plot.list for errors
 #' 
 #' Check that plot.list is a list and every element is named

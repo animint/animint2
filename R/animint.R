@@ -509,16 +509,6 @@ saveLayer <- function(l, d, meta){
 
   ## Output types
   ## Check to see if character type is d3's rgb type.
-  is.linetype <- function(x){
-    x <- tolower(x)
-    namedlinetype <-
-      x%in%c("blank", "solid", "dashed",
-             "dotted", "dotdash", "longdash", "twodash")
-    xsplit <- sapply(x, function(i){
-      sum(is.na(strtoi(strsplit(i,"")[[1]],16)))==0
-    })
-    namedlinetype | xsplit
-  }
   g$types <- sapply(g.data, function(x) {
     type <- paste(class(x), collapse="-")
     if(type == "character"){
