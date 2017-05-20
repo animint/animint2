@@ -158,6 +158,15 @@ getWidthAndHeight <- function(theme){
 }
 
 
+setUpdateAxes <- function(theme, options_list){
+  update_axes <- "animint.update_axes"
+  if(update_axes %in% names(theme)){
+    options_list$update_axes <- theme[[update_axes]]
+  }
+  options_list
+}
+
+
 hjust2anchor <- function(hjust){
   if(is.null(hjust))return(NULL)
   stopifnot(is.numeric(hjust))
