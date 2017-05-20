@@ -153,11 +153,9 @@ parsePlot <- function(meta){
   # grab the unique axis labels (makes rendering simpler)
   plot.meta <- getUniqueAxisLabels(plot.meta)
 
-  if("element_blank"%in%attr(theme.pars$plot.title, "class")){
-    plot.meta$title <- ""
-  } else {
-    plot.meta$title <- meta$plot$labels$title
-  }
+  # grab plot title if present
+  plot.meta$title <- getPlotTitle(theme.pars$plot.tiltle,
+                                  meta$plot$labels$title)
 
   ## Set plot width and height from animint.* options if they are
   ## present.

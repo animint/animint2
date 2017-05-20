@@ -134,6 +134,16 @@ getUniqueAxisLabels <- function(plot.meta){
   return(plot.meta)
 }
 
+
+getPlotTitle <- function(plot.title, meta.title){
+  if("element_blank"%in%attr(plot.title, "class")){
+    return("")
+  } else {
+    return(meta.title)
+  }
+}
+
+
 #' Check plot.list for errors
 #' 
 #' Check that plot.list is a list and every element is named
