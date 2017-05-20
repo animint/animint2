@@ -144,6 +144,20 @@ getPlotTitle <- function(plot.title, meta.title){
 }
 
 
+getWidthAndHeight <- function(theme){
+  options_list <- list()
+  for(wh in c("width", "height")){
+    awh <- paste0("animint.", wh)
+    options_list[[wh]] <- if(awh %in% names(theme)){
+      theme[[awh]]
+    }else{
+      400
+    }
+  }
+  options_list
+}
+
+
 hjust2anchor <- function(hjust){
   if(is.null(hjust))return(NULL)
   stopifnot(is.numeric(hjust))
