@@ -61,7 +61,7 @@ addShowSelectedForLegend <- function(meta, legend, L){
 
 
 ## extract panel background and borders from theme.pars
-get_bg <- function(pars) {
+get_bg <- function(pars, theme.pars) {
   # if pars is not an empty list - occurs when using element_blank()
   if(length(pars) > 0) {
     
@@ -84,7 +84,7 @@ get_bg <- function(pars) {
 
 
 ### function to extract grid info
-get_grid <- function(pars, major = T) {
+get_grid <- function(pars, theme.pars, plot.meta, meta, major = T) {
   # if pars is not an empty list - occurs when using element_blank()
   if(length(pars) > 0) {
     
@@ -123,6 +123,16 @@ get_grid <- function(pars, major = T) {
   pars
 }
 
+
+#' Get unique axis labels for the plot
+#' @param plot.meta contains axis labels
+#' @return modified \code{plot.meta} with unique axis labels
+getUniqueAxisLabels <- function(plot.meta){
+  axis.info <- plot.meta[grepl("^axis[0-9]+$", names(plot.meta))]
+  plot.meta$xlabs <- as.list(unique(unlist(lapply(axis.info, "[", "xlab"))))
+  plot.meta$ylabs <- as.list(unique(unlist(lapply(axis.info, "[", "ylab"))))
+  return(plot.meta)
+}
 
 #' Check plot.list for errors
 #' 

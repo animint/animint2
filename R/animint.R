@@ -66,13 +66,15 @@ parsePlot <- function(meta){
     plot$facet, plot$coordinates, plot.meta$layout, panel$ranges))
   
   # saving background info
-  plot.meta$panel_background <- get_bg(theme.pars$panel.background)
-  plot.meta$panel_border <- get_bg(theme.pars$panel.border)
+  plot.meta$panel_background <- get_bg(theme.pars$panel.background, theme.pars)
+  plot.meta$panel_border <- get_bg(theme.pars$panel.border, theme.pars)
   
   # extract major grid lines
-  plot.meta$grid_major <- get_grid(theme.pars$panel.grid.major)
+  plot.meta$grid_major <- get_grid(theme.pars$panel.grid.major, theme.pars,
+                                   plot.meta, meta)
   # extract minor grid lines
-  plot.meta$grid_minor <- get_grid(theme.pars$panel.grid.minor, major = F)
+  plot.meta$grid_minor <- get_grid(theme.pars$panel.grid.minor, theme.pars,
+                                   plot.meta, meta, major = F)
   
   ## Flip labels if coords are flipped - transform does not take care
   ## of this. Do this BEFORE checking if it is blank or not, so that
@@ -149,9 +151,7 @@ parsePlot <- function(meta){
     }
   }
   # grab the unique axis labels (makes rendering simpler)
-  axis.info <- plot.meta[grepl("^axis[0-9]+$", names(plot.meta))]
-  plot.meta$xlabs <- as.list(unique(unlist(lapply(axis.info, "[", "xlab"))))
-  plot.meta$ylabs <- as.list(unique(unlist(lapply(axis.info, "[", "ylab"))))
+  plot.meta <- getUniqueAxisLabels(plot.meta)
 
   if("element_blank"%in%attr(theme.pars$plot.title, "class")){
     plot.meta$title <- ""
