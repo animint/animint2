@@ -3,4 +3,7 @@
 .RData
 .Ruserdata
 *.Rproj
-.httr-oauth
+*.httr-oauth
+*animint-htmltest*
+*intreg-selection*
+*ANIMINT-TEST-FOO

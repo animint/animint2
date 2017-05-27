@@ -92,7 +92,7 @@ tests_run <- function(dir = ".", filter = NULL) {
   # avoid weird errors if this function is called via testhat::check()
   # https://github.com/hadley/testthat/issues/144
   Sys.setenv("R_TESTS" = "")
-  testthat::test_check("animint", filter = filter)
+  testthat::test_check("animint2", filter = filter)
 }
 
 #' Kill child process(es) that may have been initiated in animint testing
@@ -156,10 +156,10 @@ find_test_path <- function(dir = ".") {
   if (!grepl("animint", dir, fixed = TRUE)) 
     stop("animint must appear somewhere in 'dir'")
   base_dir <- basename(dir)
-  if (!base_dir %in% c("animint", "tests", "testthat")) 
-    stop("Basename of dir must be one of: 'animint', 'tests', 'testhat'")
+  if (!base_dir %in% c("animint2", "tests", "testthat")) 
+    stop("Basename of dir must be one of: 'animint2', 'tests', 'testhat'")
   ext_dir <- switch(base_dir,
-                    animint = "tests/testthat",
+                    animint2 = "tests/testthat",
                     tests = "testthat",
                     testthat = "")
   file.path(dir, ext_dir)
