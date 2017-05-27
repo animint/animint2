@@ -4,7 +4,7 @@
 \alias{saveLayer}
 \title{Save a layer to disk, save and return meta-data.}
 \usage{
-saveLayer(l, d, meta)
+saveLayer(l, d, meta, geom_num)
 }
 \arguments{
 \item{l}{one layer of the ggplot object.}
@@ -12,6 +12,9 @@ saveLayer(l, d, meta)
 \item{d}{one layer of calculated data from ggplot2::ggplot_build(p).}
 
 \item{meta}{environment of meta-data.}
+
+\item{geom_num}{the number of geom in the plot. Each geom gets an increasing
+ID number starting from 1}
 }
 \value{
 list representing a layer, with corresponding aesthetics, ranges, and groups.

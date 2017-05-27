@@ -310,8 +310,6 @@ newEnvironment <- function(){
   meta$plots <- list()
   meta$geoms <- list()
   meta$selectors <- list()
-  meta$geom.count <- 1
-  
   return(meta)
 }
 

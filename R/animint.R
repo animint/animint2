@@ -175,9 +175,11 @@ parsePlot <- function(meta){
 #' @param l one layer of the ggplot object.
 #' @param d one layer of calculated data from ggplot2::ggplot_build(p).
 #' @param meta environment of meta-data.
+#' @param geom_num the number of geom in the plot. Each geom gets an increasing
+#' ID number starting from 1
 #' @return list representing a layer, with corresponding aesthetics, ranges, and groups.
 #' @export
-saveLayer <- function(l, d, meta){
+saveLayer <- function(l, d, meta, geom_num){
   # carson's approach to getting layer types
   ggtype <- function (x, y = "geom") {
     sub(y, "", tolower(class(x[[y]])[1]))
@@ -186,14 +188,13 @@ saveLayer <- function(l, d, meta){
   g <- list(geom=ggtype(l))
   g$classed <-
     sprintf("geom%d_%s_%s",
-            meta$geom.count, g$geom, meta$plot.name)
+            geom_num, g$geom, meta$plot.name)
 
   ## For each geom, save the nextgeom to preserve drawing order.
   if(is.character(meta$prev.class)){
     meta$geoms[[meta$prev.class]]$nextgeom <- g$classed
   }
   
-  meta$geom.count <- meta$geom.count + 1
   ## needed for when group, etc. is an expression:
   g$aes <- sapply(l$mapping, function(k) as.character(as.expression(k)))
 
@@ -962,6 +963,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
 
   ## After going through all of the meta-data in all of the ggplots,
   ## now we have enough info to save the TSV file database.
+  geom_num <- 0
   for(p.name in names(ggplot.list)){
     ggplot.info <- ggplot.list[[p.name]]
     meta$prev.class <- NULL # first geom of any plot should not be next.
@@ -997,8 +999,8 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
           }
         }
       }
-      
-      g <- saveLayer(L, df, meta)
+      geom_num <- geom_num + 1
+      g <- saveLayer(L, df, meta, geom_num)
 
       ## Every plot has a list of geom names.
       meta$plots[[p.name]]$geoms <- c(
