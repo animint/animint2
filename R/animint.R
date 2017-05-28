@@ -3,22 +3,22 @@
 #' @return nothing, info is stored in meta.
 #' @export
 #' @import ggplot2 plyr
-parsePlot <- function(meta){
+parsePlot <- function(meta, plot, plot.name){
   ## adding data and mapping to each layer from base plot, if necessary
-  for(layer.i in seq_along(meta$plot$layers)) {
+  for(layer.i in seq_along(plot$layers)) {
     
     ## if data is not specified, get it from plot
-    if(length(meta$plot$layers[[layer.i]]$data) == 0){
-      meta$plot$layers[[layer.i]]$data <- meta$plot$data
+    if(length(plot$layers[[layer.i]]$data) == 0){
+      plot$layers[[layer.i]]$data <- plot$data
     }
     
     ## if mapping is not specified, get it from plot
-    if(is.null(meta$plot$layers[[layer.i]]$mapping)){
-      meta$plot$layers[[layer.i]]$mapping <- meta$plot$mapping
+    if(is.null(plot$layers[[layer.i]]$mapping)){
+      plot$layers[[layer.i]]$mapping <- plot$mapping
     }
   }
   
-  meta$built <- ggplot2::ggplot_build(meta$plot)
+  built <- ggplot2::ggplot_build(plot)
   plot.meta <- list()
   
   ## Export axis specification as a combination of breaks and
@@ -26,7 +26,7 @@ parsePlot <- function(meta){
   ## be passed into d3 on the x axis scale instead of on the
   ## grid 0-1 scale). This allows transformations to be used
   ## out of the box, with no additional d3 coding.
-  theme.pars <- ggplot2:::plot_theme(meta$plot)
+  theme.pars <- ggplot2:::plot_theme(plot)
 
   ## Interpret panel.margin as the number of lines between facets
   ## (ignoring whatever grid::unit such as cm that was specified).
@@ -36,14 +36,14 @@ parsePlot <- function(meta){
   
   ## No legend if theme(legend.postion="none").
   plot.meta$legend <- if(theme.pars$legend.position != "none"){
-    getLegendList(meta$built)
+    getLegendList(built)
   }
   
   ## scan for legends in each layer.
-  for(layer.i in seq_along(meta$plot$layers)){
-    ##cat(sprintf("%4d / %4d layers\n", layer.i, length(meta$plot$layers)))
+  for(layer.i in seq_along(plot$layers)){
+    ##cat(sprintf("%4d / %4d layers\n", layer.i, length(plot$layers)))
     ## This is the layer from the original ggplot object.
-    L <- meta$plot$layers[[layer.i]]
+    L <- plot$layers[[layer.i]]
     ## If any legends are specified, add showSelected aesthetic
     L <- addShowSelectedForLegend(meta, plot.meta$legend, L)
   }#layer.i
@@ -54,15 +54,15 @@ parsePlot <- function(meta){
   ## we need to specify the variable corresponding to each legend. 
   ## To do this, we need to have the legend. 
   ## And to have the legend, I think that we need to use ggplot_build
-  meta$built <- ggplot2::ggplot_build(meta$plot)
+  built <- ggplot2::ggplot_build(plot)
   ## TODO: implement a compiler that does not call ggplot_build at
   ## all, and instead does all of the relevant computations in animint
   ## code.
   ## 'strips' are really titles for the different facet panels
-  plot.meta$strips <- with(meta$built, getStrips(plot$facet, panel))
+  plot.meta$strips <- with(built, getStrips(plot$facet, panel))
   ## the layout tells us how to subset and where to plot on the JS side
-  plot.meta$layout <- with(meta$built, flag_axis(plot$facet, panel$layout))
-  plot.meta$layout <- with(meta$built, train_layout(
+  plot.meta$layout <- with(built, flag_axis(plot$facet, panel$layout))
+  plot.meta$layout <- with(built, train_layout(
     plot$facet, plot$coordinates, plot.meta$layout, panel$ranges))
   
   # saving background info
@@ -79,20 +79,20 @@ parsePlot <- function(meta){
   ## Flip labels if coords are flipped - transform does not take care
   ## of this. Do this BEFORE checking if it is blank or not, so that
   ## individual axes can be hidden appropriately, e.g. #1.
-  if("CoordFlip"%in%attr(meta$plot$coordinates, "class")){
-    temp <- meta$plot$labels$x
-    meta$plot$labels$x <- meta$plot$labels$y
-    meta$plot$labels$y <- temp
+  if("CoordFlip"%in%attr(plot$coordinates, "class")){
+    temp <- plot$labels$x
+    plot$labels$x <- plot$labels$y
+    plot$labels$y <- temp
   }
   is.blank <- function(el.name){
-    x <- ggplot2::calc_element(el.name, meta$plot$theme)
+    x <- ggplot2::calc_element(el.name, plot$theme)
     "element_blank"%in%attr(x,"class")
   }
 
   # Instead of an "axis" JSON object for each plot,
   # allow for "axis1", "axis2", etc. where
   # "axis1" corresponds to the 1st PANEL
-  ranges <- meta$built$panel$ranges
+  ranges <- built$panel$ranges
   n.axis <- length(ranges)
   axes <- setNames(vector("list", n.axis),
                    paste0("axis", seq_len(n.axis)))
@@ -105,12 +105,12 @@ parsePlot <- function(meta){
     plot.meta[[s("%stitle")]] <- if(is.blank(s("axis.title.%s"))){
       ""
     } else {
-      scale.i <- which(meta$plot$scales$find(xy))
+      scale.i <- which(plot$scales$find(xy))
       lab.or.null <- if(length(scale.i) == 1){
-        meta$plot$scales$scales[[scale.i]]$name
+        plot$scales$scales[[scale.i]]$name
       }
       if(is.null(unlist(lab.or.null))){
-        meta$plot$labels[[xy]]
+        plot$labels[[xy]]
       }else{
         lab.or.null
       }
@@ -155,19 +155,19 @@ parsePlot <- function(meta){
 
   # grab plot title if present
   plot.meta$title <- getPlotTitle(theme.pars$plot.tiltle,
-                                  meta$plot$labels$title)
+                                  plot$labels$title)
 
   ## Set plot width and height from animint.* options if they are
   ## present.
-  options_list <- getWidthAndHeight(meta$plot$theme)
-  options_list <- setUpdateAxes(meta$plot$theme, options_list)
+  options_list <- getWidthAndHeight(plot$theme)
+  options_list <- setUpdateAxes(plot$theme, options_list)
   plot.meta$options <- options_list
   
-  meta$plots[[meta$plot.name]] <- plot.meta
+  meta$plots[[plot.name]] <- plot.meta
 
   list(
-    ggplot=meta$plot,
-    built=meta$built)
+    ggplot=plot,
+    built=built)
 }
 
 
@@ -179,16 +179,16 @@ parsePlot <- function(meta){
 #' ID number starting from 1
 #' @return list representing a layer, with corresponding aesthetics, ranges, and groups.
 #' @export
-saveLayer <- function(l, d, meta, geom_num){
+saveLayer <- function(l, d, meta, geom_num, p.name, ggplot, built){
   # carson's approach to getting layer types
   ggtype <- function (x, y = "geom") {
     sub(y, "", tolower(class(x[[y]])[1]))
   }
-  ranges <- meta$built$panel$ranges
+  ranges <- built$panel$ranges
   g <- list(geom=ggtype(l))
   g$classed <-
     sprintf("geom%d_%s_%s",
-            geom_num, g$geom, meta$plot.name)
+            geom_num, g$geom, p.name)
 
   ## For each geom, save the nextgeom to preserve drawing order.
   if(is.character(meta$prev.class)){
@@ -504,7 +504,7 @@ saveLayer <- function(l, d, meta, geom_num){
   ## doing a piecewise linear interpolation of the shape.
   
   ## Flip axes in case of coord_flip
-  if(inherits(meta$plot$coordinates, "CoordFlip")){
+  if(inherits(ggplot$coordinates, "CoordFlip")){
     names(g.data) <- switch_axes(names(g.data))
   }
 
@@ -669,7 +669,7 @@ saveLayer <- function(l, d, meta, geom_num){
   }
   
   # If there is only one PANEL, we don't need it anymore.
-  plot.has.panels <- nrow(meta$built$panel$layout) > 1
+  plot.has.panels <- nrow(built$panel$layout) > 1
   g$PANEL <- unique(g.data[["PANEL"]])
   geom.has.one.panel <- length(g$PANEL) == 1
   if(geom.has.one.panel && (!plot.has.panels)) {
@@ -951,9 +951,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       checkPlotForAnimintExtensions(p, list.name)
       
       ## If plot is correct, save to meta for further processing
-      meta$plot <- p
-      meta$plot.name <- list.name
-      ggplot.list[[list.name]] <- parsePlot(meta) # calls ggplot_build.
+      ggplot.list[[list.name]] <- parsePlot(meta, p, list.name) # calls ggplot_build.
     }else if(is.list(p)){ ## for options.
       meta[[list.name]] <- p
     }else{
@@ -975,14 +973,6 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       ##   layer.i, length(ggplot.info$built$data),
       ##   p.name))
       
-      ## This is a total hack, we should clean up the internals
-      ## (parsePlot, saveLayer) so that they no longer rely on this
-      ## meta object which makes it super confusing to know which
-      ## functions need which data.
-      meta$plot.name <- p.name
-      meta$plot <- ggplot.info$ggplot
-      meta$built <- ggplot.info$built
-      
       ## Data now contains columns with fill, alpha, colour etc.
       ## Remove from data if they have a single unique value and
       ## are NOT used in mapping to reduce tsv file size
@@ -1000,7 +990,8 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
         }
       }
       geom_num <- geom_num + 1
-      g <- saveLayer(L, df, meta, geom_num)
+      g <- saveLayer(L, df, meta, geom_num,
+                     p.name, ggplot.info$ggplot, ggplot.info$built)
 
       ## Every plot has a list of geom names.
       meta$plots[[p.name]]$geoms <- c(
