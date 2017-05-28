@@ -191,17 +191,13 @@ storeLayer <- function(meta, g, g.data.varied){
 #' ID number starting from 1
 #' @return list representing a layer, with corresponding aesthetics, ranges, and groups.
 #' @export
-saveLayer <- function(l, d, meta, geom_num, p.name, ggplot, built){
-  # carson's approach to getting layer types
-  ggtype <- function (x, y = "geom") {
-    sub(y, "", tolower(class(x[[y]])[1]))
-  }
+saveLayer <- function(l, d, meta, layer_name, ggplot, built){
+  # Set geom name and layer name
+  g <- list(geom=strsplit(layer_name, "_")[[1]][2])
+  g$classed <- layer_name
+  
   ranges <- built$panel$ranges
-  g <- list(geom=ggtype(l))
-  g$classed <-
-    sprintf("geom%d_%s_%s",
-            geom_num, g$geom, p.name)
-
+  
   ## For each geom, save the nextgeom to preserve drawing order.
   if(is.character(meta$prev.class)){
     meta$geoms[[meta$prev.class]]$nextgeom <- g$classed
@@ -994,8 +990,9 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
         }
       }
       geom_num <- geom_num + 1
-      gl <- saveLayer(L, df, meta, geom_num,
-                     p.name, ggplot.info$ggplot, ggplot.info$built)
+      layer_name <- getLayerName(L, geom_num, p.name)
+      gl <- saveLayer(L, df, meta, layer_name,
+                      ggplot.info$ggplot, ggplot.info$built)
 
       ## Save to a list before saving to tsv
       ## Helps during axis updates and Inf values

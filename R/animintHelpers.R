@@ -414,6 +414,21 @@ issueSelectorWarnings <- function(geoms, selector.aes, duration){
   return(NULL)
 }
 
+#' Gives a unique name to each layer in \code{saveLayer}
+#' @param L layer in saveLayer to be named
+#' @param geom_num the number of the layer to be saved
+#' @param p.name the name of the plot to which the layer belongs
+#' @return a unique name for the layer
+getLayerName <- function(L, geom_num, p.name){
+  # carson's approach to getting layer types
+  ggtype <- function (x, y = "geom") {
+    sub(y, "", tolower(class(x[[y]])[1]))
+  }
+  layer_name <- sprintf("geom%d_%s_%s",
+                        geom_num, ggtype(L), p.name)
+  layer_name
+}
+
 
 #' Issue warnings for non interactive plots where there is only one
 #' showSelected value
