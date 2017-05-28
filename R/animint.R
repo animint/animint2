@@ -171,6 +171,18 @@ parsePlot <- function(meta, plot, plot.name){
 }
 
 
+storeLayer <- function(meta, g, g.data.varied){
+  ## Save each variable chunk to a separate tsv file.
+  meta$chunk.i <- 1L
+  meta$g <- g
+  g$chunks <- saveChunks(g.data.varied, meta)
+  g$total <- length(unlist(g$chunks))
+  
+  ## Finally save to the master geom list.
+  meta$geoms[[g$classed]] <- g
+  g
+}
+
 #' Save a layer to disk, save and return meta-data.
 #' @param l one layer of the ggplot object.
 #' @param d one layer of calculated data from ggplot2::ggplot_build(p).
@@ -752,16 +764,7 @@ saveLayer <- function(l, d, meta, geom_num, p.name, ggplot, built){
     data.or.null$varied
   }
 
-  ## Save each variable chunk to a separate tsv file.
-  meta$chunk.i <- 1L
-  meta$g <- g
-  g$chunks <- saveChunks(g.data.varied, meta)
-  g$total <- length(unlist(g$chunks))
-
-  ## Finally save to the master geom list.
-  meta$geoms[[g$classed]] <- g
-
-  g
+  list(g=g, g.data.varied=g.data.varied)
 }
 
 
@@ -962,6 +965,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   ## After going through all of the meta-data in all of the ggplots,
   ## now we have enough info to save the TSV file database.
   geom_num <- 0
+  g.list <- list()
   for(p.name in names(ggplot.list)){
     ggplot.info <- ggplot.list[[p.name]]
     meta$prev.class <- NULL # first geom of any plot should not be next.
@@ -990,12 +994,12 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
         }
       }
       geom_num <- geom_num + 1
-      g <- saveLayer(L, df, meta, geom_num,
+      gl <- saveLayer(L, df, meta, geom_num,
                      p.name, ggplot.info$ggplot, ggplot.info$built)
 
-      ## Every plot has a list of geom names.
-      meta$plots[[p.name]]$geoms <- c(
-        meta$plots[[p.name]]$geoms, list(g$classed))
+      ## Save to a list before saving to tsv
+      ## Helps during axis updates and Inf values
+      g.list[[p.name]][[gl$g$classed]] <- gl
     }#layer.i
   }
   
@@ -1040,10 +1044,6 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
     meta$selectors[[selector.name]]$update <-
       as.list(unique(unlist(lapply(values.update, "[[", "update"))))
   }
-
-  ## Now that selectors are all defined, go back through geoms to
-  ## check if there are any warnings to issue.
-  issueSelectorWarnings(meta$geoms, meta$selector.aes, meta$duration)
   
   ## For a static data viz with no interactive aes, no need to check
   ## for trivial showSelected variables with only 1 level.
@@ -1055,63 +1055,6 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   }
   ## Set plot sizes.
   setPlotSizes(meta)
-  
-  ## These geoms need to be updated when the time.var is animated, so
-  ## let's make a list of all possible values to cycle through, from
-  ## all the values used in those geoms.
-  if("time" %in% ls(meta)){
-    meta$selectors[[meta$time$variable]]$type <- "single"
-    anim.values <- meta$timeValues
-    if(length(meta$timeValues)==0){
-      stop("no interactive aes for time variable ", meta$time$variable)
-    }
-    anim.not.null <- anim.values[!sapply(anim.values, is.null)]
-    time.classes <- sapply(anim.not.null, function(x) class(x)[1])
-    time.class <- time.classes[[1]]
-    if(any(time.class != time.classes)){
-      print(time.classes)
-      stop("time variables must all have the same class")
-    }
-    meta$time$sequence <- if(time.class=="POSIXct"){
-      orderTime <- function(format){
-        values <- unlist(sapply(anim.not.null, strftime, format))
-        sort(unique(as.character(values)))
-      }
-      hms <- orderTime("%H:%M:%S")
-      f <- if(length(hms) == 1){
-        "%Y-%m-%d"
-      }else{
-        "%Y-%m-%d %H:%M:%S"
-      }
-      orderTime(f)
-    }else if(time.class=="factor"){
-      levs <- levels(anim.not.null[[1]])
-      if(any(sapply(anim.not.null, function(f)levels(f)!=levs))){
-        print(sapply(anim.not.null, levels))
-        stop("all time factors must have same levels")
-      }
-      levs
-    }else{ #character, numeric, integer, ... what else?
-      as.character(sort(unique(unlist(anim.not.null))))
-    }
-    meta$selectors[[time.var]]$selected <- meta$time$sequence[[1]]
-  }
-
-  ## The first selection:
-  for(selector.name in names(meta$first)){
-    first <- as.character(meta$first[[selector.name]])
-    if(selector.name %in% names(meta$selectors)){
-      s.type <- meta$selectors[[selector.name]]$type
-      if(s.type == "single"){
-        stopifnot(length(first) == 1)
-      }
-      meta$selectors[[selector.name]]$selected <- first
-    }else{
-      print(list(selectors=names(meta$selectors),
-                 missing.first=selector.name))
-      stop("missing first selector variable")
-    }
-  }
   
   ## Compute domains of different subsets, to be used by update_scales
   ## in the renderer
@@ -1266,25 +1209,25 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   for(p.name in names(ggplot.list)){
     axes_to_update <- meta$plots[[p.name]]$options$update_axes
     if(!is.null(axes_to_update)){
-      p_geoms <- meta$plots[[p.name]]$geoms
       for (axis in axes_to_update){
         subset_domains <- list()
         # Determine if every panel needs a different domain or not
         # We conclude here if we want to split the data by PANEL
         # for the axes updates. Else every panel uses the same domain
-        panels <- meta$plots[[p.name]]$layout$PANEL
+        panels <- ggplot.list[[p.name]]$built$panel$layout$PANEL
         axes_drawn <- 
-          meta$plots[[p.name]]$layout[[paste0("AXIS_", toupper(axis))]]
+          ggplot.list[[p.name]]$built$panel$layout[[paste0("AXIS_",
+                                                           toupper(axis))]]
         panels_used <- panels[axes_drawn]
         split_by_panel <- all(panels == panels_used)
-        for(num in seq_along(p_geoms)){
+        for(num in seq_along(ggplot.list[[p.name]]$built$plot$layers)){
           # If there is a geom where the axes updates have non numeric values,
           # we stop and throw an informative warning
           # It does not make sense to have axes updates for non numeric values
-          aesthetic_names <- names(meta$geoms[[ p_geoms[[num]] ]]$aes)
+          aesthetic_names <- names(g.list[[p.name]][[num]]$g$aes)
           
           axis_col_name <- aesthetic_names[grepl(axis, aesthetic_names)]
-          axis_col <- meta$geoms[[  p_geoms[[num]]  ]]$aes[[ axis_col_name[[1]] ]]
+          axis_col <- g.list[[p.name]][[num]]$g$aes[[ axis_col_name[[1]] ]]
           axis_is_numeric <- is.numeric(ggplot.list[[p.name]]$built$plot$layers[[num]]$data[[axis_col]])
           if(!axis_is_numeric){
             stop(paste0("'update_axes' specified for '", toupper(axis),
@@ -1296,11 +1239,11 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
           # handle cases for showSelected: showSelectedlegendfill,
           # showSelectedlegendcolour etc.
           choose_ss <- grepl("^showSelected", aesthetic_names)
-          ss_selectors <- meta$geoms[[ p_geoms[[num]] ]]$aes[choose_ss]
+          ss_selectors <- g.list[[p.name]][[num]]$g$aes[choose_ss]
           # Do not calculate domains for multiple selectors
           remove_ss <- c()
           for(j in seq_along(ss_selectors)){
-            if(meta$selectors[[ss_selectors[j]]]$type != "single"){
+            if(meta$selectors[[ ss_selectors[[j]] ]]$type != "single"){
               remove_ss <- c(remove_ss, ss_selectors[j])
             }
           }
@@ -1315,7 +1258,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
           if(length(ss_selectors) > 0){
             subset_domains[num] <- compute_domains(
               ggplot.list[[p.name]]$built$data[[num]],
-              axis, strsplit(p_geoms[[num]], "_")[[1]][[2]],
+              axis, strsplit(names(g.list[[p.name]])[[num]], "_")[[1]][[2]],
               names(sort(ss_selectors)), split_by_panel)
           }
         }
@@ -1348,6 +1291,78 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
             update_axes[!axis == update_axes]
         }
       }
+    }
+  }
+  
+  ## Finally save all the layers 
+  for(p.name in names(ggplot.list)){
+    for(g1 in seq_along(g.list[[p.name]])){
+      g <- storeLayer(meta, g.list[[p.name]][[g1]]$g,
+                      g.list[[p.name]][[g1]]$g.data.varied)
+      ## Every plot has a list of geom names.
+      meta$plots[[p.name]]$geoms <- c(
+        meta$plots[[p.name]]$geoms, list(g$classed))
+    }#layer.i
+  }
+  
+  ## Now that selectors are all defined, go back through geoms to
+  ## check if there are any warnings to issue.
+  issueSelectorWarnings(meta$geoms, meta$selector.aes, meta$duration)
+  
+  ## These geoms need to be updated when the time.var is animated, so
+  ## let's make a list of all possible values to cycle through, from
+  ## all the values used in those geoms.
+  if("time" %in% ls(meta)){
+    meta$selectors[[meta$time$variable]]$type <- "single"
+    anim.values <- meta$timeValues
+    if(length(meta$timeValues)==0){
+      stop("no interactive aes for time variable ", meta$time$variable)
+    }
+    anim.not.null <- anim.values[!sapply(anim.values, is.null)]
+    time.classes <- sapply(anim.not.null, function(x) class(x)[1])
+    time.class <- time.classes[[1]]
+    if(any(time.class != time.classes)){
+      print(time.classes)
+      stop("time variables must all have the same class")
+    }
+    meta$time$sequence <- if(time.class=="POSIXct"){
+      orderTime <- function(format){
+        values <- unlist(sapply(anim.not.null, strftime, format))
+        sort(unique(as.character(values)))
+      }
+      hms <- orderTime("%H:%M:%S")
+      f <- if(length(hms) == 1){
+        "%Y-%m-%d"
+      }else{
+        "%Y-%m-%d %H:%M:%S"
+      }
+      orderTime(f)
+    }else if(time.class=="factor"){
+      levs <- levels(anim.not.null[[1]])
+      if(any(sapply(anim.not.null, function(f)levels(f)!=levs))){
+        print(sapply(anim.not.null, levels))
+        stop("all time factors must have same levels")
+      }
+      levs
+    }else{ #character, numeric, integer, ... what else?
+      as.character(sort(unique(unlist(anim.not.null))))
+    }
+    meta$selectors[[time.var]]$selected <- meta$time$sequence[[1]]
+  }
+  
+  ## The first selection:
+  for(selector.name in names(meta$first)){
+    first <- as.character(meta$first[[selector.name]])
+    if(selector.name %in% names(meta$selectors)){
+      s.type <- meta$selectors[[selector.name]]$type
+      if(s.type == "single"){
+        stopifnot(length(first) == 1)
+      }
+      meta$selectors[[selector.name]]$selected <- first
+    }else{
+      print(list(selectors=names(meta$selectors),
+                 missing.first=selector.name))
+      stop("missing first selector variable")
     }
   }
   

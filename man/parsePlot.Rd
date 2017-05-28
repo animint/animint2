@@ -4,7 +4,7 @@
 \alias{parsePlot}
 \title{Convert a ggplot to a list.}
 \usage{
-parsePlot(meta)
+parsePlot(meta, plot, plot.name)
 }
 \arguments{
 \item{meta}{environment with previously calculated plot data, and a new plot to parse, already stored in plot and plot.name.}

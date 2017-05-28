@@ -5,7 +5,7 @@
 #' @references https://github.com/yihui/knitr/blob/master/vignettes/knit_print.Rmd
 #' @author Carson Sievert
 #' @export
-knit_print.animint <- function(x, options, ...) {
+knit_print.animint2 <- function(x, options, ...) {
   if (!requireNamespace("knitr")) warning("Please install.packages('knitr')")
   # This function should be evaluated in knitr's output directory
   output.dir <- knitr::opts_knit$get()[["output.dir"]]
