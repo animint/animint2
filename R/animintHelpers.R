@@ -84,7 +84,7 @@ get_bg <- function(pars, theme.pars) {
 
 
 ### function to extract grid info
-get_grid <- function(pars, theme.pars, plot.meta, meta, major = T) {
+get_grid <- function(pars, theme.pars, plot.meta, meta, built, major = T) {
   # if pars is not an empty list - occurs when using element_blank()
   if(length(pars) > 0) {
     
@@ -107,11 +107,11 @@ get_grid <- function(pars, theme.pars, plot.meta, meta, major = T) {
   
   ## x and y locations
   if(major) {
-    pars$loc$x <- as.list(meta$built$panel$ranges[[1]]$x.major_source)
-    pars$loc$y <- as.list(meta$built$panel$ranges[[1]]$y.major_source)
+    pars$loc$x <- as.list(built$panel$ranges[[1]]$x.major_source)
+    pars$loc$y <- as.list(built$panel$ranges[[1]]$y.major_source)
   } else {
-    pars$loc$x <- as.list(meta$built$panel$ranges[[1]]$x.minor_source)
-    pars$loc$y <- as.list(meta$built$panel$ranges[[1]]$y.minor_source)
+    pars$loc$x <- as.list(built$panel$ranges[[1]]$x.minor_source)
+    pars$loc$y <- as.list(built$panel$ranges[[1]]$y.minor_source)
     ## remove minor lines when major lines are already drawn
     pars$loc$x <- pars$loc$x[
       !(pars$loc$x %in% plot.meta$grid_major$loc$x)

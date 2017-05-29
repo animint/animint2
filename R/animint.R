@@ -71,10 +71,10 @@ parsePlot <- function(meta, plot, plot.name){
   
   # extract major grid lines
   plot.meta$grid_major <- get_grid(theme.pars$panel.grid.major, theme.pars,
-                                   plot.meta, meta)
+                                   plot.meta, meta, built)
   # extract minor grid lines
   plot.meta$grid_minor <- get_grid(theme.pars$panel.grid.minor, theme.pars,
-                                   plot.meta, meta, major = F)
+                                   plot.meta, meta, built, major = F)
   
   ## Flip labels if coords are flipped - transform does not take care
   ## of this. Do this BEFORE checking if it is blank or not, so that
