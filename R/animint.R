@@ -815,17 +815,6 @@ selector.aes <- function(a.list){
 }
 
 
-##' Deprecated alias for animint2dir.
-##' @title animint2dir
-##' @param ... passed to animint2dir
-##' @return same as animint2dir
-##' @author Toby Dylan Hocking
-##' @export
-gg2animint <- function(...){
-  warning("gg2animint is deprecated, use animint2dir instead")
-  animint2dir(...)
-}
-
 #' Compile and render an animint in a local directory
 #'
 #' An animint is a list of ggplots and options that defines
