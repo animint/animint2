@@ -162,10 +162,9 @@ parsePlot <- function(meta, plot, plot.name){
   options_list <- getWidthAndHeight(plot$theme)
   options_list <- setUpdateAxes(plot$theme, options_list)
   plot.meta$options <- options_list
-  
-  meta$plots[[plot.name]] <- plot.meta
 
   list(
+    plot.info = plot.meta,
     ggplot=plot,
     built=built)
 }
@@ -931,6 +930,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
 
   ## Extract essential info from ggplots, reality checks.
   ggplot.list <- list()
+  AllPlotsInfo <- list()
   for(list.name in names(plot.list)){
     p <- plot.list[[list.name]]
     if(is.ggplot(p)){
@@ -939,7 +939,9 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       checkPlotForAnimintExtensions(p, list.name)
       
       ## If plot is correct, save to meta for further processing
-      ggplot.list[[list.name]] <- parsePlot(meta, p, list.name) # calls ggplot_build.
+      parsed_info <- parsePlot(meta, p, list.name) # calls ggplot_build.
+      AllPlotsInfo[[list.name]] <- parsed_info[[1]]
+      ggplot.list[[list.name]] <- parsed_info[2:3]
     }else if(is.list(p)){ ## for options.
       meta[[list.name]] <- p
     }else{
@@ -1040,7 +1042,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
     meta$selectors[[v.name]]$duration <- meta$duration[[v.name]]
   }
   ## Set plot sizes.
-  setPlotSizes(meta)
+  setPlotSizes(meta, AllPlotsInfo)
   
   ## Compute domains of different subsets, to be used by update_scales
   ## in the renderer
@@ -1193,7 +1195,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   
   ## Get domains of data subsets if theme_animint(update_axes) is used
   for(p.name in names(ggplot.list)){
-    axes_to_update <- meta$plots[[p.name]]$options$update_axes
+    axes_to_update <- AllPlotsInfo[[p.name]]$options$update_axes
     if(!is.null(axes_to_update)){
       for (axis in axes_to_update){
         subset_domains <- list()
@@ -1236,9 +1238,9 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
           ss_selectors <- ss_selectors[!ss_selectors %in% remove_ss]
           # Only save those selectors which are used by plot
           for(ss in ss_selectors){
-            if(!ss %in% meta$plots[[p.name]]$axis_domains[[axis]]$selectors){
-              meta$plots[[p.name]]$axis_domains[[axis]]$selectors <-
-                c(ss, meta$plots[[p.name]]$axis_domains[[axis]]$selectors)
+            if(!ss %in% AllPlotsInfo[[p.name]]$axis_domains[[axis]]$selectors){
+              AllPlotsInfo[[p.name]]$axis_domains[[axis]]$selectors <-
+                c(ss, AllPlotsInfo[[p.name]]$axis_domains[[axis]]$selectors)
             }
           }
           if(length(ss_selectors) > 0){
@@ -1252,16 +1254,16 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
         if(length(subset_domains) > 0){
           use_domain <- get_domain(subset_domains)
           # Save for renderer
-          meta$plots[[p.name]]$axis_domains[[axis]]$domains <- use_domain
+          AllPlotsInfo[[p.name]]$axis_domains[[axis]]$domains <- use_domain
           # Get gridlines for updates
-          meta$plots[[p.name]]$axis_domains[[axis]]$grids <- 
+          AllPlotsInfo[[p.name]]$axis_domains[[axis]]$grids <- 
             get_ticks_gridlines(use_domain)
           ## Initially selected selector values are stored in curr_select
           ## which updates every time a user updates the axes
           saved_selectors <- sort(names(meta$selectors))
           for (ss in saved_selectors){
-            if(ss %in% meta$plots[[p.name]]$axis_domains[[axis]]$selectors){
-              meta$plots[[p.name]]$axis_domains[[axis]]$curr_select[[ss]] <-
+            if(ss %in% AllPlotsInfo[[p.name]]$axis_domains[[axis]]$selectors){
+              AllPlotsInfo[[p.name]]$axis_domains[[axis]]$curr_select[[ss]] <-
                 meta$selectors[[ss]]$selected
             }
           }
@@ -1272,8 +1274,8 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
             "so created a plot with no updates for",
             toupper(axis), "axis"), call. = FALSE)
           # Do not save in plot.json file if axes is not getting updated
-          update_axes <- meta$plots[[p.name]]$options$update_axes
-          meta$plots[[p.name]]$options$update_axes <-
+          update_axes <- AllPlotsInfo[[p.name]]$options$update_axes
+          AllPlotsInfo[[p.name]]$options$update_axes <-
             update_axes[!axis == update_axes]
         }
       }
@@ -1286,8 +1288,8 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       g <- storeLayer(meta, g.list[[p.name]][[g1]]$g,
                       g.list[[p.name]][[g1]]$g.data.varied)
       ## Every plot has a list of geom names.
-      meta$plots[[p.name]]$geoms <- c(
-        meta$plots[[p.name]]$geoms, list(g$classed))
+      AllPlotsInfo[[p.name]]$geoms <- c(
+        AllPlotsInfo[[p.name]]$geoms, list(g$classed))
     }#layer.i
   }
   
@@ -1352,6 +1354,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
     }
   }
   
+  meta$plots <- AllPlotsInfo
   ## Finally, copy html/js/json files to out.dir.
   src.dir <- system.file("htmljs",package="animint2")
   to.copy <- Sys.glob(file.path(src.dir, "*"))

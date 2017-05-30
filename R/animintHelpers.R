@@ -456,7 +456,7 @@ checkSingleShowSelectedValue <- function(selectors){
 #' Set plot width and height for all plots
 #' @param meta meta object with all information
 #' @return \code{NULL}. Sizes are stored in meta object
-setPlotSizes <- function(meta){
+setPlotSizes <- function(meta, AllPlotsInfo){
   # Set both width and height
   for(d in c("width","height")){
     size <- meta[[d]]
@@ -466,13 +466,13 @@ setPlotSizes <- function(meta){
               "=", size[[1]],
               ") instead")
       if(is.null(names(size))){ #use this size for all plots.
-        for(plot.name in names(meta$plots)){
-          meta$plots[[plot.name]]$options[[d]] <- size[[1]]
+        for(plot.name in names(AllPlotsInfo)){
+          AllPlotsInfo[[plot.name]]$options[[d]] <- size[[1]]
         }
       }else{ #use the size specified for the named plot.
         for(plot.name in names(size)){
-          if(plot.name %in% names(meta$plots)){
-            meta$plots[[plot.name]]$options[[d]] <- size[[plot.name]]
+          if(plot.name %in% names(AllPlotsInfo)){
+            AllPlotsInfo[[plot.name]]$options[[d]] <- size[[plot.name]]
           }else{
             stop("no ggplot named ", plot.name)
           }
