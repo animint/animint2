@@ -19,7 +19,7 @@ parsePlot <- function(meta, plot, plot.name){
   }
   
   built <- ggplot2::ggplot_build(plot)
-  plot.meta <- list()
+  plot.info <- list()
   
   ## Export axis specification as a combination of breaks and
   ## labels, on the relevant axis scale (i.e. so that it can
@@ -32,10 +32,10 @@ parsePlot <- function(meta, plot, plot.name){
   ## (ignoring whatever grid::unit such as cm that was specified).
   
   ## Now ggplot specifies panel.margin in 'pt' instead of 'lines'
-  plot.meta$panel_margin_lines <- pt.to.lines(theme.pars$panel.margin)
+  plot.info$panel_margin_lines <- pt.to.lines(theme.pars$panel.margin)
   
   ## No legend if theme(legend.postion="none").
-  plot.meta$legend <- if(theme.pars$legend.position != "none"){
+  plot.info$legend <- if(theme.pars$legend.position != "none"){
     getLegendList(built)
   }
   
@@ -45,7 +45,7 @@ parsePlot <- function(meta, plot, plot.name){
     ## This is the layer from the original ggplot object.
     L <- plot$layers[[layer.i]]
     ## If any legends are specified, add showSelected aesthetic
-    L <- addShowSelectedForLegend(meta, plot.meta$legend, L)
+    L <- addShowSelectedForLegend(meta, plot.info$legend, L)
   }#layer.i
 
   ## need to call ggplot_build again because we've added to the plot.
@@ -59,22 +59,22 @@ parsePlot <- function(meta, plot, plot.name){
   ## all, and instead does all of the relevant computations in animint
   ## code.
   ## 'strips' are really titles for the different facet panels
-  plot.meta$strips <- with(built, getStrips(plot$facet, panel))
+  plot.info$strips <- with(built, getStrips(plot$facet, panel))
   ## the layout tells us how to subset and where to plot on the JS side
-  plot.meta$layout <- with(built, flag_axis(plot$facet, panel$layout))
-  plot.meta$layout <- with(built, train_layout(
-    plot$facet, plot$coordinates, plot.meta$layout, panel$ranges))
+  plot.info$layout <- with(built, flag_axis(plot$facet, panel$layout))
+  plot.info$layout <- with(built, train_layout(
+    plot$facet, plot$coordinates, plot.info$layout, panel$ranges))
   
   # saving background info
-  plot.meta$panel_background <- get_bg(theme.pars$panel.background, theme.pars)
-  plot.meta$panel_border <- get_bg(theme.pars$panel.border, theme.pars)
+  plot.info$panel_background <- get_bg(theme.pars$panel.background, theme.pars)
+  plot.info$panel_border <- get_bg(theme.pars$panel.border, theme.pars)
   
   # extract major grid lines
-  plot.meta$grid_major <- get_grid(theme.pars$panel.grid.major, theme.pars,
-                                   plot.meta, meta, built)
+  plot.info$grid_major <- get_grid(theme.pars$panel.grid.major, theme.pars,
+                                   plot.info, meta, built)
   # extract minor grid lines
-  plot.meta$grid_minor <- get_grid(theme.pars$panel.grid.minor, theme.pars,
-                                   plot.meta, meta, built, major = F)
+  plot.info$grid_minor <- get_grid(theme.pars$panel.grid.minor, theme.pars,
+                                   plot.info, meta, built, major = F)
   
   ## Flip labels if coords are flipped - transform does not take care
   ## of this. Do this BEFORE checking if it is blank or not, so that
@@ -96,13 +96,13 @@ parsePlot <- function(meta, plot, plot.name){
   n.axis <- length(ranges)
   axes <- setNames(vector("list", n.axis),
                    paste0("axis", seq_len(n.axis)))
-  plot.meta <- c(plot.meta, axes)
+  plot.info <- c(plot.info, axes)
 
   # translate axis information
   for (xy in c("x", "y")) {
     s <- function(tmp) sprintf(tmp, xy)
     # one axis name per plot (ie, a xtitle/ytitle is shared across panels)
-    plot.meta[[s("%stitle")]] <- if(is.blank(s("axis.title.%s"))){
+    plot.info[[s("%stitle")]] <- if(is.blank(s("axis.title.%s"))){
       ""
     } else {
       scale.i <- which(plot$scales$find(xy))
@@ -132,39 +132,39 @@ parsePlot <- function(meta, plot, plot.name){
         "end"
       }
     }
-    plot.meta[[s("%sanchor")]] <- as.character(anchor)
-    plot.meta[[s("%sangle")]] <- as.numeric(angle)
+    plot.info[[s("%sanchor")]] <- as.character(anchor)
+    plot.info[[s("%sangle")]] <- as.numeric(angle)
     # translate panel specific axis info
     ctr <- 0
     for (axis in names(axes)) {
       ctr <- ctr + 1
       range <- ranges[[ctr]]
-      plot.meta[[axis]][[xy]] <- as.list(range[[s("%s.major_source")]])
-      plot.meta[[axis]][[s("%slab")]] <- if(is.blank(s("axis.text.%s"))){
+      plot.info[[axis]][[xy]] <- as.list(range[[s("%s.major_source")]])
+      plot.info[[axis]][[s("%slab")]] <- if(is.blank(s("axis.text.%s"))){
         NULL
       } else {
         as.list(range[[s("%s.labels")]])
       }
-      plot.meta[[axis]][[s("%srange")]] <- range[[s("%s.range")]]
-      plot.meta[[axis]][[s("%sline")]] <- !is.blank(s("axis.line.%s"))
-      plot.meta[[axis]][[s("%sticks")]] <- !is.blank(s("axis.ticks.%s"))
+      plot.info[[axis]][[s("%srange")]] <- range[[s("%s.range")]]
+      plot.info[[axis]][[s("%sline")]] <- !is.blank(s("axis.line.%s"))
+      plot.info[[axis]][[s("%sticks")]] <- !is.blank(s("axis.ticks.%s"))
     }
   }
   # grab the unique axis labels (makes rendering simpler)
-  plot.meta <- getUniqueAxisLabels(plot.meta)
+  plot.info <- getUniqueAxisLabels(plot.info)
 
   # grab plot title if present
-  plot.meta$title <- getPlotTitle(theme.pars$plot.tiltle,
+  plot.info$title <- getPlotTitle(theme.pars$plot.tiltle,
                                   plot$labels$title)
 
   ## Set plot width and height from animint.* options if they are
   ## present.
   options_list <- getWidthAndHeight(plot$theme)
   options_list <- setUpdateAxes(plot$theme, options_list)
-  plot.meta$options <- options_list
+  plot.info$options <- options_list
 
   list(
-    plot.info = plot.meta,
+    plot.info=plot.info,
     ggplot=plot,
     built=built)
 }
