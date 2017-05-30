@@ -197,11 +197,6 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built){
   
   ranges <- built$panel$ranges
   
-  ## For each geom, save the nextgeom to preserve drawing order.
-  if(is.character(meta$prev.class)){
-    meta$geoms[[meta$prev.class]]$nextgeom <- g$classed
-  }
-  
   ## needed for when group, etc. is an expression:
   g$aes <- sapply(l$mapping, function(k) as.character(as.expression(k)))
 
@@ -955,7 +950,6 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   g.list <- list()
   for(p.name in names(ggplot.list)){
     ggplot.info <- ggplot.list[[p.name]]
-    meta$prev.class <- NULL # first geom of any plot should not be next.
     for(layer.i in seq_along(ggplot.info$ggplot$layers)){
       L <- ggplot.info$ggplot$layers[[layer.i]]
       df <- ggplot.info$built$data[[layer.i]]
