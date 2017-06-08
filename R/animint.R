@@ -190,7 +190,7 @@ storeLayer <- function(meta, g, g.data.varied){
 #' ID number starting from 1
 #' @return list representing a layer, with corresponding aesthetics, ranges, and groups.
 #' @export
-saveLayer <- function(l, d, meta, layer_name, ggplot, built){
+saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   # Set geom name and layer name
   g <- list(geom=strsplit(layer_name, "_")[[1]][2])
   g$classed <- layer_name
@@ -538,12 +538,12 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built){
 
   ## Get unique values of time variable.
   time.col <- NULL
-  if(is.list(meta$time)){ # if this is an animation,
+  if(is.list(AnimationInfo$time)){ # if this is an animation,
     g.time.list <- list()
     for(c.or.s in names(s.aes)){
       cs.info <- s.aes[[c.or.s]]
       for(a in cs.info$one){
-        if(g$aes[[a]] == meta$time$var){
+        if(g$aes[[a]] == AnimationInfo$time$var){
           g.time.list[[a]] <- g.data[[a]]
           time.col <- a
         }
@@ -551,13 +551,13 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built){
       for(row.i in seq_along(cs.info$several$value)){
         cs.row <- cs.info$several[row.i,]
         c.name <- paste(cs.row$variable)
-        is.time <- g.data[[c.name]] == meta$time$var
+        is.time <- g.data[[c.name]] == AnimationInfo$time$var
         g.time.list[[c.name]] <- g.data[is.time, paste(cs.row$value)]
       }
     }
     u.vals <- unique(unlist(g.time.list))
     if(length(u.vals)){
-      meta$timeValues[[paste(g$classed)]] <- sort(u.vals)
+      AnimationInfo$timeValues[[paste(g$classed)]] <- sort(u.vals)
     }
   }
   ## Make the time variable the first subset_order variable.
@@ -754,7 +754,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built){
     data.or.null$varied
   }
 
-  list(g=g, g.data.varied=g.data.varied)
+  list(g=g, g.data.varied=g.data.varied, timeValues=AnimationInfo$timeValues)
 }
 
 
@@ -902,16 +902,19 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   meta$selector.types <- plot.list$selector.types
   dir.create(out.dir,showWarnings=FALSE)
   meta$out.dir <- out.dir
-
+  
+  ## Store the animation information (time, var, ms) in a separate list
+  AnimationInfo <- list()
+  
   ## Save the animation variable so we can treat it specially when we
   ## process each geom.
   # CPS (7-22-14): What if the user doesn't specify milliseconds? Could we provide a reasonable default?
   if(is.list(plot.list[["time"]])){
     # Check animation variable for errors
     checkAnimationTimeVar(plot.list$time)
-    meta$time <- plot.list$time
-    ms <- meta$time$ms
-    time.var <- meta$time$variable
+    AnimationInfo$time <- plot.list$time
+    ms <- AnimationInfo$time$ms
+    time.var <- AnimationInfo$time$variable
   }
 
   ## The title option should just be a character, not a list.
@@ -977,8 +980,11 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       geom_num <- geom_num + 1
       layer_name <- getLayerName(L, geom_num, p.name)
       gl <- saveLayer(L, df, meta, layer_name,
-                      ggplot.info$ggplot, ggplot.info$built)
-
+                      ggplot.info$ggplot, ggplot.info$built, AnimationInfo)
+      
+      ## Save Animation Info separately
+      AnimationInfo$timeValues <- gl$timeValues
+      gl$timeValues <- NULL
       ## Save to a list before saving to tsv
       ## Helps during axis updates and Inf values
       g.list[[p.name]][[gl$g$classed]] <- gl
@@ -1294,11 +1300,11 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   ## These geoms need to be updated when the time.var is animated, so
   ## let's make a list of all possible values to cycle through, from
   ## all the values used in those geoms.
-  if("time" %in% ls(meta)){
-    meta$selectors[[meta$time$variable]]$type <- "single"
-    anim.values <- meta$timeValues
-    if(length(meta$timeValues)==0){
-      stop("no interactive aes for time variable ", meta$time$variable)
+  if("time" %in% names(AnimationInfo)){
+    meta$selectors[[AnimationInfo$time$variable]]$type <- "single"
+    anim.values <- AnimationInfo$timeValues
+    if(length(AnimationInfo$timeValues)==0){
+      stop("no interactive aes for time variable ", AnimationInfo$time$variable)
     }
     anim.not.null <- anim.values[!sapply(anim.values, is.null)]
     time.classes <- sapply(anim.not.null, function(x) class(x)[1])
@@ -1307,7 +1313,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       print(time.classes)
       stop("time variables must all have the same class")
     }
-    meta$time$sequence <- if(time.class=="POSIXct"){
+    AnimationInfo$time$sequence <- if(time.class=="POSIXct"){
       orderTime <- function(format){
         values <- unlist(sapply(anim.not.null, strftime, format))
         sort(unique(as.character(values)))
@@ -1329,7 +1335,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
     }else{ #character, numeric, integer, ... what else?
       as.character(sort(unique(unlist(anim.not.null))))
     }
-    meta$selectors[[time.var]]$selected <- meta$time$sequence[[1]]
+    meta$selectors[[time.var]]$selected <- AnimationInfo$time$sequence[[1]]
   }
   
   ## The first selection:
@@ -1349,6 +1355,8 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   }
   
   meta$plots <- AllPlotsInfo
+  meta$time <- AnimationInfo$time
+  meta$timeValues <- AnimationInfo$timeValues
   ## Finally, copy html/js/json files to out.dir.
   src.dir <- system.file("htmljs",package="animint2")
   to.copy <- Sys.glob(file.path(src.dir, "*"))
