@@ -671,13 +671,10 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   }
   
   # If there is only one PANEL, we don't need it anymore.
+  # g$PANEL <- unique(g.data[["PANEL"]])
   plot.has.panels <- nrow(built$panel$layout) > 1
-  g$PANEL <- unique(g.data[["PANEL"]])
-  geom.has.one.panel <- length(g$PANEL) == 1
-  if(geom.has.one.panel && (!plot.has.panels)) {
-    g.data <- g.data[names(g.data) != "PANEL"]
-  }
-
+  g.data <- removeUniquePanelValue(g.data, plot.has.panels)
+    
   ## Also add pointers to these chunks from the related selectors.
   if(length(chunk.cols)){
     selector.names <- as.character(g$aes[chunk.cols])

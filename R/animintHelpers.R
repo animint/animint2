@@ -284,6 +284,17 @@ is.linetype <- function(x){
 }
 
 
+## Remove PANEL column from data if it has a single unique value
+removeUniquePanelValue <- function(g.data, plot.has.panels){
+  PANEL_vals <- unique(g.data[["PANEL"]])
+  geom.has.one.panel <- length(PANEL_vals) == 1
+  if(geom.has.one.panel && (!plot.has.panels)) {
+    g.data <- g.data[names(g.data) != "PANEL"]
+  }
+  g.data
+}
+
+
 #' Check plot.list for errors
 #' 
 #' Check that plot.list is a list and every element is named
