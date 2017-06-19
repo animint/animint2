@@ -11,7 +11,6 @@ knit_print.animint2 <- function(x, options, ...) {
   output.dir <- knitr::opts_knit$get()[["output.dir"]]
   ## sink()
   ## print(output.dir)
-  ## browser()
   old.wd <- setwd(output.dir)
   on.exit(setwd(old.wd))
   # the current knitr chunk 'label' defines a directory to place the animints 

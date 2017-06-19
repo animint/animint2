@@ -43,7 +43,6 @@
   # Get the name of what was passed in as e2, and pass along so that it
   # can be displayed in error messages
   e2name <- deparse(substitute(e2))
-  browser()
   if      (is.theme(e1))  add_theme(e1, e2, e2name)
   else if (is.ggplot(e1)) add_ggplot(e1, e2, e2name)
   else if (is.ggproto(e1)) {
@@ -60,7 +59,6 @@
 
 add_ggplot <- function(p, object, objectname) {
   if (is.null(object)) return(p)
-  browser()
   p <- plot_clone(p)
   if (is.data.frame(object)) {
     p$data <- object

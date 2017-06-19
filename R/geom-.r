@@ -128,9 +128,7 @@ Geom <- ggproto("Geom",
   # for setup_data() or handle_na(). These can not be imputed automatically,
   # so the slightly hacky "extra_params" field is used instead. By
   # default it contains `na.rm`
-  extra_params = c("na.rm",
-                   "clickSelects",
-                   "showSelected"),
+  extra_params = c("na.rm", "clickSelects"),
 
   parameters = function(self, extra = FALSE) {
     # Look first in draw_panel. If it contains ... then look in draw groups
