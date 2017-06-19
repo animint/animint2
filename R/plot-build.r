@@ -16,6 +16,7 @@
 #' @keywords internal
 #' @export
 ggplot_build <- function(plot) {
+  browser()
   plot <- plot_clone(plot)
   if (length(plot$layers) == 0) {
     plot <- plot + geom_blank()
