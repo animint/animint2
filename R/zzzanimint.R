@@ -32,7 +32,7 @@ parsePlot <- function(meta, plot, plot.name){
   ## (ignoring whatever grid::unit such as cm that was specified).
   
   ## Now ggplot specifies panel.margin in 'pt' instead of 'lines'
-  plot.info$panel_margin_lines <- pt.to.lines(theme.pars$panel.margin)
+  plot.info$panel_margin_lines <- pt.to.lines(theme.pars$panel.spacing)
   
   ## No legend if theme(legend.postion="none").
   plot.info$legend <- if(theme.pars$legend.position != "none"){
@@ -59,11 +59,14 @@ parsePlot <- function(meta, plot, plot.name){
   ## all, and instead does all of the relevant computations in animint
   ## code.
   ## 'strips' are really titles for the different facet panels
-  plot.info$strips <- with(built, getStrips(plot$facet, panel))
+  
+  # plot.info$strips <- with(built, getStrips(plot$facet, panel))
+  
   ## the layout tells us how to subset and where to plot on the JS side
-  plot.info$layout <- with(built, flag_axis(plot$facet, panel$layout))
-  plot.info$layout <- with(built, train_layout(
-    plot$facet, plot$coordinates, plot.info$layout, panel$ranges))
+  
+  # plot.info$layout <- with(built, flag_axis(plot$facet, panel$layout))
+  # plot.info$layout <- with(built, train_layout(
+  #   plot$facet, plot$coordinates, plot.info$layout, panel$ranges))
   
   # saving background info
   plot.info$panel_background <- get_bg(theme.pars$panel.background, theme.pars)
@@ -92,7 +95,7 @@ parsePlot <- function(meta, plot, plot.name){
   # Instead of an "axis" JSON object for each plot,
   # allow for "axis1", "axis2", etc. where
   # "axis1" corresponds to the 1st PANEL
-  ranges <- built$panel$ranges
+  ranges <- built$layout$panel_params
   n.axis <- length(ranges)
   axes <- setNames(vector("list", n.axis),
                    paste0("axis", seq_len(n.axis)))
