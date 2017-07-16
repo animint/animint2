@@ -192,10 +192,10 @@ hjust2anchor <- function(hjust){
 #' @return All parameters in the layer
 getLayerParams <- function(l){
   params <- c(l$geom_params, l$stat_params, l$aes_params, l$extra_params)
+  if("chunk_vars" %in% names(params) && is.na(params[["chunk_vars"]])){
+    params[["chunk_vars"]] <- character()
+  }
   for(p.name in names(params)){
-    if("chunk_vars" %in% names(params) && is.null(params[["chunk_vars"]])){
-      params[["chunk_vars"]] <- character()
-    }
     names(params[[p.name]]) <- NULL
     ## Ignore functions.
     if(is.function(params[[p.name]])){

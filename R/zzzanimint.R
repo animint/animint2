@@ -198,7 +198,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   g <- list(geom=strsplit(layer_name, "_")[[1]][2])
   g$classed <- layer_name
   
-  ranges <- built$panel$ranges
+  ranges <- built$layout$panel_params
   
   ## needed for when group, etc. is an expression:
   g$aes <- sapply(l$mapping, function(k) as.character(as.expression(k)))
@@ -675,7 +675,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   
   # If there is only one PANEL, we don't need it anymore.
   # g$PANEL <- unique(g.data[["PANEL"]])
-  plot.has.panels <- nrow(built$panel$layout) > 1
+  plot.has.panels <- nrow(built$layout$layout) > 1
   g.data <- removeUniquePanelValue(g.data, plot.has.panels)
     
   ## Also add pointers to these chunks from the related selectors.
