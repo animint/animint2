@@ -18,7 +18,8 @@ parsePlot <- function(meta, plot, plot.name){
     }
   }
   
-  built <- ggplot2::ggplot_build(plot)
+  built <- ggplot2Animint::ggplot_build(plot)
+  browser()
   plot.info <- list()
   
   ## Export axis specification as a combination of breaks and
@@ -26,13 +27,13 @@ parsePlot <- function(meta, plot, plot.name){
   ## be passed into d3 on the x axis scale instead of on the
   ## grid 0-1 scale). This allows transformations to be used
   ## out of the box, with no additional d3 coding.
-  theme.pars <- ggplot2:::plot_theme(plot)
+  theme.pars <- ggplot2Animint:::plot_theme(plot)
 
   ## Interpret panel.margin as the number of lines between facets
   ## (ignoring whatever grid::unit such as cm that was specified).
   
   ## Now ggplot specifies panel.margin in 'pt' instead of 'lines'
-  plot.info$panel_margin_lines <- pt.to.lines(theme.pars$panel.spacing)
+  plot.info$panel_margin_lines <- pt.to.lines(theme.pars$panel.margin)
   
   ## No legend if theme(legend.postion="none").
   plot.info$legend <- if(theme.pars$legend.position != "none"){
@@ -54,19 +55,19 @@ parsePlot <- function(meta, plot, plot.name){
   ## we need to specify the variable corresponding to each legend. 
   ## To do this, we need to have the legend. 
   ## And to have the legend, I think that we need to use ggplot_build
-  built <- ggplot2::ggplot_build(plot)
+  built <- ggplot2Animint::ggplot_build(plot)
   ## TODO: implement a compiler that does not call ggplot_build at
   ## all, and instead does all of the relevant computations in animint
   ## code.
   ## 'strips' are really titles for the different facet panels
   
-  # plot.info$strips <- with(built, getStrips(plot$facet, panel))
+  plot.info$strips <- with(built, getStrips(plot$facet, panel))
   
   ## the layout tells us how to subset and where to plot on the JS side
   
-  # plot.info$layout <- with(built, flag_axis(plot$facet, panel$layout))
-  # plot.info$layout <- with(built, train_layout(
-  #   plot$facet, plot$coordinates, plot.info$layout, panel$ranges))
+  plot.info$layout <- with(built, flag_axis(plot$facet, panel$layout))
+  plot.info$layout <- with(built, train_layout(
+    plot$facet, plot$coordinates, plot.info$layout, panel$ranges))
   
   # saving background info
   plot.info$panel_background <- get_bg(theme.pars$panel.background, theme.pars)
@@ -88,14 +89,14 @@ parsePlot <- function(meta, plot, plot.name){
     plot$labels$y <- temp
   }
   is.blank <- function(el.name){
-    x <- ggplot2::calc_element(el.name, plot$theme)
+    x <- ggplot2Animint::calc_element(el.name, plot$theme)
     "element_blank"%in%attr(x,"class")
   }
 
   # Instead of an "axis" JSON object for each plot,
   # allow for "axis1", "axis2", etc. where
   # "axis1" corresponds to the 1st PANEL
-  ranges <- built$layout$panel_params
+  ranges <- built$panel$ranges
   n.axis <- length(ranges)
   axes <- setNames(vector("list", n.axis),
                    paste0("axis", seq_len(n.axis)))
@@ -187,7 +188,7 @@ storeLayer <- function(meta, g, g.data.varied){
 
 #' Save a layer to disk, save and return meta-data.
 #' @param l one layer of the ggplot object.
-#' @param d one layer of calculated data from ggplot2::ggplot_build(p).
+#' @param d one layer of calculated data from ggplot2Animint::ggplot_build(p).
 #' @param meta environment of meta-data.
 #' @param geom_num the number of geom in the plot. Each geom gets an increasing
 #' ID number starting from 1
@@ -198,7 +199,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   g <- list(geom=strsplit(layer_name, "_")[[1]][2])
   g$classed <- layer_name
   
-  ranges <- built$layout$panel_params
+  ranges <- built$panel$ranges
   
   ## needed for when group, etc. is an expression:
   g$aes <- sapply(l$mapping, function(k) as.character(as.expression(k)))
@@ -438,7 +439,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     g$geom <- "polygon"
   } else if(g$geom=="step"){
     datanames <- names(g.data)
-    g.data <- plyr::ddply(g.data, "group", function(df) ggplot2:::stairstep(df))
+    g.data <- plyr::ddply(g.data, "group", function(df) ggplot2Animint:::stairstep(df))
     g$geom <- "path"
   } else if(g$geom=="contour" | g$geom=="density2d"){
     g$aes[["group"]] <- "piece"
@@ -455,8 +456,8 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     ## clicking/hiding hexbins doesn't really make sense. Need to stop
     ## with an error if showSelected/clickSelects is used with hex.
     g$aes[["group"]] <- "group"
-    dx <- ggplot2::resolution(g.data$x, FALSE)
-    dy <- ggplot2::resolution(g.data$y, FALSE) / sqrt(3) / 2 * 1.15
+    dx <- ggplot2Animint::resolution(g.data$x, FALSE)
+    dy <- ggplot2Animint::resolution(g.data$y, FALSE) / sqrt(3) / 2 * 1.15
     hex <- as.data.frame(hexbin::hexcoords(dx, dy))[,1:2]
     hex <- rbind(hex, hex[1,]) # to join hexagon back to first point
     g.data$group <- as.numeric(interaction(g.data$group, 1:nrow(g.data)))
@@ -675,7 +676,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   
   # If there is only one PANEL, we don't need it anymore.
   # g$PANEL <- unique(g.data[["PANEL"]])
-  plot.has.panels <- nrow(built$layout$layout) > 1
+  plot.has.panels <- nrow(built$panel$layout) > 1
   g.data <- removeUniquePanelValue(g.data, plot.has.panels)
     
   ## Also add pointers to these chunks from the related selectors.
@@ -1250,7 +1251,7 @@ servr::httd("', normalizePath( out.dir,winslash="/" ), '")')
 
 
 #' Function to get legend information from ggplot
-#' @param plistextra output from ggplot2::ggplot_build(p)
+#' @param plistextra output from ggplot2Animint::ggplot_build(p)
 #' @return list containing information for each legend
 #' @export
 getLegendList <- function(plistextra){
@@ -1258,7 +1259,7 @@ getLegendList <- function(plistextra){
   scales <- plot$scales
   layers <- plot$layers
   default_mapping <- plot$mapping
-  theme <- ggplot2:::plot_theme(plot)
+  theme <- ggplot2Animint:::plot_theme(plot)
   position <- theme$legend.position
   # by default, guide boxes are vertically aligned
   if(is.null(theme$legend.box)) theme$legend.box <- "vertical" else theme$legend.box
@@ -1297,17 +1298,17 @@ getLegendList <- function(plistextra){
     if(guide.type=="colourbar")guide.type <- "legend"
     guides.args[[aes.name]] <- guide.type
   }
-  guides.result <- do.call(ggplot2::guides, guides.args)
+  guides.result <- do.call(ggplot2Animint::guides, guides.args)
   guides.list <- plyr::defaults(plot$guides, guides.result)
   gdefs <-
-    ggplot2:::guides_train(scales = scales,
+    ggplot2Animint:::guides_train(scales = scales,
                            theme = theme,
                            guides = guides.list,
                            labels = plot$labels)
   if (length(gdefs) != 0) {
-    gdefs <- ggplot2:::guides_merge(gdefs)
-    gdefs <- ggplot2:::guides_geom(gdefs, layers, default_mapping)
-  } else (ggplot2:::zeroGrob())
+    gdefs <- ggplot2Animint:::guides_merge(gdefs)
+    gdefs <- ggplot2Animint:::guides_geom(gdefs, layers, default_mapping)
+  } else (ggplot2Animint:::zeroGrob())
   names(gdefs) <- sapply(gdefs, function(i) i$title)
   
   ## adding the variable used to each LegendList

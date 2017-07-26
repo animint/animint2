@@ -13,7 +13,7 @@ geom_tallrect <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE,
                           show.legend = NA,
                           inherit.aes = TRUE) {
-  ggplot2::layer(
+  ggplot2Animint::layer(
     geom = GeomTallRect,
     data = data,
     mapping = mapping,
@@ -28,8 +28,8 @@ geom_tallrect <- function(mapping = NULL, data = NULL,
   )
 }
 
-GeomTallRect <- ggplot2::ggproto("GeomTallRect", ggplot2::Geom,
-                                 default_aes = ggplot2::aes(colour = "grey35",
+GeomTallRect <- ggplot2Animint::ggproto("GeomTallRect", ggplot2Animint::Geom,
+                                 default_aes = ggplot2Animint::aes(colour = "grey35",
                                                    fill = "grey35", 
                                                    size = 0.5, 
                                                    linetype = 1,
@@ -59,7 +59,7 @@ GeomTallRect <- ggplot2::ggproto("GeomTallRect", ggplot2::Geom,
                                    )
                                  },
                                  
-                                 draw_key = ggplot2::draw_key_rect
+                                 draw_key = ggplot2Animint::draw_key_rect
 )
 
 
@@ -81,7 +81,7 @@ geom_widerect <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE,
                           show.legend = NA,
                           inherit.aes = TRUE) {
-  ggplot2::layer(
+  ggplot2Animint::layer(
     geom = GeomWideRect,
     data = data,
     mapping = mapping,
@@ -96,8 +96,8 @@ geom_widerect <- function(mapping = NULL, data = NULL,
   )
 }
 
-GeomWideRect <- ggplot2::ggproto("GeomWideRect", ggplot2::Geom,
-                                 default_aes = ggplot2::aes(colour = "grey35", 
+GeomWideRect <- ggplot2Animint::ggproto("GeomWideRect", ggplot2Animint::Geom,
+                                 default_aes = ggplot2Animint::aes(colour = "grey35", 
                                                    fill = "grey35", 
                                                    size = 0.5, 
                                                    linetype = 1,
@@ -127,7 +127,7 @@ GeomWideRect <- ggplot2::ggproto("GeomWideRect", ggplot2::Geom,
                                    )
                                  },
                                  
-                                 draw_key = ggplot2::draw_key_rect
+                                 draw_key = ggplot2Animint::draw_key_rect
 )
 
 #' Make a clickSelects geom_tallrect that completely tiles the x
@@ -195,7 +195,7 @@ make_tallrect_or_widerect <- function(aes.prefix, geom_xrect, data, var.name, ev
   stopifnot(length(alpha)==1)
   stopifnot(is.function(data.fun))
   vals <- sort(unique(x))
-  Delta <- if(even) rep(ggplot2::resolution(vals), length(vals)-1)/2 else diff(vals)/2
+  Delta <- if(even) rep(ggplot2Animint::resolution(vals), length(vals)-1)/2 else diff(vals)/2
   breaks <- c(vals[1] - Delta[1],
               vals[-1] - Delta,
               vals[length(vals)]+Delta[length(Delta)])

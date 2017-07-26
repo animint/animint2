@@ -16,7 +16,7 @@ Imports:
     stats,
     tibble,
     lazyeval,
-    ggplot2
+    ggplot2Animint
 Suggests:
     covr,
     ggplot2movies,
