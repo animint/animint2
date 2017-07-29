@@ -934,3 +934,39 @@ saveChunks <- function(x, meta){
     stop("unknown object")
   }
 }
+
+addSSandCSasAesthetics <- function(aesthetics, params){
+  for(i in seq_along(params)){
+    if(names(params)[[i]] == "showSelected"){
+      for(j in seq_along(params[[i]])){
+        aesthetics[[length(aesthetics)+1]] <- params[[i]][[j]]
+        names(aesthetics)[[length(aesthetics)]] <-
+          paste0("showSelected", j)  
+      }
+    }
+    if(names(params)[[i]] == "clickSelects"){
+      aesthetics[[length(aesthetics)+1]] <- params[[i]]
+      names(aesthetics)[[length(aesthetics)]] <- "clickSelects"
+    }
+  }
+  return(aesthetics)
+}
+
+
+addSSandCS <- function(extra_params, df, orig_data){
+  for(i in seq_along(extra_params)){
+    if(names(extra_params)[[i]] == "showSelected"){
+      for(j in seq_along(extra_params[[i]])){
+        df[[ paste0("showSelected", j) ]] <- 
+          orig_data[[ extra_params[[i]][[j]] ]]
+      }
+    }
+    if(names(extra_params)[[i]] == "clickSelects"){
+      for(j in seq_along(extra_params[[i]])){
+        df[[ paste0("clickSelects") ]] <- 
+          orig_data[[ extra_params[[i]][[j]] ]]
+      }
+    }
+  }
+  return(df)
+}

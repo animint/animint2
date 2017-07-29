@@ -19,7 +19,6 @@ parsePlot <- function(meta, plot, plot.name){
   }
   
   built <- ggplot2Animint::ggplot_build(plot)
-  browser()
   plot.info <- list()
   
   ## Export axis specification as a combination of breaks and
@@ -209,7 +208,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## e.g. colour.
   ## 'colour', 'size' etc. have been moved to aes_params
   g$params <- getLayerParams(l)
-  
+  g$aes <- addSSandCSasAesthetics(g$aes, g$params)
   ## Make a list of variables to use for subsetting. subset_order is the
   ## order in which these variables will be accessed in the recursive
   ## JavaScript array structure.
@@ -957,6 +956,13 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
     for(layer.i in seq_along(ggplot.info$ggplot$layers)){
       L <- ggplot.info$ggplot$layers[[layer.i]]
       df <- ggplot.info$built$data[[layer.i]]
+      
+      ## QUICK FIX: Just add the clickSelects and showSelected
+      ## columns to the data for now
+      ## TODO: Remove the code which accepts showSelected and
+      ## clickSelects aesthetics
+      df <- addSSandCS(L$extra_params, df, L$data)
+      
       ## cat(sprintf(
       ##   "saving layer %4d / %4d of ggplot %s\n",
       ##   layer.i, length(ggplot.info$built$data),
