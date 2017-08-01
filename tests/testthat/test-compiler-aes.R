@@ -11,7 +11,8 @@ test_that("we stop when data does not contain interactive variables",{
   ## should generate an animint error, not a ggplot_build error.
   foo <- 1 
   gg <- ggplot()+
-    geom_point(aes(Sepal.Length, Petal.Length, showSelected=foo),
+    geom_point(aes(Sepal.Length, Petal.Length),
+               showSelected="foo",
                data=iris)
   viz <- list(scatter=gg)
   expect_that({

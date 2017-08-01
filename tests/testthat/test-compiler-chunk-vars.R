@@ -2,7 +2,8 @@ acontext("chunk vars")
 
 test_that("produce as many chunk files as specified", {
   viz <- list(iris=ggplot()+
-    geom_point(aes(Petal.Width, Sepal.Length, showSelected=Species),
+                geom_point(aes(Petal.Width, Sepal.Length),
+                           showSelected="Species"
                data=iris, chunk_vars="Species", validate_params = FALSE))
   tdir <- tempfile()
   dir.create(tdir)
@@ -13,7 +14,8 @@ test_that("produce as many chunk files as specified", {
   expect_equal(length(tsv.files), 3)
   
   viz <- list(iris=ggplot()+
-    geom_point(aes(Petal.Width, Sepal.Length, showSelected=Species),
+                geom_point(aes(Petal.Width, Sepal.Length),
+                           showSelected="Species",
                data=iris, chunk_vars=character(), validate_params = FALSE))
   tdir <- tempfile()
   dir.create(tdir)
@@ -26,14 +28,16 @@ test_that("produce as many chunk files as specified", {
 
 test_that("produce informative errors for bad chunk_vars", {
   viz <- list(iris=ggplot()+
-    geom_point(aes(Petal.Width, Sepal.Length, showSelected=Species),
+                geom_point(aes(Petal.Width, Sepal.Length),
+                           showSelected="Species",
                data=iris, chunk_vars="species", validate_params = FALSE))
   expect_error({
     animint2dir(viz, open.browser=FALSE)
   }, "invalid chunk_vars species; possible showSelected variables: Species")
   
   viz <- list(iris=ggplot()+
-    geom_point(aes(Petal.Width, Sepal.Length, showSelected=Species),
+                geom_point(aes(Petal.Width, Sepal.Length),
+                           showSelected="Species",
                data=iris, chunk_vars=NA, validate_params = FALSE))
   expect_error({
     animint2dir(viz, open.browser=FALSE)
@@ -48,26 +52,26 @@ signal.colors <- c(estimate="#0adb0a",
                    latent="#0098ef")
 breakpointError <- 
   list(signal=ggplot()+
-         geom_point(aes(position, signal, showSelected=bases.per.probe),
+         geom_point(aes(position, signal),
+                    showSelected="bases.per.probe",
                     data=breakpoints$signals)+
          geom_line(aes(position, signal), colour=signal.colors[["latent"]],
                    data=breakpoints$imprecision)+
-         geom_segment(aes(first.base, mean, xend=last.base, yend=mean,
-                          showSelected=segments,
-                          showSelected2=bases.per.probe),
+         geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
+                      showSelected=c("segments", "bases.per.probe"),
                       colour=signal.colors[["estimate"]],
                       data=breakpoints$segments)+
-         geom_vline(aes(xintercept=base,
-                        showSelected=segments,
-                        showSelected2=bases.per.probe),
+         geom_vline(aes(xintercept=base),
+                    showSelected=c("segments", "showSelected2"),
                     colour=signal.colors[["estimate"]],
                     linetype="dashed",
                     data=breakpoints$breaks),
        error=ggplot()+
-         geom_vline(aes(xintercept=segments, clickSelects=segments),
+         geom_vline(aes(xintercept=segments),
+                    clickSelects="segments",                    
                     data=only.segments, lwd=17, alpha=1/2)+
-         geom_line(aes(segments, error, group=bases.per.probe,
-                       clickSelects=bases.per.probe),
+         geom_line(aes(segments, error, group=bases.per.probe),
+                   clickSelects="bases.per.probe",                   
                    data=only.error, lwd=4))
 
 bytes.used <- function(file.vec, apparent.size = FALSE){

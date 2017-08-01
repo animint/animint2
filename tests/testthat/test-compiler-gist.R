@@ -30,47 +30,51 @@ viz.chunk.none <-
          theme(panel.margin=grid::unit(0, "lines"))+
          xlab("")+
          ylab("")+
-         geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2,
-                           clickSelects=year),
+         geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2),
+                       clickSelects="year",
                        data=TS(years), alpha=1/2)+
          theme_animint(width=1000, height=800)+
-         geom_line(aes(year, life.expectancy, group=country, colour=region,
-                       clickSelects=country),
+         geom_line(aes(year, life.expectancy, group=country, colour=region),
+                   clickSelects="country",                   
                    data=TS(not.na), size=4, alpha=3/5)+
-         geom_point(aes(year, life.expectancy, color=region, size=population,
-                        showSelected=country, clickSelects=country),
-                    data=TS(not.na))+
-         geom_text(aes(year, life.expectancy, colour=region, label=country,
-                       showSelected=country,
-                       clickSelects=country),
-                   data=TS(min.years), hjust=1)+
-         geom_widerect(aes(ymin=year-1/2, ymax=year+1/2,
-                           clickSelects=year),
-                       data=TS2(years), alpha=1/2)+
-         geom_path(aes(fertility.rate, year, group=country, colour=region,
-                       clickSelects=country),
-                   data=TS2(not.na), size=4, alpha=3/5)+
-         geom_point(aes(fertility.rate, year, color=region, size=population,
-                        showSelected=country, clickSelects=country),
-                    data=TS2(not.na))+
-         geom_point(aes(fertility.rate, life.expectancy, clickSelects=country,
-                        showSelected=year, colour=region, size=population,
-                        key=country), # key aesthetic for animated transitions!
+         geom_point(aes(year, life.expectancy, color=region, size=population),
+                    data=TS(not.na),
+                    showSelected="country",
+                    clickSelects="country")+
+         geom_text(aes(year, life.expectancy, colour=region, label=country),
+                   data=TS(min.years),
+                   showSelected="country",
+                   clickSelects="country",
+                   hjust=1)+
+         geom_widerect(aes(ymin=year-1/2, ymax=year+1/2),
+                       data=TS2(years), alpha=1/2,
+                           clickSelects="year")+
+         geom_path(aes(fertility.rate, year, group=country, colour=region),
+                   data=TS2(not.na), size=4, alpha=3/5,
+                       clickSelects="country")+
+         geom_point(aes(fertility.rate, year, color=region, size=population),
+                    data=TS2(not.na),
+                        showSelected="country", clickSelects="country")+
+         geom_point(aes(fertility.rate, life.expectancy,
+                        key=country,
+                        colour=region, size=population), 
                     chunk_vars=c(),
+                    clickSelects="country",
+                    showSelected="year",
                     data=SCATTER(not.na),
                     validate_params = FALSE)+
-         geom_text(aes(fertility.rate, life.expectancy, label=country,
-                       showSelected=country, showSelected2=year,
-                       showSelected3=region,
-                       clickSelects=country,
-                       key=country), #also use key here!
-                   chunk_vars=c(), 
+         geom_text(aes(fertility.rate, life.expectancy,
+                       key=country,
+                       label=country), 
+                   chunk_vars=c(),
+                   showSelected=c("country", "year", "region"),
+                   clickSelects="country",
                    data=SCATTER(not.na),
                    validate_params = FALSE)+
          scale_size_animint(breaks=10^(5:9))+
          facet_grid(side ~ top, scales="free")+
-         geom_text(aes(5, 85, label=paste0("year = ", year),
-                       showSelected=year),
+         geom_text(aes(5, 85, label=paste0("year = ", year)),
+                       showSelected="year",
                    data=SCATTER(years)),
        time=list(variable="year",ms=3000),
        duration=list(year=1000),
@@ -98,11 +102,11 @@ too.tall <- do.call(rbind, too.tall.list)
 
 viz.too.many <-
   list(points=ggplot()+
-         geom_point(aes(x, y, clickSelects=row),
-                    data=too.many),
+         geom_point(aes(x, y),
+                    data=too.many, clickSelects="row"),
        bars=ggplot()+
-         geom_bar(aes(col.name, value, showSelected=row),
-                  chunk_vars=c("row"),
+         geom_bar(aes(col.name, value),
+                  chunk_vars=c("row"), showSelected="row",
                   stat="identity",
                   position="identity",
                   data=too.tall,
