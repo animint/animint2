@@ -205,7 +205,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
 
   ## Check if showSelected and clickSelects have been used as aesthetics
   ## If yes, raise error
-  checkForSSandCSasAesthetics(g$aes)
+  checkForSSandCSasAesthetics(g$aes, layer_name)
   
   ## use un-named parameters so that they will not be exported
   ## to JSON as a named object, since that causes problems with
