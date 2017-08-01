@@ -12,8 +12,8 @@ names(university.df) <- c("university", "colors")
 test_that("clickSelects and href is an error", {
   viz <-
     list(colors=ggplot()+
-         geom_point(aes(x, university, color=color,
-                        clickSelects=university, href=color),
+         geom_point(aes(x, university, color=color, href=color),
+                    clickSelects="university",
                     data=color.df)+
          scale_color_identity())
   expect_error({
@@ -25,13 +25,13 @@ test_that("aes(href) becomes <a href>", {
   viz <-
     list(universities=ggplot()+
          geom_bar(aes(university, colors,
-                      id=university,
-                      clickSelects=university),
+                      id=university),
+                  clickSelects="university",
                   data=university.df, stat="identity"),
          colors=ggplot()+
          geom_point(aes(x, university, color=color,
-                        showSelected=university,
                         href=paste0("http://en.wikipedia.org/wiki/", color)),
+                    showSelected="university",
                     data=color.df, size=5)+
          scale_color_identity(),
          first=list(university="UC Berkeley"))
