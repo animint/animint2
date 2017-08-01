@@ -1,3 +1,10 @@
+** language
+
+- mostly everything in js?
+- interfaces in R/Python/Julia?
+
+** syntax
+
 defaults could be specified as follows.
 
 #+BEGIN_SRC R
