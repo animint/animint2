@@ -203,6 +203,10 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## needed for when group, etc. is an expression:
   g$aes <- sapply(l$mapping, function(k) as.character(as.expression(k)))
 
+  ## Check if showSelected and clickSelects have been used as aesthetics
+  ## If yes, raise error
+  checkForSSandCSasAesthetics(g$aes)
+  
   ## use un-named parameters so that they will not be exported
   ## to JSON as a named object, since that causes problems with
   ## e.g. colour.

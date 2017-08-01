@@ -935,6 +935,20 @@ saveChunks <- function(x, meta){
   }
 }
 
+
+checkForSSandCSasAesthetics <- function(aesthetics){
+  for(i in seq_along(aesthetics)){
+    if(grepl("^showSelected", names(aesthetics)[[i]]) ||
+       grepl("^clickSelects$", names(aesthetics)[[i]])){
+      stop(paste("Use of clickSelects and showSelected as",
+                 "aesthetics has been deprecated. Please use",
+                 "as parameters."), call. = FALSE)
+    }
+  }
+  return(NULL)
+}
+
+
 addSSandCSasAesthetics <- function(aesthetics, params){
   for(i in seq_along(params)){
     if(names(params)[[i]] == "showSelected"){
