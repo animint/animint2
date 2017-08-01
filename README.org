@@ -1,0 +1,15 @@
+animint2 is a redesign of [[https://github.com/tdhock/animint][animint]] with cleaner syntax
+
+[[https://travis-ci.org/tdhock/animint2][https://travis-ci.org/tdhock/animint2.png?branch=master]]
+
+** Installation
+
+#+BEGIN_SRC R
+devtools::install_github("faizan-khan-iit/ggplot2@validate-params")
+devtools::install_github("tdhock/animint2")
+#+END_SRC
+
+** Usage
+
+Syntax changes with respect to usual animint are described on the
+[[https://github.com/rstats-gsoc/gsoc2017/wiki/Animated-interactive-plots-(animint)][GSOC2017 project page]].
