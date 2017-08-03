@@ -1,41 +1,40 @@
 acontext("interactivity")
 
 ## Example: 2 plots, 2 selectors, but only interacting with 1 plot.
-data(breakpoints, package = "animint")
+data(breakpoints, package = "animint2")
 only.error <- subset(breakpoints$error,type=="E")
 only.segments <- subset(only.error, samples==samples[1])
 signal.colors <- c(estimate="#0adb0a",
                    latent="#0098ef")
 breakpointError <- list(
   signal=ggplot()+
-    geom_point(aes(position, signal, showSelected=samples),
+    geom_point(aes(position, signal),
+               showSelected="samples",
                data=breakpoints$signals)+
     geom_line(aes(position, signal), colour=signal.colors[["latent"]],
               data=breakpoints$imprecision)+
-    geom_segment(aes(first.base, mean, xend=last.base, yend=mean,
-                     showSelected=segments,
-                     showSelected2=samples),
+    geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
+                 showSelected=c("segments", "samples"),
                  colour=signal.colors[["estimate"]],
                  data=breakpoints$segments)+
-    geom_vline(aes(xintercept=base,
-                   showSelected=segments,
-                   showSelected2=samples),
+    geom_vline(aes(xintercept=base),
+               showSelected=c("segments", "samples"),
                colour=signal.colors[["estimate"]],
                linetype="dashed",
                data=breakpoints$breaks),
   points=ggplot()+
     geom_point(aes(samples, error,
-                   showSelected=segments,
-                   id=paste0("samples", samples),
-                   clickSelects=samples),
+                   id=paste0("samples", samples)),
+               showSelected="segments",
+               clickSelects="samples",
                data=only.error, stat="identity"),
   error=ggplot()+
     geom_vline(aes(xintercept=segments, 
-                   id=paste0("segments", segments),
-                   clickSelects=segments),
+                   id=paste0("segments", segments)),
+               clickSelects="segments",
                data=only.segments, lwd=17, alpha=1/2)+
-    geom_line(aes(segments, error, group=samples,
-                  clickSelects=samples),
+    geom_line(aes(segments, error, group=samples),
+              clickSelects="samples",
               data=only.error, lwd=4),
   first=list(samples=150, segments=4),
   title="breakpointError (select one model size)")
@@ -173,7 +172,7 @@ test_that("clickSelects 1 removes all <line> elements and all <circle>", {
 })
 
 ## Tornado multiple selection.
-data(UStornadoes, package = "animint")
+data(UStornadoes, package = "animint2")
 stateOrder <- data.frame(state = unique(UStornadoes$state)[order(unique(UStornadoes$TornadoesSqMile), decreasing=T)], rank = 1:49) # order states by tornadoes per square mile
 UStornadoes$state <- factor(UStornadoes$state, levels=stateOrder$state, ordered=TRUE)
 UStornadoes$weight <- 1/UStornadoes$LandArea
@@ -187,25 +186,25 @@ tornado.lines <-
   list(map=ggplot()+
        make_text(UStornadoCounts, -100, 50, "year", "Tornadoes in %d")+
        geom_polygon(aes(x=long, y=lat, group=group,
-                        id=state,
-                        clickSelects=state),
+                        id=state),
+                    clickSelects="state",
                     data=USpolygons, fill="black", colour="grey") +
-       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat,
-                        showSelected=year),
+       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
+                    showSelected="year",
                     colour=seg.color, data=UStornadoes)+
        scale_fill_manual(values=c(end=seg.color))+
        theme_animint(width=750, height=500)+
-       geom_point(aes(endLong, endLat, fill=place, showSelected=year),
-                    colour=seg.color,
+       geom_point(aes(endLong, endLat, fill=place),
+                  colour=seg.color, showSelected="year",
                   data=data.frame(UStornadoes,place="end")),
        ts=ggplot()+
-       geom_text(aes(year, count, showSelected=state, label=state),
-                 hjust=0,
+       geom_text(aes(year, count, label=state),
+                 hjust=0, showSelected="state",
                  data=subset(UStornadoCounts, year==max(year)))+
        make_tallrect(UStornadoCounts, "year")+
        geom_line(aes(year, count,
-                     showSelected=state,
                      group=state),
+                 showSelected="state",
                 data=UStornadoCounts),
        selector.types=list(state="multiple"),
        first=list(state=c("CA", "NY"), year=1950))

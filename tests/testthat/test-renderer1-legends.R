@@ -11,7 +11,7 @@ viz <-
        scatter=ggplot()+
        geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population),
                   clickSelects="country",
-                  showSelected=c("year", "region"),
+                  showSelected=c("year"),
                   data=WorldBank)+
        geom_text(aes(fertility.rate, life.expectancy, label=country),
                  showSelected=c("country", "year"),
@@ -31,7 +31,7 @@ test_that('hiding both legends works with geom_point(show.legend=FALSE)', {
   viz$scatter <- ggplot()+
     geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population),
                clickSelects="country",
-               showSelected=c("year", "region"),
+               showSelected=c("year"),
                data=WorldBank, show.legend=FALSE)+
     geom_text(aes(fertility.rate, life.expectancy, label=country),
               showSelected=c("country", "year"),

@@ -1,34 +1,36 @@
 acontext("WorldBank-NA")
 
-data(WorldBank, package = "animint")
+data(WorldBank, package = "animint2")
 
 ## This example is good because it uses constancy
 ## http://bost.ocks.org/mike/constancy/
 no.time <-
   list(scatter=ggplot()+
-       geom_point(aes(life.expectancy, fertility.rate, clickSelects=country,
-                      showSelected=year, colour=region, size=population,
+       geom_point(aes(life.expectancy, fertility.rate,
+                      colour=region, size=population,
                       tooltip=paste(country, "population", population),
+                      showSelected="year",
+                      clickSelects="country",
                       key=country), # key aesthetic for animated transitions!
                   data=WorldBank)+
-       geom_text(aes(life.expectancy, fertility.rate, label=country,
-                     showSelected=country, showSelected2=year,
+       geom_text(aes(life.expectancy, fertility.rate, label=country,,
                      key=country), # also use key here!
+                 showSelected=c("country", "year"),
                  data=WorldBank)+
        scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
        
        ts=ggplot()+
        make_tallrect(WorldBank, "year")+
-       geom_line(aes(year, life.expectancy, group=country, colour=region,
-                     clickSelects=country),
+       geom_line(aes(year, life.expectancy, group=country, colour=region),
+                 clickSelects="country",
                  data=WorldBank, size=4, alpha=3/5),
 
        bar=ggplot()+
        theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region,
-                    key=country,
-                    showSelected=year, clickSelects=country),
+                    key=country),
+                showSelected="year", clickSelects="country",
                 data=WorldBank, stat="identity", position="identity")+
        coord_flip(),
        

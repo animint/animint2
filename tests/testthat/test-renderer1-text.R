@@ -1,6 +1,6 @@
 acontext("Text")
 
-data(WorldBank, package = "animint")
+data(WorldBank, package = "animint2")
 wb2010 <- subset(WorldBank, year==2010)
 subset(wb2010, population==min(population))
 ### This test does not pass if we use the wb2010 data set above rather

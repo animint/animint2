@@ -2,10 +2,9 @@ acontext("showSelected=var, showSelected2=var")
 
 viz <- list(
   points=ggplot()+
-    geom_point(aes(Sepal.Length, Petal.Length,
-                        showSelected=Species,
-                        showSelected2=Species),
-                    data=iris)
+    geom_point(aes(Sepal.Length, Petal.Length),
+               showSelected=c("Species", "Species"),
+               data=iris)
   )
 info <- animint2HTML(viz)
 ss.list <- with(info$geoms$geom1_point_points, c(chunk_order, subset_order))
@@ -43,8 +42,8 @@ test_that("selector widgets table initially visible", {
 viz <- list(
   length=ggplot()+
     geom_point(aes(Sepal.Length, Petal.Length,
-                   color=Species,
-                   showSelected=Species),
+                   color=Species),
+               showSelected="Species",
                data=iris)
   )
 info <- animint2HTML(viz)
@@ -69,12 +68,12 @@ test_that("selector widgets table initially invisible", {
 
 viz <- list(
   length=ggplot()+
-    geom_point(aes(Sepal.Length, Petal.Length,
-                   showSelected=Species),
+    geom_point(aes(Sepal.Length, Petal.Length),
+               showSelected="Species",
                data=iris),
   width=ggplot()+
-    geom_point(aes(Sepal.Width, Petal.Width,
-                   clickSelects=Species),
+    geom_point(aes(Sepal.Width, Petal.Width),
+               clickSelects="Species",
                data=iris)
   )
 info <- animint2HTML(viz)
@@ -111,9 +110,8 @@ iris$kingdom <- "plantae"
 viz <- list(
   points=ggplot()+
     geom_point(aes(Petal.Length, Sepal.Length,
-                   color=Species,
-                   showSelected=Species,
-                   showSelected2=kingdom),
+                   color=Species),
+               showSelected=c("Species", "kingdom"),
                data=iris)
   )
 

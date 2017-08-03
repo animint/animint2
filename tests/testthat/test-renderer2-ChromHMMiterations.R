@@ -1,6 +1,6 @@
 acontext("ChromHMMiterations data set")
 
-data(ChromHMMiterations, package = "animint")
+data(ChromHMMiterations, package = "animint2")
 
 emission <- data.frame(ChromHMMiterations$emission, parameters="emission")
 transition <- data.frame(ChromHMMiterations$transition, parameters="transition")
@@ -10,8 +10,8 @@ viz <- list(
     ggtitle("parameters at selected iteration")+
     scale_fill_gradient(low="white", high="blue")+
     geom_tile(aes(state, experiment, fill=frequency,
-                  key=paste(state, experiment),
-                  showSelected=iteration),
+                  key=paste(state, experiment)),
+              showSelected="iteration",
               data=emission)+
     scale_color_gradient(low="white", high="red")+
     theme_bw()+
@@ -22,8 +22,8 @@ viz <- list(
                scales="free_y")+
     scale_y_discrete(drop=FALSE)+
     geom_point(aes(state.to, state.from, color=probability,
-                  key=paste(state.from, state.to),
-                  showSelected=iteration),
+                  key=paste(state.from, state.to)),
+               showSelected="iteration",
                size=10,
                data=transition),
   metrics=ggplot()+
@@ -62,6 +62,3 @@ test_that("fill not constant in probability legend and circles", {
     info$html, '//tr[@class="probability_variable"]//circle', "fill")
   expect_true(1 < length(table(fill.vec)))
 })
-
-
-
