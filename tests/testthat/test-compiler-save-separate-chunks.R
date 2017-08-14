@@ -1,7 +1,7 @@
 acontext("save separate chunks")
 library(plyr)
 
-data(FluView, package = "animint")
+data(FluView, package = "animint2")
 # use one season to test
 state_flu <- subset(FluView$state_flu, SEASON == "2008-09")
 flu.by.weekend <- split(state_flu, state_flu$WEEKEND)
@@ -126,7 +126,7 @@ test_that("save separate chunks for geom_point without specifying group", {
   ## test the only one varied.chunk
   varied.data <- read.csv(varied.chunks, sep = "\t", comment.char = "")
   expect_equal(nrow(varied.data), nrow(flu.points))
-  expect_true(all(c("fill", "x", "y", "showSelected") %in% names(varied.data)))
+  expect_true(all(c("fill", "x", "y", "showSelected1") %in% names(varied.data)))
   
   unlink(out.dir, recursive = TRUE)
   
@@ -171,7 +171,7 @@ test_that("save separate chunks for geom_point without specifying group", {
 ### test case 3: WorldBank data, without Israel. For some reason
 ### Israel appears on travis/wercker but not on local computers, so we
 ### just get rid of it for this test.
-data(WorldBank, package = "animint")
+data(WorldBank, package = "animint2")
 
 no.israel <- subset(WorldBank, country != "Israel")
 
@@ -261,7 +261,7 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   ## test common.chunk
   common.data <- read.csv(common.chunk, sep = "\t", comment.char = "")
   expect_equal(nrow(common.data), length(unique.country.vec))
-  common.must.have <- c("colour", "clickSelects", "key", "showSelectedlegendcolour", "fill", "group")
+  common.must.have <- c("colour", "clickSelects1", "key", "showSelectedlegendcolour", "fill", "group")
   expect_true(all(common.must.have %in% names(common.data)))
   ## choose first varied.chunk to test
   chunk.info <- info$geoms$geom1_point_scatter$chunks
@@ -281,7 +281,7 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
 })
 
 ### test case 4
-data(breakpoints, package = "animint")
+data(breakpoints, package = "animint2")
 
 only.error <- subset(breakpoints$error, type=="E")
 only.segments <- subset(only.error, samples==samples[1])
@@ -325,7 +325,7 @@ test_that("save separate chunks for non-spatial geoms with nest_order not being 
   n.samples <- length(unique(breakpoints$segments$samples))
   expected.rows <- nrow(breakpoints$segments) / n.samples
   expect_equal(nrow(common.data), expected.rows)
-  common.must.have <- c("showSelected", "group")
+  common.must.have <- c("showSelected1", "group")
   expect_true(all(common.must.have %in% names(common.data)))
   # randomly choose an varied.chunk to test
   idx <- sample(no.chunks, 1)

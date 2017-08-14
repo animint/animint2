@@ -1,7 +1,7 @@
 library(testthat)
 acontext("geom line")
 
-data(intreg, package = "animint")
+data(intreg, package = "animint2")
 min.logratio <- min(intreg$signals$logratio)-0.2
 max.logratio <- max(intreg$signals$logratio)
 intreg$breaks$min.logratio <- min.logratio

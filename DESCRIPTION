@@ -4,7 +4,9 @@ Version: 2017.06.13
 Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
 Description: An interactive animation can be defined using a list of
     ggplots with clickSelects and showSelected aesthetics.
-Depends: R (>= 3.3.2)
+Depends: 
+    R (>= 3.3.2),
+    ggplot2Animint (>= 2.1.0)
 Imports:
     digest,
     grid,
@@ -16,7 +18,6 @@ Imports:
     stats,
     tibble,
     lazyeval,
-    ggplot2Animint
 Suggests:
     covr,
     ggplot2movies,

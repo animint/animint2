@@ -6,7 +6,7 @@ test_that("animint2gist() returns an object of class 'gist'", {
   gistr::delete(g)
 })
 
-data(WorldBank, package = "animint")
+data(WorldBank, package = "animint2")
 not.na <- subset(WorldBank, !(is.na(life.expectancy) | is.na(fertility.rate)))
 subset(not.na, is.na(not.na$population))
 subset(not.na, country == "Kuwait" & 1991 <= year & year <= 1995)

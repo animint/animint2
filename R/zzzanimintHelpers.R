@@ -192,7 +192,7 @@ hjust2anchor <- function(hjust){
 #' @return All parameters in the layer
 getLayerParams <- function(l){
   params <- c(l$geom_params, l$stat_params, l$aes_params, l$extra_params)
-  if("chunk_vars" %in% names(params) && is.na(params[["chunk_vars"]])){
+  if("chunk_vars" %in% names(params) && is.null(params[["chunk_vars"]])){
     params[["chunk_vars"]] <- character()
   }
   for(p.name in names(params)){
@@ -230,9 +230,13 @@ colsNotToCopy <- function(g, s.aes){
   remove.group <- group.meaningless ||
     group.not.specified && 1 < n.groups && dont.need.group
   do.not.copy <- c(
-    if(remove.group)"group",
-    s.aes$showSelected$ignored,
-    s.aes$clickSelects$ignored)
+    if(remove.group)"group") #,
+    # s.aes$showSelected$ignored,
+    # s.aes$clickSelects$ignored
+    # )
+  
+  # TODO: Remove ignored showSelected and clickSelects here
+  # Check in params itself befroe adding or not???
   do.not.copy
 }
 
@@ -373,9 +377,14 @@ checkPlotForAnimintExtensions <- function(p, plot_name){
       stop("aes names must be unique, problems: ",
            paste(names(name.counts)[is.dup], collapse=", "))
     }
-    iaes <- selector.aes(L$mapping)
+    
+    ## Add SS and CS as aesthetics before checking for interactive aes
+    ## TODO: We are doing this twice. Once in saveLayer too. Restructure
+    ## to avoid this
+    aesthetics_added <- addSSandCSasAesthetics(L$mapping, L$extra_params)
+    iaes <- selectSSandCS(aesthetics_added)
     one.names <- with(iaes, c(clickSelects$one, showSelected$one))
-    update.vars <- as.character(L$mapping[one.names])
+    update.vars <- as.character(aesthetics_added[one.names])
     # if the layer has a defined data set
     if(length(L$data) > 0) {
       # check whether the variable is in that layer
@@ -391,10 +400,10 @@ checkPlotForAnimintExtensions <- function(p, plot_name){
                  data.variables=names(L$data)))
       stop("data does not have interactive variables")
     }
-    has.cs <- 0 < with(iaes$clickSelects, nrow(several) + length(one))
+    has.cs <- !is.null(L$extra_params$clickSelects)
     has.href <- "href" %in% names(L$mapping)
     if(has.cs && has.href){
-      stop("aes(clickSelects) can not be used with aes(href)")
+      stop("clickSelects can not be used with aes(href)")
     }
   }
   return(NULL)
@@ -567,9 +576,9 @@ issueSelectorWarnings <- function(geoms, selector.aes, duration){
     if(length(show.with.duration) && no.key){
       warning(
         "to ensure that smooth transitions are interpretable, ",
-        "aes(key) should be specifed for geoms with aes(showSelected=",
+        "aes(key) should be specifed for geoms with showSelected=",
         show.with.duration[1],
-        "), problem: ", g.name)
+        ", problem: ", g.name)
     }
   }
   return(NULL)
@@ -938,8 +947,13 @@ saveChunks <- function(x, meta){
 
 checkForSSandCSasAesthetics <- function(aesthetics, layer_name){
   for(i in seq_along(aesthetics)){
-    if(grepl("^showSelected", names(aesthetics)[[i]]) ||
-       grepl("^clickSelects$", names(aesthetics)[[i]])){
+    aes_has_ss_cs <- grepl("^showSelected", names(aesthetics)[[i]]) ||
+      grepl("^clickSelects$", names(aesthetics)[[i]])
+    
+    ## Show warning only if showSelected is not added by animint code for legends
+    ## TODO: Better check this before adding showSelectedlegend...
+    ss_added_by_legend <- grepl("^showSelectedlegend", names(aesthetics)[[i]])
+    if(aes_has_ss_cs && !ss_added_by_legend){
       plot_name <- strsplit(layer_name, "_")[[1]][[3]]
       geom_name <- strsplit(layer_name, "_")[[1]][[2]]
       stop(paste("Use of clickSelects and showSelected as",
@@ -952,38 +966,127 @@ checkForSSandCSasAesthetics <- function(aesthetics, layer_name){
 }
 
 
-addSSandCSasAesthetics <- function(aesthetics, params){
-  for(i in seq_along(params)){
-    if(names(params)[[i]] == "showSelected"){
-      for(j in seq_along(params[[i]])){
-        aesthetics[[length(aesthetics)+1]] <- params[[i]][[j]]
-        names(aesthetics)[[length(aesthetics)]] <-
-          paste0("showSelected", j)  
+addSSandCSasAesthetics <- function(aesthetics, extra_params){
+  for(i in seq_along(extra_params)){
+    if(names(extra_params)[[i]] == "showSelected"){
+      if(is.null(names(extra_params[[i]]))){
+        names(extra_params[[i]]) <- 
+          rep("", length(extra_params[[i]]))
+      }
+      for(j in seq_along(extra_params[[i]])){
+        if(names(extra_params[[i]])[[j]] != ""){
+          aesthetics[[length(aesthetics)+1]] <-
+            names(extra_params[[i]])[[j]]
+          names(aesthetics)[[length(aesthetics)]] <-
+            paste0("showSelected.variable")
+          aesthetics[[length(aesthetics)+1]] <-
+            extra_params[[i]][[j]]
+          names(aesthetics)[[length(aesthetics)]] <-
+            paste0("showSelected.value")
+        }else{
+          aesthetics[[length(aesthetics)+1]] <- extra_params[[i]][[j]]
+          names(aesthetics)[[length(aesthetics)]] <-
+            paste0("showSelected", j)
+        }
       }
     }
-    if(names(params)[[i]] == "clickSelects"){
-      aesthetics[[length(aesthetics)+1]] <- params[[i]]
-      names(aesthetics)[[length(aesthetics)]] <- "clickSelects"
+    
+    if(names(extra_params)[[i]] == "clickSelects"){
+      if(is.null(names(extra_params[[i]]))){
+        names(extra_params[[i]]) <- 
+          rep("", length(extra_params[[i]]))
+      }
+      for(j in seq_along(extra_params[[i]])){
+        if(names(extra_params[[i]])[[j]] != ""){
+          aesthetics[[length(aesthetics)+1]] <-
+            names(extra_params[[i]])[[j]]
+          names(aesthetics)[[length(aesthetics)]] <-
+            paste0("clickSelects.variable")
+          aesthetics[[length(aesthetics)+1]] <-
+            extra_params[[i]][[j]]
+          names(aesthetics)[[length(aesthetics)]] <-
+            paste0("clickSelects.value")
+        }else{
+          aesthetics[[length(aesthetics)+1]] <- extra_params[[i]][[j]]
+          names(aesthetics)[[length(aesthetics)]] <-
+            paste0("clickSelects")
+        }
+      }
     }
   }
   return(aesthetics)
+}
+
+checkSSandCSparams <- function(extra_params){
+  extra_params$showSelected <- unique(extra_params$showSelected)
+  extra_params$clickSelects <- unique(extra_params$clickSelects)
+  return(extra_params)
 }
 
 
 addSSandCS <- function(extra_params, df, orig_data){
   for(i in seq_along(extra_params)){
     if(names(extra_params)[[i]] == "showSelected"){
+      ## If showSelected is not a named vector (due to no SSvar=SSval),
+      ## just put empty strings as names
+      if(is.null(names(extra_params[[i]]))){
+        names(extra_params[[i]]) <- 
+          rep("", length(extra_params[[i]]))
+      }
       for(j in seq_along(extra_params[[i]])){
-        df[[ paste0("showSelected", j) ]] <- 
-          orig_data[[ extra_params[[i]][[j]] ]]
+        if(names(extra_params[[i]])[[j]] != ""){
+          df[[ paste0("showSelected.variable")]] <- 
+            orig_data[[ names(extra_params[[i]])[[j]] ]]
+          df[[ paste0("showSelected.value") ]] <- 
+            orig_data[[ extra_params[[i]][[j]] ]]
+        }else{
+          df[[ paste0("showSelected", j) ]] <- 
+            orig_data[[ extra_params[[i]][[j]] ]]
+        }
       }
     }
     if(names(extra_params)[[i]] == "clickSelects"){
+      if(is.null(names(extra_params[[i]]))){
+        names(extra_params[[i]]) <- 
+          rep("", length(extra_params[[i]]))
+      }
       for(j in seq_along(extra_params[[i]])){
-        df[[ paste0("clickSelects") ]] <- 
-          orig_data[[ extra_params[[i]][[j]] ]]
+        if(names(extra_params[[i]])[[j]] != ""){
+          df[[ paste0("clickSelects.variable")]] <- 
+            orig_data[[ names(extra_params[[i]])[[j]] ]]
+          df[[ paste0("clickSelects.value") ]] <- 
+            orig_data[[ extra_params[[i]][[j]] ]]
+        }else{
+          df[[ paste0("clickSelects") ]] <- 
+            orig_data[[ extra_params[[i]][[j]] ]]
+        }
       }
     }
   }
   return(df)
+}
+
+
+selectSSandCS <- function(aesthetics_list){
+  aes.list <- list(showSelected=list(one=NULL, several=data.frame()),
+                   clickSelects=list(one=NULL, several=data.frame()))
+  for(i in seq_along(aesthetics_list)){
+    if(names(aesthetics_list)[[i]] == "showSelected.variable"){
+      aes.list$showSelected$several <- data.frame(variable="showSelected.variable",
+                                                  value="showSelected.value")
+    }else if(grepl("^showSelected", names(aesthetics_list)[[i]]) &&
+             !grepl("^showSelected.value", names(aesthetics_list)[[i]])){
+      aes.list$showSelected$one <- c(aes.list$showSelected$one,
+                                       names(aesthetics_list)[[i]])
+    }else if(names(aesthetics_list)[[i]] == "clickSelects.variable"){
+      aes.list$clickSelects$several <- data.frame(variable="clickSelects.variable",
+                                                  value="clickSelects.value")
+    }else if(grepl("^clickSelects", names(aesthetics_list)[[i]])&&
+             !grepl("^clickSelects.value", names(aesthetics_list)[[i]])){
+      aes.list$clickSelects$one <- c(aes.list$clickSelects$one,
+                                     names(aesthetics_list)[[i]])
+    }
+  }
+  ## TODO: how to handle showSelected$ignored in prev animint code??
+  return(aes.list)
 }

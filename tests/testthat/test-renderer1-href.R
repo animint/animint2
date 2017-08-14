@@ -18,7 +18,7 @@ test_that("clickSelects and href is an error", {
          scale_color_identity())
   expect_error({
     animint2dir(viz, open.browser=FALSE)
-  }, "aes(clickSelects) can not be used with aes(href)", fixed=TRUE)
+  }, "clickSelects can not be used with aes(href)", fixed=TRUE)
 })
 
 test_that("aes(href) becomes <a href>", {

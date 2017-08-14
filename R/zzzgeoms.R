@@ -211,10 +211,12 @@ make_tallrect_or_widerect <- function(aes.prefix, geom_xrect, data, var.name, ev
     click.val==show.val, 1,
     paste(click.val, show.val)))
   aes.string.args <- list()
-  aes.string.args[["clickSelects.variable"]] <- "var"
-  aes.string.args[["clickSelects.value"]] <- "click.val"
-  aes.string.args[["showSelected.variable"]] <- "var"
-  aes.string.args[["showSelected.value"]] <- "show.val"
+  # aes.string.args[["clickSelects.variable"]] <- "var"
+  # aes.string.args[["clickSelects.value"]] <- "click.val"
+  # aes.string.args[["showSelected.variable"]] <- "var"
+  # aes.string.args[["showSelected.value"]] <- "show.val"
+  ss_params <- c(var="show.val")
+  cs_params <- c(var="click.val")
   aes.string.args[["key"]] <- "key"
   for(suffix in c("min", "max")){
     aes.str <- paste0(aes.prefix, suffix)
@@ -222,7 +224,9 @@ make_tallrect_or_widerect <- function(aes.prefix, geom_xrect, data, var.name, ev
     aes.string.args[[aes.str]] <- suffix
   }
   a <- do.call(aes_string, aes.string.args)
-  geom_xrect(a, data.fun(geom.df), alpha=alpha, ...)
+  geom_xrect(a, data.fun(geom.df),
+             showSelected = ss_params, clickSelects = cs_params,
+             alpha=alpha, ...)
 }
 
 #' Convenience function for an interactive bar that might otherwise be
@@ -239,7 +243,7 @@ make_bar <- function(data, x.name, alpha=1){
   stopifnot(length(x.name)==1)
   x <- data[,x.name]
   stopifnot(is.numeric(x))
-  stat_summary(aes_string(x=x.name, y=x.name, clickSelects=x.name),
+  stat_summary(aes_string(x=x.name, y=x.name), clickSelects=x.name,
                data=data, alpha=alpha, fun.y=length, geom="bar")
 }
 
@@ -280,6 +284,6 @@ make_text <- function(data, x, y, label.var, format=NULL){
   }
   stopifnot(is.function(format))
   data$label <- format(data$label)
-  a <- aes_string(x="x",y="y",label="label",showSelected=label.var)
-  geom_text(a, data)
+  a <- aes_string(x="x",y="y",label="label")
+  geom_text(a, showSelected=label.var, data)
 }

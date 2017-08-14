@@ -1,7 +1,7 @@
 acontext("stat_summary")
 
 test_that("stat_summary does not infinitely recurse", {
-  data(UStornadoes, package = "animint")
+  data(UStornadoes, package = "animint2")
   gg <- ggplot()+
     stat_summary(aes(year, year),
                  data=UStornadoes,

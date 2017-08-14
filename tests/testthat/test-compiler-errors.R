@@ -1,11 +1,11 @@
 acontext("compiler errors")
 
-test_that("aes(showSelected=var1, showSelected=var2) is an error", {
+test_that("aes(showSelected=var1, showSelected2=var2) is an error", {
   viz <- list(
     petals=ggplot()+
       geom_point(aes(Petal.Width, Petal.Length,
                      showSelected=Species,
-                     showSelected=Sepal.Width),
+                     showSelected2=Sepal.Width),
                  data=iris)
     )
   expect_error({
@@ -57,7 +57,7 @@ test_that("no error for time option with color", {
   info <- animint2dir(viz, open.browser=FALSE)
 })
 
-data("WorldBank", package="animint")
+data("WorldBank", package="animint2")
 viz.no.duration <- list(
   scatter=ggplot()+
     geom_point(aes(x=life.expectancy, y=fertility.rate, color=region,
@@ -87,7 +87,7 @@ test_that("warn no key for geom_text with showSelected=duration var", {
   viz.duration$duration <- list(year=2000)
   expect_warning({
     info <- animint2dir(viz.duration, open.browser=FALSE)
-  }, "to ensure that smooth transitions are interpretable, aes(key) should be specifed for geoms with showSelected, problem: geom2_text_scatter", fixed=TRUE)
+  }, "to ensure that smooth transitions are interpretable, aes(key) should be specifed for geoms with showSelected=year, problem: geom2_text_scatter", fixed=TRUE)
 })
 
 viz.key.duration <- list(
@@ -95,7 +95,7 @@ viz.key.duration <- list(
     geom_point(aes(x=life.expectancy, y=fertility.rate, color=region,
                    key=country),
                showSelected="year",
-               clickSelects="country"
+               clickSelects="country",
                data=WorldBank)+
     geom_text(aes(x=life.expectancy, y=fertility.rate, label=country,
                   key=country),

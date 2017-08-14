@@ -212,7 +212,10 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## e.g. colour.
   ## 'colour', 'size' etc. have been moved to aes_params
   g$params <- getLayerParams(l)
-  g$aes <- addSSandCSasAesthetics(g$aes, g$params)
+  
+  ## Add showSelected and clickSelects to aesthetics list from extra_params
+  g$aes <- addSSandCSasAesthetics(g$aes, l$extra_params)
+  
   ## Make a list of variables to use for subsetting. subset_order is the
   ## order in which these variables will be accessed in the recursive
   ## JavaScript array structure.
@@ -240,7 +243,8 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## currently selected values of these variables are stored in
   ## plot.Selectors.
 
-  s.aes <- selector.aes(g$aes)
+  ## Separate .variable and .variabl selectors  
+  s.aes <- selectSSandCS(g$aes)
   meta$selector.aes[[g$classed]] <- s.aes
 
   ## Do not copy group unless it is specified in aes, and do not copy
@@ -577,7 +581,6 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## names as the selectors. E.g. if chunk_order=list("year") then
   ## when year is clicked, we may need to download some new data for
   ## this geom.
-
   subset.vec <- unlist(pre.subset.order)
   if("chunk_vars" %in% names(g$params)){ #designer-specified chunk vars.
     designer.chunks <- g$params$chunk_vars
@@ -708,7 +711,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
 
   ## nest_order should contain both .variable .value aesthetics, but
   ## subset_order should contain only .variable.
-  if(0 < nrow(s.aes$showSelected$several)){
+  if((nrow(s.aes$showSelected$several) > 0)){
     g$nest_order <- with(s.aes$showSelected$several, {
       c(g$nest_order, paste(variable), paste(value))
     })
@@ -965,6 +968,8 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       ## columns to the data for now
       ## TODO: Remove the code which accepts showSelected and
       ## clickSelects aesthetics
+      
+      # L$extra_params <- checkSSandCSparams(L$extra_params)
       df <- addSSandCS(L$extra_params, df, L$data)
       
       ## cat(sprintf(

@@ -1,6 +1,6 @@
 acontext("legends")
 
-data(WorldBank, package="animint")
+data(WorldBank, package="animint2")
 breaks <- 10^(4:9)
 viz <-
   list(ts=ggplot()+

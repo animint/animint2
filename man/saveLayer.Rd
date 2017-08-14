@@ -4,12 +4,12 @@
 \alias{saveLayer}
 \title{Save a layer to disk, save and return meta-data.}
 \usage{
-saveLayer(l, d, meta, layer_name, ggplot, built)
+saveLayer(l, d, meta, layer_name, ggplot, built, AnimationInfo)
 }
 \arguments{
 \item{l}{one layer of the ggplot object.}
 
-\item{d}{one layer of calculated data from ggplot2::ggplot_build(p).}
+\item{d}{one layer of calculated data from ggplot2Animint::ggplot_build(p).}
 
 \item{meta}{environment of meta-data.}
 

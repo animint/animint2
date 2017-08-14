@@ -1,6 +1,6 @@
 acontext("plot named timexxx")
 
-data(WorldBank, package = "animint")
+data(WorldBank, package = "animint2")
 not.na <- subset(WorldBank, !(is.na(life.expectancy) | is.na(fertility.rate)))
 subset(not.na, is.na(not.na$population))
 not.na[not.na$country=="Kuwait", "population"] <- 1700000

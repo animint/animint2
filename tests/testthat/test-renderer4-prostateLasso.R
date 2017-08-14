@@ -30,13 +30,11 @@ viz.no.time <- list(
       xmin=arclength.click-rect.width,
       xmax=arclength.click+rect.width,
       id=paste0("arclength", round(arclength.click, 1)*10),
-      clickSelects.variable="arclength",
-      clickSelects.value=arclength.click,
-      showSelected.variable="arclength",
-      showSelected.value=arclength.show,
       key=ifelse(
         arclength.click==arclength.show, 1,
         paste(arclength.click, arclength.show))),
+      clickSelects=c(arclength="arclength.click"),
+      showSelected=c(arclength="arclength.show"),
       alpha=0.5,
       data=addY(tallrect.all, "error")),
   res=ggplot()+
@@ -45,8 +43,8 @@ viz.no.time <- list(
                color="grey")+
     guides(linetype="none")+
     geom_point(aes(response, residual, 
-                   key=observation.i,
-                   showSelected=arclength),
+                   key=observation.i),
+               showSelected="arclength",
                shape=21,
                fill=NA,
                color="black",
@@ -54,8 +52,8 @@ viz.no.time <- list(
     geom_segment(aes(response, residual,
                      xend=response, yend=0,
                      linetype=set,
-                     key=observation.i,
-                     showSelected=arclength),
+                     key=observation.i),
+                 showSelected="arclength",
                  data=prostateLasso$residuals),
   first=list(arclength=max(arclength)),
   duration=list(arclength=5000))

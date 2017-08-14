@@ -17,21 +17,21 @@ path <- do.call(rbind, path.list)
 viz <- list(
   point=ggplot()+
     geom_point(aes(showSelected.i, showSelected.i,
-                   id=paste0("point", showSelected.i),
-                   clickSelects=showSelected.i),
+                   id=paste0("point", showSelected.i)),
+               clickSelects="showSelected.i",
                size=10,
                data=point),
   transition=ggplot()+
     ggtitle("should have animated transition")+
     geom_path(aes(x, y, group=group.i, color=group.i,
-                  key=group.i,
-                  showSelected=showSelected.i),
+                  key=group.i),
+              showSelected="showSelected.i",
               data=path),
   noTransition=ggplot()+
     ggtitle("should NOT have animated transition")+
     geom_path(aes(x, y, group=group.i, color=group.i,
-                  key=paste(group.i, showSelected.i),
-                  showSelected=showSelected.i),
+                  key=paste(group.i, showSelected.i)),
+              showSelected="showSelected.i",
               data=path),
   first=list(showSelected.i="1"),
   duration=list(showSelected.i=3000))

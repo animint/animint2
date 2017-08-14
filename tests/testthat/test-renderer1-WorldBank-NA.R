@@ -9,11 +9,11 @@ no.time <-
        geom_point(aes(life.expectancy, fertility.rate,
                       colour=region, size=population,
                       tooltip=paste(country, "population", population),
-                      showSelected="year",
-                      clickSelects="country",
                       key=country), # key aesthetic for animated transitions!
+                  showSelected="year",
+                  clickSelects="country",
                   data=WorldBank)+
-       geom_text(aes(life.expectancy, fertility.rate, label=country,,
+       geom_text(aes(life.expectancy, fertility.rate, label=country,
                      key=country), # also use key here!
                  showSelected=c("country", "year"),
                  data=WorldBank)+
@@ -68,7 +68,7 @@ common <- read.table(common.tsv, sep="\t", header=TRUE,
 test_that("common chunk contains expected columns", {
   expected.cols <-
     c("ymin", "ymax", "xmin", "fill", "key",
-      "clickSelects", "showSelectedlegendfill",
+      "clickSelects1", "showSelectedlegendfill",
       "group")
   expect_identical(sort(names(common)), sort(expected.cols))
 })

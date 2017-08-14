@@ -10,9 +10,9 @@ viz <-
        geom_point(aes(life.expectancy, fertility.rate,
                       colour=region, size=population,
                       tooltip=paste(country, "population", population),
-                      clickSelects="country",
-                      showSelected="year",
                       key=country), # key aesthetic for animated transitions!
+                  clickSelects="country",
+                  showSelected="year",
                   data=WorldBank)+
        geom_text(aes(life.expectancy, fertility.rate, label=country,
                      key=country), #also use key here!

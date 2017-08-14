@@ -3,8 +3,9 @@ acontext("chunk vars")
 test_that("produce as many chunk files as specified", {
   viz <- list(iris=ggplot()+
                 geom_point(aes(Petal.Width, Sepal.Length),
-                           showSelected="Species"
-               data=iris, chunk_vars="Species", validate_params = FALSE))
+                           showSelected="Species",
+                           data=iris, chunk_vars="Species",
+                           validate_params = FALSE))
   tdir <- tempfile()
   dir.create(tdir)
   tsv.files <- Sys.glob(file.path(tdir, "*.tsv"))
@@ -45,7 +46,7 @@ test_that("produce informative errors for bad chunk_vars", {
            "use chunk_vars=character() to specify 1 chunk"), fixed=TRUE)
 })
 
-data(breakpoints, package = "animint")
+data(breakpoints, package = "animint2")
 only.error <- subset(breakpoints$error,type=="E")
 only.segments <- subset(only.error,bases.per.probe==bases.per.probe[1])
 signal.colors <- c(estimate="#0adb0a",
@@ -62,7 +63,7 @@ breakpointError <-
                       colour=signal.colors[["estimate"]],
                       data=breakpoints$segments)+
          geom_vline(aes(xintercept=base),
-                    showSelected=c("segments", "showSelected2"),
+                    showSelected=c("segments", "bases.per.probe"),
                     colour=signal.colors[["estimate"]],
                     linetype="dashed",
                     data=breakpoints$breaks),

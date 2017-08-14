@@ -1,6 +1,6 @@
 acontext("TestROC")
 
-data(TestROC, package="animint")
+data(TestROC, package="animint2")
 
 ##RColorBrewer::display.brewer.all()
 ## x <- RColorBrewer::brewer.pal(12, "Paired")
@@ -30,8 +30,8 @@ path.before.params <- list(
              shape=21,
              data=subset(TestROC$parameters, parameter=="default"))+
   geom_point(aes(FPR, TPR, color=Model,
-                 key=ModelParam,
-                 clickSelects=ModelParam),
+                 key=ModelParam),
+             clickSelects="ModelParam",
              size=4,
              alpha=0.9,
              data=subset(TestROC$roc, same.as.prev==FALSE))+
@@ -81,8 +81,8 @@ path.after.params <- list(
   geom_path(aes(FPR, TPR, group=Model, key=Model, color=Model),
             data=TestROC$roc)+
   geom_point(aes(FPR, TPR, color=Model,
-                 key=ModelParam,
-                 clickSelects=ModelParam),
+                 key=ModelParam),
+             clickSelects="ModelParam",
              size=4,
              alpha=0.9,
              data=subset(TestROC$roc, same.as.prev==FALSE))+

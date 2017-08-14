@@ -2,7 +2,7 @@ acontext("animation")
 
 library(maps)
 library(plyr)
-data(UStornadoes, package = "animint")
+data(UStornadoes, package = "animint2")
 stateOrder <- data.frame(state = unique(UStornadoes$state)[order(unique(UStornadoes$TornadoesSqMile), decreasing=T)], rank = 1:49) # order states by tornadoes per square mile
 UStornadoes$state <- factor(UStornadoes$state, levels=stateOrder$state, ordered=TRUE)
 UStornadoes$weight <- 1/UStornadoes$LandArea
@@ -35,7 +35,7 @@ test_that("tornado animation frames correct", {
 })
 
 ## WorldBank/gapminder example.
-data(WorldBank, package = "animint")
+data(WorldBank, package = "animint2")
 motion <-
   list(scatter=ggplot()+
          geom_point(aes(life.expectancy, fertility.rate,
@@ -59,7 +59,7 @@ test_that("WorldBank animation frames correct", {
 })
 
 ## Evolution.
-data(generation.loci, package = "animint")
+data(generation.loci, package = "animint2")
 ## Example: 2 plots, 2 selectors.
 generations <- data.frame(generation=unique(generation.loci$generation))
 loci <- data.frame(locus=unique(generation.loci$locus))
