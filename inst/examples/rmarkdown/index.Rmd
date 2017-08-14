@@ -32,20 +32,22 @@ Now, we construct a time-series and scatterplot using ggplot2's grammar with the
 ts <- ggplot() +
       make_tallrect(WorldBank, "year") +
       # plot the lines *on top of rectangles* so lines are clickable
-      geom_line(aes(year, life.expectancy, group = country, colour = region,
-                     clickSelects = country),
+      geom_line(aes(year, life.expectancy, group = country, colour = region),
+                     clickSelects = "country",
                  data = WorldBank, size = 4, alpha = 3/5) +
       guides(color = "none")
 
 not.na <- subset(WorldBank, !(is.na(life.expectancy) | is.na(fertility.rate)))
 scatter <- ggplot() +
-       geom_point(aes(fertility.rate, life.expectancy, clickSelects = country,
-                      showSelected = year, colour = region, size = population,
+       geom_point(aes(fertility.rate, life.expectancy,
+                      colour = region, size = population,
                       key = country), # key aesthetic for animated transitions!
+                  clickSelects = "country",
+                  showSelected = "year",
                   data = not.na) +
        geom_text(aes(fertility.rate, life.expectancy, label = country,
-                     showSelected = country, showSelected2 = year,
                      key = country), #also use key here!
+                     showSelected = c("country", "year"),
                  data = not.na) +
        scale_size_animint(breaks = 10^(5:9)) +
        make_text(WorldBank, 5, 85, "year")
