@@ -43,6 +43,7 @@ two.error <-
              chunks="two")
 
 showSelected.vec <- c(problem.name="peaks", "bases.per.problem")
+clickSelects.vec <- c(problem.name="peaks")
 
 viz <-
   list(errorLines=ggplot()+
@@ -101,7 +102,7 @@ viz <-
                         color=error.type,
                         id=peaks),
                     showSelected=c("problem.name", "bases.per.problem"),
-                    clickSelects = showSelected.vec,
+                    clickSelects = clickSelects.vec,
                     size=10,
                     data=peaks)+
          geom_text(aes(1, 3, label=problem.name),
