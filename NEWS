@@ -3,3 +3,8 @@ TODO
 support variable mapping and scales that can the user can
 interactively update.
 
+OPTIMIZATION: for the prostateLasso test, it would be great to be able
+to specify clickSelects=c(arclength="arclength.click") even if there
+is no column named arclength in the data -- this would mean to update
+the selector called "arclength" with the value in column
+"arclength.click" -- less disk space, and faster compiling.
