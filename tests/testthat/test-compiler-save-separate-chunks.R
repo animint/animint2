@@ -261,7 +261,7 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   ## test common.chunk
   common.data <- read.csv(common.chunk, sep = "\t", comment.char = "")
   expect_equal(nrow(common.data), length(unique.country.vec))
-  common.must.have <- c("colour", "clickSelects1", "key", "showSelectedlegendcolour", "fill", "group")
+  common.must.have <- c("colour", "clickSelects", "key", "showSelectedlegendcolour", "fill", "group")
   expect_true(all(common.must.have %in% names(common.data)))
   ## choose first varied.chunk to test
   chunk.info <- info$geoms$geom1_point_scatter$chunks

@@ -34,6 +34,7 @@ Suggests:
     vdiffr,
     quantreg,
     knitr,
+    RSelenium,
     rgeos,
     rpart,
     rmarkdown,
