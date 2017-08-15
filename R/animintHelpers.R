@@ -413,7 +413,18 @@ checkPlotForAnimintExtensions <- function(p, plot_name){
 ## Compute domains of different subsets, to be used by update_scales
 ## in the renderer
 compute_domains <- function(built_data, axes, geom_name,
-                            vars, split_by_panel){
+                            vars, split_by_panel, mapping){
+  names_present <- names(built_data) %in% mapping
+  ## Map variables to column names
+  return_names <- function(name_selectors, mapping){
+    for(i in seq_along(mapping)){
+      if(mapping[[i]] == name_selectors){
+        return(names(mapping)[[i]])
+      }
+    }
+  }
+  
+  names(built_data)[names_present] <- sapply(names(built_data)[names_present], return_names, rev(mapping))
   # Different geoms will use diff columns to calculate domains for
   # showSelected subsets. Eg. geom_bar will use 'xmin', 'xmax', 'ymin',
   # 'ymax' etc. while geom_point will use 'x', 'y'
@@ -456,6 +467,7 @@ compute_domains <- function(built_data, axes, geom_name,
                                  ".", levels(inter_data))
     inter_data
   }
+  
   if(geom_name %in% c("point", "path", "text", "line")){
     # We suppress 'returning Inf' warnings when we compute a factor
     # interaction that has no data to display

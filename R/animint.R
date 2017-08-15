@@ -1110,11 +1110,15 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
                 c(ss, AllPlotsInfo[[p.name]]$axis_domains[[axis]]$selectors)
             }
           }
+          ## Set up built_data to compute domains
+          built_data <- ggplot.list[[p.name]]$built$plot$layers[[num]]$data
+          built_data$PANEL <- ggplot.list[[p.name]]$built$data[[num]]$PANEL
+
           if(length(ss_selectors) > 0){
             subset_domains[num] <- compute_domains(
-              ggplot.list[[p.name]]$built$data[[num]],
+              built_data,
               axis, strsplit(names(g.list[[p.name]])[[num]], "_")[[1]][[2]],
-              names(sort(ss_selectors)), split_by_panel)
+              names(sort(ss_selectors)), split_by_panel, g.list[[p.name]][[num]]$g$aes)
           }
         }
         subset_domains <- subset_domains[!sapply(subset_domains, is.null)]
