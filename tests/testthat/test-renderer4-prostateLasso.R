@@ -14,6 +14,10 @@ tallrect.all <- expand.grid(
 addY <- function(dt, y){
   data.frame(dt, y.var=factor(y, c("error", "weights")))
 }
+
+data_tallrect_error <- addY(tallrect.all, "error")
+data_tallrect_error$arclength <- arclength
+
 viz.no.time <- list(
   title="both .variable .value aesthetics",
   path=ggplot()+
@@ -36,7 +40,7 @@ viz.no.time <- list(
       clickSelects=c(arclength="arclength.click"),
       showSelected=c(arclength="arclength.show"),
       alpha=0.5,
-      data=addY(tallrect.all, "error")),
+      data=data_tallrect_error),
   res=ggplot()+
     geom_hline(aes(yintercept=residual),
                data=hline.df,

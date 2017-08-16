@@ -969,7 +969,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       ## TODO: Remove the code which accepts showSelected and
       ## clickSelects aesthetics
       
-      # L$extra_params <- checkSSandCSparams(L$extra_params)
+      L$extra_params <- checkSSandCSparams(L$extra_params)
       df <- addSSandCS(L$extra_params, df, L$data)
       
       ## cat(sprintf(

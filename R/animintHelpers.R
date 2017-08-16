@@ -1030,8 +1030,18 @@ addSSandCSasAesthetics <- function(aesthetics, extra_params){
 }
 
 checkSSandCSparams <- function(extra_params){
-  extra_params$showSelected <- unique(extra_params$showSelected)
-  extra_params$clickSelects <- unique(extra_params$clickSelects)
+  for(i in seq_along(extra_params)){
+    if(names(extra_params)[[i]] %in% c("showSelected", "clickSelects")){
+      if(is.null(names(extra_params[[i]]))){
+        ## If showSelected/clickSelects is not a named vector (due to no SSvar=SSval),
+        ## just put empty strings as names
+        names(extra_params[[i]]) <- 
+          rep("", length(extra_params[[i]]))
+      }
+      ## Remove duplicates
+      extra_params[[i]] <- extra_params[[i]][ !duplicated(extra_params[[i]]) ]
+    }
+  }
   return(extra_params)
 }
 
@@ -1039,12 +1049,6 @@ checkSSandCSparams <- function(extra_params){
 addSSandCS <- function(extra_params, df, orig_data){
   for(i in seq_along(extra_params)){
     if(names(extra_params)[[i]] == "showSelected"){
-      ## If showSelected is not a named vector (due to no SSvar=SSval),
-      ## just put empty strings as names
-      if(is.null(names(extra_params[[i]]))){
-        names(extra_params[[i]]) <- 
-          rep("", length(extra_params[[i]]))
-      }
       for(j in seq_along(extra_params[[i]])){
         if(names(extra_params[[i]])[[j]] != ""){
           df[[ paste0("showSelected.variable")]] <- 
@@ -1058,10 +1062,6 @@ addSSandCS <- function(extra_params, df, orig_data){
       }
     }
     if(names(extra_params)[[i]] == "clickSelects"){
-      if(is.null(names(extra_params[[i]]))){
-        names(extra_params[[i]]) <- 
-          rep("", length(extra_params[[i]]))
-      }
       for(j in seq_along(extra_params[[i]])){
         if(names(extra_params[[i]])[[j]] != ""){
           df[[ paste0("clickSelects.variable")]] <- 
