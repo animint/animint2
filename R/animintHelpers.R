@@ -996,9 +996,12 @@ addSSandCSasAesthetics <- function(aesthetics, extra_params){
           names(aesthetics)[[length(aesthetics)]] <-
             paste0("showSelected.value")
         }else{
-          aesthetics[[length(aesthetics)+1]] <- extra_params[[i]][[j]]
-          names(aesthetics)[[length(aesthetics)]] <-
-            paste0("showSelected", j)
+          ss_added_by_legend <- aesthetics[ grepl("^showSelectedlegend", names(aesthetics)) ]
+          if(!extra_params[[i]][[j]] %in% ss_added_by_legend){
+            aesthetics[[length(aesthetics)+1]] <- extra_params[[i]][[j]]
+            names(aesthetics)[[length(aesthetics)]] <-
+              paste0("showSelected", j)
+          }
         }
       }
     }
@@ -1029,7 +1032,7 @@ addSSandCSasAesthetics <- function(aesthetics, extra_params){
   return(aesthetics)
 }
 
-checkSSandCSparams <- function(extra_params){
+checkSSandCSparams <- function(extra_params, aes_mapping){
   for(i in seq_along(extra_params)){
     if(names(extra_params)[[i]] %in% c("showSelected", "clickSelects")){
       if(is.null(names(extra_params[[i]]))){
@@ -1040,6 +1043,12 @@ checkSSandCSparams <- function(extra_params){
       }
       ## Remove duplicates
       extra_params[[i]] <- extra_params[[i]][ !duplicated(extra_params[[i]]) ]
+      
+      ## Remove from extra_params if already added by legend
+      if(names(extra_params)[[i]] %in% c("showSelected")){
+        ss_added_by_legend <- aes_mapping[grepl("^showSelectedlegend", names(aes_mapping))]
+        extra_params[[i]] <- extra_params[[i]][ !extra_params[[i]] %in% ss_added_by_legend ]
+      }
     }
   }
   return(extra_params)
