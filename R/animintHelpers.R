@@ -957,7 +957,7 @@ saveChunks <- function(x, meta){
 }
 
 
-checkForSSandCSasAesthetics <- function(aesthetics, layer_name){
+checkForSSandCSasAesthetics <- function(aesthetics, plot_name){
   for(i in seq_along(aesthetics)){
     aes_has_ss_cs <- grepl("^showSelected", names(aesthetics)[[i]]) ||
       grepl("^clickSelects$", names(aesthetics)[[i]])
@@ -966,12 +966,10 @@ checkForSSandCSasAesthetics <- function(aesthetics, layer_name){
     ## TODO: Better check this before adding showSelectedlegend...
     ss_added_by_legend <- grepl("^showSelectedlegend", names(aesthetics)[[i]])
     if(aes_has_ss_cs && !ss_added_by_legend){
-      plot_name <- strsplit(layer_name, "_")[[1]][[3]]
-      geom_name <- strsplit(layer_name, "_")[[1]][[2]]
       stop(paste("Use of clickSelects and showSelected as",
                  "aesthetics has been deprecated. Please use",
                  "as parameters. Problem:", "\nPlot: ",
-                 plot_name, " |  Geom: ", geom_name), call. = FALSE)
+                 plot_name), call. = FALSE)
     }
   }
   return(NULL)
@@ -988,17 +986,17 @@ addSSandCSasAesthetics <- function(aesthetics, extra_params){
       for(j in seq_along(extra_params[[i]])){
         if(names(extra_params[[i]])[[j]] != ""){
           aesthetics[[length(aesthetics)+1]] <-
-            names(extra_params[[i]])[[j]]
+            as.symbol(names(extra_params[[i]])[[j]])
           names(aesthetics)[[length(aesthetics)]] <-
             paste0("showSelected.variable")
           aesthetics[[length(aesthetics)+1]] <-
-            extra_params[[i]][[j]]
+            as.symbol(extra_params[[i]][[j]])
           names(aesthetics)[[length(aesthetics)]] <-
             paste0("showSelected.value")
         }else{
           ss_added_by_legend <- aesthetics[ grepl("^showSelectedlegend", names(aesthetics)) ]
           if(!extra_params[[i]][[j]] %in% ss_added_by_legend){
-            aesthetics[[length(aesthetics)+1]] <- extra_params[[i]][[j]]
+            aesthetics[[length(aesthetics)+1]] <- as.symbol(extra_params[[i]][[j]])
             names(aesthetics)[[length(aesthetics)]] <-
               paste0("showSelected", j)
           }
@@ -1014,15 +1012,15 @@ addSSandCSasAesthetics <- function(aesthetics, extra_params){
       for(j in seq_along(extra_params[[i]])){
         if(names(extra_params[[i]])[[j]] != ""){
           aesthetics[[length(aesthetics)+1]] <-
-            names(extra_params[[i]])[[j]]
+            as.symbol(names(extra_params[[i]])[[j]])
           names(aesthetics)[[length(aesthetics)]] <-
             paste0("clickSelects.variable")
           aesthetics[[length(aesthetics)+1]] <-
-            extra_params[[i]][[j]]
+            as.symbol(extra_params[[i]][[j]])
           names(aesthetics)[[length(aesthetics)]] <-
             paste0("clickSelects.value")
         }else{
-          aesthetics[[length(aesthetics)+1]] <- extra_params[[i]][[j]]
+          aesthetics[[length(aesthetics)+1]] <- as.symbol(extra_params[[i]][[j]])
           names(aesthetics)[[length(aesthetics)]] <-
             paste0("clickSelects")
         }

@@ -46,6 +46,9 @@ parsePlot <- function(meta, plot, plot.name){
     L <- plot$layers[[layer.i]]
     ## If any legends are specified, add showSelected aesthetic
     L <- addShowSelectedForLegend(meta, plot.info$legend, L)
+    checkForSSandCSasAesthetics(L$mapping, plot.name)
+    L$extra_params <- checkSSandCSparams(L$extra_params, L$mapping)
+    L$mapping <- addSSandCSasAesthetics(L$mapping, L$extra_params)
   }#layer.i
 
   ## need to call ggplot_build again because we've added to the plot.
@@ -205,7 +208,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
 
   ## Check if showSelected and clickSelects have been used as aesthetics
   ## If yes, raise error
-  checkForSSandCSasAesthetics(g$aes, layer_name)
+  # checkForSSandCSasAesthetics(g$aes, layer_name)
   
   ## use un-named parameters so that they will not be exported
   ## to JSON as a named object, since that causes problems with
@@ -214,7 +217,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   g$params <- getLayerParams(l)
   
   ## Add showSelected and clickSelects to aesthetics list from extra_params
-  g$aes <- addSSandCSasAesthetics(g$aes, l$extra_params)
+  # g$aes <- addSSandCSasAesthetics(g$aes, l$extra_params)
   
   ## Make a list of variables to use for subsetting. subset_order is the
   ## order in which these variables will be accessed in the recursive
@@ -913,6 +916,31 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   ## Store the animation information (time, var, ms) in a separate list
   AnimationInfo <- list()
   
+  getOriginalAesthetics <- function(plot.list){
+    aesthetics_list <- list()
+    i <- 0
+    for(elem in seq_along(plot.list)){
+      p <- plot.list[[ elem ]]
+      aes_in_layer <- list()
+      if(is.ggplot(p)){
+        for(layer_i in seq_along(p$layers)){
+          mapping_i <- if(is.null(p$layers[[ layer_i ]]$mapping)){
+            p$mapping
+          }else{
+            p$layers[[ layer_i ]]$mapping
+          }
+          aes_in_layer[[ layer_i ]] <- mapping_i
+        }
+        i <- i+1
+        aesthetics_list[[i]] <- aes_in_layer
+      }
+    }
+    return(aesthetics_list)
+  }
+  
+  ## Store aesthetic info
+  AestheticList <- getOriginalAesthetics(plot.list)
+  
   ## Save the animation variable so we can treat it specially when we
   ## process each geom.
   # CPS (7-22-14): What if the user doesn't specify milliseconds? Could we provide a reasonable default?
@@ -968,8 +996,8 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       ## columns to the data for now
       ## TODO: Remove the code which accepts showSelected and
       ## clickSelects aesthetics
-      L$extra_params <- checkSSandCSparams(L$extra_params, L$mapping)
-      df <- addSSandCS(L$extra_params, df, L$data)
+      # L$extra_params <- checkSSandCSparams(L$extra_params, L$mapping)
+      # df <- addSSandCS(L$extra_params, df, L$data)
       
       ## cat(sprintf(
       ##   "saving layer %4d / %4d of ggplot %s\n",
@@ -1262,6 +1290,15 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
 if (!requireNamespace("servr")) install.packages("servr")
 servr::httd("', normalizePath( out.dir,winslash="/" ), '")')
       browseURL(sprintf("%s/index.html", out.dir))
+  }
+  
+  ## Restore layer mappings
+  for(plot_i in seq_along(ggplot.list)){
+    ggplot.info <- ggplot.list[[ plot_i ]]
+    for(layer.i in seq_along(ggplot.info$ggplot$layers)){
+      L <- ggplot.info$ggplot$layers[[layer.i]]
+      L$mapping <- AestheticList[[ plot_i ]][[ layer.i ]]
+    }
   }
   invisible(meta)
   ### An invisible copy of the R list that was exported to JSON.
