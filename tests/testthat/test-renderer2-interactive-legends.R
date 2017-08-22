@@ -13,10 +13,10 @@ p1 <- ggplot() +
             clickSelects = "Species", data = iris) + 
   facet_wrap(~Species, nrow = 2) + 
   ggtitle("Sepal Data")
-p2 <- ggplot(iris, aes(Petal.Length, Petal.Width, colour = Species, 
+p2 <- ggplot() + 
+  geom_point(data=iris, aes(Petal.Length, Petal.Width, colour = Species, 
                        size = Sepal.Width),
              showSelected = "Species") + 
-  geom_point() + 
   ggtitle("Petal Data")
 
 viz <- list(sepal = p1, 

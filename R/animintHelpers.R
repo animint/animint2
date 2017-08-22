@@ -370,7 +370,7 @@ checkPlotForAnimintExtensions <- function(p, plot_name){
     ## This code assumes that the layer has the complete aesthetic
     ## mapping and data. TODO: Do we need to copy any global
     ## values to this layer?
-    name.counts <- table(names(L$mapping))
+    name.counts <- table(names(L$orig_mapping))
     is.dup <- 1 < name.counts
     if(any(is.dup)){
       print(L)

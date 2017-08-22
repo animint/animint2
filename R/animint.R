@@ -44,6 +44,7 @@ parsePlot <- function(meta, plot, plot.name){
     ##cat(sprintf("%4d / %4d layers\n", layer.i, length(plot$layers)))
     ## This is the layer from the original ggplot object.
     L <- plot$layers[[layer.i]]
+    L$mapping <- L$orig_mapping
     ## If any legends are specified, add showSelected aesthetic
     L <- addShowSelectedForLegend(meta, plot.info$legend, L)
     checkForSSandCSasAesthetics(L$mapping, plot.name)
@@ -916,31 +917,6 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   ## Store the animation information (time, var, ms) in a separate list
   AnimationInfo <- list()
   
-  getOriginalAesthetics <- function(plot.list){
-    aesthetics_list <- list()
-    i <- 0
-    for(elem in seq_along(plot.list)){
-      p <- plot.list[[ elem ]]
-      aes_in_layer <- list()
-      if(is.ggplot(p)){
-        for(layer_i in seq_along(p$layers)){
-          mapping_i <- if(is.null(p$layers[[ layer_i ]]$mapping)){
-            p$mapping
-          }else{
-            p$layers[[ layer_i ]]$mapping
-          }
-          aes_in_layer[[ layer_i ]] <- mapping_i
-        }
-        i <- i+1
-        aesthetics_list[[i]] <- aes_in_layer
-      }
-    }
-    return(aesthetics_list)
-  }
-  
-  ## Store aesthetic info
-  AestheticList <- getOriginalAesthetics(plot.list)
-  
   ## Save the animation variable so we can treat it specially when we
   ## process each geom.
   # CPS (7-22-14): What if the user doesn't specify milliseconds? Could we provide a reasonable default?
@@ -962,26 +938,47 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   }
 
   ## Extract essential info from ggplots, reality checks.
-  ggplot.list <- list()
-  AllPlotsInfo <- list()
   for(list.name in names(plot.list)){
     p <- plot.list[[list.name]]
     if(is.ggplot(p)){
+      ## Save original mapping
+      for(layer_i in seq_along(p$layers)){
+        ## Viz has not been used before
+        if(is.null(p$layers[[layer_i]]$orig_mapping)){
+          p$layers[[layer_i]]$orig_mapping <- 
+            if(is.null(p$layers[[layer_i]]$mapping)){
+              p$mapping
+            }else{
+              p$layers[[layer_i]]$mapping
+            }
+        }else{
+          p$layers[[layer_i]]$mapping <- p$layers[[layer_i]]$orig_mapping
+        }
+      }
+      
       ## Before calling ggplot_build, we do some error checking for
       ## some animint extensions.
       checkPlotForAnimintExtensions(p, list.name)
-      
-      ## If plot is correct, save to meta for further processing
-      parsed_info <- parsePlot(meta, p, list.name) # calls ggplot_build.
-      AllPlotsInfo[[list.name]] <- parsed_info[[1]]
-      ggplot.list[[list.name]] <- parsed_info[2:3]
     }else if(is.list(p)){ ## for options.
       meta[[list.name]] <- p
     }else{
       stop("list items must be ggplots or option lists, problem: ", list.name)
     }
   }
-
+  
+  ## Call ggplot_build in parsPlot for all ggplots
+  ggplot.list <- list()
+  AllPlotsInfo <- list()
+  for(list.name in names(plot.list)){
+    p <- plot.list[[list.name]]
+    if(is.ggplot(p)){
+      ## If plot is correct, save to meta for further processing
+      parsed_info <- parsePlot(meta, p, list.name) # calls ggplot_build.
+      AllPlotsInfo[[list.name]] <- parsed_info[[1]]
+      ggplot.list[[list.name]] <- parsed_info[2:3]
+    }
+  }
+  
   ## After going through all of the meta-data in all of the ggplots,
   ## now we have enough info to save the TSV file database.
   geom_num <- 0
@@ -1292,13 +1289,11 @@ servr::httd("', normalizePath( out.dir,winslash="/" ), '")')
       browseURL(sprintf("%s/index.html", out.dir))
   }
   
-  ## Restore layer mappings
-  for(plot_i in seq_along(ggplot.list)){
-    ggplot.info <- ggplot.list[[ plot_i ]]
-    for(layer.i in seq_along(ggplot.info$ggplot$layers)){
-      L <- ggplot.info$ggplot$layers[[layer.i]]
-      L$mapping <- AestheticList[[ plot_i ]][[ layer.i ]]
-    }
+  for(plot_i in ggplot.list){
+    for(layer_i in seq_along(plot_i$ggplot$layers)){
+      plot_i$ggplot$layers[[layer_i]]$mapping <-
+        plot_i$ggplot$layers[[layer_i]]$orig_mapping
+    } 
   }
   invisible(meta)
   ### An invisible copy of the R list that was exported to JSON.
