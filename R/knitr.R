@@ -101,7 +101,7 @@ renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
     shiny::addResourcePath("animintAssets", tmp)
     list(jsonFile = "plot.json")
   }
-  shiny::markRenderFunction(animint::animintOutput, renderFunc)
+  shiny::markRenderFunction(animint2::animintOutput, renderFunc)
 }
 
 # html dependencies according htmltools protocols
@@ -115,27 +115,27 @@ animint_dependencies <- function() {
 html_dependency_d3 <- function() {
   htmltools::htmlDependency(name = "d3",
                  version = "3.0.0",
-                 src = system.file("htmljs/vendor", package = "animint"),
+                 src = system.file("htmljs/vendor", package = "animint2"),
                  script = "d3.v3.js")
 }
 
 html_dependency_animint <- function() {
   htmltools::htmlDependency(name = "animint",
-                 version = packageVersion("animint"),
-                 src = system.file("htmljs", package = "animint"),
+                 version = packageVersion("animint2"),
+                 src = system.file("htmljs", package = "animint2"),
                  script = "animint.js")
 }
 
 html_dependency_shinyAnimint <- function() {
   htmltools::htmlDependency(name = "shinyAnimint",
-                 version = packageVersion("animint"),
-                 src = system.file("shiny", package = "animint"),
+                 version = packageVersion("animint2"),
+                 src = system.file("shiny", package = "animint2"),
                  script = "shinyAnimint.js")
 }
 
 html_dependency_plotJSON <- function(path, fileName) {
   htmltools::htmlDependency(name = "plotJSON",
-                 version = packageVersion("animint"),
+                 version = packageVersion("animint2"),
                  src = path,
                  script = fileName)
 }
