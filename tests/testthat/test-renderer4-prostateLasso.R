@@ -16,7 +16,7 @@ addY <- function(dt, y){
 }
 
 data_tallrect_error <- addY(tallrect.all, "error")
-data_tallrect_error$arclength <- arclength
+data_tallrect_error$arclength <- "arclength"
 
 viz.no.time <- list(
   title="both .variable .value aesthetics",
