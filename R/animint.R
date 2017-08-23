@@ -2,7 +2,7 @@
 #' @param meta environment with previously calculated plot data, and a new plot to parse, already stored in plot and plot.name.
 #' @return nothing, info is stored in meta.
 #' @export
-#' @import ggplot2 plyr
+#' @import plyr 
 parsePlot <- function(meta, plot, plot.name){
   ## adding data and mapping to each layer from base plot, if necessary
   for(layer.i in seq_along(plot$layers)) {
