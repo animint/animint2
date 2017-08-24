@@ -900,17 +900,23 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   for(list.name in names(plot.list)){
     p <- plot.list[[list.name]]
     if(is.ggplot(p)){
-      ## Save original mapping
+      ## Save original mapping to every layer so that we can use it afterwards
+      ## This is required because we edit the original plot list created for the
+      ## animint2dir function. See the discussion here:
+      ## https://github.com/tdhock/animint2/pull/5#issuecomment-323072502
       for(layer_i in seq_along(p$layers)){
         ## Viz has not been used before
         if(is.null(p$layers[[layer_i]]$orig_mapping)){
           p$layers[[layer_i]]$orig_mapping <- 
             if(is.null(p$layers[[layer_i]]$mapping)){
+              ## Get mapping from plot if not defined in layer
               p$mapping
             }else{
               p$layers[[layer_i]]$mapping
             }
         }else{
+          ## This is not the first time this layer is being processed, so we replace
+          ## the mapping with the original mapping here
           p$layers[[layer_i]]$mapping <- p$layers[[layer_i]]$orig_mapping
         }
       }
@@ -933,8 +939,9 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
     if(is.ggplot(p)){
       ## If plot is correct, save to meta for further processing
       parsed_info <- parsePlot(meta, p, list.name) # calls ggplot_build.
-      AllPlotsInfo[[list.name]] <- parsed_info[[1]]
-      ggplot.list[[list.name]] <- parsed_info[2:3]
+      AllPlotsInfo[[list.name]] <- parsed_info$plot.info
+      ggplot.list[[list.name]]$ggplot <- parsed_info$ggplot
+      ggplot.list[[list.name]]$built <- parsed_info$built
     }
   }
   
@@ -1241,6 +1248,11 @@ servr::httd("', normalizePath( out.dir,winslash="/" ), '")')
       browseURL(sprintf("%s/index.html", out.dir))
   }
   
+  ## After everything has been done, we restore the original mappings
+  ## in the plot.list. This is necessary for visualizations where we use
+  ## the same plot.list with minor edits in another viz
+  ## See this comment:
+  ## https://github.com/tdhock/animint2/pull/5#issuecomment-323074518
   for(plot_i in ggplot.list){
     for(layer_i in seq_along(plot_i$ggplot$layers)){
       plot_i$ggplot$layers[[layer_i]]$mapping <-
