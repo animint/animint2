@@ -1,4 +1,4 @@
-animint2 is a redesign of [[https://github.com/tdhock/animint][animint]] with cleaner syntax
+animint2 provides an animated, interactive grammar of graphics
 
 [[https://travis-ci.org/tdhock/animint2][https://travis-ci.org/tdhock/animint2.png?branch=master]]
 
@@ -11,5 +11,77 @@ devtools::install_github("tdhock/animint2")
 
 ** Usage
 
-Syntax changes with respect to usual animint are described on the
-[[https://github.com/rstats-gsoc/gsoc2017/wiki/Animated-interactive-plots-(animint)][GSOC2017 project page]].
+For animint2 usage examples, see our extensive set of [[file:tests/testthat][test cases]].
+
+Another good reference is the [[http://cbio.ensmp.fr/~thocking/animint-book/Ch02-ggplot2.html][Animint Designer Manual]], which uses the
+old syntax. We eventually plan to port all of those examples to the
+new syntax.
+
+** Differences with old animint
+
+This package is a redesign of [[https://github.com/tdhock/animint][animint]] with a cleaner syntax. In the
+old animint we had showSelected/clickSelects as aesthetics, and in
+animint2 they are now parameters. Consider the following example [[http://members.cbio.mines-paristech.fr/~thocking/data/PeakSegJoint-H3K4me3-test/1/figure-train-errors/][data
+viz]], adapted from
+[[file:tests/testthat/test-renderer1-variable-value.R]]. The data set used
+to draw the blue line segments in the bottom plot looks like this:
+
+#+BEGIN_SRC R
+> with(peak.problems, data.frame(selector.name=paste0(problem.name, "peaks"), problem.name, peaks, bases.per.problem))
+             selector.name       problem.name peaks bases.per.problem
+1  size.100.problem.1peaks size.100.problem.1     1               100
+2  size.100.problem.2peaks size.100.problem.2     1               100
+3   size.50.problem.1peaks  size.50.problem.1     1                50
+4   size.50.problem.2peaks  size.50.problem.2     1                50
+5   size.50.problem.3peaks  size.50.problem.3     1                50
+6   size.50.problem.4peaks  size.50.problem.4     1                50
+7  size.100.problem.1peaks size.100.problem.1     2               100
+8  size.100.problem.2peaks size.100.problem.2     2               100
+9   size.50.problem.1peaks  size.50.problem.1     2                50
+10  size.50.problem.2peaks  size.50.problem.2     2                50
+11  size.50.problem.3peaks  size.50.problem.3     2                50
+12  size.50.problem.4peaks  size.50.problem.4     2                50
+> 
+#+END_SRC
+
+and the old animint code looks like this:
+
+#+BEGIN_SRC R
+geom_segment(aes(
+  showSelected.variable=selector.name,
+  showSelected.value=peaks,
+  clickSelects=problem.name,
+  showSelected2=bases.per.problem),
+  data=peaks.dt)
+#+END_SRC
+
+- In both animint and animint2, there are "selectors" which are
+  variables in the interactive graphic that can change based on what
+  you click on. 
+- The =aes(clickSelects)= means that whenever you click on one of these
+  segments, the =problem.name= selector will change. For example
+  clicking the segment that is plotted for the first row of data will
+  change =problem.name= to =size.100.problem.1=.
+- The =aes(showSelected2)= means that the only segments that will be
+  shown are the ones which correspond to the current value of the
+  =bases.per.problem= selector. For example the segment for the first
+  row of data will only be shown if =100= is selected for the
+  =bases.per.problem= selector.
+- The =showSelected.variable= and =showSelected.value= mean to show
+  the segment only if the value of =showSelected.value= is the current
+  selection of the =showSelected.value= selector. For example the
+  segment for the first row of data will only be shown if =1= is
+  selected for the =size.100.problem.1peaks= selector.
+
+The new syntax uses parameters instead of =aes=, so is much more concise:
+
+#+BEGIN_SRC R
+geom_segment(
+ showSelected=c(selector.name="peaks", "bases.per.problem"),
+ clickSelects="problem.name")
+#+END_SRC
+
+Both =showSelected= and =clickSelects= should be character
+vectors. Named elements of the character vector are interpreted as the
+old variable/value aes, and un-named elements are interpreted as the
+old clickSelects/showSelected aes.

@@ -8,3 +8,8 @@ to specify clickSelects=c(arclength="arclength.click") even if there
 is no column named arclength in the data -- this would mean to update
 the selector called "arclength" with the value in column
 "arclength.click" -- less disk space, and faster compiling.
+
+2017.08.24
+
+DSL: clickSelects/showSelected are now specified as parameters rather
+than aesthetics.
