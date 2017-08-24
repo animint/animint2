@@ -769,57 +769,6 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
 }
 
 
-##' Parse selectors from aes names.
-##' @title Parse selectors from aes names.
-##' @param a.vec character vector of aes names.
-##' @return list of selector info.
-##' @author Toby Dylan Hocking
-##' @export
-selector.aes <- function(a.list){
-  a.vec <- names(a.list)
-  if(is.null(a.vec))a.vec <- character()
-  stopifnot(is.character(a.vec))
-  cs.or.ss <- grepl("clickSelects|showSelected", a.vec)
-  for(v in c("value", "variable")){
-    regex <- paste0("[.]", v, "$")
-    is.v <- grepl(regex, a.vec)
-    if(any(is.v)){
-      a <- a.vec[is.v & cs.or.ss]
-      other.v <- if(v=="value")"variable" else "value"
-      other.a <- sub(paste0(v, "$"), other.v, a)
-      not.found <- ! other.a %in% a.vec
-      if(any(not.found)){
-        stop(".variable or .value aes not found")
-      }
-    }
-  }
-  aes.list <- list()
-  for(a in c("clickSelects", "showSelected")){
-    is.a <- grepl(a, a.vec)
-    is.value <- grepl("[.]value$", a.vec)
-    is.variable <- grepl("[.]variable$", a.vec)
-    var.or.val <- is.variable | is.value
-    a.value <- a.vec[is.a & is.value]
-    a.variable <- sub("value$", "variable", a.value)
-    single <- a.vec[is.a & (!var.or.val)]
-    ignored <- c()
-    if(1 < length(single)){
-      single.df <- data.frame(
-        aes.name=single,
-        data.var=paste(a.list[single]))
-      single.sorted <- single.df[order(single.df$data.var), ]
-      single.sorted$keep <- c(TRUE, diff(as.integer(single.df$data.var))!=0)
-      single <- with(single.sorted, paste(aes.name[keep]))
-      ignored <- with(single.sorted, paste(aes.name[!keep]))
-    }
-    aes.list[[a]] <-
-      list(several=data.frame(variable=a.variable, value=a.value),
-           one=single, ignored=ignored)
-  }
-  aes.list
-}
-
-
 #' Compile and render an animint in a local directory
 #'
 #' An animint is a list of ggplots and options that defines
