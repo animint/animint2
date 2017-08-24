@@ -44,11 +44,30 @@ parsePlot <- function(meta, plot, plot.name){
     ##cat(sprintf("%4d / %4d layers\n", layer.i, length(plot$layers)))
     ## This is the layer from the original ggplot object.
     L <- plot$layers[[layer.i]]
+    
+    ## Use original mapping saved before calling parsePlot
+    ## This is to handle cases where the plots may share the same layer
+    ## If the layer mapping in one plot has been edited by the animint
+    ## compiler, the layer mapping in the other plots will also change
+    ## which will give error when we check if showSelected/clickSelects have
+    ## been used as aesthetics
     L$mapping <- L$orig_mapping
+    
     ## If any legends are specified, add showSelected aesthetic
     L <- addShowSelectedForLegend(meta, plot.info$legend, L)
+    
+    ## Check if showSelected and clickSelects have been used as aesthetics
+    ## If yes, raise error
     checkForSSandCSasAesthetics(L$mapping, plot.name)
+    
+    ## Handle the extra_params argument
+    ## -> handles .value/.variable named params
+    ## -> removes duplicates
+    ## -> removes duplicates due to showSelected legend
     L$extra_params <- checkSSandCSparams(L$extra_params, L$mapping)
+    
+    ## Add the showSelected/clickSelects params to the aesthetics
+    ## mapping before calling ggplot_build
     L$mapping <- addSSandCSasAesthetics(L$mapping, L$extra_params)
   }#layer.i
 
@@ -207,10 +226,6 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## needed for when group, etc. is an expression:
   g$aes <- sapply(l$mapping, function(k) as.character(as.expression(k)))
 
-  ## Check if showSelected and clickSelects have been used as aesthetics
-  ## If yes, raise error
-  # checkForSSandCSasAesthetics(g$aes, layer_name)
-  
   ## use un-named parameters so that they will not be exported
   ## to JSON as a named object, since that causes problems with
   ## e.g. colour.
@@ -247,7 +262,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## currently selected values of these variables are stored in
   ## plot.Selectors.
 
-  ## Separate .variable and .variabl selectors  
+  ## Separate .variable/.value selectors
   s.aes <- selectSSandCS(g$aes)
   meta$selector.aes[[g$classed]] <- s.aes
 
@@ -937,13 +952,6 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
     for(layer.i in seq_along(ggplot.info$ggplot$layers)){
       L <- ggplot.info$ggplot$layers[[layer.i]]
       df <- ggplot.info$built$data[[layer.i]]
-      
-      ## QUICK FIX: Just add the clickSelects and showSelected
-      ## columns to the data for now
-      ## TODO: Remove the code which accepts showSelected and
-      ## clickSelects aesthetics
-      # L$extra_params <- checkSSandCSparams(L$extra_params, L$mapping)
-      # df <- addSSandCS(L$extra_params, df, L$data)
       
       ## cat(sprintf(
       ##   "saving layer %4d / %4d of ggplot %s\n",

@@ -379,7 +379,7 @@ checkPlotForAnimintExtensions <- function(p, plot_name){
     }
     
     ## Add SS and CS as aesthetics before checking for interactive aes
-    ## TODO: We are doing this twice. Once in saveLayer too. Restructure
+    ## TODO: We are doing this twice. Once in parsePlot too. Restructure
     ## to avoid this
     aesthetics_added <- addSSandCSasAesthetics(L$mapping, L$extra_params)
     iaes <- selectSSandCS(aesthetics_added)
