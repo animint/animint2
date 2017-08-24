@@ -1030,6 +1030,7 @@ addSSandCSasAesthetics <- function(aesthetics, extra_params){
   return(aesthetics)
 }
 
+
 checkSSandCSparams <- function(extra_params, aes_mapping){
   for(i in seq_along(extra_params)){
     if(names(extra_params)[[i]] %in% c("showSelected", "clickSelects")){
@@ -1050,39 +1051,6 @@ checkSSandCSparams <- function(extra_params, aes_mapping){
     }
   }
   return(extra_params)
-}
-
-
-addSSandCS <- function(extra_params, df, orig_data){
-  for(i in seq_along(extra_params)){
-    if(names(extra_params)[[i]] == "showSelected"){
-      for(j in seq_along(extra_params[[i]])){
-        if(names(extra_params[[i]])[[j]] != ""){
-          df[[ paste0("showSelected.variable")]] <- 
-            orig_data[[ names(extra_params[[i]])[[j]] ]]
-          df[[ paste0("showSelected.value") ]] <- 
-            orig_data[[ extra_params[[i]][[j]] ]]
-        }else{
-          df[[ paste0("showSelected", j) ]] <- 
-            orig_data[[ extra_params[[i]][[j]] ]]
-        }
-      }
-    }
-    if(names(extra_params)[[i]] == "clickSelects"){
-      for(j in seq_along(extra_params[[i]])){
-        if(names(extra_params[[i]])[[j]] != ""){
-          df[[ paste0("clickSelects.variable")]] <- 
-            orig_data[[ names(extra_params[[i]])[[j]] ]]
-          df[[ paste0("clickSelects.value") ]] <- 
-            orig_data[[ extra_params[[i]][[j]] ]]
-        }else{
-          df[[ paste0("clickSelects") ]] <- 
-            orig_data[[ extra_params[[i]][[j]] ]]
-        }
-      }
-    }
-  }
-  return(df)
 }
 
 
