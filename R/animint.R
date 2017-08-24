@@ -82,11 +82,9 @@ parsePlot <- function(meta, plot, plot.name){
   ## all, and instead does all of the relevant computations in animint
   ## code.
   ## 'strips' are really titles for the different facet panels
-  
   plot.info$strips <- with(built, getStrips(plot$facet, panel))
   
   ## the layout tells us how to subset and where to plot on the JS side
-  
   plot.info$layout <- with(built, flag_axis(plot$facet, panel$layout))
   plot.info$layout <- with(built, train_layout(
     plot$facet, plot$coordinates, plot.info$layout, panel$ranges))
@@ -231,9 +229,6 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## e.g. colour.
   ## 'colour', 'size' etc. have been moved to aes_params
   g$params <- getLayerParams(l)
-  
-  ## Add showSelected and clickSelects to aesthetics list from extra_params
-  # g$aes <- addSSandCSasAesthetics(g$aes, l$extra_params)
   
   ## Make a list of variables to use for subsetting. subset_order is the
   ## order in which these variables will be accessed in the recursive

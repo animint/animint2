@@ -230,13 +230,8 @@ colsNotToCopy <- function(g, s.aes){
   remove.group <- group.meaningless ||
     group.not.specified && 1 < n.groups && dont.need.group
   do.not.copy <- c(
-    if(remove.group)"group") #,
-    # s.aes$showSelected$ignored,
-    # s.aes$clickSelects$ignored
-    # )
+    if(remove.group)"group")
   
-  # TODO: Remove ignored showSelected and clickSelects here
-  # Check in params itself befroe adding or not???
   do.not.copy
 }
 

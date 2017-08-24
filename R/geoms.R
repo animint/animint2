@@ -211,10 +211,6 @@ make_tallrect_or_widerect <- function(aes.prefix, geom_xrect, data, var.name, ev
     click.val==show.val, 1,
     paste(click.val, show.val)))
   aes.string.args <- list()
-  # aes.string.args[["clickSelects.variable"]] <- "var"
-  # aes.string.args[["clickSelects.value"]] <- "click.val"
-  # aes.string.args[["showSelected.variable"]] <- "var"
-  # aes.string.args[["showSelected.value"]] <- "show.val"
   ss_params <- c(var="show.val")
   cs_params <- c(var="click.val")
   aes.string.args[["key"]] <- "key"
