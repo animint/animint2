@@ -957,12 +957,17 @@ saveChunks <- function(x, meta){
 }
 
 
+##' Check if showSelected and clickSelects have been used as aesthetics
+##' as in old syntax. If yes, raise error
+##' @param aesthetics list. aesthetics mapping of the layer
+##' @param plot_name character vector of the plot the layer belongs to
+##' @return \code{NULL} Throws error if used as aesthetics
 checkForSSandCSasAesthetics <- function(aesthetics, plot_name){
   for(i in seq_along(aesthetics)){
     aes_has_ss_cs <- grepl("^showSelected", names(aesthetics)[[i]]) ||
       grepl("^clickSelects$", names(aesthetics)[[i]])
     
-    ## Show warning only if showSelected is not added by animint code for legends
+    ## Show error only if showSelected is not added by animint code for legends
     ## TODO: Better check this before adding showSelectedlegend...
     ss_added_by_legend <- grepl("^showSelectedlegend", names(aesthetics)[[i]])
     if(aes_has_ss_cs && !ss_added_by_legend){
@@ -976,6 +981,13 @@ checkForSSandCSasAesthetics <- function(aesthetics, plot_name){
 }
 
 
+##' Add the showSelected/clickSelects params to the aesthetics mapping
+##' @param aesthetics list. Original aesthetics mapping of the layer
+##' @param extra_params named list containing the details of showSelected
+##' and clickSelects values of the layer
+##' @return Modified aesthetics list with showSelected/clickSelects params added
+##' @details Used before calling ggplot_build in parsePlot and while checking
+##' animint extensions to raise error 
 addSSandCSasAesthetics <- function(aesthetics, extra_params){
   for(i in seq_along(extra_params)){
     if(names(extra_params)[[i]] == "showSelected"){
@@ -984,6 +996,8 @@ addSSandCSasAesthetics <- function(aesthetics, extra_params){
           rep("", length(extra_params[[i]]))
       }
       for(j in seq_along(extra_params[[i]])){
+        
+        ## If .variable/.value have been specified
         if(names(extra_params[[i]])[[j]] != ""){
           aesthetics[[length(aesthetics)+1]] <-
             as.symbol(names(extra_params[[i]])[[j]])
@@ -1030,8 +1044,12 @@ addSSandCSasAesthetics <- function(aesthetics, extra_params){
   return(aesthetics)
 }
 
-
-checkSSandCSparams <- function(extra_params, aes_mapping){
+##' Check \code{extra_params} argument for duplicates, non-named list
+##' @param extra_params named list containing the details of showSelected
+##' and clickSelects values of the layer
+##' @param aes_mapping aesthetics mapping of the layer
+##' @return Modified \code{extra_params} list
+checkExtraParams <- function(extra_params, aes_mapping){
   for(i in seq_along(extra_params)){
     if(names(extra_params)[[i]] %in% c("showSelected", "clickSelects")){
       if(is.null(names(extra_params[[i]]))){
@@ -1053,7 +1071,10 @@ checkSSandCSparams <- function(extra_params, aes_mapping){
   return(extra_params)
 }
 
-
+##' Separate .variable/.value selectors
+##' @param aesthetics_list aesthetics mapping of the layer
+##' @return Modified \code{aes.list} list with separated
+##' showSelected.variable/value
 selectSSandCS <- function(aesthetics_list){
   aes.list <- list(showSelected=list(one=NULL, several=data.frame()),
                    clickSelects=list(one=NULL, several=data.frame()))
