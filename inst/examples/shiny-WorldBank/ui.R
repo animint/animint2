@@ -1,5 +1,5 @@
 library(shiny)
-library(animint)
+library(animint2)
 data(WorldBank)
 
 nms <- c(

@@ -1,5 +1,5 @@
 library(shiny)
-library(animint)
+library(animint2)
 
 nms <- names(mtcars)
 

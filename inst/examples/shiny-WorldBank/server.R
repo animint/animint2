@@ -1,5 +1,5 @@
 library(shiny)
-library(animint)
+library(animint2)
 data(WorldBank)
 WorldBank$literacy <- WorldBank[["15.to.25.yr.female.literacy"]]
 WorldBank$latitude <- as.numeric(paste(WorldBank$latitude))
@@ -34,88 +34,88 @@ shinyServer(function(input, output) {
     by.country <- split(not.na, not.na$country)
     min.years <- do.call(rbind, lapply(by.country, subset, year == min(year)))
     min.years$year <- 1958
-
+    data_i <-  SCATTER(not.na)
+    data_i$color <- input$color
+    
     gg <-
       ggplot()+
         theme_bw()+
         theme(panel.margin=grid::unit(0, "lines"))+
         xlab("")+
         ylab("")+
-        geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2,
-                          clickSelects=year),
+        geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2),
+                      clickSelects="year",
                       data=TS(years), alpha=1/2)+
         theme_animint(width=1000, height=800)+
         geom_line(aes_string(
-          x="year",
-          y=input$y,
-          group="country",
-          colour=input$color,
-          key="country",
-          clickSelects="country"),
-                  data=TS(not.na.y), size=4, alpha=3/5)+
+            x="year",
+            y=input$y,
+            group="country",
+            colour=input$color,
+            key="country"),
+          clickSelects="country",
+          data=TS(not.na.y), size=4, alpha=3/5)+
         geom_point(aes_string(
-          x="year",
-          y=input$y,
-          color=input$color,
-          size=input$size,
-          key="year.country",
+            x="year",
+            y=input$y,
+            color=input$color,
+            size=input$size,
+            key="year.country"),
           showSelected="country",
-          clickSelects="country"),
-                   data=TS(not.na.y))+
+          clickSelects="country",
+          data=TS(not.na.y))+
         geom_text(aes_string(
-          x="year",
-          y=input$y,
-          key="country",
-          colour=input$color,
-          label="country",
+            x="year",
+            y=input$y,
+            key="country",
+            colour=input$color,
+            label="country"),
           showSelected="country",
-          clickSelects="country"),
-                  data=TS(min.years), hjust=1)+
-        geom_widerect(aes(ymin=year-1/2, ymax=year+1/2,
-                          clickSelects=year),
+          clickSelects="country",
+          data=TS(min.years), hjust=1)+
+        geom_widerect(aes(ymin=year-1/2, ymax=year+1/2),
+                      clickSelects="year",
                       data=TS2(years), alpha=1/2)+
         geom_path(aes_string(
-          x=input$x,
-          y="year",
-          group="country",
-          colour=input$color,
-          key="country",
-          clickSelects="country"),
-                  data=TS2(not.na.x), size=4, alpha=3/5)+
-        geom_point(aes_string(
-          x=input$x,
-          y="year",
-          color=input$color,
-          size=input$size,
-          key="year.country",
-          showSelected="country",
-          clickSelects="country"),
-                   data=TS2(not.na.x))+
-        geom_point(aes_string(
-          x=input$x,
-          y=input$y,
+            x=input$x,
+            y="year",
+            group="country",
+            colour=input$color,
+            key="country"),
           clickSelects="country",
-          id="country",
+          data=TS2(not.na.x), size=4, alpha=3/5)+
+        geom_point(aes_string(
+            x=input$x,
+            y="year",
+            color=input$color,
+            size=input$size,
+            key="year.country"),
+          showSelected="country",
+          clickSelects="country",
+          data=TS2(not.na.x))+
+        geom_point(aes_string(
+            x=input$x,
+            y=input$y,
+            id="country",
+            colour=input$color,
+            size=input$size,
+            key="country"),
           showSelected="year",
-          colour=input$color,
-          size=input$size,
-          key="country"),
-                   data=SCATTER(not.na))+
-        geom_text(aes_string(
-          x=input$x,
-          y=input$y,
-          label="country",
-          showSelected="country",
-          showSelected2="year",
-          showSelected3=input$color,
           clickSelects="country",
-          key="country"), 
-                  data=SCATTER(not.na))+
+          data=SCATTER(not.na))+
+        geom_text(aes_string(
+            x=input$x,
+            y=input$y,
+            label="country",
+            key="country"),
+          showSelected=c("country","year", "color"),
+          clickSelects="country", 
+          data=data_i)+
         facet_grid(side ~ top, scales="free")+
         geom_text(aes(x, y,
-          label=paste0("year = ", year),
-          showSelected=year),
-                  data=SCATTER(years))
+          label=paste0("year = ", year)),
+          showSelected="year",
+          data=SCATTER(years))
       if(is.discrete(not.na[[input$size]])){
         gg <- gg+scale_size_discrete()
       }else{

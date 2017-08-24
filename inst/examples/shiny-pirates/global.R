@@ -1,4 +1,4 @@
-library("animint")
+library("animint2")
 data("pirates")
 
 summary(duplicated(pirates)) # duplicate records! Any idea why??

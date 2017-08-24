@@ -14,9 +14,8 @@ shinyServer(function(input, output) {
       geom_polygon(data = world, 
                    aes(x = long, y = lat, group = group), 
                    fill = "black", colour = "grey", alpha = I(0.1)) +
-      geom_point(data = pirates, aes(x = long, y = lat, tooltip = Desc1,
-                                     showSelected = year), color = "red", 
-                                  alpha = I(0.3)) +
+      geom_point(data = pirates, aes(x = long, y = lat, tooltip = Desc1),
+                 showSelected = "year", color = "red", alpha = I(0.3)) +
      xlab("") + ylab("") + #coord_fixed() + 
       theme_animint(height = 600, width = 800)
   })
