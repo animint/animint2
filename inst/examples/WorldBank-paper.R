@@ -1,4 +1,4 @@
-library(animint)
+library(animint2)
 data(WorldBank)
 WorldBank$region <-
   sub(" (all income levels)", "", WorldBank$region, fixed=TRUE)
@@ -6,21 +6,21 @@ wb.paper <-
   list(ts=ggplot()+
        make_tallrect(WorldBank, "year")+
        guides(color="none")+
-       geom_line(aes(year, life.expectancy, group=country, colour=region,
-                     showSelected=region,
-                     clickSelects=country),
+       geom_line(aes(year, life.expectancy, group=country, colour=region),
+                 showSelected="region",
+                 clickSelects="country",
                  data=WorldBank, size=4, alpha=3/5),
        scatter=ggplot()+
-       geom_point(aes(fertility.rate, life.expectancy, clickSelects=country,
-                      showSelected=year, colour=region, size=population,
+       geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population,
                       tooltip=paste(country, "population", population),
                       key=country), # key aesthetic for animated transitions!
+                  clickSelects="country",
+                  showSelected="year",
                   data=WorldBank)+
        geom_text(aes(fertility.rate, life.expectancy, label=country,
-                     clickSelects=country,
-                     showSelected=country, showSelected2=year,
-                     showSelected3=region,
                      key=country), #also use key here!
+                 clickSelects="country",
+                 showSelected=c("country", "year", "region"),
                  data=WorldBank)+
        scale_size_animint(breaks=10^(9:5))+
        make_text(WorldBank, 5, 80, "year"),

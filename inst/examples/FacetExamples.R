@@ -1,5 +1,5 @@
-library(ggplot2)
-library(animint)
+library(ggplot2Animint)
+library(animint2)
 library(plyr)
 
 #' density: should show two normal distributions, centered at 0 and 3, and a gamma distribution with mode approximately 5

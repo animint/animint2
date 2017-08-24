@@ -1,10 +1,10 @@
-library(ggplot2)
-library(animint)
+library(ggplot2Animint)
+library(animint2)
 
 # sepal plot
 p1 <- ggplot() + 
-  geom_point(aes(Sepal.Length, Sepal.Width, colour = Species, size = Sepal.Width, 
-                 clickSelects = Species), 
+  geom_point(aes(Sepal.Length, Sepal.Width, colour = Species, size = Sepal.Width), 
+             clickSelects = "Species", 
              data = iris) + 
   theme(panel.background = element_rect(fill = "lightblue"), 
         panel.border = element_rect(fill = NA, 
@@ -16,8 +16,8 @@ p1 <- ggplot() +
 
 # panel plot
 p2 <- ggplot() + 
-  geom_point(aes(Petal.Length, Petal.Width, colour = Species, 
-                 showSelected = Species), data = iris) + 
+  geom_point(aes(Petal.Length, Petal.Width, colour = Species), 
+             showSelected = "Species", data = iris) + 
   ggtitle("Petal Data") + 
   theme_bw()
 viz <- list(sepal = p1, 

@@ -148,8 +148,8 @@ for(pair.i in seq_along(v.name.list)){ #pairs of locations -> scatterplots.
           xlab(v.names$x)+ylab(v.names$y)        
       if(nrow(these$point)){
         p <- p+
-          geom_point(aes(mytrans(x), mytrans(y),
-                         clickSelects=id55mer, showSelected=monkey),
+          geom_point(aes(mytrans(x), mytrans(y)),
+                     clickSelects="id55mer", showSelected="monkey",
                      data=these$point)
       }
       if(nrow(these$label)){
@@ -178,8 +178,8 @@ lab <- "log10(percent reads)"
 p <- ggplot()+
   geom_abline(aes(slope=slope, intercept=intercept), data=ablines)+
   geom_point(aes(mytrans(x), mytrans(y)), data=scatter$zero, size=5)+
-  geom_point(aes(mytrans(x), mytrans(y),
-           clickSelects=id55mer, showSelected=monkey),
+  geom_point(aes(mytrans(x), mytrans(y)),
+             clickSelects="id55mer", showSelected="monkey",
          data=scatter$point)+
   geom_segment(aes(mytrans(xmin), mytrans(ymin),
            xend=mytrans(xmax), yend=mytrans(ymax)),
@@ -204,8 +204,8 @@ p <- ggplot()+
 nearby <- v.name.list[sapply(v.name.list, "[[", "distance") == 1]
 pair.levs <- sapply(nearby, "[[", "pair")
 pair.select <-
-  geom_rect(aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax,
-                clickSelects=pair, showSelected=monkey),
+  geom_rect(aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax),
+            clickSelects="pair", showSelected="monkey",
             data=pair.rects, alpha=1/2)
 ggplot()+pair.select+
   ylim(levs)+
@@ -248,19 +248,19 @@ viz <-
   list(kmer=ggplot()+ylim(levs)+
        ggtitle("All monkey data for one kmer")+
        xlab(lab)+
-       geom_path(aes(log10(mean), location, 
-                     showSelected=monkey, showSelected2=id55mer),
+       geom_path(aes(log10(mean), location), 
+                 showSelected=c("monkey", "id55mer"),
                  data=paths, size=5, colour="red")+
-       geom_path(aes(log10(mean), location, group=monkey,
-                     clickSelects=monkey, showSelected=id55mer),
+       geom_path(aes(log10(mean), location, group=monkey),
+                 clickSelects="monkey", showSelected="id55mer",
                  data=paths, alpha=3/4)+
        geom_segment(aes(log10(min), location,
-                        xend=log10(max), yend=location,
-                        showSelected=monkey, showSelected2=id55mer),
+                        xend=log10(max), yend=location),
+                    showSelected=c("monkey", "id55mer"),
                    data=bars)+
        geom_point(aes(log10(reads), location,
-                      fill=contamination, colour=experiment,
-                      clickSelects=monkey, showSelected=id55mer),
+                      fill=contamination, colour=experiment),
+                  clickSelects="monkey", showSelected="id55mer",
                   data=counts, size=5, alpha=3/4)+
        scale_colour_manual(values=experiment.colors)+
        scale_fill_manual(values=contamination.colors)+
@@ -270,10 +270,10 @@ viz <-
        ggtitle("All samples")+
        make_text(vervetCounts, 750, 1000, "monkey")+
        make_text(vervetCounts, 750, 3000, "id55mer")+
-       geom_point(aes(total.words.55mers, total.freq.55mers,
-                      clickSelects=monkey,
-                      showSelected=id55mer, size=observed,
+       geom_point(aes(total.words.55mers, total.freq.55mers, size=observed,
                       fill=contamination, colour=experiment),
+                  clickSelects="monkey",
+                  showSelected="id55mer",
                   data=vervetCounts, alpha=3/4)+
        scale_size_manual(values=c(absent=2, present=5))+
        scale_colour_manual(values=experiment.colors)+
@@ -286,28 +286,28 @@ viz <-
        theme(axis.line=element_blank(), axis.text=element_blank(), 
              axis.ticks=element_blank(), axis.title=element_blank())+
        geom_text(aes(x, y, label=location), data=circle.text)+
-       geom_segment(aes(x, y, xend=xend, yend=yend,
-                        showSelected=monkey, clickSelects=pair),
+       geom_segment(aes(x, y, xend=xend, yend=yend),
+                    showSelected="monkey", clickSelects="pair",
                     data=observed.segs, size=5, alpha=6/10),
 
        monkey=ggplot()+pair.select+ylim(levs)+
        ggtitle("All 55mer data for one monkey")+
        xlab(lab)+
-       geom_path(aes(log10(mean), location, 
-                     showSelected=monkey, showSelected2=id55mer),
+       geom_path(aes(log10(mean), location), 
+                 showSelected=c("monkey", "id55mer"),
                  data=paths, size=5, colour="red")+
-       geom_path(aes(log10(mean), location, group=id55mer,
-                     clickSelects=id55mer, showSelected=monkey),
+       geom_path(aes(log10(mean), location, group=id55mer),
+                 clickSelects="id55mer", showSelected="monkey",
                  data=paths, alpha=3/4)+
        geom_segment(aes(log10(min), location,
-                        xend=log10(max), yend=location,
-                        showSelected=monkey, showSelected2=id55mer),
+                        xend=log10(max), yend=location),
+                    showSelected=c("monkey", "id55mer"),
                    data=bars)+
        scale_colour_manual(values=experiment.colors)+
        scale_fill_manual(values=contamination.colors)+
        geom_point(aes(log10(reads), location,
-                      fill=contamination, colour=experiment,
-                      clickSelects=id55mer, showSelected=monkey),
+                      fill=contamination, colour=experiment),
+                  clickSelects="id55mer", showSelected="monkey",
                   data=counts, size=5, alpha=3/4,
 ### For the plot of all kmers for 1 monkey there are a lot of points so
 ### let us jitter them up and down to avoid overlaps.
@@ -315,25 +315,27 @@ viz <-
        make_text(nonzero, -2, "duodenum", "monkey"),
 
        scatter=ggplot()+
-       geom_point(aes(mytrans(x), mytrans(y), showSelected=id55mer,
-                      showSelected2=monkey, showSelected3=pair),
+       geom_point(aes(mytrans(x), mytrans(y)),
+                  showSelected=c("id55mer", "monkey", "pair"),
                   data=scatter$point, colour="red", size=5)+
-       geom_point(aes(mytrans(x), mytrans(y), clickSelects=id55mer, 
-                      showSelected2=monkey, showSelected3=pair),
+       geom_point(aes(mytrans(x), mytrans(y)),
+                  clickSelects="id55mer", 
+                  showSelected=c("monkey", "pair"),
                   data=scatter$point, position="jitter")+
-       geom_text(aes(x, y, label=label, angle=angle, showSelected=pair),
+       geom_text(aes(x, y, label=label, angle=angle),
+                 showSelected="pair",
                  data=axis.labels)+
        geom_abline(aes(slope=slope, intercept=intercept), data=ablines)+
-       geom_point(aes(mytrans(x), mytrans(y),
-                      showSelected=pair, showSelected2=monkey),
+       geom_point(aes(mytrans(x), mytrans(y)),
+                  showSelected=c("pair", "monkey"),
                   data=scatter$zero)+
        geom_segment(aes(mytrans(xmin), mytrans(ymin),
-                        showSelected=pair, showSelected2=monkey,
                         xend=mytrans(xmax), yend=mytrans(ymax)),
+                    showSelected=c("pair", "monkey"),
                     data=scatter$seg, size=2)+
        geom_text(aes(mytrans(x), mytrans(y), label=sprintf("%d", kmers),
-                     hjust=hjust, vjust=vjust, 
-                     showSelected=pair, showSelected2=monkey), colour="red",
+                     hjust=hjust, vjust=vjust), 
+                 showSelected=c("pair", "monkey"), colour="red",
                  data=scatter$label)+
        make_text(scatter$point, -2.5, -1/4, "monkey")+
        xlab(lab)+ylab(lab)+
@@ -350,20 +352,20 @@ viz <-
 ### TODO: clickSelects=pair rects on the header!
        geom_rect(aes(ymin=y-space, ymax=y+space,
                      xmin=x-space, xmax=x+space,
-                     showSelected=id55mer,
                      colour=observed, fill=contamination),
+                 showSelected="id55mer",
                  ##data=subset(vervetCounts, id55mer %in% id55mer[1:100]),
                  data=vervetCounts,
                  alpha=1/2, size=2)+
        scale_colour_manual(values=c(present="black", absent=NA))+
        facet_wrap("id55mer")+
        geom_rect(aes(ymin=y-1/2, ymax=y+1/2, 
-                     xmin=xmin, xmax=xmax,
-                     clickSelects=monkey),
+                     xmin=xmin, xmax=xmax),
+                 clickSelects="monkey",
                  alpha=1/2, fill="yellow", colour=NA, data=table.rects),
        width=list(kmer=800, samples=300, circle=300, monkey=800),
        height=list(kmer=300, samples=300, circle=300, monkey=600))
 ##viz$sca+facet_grid(pair~monkey)+theme_bw()+theme(panel.margin=grid::unit(0,"cm"))
 ###print(viz$table)
-gg2animint(viz, "vervet-new")
+animint2dir(viz, "vervet-new")
 

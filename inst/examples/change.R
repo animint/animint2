@@ -1,4 +1,4 @@
-library(animint)
+library(animint2)
 data(change)
 
 train.test <- data.frame(x=6, y=c(-3, -5), set=c("train","test"))
@@ -17,8 +17,8 @@ changed <- subset(change$truth, changed)
 varPlot <- ggplot()+
   geom_text(aes(x,y,label=variable), data=change$pos)+
   geom_segment(aes(v1.x, v1.y, xend=v2.x, yend=v2.y,
-                   size=change, colour=change,
-                   showSelected=complexity, clickSelects=variables),
+                   size=change, colour=change),
+               showSelected="complexity", clickSelects="variables",
                data=subset(change$coefs, coefficient != 0), alpha=3/4)+
   geom_segment(aes(v1.x, v1.y, xend=v2.x, yend=v2.y,
                    size=change, colour=change),
@@ -33,8 +33,8 @@ print(varPlot)
 ## The path of coefficients.
 pathPlot <- ggplot()+
   make_tallrect(change$coefs, "complexity")+
-  geom_line(aes(complexity, coefficient, group=variables, colour=truth,
-                clickSelects=variables),
+  geom_line(aes(complexity, coefficient, group=variables, colour=truth),
+            clickSelects="variables",
             data=change$coefs, alpha=3/4, size=3)+
   xlab("model complexity -log(lambda)")+
   ylab("norm of the difference between two variables")+
@@ -43,5 +43,5 @@ pathPlot <- ggplot()+
 print(pathPlot)
 
 viz <- list(path=pathPlot, var=varPlot, lik=likPlot)
-gg2animint(viz, "change")
+animint2dir(viz, "change")
 

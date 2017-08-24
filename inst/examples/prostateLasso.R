@@ -1,4 +1,4 @@
-library(animint)
+library(animint2)
 data(prostateLasso)
 variable.colors <- c(
   "#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33", 
@@ -26,35 +26,31 @@ viz <- list(
                color="grey")+
     guides(linetype="none")+
     geom_point(aes(response, residual, 
-                   key=observation.i,
-                   showSelected2=set,
-                   showSelected=arclength),
+                   key=observation.i),
+               showSelected=c("arclength", "set"),
                shape=21,
                fill=NA,
                color="black",
                data=prostateLasso$residuals)+
     geom_text(aes(3, 2.5, label=sprintf("L1 arclength = %.1f", arclength),
-                  key=1,
-                  showSelected=arclength),
+                  key=1),
+              showSelected="arclength",
               data=prostateLasso$models)+
     geom_text(aes(0, -2, label=sprintf("train error = %.3f", mse),
-                  key=1,
-                  showSelected2=set,
-                  showSelected=arclength),
+                  key=1),
+              showSelected=c("set", "arclength"),
               hjust=0,
               data=subset(prostateLasso$error, set=="train"))+
     geom_text(aes(0, -2.5, label=sprintf("validation error = %.3f", mse),
-                  key=1,
-                  showSelected2=set,
-                  showSelected=arclength),
+                  key=1),
+              showSelected=c("set", "arclength"),
               hjust=0,
               data=subset(prostateLasso$error, set=="validation"))+
     geom_segment(aes(response, residual,
                      xend=response, yend=0,
                      linetype=set,
-                     key=observation.i,
-                     showSelected2=set,
-                     showSelected=arclength),
+                     key=observation.i),
+                 showSelected=c("set", "arclength"),
                  data=prostateLasso$residuals),
   duration=list(arclength=2000))
 animint2dir(viz, "figure-prostateLasso")

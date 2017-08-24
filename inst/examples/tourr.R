@@ -1,6 +1,6 @@
 # adapted from  https://github.com/rstudio/ggvis/blob/master/demo/tourr.r
 library(tourr)
-library(animint)
+library(animint2)
 
 mat <- rescale(as.matrix(flea[1:6]))
 tour <- new_tour(mat, grand_tour(), NULL)
@@ -20,7 +20,8 @@ dat <- do.call("rbind", datz)
 
 p <- ggplot() + 
   geom_point(data = dat, 
-             aes(x = x, y = y, colour = species, showSelected = step))
+             aes(x = x, y = y, colour = species),
+             showSelected = "step")
 plist <- list(
   plot = p,
   time = list(variable = "step", ms = 100),

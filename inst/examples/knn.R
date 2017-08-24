@@ -85,7 +85,8 @@ set.linetypes <- set.colors
 set.linetypes[] <- classifier.linetypes[["KNN"]]
 set.linetypes["Bayes"] <- classifier.linetypes[["Bayes"]]
 cbind(set.linetypes, set.colors)
-library(ggplot2)
+
+library(ggplot2Animint)
 errorPlot <- ggplot()+
   theme_bw()+
   geom_hline(aes(yintercept=error.prop, color=set, linetype=set),
@@ -184,7 +185,7 @@ viz.static <- list(
   error=errorPlot,
   data=scatterPlot
   )
-library(animint)
+library(animint2)
 animint2dir(viz.static, "knn-static")
 Bayes.segment <- data.table(
   Bayes.error,
@@ -204,14 +205,14 @@ errorPlot <- ggplot()+
   theme_bw()+
   theme_animint(height=500)+
   geom_text(aes(min.neighbors, error.prop,
-                color=set, label="Bayes",
-                showSelected=classifier),
+                color=set, label="Bayes"),
+            showSelected="classifier",
             hjust=1,
             data=Bayes.segment)+
   geom_segment(aes(min.neighbors, error.prop, 
                    xend=max.neighbors, yend=error.prop,
-                   color=set,
-                   showSelected=classifier, linetype=classifier),
+                   color=set, linetype=classifier),
+               showSelected="classifier",
                data=Bayes.segment)+
   scale_color_manual(values=set.colors, breaks=names(set.colors))+
   scale_fill_manual(values=set.colors)+
@@ -223,19 +224,19 @@ errorPlot <- ggplot()+
     limits=c(-1, 30),
     breaks=c(1, 10, 20, 29))+
   geom_ribbon(aes(neighbors, ymin=mean-sd, ymax=mean+sd,
-                  fill=set,
-                  showSelected=classifier,
-                  showSelected2=set),
+                  fill=set),
+              showSelected=c("classifier", "set"),
               alpha=0.5,
               data=validation.error)+
-  geom_line(aes(neighbors, mean, color=set,
-                showSelected=classifier, linetype=classifier),
+  geom_line(aes(neighbors, mean, color=set, linetype=classifier),
+            showSelected="classifier",
             data=validation.error)+
   geom_line(aes(neighbors, error.prop, group=set, color=set,
-                showSelected=classifier, linetype=classifier),
+                linetype=classifier),
+            showSelected="classifier",
             data=other.error)+
-  geom_tallrect(aes(xmin=neighbors-1, xmax=neighbors+1,
-                    clickSelects=neighbors),
+  geom_tallrect(aes(xmin=neighbors-1, xmax=neighbors+1),
+                clickSelects="neighbors",
                 alpha=0.5,
                 data=validation.error)
 errorPlot
@@ -263,12 +264,12 @@ scatterPlot <- ggplot()+
   coord_equal()+
   scale_color_manual(values=label.colors)+
   scale_linetype_manual(values=classifier.linetypes)+
-  geom_point(aes(V1, V2, color=label,
-                 showSelected=neighbors),
+  geom_point(aes(V1, V2, color=label),
+             showSelected="neighbors",
              size=0.2,
              data=show.grid)+
-  geom_path(aes(V1, V2, group=path.i, linetype=classifier,
-                showSelected=neighbors),
+  geom_path(aes(V1, V2, group=path.i, linetype=classifier),
+            showSelected="neighbors",
             size=1,
             data=pred.boundary)+
   geom_path(aes(V1, V2, group=path.i, linetype=classifier),
@@ -276,8 +277,8 @@ scatterPlot <- ggplot()+
             size=1,
             data=Bayes.boundary)+
   geom_point(aes(V1, V2, color=label,
-                 fill=prediction,
-                 showSelected=neighbors),
+                 fill=prediction),
+             showSelected="neighbors",
              size=3,
              shape=21,
              data=show.points)+
@@ -288,21 +289,21 @@ scatterPlot <- ggplot()+
   geom_text(aes(text.V1.prop, text.V2.bottom, label=sprintf("%.3f", error.prop)),
             data=Bayes.error,
             hjust=1)+
-  geom_text(aes(text.V1.error, V2.bottom, label=paste(set, "Error:"),
-                showSelected=neighbors),
+  geom_text(aes(text.V1.error, V2.bottom, label=paste(set, "Error:")),
+            showSelected="neighbors",
             data=other.error,
             hjust=0)+
-  geom_text(aes(text.V1.prop, V2.bottom, label=sprintf("%.3f", error.prop),
-                showSelected=neighbors),
+  geom_text(aes(text.V1.prop, V2.bottom, label=sprintf("%.3f", error.prop)),
+            showSelected="neighbors",
             data=other.error,
             hjust=1)+
   geom_text(aes(V1, V2,
-                showSelected=neighbors,
                 label=paste0(
                   neighbors,
                   " nearest neighbor",
                   ifelse(neighbors==1, "", "s"),
                   " classifier")),
+            showSelected="neighbors",
             data=show.text)
 scatterPlot+
   facet_wrap("neighbors")+

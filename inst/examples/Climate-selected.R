@@ -60,23 +60,23 @@ getlab <- function(var.name){
 for(var.name in var.names){
   long.name <- long.names[[var.name]]
   viz[[sprintf("%sMap", var.name)]] <- ggplot() + 
-    geom_tile(aes_string(x="long", y="lat", fill=var.name,
-                  clickSelects="id", showSelected="time2"),
+    geom_tile(aes_string(x="long", y="lat", fill=var.name),
+              clickSelects="id", showSelected="time2",
               data=climate)+ 
     scale_fill_gradient2("deg. C", low="blue", mid="white", high="red",
                          midpoint=0, limits=lims[[var.name]]) + 
     ggtitle(long.name)+
     geom_path(aes(long, lat, group=group), col="grey",
               data=countries) + 
-    geom_text(aes(-86, 39, label=textdate, showSelected=time2),
+    geom_text(aes(-86, 39, label=textdate), showSelected="time2",
               data=dates)+ 
     theme(axis.line=element_blank(), axis.text=element_blank(), 
           axis.ticks=element_blank(), axis.title=element_blank())
 }
 selected.color <- "violet"
 viz$scatterNow <- ggplot()+
-  geom_text(aes(20, -7, label=sprintf("all regions in %s", textdate),
-                showSelected=time2),
+  geom_text(aes(20, -7, label=sprintf("all regions in %s", textdate)),
+            showSelected="time2",
             data=dates)+
   geom_hline(yintercept=0)+
   geom_vline(xintercept=0)+
@@ -85,16 +85,17 @@ viz$scatterNow <- ggplot()+
   xlab(getlab(var.names[[1]]))+
   ylab(getlab(var.names[[2]]))+
   ## WANT to be able to specify:
-  geom_point(aes_string(x=var.names[[1]], y=var.names[[2]],
-                        clickSelects="id", showSelected="time2"),
+  ## 2017-08-24: TODO:Can this example be re-written now???
+  geom_point(aes_string(x=var.names[[1]], y=var.names[[2]]),
+             clickSelects="id", showSelected="time2",
              data=climate, alpha=dot.alpha,
              selected.color="black", selected.fill=selected.color)+
   ## OLD repetitive syntax:
-  geom_point(aes_string(x=var.names[[1]], y=var.names[[2]],
-                        clickSelects="id", showSelected="time2"),
+  geom_point(aes_string(x=var.names[[1]], y=var.names[[2]]),
+             clickSelects="id", showSelected="time2",
              data=climate, alpha=dot.alpha)+
-  geom_point(aes_string(x=var.names[[1]], y=var.names[[2]],
-                        showSelected2="id", showSelected="time2"),
+  geom_point(aes_string(x=var.names[[1]], y=var.names[[2]]),
+             showSelected2="id", showSelected="time2",
              data=climate, colour="black", fill=selected.color)
 for(var.name in var.names){
   long.name <- long.names[[var.name]]
@@ -107,16 +108,16 @@ for(var.name in var.names){
     ylab(getlab(var.name))+
     ## WANT to be able to specify:
     geom_line(aes_string(x="time2", y=var.name,
-                         group="id", clickSelects="id"),
+                         group="id"), clickSelects="id",
               data=climate, alpha=3/100,
               selected.color=selected.color)
     ## OLD repetitive syntax:
     geom_line(aes_string(x="time2", y=var.name,
-                         group="id", clickSelects="id"),
+                         group="id"), clickSelects="id",
               data=climate, alpha=1/2 + 3/100)
     ##+
-    geom_line(aes_string(x="time2", y=var.name,
-                         showSelected="id"),
+    geom_line(aes_string(x="time2", y=var.name),
+              showSelected="id",
               data=climate, colour=selected.color)
 }
 viz$scatterHere <- ggplot()+
@@ -129,17 +130,17 @@ viz$scatterHere <- ggplot()+
   xlim(-10, 40)+
   ylim(-8, 8)+
   ## WANT to be able to specify:
-  geom_point(aes_string(x=var.names[[1]], y=var.names[[2]],
-                        clickSelects="time2", showSelected="id"),
+  geom_point(aes_string(x=var.names[[1]], y=var.names[[2]]),
+             clickSelects="time2", showSelected="id",
              data=climate, alpha=dot.alpha,
              selected.color="black", selected.fill="white")
   ## OLD repetitive syntax:
-  geom_point(aes_string(x=var.names[[1]], y=var.names[[2]],
-                        clickSelects="time2", showSelected="id"),
+  geom_point(aes_string(x=var.names[[1]], y=var.names[[2]]),
+             clickSelects="time2", showSelected="id",
              data=climate, alpha=dot.alpha)
   ##+
-  geom_point(aes_string(x=var.names[[1]], y=var.names[[2]],
-                        showSelected2="time2", showSelected="id"),
+  geom_point(aes_string(x=var.names[[1]], y=var.names[[2]]),
+             showSelected2="time2", showSelected="id",
              data=climate, color="black", fill="white")
 viz$width <-
   structure(as.list(rep(400, length(viz))),
@@ -147,10 +148,8 @@ viz$width <-
 viz$width[grep("TimeSeries", names(viz$width))] <- 463
 ## Non-animated version for screenshot.
 viz$duration <- list(time2=3000)
-gg2animint(viz, "climate")
+animint2dir(viz, "climate")
 ## Animated version for the web.
 viz.anim <- viz
 viz.anim$time <- list(variable="time2", ms=5000)
-gg2animint(viz.anim, "climate-anim")
-
-
+animint2dir(viz.anim, "climate-anim")

@@ -23,37 +23,38 @@ tornado.bar <-
   list(map=ggplot()+
        geom_polygon(aes(x=long, y=lat, group=group),
                     data=USpolygons, fill="black", colour="grey") +
-       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat,
-                        showSelected=year),
+       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
+                    showSelected="year",
                     colour="#55B1F7", data=UStornadoes),
        ts=ggplot()+
-       geom_bar(aes(year, clickSelects=year),data=UStornadoes))
-gg2animint(tornado.bar, "tornado-bar")
+       geom_bar(aes(year), clickSelects="year",data=UStornadoes))
+animint2dir(tornado.bar, "tornado-bar")
 
 ## OK: stat_summary + clickSelects ensures unique x values.
 tornado.bar <-
   list(map=ggplot()+
        geom_polygon(aes(x=long, y=lat, group=group),
                     data=USpolygons, fill="black", colour="grey") +
-       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat,
-                        showSelected=year),
+       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
+                    showSelected="year",
                     colour="#55B1F7", data=UStornadoes),
        ts=ggplot()+
-       stat_summary(aes(year, year, clickSelects=year),
+       stat_summary(aes(year, year),
+                    clickSelects="year",
                     data=UStornadoes, fun.y=length, geom="bar"))
-gg2animint(tornado.bar, "tornado-bar")
+animint2dir(tornado.bar, "tornado-bar")
 
 ## Same plot, using make_bar abbreviation.
 tornado.bar <-
   list(map=ggplot()+
        geom_polygon(aes(x=long, y=lat, group=group),
                     data=USpolygons, fill="black", colour="grey") +
-       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat,
-                        showSelected=year),
+       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
+                    showSelected="year",
                     colour="#55B1F7", data=UStornadoes),
        ts=ggplot()+
        make_bar(UStornadoes, "year"))
-gg2animint(tornado.bar, "tornado-bar")
+animint2dir(tornado.bar, "tornado-bar")
 
 UStornadoCounts <-
   ddply(UStornadoes, .(state, year), summarize, count=length(state))
@@ -61,40 +62,45 @@ UStornadoCounts <-
 tornado.ts.bar <-
   list(map=ggplot()+
        make_text(UStornadoCounts, -100, 50, "year", "Tornadoes in %d")+
-       geom_polygon(aes(x=long, y=lat, group=group, clickSelects=state),
+       geom_polygon(aes(x=long, y=lat, group=group),
+                    clickSelects="state",
                     data=USpolygons, fill="black", colour="grey") +
-       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat,
-                        showSelected=year),
+       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
+                    showSelected="year",
                     colour="#55B1F7", data=UStornadoes),
        ts=ggplot()+
        make_text(UStornadoes, 1980, 200, "state")+
-       geom_bar(aes(year, count, clickSelects=year, showSelected=state),
+       geom_bar(aes(year, count),
+                clickSelects="year", showSelected="state",
                 data=UStornadoCounts, stat="identity", position="identity"))
-gg2animint(tornado.ts.bar, "tornado-ts-bar")
+animint2dir(tornado.ts.bar, "tornado-ts-bar")
 ## also show points.
 seg.color <- "#55B1F7"
 tornado.points <-
   list(map=ggplot()+
        make_text(UStornadoCounts, -100, 50, "year", "Tornadoes in %d")+
-       geom_polygon(aes(x=long, y=lat, group=group, clickSelects=state),
+       geom_polygon(aes(x=long, y=lat, group=group),
+                    clickSelects="state",
                     data=USpolygons, fill="black", colour="grey") +
-       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat,
-                        showSelected=year),
+       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
+                    showSelected="year",
                     colour=seg.color, data=UStornadoes)+
        ## geom_point(aes(startLong, startLat, fill=place, showSelected=year),
        ##              colour=seg.color,
        ##            data=data.frame(UStornadoes,place="start"))+
        scale_fill_manual(values=c(end=seg.color))+
-       geom_point(aes(endLong, endLat, fill=place, showSelected=year),
-                    colour=seg.color,
+       geom_point(aes(endLong, endLat, fill=place),
+                  showSelected="year",
+                  colour=seg.color,
                   data=data.frame(UStornadoes,place="end")),
        width=list(map=1500, ts=300),
        height=list(map=1000, ts=300),
        ts=ggplot()+
        make_text(UStornadoes, 1980, 200, "state")+
-       geom_bar(aes(year, count, clickSelects=year, showSelected=state),
+       geom_bar(aes(year, count),
+                clickSelects="year", showSelected="state",
                 data=UStornadoCounts, stat="identity", position="identity"))
-gg2animint(tornado.points, "tornado-points")
+animint2dir(tornado.points, "tornado-points")
 
 ## It would be nice to be able to specify the width/height using
 ## animint.* theme options, but this gives an error in ggplot2
@@ -102,44 +108,49 @@ gg2animint(tornado.points, "tornado-points")
 tornado.points <-
   list(map=ggplot()+
        make_text(UStornadoCounts, -100, 50, "year", "Tornadoes in %d")+
-       geom_polygon(aes(x=long, y=lat, group=group, clickSelects=state),
+       geom_polygon(aes(x=long, y=lat, group=group),
+                    clickSelects="state",
                     data=USpolygons, fill="black", colour="grey") +
-       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat,
-                        showSelected=year),
+       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
+                    showSelected="year",
                     colour=seg.color, data=UStornadoes)+
        scale_fill_manual(values=c(end=seg.color))+
        theme_animint(width=750, height=500)+
-       geom_point(aes(endLong, endLat, fill=place, showSelected=year),
+       geom_point(aes(endLong, endLat, fill=place), showSelected="year",
                     colour=seg.color,
                   data=data.frame(UStornadoes,place="end")),
        ts=ggplot()+
        make_text(UStornadoes, 1980, 200, "state")+
-       geom_bar(aes(year, count, clickSelects=year, showSelected=state),
+       geom_bar(aes(year, count),
+                clickSelects="year", showSelected="state",
                 data=UStornadoCounts, stat="identity", position="identity"))
-gg2animint(tornado.points, "tornado-points")
+animint2dir(tornado.points, "tornado-points")
 
 ## Tornado multiple selection.
 tornado.lines <-
   list(map=ggplot()+
        make_text(UStornadoCounts, -100, 50, "year", "Tornadoes in %d")+
-       geom_polygon(aes(x=long, y=lat, group=group, clickSelects=state),
+       geom_polygon(aes(x=long, y=lat, group=group),
+                    clickSelects="state",
                     data=USpolygons, fill="black", colour="grey") +
-       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat,
-                        showSelected=year),
+       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
+                    showSelected="year",
                     colour=seg.color, data=UStornadoes)+
        scale_fill_manual(values=c(end=seg.color))+
        theme_animint(width=750, height=500)+
-       geom_point(aes(endLong, endLat, fill=place, showSelected=year),
-                    colour=seg.color,
+       geom_point(aes(endLong, endLat, fill=place),
+                  showSelected="year",
+                  colour=seg.color,
                   data=data.frame(UStornadoes,place="end")),
        ts=ggplot()+
-       geom_text(aes(year, count, showSelected=state, label=state),
+       geom_text(aes(year, count, label=state),
+                 showSelected="state",
                  data=subset(UStornadoCounts, year==max(year)))+
        geom_line(aes(year, count,
-                     clickSelects=year,
-                     showSelected=state,
                      group=state),
+                 clickSelects="year",
+                 showSelected="state",
                 data=UStornadoCounts, hjust=0),
        selector.types=list(state="multiple"))
-gg2animint(tornado.lines, "tornado-lines")
+animint2dir(tornado.lines, "tornado-lines")
 

@@ -1,5 +1,5 @@
-library(animint)
-library(ggplot2)
+library(animint2)
+library(ggplot2Animint)
 library(gridExtra)
 
 #' Demonstrates axis specification, serves as a tutorial to introduce animint (eventually?)
@@ -72,10 +72,11 @@ qplot(data=scatterdata2, x=x, y=y, geom="point", colour=quad)
 
 #' Interactive plots...
 s7 <- ggplot() + 
-  geom_rect(data=scatterdata2.summary, aes(xmax=xmax, xmin=xmin, ymax=ymax, ymin=ymin, 
-                                           colour=quad, fill=quad,
-                                           clickSelects = quad), alpha=.3) +
-  geom_point(data=scatterdata2.summary, aes(x=xmean, y=ymean, colour=quad, fill=quad, showSelected = quad), size=5) +
+  geom_rect(data=scatterdata2.summary,
+            aes(xmax=xmax, xmin=xmin, ymax=ymax, ymin=ymin, colour=quad, fill=quad),
+            clickSelects = "quad", alpha=.3) +
+  geom_point(data=scatterdata2.summary, aes(x=xmean, y=ymean, colour=quad, fill=quad),
+             showSelected = "quad", size=5) +
   geom_point(data=scatterdata2, aes(x=x, y=y), alpha=.15) + 
   scale_colour_discrete(guide="legend") + scale_fill_discrete(guide="legend") +
   scale_alpha_discrete(guide="none") +
@@ -86,8 +87,8 @@ s7
 #' Single alpha value
 s8 <- ggplot() + 
   geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad),alpha=.2)+
-  geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, 
-                                    clickSelects=quad, showSelected=quad), alpha=.6) +
+  geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad), 
+             clickSelects="quad", showSelected="quad", alpha=.6) +
   guides(colour = guide_legend(override.aes = list(alpha = 1)), 
          fill = guide_legend(override.aes = list(alpha = 1))) +
   ggtitle("Constant alpha")
@@ -97,8 +98,9 @@ s8
 #' Continuous alpha
 s9 <- ggplot() +
   geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad),alpha=.2)+
-  geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, 
-                                    alpha=str, clickSelects=quad, showSelected=quad)) +
+  geom_point(data=scatterdata2,
+             aes(x=x, y=y, colour=quad, fill=quad, alpha=str),
+             clickSelects="quad", showSelected="quad") +
   guides(colour = guide_legend(override.aes = list(alpha = 1)), 
          fill = guide_legend(override.aes = list(alpha = 1))) +
   scale_alpha(range=c(.6, 1), guide="none") +
@@ -110,8 +112,8 @@ s9
 #' Note, to get unselected points to show up, need to have two copies of geom_point: One for anything that isn't selected, one for only the selected points.
 s10 <- ggplot() + 
   geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, alpha=quad))+
-  geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, 
-                                    alpha=quad, clickSelects=quad, showSelected=quad)) +
+  geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, alpha=quad),
+             clickSelects="quad", showSelected="quad") +
   guides(colour = guide_legend(override.aes = list(alpha = 1)), 
          fill = guide_legend(override.aes = list(alpha = 1))) +
   scale_alpha_discrete(guide="none")+
@@ -125,8 +127,8 @@ s10
 #' Scale defaults to radius, but area is more easily interpreted by the brain (Tufte).
 s11 <- ggplot() + 
   geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, size=str), alpha=.5) +
-  geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, 
-                                    size=str, clickSelects=quad, showSelected=quad), alpha=.3) +
+  geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, size=str),
+             clickSelects="quad", showSelected="quad", alpha=.3) +
   ggtitle("Scale Size")
 s11
 
@@ -138,5 +140,5 @@ s12 <- ggplot() +
   ggtitle("Scale Area")
 s12
 
-gg2animint(list(s1=s1, s2=s2, s3=s3, s4=s4, s5=s5, s6=s6, s7=s7, s8=s8, s9=s9, s10=s10, s11=s11, s12=s12))
+animint2dir(list(s1=s1, s2=s2, s3=s3, s4=s4, s5=s5, s6=s6, s7=s7, s8=s8, s9=s9, s10=s10, s11=s11, s12=s12))
 

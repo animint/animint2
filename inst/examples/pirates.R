@@ -8,8 +8,8 @@
 #' 
 #' See ?animint::pirates for more information
 
-library(ggplot2)
-library(animint)
+library(ggplot2Animint)
+library(animint2)
 library(dplyr)      ## for data manipulation
 library(tidyr)      ## for data manipulation
 library(maps)       ## to plot world map
@@ -59,7 +59,7 @@ count_bins <- function(bins, x, y) {
 # data -------------------------------------------------
 
 # loading data
-data(pirates, package = "animint")
+data(pirates, package = "animint2")
 countries <- map_data("world") %>% 
   filter(region != "Antarctica")
 
@@ -133,7 +133,8 @@ p_time <- ggplot() +
 p_points <- ggplot() + 
   geom_polygon(aes(long, lat, group = group), size = I(1), 
                data = countries, fill = "lightgrey", colour = "darkgreen") +
-  geom_point(aes(coords.x1, coords.x2, showSelected = date), 
+  geom_point(aes(coords.x1, coords.x2),
+             showSelected = "date", 
              size = 3, alpha = I(.5), data = p_df) + 
   make_text(p_df, 0, 90, "date", "Pirate Attacks in %d") + 
   theme(panel.background = element_rect(fill = "lightblue"), 
@@ -146,10 +147,11 @@ p_points <- ggplot() +
 p_tiles <- ggplot() + 
   geom_polygon(aes(long, lat, group = group), size = I(1), 
                data = countries, fill = "lightgrey", colour = "darkgreen") +
-  geom_tile(aes(xmid, ymid, fill = log(attacks), 
-                showSelected = date, clickSelects = id), 
+  geom_tile(aes(xmid, ymid, fill = log(attacks)), 
+            showSelected = "date", clickSelects = "id", 
             data = p_df3, colour = I("red")) + 
-  geom_text(aes(xmid, ymid, label = id, showSelected = id), 
+  geom_text(aes(xmid, ymid, label = id),
+            showSelected = "id", 
             data = p_df3) + 
   make_text(p_df, 0, 90, "date", "Pirate Attacks from 1995 to %d") + 
   scale_fill_gradient(low = "#fee5d9", high = "#a50f15", name = "Attacks", 
@@ -164,11 +166,11 @@ p_tiles <- ggplot() +
 # tiles over time
 p_time2 <- ggplot() + 
   make_tallrect(p_df2, "date") + 
-  geom_line(aes(date, log(attacks), group = id, 
-                clickSelects = id, showSelected = id), 
+  geom_line(aes(date, log(attacks), group = id), 
+            clickSelects = "id", showSelected = "id", 
             data = p_df3) + 
-  geom_text(aes(text_loc_x, text_loc_y, label = id, 
-                clickSelects = id, showSelected = id), 
+  geom_text(aes(text_loc_x, text_loc_y, label = id), 
+            clickSelects = "id", showSelected = "id", 
             colour = "red", data = p_df4) + 
   scale_y_continuous(labels = c(1, 7, 55, 400), name = "Total Attacks") + 
   scale_x_continuous(breaks = c(1995, 2000, 2005, 2010), name = "Date", limits = c(1995, 2013)) + 

@@ -1,4 +1,4 @@
-library(animint)
+library(animint2)
 data(malaria)
 
 filterVar <- malaria$filterVar$filterVar
@@ -52,8 +52,8 @@ viz <-
          scale_color_manual(values=fp.fn.colors)+
          geom_text(aes(filterVar.thresh, metric.value+offset,
                        color=metric.name,
-                       label=paste(metric.value, metric.name, " "),
-                       showSelected=filterVar.thresh),
+                       label=paste(metric.value, metric.name, " ")),
+                   showSelected="filterVar.thresh",
                    hjust=1,
                    data=malaria$error.curves),
 
@@ -63,24 +63,24 @@ viz <-
          theme_animint(width=600)+
          geom_text(aes(chrom2int(chrom), position/1e3,
                        label=sprintf("%s threshold = %.1f",
-                         filterVar, filterVar.thresh),
-                       showSelected=filterVar.thresh),
+                         filterVar, filterVar.thresh)),
+                   showSelected="filterVar.thresh",
                    data=malaria$filterVar.labels)+
          geom_text(aes(chrom2int(chrom), position/1e3,
-                       label=paste(fp, "fp_"),
-                       clickSelects=LOCUS_ID,
-                       showSelected3=annotation,
-                       showSelected2=highly.divergent.regions,
-                       showSelected=filterVar.thresh),
+                       label=paste(fp, "fp_")),
+                   clickSelects="LOCUS_ID",
+                   showSelected=c("filterVar.thresh",
+                                  "highly.divergent.regions",
+                                  "annotation"),
                    hjust=1,
                    color=fp.fn.colors[["fp"]],
                    data=subset(malaria$error.amplicons, fp != 0))+
          geom_text(aes(chrom2int(chrom), position/1e3,
-                       label=paste0("_" , fn, " fn"),
-                       clickSelects=LOCUS_ID,
-                       showSelected3=annotation,
-                       showSelected2=highly.divergent.regions,
-                       showSelected=filterVar.thresh),
+                       label=paste0("_" , fn, " fn")),
+                   clickSelects="LOCUS_ID",
+                   showSelected=c("filterVar.thresh",
+                                  "highly.divergent.regions",
+                                  "annotation"),
                    color=fp.fn.colors[["fn"]],
                    hjust=0,
                    data=subset(malaria$error.amplicons, fn != 0))+
@@ -89,8 +89,8 @@ viz <-
                       data=malaria$chroms)+
          geom_point(aes(chrom2int(chrom), position/1e3,
                         color=highly.divergent.regions,
-                        fill=annotation,
-                        clickSelects=LOCUS_ID),
+                        fill=annotation),
+                    clickSelects="LOCUS_ID",
                     size=5,
                     data=malaria$amplicons)+
          scale_color_manual(values=c(none="white", some="black"))+
@@ -108,31 +108,28 @@ viz <-
                             limits=c(-0.05, 1.05),
                             breaks=c())+
          geom_text(aes(normalize(LOCUS_ID, firstVariant), LOCUS_ID,
-                       showSelected=highly.divergent.regions,
-                       showSelected2=annotation,
                        label=paste0(firstVariant, "_")),
+                   showSelected=c("highly.divergent.regions",
+                                  "annotation"),
                    hjust=1,
                    data=malaria$amplicons)+
          geom_text(aes(normalize(LOCUS_ID, lastVariant), LOCUS_ID,
-                       showSelected=highly.divergent.regions,
-                       showSelected2=annotation,
                        label=paste0("_", lastVariant, " --- ",
                                     lastVariant-firstVariant, " bases")),
+                   showSelected=c("highly.divergent.regions", "annotation"),
                    hjust=0,
                    data=malaria$amplicons)+
          geom_segment(aes(normalize(LOCUS_ID, firstVariant), LOCUS_ID,
-                          xend=normalize(LOCUS_ID, lastVariant), yend=LOCUS_ID,
-                          showSelected=highly.divergent.regions,
-                          showSelected2=annotation,
-                          clickSelects=LOCUS_ID),
+                          xend=normalize(LOCUS_ID, lastVariant), yend=LOCUS_ID),
+                      clickSelects="LOCUS_ID",
+                      showSelected=c("highly.divergent.regions", "annotation"),
                       size=12,
                       alpha=0.6,
                       data=malaria$amplicons)+
          geom_segment(aes(normalize(LOCUS_ID, regionStart), LOCUS_ID,
                           xend=normalize(LOCUS_ID, regionEnd), yend=LOCUS_ID,
-                          showSelected=highly.divergent.regions,
-                          showSelected2=annotation,
                           color=region.type),
+                      showSelected=c("highly.divergent.regions", "annotation"),
                       size=8,
                       data=malaria$regions)+
          scale_color_manual(values=c("#E41A1C", #red
@@ -146,10 +143,9 @@ viz <-
                                      HDR="black"))+
          geom_point(aes(normalize(LOCUS_ID, POS), LOCUS_ID,
                         tooltip=paste(Coding, Variant_type),
-                        showSelected=highly.divergent.regions,
-                        showSelected2=annotation,
-                        showSelected3=filterVar.thresh,
                         fill=error.type),
+                    showSelected=c("highly.divergent.regions",
+                                  "filterVar.thresh", "annotation"),
                     color="black",
                     pch=21,
                     size=4,

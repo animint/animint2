@@ -35,33 +35,31 @@ mmir.plot <-
        scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
        geom_tallrect(aes(xmin=first.base/1e6, xmax=last.base/1e6,
-                         fill=annotation,
-                         showSelected=signal),
+                         fill=annotation),
+                     showSelected="signal",
                      data=intreg$ann)+
        scale_fill_manual(values=breakpoint.colors,guide="none")+
        geom_text(aes((first.base+last.base)/2e6, logratio+1/8,
-                     label=annotation,
-                     showSelected=signal),
+                     label=annotation),
+                 showSelected="signal",
                  data=intreg$ann)+
        geom_blank(aes(first.base/1e6, logratio+2/8), data=intreg$ann)+
-       geom_point(aes(base/1e6, logratio,
-                      showSelected=signal),
+       geom_point(aes(base/1e6, logratio),
+                  showSelected="signal",
                   data=intreg$sig)+
-       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean,
-                        showSelected=signal,
-                        showSelected2=segments),
+       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean),
+                    showSelected=c("signal", "segments"),
                     data=intreg$seg, colour=signal.colors[["estimate"]])+
-       geom_vline(aes(xintercept=base/1e6,
-                      showSelected=signal,
-                      showSelected2=segments),
+       geom_vline(aes(xintercept=base/1e6),
+                  showSelected=c("signal", "segments"),
                   colour=signal.colors[["estimate"]],
                   linetype="dashed",
                   data=intreg$breaks),
        regression=ggplot()+
        theme_animint(height=150, width=800)+
        geom_blank(aes(x,y), data=blank.items$regression$blank)+
-       geom_segment(aes(x=min.L, y=feature, xend=max.L, yend=feature,
-                        clickSelects=signal),
+       geom_segment(aes(x=min.L, y=feature, xend=max.L, yend=feature),
+                    clickSelects="signal",
                     size=5,
                     data=intreg$int)+
        geom_segment(aes(min.L, min.feature, xend=max.L, yend=max.feature,
@@ -73,16 +71,16 @@ mmir.plot <-
        error=ggplot()+
        theme_animint(height=100, width=800)+
        geom_blank(aes(x,y), data=blank.items$error$blank)+
-       geom_segment(aes(min.L, cost, xend=max.L, yend=cost,
-                        showSelected=signal), data=intreg$selection),
+       geom_segment(aes(min.L, cost, xend=max.L, yend=cost),
+                    showSelected="signal", data=intreg$selection),
        segments=ggplot()+
        theme_animint(height=100, width=800)+
        geom_blank(aes(x,y), data=blank.items$segments$blank)+
-       geom_segment(aes(min.L, segments, xend=max.L, yend=segments,
-                        showSelected=signal), data=intreg$selection)+
-       geom_tallrect(aes(xmin=min.L, xmax=max.L,
-                         showSelected=signal,
-                         clickSelects=segments),
+       geom_segment(aes(min.L, segments, xend=max.L, yend=segments),
+                    showSelected="signal", data=intreg$selection)+
+       geom_tallrect(aes(xmin=min.L, xmax=max.L),
+                     showSelected="signal",
+                     clickSelects="segments",
                      data=intreg$selection,
                      alpha=1/2))
 ## This is a normal ggplot of all the data, subsets of which can be
@@ -100,17 +98,17 @@ mmir.facet <-
   list(signal=mmir.plot$signal,
        
        penalty=ggplot()+
-       geom_tallrect(aes(xmin=min.L, xmax=max.L,
-                         showSelected=signal,
-                         clickSelects=segments),
+       geom_tallrect(aes(xmin=min.L, xmax=max.L),
+                     showSelected="signal",
+                     clickSelects="segments",
                      data=data.frame(intreg$selection, what="segments"),
                      alpha=1/2)+
        ylab("")+
        theme_bw()+
        theme_animint(height=500, width=800)+
        theme(panel.margin=grid::unit(0, "lines"))+
-       geom_segment(aes(min.L, feature, xend=max.L, yend=feature,
-                        clickSelects=signal),
+       geom_segment(aes(min.L, feature, xend=max.L, yend=feature),
+                    clickSelects="signal",
                     size=5,
                     data=data.frame(intreg$int, what="regression"))+
        geom_segment(aes(min.L, min.feature, xend=max.L, yend=max.feature,
@@ -119,11 +117,11 @@ mmir.facet <-
                     size=3,
                     data=data.frame(intreg$model, what="regression"))+
        scale_linetype_manual(values=model.linetypes)+
-       geom_segment(aes(min.L, cost, xend=max.L, yend=cost,
-                        showSelected=signal),
+       geom_segment(aes(min.L, cost, xend=max.L, yend=cost),
+                    showSelected="signal",
                     data=data.frame(intreg$selection, what="error"))+
-       geom_segment(aes(min.L, segments, xend=max.L, yend=segments,
-                        showSelected=signal),
+       geom_segment(aes(min.L, segments, xend=max.L, yend=segments),
+                    showSelected="signal",
                     data=data.frame(intreg$selection, what="segments"))+
        xlab("penalty value $L=f(x)$")+ # TODO: mathjax.
        facet_grid(what~.,scales="free"),
@@ -179,9 +177,8 @@ intreg.errors <-
        ylab("noisy copy number logratio signal")+
        geom_tallrect(aes(xmin=first.base/1e6, xmax=last.base/1e6,
                          fill=annotation,
-                         linetype=error.type,
-                         showSelected2=segments,
-                         showSelected=signal),
+                         linetype=error.type),
+                     showSelected=c("signal", "segments"),
                      color="black",
                      alpha=0.5,
                      data=error.regions)+
@@ -191,16 +188,14 @@ intreg.errors <-
        guides(linetype=guide_legend(override.aes=list(fill="white")))+       
        scale_fill_manual(values=breakpoint.colors)+
        geom_blank(aes(first.base/1e6, logratio+2/8), data=intreg$ann)+
-       geom_point(aes(base/1e6, logratio,
-                      showSelected=signal),
+       geom_point(aes(base/1e6, logratio),
+                  showSelected="signal",
                   data=intreg$sig)+
-       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean,
-                        showSelected=signal,
-                        showSelected2=segments),
+       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean),
+                    showSelected=c("signal", "segments"),
                     data=intreg$seg, colour=signal.colors[["estimate"]])+
-       geom_vline(aes(xintercept=base/1e6,
-                      showSelected=signal,
-                      showSelected2=segments),
+       geom_vline(aes(xintercept=base/1e6),
+                  showSelected=c("signal", "segments"),
                   colour=signal.colors[["estimate"]],
                   linetype="dashed",
                   data=intreg$breaks),
@@ -208,19 +203,20 @@ intreg.errors <-
          theme_bw()+
          theme_animint(height=500, width=800)+
          theme(panel.margin=grid::unit(0, "cm"))+
-       geom_tallrect(aes(xmin=min.L, xmax=max.L,
-                         showSelected=signal,
-                         clickSelects=segments),
+       geom_tallrect(aes(xmin=min.L, xmax=max.L),
+                     showSelected="signal",
+                     clickSelects="segments",
                      data=data.frame(intreg$selection
                       ##,what="segments"
                                      ),
                      alpha=1/2)+
        ylab("")+
-       geom_vline(aes(xintercept=pred.L, showSelected=signal),
+       geom_vline(aes(xintercept=pred.L),
+                  showSelected="signal",
                   color="violet",
                   data=intreg$intervals)+
-       geom_segment(aes(min.L, feature, xend=max.L, yend=feature,
-                        clickSelects=signal),
+       geom_segment(aes(min.L, feature, xend=max.L, yend=feature),
+                    clickSelects="signal",
                     size=6,
                     data=data.frame(intreg$intervals, what="regression"))+
        geom_segment(aes(min.L, min.feature, xend=max.L, yend=max.feature,
@@ -232,11 +228,11 @@ intreg.errors <-
        ##            size=5,
        ##            data=data.frame(intreg$intervals, what="regression"))+
        scale_linetype_manual(values=model.linetypes)+
-       geom_segment(aes(min.L, cost, xend=max.L, yend=cost,
-                        showSelected=signal),
+       geom_segment(aes(min.L, cost, xend=max.L, yend=cost),
+                    showSelected="signal",
                     data=data.frame(intreg$selection, what="incorrect labels"))+
-       geom_segment(aes(min.L, segments, xend=max.L, yend=segments,
-                        showSelected=signal),
+       geom_segment(aes(min.L, segments, xend=max.L, yend=segments),
+                    showSelected="signal",
                     data=data.frame(intreg$selection, what="segments"))+
        xlab("penalty value log(lambda)")+ # TODO: mathjax.
        facet_grid(what~., scales="free"),
@@ -255,16 +251,14 @@ mmir.segs <-
        geom_blank(aes(first.base/1e6, logratio+2/8), data=intreg$ann)+
        ggtitle("Copy number profile and maximum likelihood segmentation")+
        ylab("logratio")+
-       geom_point(aes(base/1e6, logratio,
-                      showSelected=signal),
+       geom_point(aes(base/1e6, logratio),
+                  showSelected="signal",
                   data=intreg$sig)+
-       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean,
-                        showSelected=signal,
-                        showSelected2=segments),
+       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean),
+                    showSelected=c("signal", "segments"),
                     data=intreg$seg, colour=signal.colors[["estimate"]])+
-       geom_vline(aes(xintercept=base/1e6,
-                      showSelected=signal,
-                      showSelected2=segments),
+       geom_vline(aes(xintercept=base/1e6),
+                  showSelected=c("signal", "segments"),
                   colour=signal.colors[["estimate"]],
                   linetype="dashed",
                   data=intreg$breaks),
@@ -274,13 +268,13 @@ mmir.segs <-
        xlab("log(penalty)")+
        ylab("optimal number of segments")+
        ggtitle("Select profile and number of segments")+
-       geom_tallrect(aes(xmin=min.L, xmax=max.L,
-                         showSelected=signal,
-                         clickSelects=segments),
+       geom_tallrect(aes(xmin=min.L, xmax=max.L),
+                     showSelected="signal",
+                     clickSelects="segments",
                      data=intreg$selection,
                      alpha=1/2)+
-       geom_segment(aes(min.L, segments, xend=max.L, yend=segments,
-                        clickSelects=signal),
+       geom_segment(aes(min.L, segments, xend=max.L, yend=segments),
+                    clickSelects="signal",
                     data=intreg$selection, alpha=0.6, size=5))
 animint2dir(mmir.segs, "intreg-segs")
 
@@ -322,14 +316,15 @@ mmir.selection <-
   list(segments=ggplot()+
        ggtitle("Select profile and number of segments")+
        tallrects+
-       geom_text(aes(0, error, label=signal, clickSelects=signal),
+       geom_text(aes(0, error, label=signal),
+                 clickSelects="signal",
                  data=sig.labels, hjust=1)+
        scale_x_continuous("segments", breaks=c(1, 5, 10, 20),
                           limits=c(-2, 20))+
        xlab("squared error")+
        geom_line(aes(segments, error,
-                     group=signal,
-                     clickSelects=signal),
+                     group=signal),
+                 clickSelects="signal",
                  data=model.selection,
                  alpha=0.6, size=8),
 
@@ -341,28 +336,25 @@ mmir.selection <-
        geom_blank(aes(first.base/1e6, logratio+2/8), data=intreg$ann)+
        ggtitle("Copy number profile and maximum likelihood segmentation")+
        ylab("logratio")+
-       geom_point(aes(base/1e6, logratio,
-                      showSelected=signal),
+       geom_point(aes(base/1e6, logratio),
+                  showSelected="signal",
                   data=intreg$sig)+
-       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean,
-                        showSelected=signal,
-                        showSelected2=segments),
+       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean),
+                    showSelected=c("signal", "segments"),
                     data=intreg$seg, colour=signal.colors[["estimate"]])+
        geom_segment(aes(base/1e6, min(sigs$logratio),
-                        xend=base/1e6, yend=max(sigs$logratio),
-                        showSelected=signal,
-                        showSelected2=segments),
+                        xend=base/1e6, yend=max(sigs$logratio)),
+                    showSelected=c("signal", "segments"),
                   colour=signal.colors[["estimate"]],
                   linetype="dashed",
                   data=intreg$breaks)+
-       geom_text(aes(base/1e6, logratio, label=paste("signal", signal),
-                     showSelected=signal),
+       geom_text(aes(base/1e6, logratio, label=paste("signal", signal)),
+                 showSelected="signal",
                  data=sig.names)+
        geom_text(aes(base/1e6, logratio,
                      label=sprintf("%d segment%s", segments,
-                       ifelse(segments==1, "", "s")),
-                     showSelected=signal,
-                     showSelected2=segments),
+                       ifelse(segments==1, "", "s"))),
+                 showSelected=c("signal", "segments"),
                  data=seg.names, color=signal.colors[["estimate"]]),
 
        first=list(signal="4.2", segments=4))
@@ -381,8 +373,8 @@ mmir.buggy <-
        xlab("")+
        facet_grid(variable ~ ., scales="free_y")+
        geom_line(aes(segments, value,
-                     group=interaction(signal, variable),
-                     clickSelects=signal),
+                     group=interaction(signal, variable)),
+                 clickSelects="signal",
                  data=model.tall,
                  alpha=0.6, size=8),
 
@@ -394,28 +386,25 @@ mmir.buggy <-
        geom_blank(aes(first.base/1e6, logratio+2/8), data=intreg$ann)+
        ggtitle("Copy number profile and maximum likelihood segmentation")+
        ylab("logratio")+
-       geom_point(aes(base/1e6, logratio,
-                      showSelected=signal),
+       geom_point(aes(base/1e6, logratio),
+                  showSelected="signal",
                   data=intreg$sig)+
-       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean,
-                        showSelected=signal,
-                        showSelected2=segments),
+       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean),
+                    showSelected=c("signal", "segments"),
                     data=intreg$seg, colour=signal.colors[["estimate"]])+
        geom_segment(aes(base/1e6, min(sigs$logratio),
-                        xend=base/1e6, yend=max(sigs$logratio),
-                        showSelected=signal,
-                        showSelected2=segments),
+                        xend=base/1e6, yend=max(sigs$logratio)),
+                    showSelected=c("signal", "segments"),
                   colour=signal.colors[["estimate"]],
                   linetype="dashed",
                   data=intreg$breaks)+
-       geom_text(aes(base/1e6, logratio, label=paste("signal", signal),
-                     showSelected=signal),
+       geom_text(aes(base/1e6, logratio, label=paste("signal", signal)),
+                 showSelected="signal",
                  data=sig.names)+
        geom_text(aes(base/1e6, logratio,
                      label=sprintf("%d segment%s", segments,
-                       ifelse(segments==1, "", "s")),
-                     showSelected=signal,
-                     showSelected2=segments),
+                       ifelse(segments==1, "", "s"))),
+                 showSelected=c("signal", "segments"),
                  data=seg.names, color=signal.colors[["estimate"]]),
 
        first=list(signal="4.2", segments=4))
@@ -434,14 +423,14 @@ mmir.BIC <-
        xlab("")+
        facet_grid(variable ~ ., scales="free_y")+
        geom_line(aes(segments, error,
-                     group=signal,
-                     clickSelects=signal),
+                     group=signal),
+                 clickSelects="signal",
                  data=data.frame(model.selection,
                    variable="un-penalized error"),
                  alpha=0.6, size=8)+
        geom_line(aes(segments, penalized.error,
-                     group=signal,
-                     clickSelects=signal),
+                     group=signal),
+                 clickSelects="signal",
                  data=data.frame(penalized, variable="penalized error (BIC)"),
                  alpha=0.6, size=8),
 
@@ -453,28 +442,25 @@ mmir.BIC <-
        geom_blank(aes(first.base/1e6, logratio+2/8), data=intreg$ann)+
        ggtitle("Copy number profile and maximum likelihood segmentation")+
        ylab("logratio")+
-       geom_point(aes(base/1e6, logratio,
-                      showSelected=signal),
+       geom_point(aes(base/1e6, logratio),
+                  showSelected="signal",
                   data=intreg$sig)+
-       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean,
-                        showSelected=signal,
-                        showSelected2=segments),
+       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean),
+                    showSelected=c("signal", "segments"),
                     data=intreg$seg, colour=signal.colors[["estimate"]])+
        geom_segment(aes(base/1e6, min(sigs$logratio),
-                        xend=base/1e6, yend=max(sigs$logratio),
-                        showSelected=signal,
-                        showSelected2=segments),
+                        xend=base/1e6, yend=max(sigs$logratio)),
+                    showSelected=c("signal", "segments"),
                   colour=signal.colors[["estimate"]],
                   linetype="dashed",
                   data=intreg$breaks)+
-       geom_text(aes(base/1e6, logratio, label=paste("signal", signal),
-                     showSelected=signal),
+       geom_text(aes(base/1e6, logratio, label=paste("signal", signal)),
+                 showSelected="signal",
                  data=sig.names)+
        geom_text(aes(base/1e6, logratio,
                      label=sprintf("%d segment%s", segments,
-                       ifelse(segments==1, "", "s")),
-                     showSelected=signal,
-                     showSelected2=segments),
+                       ifelse(segments==1, "", "s"))),
+                 showSelected=c("signal", "segments"),
                  data=seg.names, color=signal.colors[["estimate"]]),
 
        first=list(signal="4.2", segments=4))

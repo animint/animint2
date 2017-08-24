@@ -1,4 +1,4 @@
-library( animint )
+library(animint2)
 time <- 1:20
 count <- 3:22 + rnorm(20)
 count_all <- 201:220 + rnorm(20)
@@ -22,8 +22,8 @@ list(
 
 ts = ggplot() +
   make_tallrect( data, "time" ) +
-  geom_line( aes(time, count, group = name, colour = name,
-                 clickSelects = name),
+  geom_line( aes(time, count, group = name, colour = name),
+             clickSelects = "name",
              data = data, size = 3, alpha = 0.8 ),
 
 time = list( variable="time",ms = 3000 ),
@@ -31,11 +31,12 @@ time = list( variable="time",ms = 3000 ),
 duration = list( time = 1000 ),
 
 scatter = ggplot()+
-  geom_point( aes(count_all, count, clickSelects = name,
-                  showSelected = time, colour = name, size = count_all),
+  geom_point( aes(count_all, count, colour = name, size = count_all),
+              clickSelects = "name",
+              showSelected = "time",
               data = data ) +
-  geom_text( aes(time, count, label = name,
-                 showSelected = name, showSelected2 = time),
+  geom_text( aes(time, count, label = name),
+             showSelected = c("name", "time"),
              data=data ) +
   ##make_text( data, 80, 90, "time" ) +
   continuous_scale("size","area",palette = function(x){

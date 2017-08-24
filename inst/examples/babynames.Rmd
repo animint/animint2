@@ -19,8 +19,8 @@ Define $d_{ijk} = (m_{ijk} - f_{ijk})/n_{k}$. In english, $d_{ijk}$ is a measure
 ```
 
 ```{r libs, cache=TRUE}
-library(ggplot2)
-library(animint)
+library(ggplot2Animint)
+library(animint2)
 library(dplyr)
 library(magrittr)
 data(namesbystate, package = "babynames")
@@ -64,7 +64,7 @@ ggplot() +
 
 viz <- list(map = map)
 
-gg2animint(viz)
+animint2dir(viz)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

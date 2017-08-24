@@ -7,16 +7,17 @@ viz <-
          borders(regions="canada")+
          coord_equal()+
          make_text(canada.cities, -125, 80, "name")+
-         geom_point(aes(long, lat, showSelected=name),
+         geom_point(aes(long, lat), showSelected="name",
                     data=canada.cities, colour="red", size=4),
          bar=ggplot()+
-         geom_bar(aes(name, log10(pop), clickSelects=name),
+         geom_bar(aes(name, log10(pop)), clickSelects="name",
                   data=canada.cities, stat="identity")+
          coord_flip(),
          height=list(bar=8000))
-gg2animint(viz, "canada-cities")
+animint2dir(viz, "canada-cities")
 ## I would have liked the next plot to cycle through cities, but there
 ## is a bug in the current animint code, I guess it has something to
 ## do with non-numeric time variables.
+## 2017-08-24: TODO: Does this bug still exist???
 bug <- c(viz, list(time=list(variable="name", ms=2000)))
-gg2animint(bug)
+animint2dir(bug)
