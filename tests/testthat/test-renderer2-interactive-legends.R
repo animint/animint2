@@ -9,13 +9,14 @@ iris$id <- 1:nrow(iris)
 p1 <- ggplot() +
   guides(color="none")+
   geom_point(aes(Sepal.Length, Sepal.Width, colour = Species, 
-                 size = Petal.Width, clickSelects = Species, id = id), 
-             data = iris) + 
+                 size = Petal.Width, id = id), 
+            clickSelects = "Species", data = iris) + 
   facet_wrap(~Species, nrow = 2) + 
   ggtitle("Sepal Data")
-p2 <- ggplot(iris, aes(Petal.Length, Petal.Width, colour = Species, 
-                       size = Sepal.Width, showSelected = Species)) + 
-  geom_point() + 
+p2 <- ggplot() + 
+  geom_point(data=iris, aes(Petal.Length, Petal.Width, colour = Species, 
+                       size = Sepal.Width),
+             showSelected = "Species") + 
   ggtitle("Petal Data")
 
 viz <- list(sepal = p1, 

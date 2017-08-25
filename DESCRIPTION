@@ -1,11 +1,43 @@
 Package: animint2
-Title: Interactive animations
-Version: 2017.06.13
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: An interactive animation can be defined using a list of
-    ggplots with clickSelects and showSelected aesthetics.
-Depends: R (>= 3.3.2)
-License: What license is it under?
+Title: Animated Interactive Grammar of Graphics
+Version: 2017.08.24
+Author: Toby Dylan Hocking, Susan VanderPlas, Carson Sievert, Kevin Ferris,
+ Tony Tsai, Faizan Khan
+Maintainer: Toby Dylan Hocking <toby.hocking@r-project.org>
+Description: A redesign of animint with a new syntax: clickSelects
+ and showSelected are now specified as parameters.
+Depends: 
+    R (>= 3.3.2),
+    ggplot2Animint (>= 2.1.0)
+Imports:
+    digest,
+    grid,
+    gtable (>= 0.1.1),
+    MASS,
+    plyr (>= 1.7.1),
+    reshape2,
+    scales (>= 0.4.1),
+    stats,
+    tibble,
+    lazyeval,
+Suggests:
+    knitr (>= 1.5.33),
+    servr,
+    gistr (>= 0.2),
+    shiny,
+    htmltools,
+    rmarkdown,
+    digest,
+    testthat,
+    RSelenium,
+    XML,
+    devtools,
+    httr,
+    maps
+Remotes: 
+    ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa,
+    faizan-khan-iit/ggplot2@validate-params
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1

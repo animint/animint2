@@ -1,9 +1,9 @@
 acontext("coord")
 
 test_that("coord_flip works", {
-  data(worldPop, package="animint")
+  data(worldPop, package="animint2")
   bars <- ggplot()+
-    geom_bar(aes(x=subcontinent, y=population, showSelected=year),
+    geom_bar(aes(x=subcontinent, y=population), showSelected="year",
              data=worldPop, stat="identity", position="identity")
   ## First test without flip.
   no.flip <- animint2dir(list(bars=bars), open.browser=FALSE)

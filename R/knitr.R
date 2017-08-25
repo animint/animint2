@@ -5,13 +5,12 @@
 #' @references https://github.com/yihui/knitr/blob/master/vignettes/knit_print.Rmd
 #' @author Carson Sievert
 #' @export
-knit_print.animint2 <- function(x, options, ...) {
+knit_print.animint <- function(x, options, ...) {
   if (!requireNamespace("knitr")) warning("Please install.packages('knitr')")
   # This function should be evaluated in knitr's output directory
   output.dir <- knitr::opts_knit$get()[["output.dir"]]
   ## sink()
   ## print(output.dir)
-  ## browser()
   old.wd <- setwd(output.dir)
   on.exit(setwd(old.wd))
   # the current knitr chunk 'label' defines a directory to place the animints 
@@ -102,7 +101,7 @@ renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
     shiny::addResourcePath("animintAssets", tmp)
     list(jsonFile = "plot.json")
   }
-  shiny::markRenderFunction(animint::animintOutput, renderFunc)
+  shiny::markRenderFunction(animint2::animintOutput, renderFunc)
 }
 
 # html dependencies according htmltools protocols
@@ -116,27 +115,27 @@ animint_dependencies <- function() {
 html_dependency_d3 <- function() {
   htmltools::htmlDependency(name = "d3",
                  version = "3.0.0",
-                 src = system.file("htmljs/vendor", package = "animint"),
+                 src = system.file("htmljs/vendor", package = "animint2"),
                  script = "d3.v3.js")
 }
 
 html_dependency_animint <- function() {
   htmltools::htmlDependency(name = "animint",
-                 version = packageVersion("animint"),
-                 src = system.file("htmljs", package = "animint"),
+                 version = packageVersion("animint2"),
+                 src = system.file("htmljs", package = "animint2"),
                  script = "animint.js")
 }
 
 html_dependency_shinyAnimint <- function() {
   htmltools::htmlDependency(name = "shinyAnimint",
-                 version = packageVersion("animint"),
-                 src = system.file("shiny", package = "animint"),
+                 version = packageVersion("animint2"),
+                 src = system.file("shiny", package = "animint2"),
                  script = "shinyAnimint.js")
 }
 
 html_dependency_plotJSON <- function(path, fileName) {
   htmltools::htmlDependency(name = "plotJSON",
-                 version = packageVersion("animint"),
+                 version = packageVersion("animint2"),
                  src = path,
                  script = fileName)
 }

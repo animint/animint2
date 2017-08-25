@@ -1,6 +1,6 @@
 acontext("make_xrect")
 
-data(WorldBank, package = "animint")
+data(WorldBank, package = "animint2")
 not.na <- subset(WorldBank, !(is.na(life.expectancy) | is.na(fertility.rate)))
 BOTH <- function(df, top, side){
   data.frame(df,
@@ -19,26 +19,30 @@ viz.data.fun <- list(
     theme_animint(width=1000, height=800)+
     theme(panel.margin=grid::unit(0, "lines"))+
     geom_line(aes(year, life.expectancy, group=country, colour=region,
-                  clickSelects=country, id = country),
+                  id = country),
+              clickSelects="country",
               data=TS(not.na), size=4, alpha=3/5)+
-    geom_point(aes(year, life.expectancy, color=region, size=population,
-                   showSelected=country, clickSelects=country),
+    geom_point(aes(year, life.expectancy, color=region, size=population),
+               showSelected="country",
+               clickSelects="country",
                data=TS(not.na))+
-    geom_path(aes(fertility.rate, year, group=country, colour=region,
-                  clickSelects=country),
+    geom_path(aes(fertility.rate, year, group=country, colour=region),
+              clickSelects="country",
               data=TS2(not.na), size=4, alpha=3/5)+
-    geom_point(aes(fertility.rate, year, color=region, size=population,
-                   showSelected=country, clickSelects=country),
+    geom_point(aes(fertility.rate, year, color=region, size=population),
+               showSelected="country",
+               clickSelects="country",
                data=TS2(not.na))+
     make_widerect(not.na, "year", data.fun=TS2)+
-  geom_point(aes(fertility.rate, life.expectancy, clickSelects=country,
-                 showSelected=year, colour=region, size=population,
+  geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population,
                  key=country), # key aesthetic for animated transitions!
+             clickSelects="country",
+             showSelected="year",
              data=SCATTER(not.na))+
     geom_text(aes(fertility.rate, life.expectancy, label=country,
-                  showSelected=country, showSelected2=year,
-                  clickSelects=country,
                   key=country), #also use key here!
+              showSelected=c("country", "year"),
+              clickSelects="country",
               data=SCATTER(not.na))+
     scale_size_animint(breaks=10^(5:9))+
     facet_grid(side ~ top, scales="free"),

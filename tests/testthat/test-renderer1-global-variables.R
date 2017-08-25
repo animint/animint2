@@ -3,6 +3,7 @@ acontext("global variables")
 viz <- list(scatter=ggplot()+
   geom_point(aes(y=Petal.Length, x=Sepal.Length,
                 color=Species),
+             showSelected="Species",
             data=iris))
 
 myScript <- 'myArray = [];

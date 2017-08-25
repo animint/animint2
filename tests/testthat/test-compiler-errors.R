@@ -1,16 +1,16 @@
 acontext("compiler errors")
 
-test_that("aes(showSelected=var1, showSelected=var2) is an error", {
+test_that("aes(showSelected=var1, showSelected2=var2) is an error", {
   viz <- list(
     petals=ggplot()+
       geom_point(aes(Petal.Width, Petal.Length,
                      showSelected=Species,
-                     showSelected=Sepal.Width),
+                     showSelected2=Sepal.Width),
                  data=iris)
     )
   expect_error({
     animint2dir(viz, open.browser=FALSE)
-  }, "aes names must be unique, problems: showSelected")
+  }, "Use of clickSelects and showSelected as aesthetics has been deprecated. Please use as parameters")
 })
 
 test_that("informative error for time option with no showSelected", {
@@ -28,7 +28,8 @@ test_that("informative error for time option with no showSelected", {
 test_that("no error for time option with clickSelects", {
   viz <- list(
     petals=ggplot()+
-      geom_point(aes(Petal.Width, Petal.Length, clickSelects=Species),
+      geom_point(aes(Petal.Width, Petal.Length),
+                 clickSelects="Species",
                  data=iris),
     time=list(variable="Species", ms=3000)
   )
@@ -38,7 +39,8 @@ test_that("no error for time option with clickSelects", {
 test_that("no error for time option with showSelected", {
   viz <- list(
     petals=ggplot()+
-      geom_point(aes(Petal.Width, Petal.Length, showSelected=Species),
+      geom_point(aes(Petal.Width, Petal.Length),
+                 showSelected="Species",
                  data=iris),
     time=list(variable="Species", ms=3000)
   )
@@ -55,20 +57,18 @@ test_that("no error for time option with color", {
   info <- animint2dir(viz, open.browser=FALSE)
 })
 
-data("WorldBank", package="animint")
+data("WorldBank", package="animint2")
 viz.no.duration <- list(
   scatter=ggplot()+
     geom_point(aes(x=life.expectancy, y=fertility.rate, color=region,
-                   key=country,
-                   showSelected=year,
-                   clickSelects=country),
+                   key=country),
+               showSelected="year",
+               clickSelects="country",
                data=WorldBank)+
-    geom_text(aes(x=life.expectancy, y=fertility.rate, label=country,
-                  showSelected=year,
-                  showSelected2=country,
-                  showSelected3=region,
-                  clickSelects=country),
-              data=WorldBank),
+    geom_text(aes(x=life.expectancy, y=fertility.rate, label=country),
+              data=WorldBank,
+              showSelected=c("year", "country", "region"),
+              clickSelects="country"),
   first=list(
     year=1970,
     country=c("Canada", "India", "Pakistan", "Japan"),
@@ -87,22 +87,20 @@ test_that("warn no key for geom_text with showSelected=duration var", {
   viz.duration$duration <- list(year=2000)
   expect_warning({
     info <- animint2dir(viz.duration, open.browser=FALSE)
-  }, "to ensure that smooth transitions are interpretable, aes(key) should be specifed for geoms with aes(showSelected=year), problem: geom2_text_scatter", fixed=TRUE)
+  }, "to ensure that smooth transitions are interpretable, aes(key) should be specifed for geoms with showSelected=year, problem: geom2_text_scatter", fixed=TRUE)
 })
 
 viz.key.duration <- list(
   scatter=ggplot()+
     geom_point(aes(x=life.expectancy, y=fertility.rate, color=region,
-                   key=country,
-                   showSelected=year,
-                   clickSelects=country),
+                   key=country),
+               showSelected="year",
+               clickSelects="country",
                data=WorldBank)+
     geom_text(aes(x=life.expectancy, y=fertility.rate, label=country,
-                  showSelected=year,
-                  showSelected2=country,
-                  showSelected3=region,
-                  key=country,
-                  clickSelects=country),
+                  key=country),
+                  showSelected=c("year", "country", "region"),
+                  clickSelects="country",              
               data=WorldBank),
   first=list(
     year=1970,
@@ -124,13 +122,14 @@ test_that("warning for position=stack and showSelected", {
     count = c(replicate(4, rbinom(5, 50, 0.5))),
     stack = rep(rep(1:2, each = 5), 2),
     facet = rep(1:2, each = 10)
-  )
+    )
+  df$key <- with(df, paste(stack, letter))
   gg <- ggplot() +
     theme_bw()+
     theme(panel.margin=grid::unit(0, "lines"))+
     geom_bar(
-      aes(letter, count, fill = stack, showSelected=facet,
-          key=paste(stack, letter)),
+      aes(letter, count, fill = stack, key=key),
+      showSelected="facet",
       data = df,
       stat = "identity",
       position="stack"

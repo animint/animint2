@@ -183,12 +183,12 @@ tips$sex_smoker <- with(tips, interaction(sex, smoker))
 ss.viz <- list(
   p1 = ggplot() + theme(legend.position = "none") +
     geom_point(data = tips, position = "jitter", 
-               aes(x = sex, y = smoker, colour = sex_smoker,
-                   clickSelects = sex_smoker)), 
+               aes(x = sex, y = smoker, colour = sex_smoker),
+               clickSelects = "sex_smoker"), 
   p2 = ggplot() +
     geom_point(data = tips,
-               aes(x = total_bill, y = tip, colour = sex_smoker,
-                   showSelected = sex_smoker))
+               aes(x = total_bill, y = tip, colour = sex_smoker),
+               showSelected = "sex_smoker")
   )
 
 test_that("renderer can handle no grid lines", {

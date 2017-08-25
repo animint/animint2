@@ -4,7 +4,7 @@
 \alias{setPlotSizes}
 \title{Set plot width and height for all plots}
 \usage{
-setPlotSizes(meta)
+setPlotSizes(meta, AllPlotsInfo)
 }
 \arguments{
 \item{meta}{meta object with all information}

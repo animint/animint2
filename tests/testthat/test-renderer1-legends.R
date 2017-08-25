@@ -1,19 +1,20 @@
 acontext("legends")
 
-data(WorldBank, package="animint")
+data(WorldBank, package="animint2")
 breaks <- 10^(4:9)
 viz <-
   list(ts=ggplot()+
        make_tallrect(WorldBank, "year")+
-       geom_line(aes(year, life.expectancy, group=country, colour=region,
-                     clickSelects=country),
+       geom_line(aes(year, life.expectancy, group=country, colour=region),
+                 clickSelects="country",
                  data=WorldBank, size=3, alpha=3/5),
        scatter=ggplot()+
-       geom_point(aes(fertility.rate, life.expectancy, clickSelects=country,
-                      showSelected=year, colour=region, size=population),
+       geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population),
+                  clickSelects="country",
+                  showSelected=c("year"),
                   data=WorldBank)+
-       geom_text(aes(fertility.rate, life.expectancy, label=country,
-                     showSelected=country, showSelected2=year),
+       geom_text(aes(fertility.rate, life.expectancy, label=country),
+                 showSelected=c("country", "year"),
                  data=WorldBank)+
        make_text(WorldBank, 5, 80, "year")+
        scale_size_animint(breaks=breaks))
@@ -28,11 +29,12 @@ test_that('breaks are respected', {
 
 test_that('hiding both legends works with geom_point(show.legend=FALSE)', {
   viz$scatter <- ggplot()+
-    geom_point(aes(fertility.rate, life.expectancy, clickSelects=country,
-                   showSelected=year, colour=region, size=population),
+    geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population),
+               clickSelects="country",
+               showSelected=c("year"),
                data=WorldBank, show.legend=FALSE)+
-    geom_text(aes(fertility.rate, life.expectancy, label=country,
-                  showSelected=country, showSelected2=year),
+    geom_text(aes(fertility.rate, life.expectancy, label=country),
+              showSelected=c("country", "year"),
               data=WorldBank)+
     make_text(WorldBank, 5, 80, "year")
   info <- animint2dir(viz, open.browser=FALSE)

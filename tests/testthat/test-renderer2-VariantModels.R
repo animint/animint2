@@ -1,6 +1,6 @@
 acontext("VariantModels data viz")
 
-data(VariantModels, package = "animint")
+data(VariantModels, package = "animint2")
 
 auc.min.error <- subset(VariantModels$auc, metric.name=="min.error")
 
@@ -48,6 +48,17 @@ first.list$test.fold <- 2
 minima.df <- VariantModels$minima
 minima.df$thresh.type <- "min error"
 
+data_auc = add.filterVar.rev(VariantModels$roc)
+data_auc$showVar <- with(data_auc,
+                         paste0(filterVar, "_fold", test.fold))
+
+data_roc <- VariantModels$roc
+data_roc$showVar <- with(data_roc,
+                         paste0(filterVar, "_fold", test.fold))
+
+data_error <- add.filterVar.fac(VariantModels$thresholds)
+data_error$clickVar <- with(data_error,
+                   paste0(filterVar.fac, "_fold", test.fold))
 viz <- list(
   auc=ggplot()+
     ggtitle("Performance on 3 test folds")+
@@ -60,26 +71,22 @@ viz <- list(
     scale_color_manual(values=method.colors, guide="none")+
     scale_fill_manual("threshold", values=thresh.colors, guide="none")+
     geom_point(aes(metric.value, filterVar.fac, color=method,
-                   fill=thresh.type,
-                   showSelected=method,
-                   showSelected2=thresh.type,
-                   clickSelects=test.fold),
+                   fill=thresh.type),
+               clickSelects="test.fold",
+               showSelected=c("method", "thresh.type"),
                size=5,
                pch=21,
                data=add.filterVar.rev(VariantModels$auc))+
     geom_point(aes(
       error.or.Inf,
-      filterVar.fac, 
-      showSelected=test.fold,
+      filterVar.fac,
       key=filterVar,
-      showSelected2=thresh.type,
-      showSelected3=method,
-      showSelected.variable=paste0(filterVar, "_fold", test.fold),
-      showSelected.value=threshold,
-      fill=thresh.type, color=method),
+      fill=thresh.type, color=method), 
+      showSelected=c("test.fold", "method", "thresh.type",
+                     showVar="threshold"),
                size=4,
                pch=21,
-               data=add.filterVar.rev(VariantModels$roc)),
+               data=data_auc),
   roc=ggplot()+
     ggtitle("ROC curves by weights and test fold")+
     scale_y_continuous("True positive rate")+
@@ -99,41 +106,38 @@ viz <- list(
         lapply(label_df, paste)
       }
     })+
-    geom_path(aes(FPR, TPR, clickSelects=test.fold,
+    geom_path(aes(FPR, TPR,
                   ##showSelected=method, #not needed!
                   group=method, tooltip=method, color=method),
+              clickSelects="test.fold",
               size=5,
               data=VariantModels$roc)+
     scale_fill_manual("threshold", values=thresh.colors)+
     geom_point(aes(FPR, TPR, color=method,
                    ##showSelected=method, #not needed!
-                   clickSelects=test.fold,
                    fill=thresh.type),
+               clickSelects="test.fold",
                pch=21,
                size=4,
                data=subset(VariantModels$auc, metric.name=="auc"))+
     geom_point(aes(
-      FPR, TPR, clickSelects=test.fold,
+      FPR, TPR,
       key=method,
-      showSelected=test.fold,
-      showSelected.variable=paste0(filterVar, "_fold", test.fold),
-      showSelected.value=threshold,
       ##showSelected=method, #not needed!
       fill=thresh.type,
       color=method),
+      clickSelects="test.fold",
+      showSelected=c("test.fold", showVar="threshold"),
                size=3,
                pch=21,
-               data=VariantModels$roc),
+               data=data_roc),
   error=ggplot()+
-    geom_hline(aes(yintercept=min.errors,
-                   showSelected2=thresh.type,
-                   showSelected=test.fold),
+    geom_hline(aes(yintercept=min.errors),
+               showSelected=c("test.fold", "thresh.type"),
                data=minima.df,
                color="grey50")+
-    geom_vline(aes(xintercept=threshold,
-                   showSelected2=method,
-                   showSelected3=thresh.type,
-                   showSelected=test.fold),
+    geom_vline(aes(xintercept=threshold),
+               showSelected=c("test.fold", "thresh.type", "method"),
                data=add.filterVar.fac(auc.min.error),
                color="grey50")+
     theme_bw()+
@@ -147,23 +151,18 @@ viz <- list(
     }, scales="free", space="fixed")+
     scale_color_manual(values=fp.fn.colors)+
     geom_line(aes(threshold, error.value,
-                  showSelected=test.fold,
-                  showSelected2=method,
-                  showSelected3=thresh.type,
                   group=error.type, color=error.type),
+              showSelected=c("test.fold", "thresh.type", "method"),
               data=add.filterVar.fac(VariantModels$error))+
     scale_fill_manual(values=method.colors, guide="none")+
     geom_tallrect(aes(
       xmin=xmin, xmax=xmax,
-      showSelected=test.fold,
-      showSelected2=method,
-      showSelected3=thresh.type,
-      clickSelects.variable=paste0(filterVar.fac, "_fold", test.fold),
-      clickSelects.value=threshold,
       fill=method),
+      showSelected=c("test.fold", "thresh.type", "method"),
+      clickSelects = c(clickVar="threshold"),
                   alpha=0.5,
                   color=NA,
-                  data=add.filterVar.fac(VariantModels$thresholds)),
+                  data=data_error),
   selector.types=list(method="multiple", thresh.type="multiple"),
   title="3-fold CV estimates variant calling test error",
   first=first.list,

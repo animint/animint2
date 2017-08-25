@@ -21,7 +21,8 @@ vi_lilac_chaser <- function(np = 10,
     p1 <- ggplot(data = df) +
         # Display the points
         geom_point(data = df,
-                   aes(x = sinv, y = cosv, showSelected = ptn),
+                   aes(x = sinv, y = cosv),
+                   showSelected = "ptn",
                    col = col,
                    size = p.size) +
         # Display the '+' mark

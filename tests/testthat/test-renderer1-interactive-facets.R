@@ -1,7 +1,7 @@
 acontext("Interactive facets")
 
 ## Example: 4 plots, 2 selectors.
-data(intreg, package = "animint")
+data(intreg, package = "animint2")
 signal.colors <- c(estimate="#0adb0a", latent="#0098ef")
 breakpoint.colors <- c("1breakpoint"="#ff7d7d", "0breakpoints"='#f6f4bf')
 model.linetypes <- c(margin="dotted",limit="dashed",regression="solid")
@@ -13,40 +13,38 @@ mmir.facets <-
        scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
        geom_tallrect(aes(xmin=first.base/1e6, xmax=last.base/1e6,
-                         fill=annotation,
-                         showSelected=signal),
+                         fill=annotation),
+                     showSelected="signal",
                      data=intreg$annotations)+
        scale_fill_manual(values=breakpoint.colors,guide="none")+
        geom_text(aes((first.base+last.base)/2e6, logratio+1/8,
-                     label=annotation,
-                     showSelected=signal),
+                     label=annotation),
+                 showSelected="signal",
                  data=intreg$annotations)+
        geom_blank(aes(first.base/1e6, logratio+2/8),
                   data=intreg$annotations)+
-       geom_point(aes(base/1e6, logratio,
-                      showSelected=signal),
+       geom_point(aes(base/1e6, logratio),
+                  showSelected="signal",
                   data=intreg$signals)+
-       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean,
-                        showSelected=signal,
-                        showSelected2=segments),
+       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean),
+                    showSelected=c("signal", "segments"),
                     data=intreg$segments,
                     colour=signal.colors[["estimate"]])+
-       geom_vline(aes(xintercept=base/1e6,
-                      showSelected=signal,
-                      showSelected2=segments),
+       geom_vline(aes(xintercept=base/1e6),
+                  showSelected=c("signal", "segments"),
                   colour=signal.colors[["estimate"]],
                   linetype="dashed",
                   data=intreg$breaks),
        penalty=ggplot()+
-       geom_tallrect(aes(xmin=min.L, xmax=max.L,
-                         showSelected=signal,
-                         clickSelects=segments),
+       geom_tallrect(aes(xmin=min.L, xmax=max.L),
+                     showSelected="signal",
+                     clickSelects="segments",
                      data=data.frame(intreg$selection, what="segments"),
                      alpha=1/2)+
        ylab("")+
        theme_animint(height=500, width=800)+
-       geom_segment(aes(min.L, feature, xend=max.L, yend=feature,
-                        clickSelects=signal),
+       geom_segment(aes(min.L, feature, xend=max.L, yend=feature),
+                    clickSelects="signal",
                     size=5,
                     data=data.frame(intreg$intervals, what="regression"))+
        geom_segment(aes(min.L, min.feature, xend=max.L, yend=max.feature,
@@ -55,11 +53,11 @@ mmir.facets <-
                     size=3,
                     data=data.frame(intreg$model, what="regression"))+
        scale_linetype_manual(values=model.linetypes)+
-       geom_segment(aes(min.L, cost, xend=max.L, yend=cost,
-                        showSelected=signal),
+       geom_segment(aes(min.L, cost, xend=max.L, yend=cost),
+                    showSelected="signal",
                     data=data.frame(intreg$selection, what="error"))+
-       geom_segment(aes(min.L, segments, xend=max.L, yend=segments,
-                        showSelected=signal),
+       geom_segment(aes(min.L, segments, xend=max.L, yend=segments),
+                    showSelected="signal",
                     data=data.frame(intreg$selection, what="segments"))+
        xlab("penalty value $L=f(x)$")+ # TODO: mathjax.
        facet_grid(what~.,scales="free"))

@@ -11,11 +11,12 @@ data(txhousing)
 
 viz <- list(
   ggdata=ggplot(txhousing)+
-    geom_line(aes(x = date, y = median, group = city, 
-                  clickSelects=city),
+    geom_line(aes(x = date, y = median, group = city), 
+              clickSelects="city",
               alpha = 0.6),
   selected=ggplot()+
-    geom_line(aes(x = date, y = median, group = city, showSelected=city),
+    geom_line(aes(x = date, y = median, group = city),
+              showSelected="city",
               data=txhousing),
   first=list(city="San Marcos")
 )

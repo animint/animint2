@@ -2,7 +2,7 @@ acontext("animation")
 
 library(maps)
 library(plyr)
-data(UStornadoes, package = "animint")
+data(UStornadoes, package = "animint2")
 stateOrder <- data.frame(state = unique(UStornadoes$state)[order(unique(UStornadoes$TornadoesSqMile), decreasing=T)], rank = 1:49) # order states by tornadoes per square mile
 UStornadoes$state <- factor(UStornadoes$state, levels=stateOrder$state, ordered=TRUE)
 UStornadoes$weight <- 1/UStornadoes$LandArea
@@ -15,14 +15,17 @@ UStornadoCounts <-
   ddply(UStornadoes, .(state, year), summarize, count=length(state))
 tornado.anim <-
   list(map=ggplot()+
-       geom_polygon(aes(x=long, y=lat, group=group, clickSelects=state),
-                    data=USpolygons, fill="black", colour="grey") +
-       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat,
-                        showSelected=year),
+       geom_polygon(aes(x=long, y=lat, group=group),
+                    data=USpolygons,
+                    clickSelects="state",
+                    fill="black", colour="grey") +
+       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
+                    showSelected="year",                    
                     colour="#55B1F7", data=UStornadoes),
        ts=ggplot()+
        make_tallrect(UStornadoCounts, "year")+
-       geom_line(aes(year, count, clickSelects=state, group=state),
+       geom_line(aes(year, count, group=state),
+                 clickSelects="state", 
                  data=UStornadoCounts, alpha=3/5, size=4),
        time=list(variable="year",ms=2000))
 
@@ -32,18 +35,20 @@ test_that("tornado animation frames correct", {
 })
 
 ## WorldBank/gapminder example.
-data(WorldBank, package = "animint")
+data(WorldBank, package = "animint2")
 motion <-
   list(scatter=ggplot()+
-       geom_point(aes(life.expectancy, fertility.rate, clickSelects=country,
-                      showSelected=year, colour=region, size=population),
+         geom_point(aes(life.expectancy, fertility.rate,
+                        colour=region, size=population),
+                        clickSelects="country",
+                        showSelected="year",
                   data=WorldBank)+
        make_text(WorldBank, 55, 9, "year")+
        scale_size_continuous(range=c(1.5,20)),
        ts=ggplot()+
        make_tallrect(WorldBank, "year")+
-       geom_line(aes(year, life.expectancy, group=country,
-                     clickSelects=country),
+       geom_line(aes(year, life.expectancy, group=country),
+                 clickSelects="country",
                  data=WorldBank, size=4, alpha=3/5),
        time=list(variable="year",ms=3000),
        duration=list(year=1000))
@@ -54,7 +59,7 @@ test_that("WorldBank animation frames correct", {
 })
 
 ## Evolution.
-data(generation.loci, package = "animint")
+data(generation.loci, package = "animint2")
 ## Example: 2 plots, 2 selectors.
 generations <- data.frame(generation=unique(generation.loci$generation))
 loci <- data.frame(locus=unique(generation.loci$locus))
@@ -72,19 +77,24 @@ generation.pop <- do.call(rbind,lapply(gl.list,with,{
 generation.pop$ancestral <- ancestral$ancestral[generation.pop$locus]
 evolution <- 
   list(ts=ggplot()+
-         geom_vline(aes(xintercept=generation,
-                        clickSelects=generation),
+         geom_vline(aes(xintercept=generation),
+                    clickSelects="generation",
                     data=generations, alpha=1/2, lwd=4)+
-         geom_line(aes(generation, frequency, group=population,
-                       showSelected=locus), data=generation.loci),
+         geom_line(aes(generation, frequency, group=population),
+                   showSelected="locus",
+                   data=generation.loci),
        predictions=ggplot()+
-         geom_point(aes(ancestral, estimated, showSelected=generation,
-                        clickSelects=locus),
+         geom_point(aes(ancestral, estimated),
+                    showSelected="generation",
+                    clickSelects="locus",               
                     data=generation.pop, size=4, alpha=3/4),
        loci=ggplot()+
-         geom_vline(aes(xintercept=locus, clickSelects=locus),
-                    data=loci, alpha=1/2, lwd=4)+
-         geom_point(aes(locus, frequency, showSelected=generation),
+         geom_vline(aes(xintercept=locus),
+                    data=loci,
+                    clickSelects="locus",
+                    alpha=1/2, lwd=4)+
+         geom_point(aes(locus, frequency),
+                    showSelected="generation",
                     data=generation.loci),
        duration=list(generation=1000),
        time=list(variable="generation",ms=2000))

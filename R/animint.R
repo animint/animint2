@@ -2,7 +2,7 @@
 #' @param meta environment with previously calculated plot data, and a new plot to parse, already stored in plot and plot.name.
 #' @return nothing, info is stored in meta.
 #' @export
-#' @import ggplot2 plyr
+#' @import plyr 
 parsePlot <- function(meta, plot, plot.name){
   ## adding data and mapping to each layer from base plot, if necessary
   for(layer.i in seq_along(plot$layers)) {
@@ -18,7 +18,7 @@ parsePlot <- function(meta, plot, plot.name){
     }
   }
   
-  built <- ggplot2::ggplot_build(plot)
+  built <- ggplot2Animint::ggplot_build(plot)
   plot.info <- list()
   
   ## Export axis specification as a combination of breaks and
@@ -26,7 +26,7 @@ parsePlot <- function(meta, plot, plot.name){
   ## be passed into d3 on the x axis scale instead of on the
   ## grid 0-1 scale). This allows transformations to be used
   ## out of the box, with no additional d3 coding.
-  theme.pars <- ggplot2:::plot_theme(plot)
+  theme.pars <- ggplot2Animint:::plot_theme(plot)
 
   ## Interpret panel.margin as the number of lines between facets
   ## (ignoring whatever grid::unit such as cm that was specified).
@@ -44,8 +44,31 @@ parsePlot <- function(meta, plot, plot.name){
     ##cat(sprintf("%4d / %4d layers\n", layer.i, length(plot$layers)))
     ## This is the layer from the original ggplot object.
     L <- plot$layers[[layer.i]]
+    
+    ## Use original mapping saved before calling parsePlot
+    ## This is to handle cases where the plots may share the same layer
+    ## If the layer mapping in one plot has been edited by the animint
+    ## compiler, the layer mapping in the other plots will also change
+    ## which will give error when we check if showSelected/clickSelects have
+    ## been used as aesthetics
+    L$mapping <- L$orig_mapping
+    
     ## If any legends are specified, add showSelected aesthetic
     L <- addShowSelectedForLegend(meta, plot.info$legend, L)
+    
+    ## Check if showSelected and clickSelects have been used as aesthetics
+    ## If yes, raise error
+    checkForSSandCSasAesthetics(L$mapping, plot.name)
+    
+    ## Handle the extra_params argument
+    ## -> handles .value/.variable named params
+    ## -> removes duplicates
+    ## -> removes duplicates due to showSelected legend
+    L$extra_params <- checkExtraParams(L$extra_params, L$mapping)
+    
+    ## Add the showSelected/clickSelects params to the aesthetics
+    ## mapping before calling ggplot_build
+    L$mapping <- addSSandCSasAesthetics(L$mapping, L$extra_params)
   }#layer.i
 
   ## need to call ggplot_build again because we've added to the plot.
@@ -54,12 +77,13 @@ parsePlot <- function(meta, plot, plot.name){
   ## we need to specify the variable corresponding to each legend. 
   ## To do this, we need to have the legend. 
   ## And to have the legend, I think that we need to use ggplot_build
-  built <- ggplot2::ggplot_build(plot)
+  built <- ggplot2Animint::ggplot_build(plot)
   ## TODO: implement a compiler that does not call ggplot_build at
   ## all, and instead does all of the relevant computations in animint
   ## code.
   ## 'strips' are really titles for the different facet panels
   plot.info$strips <- with(built, getStrips(plot$facet, panel))
+  
   ## the layout tells us how to subset and where to plot on the JS side
   plot.info$layout <- with(built, flag_axis(plot$facet, panel$layout))
   plot.info$layout <- with(built, train_layout(
@@ -85,7 +109,7 @@ parsePlot <- function(meta, plot, plot.name){
     plot$labels$y <- temp
   }
   is.blank <- function(el.name){
-    x <- ggplot2::calc_element(el.name, plot$theme)
+    x <- ggplot2Animint::calc_element(el.name, plot$theme)
     "element_blank"%in%attr(x,"class")
   }
 
@@ -184,7 +208,7 @@ storeLayer <- function(meta, g, g.data.varied){
 
 #' Save a layer to disk, save and return meta-data.
 #' @param l one layer of the ggplot object.
-#' @param d one layer of calculated data from ggplot2::ggplot_build(p).
+#' @param d one layer of calculated data from ggplot2Animint::ggplot_build(p).
 #' @param meta environment of meta-data.
 #' @param geom_num the number of geom in the plot. Each geom gets an increasing
 #' ID number starting from 1
@@ -233,7 +257,8 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## currently selected values of these variables are stored in
   ## plot.Selectors.
 
-  s.aes <- selector.aes(g$aes)
+  ## Separate .variable/.value selectors
+  s.aes <- selectSSandCS(g$aes)
   meta$selector.aes[[g$classed]] <- s.aes
 
   ## Do not copy group unless it is specified in aes, and do not copy
@@ -435,7 +460,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     g$geom <- "polygon"
   } else if(g$geom=="step"){
     datanames <- names(g.data)
-    g.data <- plyr::ddply(g.data, "group", function(df) ggplot2:::stairstep(df))
+    g.data <- plyr::ddply(g.data, "group", function(df) ggplot2Animint:::stairstep(df))
     g$geom <- "path"
   } else if(g$geom=="contour" | g$geom=="density2d"){
     g$aes[["group"]] <- "piece"
@@ -452,8 +477,8 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     ## clicking/hiding hexbins doesn't really make sense. Need to stop
     ## with an error if showSelected/clickSelects is used with hex.
     g$aes[["group"]] <- "group"
-    dx <- ggplot2::resolution(g.data$x, FALSE)
-    dy <- ggplot2::resolution(g.data$y, FALSE) / sqrt(3) / 2 * 1.15
+    dx <- ggplot2Animint::resolution(g.data$x, FALSE)
+    dy <- ggplot2Animint::resolution(g.data$y, FALSE) / sqrt(3) / 2 * 1.15
     hex <- as.data.frame(hexbin::hexcoords(dx, dy))[,1:2]
     hex <- rbind(hex, hex[1,]) # to join hexagon back to first point
     g.data$group <- as.numeric(interaction(g.data$group, 1:nrow(g.data)))
@@ -570,7 +595,6 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## names as the selectors. E.g. if chunk_order=list("year") then
   ## when year is clicked, we may need to download some new data for
   ## this geom.
-
   subset.vec <- unlist(pre.subset.order)
   if("chunk_vars" %in% names(g$params)){ #designer-specified chunk vars.
     designer.chunks <- g$params$chunk_vars
@@ -701,7 +725,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
 
   ## nest_order should contain both .variable .value aesthetics, but
   ## subset_order should contain only .variable.
-  if(0 < nrow(s.aes$showSelected$several)){
+  if((nrow(s.aes$showSelected$several) > 0)){
     g$nest_order <- with(s.aes$showSelected$several, {
       c(g$nest_order, paste(variable), paste(value))
     })
@@ -752,57 +776,6 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   }
 
   list(g=g, g.data.varied=g.data.varied, timeValues=AnimationInfo$timeValues)
-}
-
-
-##' Parse selectors from aes names.
-##' @title Parse selectors from aes names.
-##' @param a.vec character vector of aes names.
-##' @return list of selector info.
-##' @author Toby Dylan Hocking
-##' @export
-selector.aes <- function(a.list){
-  a.vec <- names(a.list)
-  if(is.null(a.vec))a.vec <- character()
-  stopifnot(is.character(a.vec))
-  cs.or.ss <- grepl("clickSelects|showSelected", a.vec)
-  for(v in c("value", "variable")){
-    regex <- paste0("[.]", v, "$")
-    is.v <- grepl(regex, a.vec)
-    if(any(is.v)){
-      a <- a.vec[is.v & cs.or.ss]
-      other.v <- if(v=="value")"variable" else "value"
-      other.a <- sub(paste0(v, "$"), other.v, a)
-      not.found <- ! other.a %in% a.vec
-      if(any(not.found)){
-        stop(".variable or .value aes not found")
-      }
-    }
-  }
-  aes.list <- list()
-  for(a in c("clickSelects", "showSelected")){
-    is.a <- grepl(a, a.vec)
-    is.value <- grepl("[.]value$", a.vec)
-    is.variable <- grepl("[.]variable$", a.vec)
-    var.or.val <- is.variable | is.value
-    a.value <- a.vec[is.a & is.value]
-    a.variable <- sub("value$", "variable", a.value)
-    single <- a.vec[is.a & (!var.or.val)]
-    ignored <- c()
-    if(1 < length(single)){
-      single.df <- data.frame(
-        aes.name=single,
-        data.var=paste(a.list[single]))
-      single.sorted <- single.df[order(single.df$data.var), ]
-      single.sorted$keep <- c(TRUE, diff(as.integer(single.df$data.var))!=0)
-      single <- with(single.sorted, paste(aes.name[keep]))
-      ignored <- with(single.sorted, paste(aes.name[!keep]))
-    }
-    aes.list[[a]] <-
-      list(several=data.frame(variable=a.variable, value=a.value),
-           one=single, ignored=ignored)
-  }
-  aes.list
 }
 
 
@@ -924,26 +897,54 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   }
 
   ## Extract essential info from ggplots, reality checks.
-  ggplot.list <- list()
-  AllPlotsInfo <- list()
   for(list.name in names(plot.list)){
     p <- plot.list[[list.name]]
     if(is.ggplot(p)){
+      ## Save original mapping to every layer so that we can use it afterwards
+      ## This is required because we edit the original plot list created for the
+      ## animint2dir function. See the discussion here:
+      ## https://github.com/tdhock/animint2/pull/5#issuecomment-323072502
+      for(layer_i in seq_along(p$layers)){
+        ## Viz has not been used before
+        if(is.null(p$layers[[layer_i]]$orig_mapping)){
+          p$layers[[layer_i]]$orig_mapping <- 
+            if(is.null(p$layers[[layer_i]]$mapping)){
+              ## Get mapping from plot if not defined in layer
+              p$mapping
+            }else{
+              p$layers[[layer_i]]$mapping
+            }
+        }else{
+          ## This is not the first time this layer is being processed, so we replace
+          ## the mapping with the original mapping here
+          p$layers[[layer_i]]$mapping <- p$layers[[layer_i]]$orig_mapping
+        }
+      }
+      
       ## Before calling ggplot_build, we do some error checking for
       ## some animint extensions.
       checkPlotForAnimintExtensions(p, list.name)
-      
-      ## If plot is correct, save to meta for further processing
-      parsed_info <- parsePlot(meta, p, list.name) # calls ggplot_build.
-      AllPlotsInfo[[list.name]] <- parsed_info[[1]]
-      ggplot.list[[list.name]] <- parsed_info[2:3]
     }else if(is.list(p)){ ## for options.
       meta[[list.name]] <- p
     }else{
       stop("list items must be ggplots or option lists, problem: ", list.name)
     }
   }
-
+  
+  ## Call ggplot_build in parsPlot for all ggplots
+  ggplot.list <- list()
+  AllPlotsInfo <- list()
+  for(list.name in names(plot.list)){
+    p <- plot.list[[list.name]]
+    if(is.ggplot(p)){
+      ## If plot is correct, save to meta for further processing
+      parsed_info <- parsePlot(meta, p, list.name) # calls ggplot_build.
+      AllPlotsInfo[[list.name]] <- parsed_info$plot.info
+      ggplot.list[[list.name]]$ggplot <- parsed_info$ggplot
+      ggplot.list[[list.name]]$built <- parsed_info$built
+    }
+  }
+  
   ## After going through all of the meta-data in all of the ggplots,
   ## now we have enough info to save the TSV file database.
   geom_num <- 0
@@ -953,6 +954,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
     for(layer.i in seq_along(ggplot.info$ggplot$layers)){
       L <- ggplot.info$ggplot$layers[[layer.i]]
       df <- ggplot.info$built$data[[layer.i]]
+      
       ## cat(sprintf(
       ##   "saving layer %4d / %4d of ggplot %s\n",
       ##   layer.i, length(ggplot.info$built$data),
@@ -1091,11 +1093,15 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
                 c(ss, AllPlotsInfo[[p.name]]$axis_domains[[axis]]$selectors)
             }
           }
+          ## Set up built_data to compute domains
+          built_data <- ggplot.list[[p.name]]$built$plot$layers[[num]]$data
+          built_data$PANEL <- ggplot.list[[p.name]]$built$data[[num]]$PANEL
+
           if(length(ss_selectors) > 0){
             subset_domains[num] <- compute_domains(
-              ggplot.list[[p.name]]$built$data[[num]],
+              built_data,
               axis, strsplit(names(g.list[[p.name]])[[num]], "_")[[1]][[2]],
-              names(sort(ss_selectors)), split_by_panel)
+              names(sort(ss_selectors)), split_by_panel, g.list[[p.name]][[num]]$g$aes)
           }
         }
         subset_domains <- subset_domains[!sapply(subset_domains, is.null)]
@@ -1241,13 +1247,25 @@ if (!requireNamespace("servr")) install.packages("servr")
 servr::httd("', normalizePath( out.dir,winslash="/" ), '")')
       browseURL(sprintf("%s/index.html", out.dir))
   }
+  
+  ## After everything has been done, we restore the original mappings
+  ## in the plot.list. This is necessary for visualizations where we use
+  ## the same plot.list with minor edits in another viz
+  ## See this comment:
+  ## https://github.com/tdhock/animint2/pull/5#issuecomment-323074518
+  for(plot_i in ggplot.list){
+    for(layer_i in seq_along(plot_i$ggplot$layers)){
+      plot_i$ggplot$layers[[layer_i]]$mapping <-
+        plot_i$ggplot$layers[[layer_i]]$orig_mapping
+    } 
+  }
   invisible(meta)
   ### An invisible copy of the R list that was exported to JSON.
 }
 
 
 #' Function to get legend information from ggplot
-#' @param plistextra output from ggplot2::ggplot_build(p)
+#' @param plistextra output from ggplot2Animint::ggplot_build(p)
 #' @return list containing information for each legend
 #' @export
 getLegendList <- function(plistextra){
@@ -1255,7 +1273,7 @@ getLegendList <- function(plistextra){
   scales <- plot$scales
   layers <- plot$layers
   default_mapping <- plot$mapping
-  theme <- ggplot2:::plot_theme(plot)
+  theme <- ggplot2Animint:::plot_theme(plot)
   position <- theme$legend.position
   # by default, guide boxes are vertically aligned
   if(is.null(theme$legend.box)) theme$legend.box <- "vertical" else theme$legend.box
@@ -1294,17 +1312,17 @@ getLegendList <- function(plistextra){
     if(guide.type=="colourbar")guide.type <- "legend"
     guides.args[[aes.name]] <- guide.type
   }
-  guides.result <- do.call(ggplot2::guides, guides.args)
+  guides.result <- do.call(ggplot2Animint::guides, guides.args)
   guides.list <- plyr::defaults(plot$guides, guides.result)
   gdefs <-
-    ggplot2:::guides_train(scales = scales,
+    ggplot2Animint:::guides_train(scales = scales,
                            theme = theme,
                            guides = guides.list,
                            labels = plot$labels)
   if (length(gdefs) != 0) {
-    gdefs <- ggplot2:::guides_merge(gdefs)
-    gdefs <- ggplot2:::guides_geom(gdefs, layers, default_mapping)
-  } else (ggplot2:::zeroGrob())
+    gdefs <- ggplot2Animint:::guides_merge(gdefs)
+    gdefs <- ggplot2Animint:::guides_geom(gdefs, layers, default_mapping)
+  } else (ggplot2Animint:::zeroGrob())
   names(gdefs) <- sapply(gdefs, function(i) i$title)
   
   ## adding the variable used to each LegendList
