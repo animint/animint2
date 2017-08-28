@@ -939,7 +939,7 @@ saveChunks <- function(x, meta){
   if(is.data.frame(x)){
     this.i <- meta$chunk.i
     csv.name <- sprintf("%s_chunk%d.tsv", meta$g$classed, this.i)
-    write.table(x, file.path(meta$out.dir, csv.name), quote=FALSE, 
+    data.table::fwrite(x, file.path(meta$out.dir, csv.name), quote=FALSE, 
                 row.names=FALSE, sep="\t")
     meta$chunk.i <- meta$chunk.i + 1L
     this.i

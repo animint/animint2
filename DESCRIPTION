@@ -20,6 +20,7 @@ Imports:
     stats,
     tibble,
     lazyeval,
+    data.table,
 Suggests:
     knitr (>= 1.5.33),
     servr,
