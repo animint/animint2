@@ -52,7 +52,7 @@ GeomTallRect <- ggplot2Animint::ggproto("GeomTallRect", ggplot2Animint::Geom,
                                        col = coords$colour,
                                        fill = scales::alpha(coords$fill, 
                                                             coords$alpha), 
-                                       lwd = coords$size * .pt,
+                                       lwd = coords$size * ggplot2Animint::.pt,
                                        lty = coords$linetype,
                                        lineend = "butt"
                                      )
@@ -120,7 +120,7 @@ GeomWideRect <- ggplot2Animint::ggproto("GeomWideRect", ggplot2Animint::Geom,
                                        col = coords$colour,
                                        fill = scales::alpha(coords$fill, 
                                                             coords$alpha), 
-                                       lwd = coords$size * .pt,
+                                       lwd = coords$size * ggplot2Animint::.pt,
                                        lty = coords$linetype,
                                        lineend = "butt"
                                      )
