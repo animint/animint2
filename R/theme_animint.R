@@ -22,5 +22,5 @@ theme_animint <- function(...){
   elements <- list(...)
   names(elements) <- paste0("animint.", names(elements))
   elements$validate <- FALSE
-  do.call(theme, elements)
+  do.call(ggplot2Animint::theme, elements)
 }
