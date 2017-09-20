@@ -15,3 +15,4 @@ list containing information for each legend
 \description{
 Function to get legend information from ggplot
 }
+

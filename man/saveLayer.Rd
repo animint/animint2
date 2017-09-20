@@ -22,3 +22,4 @@ list representing a layer, with corresponding aesthetics, ranges, and groups.
 \description{
 Save a layer to disk, save and return meta-data.
 }
+

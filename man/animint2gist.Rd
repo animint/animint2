@@ -32,3 +32,4 @@ viz <- list(petal=ggplot()+
 animint2gist(viz, description = "My animint plot")
 }
 }
+

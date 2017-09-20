@@ -15,3 +15,4 @@ hexadecimal color value or "transparent" if is.na
 \description{
 Convert R colors to RGB hexadecimal color values
 }
+

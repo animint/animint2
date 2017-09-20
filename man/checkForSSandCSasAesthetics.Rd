@@ -19,3 +19,4 @@ checkForSSandCSasAesthetics(aesthetics, plot_name)
 Check if showSelected and clickSelects have been used as aesthetics
 as in old syntax. If yes, raise error
 }
+

@@ -15,3 +15,4 @@ list of legend information, NULL if guide=FALSE.
 \description{
 Function to get legend information for each scale
 }
+

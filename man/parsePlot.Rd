@@ -15,3 +15,4 @@ nothing, info is stored in meta.
 \description{
 Convert a ggplot to a list.
 }
+

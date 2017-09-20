@@ -30,3 +30,4 @@ ggplot2 geom with ymin and ymax aesthetics that covers the entire x range, usefu
    source(system.file("examples/WorldBank.R", package = "animint"))
  }
 }
+

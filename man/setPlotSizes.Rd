@@ -15,3 +15,4 @@ setPlotSizes(meta, AllPlotsInfo)
 \description{
 Set plot width and height for all plots
 }
+

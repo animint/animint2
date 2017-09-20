@@ -20,3 +20,4 @@ port number of the successful attempt
 \description{
 Run a blocking command in a child R session (for example a file server or shiny app)
 }
+

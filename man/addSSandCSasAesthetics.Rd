@@ -22,3 +22,4 @@ Add the showSelected/clickSelects params to the aesthetics mapping
 Used before calling ggplot_build in parsePlot and while checking
 animint extensions to raise error
 }
+

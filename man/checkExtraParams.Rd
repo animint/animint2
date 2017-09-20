@@ -18,3 +18,4 @@ Modified \code{extra_params} list
 \description{
 Check \code{extra_params} argument for duplicates, non-named list
 }
+

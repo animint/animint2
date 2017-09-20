@@ -13,3 +13,4 @@ A new environment to store meta data
 Get a new environment to store meta-data. Used to alter state in the
 lower-level functions
 }
+

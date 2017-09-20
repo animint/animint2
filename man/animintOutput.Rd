@@ -15,3 +15,4 @@ Shiny ui output function
 \seealso{
 http://shiny.rstudio.com/articles/building-outputs.html
 }
+
