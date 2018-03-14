@@ -14,6 +14,14 @@ remDr$refresh()
 Sys.sleep(1)
 html <- getHTML()
 
+## This is a test for URL links displayed inside of animint Rmd.
+test_that("one url for each animint viz", {
+  nodes <- getNodeSet(html, "//table[@class='urltable']//a")
+  expect_equal(length(nodes), 4)
+  ## TODO maybe also test URLs which point to individual animints
+  ## e.g. http://localhost:4848/animint-htmltest/breakpoints/#{}
+})
+
 test_that("knit_print.animint renders five x axis titles", {
   nodes <- getNodeSet(html, "//text[@class='xtitle']")
   value.vec <- sapply(nodes, xmlValue)
