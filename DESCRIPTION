@@ -7,7 +7,7 @@ Maintainer: Toby Dylan Hocking <toby.hocking@r-project.org>
 Description: A redesign of animint with a new syntax: clickSelects
     and showSelected are now specified as parameters.
 Depends:
-    R (>= 3.3.2),
+    R (>= 3.3.0),
     ggplot2Animint (>= 2.1.0)
 Imports:
     digest,
@@ -27,7 +27,6 @@ Suggests:
     shiny,
     htmltools,
     rmarkdown,
-    digest,
     testthat,
     RSelenium,
     XML,
