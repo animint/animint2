@@ -3,7 +3,11 @@
 #' @return nothing, info is stored in meta.
 #' @export
 #' @import plyr
+#' @import utils
+#' @import stats
+#' @import grDevices
 #' @import ggplot2Animint
+#' @importFrom ggplot2Animint zeroGrob
 parsePlot <- function(meta, plot, plot.name){
   ## adding data and mapping to each layer from base plot, if necessary
   for(layer.i in seq_along(plot$layers)) {
@@ -859,7 +863,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
 #' @param css.file character string for non-empty css file to include. Provided file will be copied to the output directory as styles.css
 #' @return invisible list of ggplots in list format.
 #' @export
-#' @seealso \code{\link{ggplot2}}
+#' @seealso \code{\link[ggplot2Animint]{ggplot_build}}
 #' @example inst/examples/animint.R
 animint2dir <- function(plot.list, out.dir = tempfile(),
                         json.file = "plot.json", open.browser = interactive(),
