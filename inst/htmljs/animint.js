@@ -1690,6 +1690,7 @@ var animint = function (to_select, json_file) {
 	});
       }
     }else{//has neither clickSelects nor clickSelects.variable.
+      // GSOC18 new get_alpha_stroke
       elements.style("opacity", get_alpha);
     }
     var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
