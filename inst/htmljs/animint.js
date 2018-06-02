@@ -1078,28 +1078,15 @@ var animint = function (to_select, json_file) {
       return size;
     };
 
-    //GSOC18 get_alpha_stroke ONGOING
+    //GSOC18 get_alpha_stroke Work in progress during the weekend
     var get_alpha_stroke = function (d) {
       var a;
-      if (aes.hasOwnProperty("alpha") && d.hasOwnProperty("alpha")) {
+      if (aes.hasOwnProperty("alpha") && d.hasOwnProperty("alpha")) { //GSOC18 Change "alpha" for "alpha_stroke"
         a = d["alpha"];
       } else {
-        a = base_opacity;
+        a = base_opacity; //GSOC18 Modify base_opacity with a new variable I guess
       }
       return a;
-    };
-    var size = 2;
-    if(g_info.geom == "text"){
-      size = 12;
-    }
-    if (g_info.params.hasOwnProperty("size")) {
-      size = g_info.params.size;
-    }
-    var get_size = function (d) {
-      if (aes.hasOwnProperty("size") && d.hasOwnProperty("size")) {
-        return d["size"];
-      }
-      return size;
     };
 
     // stroke_width for geom_point
