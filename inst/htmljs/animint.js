@@ -27,13 +27,13 @@ var animint = function (to_select, json_file) {
             d[v_name] = parseInt(d[v_name]);
           } else if (r_type == "numeric") {
             d[v_name] = parseFloat(d[v_name]);
-          } else if (r_type == "factor" || r_type == "rgb"
-		     || r_type == "linetype" || r_type == "label"
+          } else if (r_type == "factor" || r_type == "rgb" 
+		     || r_type == "linetype" || r_type == "label" 
 		     || r_type == "character") {
             // keep it as a character
           } else if (r_type == "character" & v_name == "outliers") {
             d[v_name] = parseFloat(d[v_name].split(" @ "));
-          }
+          } 
       	}
       }
       return d;
@@ -298,7 +298,7 @@ var animint = function (to_select, json_file) {
       .attr("class", "plottitle")
       .attr("font-family", "sans-serif")
       .attr("font-size", "20px")
-      .attr("transform", "translate(" + plotdim.title.x + "," +
+      .attr("transform", "translate(" + plotdim.title.x + "," + 
         plotdim.title.y + ")")
       .style("text-anchor", "middle");
 
@@ -321,12 +321,12 @@ var animint = function (to_select, json_file) {
       //margin.right += 5;
     }
     plotdim.margin = margin;
-
-    var strip_heights = p_info.strips.top.map(function(entry){
+    
+    var strip_heights = p_info.strips.top.map(function(entry){ 
       return measureText(entry, 11).height;
     });
-    var strip_widths = p_info.strips.right.map(function(entry){
-      return measureText(entry, 11).height;
+    var strip_widths = p_info.strips.right.map(function(entry){ 
+      return measureText(entry, 11).height; 
     });
 
     // compute the number of x/y axes, max strip height per row, and
@@ -369,10 +369,10 @@ var animint = function (to_select, json_file) {
     var strip_height = d3.max(cum_height_per_row);
 
     // the *entire graph* height/width
-    var graph_width = p_info.options.width -
+    var graph_width = p_info.options.width - 
         ncols * (margin.left + margin.right + strip_width) -
         n_yaxes * axispaddingy - ytitlepadding;
-    var graph_height = p_info.options.height -
+    var graph_height = p_info.options.height - 
         nrows * (margin.top + margin.bottom + strip_height) -
         titlepadding - n_xaxes * axispaddingx - xtitlepadding;
 
@@ -632,12 +632,12 @@ var animint = function (to_select, json_file) {
       if(!axis.yticks) {
     	styles.push("#"+p_name+" #yaxis .tick"+" line{stroke:none;}");
       }
-
+      
       // creating g element for background, grid lines, and border
       // uses insert to draw it right before plot title
       var background = svg.insert("g", ".plottitle")
         .attr("class", "background bgr" + panel_i);
-
+      
       // drawing background
       if(Object.keys(p_info.panel_background).length > 1) {
         background.append("rect")
@@ -653,8 +653,8 @@ var animint = function (to_select, json_file) {
                                           p_info.panel_background.size);
           });
       }
-
-      // function to draw major/minor grid lines
+      
+      // function to draw major/minor grid lines 
       var grid_line = function(grid_background, grid_class) {
         // if grid lines are defined
         if(Object.keys(grid_background).length > 1) {
@@ -718,7 +718,7 @@ var animint = function (to_select, json_file) {
       // drawing the grid lines
       grid_line(p_info.grid_minor, "grid_minor");
       grid_line(p_info.grid_major, "grid_major");
-
+      
       // drawing border
       // uses insert to draw it right before the #plottitle
       if(Object.keys(p_info.panel_border).length > 1) {
@@ -744,10 +744,10 @@ var animint = function (to_select, json_file) {
 	.attr("class", "ytitle")
 	.style("text-anchor", "middle")
 	.style("font-size", "11px")
-	.attr("transform", "translate(" +
+	.attr("transform", "translate(" + 
 	      ytitle_x +
 	      "," +
-	      (ytitle_top + ytitle_bottom)/2 +
+	      (ytitle_top + ytitle_bottom)/2 + 
 	      ")rotate(270)")
       ;
     }
@@ -757,10 +757,10 @@ var animint = function (to_select, json_file) {
 	.attr("class", "xtitle")
 	.style("text-anchor", "middle")
 	.style("font-size", "11px")
-	.attr("transform", "translate(" +
+	.attr("transform", "translate(" + 
 	      (xtitle_left + xtitle_right)/2 +
-	      "," +
-	      xtitle_y +
+	      "," + 
+	      xtitle_y + 
 	      ")")
       ;
     }
@@ -797,7 +797,7 @@ var animint = function (to_select, json_file) {
 	}
       }
     }
-    s_info.legend_tds =
+    s_info.legend_tds = 
       element.selectAll("tr."+legend_class_name(s_name)+" td.legend_entry_label")
     ;
     update_legend_opacity(s_name);
@@ -809,7 +809,7 @@ var animint = function (to_select, json_file) {
   function getTSVpath(tsv_name){
     return dirs.concat(tsv_name).join("/");
   }
-
+  
   /**
    * copy common chunk tsv to varied chunk tsv, returning an array of
    * objects.
@@ -968,7 +968,7 @@ var animint = function (to_select, json_file) {
     g_info.subset_order.forEach(function (aes_name) {
       var selected, values;
       var new_arrays = [];
-      if(0 < aes_name.indexOf(".variable")){
+      if(0 < aes_name.indexOf(".variable")){ 
 	selected_arrays.forEach(function(old_array){
 	  var some_data = chunk;
 	  old_array.forEach(function(value){
@@ -992,7 +992,7 @@ var animint = function (to_select, json_file) {
           var s_name = g_info.aes[aes_name];
           selected = Selectors[s_name].selected;
 	}
-	if(isArray(selected)){
+	if(isArray(selected)){ 
 	  values = selected; //multiple selection.
 	}else{
 	  values = [selected]; //single selection.
@@ -1077,18 +1077,7 @@ var animint = function (to_select, json_file) {
       }
       return size;
     };
-
-    //GSOC18 get_alpha_stroke Work in progress during the weekend
-    var get_alpha_stroke = function (d) {
-      var a;
-      if (aes.hasOwnProperty("alpha") && d.hasOwnProperty("alpha")) { //GSOC18 Change "alpha" for "alpha_stroke"
-        a = d["alpha"];
-      } else {
-        a = base_opacity; //GSOC18 Modify base_opacity with a new variable I guess
-      }
-      return a;
-    };
-
+    
     // stroke_width for geom_point
     var stroke_width = 1;  // by default ggplot2 has 0.5, animint has 1
     if (g_info.params.hasOwnProperty("stroke")) {
@@ -1100,7 +1089,7 @@ var animint = function (to_select, json_file) {
       }
       return stroke_width;
     }
-
+    
     var linetype = "solid";
     if (g_info.params.linetype) {
       linetype = g_info.params.linetype;
@@ -1677,7 +1666,6 @@ var animint = function (to_select, json_file) {
 	});
       }
     }else{//has neither clickSelects nor clickSelects.variable.
-      // GSOC18 new get_alpha_stroke
       elements.style("opacity", get_alpha);
     }
     var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
@@ -1689,7 +1677,7 @@ var animint = function (to_select, json_file) {
 	  return one_group[0];
         };
       }else{
-	get_one = function(d_or_kv){
+	get_one = function(d_or_kv){ 
 	  return d_or_kv;
 	};
       }
@@ -1738,9 +1726,9 @@ var animint = function (to_select, json_file) {
       eActions(elements); // Set the attributes of all elements (enter/exit/stay)
     }
   };
-
-
-
+  
+  
+  
   var value_tostring = function(selected_values) {
       //function that is helpful to change the format of the string
       var selector_url="#"
@@ -1755,7 +1743,7 @@ var animint = function (to_select, json_file) {
       selector_url=url_nohash.concat(selector_url);
       return  selector_url;
  };
-
+  
   var get_values=function(){
       // function that is useful to get the selected values
       var selected_values={}
@@ -1770,12 +1758,12 @@ var animint = function (to_select, json_file) {
             initial_selections[i] =  s_info.selected[i];
           }
           }
-          selected_values[s_name]=initial_selections;
+          selected_values[s_name]=initial_selections;    
       }
       return selected_values;
   };
-
-  var counter=-1;
+  
+  var counter=-1;    
   var update_selector_url = function() {
       var selected_values=get_values();
       var url=value_tostring(selected_values);
@@ -1874,7 +1862,7 @@ var animint = function (to_select, json_file) {
     }else{
       orient = "hor";
     }
-
+    
     // Update major and minor grid lines
     ["minor", "major"].forEach(function(grid_class, j){
       var lines = bgr.select(".grid_"+grid_class).select("."+orient);
@@ -1886,7 +1874,7 @@ var animint = function (to_select, json_file) {
         xy1 = lines.select("line").attr("x1");
         xy2 = lines.select("line").attr("x2");
       }
-
+      
       // Get default values for grid lines like colour, stroke etc.
       var grid_background = Plots[p_name]["grid_"+grid_class];
       var col = grid_background.colour;
@@ -1939,7 +1927,7 @@ var animint = function (to_select, json_file) {
   var update_selector = function (v_name, value) {
     value = value + "";
     var s_info = Selectors[v_name];
-
+    
     if(s_info.type == "single"){
       // value is the new selection.
       s_info.selected = value;
@@ -2004,7 +1992,7 @@ var animint = function (to_select, json_file) {
       return not_selected;
     }
   };
-
+  
   function update_next_animation(){
     var values = d3.values(Animation.done_geoms);
     if(d3.sum(values) == values.length){
@@ -2059,7 +2047,7 @@ var animint = function (to_select, json_file) {
       ;
       if(l_info.selector != null){
 	legend_rows
-	  .on("click", function(d) {
+	  .on("click", function(d) { 
             update_selector(d.variable, d.value);
 	  })
 	  .attr("title", function(d) {
@@ -2164,7 +2152,7 @@ var animint = function (to_select, json_file) {
     for (var s_name in response.selectors) {
       add_selector(s_name, response.selectors[s_name]);
     }
-
+    
     // Update the scales/axes of the plots if needed
     // We do this so that the plots zoom in initially after loading
     for (var p_name in response.plots) {
@@ -2184,7 +2172,7 @@ var animint = function (to_select, json_file) {
     // Widgets at bottom of page
     ////////////////////////////////////////////
     element.append("br");
-
+      
     // loading table.
     var show_hide_table = element.append("button")
       .text("Show download status table");
@@ -2207,12 +2195,12 @@ var animint = function (to_select, json_file) {
     tr.append("th").attr("class", "downloaded").text("downloaded");
     tr.append("th").attr("class", "total").text("total");
     tr.append("th").attr("class", "status").text("status");
-
+    
     // Add geoms and construct nest operators.
     for (var g_name in response.geoms) {
       add_geom(g_name, response.geoms[g_name]);
     }
-
+    
     // Animation control widgets.
     var show_message = "Show animation controls";
     // add a button to view the animation widgets
@@ -2326,7 +2314,7 @@ var animint = function (to_select, json_file) {
       .append("th")
       .text("Selected value(s)")
     ;
-
+      
      // looping through and adding a row for each selector
     for(s_name in Selectors) {
       var s_info = Selectors[s_name];
@@ -2340,11 +2328,11 @@ var animint = function (to_select, json_file) {
 	// selector, then there is no way to select it other than the
 	// selectize widgets (and possibly legends). So in this case
 	// we show the selectize widgets by default.
-	var selector_widgets_hidden =
+	var selector_widgets_hidden = 
 	  show_hide_selector_widgets.text() == toggle_message;
-	var has_no_clickSelects =
+	var has_no_clickSelects = 
 	  !Selectors[s_name].hasOwnProperty("clickSelects")
-	var has_no_legend =
+	var has_no_legend = 
 	  !Selectors[s_name].hasOwnProperty("legend")
 	if(selector_widgets_hidden && has_no_clickSelects && has_no_legend){
 	  var node = show_hide_selector_widgets.node();
@@ -2377,7 +2365,7 @@ var animint = function (to_select, json_file) {
           .insert("option")
           .attr("value", "")
           .text(function() { return "Toggle " + s_name; });
-
+	
 	// calling selectize
 	var selectize_selector = to_select + ' .' + s_name_id + "_input";
 	if(s_info.type == "single") {
@@ -2385,7 +2373,7 @@ var animint = function (to_select, json_file) {
           var selector_values = [];
           for(i in s_info.levels) {
             selector_values[i] = {
-              id: s_name.concat("___", s_info.levels[i]),
+              id: s_name.concat("___", s_info.levels[i]), 
               text: s_info.levels[i]
             };
           }
@@ -2395,13 +2383,13 @@ var animint = function (to_select, json_file) {
           // if single selection, only allow one item
           var $temp = $(selectize_selector)
             .selectize({
-              create: false,
+              create: false, 
               valueField: 'id',
               labelField: 'text',
               searchField: ['text'],
-              options: selector_values,
+              options: selector_values, 
               items: [selected_id],
-              maxItems: 1,
+              maxItems: 1, 
               allowEmptyOption: true,
               onChange: function(value) {
 		// extracting the name and the level to update
@@ -2418,13 +2406,13 @@ var animint = function (to_select, json_file) {
           if(typeof s_info.levels == "object") {
             for(i in s_info.levels) {
               selector_values[i] = {
-		id: s_name.concat("___", s_info.levels[i]),
+		id: s_name.concat("___", s_info.levels[i]), 
 		text: s_info.levels[i]
               };
             }
           } else {
             selector_values[0] = {
-              id: s_name.concat("___", s_info.levels),
+              id: s_name.concat("___", s_info.levels), 
               text: s_info.levels
             };
           }
@@ -2433,19 +2421,19 @@ var animint = function (to_select, json_file) {
           for(i in s_info.selected) {
             initial_selections[i] = s_name.concat("___", s_info.selected[i]);
           }
-
+          
           // construct the selectize
           var $temp = $(selectize_selector)
             .selectize({
-              create: false,
+              create: false, 
               valueField: 'id',
               labelField: 'text',
               searchField: ['text'],
-              options: selector_values,
+              options: selector_values, 
               items: initial_selections,
-              maxItems: s_info.levels.length,
+              maxItems: s_info.levels.length, 
               allowEmptyOption: true,
-              onChange: function(value) {
+              onChange: function(value) { 
 		// if nothing is selected, remove what is currently selected
 		if(value == null) {
                   // extracting the selector ids from the options
@@ -2468,7 +2456,7 @@ var animint = function (to_select, json_file) {
                   }
                   // the previously selected entries
                   old_selections = Selectors[selector_name].selected;
-
+                  
                   // the levels that need to have selections turned on
                   specified_levels
                     .filter(function(n) {
@@ -2561,7 +2549,7 @@ var animint = function (to_select, json_file) {
                return $.trim($(this).text());
             }).get();
        status_array=status_array.slice(1)
-       return status_array.every(function(elem){ return elem === "displayed"});
+       return status_array.every(function(elem){ return elem === "displayed"});           
       }
      if(window.location.hash) {
          var fragment=window.location.hash;
@@ -2569,7 +2557,7 @@ var animint = function (to_select, json_file) {
          fragment=decodeURI(fragment)
          var frag_array=fragment.split(/(.*?})/);
          frag_array=frag_array.filter(function(x){ return x!=""})
-         frag_array.forEach(function(selector_string){
+         frag_array.forEach(function(selector_string){ 
          var selector_hash=selector_string.split("=");
          var selector_nam=selector_hash[0];
          var selector_values=selector_hash[1];
@@ -2578,13 +2566,13 @@ var animint = function (to_select, json_file) {
          var array_values = selector_values.split(',');
          var s_info=Selectors[selector_nam]
           if(s_info.type=="single"){
-
+             
                   array_values.forEach(function(element) {
-
+                      
                       wait_until_then(100, check_func, update_selector,selector_nam,element)
                       if(response.time)Animation.pause(true)
-                    });
-
+                    });   
+                 
              }
              else{
                   var old_selections = Selectors[selector_nam].selected;
@@ -2599,8 +2587,8 @@ var animint = function (to_select, json_file) {
                         Animation.pause(true)
                         }
                     });
-
-
+                  
+            
                   old_selections
                     .filter(function(n) {
                       return array_values.indexOf(n) == -1;
@@ -2610,10 +2598,12 @@ var animint = function (to_select, json_file) {
                        if(response.time){
                         Animation.pause(true)
                        }
-                    });
+                    });     
              }
-
+         
       })
       }
   });
 };
+
+
