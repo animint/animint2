@@ -35,7 +35,7 @@ Suggests:
     httr,
     maps
 Remotes: ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa,
-    faizan-khan-iit/ggplot2@validate-params
+    faizan-khan-iit/ggplot2@e62066b462070a3a46f403d6f63531413a3a20ce
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
