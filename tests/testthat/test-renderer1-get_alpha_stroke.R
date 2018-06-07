@@ -23,9 +23,14 @@ test_that("set get_alpha_stroke in a viz", {
 
 })
 
-# I am also developing a cartogram with ggplot2 to test get_aplha_stroke in the border of the states
-# I think it could be interesting as there are not tests or examples with maps. We can reuse it later for the new documentation
-# It should be ready tomorrow
+test_that("expectations test for get_alpha_stroke", {
+  opacity.num <- as.numeric(opacity.str)
+  opacity.exp <- rep(1, 6)
+  expect_equal(opacity.num, opacity.exp)
+})
+
+
+# Conflict: Substitute the following cartogram with other dataset already included in animint2
 
 test_that("set get_alpha_stroke in a viz", {
 
