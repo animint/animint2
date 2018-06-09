@@ -1,7 +1,7 @@
 #' Superimpose a function.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("stat", "function")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "function")}
 #'
 #' @param fun function to use
 #' @param n number of points to interpolate along
@@ -76,7 +76,7 @@ stat_function <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

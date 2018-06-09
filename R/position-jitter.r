@@ -35,7 +35,7 @@ position_jitter <- function(width = NULL, height = NULL) {
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

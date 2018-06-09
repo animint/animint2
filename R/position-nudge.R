@@ -26,7 +26,7 @@ position_nudge <- function(x = 0, y = 0) {
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

@@ -4,7 +4,7 @@
 #' \code{ymin} and \code{ymax}.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("geom", "linerange")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "linerange")}
 #'
 #' @param fatten A multiplicative factor used to increase the size of the
 #'   middle bar in \code{geom_crossbar()} and the middle point in
@@ -70,7 +70,7 @@ geom_linerange <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

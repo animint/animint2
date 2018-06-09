@@ -35,7 +35,7 @@ coord_fixed <- function(ratio = 1, xlim = NULL, ylim = NULL, expand = TRUE) {
 coord_equal <- coord_fixed
 
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

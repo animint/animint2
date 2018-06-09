@@ -184,7 +184,7 @@ rescale01 <- function(x) {
 #' @export
 gg_dep <- function(version, msg) {
   v <- as.package_version(version)
-  cv <- utils::packageVersion("ggplot2")
+  cv <- utils::packageVersion("animint2")
 
   # If current major number is greater than last-good major number, or if
   #  current minor number is more than 1 greater than last-good minor number,

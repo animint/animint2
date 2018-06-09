@@ -77,7 +77,7 @@ stat_summary2d <- function(...) {
   stat_summary_2d(...)
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

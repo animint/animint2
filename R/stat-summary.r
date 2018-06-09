@@ -6,7 +6,7 @@
 #' aggregate.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("stat", "summary")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "summary")}
 #'
 #' @seealso \code{\link{geom_errorbar}}, \code{\link{geom_pointrange}},
 #'  \code{\link{geom_linerange}}, \code{\link{geom_crossbar}} for geoms to
@@ -134,7 +134,7 @@ stat_summary <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

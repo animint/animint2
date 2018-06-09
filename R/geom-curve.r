@@ -32,7 +32,7 @@ geom_curve <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @include geom-segment.r
 #' @format NULL
 #' @usage NULL

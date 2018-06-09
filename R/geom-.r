@@ -47,7 +47,7 @@ NULL
 #'   \item \code{reparameterise}: Converts width and height to xmin and xmax,
 #'     and ymin and ymax values. It can potentially set other values as well.
 #' }
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

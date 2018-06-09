@@ -8,7 +8,7 @@
 #' performance special case for when all the tiles are the same size.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("geom", "tile")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "tile")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point
@@ -77,7 +77,7 @@ geom_tile <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

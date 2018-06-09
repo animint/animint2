@@ -7,7 +7,7 @@
 #' Each of the \code{Scale*} objects is a \code{\link{ggproto}} object,
 #' descended from the top-level \code{Scale}.
 #'
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

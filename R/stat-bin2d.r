@@ -38,7 +38,7 @@ stat_bin_2d <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 stat_bin2d <- stat_bin_2d
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

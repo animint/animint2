@@ -8,7 +8,7 @@ coord_quickmap <- function(xlim = NULL, ylim = NULL, expand = TRUE) {
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

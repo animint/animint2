@@ -104,7 +104,7 @@ coord_trans <- function(x = "identity", y = "identity", limx = NULL, limy = NULL
 }
 
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

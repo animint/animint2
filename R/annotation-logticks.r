@@ -104,7 +104,7 @@ annotation_logticks <- function(base = 10, sides = "bl", scaled = TRUE,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

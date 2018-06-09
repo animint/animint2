@@ -21,7 +21,7 @@
 #' the bars and then stretching or squashing to the same height.
 #'
 #' @section Aesthetics:
-#'   \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("geom", "bar")}
+#'   \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "bar")}
 #'
 #' @seealso \code{\link{geom_histogram}} for continuous data,
 #'   \code{\link{position_dodge}} for creating side-by-side barcharts.
@@ -107,7 +107,7 @@ geom_bar <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

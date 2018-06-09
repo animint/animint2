@@ -138,13 +138,13 @@ is.ggplot <- function(x) inherits(x, "ggplot")
 print.ggplot <- function(x, newpage = is.null(vp), vp = NULL, ...) {
   set_last_plot(x)
   if (newpage) grid.newpage()
-
-  # Record dependency on 'ggplot2' on the display list
+  
+  # Record dependency on 'animint2' on the display list
   # (AFTER grid.newpage())
   grDevices::recordGraphics(
-    requireNamespace("ggplot2Animint", quietly = TRUE),
+    requireNamespace("animint2", quietly = TRUE),
     list(),
-    getNamespace("ggplot2Animint")
+    getNamespace("animint2")
   )
 
   data <- ggplot_build(x)

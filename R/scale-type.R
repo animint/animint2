@@ -23,7 +23,7 @@ find_global <- function(name, env, mode = "any") {
     return(get(name, envir = env, mode = mode))
   }
 
-  nsenv <- asNamespace("ggplot2Animint")
+  nsenv <- asNamespace("animint2")
   if (exists(name, envir = nsenv, mode = mode)) {
     return(get(name, envir = nsenv, mode = mode))
   }

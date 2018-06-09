@@ -17,7 +17,7 @@
 #' See McGill et al. (1978) for more details.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("geom", "boxplot")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "boxplot")}
 #'
 #' @seealso \code{\link{stat_quantile}} to view quantiles conditioned on a
 #'   continuous variable, \code{\link{geom_jitter}} for another way to look
@@ -122,7 +122,7 @@ geom_boxplot <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

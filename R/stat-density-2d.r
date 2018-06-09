@@ -39,7 +39,7 @@ stat_density_2d <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 stat_density2d <- stat_density_2d
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

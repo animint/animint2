@@ -57,11 +57,11 @@ ylim <- function(...) {
 #' @param var name of variable
 #' @keywords internal
 #' @examples
-#' ggplot2Animint:::limits(c(1, 5), "x")
-#' ggplot2Animint:::limits(c(5, 1), "x")
-#' ggplot2Animint:::limits(c("A", "b", "c"), "x")
-#' ggplot2Animint:::limits(c("A", "b", "c"), "fill")
-#' ggplot2Animint:::limits(as.Date(c("2008-01-01", "2009-01-01")), "x")
+#' animint2:::limits(c(1, 5), "x")
+#' animint2:::limits(c(5, 1), "x")
+#' animint2:::limits(c("A", "b", "c"), "x")
+#' animint2:::limits(c("A", "b", "c"), "fill")
+#' animint2:::limits(as.Date(c("2008-01-01", "2009-01-01")), "x")
 limits <- function(lims, var) UseMethod("limits")
 #' @export
 limits.numeric <- function(lims, var) {

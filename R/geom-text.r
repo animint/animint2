@@ -11,7 +11,7 @@
 #' resize a plot, labels stay the same size, but the size of the axes changes.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("geom", "text")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "text")}
 #'
 #' @section \code{geom_label}:
 #' Currently \code{geom_label} does not support the \code{rot} parameter and
@@ -154,7 +154,7 @@ geom_text <- function(mapping = NULL, data = NULL,
 }
 
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

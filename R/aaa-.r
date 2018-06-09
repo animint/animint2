@@ -9,5 +9,5 @@ NULL
 #'
 #' @seealso ggproto
 #' @keywords internal
-#' @name ggplot2-ggproto
+#' @name animint2-ggproto
 NULL

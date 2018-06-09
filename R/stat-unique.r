@@ -1,7 +1,7 @@
 #' Remove duplicates.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("stat", "unique")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "unique")}
 #'
 #' @export
 #' @inheritParams layer
@@ -30,7 +30,7 @@ stat_unique <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

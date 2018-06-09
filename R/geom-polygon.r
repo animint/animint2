@@ -1,7 +1,7 @@
 #' Polygon, a filled path.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("geom", "polygon")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "polygon")}
 #'
 #' @seealso
 #'  \code{\link{geom_path}} for an unfilled polygon,
@@ -68,7 +68,7 @@ geom_polygon <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

@@ -11,7 +11,7 @@
 #' see the individual pattern as you move up the stack.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("geom", "ribbon")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "ribbon")}
 #'
 #' @seealso
 #'   \code{\link{geom_bar}} for discrete intervals (bars),
@@ -53,7 +53,7 @@ geom_ribbon <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export
@@ -127,7 +127,7 @@ geom_area <- function(mapping = NULL, data = NULL, stat = "identity",
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

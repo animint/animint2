@@ -13,7 +13,7 @@
 #' scale, and then back-transformed to the response scale.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("geom", "smooth")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "smooth")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point
@@ -109,7 +109,7 @@ geom_smooth <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

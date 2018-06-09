@@ -1,7 +1,7 @@
 #' A line segment parameterised by location, direction and distance.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("geom", "spoke")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "spoke")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_segment
@@ -47,7 +47,7 @@ stat_spoke <- function(...) {
   geom_spoke(...)
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

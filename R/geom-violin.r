@@ -1,7 +1,7 @@
 #' Violin plot.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("geom", "violin")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "violin")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point
@@ -93,7 +93,7 @@ geom_violin <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

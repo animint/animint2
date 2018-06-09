@@ -1,7 +1,7 @@
 #' Calculation for quantile-quantile plot.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("stat", "qq")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "qq")}
 #'
 #' @param distribution Distribution function to use, if x not specified
 #' @param dparams Additional parameters passed on to \code{distribution}
@@ -61,7 +61,7 @@ stat_qq <- function(mapping = NULL, data = NULL,
 #' @rdname stat_qq
 geom_qq <- stat_qq
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

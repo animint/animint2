@@ -1,7 +1,7 @@
 #' Display contours of a 3d surface in 2d.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("geom", "contour")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "contour")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point
@@ -61,7 +61,7 @@ geom_contour <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

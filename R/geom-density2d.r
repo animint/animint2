@@ -4,7 +4,7 @@
 #' results with contours. This can be useful for dealing with overplotting.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("geom", "density_2d")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "density_2d")}
 #'
 #' @seealso \code{\link{geom_contour}} for contour drawing geom,
 #'  \code{\link{stat_sum}} for another way of dealing with overplotting
@@ -68,7 +68,7 @@ geom_density_2d <- function(mapping = NULL, data = NULL,
 geom_density2d <- geom_density_2d
 
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

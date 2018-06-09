@@ -92,7 +92,7 @@ coord_map <- function(projection="mercator", ..., orientation = NULL, xlim = NUL
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

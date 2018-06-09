@@ -41,7 +41,7 @@
 #'      that must be present for this position adjustment to work.
 #' }
 #'
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

@@ -3,7 +3,7 @@
 #' This can be used as a continuous analogue of a geom_boxplot.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{ggplot2Animint:::rd_aesthetics("geom", "quantile")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "quantile")}
 #'
 #' @export
 #' @inheritParams layer
@@ -56,7 +56,7 @@ geom_quantile <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export
