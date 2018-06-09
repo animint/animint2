@@ -39,4 +39,4 @@ Remotes: ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa,
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
