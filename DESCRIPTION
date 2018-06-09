@@ -8,7 +8,6 @@ Description: A redesign of animint with a new syntax: clickSelects
     and showSelected are now specified as parameters.
 Depends:
     R (>= 3.3.2),
-    ggplot2Animint (>= 2.1.0)
 Imports:
     digest,
     grid,
@@ -34,8 +33,7 @@ Suggests:
     devtools,
     httr,
     maps
-Remotes: ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa,
-    faizan-khan-iit/ggplot2@validate-params
+Remotes: ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
