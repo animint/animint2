@@ -3,7 +3,6 @@
 #' @return nothing, info is stored in meta.
 #' @export
 #' @import plyr
-#' @import ggplot2Animint
 parsePlot <- function(meta, plot, plot.name){
   ## adding data and mapping to each layer from base plot, if necessary
   for(layer.i in seq_along(plot$layers)) {
