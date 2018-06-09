@@ -1,6 +1,6 @@
 
 # Determine titles to put on facet panels.
-# The implementation here is a modified version of ggplot2:::facet_strips.
+# The implementation here is a modified version of facet_strips.
 getStrips <- function(facet, panel, ...)
   # ... is a placeholder at the moment in case we want to implement 
   # themes or special options later

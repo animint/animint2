@@ -18,7 +18,7 @@ parsePlot <- function(meta, plot, plot.name){
     }
   }
   
-  built <- ggplot2Animint::ggplot_build(plot)
+  built <- ggplot_build(plot)
   plot.info <- list()
   
   ## Export axis specification as a combination of breaks and
@@ -26,7 +26,7 @@ parsePlot <- function(meta, plot, plot.name){
   ## be passed into d3 on the x axis scale instead of on the
   ## grid 0-1 scale). This allows transformations to be used
   ## out of the box, with no additional d3 coding.
-  theme.pars <- ggplot2Animint:::plot_theme(plot)
+  theme.pars <- plot_theme(plot)
 
   ## Interpret panel.margin as the number of lines between facets
   ## (ignoring whatever grid::unit such as cm that was specified).
@@ -77,7 +77,7 @@ parsePlot <- function(meta, plot, plot.name){
   ## we need to specify the variable corresponding to each legend. 
   ## To do this, we need to have the legend. 
   ## And to have the legend, I think that we need to use ggplot_build
-  built <- ggplot2Animint::ggplot_build(plot)
+  built <- ggplot_build(plot)
   ## TODO: implement a compiler that does not call ggplot_build at
   ## all, and instead does all of the relevant computations in animint
   ## code.
@@ -109,7 +109,7 @@ parsePlot <- function(meta, plot, plot.name){
     plot$labels$y <- temp
   }
   is.blank <- function(el.name){
-    x <- ggplot2Animint::calc_element(el.name, plot$theme)
+    x <- calc_element(el.name, plot$theme)
     "element_blank"%in%attr(x,"class")
   }
 
@@ -208,7 +208,7 @@ storeLayer <- function(meta, g, g.data.varied){
 
 #' Save a layer to disk, save and return meta-data.
 #' @param l one layer of the ggplot object.
-#' @param d one layer of calculated data from ggplot2Animint::ggplot_build(p).
+#' @param d one layer of calculated data from ggplot_build(p).
 #' @param meta environment of meta-data.
 #' @param geom_num the number of geom in the plot. Each geom gets an increasing
 #' ID number starting from 1
@@ -460,7 +460,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     g$geom <- "polygon"
   } else if(g$geom=="step"){
     datanames <- names(g.data)
-    g.data <- plyr::ddply(g.data, "group", function(df) ggplot2Animint:::stairstep(df))
+    g.data <- plyr::ddply(g.data, "group", function(df) stairstep(df))
     g$geom <- "path"
   } else if(g$geom=="contour" | g$geom=="density2d"){
     g$aes[["group"]] <- "piece"
@@ -477,8 +477,8 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     ## clicking/hiding hexbins doesn't really make sense. Need to stop
     ## with an error if showSelected/clickSelects is used with hex.
     g$aes[["group"]] <- "group"
-    dx <- ggplot2Animint::resolution(g.data$x, FALSE)
-    dy <- ggplot2Animint::resolution(g.data$y, FALSE) / sqrt(3) / 2 * 1.15
+    dx <- resolution(g.data$x, FALSE)
+    dy <- resolution(g.data$y, FALSE) / sqrt(3) / 2 * 1.15
     hex <- as.data.frame(hexbin::hexcoords(dx, dy))[,1:2]
     hex <- rbind(hex, hex[1,]) # to join hexagon back to first point
     g.data$group <- as.numeric(interaction(g.data$group, 1:nrow(g.data)))
