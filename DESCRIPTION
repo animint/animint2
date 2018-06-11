@@ -218,6 +218,8 @@ Collate:
     'utilities-matrix.r'
     'utilities-resolution.r'
     'utilities-table.r'
+    'uu_zxx.r'
+    'uu_zzz.r'
     'z_animint.R'
     'z_animintHelpers.R'
     'z_facets.R'
@@ -230,6 +232,4 @@ Collate:
     'z_testHelpers.R'
     'z_theme_animint.R'
     'z_transformShape.R'
-    'zxx.r'
-    'zzz.r'
 RoxygenNote: 6.0.1

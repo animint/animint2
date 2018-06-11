@@ -1265,7 +1265,7 @@ servr::httd("', normalizePath( out.dir,winslash="/" ), '")')
 
 
 #' Function to get legend information from ggplot
-#' @param plistextra output from ggplot2Animint::ggplot_build(p)
+#' @param plistextra output from ggplot_build(p)
 #' @return list containing information for each legend
 #' @export
 getLegendList <- function(plistextra){
@@ -1273,7 +1273,7 @@ getLegendList <- function(plistextra){
   scales <- plot$scales
   layers <- plot$layers
   default_mapping <- plot$mapping
-  theme <- ggplot2Animint:::plot_theme(plot)
+  theme <- plot_theme(plot)
   position <- theme$legend.position
   # by default, guide boxes are vertically aligned
   if(is.null(theme$legend.box)) theme$legend.box <- "vertical" else theme$legend.box
@@ -1312,17 +1312,16 @@ getLegendList <- function(plistextra){
     if(guide.type=="colourbar")guide.type <- "legend"
     guides.args[[aes.name]] <- guide.type
   }
-  guides.result <- do.call(ggplot2Animint::guides, guides.args)
+  guides.result <- do.call(guides, guides.args)
   guides.list <- plyr::defaults(plot$guides, guides.result)
-  gdefs <-
-    ggplot2Animint:::guides_train(scales = scales,
+  gdefs <- guides_train(scales = scales,
                            theme = theme,
                            guides = guides.list,
                            labels = plot$labels)
   if (length(gdefs) != 0) {
-    gdefs <- ggplot2Animint:::guides_merge(gdefs)
-    gdefs <- ggplot2Animint:::guides_geom(gdefs, layers, default_mapping)
-  } else (ggplot2Animint:::zeroGrob())
+    gdefs <- guides_merge(gdefs)
+    gdefs <- guides_geom(gdefs, layers, default_mapping)
+  } else (zeroGrob())
   names(gdefs) <- sapply(gdefs, function(i) i$title)
   
   ## adding the variable used to each LegendList

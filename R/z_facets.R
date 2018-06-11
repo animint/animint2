@@ -83,7 +83,7 @@ flag_axis.null <- function(facet, layout) {
 
 # TODO: how to 'train_layout' for non-cartesian coordinates?
 # https://github.com/hadley/ggplot2/blob/dfcb56ec067910e1a3a04693d8f1e146cc7fb796/R/coord-.r
-
+#' @keywords internal
 train_layout <- function(facet, coord, layout, ranges) {
   npanels <- dim(layout)[1]
   nrows <- max(layout$ROW)
