@@ -36,7 +36,7 @@ notifications:
 
 env:
   global:
-    - secure: "8c14984b9a79ad7377c1f7b3b93dbd6f6d033df9"
+    - secure: "h06r9Nn7Y01TKEsPy9IWlSj38GopqKcjaNY5pH2/tRfQzNtlmDJKz2R028d5LtVk3tdpen6GTTKwDeWVmQUH63p6BffNjrhmB+JTk+2g4SSx8C8gJqSF0zPEIzz+8012PxXaW/4MIA8l/EJN1Y8ESxsLJNacBJYkWYNYLMCoRZ4="
   matrix:
     - TEST_SUITE=renderer1
     - TEST_SUITE=renderer2
