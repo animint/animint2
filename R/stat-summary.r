@@ -43,7 +43,6 @@
 #' @export
 #' @examples
 #' d <- ggplot(mtcars, aes(cyl, mpg)) + geom_point()
-#' d + stat_summary(fun.data = "mean_cl_boot", colour = "red", size = 2)
 #'
 #' # You can supply individual functions to summarise the value at
 #' # each x:

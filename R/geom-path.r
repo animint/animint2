@@ -243,7 +243,7 @@ geom_line <- function(mapping = NULL, data = NULL, stat = "identity",
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export
@@ -277,7 +277,7 @@ geom_step <- function(mapping = NULL, data = NULL, stat = "identity",
   )
 }
 
-#' @rdname ggplot2-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

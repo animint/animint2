@@ -307,9 +307,9 @@ facet_strips.grid <- function(facet, panel, theme) {
   }
 
   strips <- list(
-    r = build_strip(panel, row_vars, facet$labeller,
+    r = g_build_strip(panel, row_vars, facet$labeller,
       theme, dir$r, switch = facet$switch),
-    t = build_strip(panel, col_vars, facet$labeller,
+    t = g_build_strip(panel, col_vars, facet$labeller,
       theme, dir$t, switch = facet$switch)
   )
 

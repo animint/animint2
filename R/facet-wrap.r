@@ -353,7 +353,7 @@ facet_strips.wrap <- function(facet, panel, theme) {
     attr(labels_df, "type") <- "cols"
   }
 
-  strips_table <- build_strip(panel, labels_df, facet$labeller,
+  strips_table <- g_build_strip(panel, labels_df, facet$labeller,
     theme, dir, switch = facet$switch)
 
   # While grid facetting works with a whole gtable, wrap processes the

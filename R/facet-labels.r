@@ -472,7 +472,7 @@ labeller <- function(..., .rows = NULL, .cols = NULL,
 }
 
 
-build_strip <- function(panel, label_df, labeller, theme, side = "right", switch = NULL) {
+g_build_strip <- function(panel, label_df, labeller, theme, side = "right", switch = NULL) {
   side <- match.arg(side, c("top", "left", "bottom", "right"))
   horizontal <- side %in% c("top", "bottom")
   labeller <- match.fun(labeller)

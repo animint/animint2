@@ -106,7 +106,7 @@ poly_dir <- function(x, y) {
 
 # To fix breaks and complete the polygons, we need to add 0-4 corner points.
 #
-# contours <- ddply(contours, "piece", mutate, dir = ggplot2Animint:::poly_dir(x, y))
+# contours <- ddply(contours, "piece", mutate, dir = poly_dir(x, y))
 # ggplot(contours, aes(x, y)) +
 #   geom_path(aes(group = piece, colour = factor(dir)))
 # last_plot() + facet_wrap(~ level)
