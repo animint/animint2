@@ -36,7 +36,7 @@ notifications:
 
 env:
   global:
-    - secure: "14f1198995e524a576cf2dd3c119ddfa1fd71711"
+    - secure: "8c14984b9a79ad7377c1f7b3b93dbd6f6d033df9"
   matrix:
     - TEST_SUITE=renderer1
     - TEST_SUITE=renderer2
