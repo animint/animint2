@@ -12,7 +12,7 @@ acontext("get_alpha_stroke")
                             fill = "white",
                             # I include it here to modify the stroke of geom_point
                             # What do you think? Any advice? Is it a fraction the best way to set it?
-                            get_alpha_stroke = 1/10,
+                            alpha_stroke = 1/10,
                             validate_params = FALSE) +
                 ggtitle("Income v. Life Expectancy") +
                 theme(panel.background = element_rect(fill = NA),
@@ -21,8 +21,8 @@ acontext("get_alpha_stroke")
 
 
 test_that("alpha_stroke parameter is rendered as stroke-opacity style", {
-  opacity.str <- getStyleValue(info$html, "//g[@class="geom"]", "opacity")
+  opacity.str <- getStyleValue(info$html, "//circle[@class='geom']", "stroke-opacity")
   opacity.num <- as.numeric(opacity.str)
-  opacity.exp <- rep(1, 6)
+  opacity.exp <- rep(1/10, nrow(states.data))
   expect_equal(opacity.num, opacity.exp)
 })
