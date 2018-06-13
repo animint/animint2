@@ -1,4 +1,4 @@
-# Welcome to the Animint Designer Manual web site!
+# Welcome to the Animint2 Designer Manual web site!
 This manual explains how to design and create interactive data visualizations using the R package animint2. This package is an updated version of [animint](http://members.cbio.mines-paristech.fr/~thocking/animint-book/Ch00-preface.html)
 
 ## What's animint2
