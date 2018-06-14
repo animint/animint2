@@ -16,7 +16,7 @@
 #' @keywords internal
 #' @export
 ggplot_build <- function(plot) {
-  plot <- plot_clone(plot)
+  plot <- a_plot_clone(plot)
   if (length(plot$layers) == 0) {
     plot <- plot + geom_blank()
   }

@@ -79,7 +79,7 @@
 add_ggplot <- function(p, object, objectname) {
   if (is.null(object)) return(p)
 
-  p <- plot_clone(p)
+  p <- a_plot_clone(p)
   if (is.data.frame(object)) {
     p$data <- object
   } else if (is.theme(object)) {

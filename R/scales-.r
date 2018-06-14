@@ -2,10 +2,13 @@
 # All input and output done with data.frames to facilitate
 # multiple input and output variables
 
-scales_list <- function() {
+#' @export
+a_scales_list <- function() {
   ggproto(NULL, ScalesList)
 }
 
+#' @noRd
+#' @export
 ScalesList <- ggproto("ScalesList", NULL,
   scales = NULL,
 

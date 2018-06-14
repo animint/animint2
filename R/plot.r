@@ -96,7 +96,7 @@ ggplot.data.frame <- function(data, mapping = aes(), ...,
   p <- structure(list(
     data = data,
     layers = list(),
-    scales = scales_list(),
+    scales = a_scales_list(),
     mapping = mapping,
     theme = list(),
     coordinates = coord_cartesian(),
@@ -110,7 +110,7 @@ ggplot.data.frame <- function(data, mapping = aes(), ...,
   p
 }
 
-plot_clone <- function(plot) {
+a_plot_clone <- function(plot) {
   p <- plot
   p$scales <- plot$scales$clone()
 
