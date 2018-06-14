@@ -7,7 +7,7 @@ Maintainer: Toby Dylan Hocking <toby.hocking@r-project.org>
 Description: A redesign of animint with a new syntax: clickSelects
     and showSelected are now specified as parameters.
 Depends:
-    R (>= 3.3.2),
+    R (>= 3.3.2)
 Imports:
     digest,
     grid,
@@ -17,7 +17,6 @@ Imports:
     reshape2,
     scales (>= 0.4.1),
     stats,
-    grid,
     tibble,
     lazyeval
 Suggests:
@@ -48,7 +47,6 @@ Suggests:
     svglite
 Enhances: sp
 Remotes: ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa
-
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
