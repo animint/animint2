@@ -64,7 +64,7 @@ guides <- function(...) {
 }
 
 update_guides <- function(p, guides) {
-  p <- plot_clone(p)
+  p <- a_plot_clone(p)
   p$guides <- defaults(guides, p$guides)
   p
 }
