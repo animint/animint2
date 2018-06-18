@@ -1,13 +1,25 @@
-Overview
+#### Overview
+animint2 is an R library that allows you to create interactive and animated multi-layer, multi-plot data visualizations designed with ggplot2 using just a few lines of code. 
+animint2 renders using javascript library D3.js
 
-Installation
+#### Installation
 
-Learning animint2
+Right now, it is only possible to install it with devtools, pulling the code from the source.
 
-Usage
+```
+devtools::install_github("faizan-khan-iit/ggplot2@validate-params")
+devtools::install_github("tdhock/animint2")
+```
 
-Main features
+It will be available on `CRAN`. More details soon.
 
-Examples
+#### Learning animint2
+Reference to `new-designer-manual.md`
 
-Getting help
+#### Usage
+
+#### Main features
+
+#### Examples
+
+#### Getting help
