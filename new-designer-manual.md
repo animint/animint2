@@ -70,3 +70,48 @@ Comparison with animint
 
 
 ## [Chapter 2: animint2](#animint2)
+
+animint2 is a redesign of animint with a cleaner syntax. 
+
+## [Chapter 3: ](#)
+
+## [Chapter 4: ](#)
+
+## [Chapter 5: ](#)
+
+#### What's ggplot2?
+
+ggplot2 is a system for declaratively creating graphics, based on The Grammar of Graphics. You provide the data, tell ggplot2 how to map variables to aesthetics, what graphical primitives to use, and it takes care of the details.
+
+**How to install ggplot2**
+
+```
+install.packages("ggplot2")
+```
+https://ggplot2.tidyverse.org/
+
+
+## [Chapter 6: ](#)
+
+## [Chapter 7: ](#)
+
+## [Chapter 8: ](#)
+
+## [Chapter 9: ](#)
+
+## [Chapter 10: Real examples](#)
+
+Proposed examples to replicate in gglpot2 and make them interactive with animint2.
+
+Scatterplot from the NYT:
+https://www.nytimes.com/interactive/2018/06/13/upshot/boys-girls-math-reading-tests.html
+
+Interactive histogram from WaPo:
+https://www.washingtonpost.com/graphics/2018/politics/house-primaries-candidates/?noredirect=on&utm_term=.a375ae92ecc2
+
+## [Chapter 11: Open source](#)
+
+* Open source
+* Test-driven development
+
+## [Chapter 12: ](#)
