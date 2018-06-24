@@ -40,4 +40,3 @@ make_tallrect or make_widerect, which are more user-friendly.
 \author{
 Toby Dylan Hocking
 }
-

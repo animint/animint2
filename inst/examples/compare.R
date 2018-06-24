@@ -18,7 +18,7 @@ model.colors <- c(compare="#00bfc4", #bluish
                   latent="grey")
 ord <- c("latent","compare","rank")
 dots <-
-  list(data=ggplot()+
+  list(data=a_plot()+
        geom_segment(aes(Xt.1, Xt.2, xend=Xtp.1, yend=Xtp.2, colour=factor(yt)),
                     showSelected="set.id",
                     data=compare$train)+
@@ -28,7 +28,7 @@ dots <-
        scale_colour_manual("label",values=c("1"="red","-1"="black"))+
        xl+yl+
        ggtitle("training data"),
-       error=ggplot()+
+       error=a_plot()+
        make_text(compare$err, 200, 35, "norm")+
        geom_point(aes(as.integer(as.character(N)), percent, colour=model),
                   showSelected=c("norm", "set.id"),
@@ -42,7 +42,7 @@ dots <-
                            breaks=ord)+
        xlab(x.lab)+
        ggtitle("test error, select data set"),
-       diff=ggplot()+
+       diff=a_plot()+
        geom_ribbon(aes(N, ymin=mean-sd, ymax=mean+sd, group=norm),
                    clickSelects="norm", alpha=1/2,
                    data=diff.df)+
@@ -56,7 +56,7 @@ dots <-
        ylab("<- compare better (test error percent difference) rank better->"))
 for(model in c("compare", "rank")){
   sub.df <- subset(compare$rank, what %in% c(model, "latent"))
-  L <- list(ggplot()+
+  L <- list(a_plot()+
     geom_contour(aes(x1, x2, z=rank, group=interaction(what, norm, seed, N),
                      colour=what), showSelected="set.id", data=sub.df)+
     scale_colour_manual("model",values=model.colors)+

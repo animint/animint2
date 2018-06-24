@@ -1,23 +1,27 @@
 
-# Determine titles to put on facet panels.
-# The implementation here is a modified version of ggplot2:::facet_strips.
-getStrips <- function(facet, panel, ...)
+#' Determine titles to put on a_facet panels.
+#' The implementation here is a modified version of ggplot2:::facet_strips.
+#' @param a_facet ....
+#' @param panel ....
+#' @export
+getStrips <- function(a_facet, panel, ...)
   # ... is a placeholder at the moment in case we want to implement 
   # themes or special options later
   UseMethod("getStrips")
 
-getStrips.grid <- function(facet, panel, ...) {
+#' @export
+getStrips.grid <- function(a_facet, panel, ...) {
   npanels <- nrow(panel$layout)
   # preallocate strip labels to a default of ""
   strips.empty <- strips.right <- strips.top <- rep("", npanels)
   # right strips in a grid are only drawn on the last column
-  row_vars <- unique(panel$layout[names(facet$rows)])
+  row_vars <- unique(panel$layout[names(a_facet$rows)])
   strips.right[with(panel$layout, COL == max(COL))] <- 
-    build_strip(panel, row_vars, facet$labeller, side = "right", ...)
+    build_strip(panel, row_vars, a_facet$labeller, side = "right", ...)
   # top strips in a grid layout are only drawn on the first row
-  col_vars <- unique(panel$layout[names(facet$cols)])
+  col_vars <- unique(panel$layout[names(a_facet$cols)])
   strips.top[panel$layout$ROW == 1] <-
-    build_strip(panel, col_vars, facet$labeller, side = "top", ...)
+    build_strip(panel, col_vars, a_facet$labeller, side = "top", ...)
   strips <- list(right = as.list(strips.right), top = as.list(strips.top))
   # the right/top element should exist if there are non-trivial labels
   # strips <- strips[sapply(strips, function(x) !identical(x, strips.empty))]
@@ -25,6 +29,8 @@ getStrips.grid <- function(facet, panel, ...) {
   strips
 }
 
+#' @format NULL
+#' @export
 build_strip <- function(panel, label_df, labeller, side = "right", ...) {
   side <- match.arg(side, c("top", "left", "bottom", "right"))
   labeller <- match.fun(labeller)
@@ -41,8 +47,9 @@ build_strip <- function(panel, label_df, labeller, side = "right", ...) {
   apply(labels, 1, paste, collapse = "; ")
 }
 
-getStrips.wrap <- function(facet, panel, ...) {
-  labels_df <- panel$layout[names(facet$facets)]
+#' @export
+getStrips.wrap <- function(a_facet, panel, ...) {
+  labels_df <- panel$layout[names(a_facet$facets)]
   labels_df[] <- plyr::llply(labels_df, format, justify = "none")
   # facet_wrap labels always go on top
   # we return a list so p_info.strips is always an object (on the JS side)
@@ -52,18 +59,23 @@ getStrips.wrap <- function(facet, panel, ...) {
   strips
 }
 
-getStrips.null <- function(facet, panel, ...) {
+#' @export
+getStrips.null <- function(a_facet, panel, ...) {
   list(top = list(""), right = list(""), n = list(top = 0, right = 0))
 }
 
-# Attach AXIS_X/AXIS_Y columns to the panel layout if 
-# facet_grids is used.
-# Currently every axis is rendered,
-# but this could be helpful if we decide not to that.
-flag_axis <- function(facet, layout) 
+#' Attach AXIS_X/AXIS_Y columns to the panel layout if 
+#' facet_grids is used.
+#' Currently every axis is rendered,
+#' but this could be helpful if we decide not to that.
+#' @param a_facet ....
+#' @param layout ...
+#' @export
+flag_axis <- function(a_facet, layout) 
   UseMethod("flag_axis")
 
-flag_axis.grid <- function(facet, layout) {
+#' @export
+flag_axis.grid <- function(a_facet, layout) {
   # 'grid rules' are to draw y-axis on panels with COL == 1
   # and ROW == max(ROW).
   layout$AXIS_Y <- layout$COL == 1
@@ -71,20 +83,23 @@ flag_axis.grid <- function(facet, layout) {
   layout
 }
 
-flag_axis.wrap <- function(facet, layout) {
+#' @export
+flag_axis.wrap <- function(a_facet, layout) {
   if (sum(grepl("^AXIS_[X-Y]$", names(layout))) != 2)
     stop("Expected 'AXIS_X' and 'AXIS_Y' to be in panel layout")
   layout
 }
 
-flag_axis.null <- function(facet, layout) {
+#' @export
+flag_axis.null <- function(a_facet, layout) {
   cbind(layout, AXIS_X = TRUE, AXIS_Y = TRUE)
 }
 
 # TODO: how to 'train_layout' for non-cartesian coordinates?
 # https://github.com/hadley/ggplot2/blob/dfcb56ec067910e1a3a04693d8f1e146cc7fb796/R/coord-.r
 
-train_layout <- function(facet, coord, layout, ranges) {
+#' @export
+train_layout <- function(a_facet, coord, layout, ranges) {
   npanels <- dim(layout)[1]
   nrows <- max(layout$ROW)
   ncols <- max(layout$COL)
@@ -102,8 +117,8 @@ train_layout <- function(facet, coord, layout, ranges) {
     layout$height_proportion <- layout$height_proportion/nrows
   } else {
     vars <- NULL
-    if (isTRUE(facet$space_free$x)) vars <- c(vars, "x")
-    if (isTRUE(facet$space_free$y)) vars <- c(vars, "y")
+    if (isTRUE(a_facet$space_free$x)) vars <- c(vars, "x")
+    if (isTRUE(a_facet$space_free$y)) vars <- c(vars, "y")
     if (is.null(vars)) { # fill the entire space and give panels equal area
       layout <- cbind(layout, width_proportion = rep(1/ncols, npanels),
                       height_proportion = rep(1/nrows, npanels))

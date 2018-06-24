@@ -15,4 +15,3 @@ data frame
 \description{
 Merge a list of data frames.
 }
-

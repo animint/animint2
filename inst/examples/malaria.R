@@ -38,7 +38,7 @@ normalize <- function(LOCUS_ID, position){
 }
 
 viz <-
-  list(errorCurves=ggplot()+
+  list(errorCurves=a_plot()+
          theme_bw()+
          ggtitle(paste("error curves, select",
                        filterVar, "threshold"))+
@@ -57,7 +57,7 @@ viz <-
                    hjust=1,
                    data=malaria$error.curves),
 
-       chroms=ggplot()+
+       chroms=a_plot()+
          theme_bw()+
          ggtitle("Sanger sequenced amplicons")+
          theme_animint(width=600)+
@@ -98,7 +98,7 @@ viz <-
                           drop=FALSE)+
          ylab("position on chromosome (kilo bases = kb)"),
 
-       variants=ggplot()+
+       variants=a_plot()+
          theme_bw()+
          ggtitle("Variants in each sanger sequenced amplicon")+
          theme_animint(width=1000, height=600)+

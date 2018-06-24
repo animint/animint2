@@ -17,4 +17,3 @@ Column names with x and y axes switched
 Flip axes in case of coord_flip
 Switches column names. Eg. xmin to ymin, yntercept to xintercept etc.
 }
-

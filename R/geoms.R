@@ -4,6 +4,9 @@
 #' @param stat statistic mapping, defaults to identity
 #' @param position position mapping, defaults to identity
 #' @param ... other arguments
+#' @param na.rm ...
+#' @param show.legend ...
+#' @param inherit.aes ...
 #' @return ggplot2 layer
 #' @export
 #' @example inst/examples/breakpoints.R
@@ -14,7 +17,7 @@ geom_tallrect <- function(mapping = NULL, data = NULL,
                           show.legend = NA,
                           inherit.aes = TRUE) {
   ggplot2Animint::layer(
-    geom = GeomTallRect,
+    geom = a_GeomTallRect,
     data = data,
     mapping = mapping,
     stat = stat,
@@ -28,7 +31,7 @@ geom_tallrect <- function(mapping = NULL, data = NULL,
   )
 }
 
-GeomTallRect <- ggplot2Animint::ggproto("GeomTallRect", ggplot2Animint::Geom,
+a_GeomTallRect <- ggplot2Animint::a_ggproto("a_GeomTallRect", ggplot2Animint::a_Geom,
                                  default_aes = ggplot2Animint::aes(colour = "grey35",
                                                    fill = "grey35", 
                                                    size = 0.5, 
@@ -59,7 +62,7 @@ GeomTallRect <- ggplot2Animint::ggproto("GeomTallRect", ggplot2Animint::Geom,
                                    )
                                  },
                                  
-                                 draw_key = ggplot2Animint::draw_key_rect
+                                 draw_key = ggplot2Animint::a_draw_key_rect
 )
 
 
@@ -69,6 +72,9 @@ GeomTallRect <- ggplot2Animint::ggproto("GeomTallRect", ggplot2Animint::Geom,
 #' @param stat statistic mapping, defaults to identity
 #' @param position position mapping, defaults to identity
 #' @param ... other arguments
+#' @param na.rm ...
+#' @param show.legend ...
+#' @param inherit.aes ...
 #' @return ggplot2 layer
 #' @export
 #' @examples
@@ -82,7 +88,7 @@ geom_widerect <- function(mapping = NULL, data = NULL,
                           show.legend = NA,
                           inherit.aes = TRUE) {
   ggplot2Animint::layer(
-    geom = GeomWideRect,
+    geom = a_GeomWideRect,
     data = data,
     mapping = mapping,
     stat = stat,
@@ -96,7 +102,7 @@ geom_widerect <- function(mapping = NULL, data = NULL,
   )
 }
 
-GeomWideRect <- ggplot2Animint::ggproto("GeomWideRect", ggplot2Animint::Geom,
+a_GeomWideRect <- ggplot2Animint::a_ggproto("a_GeomWideRect", ggplot2Animint::a_Geom,
                                  default_aes = ggplot2Animint::aes(colour = "grey35", 
                                                    fill = "grey35", 
                                                    size = 0.5, 
@@ -127,7 +133,7 @@ GeomWideRect <- ggplot2Animint::ggproto("GeomWideRect", ggplot2Animint::Geom,
                                    )
                                  },
                                  
-                                 draw_key = ggplot2Animint::draw_key_rect
+                                 draw_key = ggplot2Animint::a_draw_key_rect
 )
 
 #' Make a clickSelects geom_tallrect that completely tiles the x

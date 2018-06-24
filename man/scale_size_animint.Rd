@@ -16,4 +16,3 @@ scale_size_animint(pixel.range = c(2, 20), ...)
 Scale point sizes using circle area, but specifying the radius in
 pixels.
 }
-

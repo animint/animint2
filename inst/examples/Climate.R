@@ -34,11 +34,11 @@ countries <- subset(countries, (lat < 38)&(lat>-24))
 countries <- subset(countries, ((-long)>54)&((-long)<118))
 
 
-temp.seq <- ggplot() + 
+temp.seq <- a_plot() + 
   make_tallrect(data=climate, "time2") + 
   geom_line(data=climate, aes(x=time2, y=temperature), showSelected="id")
 
-clouds.high <- ggplot() + 
+clouds.high <- a_plot() + 
   geom_tile(data=climate, aes(x=long, y=lat, fill=cloudhigh),
             clickSelects="id", showSelected="time2", colour="grey")+ 
   scale_fill_gradient("Coverage", low="skyblue", high="white", limits=c(0, 75)) + 
@@ -47,7 +47,7 @@ clouds.high <- ggplot() +
   theme(axis.line=element_blank(), axis.text=element_blank(), 
         axis.ticks=element_blank(), axis.title=element_blank())
 
-clouds.mid <- ggplot() + 
+clouds.mid <- a_plot() + 
   geom_tile(data=climate, aes(x=long, y=lat, fill=cloudmid),
             clickSelects="id", showSelected="time2", colour="grey")+ 
   scale_fill_gradient("Coverage", low="skyblue", high="white", limits=c(0, 75)) + 
@@ -56,7 +56,7 @@ clouds.mid <- ggplot() +
   theme(axis.line=element_blank(), axis.text=element_blank(), 
         axis.ticks=element_blank(), axis.title=element_blank())
 
-clouds.low <- ggplot() + 
+clouds.low <- a_plot() + 
   geom_tile(data=climate, aes(x=long, y=lat, fill=cloudlow),
             clickSelects="id", showSelected="time2", colour="grey")+ 
   scale_fill_gradient("Coverage", low="skyblue", high="white", limits=c(0, 75)) + 
@@ -65,7 +65,7 @@ clouds.low <- ggplot() +
   theme(axis.line=element_blank(), axis.text=element_blank(), 
         axis.ticks=element_blank(), axis.title=element_blank())
 
-ozone.map <- ggplot() + 
+ozone.map <- a_plot() + 
   geom_tile(data=climate, aes(x=long, y=lat, fill=ozone),
             clickSelects="id", showSelected="time2", colour="grey")+ 
   scale_fill_gradient("Concentration", low="white", high="brown") + 
@@ -77,7 +77,7 @@ ozone.map <- ggplot() +
 # Create variable showing temp-avg.monthly.temp at that location
 climate <- ddply(climate, .(id, month), transform, tempdev = temperature - mean(temperature))
 
-temperature.map <- ggplot() + 
+temperature.map <- a_plot() + 
   geom_tile(data=climate, aes(x=long, y=lat, fill=tempdev),
             clickSelects="id", showSelected="time2", colour="grey")+ 
   scale_fill_gradient2("Temperature", low="blue", mid="white", high="red", limits=c(-20, 20), midpoint=0) + 

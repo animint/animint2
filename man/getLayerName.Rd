@@ -19,4 +19,3 @@ a unique name for the layer
 \description{
 Gives a unique name to each layer in \code{saveLayer}
 }
-

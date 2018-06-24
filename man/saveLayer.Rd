@@ -4,17 +4,24 @@
 \alias{saveLayer}
 \title{Save a layer to disk, save and return meta-data.}
 \usage{
-saveLayer(l, d, meta, layer_name, ggplot, built, AnimationInfo)
+saveLayer(l, d, meta, layer_name, a_plot, built, AnimationInfo)
 }
 \arguments{
 \item{l}{one layer of the ggplot object.}
 
-\item{d}{one layer of calculated data from ggplot2Animint::ggplot_build(p).}
+\item{d}{one layer of calculated data from ggplot2Animint::a_plot_build(p).}
 
 \item{meta}{environment of meta-data.}
 
-\item{geom_num}{the number of geom in the plot. Each geom gets an increasing
-ID number starting from 1}
+\item{layer_name}{.....}
+
+\item{a_plot}{....}
+
+\item{built}{....}
+
+\item{geom_num}{the number of geom in the plot. Each geom gets an increasing}
+
+\item{AniminationInfo}{ID number starting from 1}
 }
 \value{
 list representing a layer, with corresponding aesthetics, ranges, and groups.
@@ -22,4 +29,3 @@ list representing a layer, with corresponding aesthetics, ranges, and groups.
 \description{
 Save a layer to disk, save and return meta-data.
 }
-

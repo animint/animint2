@@ -17,4 +17,3 @@ checkSingleShowSelectedValue(selectors)
 Issue warnings for non interactive plots where there is only one
 showSelected value
 }
-

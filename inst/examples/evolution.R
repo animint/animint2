@@ -5,12 +5,12 @@ data(generation.loci)
 generations <- data.frame(generation=unique(generation.loci$generation))
 loci <- data.frame(locus=unique(generation.loci$locus))
 two.selectors.not.animated <- 
-  list(ts=ggplot()+
+  list(ts=a_plot()+
          geom_vline(aes(xintercept=generation), clickSelects="generation",
                     data=generations, alpha=1/2, lwd=4)+
          geom_line(aes(generation, frequency, group=population),
                    showSelected="locus", data=generation.loci),
-       loci=ggplot()+
+       loci=a_plot()+
          geom_vline(aes(xintercept=locus), clickSelects="locus",
                     data=loci, alpha=1/2, size=4)+
          geom_point(aes(locus, frequency), showSelected="generation",
@@ -24,7 +24,7 @@ colormap <- c(blue="blue",red="red",ancestral="black",neutral="grey30")
 ancestral <- subset(generation.loci,population==1 & generation==1)
 ancestral$color <- "ancestral"
 two.selectors.color <- 
-  list(ts=ggplot()+
+  list(ts=a_plot()+
        make_tallrect(generation.loci, "generation")+
        geom_text(aes(generation,frequency,
                      label=sprintf("locus %d",locus)), showSelected="locus",
@@ -35,7 +35,7 @@ two.selectors.color <-
                  data=generation.loci)+
        geom_point(aes(generation, frequency), showSelected="locus",
                   data=ancestral),
-       loci=ggplot()+
+       loci=a_plot()+
        make_tallrect(generation.loci, "locus")+
        ## TODO: why do we have to specify color AND fill to get the
        ## points and legend to look right?
@@ -71,13 +71,13 @@ generation.pop$ancestral <- ancestral$ancestral[generation.pop$locus]
 generation.loci.last <- subset(generation.loci,generation==max(generation))
 generation.pop.last <- subset(generation.pop,generation==max(generation))
 one.selector.not.animated <- 
-  list(ts=ggplot()+
+  list(ts=a_plot()+
          geom_line(aes(generation, frequency, group=population),
                    showSelected="locus", data=generation.loci),
-       predictions=ggplot()+
+       predictions=a_plot()+
          geom_point(aes(ancestral, estimated), clickSelects="locus",
                     data=generation.pop.last, size=4, alpha=3/4),
-       loci=ggplot()+
+       loci=a_plot()+
          geom_vline(aes(xintercept=locus), clickSelects="locus",
                     data=loci, alpha=1/2, lwd=4)+
          geom_point(aes(locus, frequency), data=generation.loci.last)
@@ -86,18 +86,18 @@ animint2dir(one.selector.not.animated)
 
 ## Example: animated time series with 3 plots and 2 selectors.
 two.selectors.animated <- 
-  list(ts=ggplot()+
+  list(ts=a_plot()+
          geom_vline(aes(xintercept=generation),
                     clickSelects="generation",
                     data=generations, alpha=1/2, lwd=4)+
          geom_line(aes(generation, frequency, group=population),
                    showSelected="locus", data=generation.loci),
-       predictions=ggplot()+
+       predictions=a_plot()+
          geom_point(aes(ancestral, estimated),
                     showSelected="generation",
                     clickSelects="locus",
                     data=generation.pop, size=4, alpha=3/4),
-       loci=ggplot()+
+       loci=a_plot()+
          geom_vline(aes(xintercept=locus), clickSelects="locus",
                     data=loci, alpha=1/2, lwd=4)+
          geom_point(aes(locus, frequency),

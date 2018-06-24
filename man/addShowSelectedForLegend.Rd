@@ -19,4 +19,3 @@ L : Layer with additional mapping to new aesthetic
 \description{
 Add a showSelected aesthetic if legend is specified
 }
-

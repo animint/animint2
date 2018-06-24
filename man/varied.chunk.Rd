@@ -17,4 +17,3 @@ list of data.frame.
 \description{
 Extract subset for each data.frame in a list of data.frame
 }
-

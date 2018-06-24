@@ -15,4 +15,3 @@ True/False value
 \description{
 Check if character is an RGB hexadecimal color value
 }
-

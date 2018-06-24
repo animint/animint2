@@ -87,7 +87,7 @@ set.linetypes["Bayes"] <- classifier.linetypes[["Bayes"]]
 cbind(set.linetypes, set.colors)
 
 library(ggplot2Animint)
-errorPlot <- ggplot()+
+errorPlot <- a_plot()+
   theme_bw()+
   geom_hline(aes(yintercept=error.prop, color=set, linetype=set),
              data=Bayes.error)+
@@ -151,7 +151,7 @@ show.grid
 label.colors <- c(
   "0"="#377EB8",
   "1"="#FF7F00")
-scatterPlot <- ggplot()+
+scatterPlot <- a_plot()+
   theme_bw()+
   theme(axis.text=element_blank(),
         axis.ticks=element_blank(),
@@ -200,7 +200,7 @@ set.colors <-
     validation="#4DAF4A",#green
     Bayes="#984EA3",#purple
     train="black")
-errorPlot <- ggplot()+
+errorPlot <- a_plot()+
   ggtitle("Select number of neighbors")+
   theme_bw()+
   theme_animint(height=500)+
@@ -255,7 +255,7 @@ other.error[, V2.bottom := text.V2.bottom + text.height * 1:2]
 Bayes.error <- data.table(
   set="Bayes",
   error.prop=0.21)
-scatterPlot <- ggplot()+
+scatterPlot <- a_plot()+
   ggtitle("Mis-classification errors in train set")+
   theme_bw()+
   theme_animint(width=500, height=500)+
@@ -306,7 +306,7 @@ scatterPlot <- ggplot()+
             showSelected="neighbors",
             data=show.text)
 scatterPlot+
-  facet_wrap("neighbors")+
+  a_facet_wrap("neighbors")+
   theme(panel.margin=grid::unit(0, "lines"))
 viz.neighbors <- list(
   error=errorPlot,

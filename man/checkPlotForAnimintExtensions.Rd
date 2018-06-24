@@ -18,4 +18,3 @@ begin with an alphabet}
 \description{
 Performs error checking on the plot for animint extensions
 }
-

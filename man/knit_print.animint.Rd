@@ -16,10 +16,9 @@ knit_print.animint(x, options, ...)
 \description{
 Insert an interactive animation into an R markdown document using a customized print method.
 }
-\author{
-Carson Sievert
-}
 \references{
 https://github.com/yihui/knitr/blob/master/vignettes/knit_print.Rmd
 }
-
+\author{
+Carson Sievert
+}

@@ -9,7 +9,7 @@
 ##' @return ggplot theme list with names such as \code{animint.width}.
 ##' @examples 
 ##' mtcars$cyl <- as.factor(mtcars$cyl)
-##' p <- ggplot() +
+##' p <- a_plot() +
 ##'   geom_point(aes(x=wt, y=mpg, colour=cyl),
 ##'              data=mtcars) +
 ##'   ## set width and height values and update both axes

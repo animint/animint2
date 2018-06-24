@@ -3,7 +3,7 @@ data(WorldBank)
 
 wb  <- WorldBank[WorldBank$year == 2010,]
 
-p <- ggplot()+
+p <- a_plot()+
   geom_text(aes(y=fertility.rate, x=life.expectancy,
                 label=iso2c, size=population, colour=population),
             data=wb)+

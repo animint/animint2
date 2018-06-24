@@ -122,7 +122,7 @@ p_df4 <- p_df3 %>%
 # animint plots -----------------------------------------
 
 # total number of attacks
-p_time <- ggplot() + 
+p_time <- a_plot() + 
   geom_line(aes(date, total_attacks), data = p_df2) + 
   make_tallrect(p_df2, "date") + 
   labs(y = "Total Attacks", x = "Date", 
@@ -130,7 +130,7 @@ p_time <- ggplot() +
   theme_animint(width = 550, height = 350)
 
 # points on world map
-p_points <- ggplot() + 
+p_points <- a_plot() + 
   geom_polygon(aes(long, lat, group = group), size = I(1), 
                data = countries, fill = "lightgrey", colour = "darkgreen") +
   geom_point(aes(coords.x1, coords.x2),
@@ -144,7 +144,7 @@ p_points <- ggplot() +
   theme_animint(width = 550, height = 350)
 
 # tiles on world map
-p_tiles <- ggplot() + 
+p_tiles <- a_plot() + 
   geom_polygon(aes(long, lat, group = group), size = I(1), 
                data = countries, fill = "lightgrey", colour = "darkgreen") +
   geom_tile(aes(xmid, ymid, fill = log(attacks)), 
@@ -164,7 +164,7 @@ p_tiles <- ggplot() +
   theme_animint(width = 550, height = 350)
 
 # tiles over time
-p_time2 <- ggplot() + 
+p_time2 <- a_plot() + 
   make_tallrect(p_df2, "date") + 
   geom_line(aes(date, log(attacks), group = id), 
             clickSelects = "id", showSelected = "id", 

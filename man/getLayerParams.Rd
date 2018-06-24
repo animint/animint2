@@ -15,4 +15,3 @@ All parameters in the layer
 \description{
 Get all parameters for a layer
 }
-

@@ -25,4 +25,3 @@ Initiates a local file server and remote driver.
 \seealso{
 \link{tests_run}
 }
-

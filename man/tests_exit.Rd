@@ -12,4 +12,3 @@ Read process IDs from a file and kill those process(es)
 \seealso{
 \link{tests_run}
 }
-

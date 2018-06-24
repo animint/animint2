@@ -19,4 +19,3 @@ issueSelectorWarnings(geoms, selector.aes, duration)
 \description{
 Issue warnings for selectors
 }
-

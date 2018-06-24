@@ -15,4 +15,3 @@ modified \code{plot.meta} with unique axis labels
 \description{
 Get unique axis labels for the plot
 }
-

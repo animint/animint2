@@ -240,7 +240,7 @@ colsNotToCopy <- function(g, s.aes){
 checkForNonIdentityAndSS <- function(stat.type, has.show, is.show, l,
                                      g_classed, g_data_names,
                                      aes_names){
-  if(has.show && stat.type != "StatIdentity"){
+  if(has.show && stat.type != "a_StatIdentity"){
     show.names <- aes_names[is.show]
     data.has.show <- show.names %in% g_data_names
     signal <- if(all(data.has.show))warning else stop
@@ -639,7 +639,7 @@ setPlotSizes <- function(meta, AllPlotsInfo){
     size <- meta[[d]]
     if(is.list(size)){
       warning("option ", d, " is deprecated, ",
-              "use ggplot()+theme_animint(", d,
+              "use a_plot()+theme_animint(", d,
               "=", size[[1]],
               ") instead")
       if(is.null(names(size))){ #use this size for all plots.
@@ -679,7 +679,7 @@ merge_recurse <- function(dfs){
 
 
 #' Function to get legend information for each scale
-#' @param mb single entry from ggplot2:::guides_merge() list of legend data
+#' @param mb single entry from ggplot2Animint::guides_merge() list of legend data
 #' @return list of legend information, NULL if guide=FALSE.
 getLegend <- function(mb){
   guidetype <- mb$name

@@ -2,13 +2,13 @@ library(ggplot2Animint)
 library(animint2)
 library(plyr) # to access round_any
 movies$decade <- round_any(movies$year, 10)
-m <- ggplot(movies, aes(x=rating, colour=decade, group=decade)) + 
+m <- a_plot(movies, aes(x=rating, colour=decade, group=decade)) + 
   geom_density(fill=NA) + scale_colour_continuous(guide="legend") 
 
-m <- ggplot(movies, aes(x=rating, colour=decade, group=decade)) + geom_density(fill=NA) #+ scale_colour_continuous(guide="none")
+m <- a_plot(movies, aes(x=rating, colour=decade, group=decade)) + geom_density(fill=NA) #+ scale_colour_continuous(guide="none")
 m 
 
-mb <- ggplot_build(m)
+mb <- a_plot_build(m)
 aes.scales <- which(sapply(mb$plot$scales$scales, function(i) sum(i$aesthetics%in%c("colour", "size", "fill", "linetype", "alpha"))>0))
 
 getLegendList <- function(mb){
@@ -40,10 +40,10 @@ getLegend <- function(mb, i){
 }
 legends <- lapply(aes.scales, getLegend, mb=mb)
 
-m <- ggplot(movies, aes(x=length, y=rating, size=votes, colour=factor(Comedy))) + scale_colour_manual(values=c("black", "green")) +
+m <- a_plot(movies, aes(x=length, y=rating, size=votes, colour=factor(Comedy))) + scale_colour_manual(values=c("black", "green")) +
   geom_jitter(alpha=.5) + scale_size_area() + xlim(c(20, 300))
 m
-mb <- ggplot_build(m)
+mb <- a_plot_build(m)
 aes.scales <- which(sapply(mb$plot$scales$scales,
                            function(i) sum(i$aesthetics%in%c("colour", "size",
                                                              "fill", "linetype", "alpha"))>0))
@@ -53,7 +53,7 @@ legends <- lapply(aes.scales, getLegend, mb=mb)
 
 
 #------------------
-data <- ggplot_build(p)
+data <- a_plot_build(p)
 
 
 gdefs <- ggplot2Animint:::guides_train(scales = scales,

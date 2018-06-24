@@ -21,7 +21,7 @@ names. https://github.com/hadley/ggplot2/issues/938
 }
 \examples{
 mtcars$cyl <- as.factor(mtcars$cyl)
-p <- ggplot() +
+p <- a_plot() +
   geom_point(aes(x=wt, y=mpg, colour=cyl),
              data=mtcars) +
   ## set width and height values and update both axes
@@ -32,4 +32,3 @@ animint2dir(viz)
 \author{
 Toby Dylan Hocking
 }
-

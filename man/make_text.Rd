@@ -26,4 +26,3 @@ Convenvience function for a showSelected plot label.
 \author{
 Toby Dylan Hocking
 }
-

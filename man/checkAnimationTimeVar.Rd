@@ -16,4 +16,3 @@ for errors}
 \description{
 Check animation variable for errors
 }
-

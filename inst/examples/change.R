@@ -2,7 +2,7 @@ library(animint2)
 data(change)
 
 train.test <- data.frame(x=6, y=c(-3, -5), set=c("train","test"))
-likPlot <- ggplot()+
+likPlot <- a_plot()+
   make_tallrect(change$lik, "complexity")+
   geom_line(aes(complexity, log(log.likelihood+.002), group=set, colour=set),
             data=change$lik, size=5)+
@@ -14,7 +14,7 @@ print(likPlot)
 
 ## Just the variables which have really changed.
 changed <- subset(change$truth, changed)
-varPlot <- ggplot()+
+varPlot <- a_plot()+
   geom_text(aes(x,y,label=variable), data=change$pos)+
   geom_segment(aes(v1.x, v1.y, xend=v2.x, yend=v2.y,
                    size=change, colour=change),
@@ -31,7 +31,7 @@ varPlot <- ggplot()+
 print(varPlot)
 
 ## The path of coefficients.
-pathPlot <- ggplot()+
+pathPlot <- a_plot()+
   make_tallrect(change$coefs, "complexity")+
   geom_line(aes(complexity, coefficient, group=variables, colour=truth),
             clickSelects="variables",

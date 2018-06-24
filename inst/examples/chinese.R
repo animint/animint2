@@ -20,7 +20,7 @@ data$count_all <- as.numeric(data$count_all)
 viz <-
 list(
 
-ts = ggplot() +
+ts = a_plot() +
   make_tallrect( data, "time" ) +
   geom_line( aes(time, count, group = name, colour = name),
              clickSelects = "name",
@@ -30,7 +30,7 @@ time = list( variable="time",ms = 3000 ),
 
 duration = list( time = 1000 ),
 
-scatter = ggplot()+
+scatter = a_plot()+
   geom_point( aes(count_all, count, colour = name, size = count_all),
               clickSelects = "name",
               showSelected = "time",

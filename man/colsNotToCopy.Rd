@@ -17,4 +17,3 @@ Character vector of columns not to be copied
 \description{
 Filter out columns that do not need to be copied
 }
-

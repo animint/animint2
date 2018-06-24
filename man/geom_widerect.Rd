@@ -18,6 +18,12 @@ geom_widerect(mapping = NULL, data = NULL, stat = "identity",
 \item{position}{position mapping, defaults to identity}
 
 \item{...}{other arguments}
+
+\item{na.rm}{...}
+
+\item{show.legend}{...}
+
+\item{inherit.aes}{...}
 }
 \value{
 ggplot2 layer
@@ -30,4 +36,3 @@ ggplot2 geom with ymin and ymax aesthetics that covers the entire x range, usefu
    source(system.file("examples/WorldBank.R", package = "animint"))
  }
 }
-

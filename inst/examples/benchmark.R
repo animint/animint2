@@ -8,12 +8,12 @@ perfMeans <- dcast(molt,alg+ds~perf,mean,na.rm=TRUE)
 x <- 0.3
 y <- 500
 algos <-
-  list(selectAlg=ggplot()+
+  list(selectAlg=a_plot()+
        geom_point(aes(Misclassification, Time, colour=alg),
                   clickSelects="alg", showSelected="ds",
                   data=perfs, alpha=6/10)+
        make_text(perfs,x,y,"ds"),
-       selectDS=ggplot()+
+       selectDS=a_plot()+
        ## geom_text(aes(Misclassification, Time, 
        ##                label=ds, showSelected=alg),
        ##            data=perfMeans)+
@@ -21,12 +21,12 @@ algos <-
                   clickSelects="ds", showSelected="alg",
                   data=perfMeans)+
        make_text(perfs,x,y,"alg"),
-       selectAlgLog=ggplot()+
+       selectAlgLog=a_plot()+
        geom_point(aes(Misclassification, log10(Time), colour=alg),
                   clickSelects="alg", showSelected="ds",
                   data=perfs, alpha=6/10)+
        make_text(perfs,x,log10(y),"ds"),
-       selectDSLog=ggplot()+
+       selectDSLog=a_plot()+
        geom_text(aes(Misclassification, log10(Time), 
                       label=ds),
                  showSelected="alg",

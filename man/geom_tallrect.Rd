@@ -18,6 +18,12 @@ geom_tallrect(mapping = NULL, data = NULL, stat = "identity",
 \item{position}{position mapping, defaults to identity}
 
 \item{...}{other arguments}
+
+\item{na.rm}{...}
+
+\item{show.legend}{...}
+
+\item{inherit.aes}{...}
 }
 \value{
 ggplot2 layer
@@ -35,7 +41,7 @@ only.segments <- subset(only.error,bases.per.probe==bases.per.probe[1])
 signal.colors <- c(estimate="#0adb0a",
                    latent="#0098ef")
 breakpointError <- 
-  list(signal=ggplot()+
+  list(signal=a_plot()+
          geom_point(aes(position, signal),
                     showSelected="bases.per.probe",
                     data=breakpoints$signals)+
@@ -50,7 +56,7 @@ breakpointError <-
                     colour=signal.colors[["estimate"]],
                     linetype="dashed",
                     data=breakpoints$breaks),
-       error=ggplot()+
+       error=a_plot()+
          geom_vline(aes(xintercept=segments), clickSelects="segments",
                     data=only.segments, lwd=17, alpha=1/2)+
          geom_line(aes(segments, error, group=bases.per.probe),
@@ -58,4 +64,3 @@ breakpointError <-
                    data=only.error, lwd=4))
 animint2dir(breakpointError)
 }
-

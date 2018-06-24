@@ -16,4 +16,3 @@ showSelected.variable/value
 \description{
 Separate .variable/.value selectors
 }
-

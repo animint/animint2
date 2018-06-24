@@ -30,7 +30,7 @@ for(N in names(blank.items)){
 }
 
 mmir.plot <- 
-  list(signal=ggplot()+
+  list(signal=a_plot()+
        theme_animint(height=300, width=800)+       
        scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
@@ -55,7 +55,7 @@ mmir.plot <-
                   colour=signal.colors[["estimate"]],
                   linetype="dashed",
                   data=intreg$breaks),
-       regression=ggplot()+
+       regression=a_plot()+
        theme_animint(height=150, width=800)+
        geom_blank(aes(x,y), data=blank.items$regression$blank)+
        geom_segment(aes(x=min.L, y=feature, xend=max.L, yend=feature),
@@ -68,12 +68,12 @@ mmir.plot <-
                     size=3,
                     data=intreg$model)+
        scale_linetype_manual(values=model.linetypes),
-       error=ggplot()+
+       error=a_plot()+
        theme_animint(height=100, width=800)+
        geom_blank(aes(x,y), data=blank.items$error$blank)+
        geom_segment(aes(min.L, cost, xend=max.L, yend=cost),
                     showSelected="signal", data=intreg$selection),
-       segments=ggplot()+
+       segments=a_plot()+
        theme_animint(height=100, width=800)+
        geom_blank(aes(x,y), data=blank.items$segments$blank)+
        geom_segment(aes(min.L, segments, xend=max.L, yend=segments),
@@ -86,7 +86,7 @@ mmir.plot <-
 ## This is a normal ggplot of all the data, subsets of which can be
 ## shown by clicking the plots.
 sig.facets <- mmir.plot$sig+
-  facet_grid(segments~signal, scales="free", space="free_x")+
+  a_facet_grid(segments~signal, scales="free", space="free_x")+
   theme_bw()+
   theme(panel.margin=grid::unit(0,"cm"))
 print(sig.facets)
@@ -97,7 +97,7 @@ animint2dir(mmir.plot, "intreg-nofacets")
 mmir.facet <- 
   list(signal=mmir.plot$signal,
        
-       penalty=ggplot()+
+       penalty=a_plot()+
        geom_tallrect(aes(xmin=min.L, xmax=max.L),
                      showSelected="signal",
                      clickSelects="segments",
@@ -124,7 +124,7 @@ mmir.facet <-
                     showSelected="signal",
                     data=data.frame(intreg$selection, what="segments"))+
        xlab("penalty value $L=f(x)$")+ # TODO: mathjax.
-       facet_grid(what~.,scales="free"),
+       a_facet_grid(what~.,scales="free"),
 
        title="Max-margin interval regression")
 animint2dir(mmir.facet, "intreg-facets") 
@@ -132,7 +132,7 @@ animint2dir(mmir.facet, "intreg-facets")
 ## present in the interactive plot, but is useful here to see all
 ## the data in regular ggplot2.
 too.many.facets <- mmir.facet$penalty+
-  facet_grid(what~signal, scales="free")+
+  a_facet_grid(what~signal, scales="free")+
   theme_bw()+
   theme(panel.margin=grid::unit(0, "cm"))
 print(too.many.facets)
@@ -170,7 +170,7 @@ slope <- with(reg, (min.L-max.L)/(min.feature-max.feature))
 intreg$intervals$pred.L <-
   slope * (intreg$intervals$feature - reg$min.feature) + reg$min.L
 intreg.errors <- 
-  list(signal=ggplot()+
+  list(signal=a_plot()+
        theme_animint(height=300, width=800)+       
        scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
@@ -199,7 +199,7 @@ intreg.errors <-
                   colour=signal.colors[["estimate"]],
                   linetype="dashed",
                   data=intreg$breaks),
-       penalty=ggplot()+
+       penalty=a_plot()+
          theme_bw()+
          theme_animint(height=500, width=800)+
          theme(panel.margin=grid::unit(0, "cm"))+
@@ -235,7 +235,7 @@ intreg.errors <-
                     showSelected="signal",
                     data=data.frame(intreg$selection, what="segments"))+
        xlab("penalty value log(lambda)")+ # TODO: mathjax.
-       facet_grid(what~., scales="free"),
+       a_facet_grid(what~., scales="free"),
        title="Max-margin interval regression")
 animint2dir(intreg.errors, "intreg-errors")
 
@@ -243,7 +243,7 @@ animint2dir(intreg.errors, "intreg-errors")
 
 ## No annotated regions!
 mmir.segs <- 
-  list(signal=ggplot()+
+  list(signal=a_plot()+
        theme_animint(height=300, width=800)+       
        scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
@@ -263,7 +263,7 @@ mmir.segs <-
                   linetype="dashed",
                   data=intreg$breaks),
        
-       segments=ggplot()+
+       segments=a_plot()+
        theme_animint(height=300, width=800)+
        xlab("log(penalty)")+
        ylab("optimal number of segments")+
@@ -313,7 +313,7 @@ tallrects$geom_params$colour <- signal.colors[["estimate"]]
 
 ## Plot segments rather than penalty.
 mmir.selection <- 
-  list(segments=ggplot()+
+  list(segments=a_plot()+
        ggtitle("Select profile and number of segments")+
        tallrects+
        geom_text(aes(0, error, label=signal),
@@ -328,7 +328,7 @@ mmir.selection <-
                  data=model.selection,
                  alpha=0.6, size=8),
 
-       signal=ggplot()+
+       signal=a_plot()+
        theme_animint(width=800)+       
        scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
@@ -365,20 +365,20 @@ library(reshape2)
 model.tall <- melt(model.selection, measure.vars=c("error", "penalized.error"))
 ## Plot error AND penalized error versus number of segments.
 mmir.buggy <- 
-  list(segments=ggplot()+
+  list(segments=a_plot()+
        ggtitle("Select profile and number of segments")+
        tallrects+
        scale_x_continuous("segments", breaks=c(1, 5, 10, 20),
                           limits=c(-2, 21))+
        xlab("")+
-       facet_grid(variable ~ ., scales="free_y")+
+       a_facet_grid(variable ~ ., scales="free_y")+
        geom_line(aes(segments, value,
                      group=interaction(signal, variable)),
                  clickSelects="signal",
                  data=model.tall,
                  alpha=0.6, size=8),
 
-       signal=ggplot()+
+       signal=a_plot()+
        theme_animint(width=800)+       
        scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
@@ -415,13 +415,13 @@ penalized <- model.selection %>%
   group_by(signal) %>%
   filter(penalized.error < penalized.error[1]*2)
 mmir.BIC <- 
-  list(segments=ggplot()+
+  list(segments=a_plot()+
        ggtitle("Select profile and number of segments")+
        tallrects+
        scale_x_continuous("segments", breaks=c(1, 5, 10, 20),
                           limits=c(-2, 21))+
        xlab("")+
-       facet_grid(variable ~ ., scales="free_y")+
+       a_facet_grid(variable ~ ., scales="free_y")+
        geom_line(aes(segments, error,
                      group=signal),
                  clickSelects="signal",
@@ -434,7 +434,7 @@ mmir.BIC <-
                  data=data.frame(penalized, variable="penalized error (BIC)"),
                  alpha=0.6, size=8),
 
-       signal=ggplot()+
+       signal=a_plot()+
        theme_animint(width=800)+       
        scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+

@@ -30,4 +30,3 @@ case of selecting a particular x value.
 \author{
 Toby Dylan Hocking
 }
-

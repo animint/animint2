@@ -18,4 +18,3 @@ Convert \code{pt} value to \code{lines}
 \note{
 Does NOT work if input is not in \code{pt}. Input is returned as is.
 }
-
