@@ -77,18 +77,36 @@ animint2 is a redesign of animint with a cleaner syntax.
 
 ## [Chapter 4: ](#)
 
-## [Chapter 5: ](#)
-
 #### What's ggplot2?
 
-ggplot2 is a system for declaratively creating graphics, based on The Grammar of Graphics. You provide the data, tell ggplot2 how to map variables to aesthetics, what graphical primitives to use, and it takes care of the details.
+Created in 2005 by Hadley Wickham, ggplot2 is a libary based on Leland Wilkinson's Grammar of Graphics, a general scheme for data visualization which breaks up graphs into semantic components such as scales and layers. You provide the data, tell ggplot2 how to map variables to aesthetics, what graphical primitives to use, and it takes care of the details.
+
+We are going to cover the basic steps to run and work with ggplot2. For a more detailed explanation you can read its [own designer guide](https://ggplot2.tidyverse.org/)
 
 **How to install ggplot2**
 
 ```
 install.packages("ggplot2")
 ```
-https://ggplot2.tidyverse.org/
+
+## [Chapter 5: animint2, the basics](#)
+
+Once installed, let's create our first graphic. We are going to start with one of the most basic: a histogram. Regarding the data, we are going to use diamonds as our source.
+
+```
+ggplot(diamonds, aes(carat)) +
+  geom_histogram()
+```
+
+#### animint2 installation
+
+To install animint2 we have to run this code in R:
+(Review this after submission to CRAN)
+
+```
+devtools::install_github("faizan-khan-iit/ggplot2@validate-params")
+devtools::install_github("tdhock/animint2")
+```
 
 
 ## [Chapter 6: ](#)
