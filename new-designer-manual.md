@@ -28,6 +28,13 @@ Chapter 7 | Customizing animint2
 
 Chapter 8 | Publishing your interactive data visualizations on the web.
 
+animint2 is designed to create interactive graphics. Once you have them, you have a bunch of options to publish them. The ideal output would be the web but in this chapter all options are covered. As a user, you can publish your animint2 graphics:
+
+* on your personal computer.
+* on gist.github.com and view them on bl.ocks.org.
+* in R Markdown documents.
+* using any web server, including GitHub pages.
+
 ## Examples & Practice
 
 Chapter 9 | Examples based in ggplot2
