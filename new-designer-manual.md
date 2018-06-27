@@ -118,9 +118,35 @@ devtools::install_github("tdhock/animint2")
 animint2 is designed to create interactive graphics. Once you have them, you have a bunch of options to publish them. The ideal output would be the web but in this chapter all options are covered. As a user, you can publish your animint2 graphics:
 
 * on your personal computer.
-* on gist.github.com and view them on bl.ocks.org.
 * in R Markdown documents.
+* on gist.github.com and view them on bl.ocks.org.
 * using any web server, including GitHub pages.
+
+#### personal computer
+
+#### R Markdown
+
+Confirm that animint2 will allow to publish via R Markdown
+
+#### bl.ocks.org
+
+To publish R visualizations in bl.ocks first we have to deal with [GitHub Gist](https://help.github.com/articles/about-gists/). Gist was originally meant for sharing code, but it also works for sharing animints.
+
+To publish an animint on Gist, you need: 
+* 1) a GitHub account (Sign up [here](https://github.com/join) for free)
+* 2) the gistr package. 
+
+If you have already set up your Githu account, now you can install the gistr package. Write in R:
+
+```
+if(!require(gistr))install.packages("gistr")
+````
+
+(Rewrite paragraph)
+Now you should be able to use animint2gist(viz) to publish viz as a new gist. That command will post the files to a new gist, for example https://gist.github.com/tdhock/2b029fe9abc8eb300f9f/. It will then open a new web browser window at the corresponding bl.ocks.org URL, for example http://bl.ocks.org/tdhock/raw/2b029fe9abc8eb300f9f/
+
+NOTE: Should we include an example in ObservableHQ?
+https://beta.observablehq.com/
 
 ## [Chapter 9: ](#)
 
