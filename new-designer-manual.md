@@ -4,6 +4,7 @@ This manual explains how to design and create interactive data visualizations us
 ## What's animint2
 
 Chapter 1 | Preface
+        
           | What's new? Comparison with animint
           
 Chapter 2 | animint2
