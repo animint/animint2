@@ -165,6 +165,9 @@ https://www.washingtonpost.com/graphics/2018/politics/house-primaries-candidates
 ## [Chapter 11: Open source](#)
 
 * Open source
+
+[Open-source software](https://en.wikipedia.org/wiki/Open-source_software) is a type of computer software, developed in a collaborative public manner, whose source code is released under a license in which the copyright holder grants users the rights to study, change, and distribute the software to anyone and for any purpose.
+
 * Test-driven development
 
 ## [Chapter 12: ](#)
