@@ -68,6 +68,7 @@ Comparison with animint
 
 #### Why you'll find animint2 useful?
 
+animint2 is a great library to create interactive graphics and to get your ggplot2 graphics ready for the web. The magic of animint2 is that with only a few lines of code you'll be able to transform your static ggplot2 graphics to interactive ones. It allows you to create a new bunch of perspectives of the data you are visualising. 
 
 ## [Chapter 2: animint2](#animint2)
 
