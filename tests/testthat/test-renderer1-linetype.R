@@ -4,7 +4,7 @@ error.types <-
   data.frame(x=1:3, status=c("correct", "false positive", "false negative"))
 
 gg <- 
-  ggplot(error.types)+
+  a_plot(error.types)+
     geom_point(aes(x, x))+
     geom_tallrect(aes(xmin=x, xmax=x+0.5, linetype=status),
                   fill="grey",

@@ -1,7 +1,7 @@
 acontext("chunk vars")
 
 test_that("produce as many chunk files as specified", {
-  viz <- list(iris=ggplot()+
+  viz <- list(iris=a_plot()+
                 geom_point(aes(Petal.Width, Sepal.Length),
                            showSelected="Species",
                            data=iris, chunk_vars="Species",
@@ -14,7 +14,7 @@ test_that("produce as many chunk files as specified", {
   tsv.files <- Sys.glob(file.path(tdir, "*.tsv"))
   expect_equal(length(tsv.files), 3)
   
-  viz <- list(iris=ggplot()+
+  viz <- list(iris=a_plot()+
                 geom_point(aes(Petal.Width, Sepal.Length),
                            showSelected="Species",
                data=iris, chunk_vars=character(), validate_params = FALSE))
@@ -28,7 +28,7 @@ test_that("produce as many chunk files as specified", {
 })
 
 test_that("produce informative errors for bad chunk_vars", {
-  viz <- list(iris=ggplot()+
+  viz <- list(iris=a_plot()+
                 geom_point(aes(Petal.Width, Sepal.Length),
                            showSelected="Species",
                data=iris, chunk_vars="species", validate_params = FALSE))
@@ -36,7 +36,7 @@ test_that("produce informative errors for bad chunk_vars", {
     animint2dir(viz, open.browser=FALSE)
   }, "invalid chunk_vars species; possible showSelected variables: Species")
   
-  viz <- list(iris=ggplot()+
+  viz <- list(iris=a_plot()+
                 geom_point(aes(Petal.Width, Sepal.Length),
                            showSelected="Species",
                data=iris, chunk_vars=NA, validate_params = FALSE))
@@ -52,7 +52,7 @@ only.segments <- subset(only.error,bases.per.probe==bases.per.probe[1])
 signal.colors <- c(estimate="#0adb0a",
                    latent="#0098ef")
 breakpointError <- 
-  list(signal=ggplot()+
+  list(signal=a_plot()+
          geom_point(aes(position, signal),
                     showSelected="bases.per.probe",
                     data=breakpoints$signals)+
@@ -67,7 +67,7 @@ breakpointError <-
                     colour=signal.colors[["estimate"]],
                     linetype="dashed",
                     data=breakpoints$breaks),
-       error=ggplot()+
+       error=a_plot()+
          geom_vline(aes(xintercept=segments),
                     clickSelects="segments",                    
                     data=only.segments, lwd=17, alpha=1/2)+

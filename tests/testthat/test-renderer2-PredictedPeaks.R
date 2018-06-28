@@ -13,7 +13,7 @@ load(PredictedPeaks.RData, .GlobalEnv)
 hover.dots <- subset(PredictedPeaks$chromCounts, nonInputType==type)
 
 viz <- list(
-  oneChrom=ggplot()+
+  oneChrom=a_plot()+
     ggtitle("PeakSegJoint detections on selected chromosome")+
     theme_bw()+
     coord_cartesian(xlim=c(0, 1))+
@@ -34,7 +34,7 @@ viz <- list(
               size=11,
               data=PredictedPeaks$chromCounts)+
     scale_y_discrete("cell type", drop=FALSE),
-  chroms=ggplot()+
+  chroms=a_plot()+
     theme_bw()+
     theme_animint(width=1500, height=330)+
     scale_y_discrete("chromosome", drop=FALSE)+ 
@@ -59,12 +59,12 @@ viz <- list(
                   label=totals),
               showSelected="dotID",
               data=PredictedPeaks$scatter.text),
-  scatter=ggplot()+
+  scatter=a_plot()+
     geom_hline(aes(yintercept=N),
                color="grey",
                data=PredictedPeaks$counts.Input)+
     scale_x_continuous("number of samples with a peak")+
-    facet_grid(nonInputType ~ .)+
+    a_facet_grid(nonInputType ~ .)+
     theme_bw()+
     scale_fill_gradient(low="grey", high="red")+
     theme_animint(width=1500)+
@@ -149,7 +149,7 @@ PredictedPeaks$counts.not.Input$thresh.type <- "max samples"
 PredictedPeaks$counts.Input$thresh.type <- "max samples"
 
 viz <- list(
-  oneChrom=ggplot()+
+  oneChrom=a_plot()+
     ggtitle("PeakSegJoint detections on selected chromosome")+
     theme_bw()+
     coord_cartesian(xlim=c(0, 1))+
@@ -162,7 +162,7 @@ viz <- list(
               size=11,
               data=PredictedPeaks$chromCounts)+
     scale_y_discrete("cell type", drop=FALSE),
-  chroms=ggplot()+
+  chroms=a_plot()+
     theme_bw()+
     theme_animint(width=1500, height=330)+
     scale_y_discrete("chromosome", drop=FALSE)+ 
@@ -187,7 +187,7 @@ viz <- list(
                   label=totals),
               showSelected="dotID",
              data=PredictedPeaks$scatter.text),
-  scatter=ggplot()+
+  scatter=a_plot()+
     geom_vline(aes(xintercept=N, color=thresh.type),
                data=PredictedPeaks$counts.not.Input)+
     scale_color_manual("threshold", values=c(
@@ -200,7 +200,7 @@ viz <- list(
                show.legend=TRUE,
                data=PredictedPeaks$counts.Input)+
     scale_x_continuous("number of samples with a peak")+
-    facet_grid(nonInputType ~ .)+
+    a_facet_grid(nonInputType ~ .)+
     theme_bw()+
     scale_fill_gradient(low="grey", high="red")+
     theme_animint(width=1500)+

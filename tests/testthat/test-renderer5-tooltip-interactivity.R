@@ -2,7 +2,7 @@ acontext("tooltip-interactivity")
 
 data("CO2")
 
-plot_viz <- ggplot() + 
+plot_viz <- a_plot() + 
   geom_point(aes(conc, uptake, color=Treatment, tooltip=Plant),
              data = CO2)
 viz <- list(p=plot_viz)

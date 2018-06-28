@@ -1,11 +1,11 @@
 acontext("geom_point_stroke")
 
 stroke_in_R <- 5
-p1 <- ggplot(mtcars, aes(wt, mpg)) +
+p1 <- a_plot(mtcars, aes(wt, mpg)) +
   geom_point(shape = 21, colour = "black", fill = "white",
              size = 5, stroke = stroke_in_R)
 
-p2 <- ggplot(mtcars, aes(wt, mpg, stroke=cyl)) +
+p2 <- a_plot(mtcars, aes(wt, mpg, stroke=cyl)) +
   geom_point(shape = 21, colour = "black", fill = "white", size = 5)
 
 viz <- list(p1=p1, p2=p2)

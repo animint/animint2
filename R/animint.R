@@ -1338,7 +1338,7 @@ getLegendList <- function(plistextra){
     legend_type <- legend_type[legend_type != ".label"]
     gdefs[[leg]]$legend_type <- legend_type
     scale.list <- scales$scales[which(scales$find(legend_type))]
-    discrete.vec <- sapply(scale.list, inherits, "ScaleDiscrete")
+    discrete.vec <- sapply(scale.list, inherits, "a_ScaleDiscrete")
     is.discrete <- all(discrete.vec)
     gdefs[[leg]]$is.discrete <- is.discrete
     ## get the name of the legend/selection variable.

@@ -13,7 +13,7 @@ load(ChromHMMinit.RData, .GlobalEnv)
 last.iteration <- subset(ChromHMMinit$metrics, iteration==100)
 
 viz <- list(
-  parameters=ggplot()+
+  parameters=a_plot()+
     ggtitle("parameters at selected iteration")+
     scale_fill_gradient(low="white", high="blue")+
     geom_tile(aes(state, experiment, fill=frequency,
@@ -25,7 +25,7 @@ viz <- list(
     theme_bw()+
     theme_animint(height=500, width=400)+
     theme(panel.margin=grid::unit(0, "cm"))+
-    facet_grid(parameters ~ .,
+    a_facet_grid(parameters ~ .,
                space="free",
                scales="free_y")+
     scale_y_discrete(drop=FALSE)+
@@ -36,7 +36,7 @@ viz <- list(
                ##chunk_vars=c("repeat.fac"),
                data=data.frame(ChromHMMinit$transition,
                  parameters="transition")),
-  metrics=ggplot()+
+  metrics=a_plot()+
     ggtitle("convergence metrics, select iteration")+
     make_tallrect(ChromHMMinit$metrics, "iteration")+
     geom_line(aes(iteration, metric.value,
@@ -48,13 +48,13 @@ viz <- list(
     theme_bw()+
     theme_animint(height=500)+
     theme(panel.margin=grid::unit(0, "cm"))+
-    facet_grid(metric.name ~ ., scales="free_y"),
-  last=ggplot()+
+    a_facet_grid(metric.name ~ ., scales="free_y"),
+  last=a_plot()+
     ggtitle("last iteration, select initialization")+
     theme_bw()+
     theme_animint(height=500, width=400)+
     theme(panel.margin=grid::unit(0, "cm"))+
-    facet_grid(metric.name ~ ., space="fixed", scales="free")+
+    a_facet_grid(metric.name ~ ., space="fixed", scales="free")+
     geom_point(aes(repeat.fac, metric.value),
                clickSelects="repeat.fac",
                size=5,

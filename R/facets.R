@@ -3,6 +3,7 @@
 #' The implementation here is a modified version of ggplot2:::facet_strips.
 #' @param a_facet ....
 #' @param panel ....
+#' @param ... other arguments
 #' @export
 getStrips <- function(a_facet, panel, ...)
   # ... is a placeholder at the moment in case we want to implement 

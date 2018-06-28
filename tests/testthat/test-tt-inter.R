@@ -8,7 +8,7 @@ test_that("Interactivity does not mess up tooltip titles",{
   WorldBank1975$region <- tolower(
     substring(as.character(WorldBank1975$region), 1, 3))
   
-  ex_plot <- ggplot() +
+  ex_plot <- a_plot() +
     geom_point(aes(fertility.rate, life.expectancy, color = region,
                    tooltip = country, href = "https://github.com"),
                data = WorldBank1975)

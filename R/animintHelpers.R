@@ -632,6 +632,7 @@ checkSingleShowSelectedValue <- function(selectors){
 
 #' Set plot width and height for all plots
 #' @param meta meta object with all information
+#' @param AllPlotsInfo ....
 #' @return \code{NULL}. Sizes are stored in meta object
 setPlotSizes <- function(meta, AllPlotsInfo){
   # Set both width and height

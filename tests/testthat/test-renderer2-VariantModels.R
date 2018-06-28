@@ -60,12 +60,12 @@ data_error <- add.filterVar.fac(VariantModels$thresholds)
 data_error$clickVar <- with(data_error,
                    paste0(filterVar.fac, "_fold", test.fold))
 viz <- list(
-  auc=ggplot()+
+  auc=a_plot()+
     ggtitle("Performance on 3 test folds")+
     theme_bw()+
     theme_animint(height=500)+
     theme(panel.margin=grid::unit(0, "cm"))+
-    facet_grid(.~metric.name, scales="free", space="fixed")+
+    a_facet_grid(.~metric.name, scales="free", space="fixed")+
     scale_y_discrete("method . weights")+
     scale_x_continuous("")+
     scale_color_manual(values=method.colors, guide="none")+
@@ -87,7 +87,7 @@ viz <- list(
                size=4,
                pch=21,
                data=data_auc),
-  roc=ggplot()+
+  roc=a_plot()+
     ggtitle("ROC curves by weights and test fold")+
     scale_y_continuous("True positive rate")+
     scale_x_continuous("False positive rate",
@@ -98,7 +98,7 @@ viz <- list(
     theme_bw()+
     theme_animint(width=500, height=500)+
     theme(panel.margin=grid::unit(0, "cm"))+
-    facet_grid(test.fold ~ type, labeller=function(label_df){
+    a_facet_grid(test.fold ~ type, labeller=function(label_df){
       if(names(label_df)=="test.fold"){
         label_names <- mapply(paste, "test fold", label_df, SIMPLIFY = FALSE)
         label_context(labels = label_names)
@@ -131,7 +131,7 @@ viz <- list(
                size=3,
                pch=21,
                data=data_roc),
-  error=ggplot()+
+  error=a_plot()+
     geom_hline(aes(yintercept=min.errors),
                showSelected=c("test.fold", "thresh.type"),
                data=minima.df,
@@ -144,7 +144,7 @@ viz <- list(
     theme_animint(width=1800, height=500)+
     theme(panel.margin=grid::unit(0, "cm"))+
     theme(axis.text.x=element_text(angle=90))+
-    facet_grid(. ~ filterVar.fac, labeller=function(label_df){
+    a_facet_grid(. ~ filterVar.fac, labeller=function(label_df){
       label_df <- mapply(sub, "balanced", "b", label_df, SIMPLIFY = FALSE)
       label_df <- mapply(sub, "one", "1", label_df, SIMPLIFY = FALSE)
       label_value(label_df)
@@ -175,7 +175,7 @@ viz <- list(
 info <- animint2HTML(viz)
 
 viz$error+
-  facet_grid(test.fold ~ filterVar.fac, labeller=function(label_df){
+  a_facet_grid(test.fold ~ filterVar.fac, labeller=function(label_df){
     if(names(label_df)=="test.fold"){
       label_names <- mapply(paste, "test fold", label_df, SIMPLIFY = FALSE)
       label_context(labels = label_names)

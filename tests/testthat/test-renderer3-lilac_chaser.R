@@ -10,7 +10,7 @@ vi_lilac_chaser <- function(np = 10,
 {
     x <- seq(0, 2 * pi * np/(np + 1), length = np)  # Get co-ordinates to plot
 
-    # Get data in a data-frame to pass to ggplot
+    # Get data in a data-frame to pass to a_plot
     df <- data.frame()
     for (i in 1:np) {
         df <- rbind(df, cbind(sin(x[-i]), cos(x[-i]), ptn = i))}
@@ -18,7 +18,7 @@ vi_lilac_chaser <- function(np = 10,
 
 
     # Plot to display the points and the '+' mark in the middle
-    p1 <- ggplot(data = df) +
+    p1 <- a_plot(data = df) +
         # Display the points
         geom_point(data = df,
                    aes(x = sinv, y = cosv),

@@ -3,11 +3,11 @@ acontext("axis angle rotate")
 ss <- data.frame(State=paste("some long text", c("CA", "NY")),
                  Prop.Inv=c(0, 1),
                  Year=c(1984, 2015))
-fg <- ggplot() +
+fg <- a_plot() +
   geom_point(aes(x=State, y=Prop.Inv), showSelected=c("Year"), data=ss) +
   xlab("STATE SOME REALLY REALLY LONG TEXT THAT MAY OVERLAP TICKS")+
   theme_animint(width=600, height=400)
-sg <- ggplot() +
+sg <- a_plot() +
   stat_summary(data=ss, aes(Year, Year), clickSelects=c("Year"),
                fun.y=length, geom="bar")
 ## This getTicks function is only used in this file.

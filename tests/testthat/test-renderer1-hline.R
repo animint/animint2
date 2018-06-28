@@ -3,7 +3,7 @@ acontext("hline")
 
 n.rows <- 100
 df <- data.frame(x=rnorm(n.rows), y=rnorm(n.rows))
-sc <- ggplot()+
+sc <- a_plot()+
   geom_point(aes(x, y), data=df)
 two <- data.frame(x=c(0, 1))
 

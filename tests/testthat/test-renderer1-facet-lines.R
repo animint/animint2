@@ -7,7 +7,7 @@ SCATTER <- function(df)data.frame(df, facet="Fertility rate")
 years <- unique(not.na[, "year", drop=FALSE])
 countries <- unique(not.na[, "country", drop=FALSE])
 wb.facets <-
-  list(ts=ggplot()+
+  list(ts=a_plot()+
          xlab("")+
          geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2),
                        clickSelects="year",
@@ -34,7 +34,7 @@ wb.facets <-
                    showSelected="year",
                    data=SCATTER(years)),
        time=list(variable="year",ms=3000),
-       bar=ggplot()+
+       bar=a_plot()+
          theme_animint(height=2400)+
          geom_bar(aes(country, life.expectancy, fill=region,
                       key=country),

@@ -19,7 +19,7 @@ set.colors <-
     Bayes="#984EA3",#purple
     train="black")
 
-errorPlot <- ggplot()+
+errorPlot <- a_plot()+
   ggtitle("Select number of neighbors")+
   theme_bw()+
   theme_animint(height=500)+
@@ -60,7 +60,7 @@ errorPlot <- ggplot()+
                 data=mixtureKNN$validation.error)
 errorPlot
 
-scatterPlot <- ggplot()+
+scatterPlot <- a_plot()+
   ggtitle("Mis-classification errors in train set")+
   theme_bw()+
   theme_animint(width=500, height=500)+
@@ -111,7 +111,7 @@ scatterPlot <- ggplot()+
             showSelected="neighbors",
             data=mixtureKNN$show.text)
 scatterPlot+
-  facet_wrap("neighbors")+
+  a_facet_wrap("neighbors")+
   theme(panel.margin=grid::unit(0, "lines"))
 
 viz.neighbors <- list(

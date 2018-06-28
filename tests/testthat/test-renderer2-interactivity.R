@@ -7,7 +7,7 @@ only.segments <- subset(only.error, samples==samples[1])
 signal.colors <- c(estimate="#0adb0a",
                    latent="#0098ef")
 breakpointError <- list(
-  signal=ggplot()+
+  signal=a_plot()+
     geom_point(aes(position, signal),
                showSelected="samples",
                data=breakpoints$signals)+
@@ -22,13 +22,13 @@ breakpointError <- list(
                colour=signal.colors[["estimate"]],
                linetype="dashed",
                data=breakpoints$breaks),
-  points=ggplot()+
+  points=a_plot()+
     geom_point(aes(samples, error,
                    id=paste0("samples", samples)),
                showSelected="segments",
                clickSelects="samples",
                data=only.error, stat="identity"),
-  error=ggplot()+
+  error=a_plot()+
     geom_vline(aes(xintercept=segments, 
                    id=paste0("segments", segments)),
                clickSelects="segments",
@@ -183,7 +183,7 @@ UStornadoCounts <-
   ddply(UStornadoes, .(state, year), summarize, count=length(state))
 seg.color <- "#55B1F7"
 tornado.lines <-
-  list(map=ggplot()+
+  list(map=a_plot()+
        make_text(UStornadoCounts, -100, 50, "year", "Tornadoes in %d")+
        geom_polygon(aes(x=long, y=lat, group=group,
                         id=state),
@@ -197,7 +197,7 @@ tornado.lines <-
        geom_point(aes(endLong, endLat, fill=place),
                   colour=seg.color, showSelected="year",
                   data=data.frame(UStornadoes,place="end")),
-       ts=ggplot()+
+       ts=a_plot()+
        geom_text(aes(year, count, label=state),
                  hjust=0, showSelected="state",
                  data=subset(UStornadoCounts, year==max(year)))+

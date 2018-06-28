@@ -9,7 +9,7 @@ df <- data.frame(xmin = c(0, 0),
 
 test_that("rect size translates to stroke-width", {
   viz <-
-    list(segs = ggplot() +
+    list(segs = a_plot() +
            geom_rect(data = df, size = 5, color = "violet",
                      aes(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax)))
   info <- animint2HTML(viz)
@@ -18,7 +18,7 @@ test_that("rect size translates to stroke-width", {
 
 test_that("zero rect size translates to stroke-width", {
   # phantomjs hangs when calling animint2HTML() and size/stroke-width is *exactly* 0
-  viz <- list(segs = ggplot() +
+  viz <- list(segs = a_plot() +
                 geom_rect(data = df, size = 0.01, color = "violet",
                           aes(xmin = xmin, ymin = ymin,
                               xmax = xmax, ymax = ymax)))
@@ -27,7 +27,7 @@ test_that("zero rect size translates to stroke-width", {
 })
 
 test_that("rect size range translates to stroke-width", {
-  viz <- list(segs = ggplot() + geom_rect(data = df, color = "violet",
+  viz <- list(segs = a_plot() + geom_rect(data = df, color = "violet",
                                           aes(xmin = xmin, ymin = ymin,
                                               xmax = xmax, ymax = ymax, size = size)) +
                 scale_size_identity())

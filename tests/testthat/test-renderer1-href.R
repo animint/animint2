@@ -11,7 +11,7 @@ names(university.df) <- c("university", "colors")
 
 test_that("clickSelects and href is an error", {
   viz <-
-    list(colors=ggplot()+
+    list(colors=a_plot()+
          geom_point(aes(x, university, color=color, href=color),
                     clickSelects="university",
                     data=color.df)+
@@ -23,12 +23,12 @@ test_that("clickSelects and href is an error", {
 
 test_that("aes(href) becomes <a href>", {
   viz <-
-    list(universities=ggplot()+
+    list(universities=a_plot()+
          geom_bar(aes(university, colors,
                       id=university),
                   clickSelects="university",
                   data=university.df, stat="identity"),
-         colors=ggplot()+
+         colors=a_plot()+
          geom_point(aes(x, university, color=color,
                         href=paste0("http://en.wikipedia.org/wiki/", color)),
                     showSelected="university",
@@ -57,7 +57,7 @@ test_that("aes(href) works with geom_polygon", {
   USpolygons <- map_data("state")
   USpolygons$href <- paste0("https://en.wikipedia.org/wiki/", USpolygons$region)
   viz.href <- list(
-    map=ggplot()+
+    map=a_plot()+
       ggtitle("click a state to read its Wikipedia page")+
       coord_equal()+
       geom_polygon(

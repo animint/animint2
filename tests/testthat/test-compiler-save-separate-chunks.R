@@ -17,7 +17,7 @@ map_flu <- do.call(rbind, map.by.weekend)
 
 # visualize CDC FluView data
 # activity level heatmap
-level.heatmap <- ggplot() + 
+level.heatmap <- a_plott() + 
   geom_tile(aes(x = WEEKEND, y = STATENAME, fill = level),
             data = state_flu) + 
   geom_tallrect(aes(xmin = WEEKEND - 3, xmax = WEEKEND + 3), 
@@ -41,7 +41,7 @@ theme_opts <- list(theme(panel.grid.minor = element_blank(),
                          axis.title.x = element_blank(), 
                          axis.title.y = element_blank()))
 
-p <- ggplot() + 
+p <- a_plott() + 
   make_text(map_flu, -100, 50, "WEEKEND",
             "CDC FluView in Lower 48 States ending %s") + 
   scale_fill_gradient2(low = "white", high = "red", breaks = 0:10,
@@ -198,7 +198,7 @@ points.not.na <- no.israel[life.not.na & fert.not.na & pop.not.na, ]
 unique.year.vec <- unique(points.not.na$year)
 unique.country.vec <- unique(no.israel$country)
 
-scatter <- ggplot()+
+scatter <- a_plott()+
   geom_point(aes(life.expectancy, fertility.rate,
                  colour=region, size=population,
                  tooltip=paste(country, "population", population),
@@ -215,7 +215,7 @@ scatter <- ggplot()+
   scale_size_animint(breaks=10^(5:9))+
   make_text(no.israel, 55, 9, "year")
 
-ts <- ggplot()+
+ts <- a_plott()+
   make_tallrect(no.israel, "year")+
   geom_line(aes(year, life.expectancy, group=country, colour=region),
             data=no.israel, size=4, alpha=3/5,
@@ -287,7 +287,7 @@ only.error <- subset(breakpoints$error, type=="E")
 only.segments <- subset(only.error, samples==samples[1])
 signal.colors <- c(estimate="#0adb0a", latent="#0098ef")
 
-signal <- ggplot()+
+signal <- a_plott()+
   geom_point(aes(position, signal),
              data=breakpoints$signals, showSelected="samples")+
   geom_line(aes(position, signal), colour=signal.colors[["latent"]],

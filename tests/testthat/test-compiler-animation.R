@@ -14,7 +14,7 @@ USpolygons$state = state.abb[match(USpolygons$region, tolower(state.name))]
 UStornadoCounts <-
   ddply(UStornadoes, .(state, year), summarize, count=length(state))
 tornado.anim <-
-  list(map=ggplot()+
+  list(map=a_plot()+
        geom_polygon(aes(x=long, y=lat, group=group),
                     data=USpolygons,
                     clickSelects="state",
@@ -22,7 +22,7 @@ tornado.anim <-
        geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
                     showSelected="year",                    
                     colour="#55B1F7", data=UStornadoes),
-       ts=ggplot()+
+       ts=a_plot()+
        make_tallrect(UStornadoCounts, "year")+
        geom_line(aes(year, count, group=state),
                  clickSelects="state", 
@@ -37,7 +37,7 @@ test_that("tornado animation frames correct", {
 ## WorldBank/gapminder example.
 data(WorldBank, package = "animint2")
 motion <-
-  list(scatter=ggplot()+
+  list(scatter=a_plot()+
          geom_point(aes(life.expectancy, fertility.rate,
                         colour=region, size=population),
                         clickSelects="country",
@@ -45,7 +45,7 @@ motion <-
                   data=WorldBank)+
        make_text(WorldBank, 55, 9, "year")+
        scale_size_continuous(range=c(1.5,20)),
-       ts=ggplot()+
+       ts=a_plot()+
        make_tallrect(WorldBank, "year")+
        geom_line(aes(year, life.expectancy, group=country),
                  clickSelects="country",
@@ -76,19 +76,19 @@ generation.pop <- do.call(rbind,lapply(gl.list,with,{
 }))
 generation.pop$ancestral <- ancestral$ancestral[generation.pop$locus]
 evolution <- 
-  list(ts=ggplot()+
+  list(ts=a_plot()+
          geom_vline(aes(xintercept=generation),
                     clickSelects="generation",
                     data=generations, alpha=1/2, lwd=4)+
          geom_line(aes(generation, frequency, group=population),
                    showSelected="locus",
                    data=generation.loci),
-       predictions=ggplot()+
+       predictions=a_plot()+
          geom_point(aes(ancestral, estimated),
                     showSelected="generation",
                     clickSelects="locus",               
                     data=generation.pop, size=4, alpha=3/4),
-       loci=ggplot()+
+       loci=a_plot()+
          geom_vline(aes(xintercept=locus),
                     data=loci,
                     clickSelects="locus",

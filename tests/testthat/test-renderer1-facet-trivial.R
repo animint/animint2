@@ -3,7 +3,7 @@ acontext("facet-trivial")
 miris <- iris
 miris$kingdom <- "plantae"
 
-gg <- ggplot()+
+gg <- a_plot()+
   geom_point(aes(Petal.Length, Petal.Width),
              data=miris)
 

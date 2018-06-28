@@ -63,7 +63,7 @@ sig.labels <- do.call(rbind, sig.labels.list)
 
 ## Plot segments rather than penalty.
 mmir.selection <- 
-  list(error=ggplot()+
+  list(error=a_plot()+
        ggtitle("Select profile and number of segments")+
        make_tallrect(model.selection, "segments",
                      colour=signal.colors[["estimate"]])+
@@ -88,7 +88,7 @@ mmir.selection <-
                      clickSelects="signal",
                  alpha=0.6, size=8),
 
-       signal=ggplot()+
+       signal=a_plot()+
          theme_bw()+
        theme_animint(width=800)+       
        scale_x_continuous("position on chromosome (mega base pairs)",

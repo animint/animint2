@@ -11,6 +11,8 @@ getStrips(a_facet, panel, ...)
 \item{a_facet}{....}
 
 \item{panel}{....}
+
+\item{...}{other arguments}
 }
 \description{
 Determine titles to put on a_facet panels.

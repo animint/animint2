@@ -1,7 +1,7 @@
 acontext("no axes")
 
 viz <- list(
-  gg=ggplot()+
+  gg=a_plot()+
     geom_point(aes(Petal.Length, Sepal.Length),
                data=iris)+
     theme_bw()+

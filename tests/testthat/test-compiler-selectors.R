@@ -3,12 +3,12 @@ acontext("selectors")
 test_that("first options are copied to selectors", {
   data(WorldBank, package = "animint2")
   gapminder <-
-    list(ts=ggplot()+
+    list(ts=a_plot()+
          make_tallrect(WorldBank, "year")+
          geom_line(aes(year, life.expectancy, group=country, color=region),
                    data=WorldBank, size=4, alpha=3/5,
                        clickSelects="country"),
-         scatter=ggplot()+
+         scatter=a_plot()+
            geom_point(aes(fertility.rate, life.expectancy,
                           colour=region, size=population),
                       clickSelects="country",

@@ -11,7 +11,7 @@ subset(wb2010, population==min(population))
 ### fact there will be no text element with fontsize=10!
 wb <- subset(wb2010, !is.na(population) &
     !is.na(fertility.rate) & !is.na(life.expectancy))
-viz <- list(scatter=ggplot()+
+viz <- list(scatter=a_plot()+
   geom_text(aes(y=fertility.rate, x=life.expectancy,
                 label=country, size=population, colour=population),
             data=wb)+

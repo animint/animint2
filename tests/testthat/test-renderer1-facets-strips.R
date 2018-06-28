@@ -1,6 +1,6 @@
 acontext("facet-strips")
 
-p <- ggplot(mtcars, aes(mpg, wt)) + 
+p <- a_plot(mtcars, aes(mpg, wt)) + 
   geom_point(colour='grey50', size = 4) + 
   geom_point(aes(colour = cyl)) 
 

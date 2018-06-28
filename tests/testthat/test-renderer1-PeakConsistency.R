@@ -13,11 +13,11 @@ color.code <-
     "#666666") #grey
 
 second.small <-
-  list(signals=ggplot()+
+  list(signals=a_plot()+
          theme_bw()+
          theme_animint(width=1000, height=800)+
          theme(panel.margin=grid::unit(0, "cm"))+
-         facet_grid(sample.id ~ ., labeller=function(val){
+         a_facet_grid(sample.id ~ ., labeller=function(val){
            mapply(paste, "sample", val, SIMPLIFY = FALSE)
          })+
          guides(size="none")+
@@ -52,10 +52,10 @@ test_that("15 segments of both colors", {
 })
 
 viz <-
-  list(increase=ggplot()+
+  list(increase=a_plot()+
          make_tallrect(PeakConsistency$increase, "increase")+
          geom_line(aes(increase, mean.diff), data=PeakConsistency$increase),
-       errors=ggplot()+
+       errors=a_plot()+
          ylab("distance from true peaks to estimated peaks")+
          scale_color_manual(values=color.code)+
          make_tallrect(PeakConsistency$error, "sample.size")+
@@ -67,11 +67,11 @@ viz <-
                    size=5,
                    alpha=0.7,
                    data=PeakConsistency$error),
-       signals=ggplot()+
+       signals=a_plot()+
          theme_bw()+
          theme_animint(width=1000, height=800)+
          theme(panel.margin=grid::unit(0, "cm"))+
-         facet_grid(sample.id ~ ., labeller=function(val){
+         a_facet_grid(sample.id ~ ., labeller=function(val){
            mapply(paste, "sample", val, SIMPLIFY = FALSE)
          })+
          geom_point(aes(chromEnd, count),
@@ -99,8 +99,8 @@ viz <-
          scale_color_manual(values=color.code),
        first=list(sample.size=5))
 
-## viz$errors+facet_grid(. ~ increase)
-## viz$signals+facet_grid(sample.id ~ increase + seed)
+## viz$errors+a_facet_grid(. ~ increase)
+## viz$signals+a_facet_grid(sample.id ~ increase + seed)
 
 info <- animint2HTML(viz)
 

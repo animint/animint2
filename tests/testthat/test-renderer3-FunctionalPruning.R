@@ -2,7 +2,7 @@ acontext("FunctionalPruning")
 
 data(FunctionalPruning, package="animint2")
 min.bug.viz <- list(
-  pruning=ggplot()+
+  pruning=a_plot()+
     geom_line(aes(mean, cost),
               showSelected="minimization",
               color="grey",
@@ -17,7 +17,7 @@ min.bug.viz <- list(
                showSelected="minimization",
                size=5,
                data=FunctionalPruning$minima),
-  data=ggplot()+
+  data=a_plot()+
     geom_tile(aes(timestep, total.segments,
                   fill=optimal.cost,
                   id=paste0("segs", total.segments, "time", timestep)),
