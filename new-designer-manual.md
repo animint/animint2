@@ -32,14 +32,14 @@ Chapter 8 | Publishing your interactive data visualizations on the web.
 
 Chapter 9 | Examples based in ggplot2
 
-Chapter 10| How to implement real examples from the web, media in animint2 
+Chapter 10 | How to implement real examples from the web, media in animint2 
 
 ## Future implementations
 
-Chapter 11| Open Source
-          | How you can contribute
+Chapter 11 | Open Source
+           | How you can contribute
           
-Chapter 12| Future implementation
+Chapter 12 | Future implementation
 
 
 
