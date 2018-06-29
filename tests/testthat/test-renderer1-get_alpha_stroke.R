@@ -5,7 +5,7 @@ acontext("get_alpha_stroke")
   states.data$states <- rownames(states.data)
   colnames(states.data)[4] <- "Life.Exp"
 
-  viz <- ggplot(data = states.data,
+  viz <- list(geoms_viz = ggplot(data = states.data,
                 aes(x = Income, y = Life.Exp)) +
                 geom_point(shape = 21,
                             colour = "black",
@@ -17,8 +17,9 @@ acontext("get_alpha_stroke")
                 ggtitle("Income v. Life Expectancy") +
                 theme(panel.background = element_rect(fill = NA),
                       panel.grid.major = element_line(colour = "grey90")
-                )
+                ))
 
+  info <- animint2HTML(viz)
 
 test_that("alpha_stroke parameter is rendered as stroke-opacity style", {
   opacity.str <- getStyleValue(info$html, "//circle[@class='geom']", "stroke-opacity")
@@ -26,3 +27,18 @@ test_that("alpha_stroke parameter is rendered as stroke-opacity style", {
   opacity.exp <- rep(1/10, nrow(states.data))
   expect_equal(opacity.num, opacity.exp)
 })
+
+# Working on geom_rect test
+# test_that("alpha_stroke parameter is rendered as stroke-opacity style in rects", {
+#  viz <- list(segs = ggplot() +
+#                geom_rect(data = df, size = 0.01, color = "violet",
+#                          alpha_stroke = 1/10,
+#                          validate_params = FALSE,
+#                          aes(xmin = xmin, ymin = ymin,
+#                              xmax = xmax, ymax = ymax)))
+#  info <- animint2HTML(viz)
+#
+# opacity.str <- getStyleValue(info$html, "//rect[@class='geom']", "stroke-opacity")
+# opacity.num <- as.numeric(opacity.str)
+# opacity.exp <- rep(1/10, nrow(states.data))
+# expect_equal(opacity.num, opacity.exp)
