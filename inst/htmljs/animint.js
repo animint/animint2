@@ -1065,6 +1065,15 @@ var animint = function (to_select, json_file) {
       return a;
     };
     // test-renderer1-get_alpha_stroke.R includes alpha_stoke aes
+    var get_alpha_stroke = function (d) {
+      var a;
+      if (aes.hasOwnProperty("alpha_stroke") && d.hasOwnProperty("alpha_stroke")) {
+        a = d["alpha_stroke"];
+      } else {
+        a = base_opacity;
+      }
+      return a;
+    };
     var size = 2;
     if(g_info.geom == "text"){
       size = 12;
@@ -1416,6 +1425,7 @@ var animint = function (to_select, json_file) {
           .attr("r", get_size)
           .style("fill", get_fill)
           .style("stroke", get_colour)
+          .style("stroke-opacity", get_alpha_stroke)
           .style("stroke-width", get_stroke_width);
       };
       eAppend = "circle";
