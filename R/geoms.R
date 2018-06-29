@@ -31,10 +31,6 @@ geom_tallrect <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
-#' @format NULL
-#' @usage NULL
-#' @export
 a_GeomTallRect <- ggplot2Animint::a_ggproto("a_GeomTallRect", ggplot2Animint::a_Geom,
                                  default_aes = ggplot2Animint::aes(colour = "grey35",
                                                    fill = "grey35", 
@@ -106,10 +102,6 @@ geom_widerect <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
-#' @format NULL
-#' @usage NULL
-#' @export
 a_GeomWideRect <- ggplot2Animint::a_ggproto("a_GeomWideRect", ggplot2Animint::a_Geom,
                                  default_aes = ggplot2Animint::aes(colour = "grey35", 
                                                    fill = "grey35", 

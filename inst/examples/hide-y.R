@@ -9,8 +9,7 @@ popPlots <-list(bars=a_plot()
                               fill=subcontinent,alpha=.5),
                           clickSelects="subcontinent",
                           data=worldPop, stat="identity",
-                          position="identity")
-                +ggplot2Animint:::coord_flip(),
+                          position="identity")+ coord_flip(),
 
 lines=a_plot()+ geom_point(aes(year, population, colour=type),
                            data=worldPop, size=4, alpha=1/4)+
@@ -23,8 +22,7 @@ hide.y <- a_plot()+
   geom_bar(aes(x=subcontinent, y=population, fill=subcontinent),
            clickSelects="subcontinent",
            data=worldPop, 
-           stat="identity", position="identity")+
-  ggplot2Animint:::coord_flip()+
+           stat="identity", position="identity")+ coord_flip()+
   theme(axis.line.y=element_blank(), axis.text.y=element_blank(), 
         axis.ticks.y=element_blank(), axis.title.y=element_blank())
 print(hide.y)
