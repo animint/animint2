@@ -10,7 +10,7 @@ data_f1$ss2 <- as.factor(c("alpha", "beta"))
 data_f1$ss3 <- as.factor(c("A", "A", "B"))
 # factors "1" & "2" are never paired with factor "B"
 # factor "3" is never paired with factor "A"
-plot1 <- ggplot() + geom_point(aes(a,b),
+plot1 <- a_plot() + geom_point(aes(a,b),
                                showSelected=c("ss1","ss2","ss3"),
                                data = data_f1) +
   theme_animint(update_axes=c("x"))
@@ -25,7 +25,7 @@ data_f2 <- data.frame(a=runif(6, 1, 6), b=sample(1:6))
 data_f2$ss1 <- as.factor(1:3)
 data_f2$ss2 <- as.factor(c("alpha", "beta"))
 # Each factor interaction only possesses a single value
-plot2 <- ggplot() + geom_point(aes(a,b),
+plot2 <- a_plot() + geom_point(aes(a,b),
                                showSelected=c("ss1", "ss2"),
                                data = data_f2) +
   theme_animint(update_axes=c("x"))
@@ -39,7 +39,7 @@ expect_warning(animint2HTML(viz),
 data_f3 <- data.frame(a=runif(60, 1, 60), b=sample(1:60))
 data_f3$ss1 <- as.factor(1:3)
 data_f3$ss2 <- as.factor(c("alpha", "beta"))
-plot3 <- ggplot() + geom_point(aes(a,b, colour=ss1),
+plot3 <- a_plot() + geom_point(aes(a,b, colour=ss1),
                                showSelected="ss2",
                                data = data_f3)
   

@@ -1,8 +1,8 @@
 acontext("stat bin")
 
 set.seed(1)
-make <- function(count, stack, facet){
-  data.frame(count, row=1:count, stack, facet)
+make <- function(count, stack, a_facet){
+  data.frame(count, row=1:count, stack, a_facet)
 }
 df <- rbind(
   make(2, 1, 1),
@@ -21,13 +21,13 @@ test_that("error for stat=bin and showSelected", {
     theme(panel.margin=grid::unit(0, "lines"))+
     geom_bar(
       aes(count, group=stack, fill=stack),
-      showSelected="facet",
+      showSelected="a_facet",
       binwidth=1,
       data = df,
       stat = "bin",
       position="identity"
     )
-  gg+facet_grid(facet~.)
+  gg+a_facet_grid(a_facet~.)
   complicated <- list(
     plot = gg
   )
@@ -47,7 +47,7 @@ test_that("no warning for stat=bin without showSelected", {
       stat = "bin",
       position="identity"
     )+
-    facet_grid(facet~.)
+    a_facet_grid(a_facet~.)
   complicated <- list(plot = gg)
   expect_no_warning({
     info <- animint2HTML(complicated)

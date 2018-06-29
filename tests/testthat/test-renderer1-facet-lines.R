@@ -2,8 +2,8 @@ acontext("facet lines")
 
 data(WorldBank, package = "animint2")
 not.na <- subset(WorldBank, !(is.na(life.expectancy) | is.na(fertility.rate)))
-TS <- function(df)data.frame(df, facet="Years")
-SCATTER <- function(df)data.frame(df, facet="Fertility rate")
+TS <- function(df)data.frame(df, a_facet="Years")
+SCATTER <- function(df)data.frame(df, a_facet="Fertility rate")
 years <- unique(not.na[, "year", drop=FALSE])
 countries <- unique(not.na[, "country", drop=FALSE])
 wb.facets <-
@@ -29,7 +29,7 @@ wb.facets <-
                    clickSelects="country",
                    data=SCATTER(not.na))+
          scale_size_animint(breaks=10^(5:9))+
-         facet_grid(.~facet, scales="free")+
+         a_facet_grid(.~a_facet, scales="free")+
          geom_text(aes(5, 85, label=paste0("year = ", year)),
                    showSelected="year",
                    data=SCATTER(years)),

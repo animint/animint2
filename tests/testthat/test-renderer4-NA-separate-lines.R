@@ -2,7 +2,7 @@ acontext("NA separate lines")
 
 data(txhousing)
 
-## a_plot2 draws separate lines when there are missing values.
+## ggplot2 draws separate lines when there are missing values.
 
 ## san.marcos <- subset(txhousing, city=="San Marcos")
 ## a_plot()+

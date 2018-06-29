@@ -3,7 +3,7 @@ acontext("update_axes")
 # Plots with axis updates
 mtcars$cyl <- as.factor(mtcars$cyl)
 
-no_updates <- ggplot()+geom_point(aes(mpg, disp, 
+no_updates <- a_plot()+geom_point(aes(mpg, disp, 
                                       colour=cyl), 
                                   data = mtcars)
 
@@ -35,7 +35,7 @@ expect_no_warning(info <- animint2HTML(viz))
 # and does not produce an error
 d <- mtcars
 d$disp <- as.factor(d$disp)
-non_numeric_updates <- ggplot()+geom_point(aes(mpg, disp, colour=cyl),
+non_numeric_updates <- a_plot()+geom_point(aes(mpg, disp, colour=cyl),
                                            data = d) +
   theme_animint(update_axes = c("x", "y"))
 viz_fac <- list(nonNum = non_numeric_updates)
@@ -303,7 +303,7 @@ ribbondata <- rbind(cbind(ribbondata, group="low"),
                     cbind(ribbondata, group="high"))
 ribbondata[12:22,2:3] <- ribbondata[12:22,2:3]+runif(11, 1, 10)
 ribbondata[23:33,2:3] <- ribbondata[12:22,2:3]+runif(11, 1, 10)
-ribbon <- ggplot() + 
+ribbon <- a_plot() + 
   geom_ribbon(data=ribbondata, aes(x=x, ymin=ymin, ymax=ymax, group=group, fill=group), alpha=.5) + 
   ggtitle("geom_ribbon") +
   theme_animint(update_axes = c("y"))
@@ -350,7 +350,7 @@ data_f <- data.frame(xmin=c(1, 3, 9, 19),
                      ymax=c(6, 12, 18, 28),
                      z=as.factor(c(1:4)))
 
-rect <- ggplot() + geom_rect(aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax,
+rect <- a_plot() + geom_rect(aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax,
                               colour=z,fill=z),
                           data = data_f) +
   theme_animint(update_axes=c("x", "y"))
@@ -411,7 +411,7 @@ data_f <- data.frame(x1=c(runif(10, 0, 10),runif(10, 10, 20),runif(10, 20, 30),
                      y2=runif(40, 0, 40),
                      ss = as.factor(rep(1:4,each=10)))
 
-segment <- ggplot() +
+segment <- a_plot() +
   geom_segment(aes(x=x1, y=y1, xend=x2, yend=y2, colour=ss),
                data=data_f) + 
   theme_animint(update_axes=c("x", "y"))
@@ -463,7 +463,7 @@ test_that("geom_segment has axis tick updates", {
 })
 
 ##  ------------------------- geom_text ------------------------- ##
-text <- ggplot() + geom_text(aes(mpg, disp, colour=cyl, label=hp), 
+text <- a_plot() + geom_text(aes(mpg, disp, colour=cyl, label=hp), 
                              data = mtcars) +
   theme_animint(update_axes=c("x", "y"))
 viz <- list(text=text, selector.types=list(cyl="single"))

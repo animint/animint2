@@ -70,7 +70,7 @@ mmir.selection <-
        theme_bw()+
        theme_animint(width=600)+
        theme(panel.margin=grid::unit(0, "lines"))+
-       facet_grid(. ~ geom)+
+       a_facet_grid(. ~ geom)+
        geom_text(aes(0, error, label=signal),
                  clickSelects="signal",
                  data=sig.labels, hjust=1)+

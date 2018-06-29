@@ -1,8 +1,7 @@
 acontext("geom_abline")
 
 p <- qplot(wt, mpg, data = mtcars) + 
-  geom_abline(intercept = c(20, 5), slope = c(1,4)) + 
-  a_facet_wrap(~cyl)
+  geom_abline(intercept = c(20, 5), slope = c(1,4)) + a_facet_wrap(~cyl)
 info <- animint2HTML(list(p = p))
 
 tsv.file <- file.path("animint-htmltest", "geom2_abline_p_chunk1.tsv")
