@@ -14,7 +14,7 @@
 %   R/geom-vline.r, R/position-.r, R/position-dodge.r, R/position-fill.r,
 %   R/position-identity.r, R/position-jitter.r, R/position-jitterdodge.R,
 %   R/position-nudge.R, R/position-stack.r, R/scale-.r, R/scale-continuous.r,
-%   R/scale-date.r, R/scale-discrete-.r, R/scale-identity.r, R/stat-bin.r,
+%   R/scale-date.r, R/scale-discrete-.r, R/scale-identity.r, R/scales-.r,
 %   R/stat-bin2d.r, R/stat-bindot.r, R/stat-binhex.r, R/stat-boxplot.r,
 %   R/stat-contour.r, R/stat-count.r, R/stat-density-2d.r, R/stat-density.r,
 %   R/stat-ecdf.r, R/stat-ellipse.R, R/stat-function.r, R/stat-identity.r,
@@ -24,116 +24,117 @@
 \docType{data}
 \name{animint2-ggproto}
 \alias{animint2-ggproto}
-\alias{Geom}
-\alias{GeomCustomAnn}
-\alias{GeomLogticks}
-\alias{GeomPolygon}
-\alias{GeomMap}
-\alias{GeomAnnotationMap}
-\alias{GeomRaster}
-\alias{GeomRasterAnn}
-\alias{Coord}
-\alias{CoordCartesian}
-\alias{CoordFixed}
-\alias{CoordFlip}
-\alias{CoordMap}
-\alias{CoordPolar}
-\alias{CoordQuickmap}
-\alias{CoordTrans}
-\alias{Stat}
-\alias{GeomAbline}
-\alias{GeomRect}
-\alias{GeomBar}
-\alias{GeomBlank}
-\alias{GeomBoxplot}
-\alias{GeomPath}
-\alias{GeomLine}
-\alias{GeomStep}
-\alias{GeomContour}
-\alias{GeomCrossbar}
-\alias{GeomSegment}
-\alias{GeomCurve}
-\alias{GeomRibbon}
-\alias{GeomArea}
-\alias{GeomDensity}
-\alias{GeomDensity2d}
-\alias{GeomDotplot}
-\alias{GeomErrorbar}
-\alias{GeomErrorbarh}
-\alias{GeomHex}
-\alias{GeomHline}
-\alias{GeomLabel}
-\alias{GeomLinerange}
-\alias{GeomPoint}
-\alias{GeomPointrange}
-\alias{GeomQuantile}
-\alias{GeomRug}
-\alias{GeomSmooth}
-\alias{GeomSpoke}
-\alias{GeomText}
-\alias{GeomTile}
-\alias{GeomViolin}
-\alias{GeomVline}
-\alias{Position}
-\alias{PositionDodge}
-\alias{PositionFill}
-\alias{PositionIdentity}
-\alias{PositionJitter}
-\alias{PositionJitterdodge}
-\alias{PositionNudge}
-\alias{PositionStack}
-\alias{Scale}
-\alias{ScaleContinuous}
-\alias{ScaleContinuousPosition}
-\alias{ScaleContinuousDatetime}
-\alias{ScaleContinuousDate}
-\alias{ScaleDiscretePosition}
-\alias{ScaleDiscreteIdentity}
-\alias{ScaleContinuousIdentity}
-\alias{StatBin}
-\alias{StatBin2d}
-\alias{StatBindot}
-\alias{StatBinhex}
-\alias{StatBoxplot}
-\alias{StatContour}
-\alias{StatCount}
-\alias{StatDensity2d}
-\alias{StatDensity}
-\alias{StatEcdf}
-\alias{StatEllipse}
-\alias{StatFunction}
-\alias{StatIdentity}
-\alias{StatQq}
-\alias{StatQuantile}
-\alias{StatSmooth}
-\alias{StatSum}
-\alias{StatSummary2d}
-\alias{StatSummaryBin}
-\alias{StatSummaryHex}
-\alias{StatSummary}
-\alias{StatUnique}
-\alias{StatYdensity}
-\alias{GeomTallRect}
-\alias{GeomWideRect}
-\title{Base ggproto classes for ggplot2}
+\alias{a_Geom}
+\alias{a_GeomCustomAnn}
+\alias{a_GeomLogticks}
+\alias{a_GeomPolygon}
+\alias{a_GeomMap}
+\alias{a_GeomAnnotationMap}
+\alias{a_GeomRaster}
+\alias{a_GeomRasterAnn}
+\alias{a_Coord}
+\alias{a_CoordCartesian}
+\alias{a_CoordFixed}
+\alias{a_CoordFlip}
+\alias{a_CoordMap}
+\alias{a_CoordPolar}
+\alias{a_CoordQuickmap}
+\alias{a_CoordTrans}
+\alias{a_Stat}
+\alias{a_GeomAbline}
+\alias{a_GeomRect}
+\alias{a_GeomBar}
+\alias{a_GeomBlank}
+\alias{a_GeomBoxplot}
+\alias{a_GeomPath}
+\alias{a_GeomLine}
+\alias{a_GeomStep}
+\alias{a_GeomContour}
+\alias{a_GeomCrossbar}
+\alias{a_GeomSegment}
+\alias{a_GeomCurve}
+\alias{a_GeomRibbon}
+\alias{a_GeomArea}
+\alias{a_GeomDensity}
+\alias{a_GeomDensity2d}
+\alias{a_GeomDotplot}
+\alias{a_GeomErrorbar}
+\alias{a_GeomErrorbarh}
+\alias{a_GeomHex}
+\alias{a_GeomHline}
+\alias{a_GeomLabel}
+\alias{a_GeomLinerange}
+\alias{a_GeomPoint}
+\alias{a_GeomPointrange}
+\alias{a_GeomQuantile}
+\alias{a_GeomRug}
+\alias{a_GeomSmooth}
+\alias{a_GeomSpoke}
+\alias{a_GeomText}
+\alias{a_GeomTile}
+\alias{a_GeomViolin}
+\alias{a_GeomVline}
+\alias{a_Position}
+\alias{a_PositionDodge}
+\alias{a_PositionFill}
+\alias{a_PositionIdentity}
+\alias{a_PositionJitter}
+\alias{a_PositionJitterdodge}
+\alias{a_PositionNudge}
+\alias{a_PositionStack}
+\alias{a_Scale}
+\alias{a_ScaleContinuous}
+\alias{a_ScaleDiscrete}
+\alias{a_ScaleContinuousPosition}
+\alias{a_ScaleContinuousDatetime}
+\alias{a_ScaleContinuousDate}
+\alias{a_ScaleDiscretePosition}
+\alias{a_ScaleDiscreteIdentity}
+\alias{a_ScaleContinuousIdentity}
+\alias{a_ScalesList}
+\alias{a_StatBin2d}
+\alias{a_StatBindot}
+\alias{a_StatBinhex}
+\alias{a_StatBoxplot}
+\alias{a_StatContour}
+\alias{a_StatCount}
+\alias{a_StatDensity2d}
+\alias{a_StatDensity}
+\alias{a_StatEcdf}
+\alias{a_StatEllipse}
+\alias{a_StatFunction}
+\alias{a_StatIdentity}
+\alias{a_StatQq}
+\alias{a_StatQuantile}
+\alias{a_StatSmooth}
+\alias{a_StatSum}
+\alias{a_StatSummary2d}
+\alias{a_StatSummaryBin}
+\alias{a_StatSummaryHex}
+\alias{a_StatSummary}
+\alias{a_StatUnique}
+\alias{a_StatYdensity}
+\alias{a_GeomTallRect}
+\alias{a_GeomWideRect}
+\title{Base ggproto classes for animint2}
 \description{
 If you are creating a new geom, stat, position, or scale in another package,
-you'll need to extend from \code{animint2::Geom}, \code{animint2::Stat},
-\code{animint2::Position}, or \code{animint2::Scale}.
+you'll need to extend from \code{animint2::a_Geom}, \code{animint2::a_Stat},
+\code{animint2::a_Position}, or \code{animint2::a_Scale}.
 }
-\section{Geoms}{
+\section{a_Geoms}{
 
 
 All \code{geom_*} functions (like \code{geom_point}) return a layer that
-contains a \code{Geom*} object (like \code{GeomPoint}). The \code{Geom*}
+contains a \code{a_Geom*} object (like \code{a_GeomPoint}). The \code{a_Geom*}
 object is responsible for rendering the data in the plot.
 
-Each of the \code{Geom*} objects is a \code{\link{ggproto}} object, descended
-from the top-level \code{Geom}, and each implements various methods and
+Each of the \code{a_Geom*} objects is a \code{\link{a_ggproto}} object, descended
+from the top-level \code{a)Geom}, and each implements various methods and
 fields. To create a new type of Geom object, you typically will want to
 implement one or more of the following:
 
-Compared to \code{Stat} and \code{Position}, \code{Geom} is a little
+Compared to \code{a_Stat} and \code{a_Position}, \code{a_Geom} is a little
 different because the execution of the setup and compute functions is
 split up. \code{setup_data} runs before position adjustments, and
 \code{draw_layer} is not run until render time,  much later. This
@@ -170,20 +171,20 @@ the changes.
 }
 }
 
-\section{Coordinate systems}{
+\section{a_Coordinate systems}{
 
 
-All \code{coord_*} functions (like \code{coord_trans}) return a \code{Coord*}
-object (like \code{CoordTrans}). The \code{Coord*} object is responsible for
+All \code{coord_*} functions (like \code{coord_trans}) return a \code{a_Coord*}
+object (like \code{a_CoordTrans}). The \code{a_Coord*} object is responsible for
 adjusting the position of overlapping geoms.
 
 The way that the \code{coord_*} functions work is slightly different from the
 \code{geom_*} and \code{stat_*} functions, because a \code{coord_*} function
-actually "instantiates" the \code{Coord*} object by creating a descendant,
+actually "instantiates" the \code{a_Coord*} object by creating a descendant,
 and returns that.
 
-Each of the \code{Coord*} objects is a \code{\link{ggproto}} object,
-descended from the top-level \code{Coord}.  To create a new type of Coord
+Each of the \code{a_Coord*} objects is a \code{\link{a_ggproto}} object,
+descended from the top-level \code{a_Coord}.  To create a new type of Coord
 object, you typically will want to implement one or more of the following:
 
 \itemize{
@@ -202,15 +203,15 @@ object, you typically will want to implement one or more of the following:
 }
 }
 
-\section{Stats}{
+\section{a_Stats}{
 
 
 All \code{stat_*} functions (like \code{stat_bin}) return a layer that
-contains a \code{Stat*} object (like \code{StatBin}). The \code{Stat*}
+contains a \code{a_Stat*} object (like \code{a_StatBin}). The \code{a_Stat*}
 object is responsible for rendering the data in the plot.
 
-Each of the \code{Stat*} objects is a \code{\link{ggproto}} object, descended
-from the top-level \code{Stat}, and each implements various methods and
+Each of the \code{a_Stat*} objects is a \code{\link{a_ggproto}} object, descended
+from the top-level \code{a_Stat}, and each implements various methods and
 fields. To create a new type of Stat object, you typically will want to
 implement one or more of the following:
 
@@ -249,20 +250,20 @@ implement one or more of the following:
 }
 }
 
-\section{Positions}{
+\section{a_Positions}{
 
 
 All \code{position_*} functions (like \code{position_dodge}) return a
-\code{Position*} object (like \code{PositionDodge}). The \code{Position*}
+\code{a_Position*} object (like \code{a_PositionDodge}). The \code{a_Position*}
 object is responsible for adjusting the position of overlapping geoms.
 
 The way that the \code{position_*} functions work is slightly different from
 the \code{geom_*} and \code{stat_*} functions, because a \code{position_*}
-function actually "instantiates" the \code{Position*} object by creating a
+function actually "instantiates" the \code{a_Position*} object by creating a
 descendant, and returns that.
 
-Each of the \code{Position*} objects is a \code{\link{ggproto}} object,
-descended from the top-level \code{Position}, and each implements the
+Each of the \code{a_Position*} objects is a \code{\link{a_ggproto}} object,
+descended from the top-level \code{a_Position}, and each implements the
 following methods:
 
 \itemize{
@@ -294,19 +295,19 @@ And the following fields
 }
 }
 
-\section{Scales}{
+\section{a_Scales}{
 
 
 All \code{scale_*} functions (like \code{scale_x_continuous}) return a
-\code{Scale*} object (like \code{ScaleContinuous}). The \code{Scale*}
+\code{a_Scale*} object (like \code{a_ScaleContinuous}). The \code{a_Scale*}
 object represents a single scale.
 
-Each of the \code{Scale*} objects is a \code{\link{ggproto}} object,
-descended from the top-level \code{Scale}.
+Each of the \code{a_Scale*} objects is a \code{\link{a_ggproto}} object,
+descended from the top-level \code{a_Scale}.
 }
 
 \seealso{
-ggproto
+a_ggproto
 }
 \keyword{datasets}
 \keyword{internal}

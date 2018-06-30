@@ -23,7 +23,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -69,7 +69,7 @@ Display contours of a 3d surface in 2d.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "contour")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "contour")}
 }
 
 \section{Computed variables}{
@@ -81,11 +81,11 @@ Display contours of a 3d surface in 2d.
 
 \examples{
 #' # Basic plot
-v <- ggplot(faithfuld, aes(waiting, eruptions, z = density))
+v <- a_plot(faithfuld, aes(waiting, eruptions, z = density))
 v + geom_contour()
 
 # Or compute from raw data
-ggplot(faithful, aes(waiting, eruptions)) +
+a_plot(faithful, aes(waiting, eruptions)) +
   geom_density_2d()
 
 \donttest{

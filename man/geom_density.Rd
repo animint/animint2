@@ -23,7 +23,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -78,7 +78,7 @@ with underlying smoothness.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "density")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "density")}
 }
 
 \section{Computed variables}{
@@ -92,18 +92,18 @@ with underlying smoothness.
 }
 
 \examples{
-ggplot(diamonds, aes(carat)) +
+a_plot(diamonds, aes(carat)) +
   geom_density()
 
-ggplot(diamonds, aes(carat)) +
+a_plot(diamonds, aes(carat)) +
   geom_density(adjust = 1/5)
-ggplot(diamonds, aes(carat)) +
+a_plot(diamonds, aes(carat)) +
   geom_density(adjust = 5)
 
-ggplot(diamonds, aes(depth, colour = cut)) +
+a_plot(diamonds, aes(depth, colour = cut)) +
   geom_density() +
   xlim(55, 70)
-ggplot(diamonds, aes(depth, fill = cut, colour = cut)) +
+a_plot(diamonds, aes(depth, fill = cut, colour = cut)) +
   geom_density(alpha = 0.1) +
   xlim(55, 70)
 
@@ -113,14 +113,14 @@ ggplot(diamonds, aes(depth, fill = cut, colour = cut)) +
 # density
 
 # Loses marginal densities
-ggplot(diamonds, aes(carat, fill = cut)) +
+a_plot(diamonds, aes(carat, fill = cut)) +
   geom_density(position = "stack")
 # Preserves marginal densities
-ggplot(diamonds, aes(carat, ..count.., fill = cut)) +
+a_plot(diamonds, aes(carat, ..count.., fill = cut)) +
   geom_density(position = "stack")
 
 # You can use position="fill" to produce a conditional density estimate
-ggplot(diamonds, aes(carat, ..count.., fill = cut)) +
+a_plot(diamonds, aes(carat, ..count.., fill = cut)) +
   geom_density(position = "fill")
 }
 }

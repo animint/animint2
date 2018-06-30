@@ -23,7 +23,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -65,7 +65,7 @@ Calculation for quantile-quantile plot.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "qq")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "qq")}
 }
 
 \section{Computed variables}{
@@ -79,19 +79,19 @@ Calculation for quantile-quantile plot.
 \examples{
 \donttest{
 df <- data.frame(y = rt(200, df = 5))
-p <- ggplot(df, aes(sample = y))
+p <- a_plot(df, aes(sample = y))
 p + stat_qq()
 p + geom_point(stat = "qq")
 
 # Use fitdistr from MASS to estimate distribution params
 params <- as.list(MASS::fitdistr(df$y, "t")$estimate)
-ggplot(df, aes(sample = y)) +
+a_plot(df, aes(sample = y)) +
   stat_qq(distribution = qt, dparams = params["df"])
 
 # Using to explore the distribution of a variable
-ggplot(mtcars) +
+a_plot(mtcars) +
   stat_qq(aes(sample = mpg))
-ggplot(mtcars) +
+a_plot(mtcars) +
   stat_qq(aes(sample = mpg, colour = factor(cyl)))
 }
 }

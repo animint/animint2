@@ -36,7 +36,7 @@ set. This means that layers created with this function will never
 affect the legend.
 }
 \examples{
-p <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
+p <- a_plot(mtcars, aes(x = wt, y = mpg)) + geom_point()
 p + annotate("text", x = 4, y = 25, label = "Some text")
 p + annotate("text", x = 2:5, y = 25, label = "Some text")
 p + annotate("rect", xmin = 3, xmax = 4.2, ymin = 12, ymax = 21,

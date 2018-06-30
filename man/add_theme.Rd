@@ -18,5 +18,5 @@ informative error messages.}
 Modify properties of an element in a theme object
 }
 \seealso{
-+.gg
++.aaa
 }

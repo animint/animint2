@@ -23,7 +23,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -63,7 +63,7 @@ useful when you have discrete data.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "point")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "point")}
 }
 
 \section{Computed variables}{
@@ -75,16 +75,16 @@ useful when you have discrete data.
 }
 
 \examples{
-ggplot(mpg, aes(cty, hwy)) +
+a_plot(mpg, aes(cty, hwy)) +
  geom_point()
 
-ggplot(mpg, aes(cty, hwy)) +
+a_plot(mpg, aes(cty, hwy)) +
  geom_count()
 
 # Best used in conjunction with scale_size_area which ensures that
 # counts of zero would be given size 0. Doesn't make much different
 # here because the smallest count is already close to 0.
-ggplot(mpg, aes(cty, hwy)) +
+a_plot(mpg, aes(cty, hwy)) +
  geom_count()
  scale_size_area()
 
@@ -92,7 +92,7 @@ ggplot(mpg, aes(cty, hwy)) +
 # By default, all categorical variables in the plot form the groups.
 # Specifying geom_count without a group identifier leads to a plot which is
 # not useful:
-d <- ggplot(diamonds, aes(x = cut, y = clarity))
+d <- a_plot(diamonds, aes(x = cut, y = clarity))
 d + geom_count(aes(size = ..prop..))
 # To correct this problem and achieve a more desirable plot, we need
 # to specify which group the proportion is to be calculated over.

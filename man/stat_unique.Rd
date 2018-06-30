@@ -18,7 +18,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -55,10 +55,10 @@ Remove duplicates.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "unique")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "unique")}
 }
 
 \examples{
-ggplot(mtcars, aes(vs, am)) + geom_point(alpha = 0.1)
-ggplot(mtcars, aes(vs, am)) + geom_point(alpha = 0.1, stat="unique")
+a_plot(mtcars, aes(vs, am)) + geom_point(alpha = 0.1)
+a_plot(mtcars, aes(vs, am)) + geom_point(alpha = 0.1, stat="unique")
 }

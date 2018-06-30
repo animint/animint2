@@ -27,7 +27,7 @@ directly or indirectly from \code{text}; all lines inherit from
 \code{line}, and all rectangular objects inherit from \code{rect}.
 
 For more examples of modifying properties using inheritance, see
-\code{\link{+.gg}} and \code{\link{\%+replace\%}}.
+\code{\link{+.aaa}} and \code{\link{\%+replace\%}}.
 
 To see a graphical representation of the inheritance tree, see the
 last example below.
@@ -169,14 +169,14 @@ The individual theme elements are:
 
 \examples{
 \donttest{
-p <- ggplot(mtcars, aes(mpg, wt)) +
+p <- a_plot(mtcars, aes(mpg, wt)) +
   geom_point()
 p
 p + theme(panel.background = element_rect(colour = "pink"))
 p + theme_bw()
 
 # Scatter plot of gas mileage by vehicle weight
-p <- ggplot(mtcars, aes(wt, mpg)) +
+p <- a_plot(mtcars, aes(wt, mpg)) +
   geom_point()
 # Calculate slope and intercept of line of best fit
 coef(lm(mpg ~ wt, data = mtcars))
@@ -190,9 +190,9 @@ geom_text(data = data.frame(), aes(4.5, 30, label = "Pearson-R = -.87"))
 # Change the axis labels
 # Original plot
 p
-p + labs(x = "Vehicle Weight", y = "Miles per Gallon")
+p + animint2:::labs(x = "Vehicle Weight", y = "Miles per Gallon")
 # Or
-p + labs(x = "Vehicle Weight", y = "Miles per Gallon")
+p + animint2:::labs(x = "Vehicle Weight", y = "Miles per Gallon")
 
 # Change title appearance
 p <- p + labs(title = "Vehicle Weight-Gas Mileage Relationship")
@@ -207,7 +207,7 @@ p + labs(title = "Vehicle Weight-Gas Mileage Relationship",
 
 # Changing plot look with themes
 DF <- data.frame(x = rnorm(400))
-m <- ggplot(DF, aes(x = x)) +
+m <- a_plot(DF, aes(x = x)) +
   geom_histogram()
 # Default is theme_grey()
 m
@@ -224,7 +224,7 @@ m + theme(axis.title.x = element_blank())
 m + theme(axis.ticks.length = unit(.85, "cm"))
 
 # Legend Attributes
-z <- ggplot(mtcars, aes(wt, mpg)) +
+z <- a_plot(mtcars, aes(wt, mpg)) +
   geom_point(aes(colour = factor(cyl)))
 z
 z + theme(legend.position = "none")
@@ -264,9 +264,9 @@ z + theme(plot.background = element_rect(fill = "green"))
 # Faceting Attributes
 set.seed(4940)
 dsmall <- diamonds[sample(nrow(diamonds), 1000), ]
-k <- ggplot(dsmall, aes(carat, ..density..)) +
+k <- a_plot(dsmall, aes(carat, ..density..)) +
   geom_histogram(binwidth = 0.2) +
-  facet_grid(. ~ cut)
+  a_facet_grid(. ~ cut)
 k + theme(strip.background = element_rect(colour = "purple", fill = "pink",
                                           size = 3, linetype = "dashed"))
 k + theme(strip.text.x = element_text(colour = "red", angle = 45, size = 10,
@@ -278,7 +278,7 @@ k + theme(panel.margin.y = unit(0, "lines"))
 meanprice <- tapply(diamonds$price, diamonds$cut, mean)
 cut <- factor(levels(diamonds$cut), levels = levels(diamonds$cut))
 df <- data.frame(meanprice, cut)
-g <- ggplot(df, aes(cut, meanprice)) + geom_bar(stat = "identity")
+g <- a_plot(df, aes(cut, meanprice)) + geom_bar(stat = "identity")
 g + geom_bar(stat = "identity") +
     theme(panel.background = element_blank(),
           panel.grid.major.x = element_blank(),
@@ -293,7 +293,7 @@ p + mytheme
 }
 }
 \seealso{
-\code{\link{+.gg}}
+\code{\link{+.aaa}}
 
 \code{\link{\%+replace\%}}
 

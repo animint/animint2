@@ -24,7 +24,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -80,11 +80,11 @@ the default plot specification, e.g. \code{\link{borders}}.}
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "segment")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "segment")}
 }
 
 \examples{
-b <- ggplot(mtcars, aes(wt, mpg)) +
+b <- a_plot(mtcars, aes(wt, mpg)) +
   geom_point()
 
 df <- data.frame(x1 = 2.62, x2 = 3.57, y1 = 21.0, y2 = 15.0)
@@ -100,17 +100,17 @@ b + geom_curve(
   arrow = arrow(length = unit(0.03, "npc"))
 )
 
-ggplot(seals, aes(long, lat)) +
+a_plot(seals, aes(long, lat)) +
   geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat),
     arrow = arrow(length = unit(0.1,"cm"))) +
-  borders("state")
+  animint2:::borders("state")
 
 # You can also use geom_segment to recreate plot(type = "h") :
 counts <- as.data.frame(table(x = rpois(100,5)))
 counts$x <- as.numeric(as.character(counts$x))
 with(counts, plot(x, Freq, type = "h", lwd = 10))
 
-ggplot(counts, aes(x, Freq)) +
+a_plot(counts, aes(x, Freq)) +
   geom_segment(aes(xend = x, yend = 0), size = 10, lineend = "butt")
 }
 \seealso{

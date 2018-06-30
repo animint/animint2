@@ -25,7 +25,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -99,7 +99,7 @@ scale, and then back-transformed to the response scale.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "smooth")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "smooth")}
 }
 
 \section{Computed variables}{
@@ -113,36 +113,36 @@ scale, and then back-transformed to the response scale.
 }
 
 \examples{
-ggplot(mpg, aes(displ, hwy)) +
+a_plot(mpg, aes(displ, hwy)) +
   geom_point() +
   geom_smooth()
 
 # Use span to control the "wiggliness" of the default loess smoother
 # The span is the fraction of points used to fit each local regression:
 # small numbers make a wigglier curve, larger numbers make a smoother curve.
-ggplot(mpg, aes(displ, hwy)) +
+a_plot(mpg, aes(displ, hwy)) +
   geom_point() +
   geom_smooth(span = 0.3)
 
 # Instead of a loess smooth, you can use any other modelling function:
-ggplot(mpg, aes(displ, hwy)) +
+a_plot(mpg, aes(displ, hwy)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
 
-ggplot(mpg, aes(displ, hwy)) +
+a_plot(mpg, aes(displ, hwy)) +
   geom_point() +
   geom_smooth(method = "lm", formula = y ~ splines::bs(x, 3), se = FALSE)
 
 # Smoothes are automatically fit to each group (defined by categorical
 # aesthetics or the group aesthetic) and for each facet
 
-ggplot(mpg, aes(displ, hwy, colour = class)) +
+a_plot(mpg, aes(displ, hwy, colour = class)) +
   geom_point() +
   geom_smooth(se = FALSE, method = "lm")
-ggplot(mpg, aes(displ, hwy)) +
+a_plot(mpg, aes(displ, hwy)) +
   geom_point() +
   geom_smooth(span = 0.8) +
-  facet_wrap(~drv)
+  animint2:::a_facet_wrap(~drv)
 
 \donttest{
 binomial_smooth <- function(...) {
@@ -150,15 +150,15 @@ binomial_smooth <- function(...) {
 }
 # To fit a logistic regression, you need to coerce the values to
 # a numeric vector lying between 0 and 1.
-ggplot(rpart::kyphosis, aes(Age, Kyphosis)) +
+a_plot(rpart::kyphosis, aes(Age, Kyphosis)) +
   geom_jitter(height = 0.05) +
   binomial_smooth()
 
-ggplot(rpart::kyphosis, aes(Age, as.numeric(Kyphosis) - 1)) +
+a_plot(rpart::kyphosis, aes(Age, as.numeric(Kyphosis) - 1)) +
   geom_jitter(height = 0.05) +
   binomial_smooth()
 
-ggplot(rpart::kyphosis, aes(Age, as.numeric(Kyphosis) - 1)) +
+a_plot(rpart::kyphosis, aes(Age, as.numeric(Kyphosis) - 1)) +
   geom_jitter(height = 0.05) +
   binomial_smooth(formula = y ~ splines::ns(x, 2))
 

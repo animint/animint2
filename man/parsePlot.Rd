@@ -8,6 +8,10 @@ parsePlot(meta, plot, plot.name)
 }
 \arguments{
 \item{meta}{environment with previously calculated plot data, and a new plot to parse, already stored in plot and plot.name.}
+
+\item{plot}{...}
+
+\item{plot.name}{...}
 }
 \value{
 nothing, info is stored in meta.

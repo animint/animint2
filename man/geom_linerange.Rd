@@ -34,7 +34,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -77,7 +77,7 @@ Various ways of representing a vertical interval defined by \code{x},
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "linerange")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "linerange")}
 }
 
 \examples{
@@ -90,7 +90,7 @@ df <- data.frame(
   lower = c(0.8, 4.6, 2.4, 3.6)
 )
 
-p <- ggplot(df, aes(trt, resp, colour = group))
+p <- a_plot(df, aes(trt, resp, colour = group))
 p + geom_linerange(aes(ymin = lower, ymax = upper))
 p + geom_pointrange(aes(ymin = lower, ymax = upper))
 p + geom_crossbar(aes(ymin = lower, ymax = upper), width = 0.2)
@@ -103,7 +103,7 @@ p +
 
 # If you want to dodge bars and errorbars, you need to manually
 # specify the dodge width
-p <- ggplot(df, aes(trt, resp, fill = group))
+p <- a_plot(df, aes(trt, resp, fill = group))
 p +
  geom_bar(position = "dodge", stat = "identity") +
  geom_errorbar(aes(ymin = lower, ymax = upper), position = "dodge", width = 0.25)

@@ -39,7 +39,7 @@ Qualitative colour scale with evenly spaced hues.
 \examples{
 \donttest{
 dsamp <- diamonds[sample(nrow(diamonds), 1000), ]
-(d <- ggplot(dsamp, aes(carat, price)) + geom_point(aes(colour = clarity)))
+(d <- a_plot(dsamp, aes(carat, price)) + geom_point(aes(colour = clarity)))
 
 # Change scale label
 d + scale_colour_hue()
@@ -60,15 +60,15 @@ d + scale_colour_hue(h = c(270, 360))
 
 # Vary opacity
 # (only works with pdf, quartz and cairo devices)
-d <- ggplot(dsamp, aes(carat, price, colour = clarity))
+d <- a_plot(dsamp, aes(carat, price, colour = clarity))
 d + geom_point(alpha = 0.9)
 d + geom_point(alpha = 0.5)
 d + geom_point(alpha = 0.2)
 
 # Colour of missing values is controlled with na.value:
 miss <- factor(sample(c(NA, 1:5), nrow(mtcars), replace = TRUE))
-ggplot(mtcars, aes(mpg, wt)) + geom_point(aes(colour = miss))
-ggplot(mtcars, aes(mpg, wt)) +
+a_plot(mtcars, aes(mpg, wt)) + geom_point(aes(colour = miss))
+a_plot(mtcars, aes(mpg, wt)) +
   geom_point(aes(colour = miss)) +
   scale_colour_hue(na.value = "black")
 }

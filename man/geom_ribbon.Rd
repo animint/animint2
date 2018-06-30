@@ -23,7 +23,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -70,13 +70,13 @@ see the individual pattern as you move up the stack.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "ribbon")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "ribbon")}
 }
 
 \examples{
 # Generate data
 huron <- data.frame(year = 1875:1972, level = as.vector(LakeHuron))
-h <- ggplot(huron, aes(year))
+h <- a_plot(huron, aes(year))
 
 h + geom_ribbon(aes(ymin=0, ymax=level))
 h + geom_area(aes(y = level))

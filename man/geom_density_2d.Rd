@@ -25,7 +25,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -78,7 +78,7 @@ results with contours. This can be useful for dealing with overplotting.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "density_2d")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "density_2d")}
 }
 
 \section{Computed variables}{
@@ -87,7 +87,7 @@ Same as \code{\link{stat_contour}}
 }
 
 \examples{
-m <- ggplot(faithful, aes(x = eruptions, y = waiting)) +
+m <- a_plot(faithful, aes(x = eruptions, y = waiting)) +
  geom_point() +
  xlim(0.5, 6) +
  ylim(40, 110)
@@ -97,7 +97,7 @@ m + stat_density_2d(aes(fill = ..level..), geom = "polygon")
 
 set.seed(4393)
 dsmall <- diamonds[sample(nrow(diamonds), 1000), ]
-d <- ggplot(dsmall, aes(x, y))
+d <- a_plot(dsmall, aes(x, y))
 # If you map an aesthetic to a categorical variable, you will get a
 # set of contours for each value of that variable
 d + geom_density_2d(aes(colour = cut))

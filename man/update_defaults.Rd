@@ -13,14 +13,14 @@ update_stat_defaults(stat, new)
 \item{new}{Named list of aesthetics.}
 
 \item{stat, geom}{Name of geom/stat to modify (like \code{"point"} or
-\code{"bin"}), or a Geom/Stat object (like \code{GeomPoint} or
-\code{StatBin}).}
+\code{"bin"}), or a Geom/Stat object (like \code{a_GeomPoint} or
+\code{a_StatBin}).}
 }
 \description{
 Modify geom/stat aesthetic defaults for future plots
 }
 \examples{
 update_geom_defaults("point", list(colour = "darkblue"))
-ggplot(mtcars, aes(mpg, wt)) + geom_point()
+a_plot(mtcars, aes(mpg, wt)) + geom_point()
 update_geom_defaults("point", list(colour = "black"))
 }

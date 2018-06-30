@@ -2,14 +2,14 @@
 % Please edit documentation in R/plot-build.r
 \name{ggplotGrob}
 \alias{ggplotGrob}
-\title{Generate a ggplot2 plot grob.}
+\title{Generate a ggplot2 (a_plot) plot grob.}
 \usage{
 ggplotGrob(x)
 }
 \arguments{
-\item{x}{ggplot2 object}
+\item{x}{a_plot2 object}
 }
 \description{
-Generate a ggplot2 plot grob.
+Generate a ggplot2 (a_plot) plot grob.
 }
 \keyword{internal}

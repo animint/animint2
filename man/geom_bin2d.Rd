@@ -24,7 +24,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -70,11 +70,11 @@ Add heatmap of 2d bin counts.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "bin2d")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "bin2d")}
 }
 
 \examples{
-d <- ggplot(diamonds, aes(x, y)) + xlim(4, 10) + ylim(4, 10)
+d <- a_plot(diamonds, aes(x, y)) + xlim(4, 10) + ylim(4, 10)
 d + geom_bin2d()
 
 # You can control the size of the bins by specifying the number of

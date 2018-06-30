@@ -25,7 +25,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -83,7 +83,7 @@ aesthetics that control the position of the line:
 }
 
 \examples{
-p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
+p <- a_plot(mtcars, aes(wt, mpg)) + geom_point()
 
 # Fixed values
 p + geom_vline(xintercept = 5)
@@ -100,18 +100,18 @@ p + geom_abline(intercept = 37, slope = -5)
 p + geom_smooth(method = "lm", se = FALSE)
 
 # To show different lines in different facets, use aesthetics
-p <- ggplot(mtcars, aes(mpg, wt)) +
+p <- a_plot(mtcars, aes(mpg, wt)) +
   geom_point() +
-  facet_wrap(~ cyl)
+  a_facet_wrap(~ cyl)
 
 mean_wt <- data.frame(cyl = c(4, 6, 8), wt = c(2.28, 3.11, 4.00))
 p + geom_hline(aes(yintercept = wt), mean_wt)
 
 # You can also control other aesthetics
-ggplot(mtcars, aes(mpg, wt, colour = wt)) +
+a_plot(mtcars, aes(mpg, wt, colourffa = wt)) +
   geom_point() +
   geom_hline(aes(yintercept = wt, colour = wt), mean_wt) +
-  facet_wrap(~ cyl)
+  a_facet_wrap(~ cyl)
 }
 \seealso{
 See \code{\link{geom_segment}} for a more general approach to

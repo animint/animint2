@@ -29,16 +29,16 @@ xlim(20, 15)
 xlim(c(10, 20))
 xlim("a", "b", "c")
 
-ggplot(mtcars, aes(mpg, wt)) +
+a_plot(mtcars, aes(mpg, wt)) +
   geom_point() +
   xlim(15, 20)
 # with automatic lower limit
-ggplot(mtcars, aes(mpg, wt)) +
+a_plot(mtcars, aes(mpg, wt)) +
   geom_point() +
   xlim(NA, 20)
 
 # Change both xlim and ylim
-ggplot(mtcars, aes(mpg, wt)) +
+a_plot(mtcars, aes(mpg, wt)) +
   geom_point() +
   lims(x = c(10, 20), y = c(3, 5))
 }

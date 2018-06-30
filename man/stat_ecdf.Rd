@@ -18,7 +18,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -70,11 +70,11 @@ Empirical Cumulative Density Function
 \examples{
 \donttest{
 df <- data.frame(x = rnorm(1000))
-ggplot(df, aes(x)) + stat_ecdf(geom = "step")
+a_plot(df, aes(x)) + stat_ecdf(geom = "step")
 
 df <- data.frame(x = c(rnorm(100, 0, 3), rnorm(100, 0, 10)),
                  g = gl(2, 100))
 
-ggplot(df, aes(x, colour = g)) + stat_ecdf()
+a_plot(df, aes(x, colour = g)) + stat_ecdf()
 }
 }

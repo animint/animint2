@@ -23,7 +23,7 @@ change the underlying data like setting limits on a scale will.
 # There are two ways of zooming the plot display: with scales or
 # with coordinate systems.  They work in two rather different ways.
 
-p <- ggplot(mtcars, aes(disp, wt)) +
+p <- a_plot(mtcars, aes(disp, wt)) +
   geom_point() +
   geom_smooth()
 p
@@ -45,7 +45,7 @@ p + coord_cartesian(xlim = c(325, 500), expand = FALSE)
 p + coord_cartesian(expand = FALSE)
 
 # You can see the same thing with this 2d histogram
-d <- ggplot(diamonds, aes(carat, price)) +
+d <- a_plot(diamonds, aes(carat, price)) +
   stat_bin2d(bins = 25, colour = "white")
 d
 

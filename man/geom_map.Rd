@@ -17,7 +17,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -57,7 +57,7 @@ Does not affect position scales.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "map")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "map")}
 }
 
 \examples{
@@ -81,28 +81,28 @@ positions <- data.frame(
   2.2, 2.1, 1.7, 2.1, 3.2, 2.8, 2.1, 2.2, 3.3, 3.2)
 )
 
-ggplot(values) + geom_map(aes(map_id = id), map = positions) +
-  expand_limits(positions)
-ggplot(values, aes(fill = value)) +
+a_plot(values) + geom_map(aes(map_id = id), map = positions) +
+  animint2:::expand_limits(positions)
+a_plot(values, aes(fill = value)) +
   geom_map(aes(map_id = id), map = positions) +
-  expand_limits(positions)
-ggplot(values, aes(fill = value)) +
+  animint2:::expand_limits(positions)
+a_plot(values, aes(fill = value)) +
   geom_map(aes(map_id = id), map = positions) +
-  expand_limits(positions) + ylim(0, 3)
+  animint2:::expand_limits(positions) + ylim(0, 3)
 
 # Better example
 crimes <- data.frame(state = tolower(rownames(USArrests)), USArrests)
 crimesm <- reshape2::melt(crimes, id = 1)
 if (require(maps)) {
   states_map <- map_data("state")
-  ggplot(crimes, aes(map_id = state)) +
+  a_plot(crimes, aes(map_id = state)) +
     geom_map(aes(fill = Murder), map = states_map) +
-    expand_limits(x = states_map$long, y = states_map$lat)
+    animint2:::expand_limits(x = states_map$long, y = states_map$lat)
 
-  last_plot() + coord_map()
-  ggplot(crimesm, aes(map_id = state)) +
+  last_plot() + animint2:::coord_map()
+  a_plot(crimesm, aes(map_id = state)) +
     geom_map(aes(fill = value), map = states_map) +
-    expand_limits(x = states_map$long, y = states_map$lat) +
-    facet_wrap( ~ variable)
+    animint2:::expand_limits(x = states_map$long, y = states_map$lat) +
+    animint2:::a_facet_wrap( ~ variable)
 }
 }

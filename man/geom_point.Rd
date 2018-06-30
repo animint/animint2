@@ -18,7 +18,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -78,11 +78,11 @@ points, e.g. \code{geom_point(alpha = 0.05)}.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "point")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "point")}
 }
 
 \examples{
-p <- ggplot(mtcars, aes(wt, mpg))
+p <- a_plot(mtcars, aes(wt, mpg))
 p + geom_point()
 
 # Add aesthetic mappings
@@ -95,11 +95,11 @@ p + geom_point(aes(colour = cyl)) + scale_colour_gradient(low = "blue")
 p + geom_point(aes(shape = factor(cyl))) + scale_shape(solid = FALSE)
 
 # Set aesthetics to fixed value
-ggplot(mtcars, aes(wt, mpg)) + geom_point(colour = "red", size = 3)
+a_plot(mtcars, aes(wt, mpg)) + geom_point(colour = "red", size = 3)
 
 \donttest{
 # Varying alpha is useful for large datasets
-d <- ggplot(diamonds, aes(carat, price))
+d <- a_plot(diamonds, aes(carat, price))
 d + geom_point(alpha = 1/10)
 d + geom_point(alpha = 1/20)
 d + geom_point(alpha = 1/100)
@@ -108,13 +108,13 @@ d + geom_point(alpha = 1/100)
 # For shapes that have a border (like 21), you can colour the inside and
 # outside separately. Use the stroke aesthetic to modify the width of the
 # border
-ggplot(mtcars, aes(wt, mpg)) +
+a_plot(mtcars, aes(wt, mpg)) +
   geom_point(shape = 21, colour = "black", fill = "white", size = 5, stroke = 5)
 
 \donttest{
 # You can create interesting shapes by layering multiple points of
 # different sizes
-p <- ggplot(mtcars, aes(mpg, wt, shape = factor(cyl)))
+p <- a_plot(mtcars, aes(mpg, wt, shape = factor(cyl)))
 p + geom_point(aes(colour = factor(cyl)), size = 4) +
   geom_point(colour = "grey90", size = 1.5)
 p + geom_point(colour = "black", size = 4.5) +
@@ -130,8 +130,8 @@ p + geom_point(colour = "black", size = 4.5, show.legend = TRUE) +
 # geom_point warns when missing values have been dropped from the data set
 # and not plotted, you can turn this off by setting na.rm = TRUE
 mtcars2 <- transform(mtcars, mpg = ifelse(runif(32) < 0.2, NA, mpg))
-ggplot(mtcars2, aes(wt, mpg)) + geom_point()
-ggplot(mtcars2, aes(wt, mpg)) + geom_point(na.rm = TRUE)
+a_plot(mtcars2, aes(wt, mpg)) + geom_point()
+a_plot(mtcars2, aes(wt, mpg)) + geom_point(na.rm = TRUE)
 }
 }
 \seealso{

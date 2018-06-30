@@ -100,7 +100,7 @@ see \code{\link{guides}}.
 \donttest{
 df <- reshape2::melt(outer(1:4, 1:4), varnames = c("X1", "X2"))
 
-p1 <- ggplot(df, aes(X1, X2)) + geom_tile(aes(fill = value))
+p1 <- a_plot(df, aes(X1, X2)) + geom_tile(aes(fill = value))
 p2 <- p1 + geom_point(aes(size = value))
 
 # Basic form
@@ -150,7 +150,7 @@ p1 + scale_fill_continuous(breaks = c(5, 10, 15),
 # Set aesthetic of legend key
 
 # very low alpha value make it difficult to see legend key
-p3 <- ggplot(diamonds, aes(carat, price)) +
+p3 <- a_plot(diamonds, aes(carat, price)) +
   geom_point(aes(colour = color), alpha = 1/100)
 p3
 
@@ -159,7 +159,7 @@ p3 + guides(colour = guide_legend(override.aes = list(alpha = 1)))
 
 # multiple row/col legends
 df <- data.frame(x = 1:20, y = 1:20, color = letters[1:20])
-p <- ggplot(df, aes(x, y)) +
+p <- a_plot(df, aes(x, y)) +
   geom_point(aes(colour = color))
 p + guides(col = guide_legend(nrow = 8))
 p + guides(col = guide_legend(ncol = 8))

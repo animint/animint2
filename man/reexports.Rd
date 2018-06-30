@@ -10,10 +10,10 @@
 \alias{arrow}
 \title{Objects exported from other packages}
 \examples{
-ggplot(mpg, aes(displ, hwy)) +
+a_plot(mpg, aes(displ, hwy)) +
   geom_point(alpha = 0.5, colour = "blue")
 
-ggplot(mpg, aes(displ, hwy)) +
+a_plot(mpg, aes(displ, hwy)) +
   geom_point(colour = alpha("blue", 0.5))
 }
 \keyword{internal}

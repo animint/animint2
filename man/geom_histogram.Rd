@@ -30,7 +30,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -122,23 +122,23 @@ may need to look at a few to uncover the full story behind your data.
 }
 
 \examples{
-ggplot(diamonds, aes(carat)) +
+a_plot(diamonds, aes(carat)) +
   geom_histogram()
-ggplot(diamonds, aes(carat)) +
+a_plot(diamonds, aes(carat)) +
   geom_histogram(binwidth = 0.01)
-ggplot(diamonds, aes(carat)) +
+a_plot(diamonds, aes(carat)) +
   geom_histogram(bins = 200)
 
 # Rather than stacking histograms, it's easier to compare frequency
 # polygons
-ggplot(diamonds, aes(price, fill = cut)) +
+a_plot(diamonds, aes(price, fill = cut)) +
   geom_histogram(binwidth = 500)
-ggplot(diamonds, aes(price, colour = cut)) +
+a_plot(diamonds, aes(price, colour = cut)) +
   geom_freqpoly(binwidth = 500)
 
 # To make it easier to compare distributions with very different counts,
 # put density on the y axis instead of the default count
-ggplot(diamonds, aes(price, ..density.., colour = cut)) +
+a_plot(diamonds, aes(price, ..density.., colour = cut)) +
   geom_freqpoly(binwidth = 500)
 
 if (require("ggplot2movies")) {
@@ -146,7 +146,7 @@ if (require("ggplot2movies")) {
 # count of observations, but the sum of some other variable.
 # For example, the following plot shows the number of movies
 # in each rating.
-m <- ggplot(movies, aes(rating))
+m <- a_plot(movies, aes(rating))
 m + geom_histogram(binwidth = 0.1)
 
 # If, however, we want to see the number of votes cast in each
@@ -162,7 +162,7 @@ m + geom_histogram(binwidth = 0.05) + scale_x_log10()
 # raw data. The bins have constant width on the original scale.
 
 # Using log scales does not work here, because the first
-# bar is anchored at zero, and so when transformed becomes negative
+# bar is anchored at zero, and so whens transformed becomes negative
 # infinity. This is not a problem when transforming the scales, because
 # no observations have 0 ratings.
 m + geom_histogram(origin = 0) + coord_trans(x = "log10")
@@ -171,7 +171,7 @@ m + geom_histogram(origin = 0) + coord_trans(x = "sqrt")
 
 # You can also transform the y axis.  Remember that the base of the bars
 # has value 0, so log transformations are not appropriate
-m <- ggplot(movies, aes(x = rating))
+m <- a_plot(movies, aes(x = rating))
 m + geom_histogram(binwidth = 0.5) + scale_y_sqrt()
 }
 rm(movies)

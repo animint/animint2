@@ -25,7 +25,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -99,7 +99,7 @@ See McGill et al. (1978) for more details.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "boxplot")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "boxplot")}
 }
 
 \section{Computed variables}{
@@ -117,10 +117,10 @@ See McGill et al. (1978) for more details.
 }
 
 \examples{
-p <- ggplot(mpg, aes(class, hwy))
+p <- a_plot(mpg, aes(class, hwy))
 p + geom_boxplot()
 p + geom_boxplot() + geom_jitter(width = 0.2)
-p + geom_boxplot() + coord_flip()
+p + geom_boxplot() + animint2:::coord_flip()
 
 p + geom_boxplot(notch = TRUE)
 p + geom_boxplot(varwidth = TRUE)
@@ -134,9 +134,9 @@ p + geom_boxplot(aes(colour = drv))
 
 # You can also use boxplots with continuous x, as long as you supply
 # a grouping variable. cut_width is particularly useful
-ggplot(diamonds, aes(carat, price)) +
+a_plot(diamonds, aes(carat, price)) +
   geom_boxplot()
-ggplot(diamonds, aes(carat, price)) +
+a_plot(diamonds, aes(carat, price)) +
   geom_boxplot(aes(group = cut_width(carat, 0.25)))
 
 \donttest{
@@ -151,7 +151,7 @@ df <- data.frame(
   y75 = quantile(y, 0.75),
   y100 = max(y)
 )
-ggplot(df, aes(x)) +
+a_plot(df, aes(x)) +
   geom_boxplot(
    aes(ymin = y0, lower = y25, middle = y50, upper = y75, ymax = y100),
    stat = "identity"

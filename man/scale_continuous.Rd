@@ -100,7 +100,7 @@ that set the \code{trans} argument to commonly used transformations.
 \examples{
 \donttest{
 if (require(ggplot2movies)) {
-m <- ggplot(subset(movies, votes > 1000), aes(rating, votes)) +
+m <- a_plot(subset(movies, votes > 1000), aes(rating, votes)) +
   geom_point(na.rm = TRUE)
 m
 
@@ -142,21 +142,21 @@ df <- data.frame(
   x = rnorm(10) * 100000,
   y = seq(0, 1, length.out = 10)
 )
-p <- ggplot(df, aes(x, y)) + geom_point()
+p <- a_plot(df, aes(x, y)) + geom_point()
 p + scale_y_continuous(labels = scales::percent)
 p + scale_y_continuous(labels = scales::dollar)
 p + scale_x_continuous(labels = scales::comma)
 
 # Other shortcut functions
-ggplot(movies, aes(rating, votes)) +
+a_plot(movies, aes(rating, votes)) +
   geom_point() +
   ylim(1e4, 5e4)
 #   * axis labels
-ggplot(movies, aes(rating, votes)) +
+a_plot(movies, aes(rating, votes)) +
   geom_point() +
   labs(x = "My x axis", y = "My y axis")
 #   * log scaling
-ggplot(movies, aes(rating, votes)) +
+a_plot(movies, aes(rating, votes)) +
   geom_point() +
   scale_x_log10() +
   scale_y_log10()

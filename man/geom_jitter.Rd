@@ -18,7 +18,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -76,11 +76,11 @@ in smaller datasets.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "point")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "point")}
 }
 
 \examples{
-p <- ggplot(mpg, aes(cyl, hwy))
+p <- a_plot(mpg, aes(cyl, hwy))
 p + geom_point()
 p + geom_jitter()
 
@@ -88,12 +88,12 @@ p + geom_jitter()
 p + geom_jitter(aes(colour = class))
 
 # Use smaller width/height to emphasise categories
-ggplot(mpg, aes(cyl, hwy)) + geom_jitter()
-ggplot(mpg, aes(cyl, hwy)) + geom_jitter(width = 0.25)
+a_plot(mpg, aes(cyl, hwy)) + geom_jitter()
+a_plot(mpg, aes(cyl, hwy)) + geom_jitter(width = 0.25)
 
 # Use larger width/height to completely smooth away discreteness
-ggplot(mpg, aes(cty, hwy)) + geom_jitter()
-ggplot(mpg, aes(cty, hwy)) + geom_jitter(width = 0.5, height = 0.5)
+a_plot(mpg, aes(cty, hwy)) + geom_jitter()
+a_plot(mpg, aes(cty, hwy)) + geom_jitter(width = 0.5, height = 0.5)
 }
 \seealso{
 \code{\link{geom_point}} for regular, unjittered points,

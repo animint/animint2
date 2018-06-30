@@ -14,7 +14,7 @@ Relative sizing for theme elements
 }
 \examples{
 df <- data.frame(x = 1:3, y = 1:3)
-ggplot(df, aes(x, y)) +
+a_plot(df, aes(x, y)) +
   geom_point() +
   theme(axis.title.x = element_text(size = rel(2.5)))
 }

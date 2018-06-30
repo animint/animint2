@@ -23,7 +23,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -89,7 +89,7 @@ the bars and then stretching or squashing to the same height.
 }
 \section{Aesthetics}{
 
-  \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "bar")}
+  \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "bar")}
 }
 
 \section{Computed variables}{
@@ -103,7 +103,7 @@ the bars and then stretching or squashing to the same height.
 \examples{
 # geom_bar is designed to make it easy to create bar charts that show
 # counts (or sums of weights)
-g <- ggplot(mpg, aes(class))
+g <- a_plot(mpg, aes(class))
 # Number of cars in each class:
 g + geom_bar()
 # Total engine displacement of each class
@@ -111,19 +111,19 @@ g + geom_bar(aes(weight = displ))
 
 # To show (e.g.) means, you need stat = "identity"
 df <- data.frame(trt = c("a", "b", "c"), outcome = c(2.3, 1.9, 3.2))
-ggplot(df, aes(trt, outcome)) +
+a_plot(df, aes(trt, outcome)) +
   geom_bar(stat = "identity")
 # But geom_point() display exactly the same information and doesn't
 # require the y-axis to touch zero.
-ggplot(df, aes(trt, outcome)) +
+a_plot(df, aes(trt, outcome)) +
   geom_point()
 
 # You can also use geom_bar() with continuous data, in which case
 # it will show counts at unique locations
 df <- data.frame(x = rep(c(2.9, 3.1, 4.5), c(5, 10, 4)))
-ggplot(df, aes(x)) + geom_bar()
+a_plot(df, aes(x)) + geom_bar()
 # cf. a histogram of the same data
-ggplot(df, aes(x)) + geom_histogram(binwidth = 0.5)
+a_plot(df, aes(x)) + geom_histogram(binwidth = 0.5)
 
 \donttest{
 # Bar charts are automatically stacked when multiple bars are placed
@@ -138,7 +138,7 @@ g + geom_bar(aes(fill = drv), position = "fill")
 reorder_size <- function(x) {
   factor(x, levels = names(sort(table(x))))
 }
-ggplot(mpg, aes(reorder_size(class))) + geom_bar()
+a_plot(mpg, aes(reorder_size(class))) + geom_bar()
 }
 }
 \seealso{

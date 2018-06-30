@@ -23,7 +23,7 @@ a fill aesthetic supplied).
 }
 \examples{
 dsub <- diamonds[ sample(nrow(diamonds), 1000), ]
-ggplot(dsub, aes(x = cut, y = carat, fill = clarity)) +
+a_plot(dsub, aes(x = cut, y = carat, fill = clarity)) +
   geom_boxplot(outlier.size = 0) +
   geom_point(pch = 21, position = position_jitterdodge())
 }

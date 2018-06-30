@@ -17,7 +17,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -52,6 +52,6 @@ The blank geom draws nothing, but can be a useful way of ensuring common
 scales between different plots.
 }
 \examples{
-ggplot(mtcars, aes(wt, mpg))
+a_plot(mtcars, aes(wt, mpg))
 # Nothing to see here!
 }

@@ -30,7 +30,7 @@ function.}
 used with lookup tables or non-labeller functions.}
 }
 \value{
-A labeller function to supply to \code{\link{facet_grid}}
+A labeller function to supply to \code{\link{a_facet_grid}}
   for the argument \code{labeller}.
 }
 \description{
@@ -49,7 +49,7 @@ functions taking a character vector such as
 }
 \examples{
 \donttest{
-p1 <- ggplot(mtcars, aes(x = mpg, y = wt)) + geom_point()
+p1 <- a_plot(mtcars, aes(x = mpg, y = wt)) + geom_point()
 
 # You can assign different labellers to variables:
 p1 + facet_grid(vs + am ~ gear,
@@ -64,7 +64,7 @@ capitalize <- function(string) {
   substr(string, 1, 1) <- toupper(substr(string, 1, 1))
   string
 }
-p2 <- ggplot(msleep, aes(x = sleep_total, y = awake)) + geom_point()
+p2 <- a_plot(msleep, aes(x = sleep_total, y = awake)) + geom_point()
 p2 + facet_grid(vore ~ conservation, labeller = labeller(vore = capitalize))
 
 # Or use character vectors as lookup tables:

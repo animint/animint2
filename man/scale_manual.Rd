@@ -39,30 +39,30 @@ Create your own discrete scale.
 }
 \examples{
 \donttest{
-p <- ggplot(mtcars, aes(mpg, wt)) +
+p <- a_plot(mtcars, aes(mpg, wt)) +
   geom_point(aes(colour = factor(cyl)))
 
-p + scale_colour_manual(values = c("red","blue", "green"))
-p + scale_colour_manual(
+p + exportscale_colour_manual(values = c("red","blue", "green"))
+p + exportscale_colour_manual(
   values = c("8" = "red","4" = "blue","6" = "green"))
 # With rgb hex values
-p + scale_colour_manual(values = c("#FF0000", "#0000FF", "#00FF00"))
+p + exportscale_colour_manual(values = c("#FF0000", "#0000FF", "#00FF00"))
 
 # As with other scales you can use breaks to control the appearance
 # of the legend
 cols <- c("8" = "red","4" = "blue","6" = "darkgreen", "10" = "orange")
-p + scale_colour_manual(values = cols)
-p + scale_colour_manual(values = cols, breaks = c("4", "6", "8"))
-p + scale_colour_manual(values = cols, breaks = c("8", "6", "4"))
-p + scale_colour_manual(values = cols, breaks = c("4", "6", "8"),
-  labels = c("four", "six", "eight"))
+p + exportscale_colour_manual(values = cols)
+p + exportscale_colour_manual(values = cols, breaks = c("4", "6", "8"))
+p + exportscale_colour_manual(values = cols, breaks = c("8", "6", "4"))
+p + exportscale_colour_manual(values = cols, breaks = c("4", "6", "8"),
+labels = c("four", "six", "eight"))
 
 # And limits to control the possible values of the scale
-p + scale_colour_manual(values = cols, limits = c("4", "8"))
-p + scale_colour_manual(values = cols, limits = c("4", "6", "8", "10"))
+p + exportscale_colour_manual(values = cols, limits = c("4", "8"))
+p + exportscale_colour_manual(values = cols, limits = c("4", "6", "8", "10"))
 
 # Notice that the values are matched with limits, and not breaks
-p + scale_colour_manual(limits = c(6, 8, 4), breaks = c(8, 4, 6),
+p + exportscale_colour_manual(limits = c(6, 8, 4), breaks = c(8, 4, 6),
   values = c("grey50", "grey80", "black"))
 }
 }

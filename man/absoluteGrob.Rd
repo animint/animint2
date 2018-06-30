@@ -2,15 +2,28 @@
 % Please edit documentation in R/grob-absolute.r
 \name{absoluteGrob}
 \alias{absoluteGrob}
-\title{Absolute grob}
+\title{Absolute grob
+This grob has fixed dimensions and position.
+It's still experimental}
 \usage{
 absoluteGrob(grob, width = NULL, height = NULL, xmin = NULL,
   ymin = NULL, vp = NULL)
 }
-\description{
-This grob has fixed dimensions and position.
+\arguments{
+\item{grob}{....}
+
+\item{width}{.....}
+
+\item{height}{.....}
+
+\item{xmin}{......}
+
+\item{ymin}{.......}
+
+\item{vp}{....}
 }
-\details{
+\description{
+Absolute grob
+This grob has fixed dimensions and position.
 It's still experimental
 }
-\keyword{internal}

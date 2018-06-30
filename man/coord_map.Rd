@@ -53,7 +53,7 @@ in the mapproj package.
 if (require("maps")) {
 nz <- map_data("nz")
 # Prepare a map of NZ
-nzmap <- ggplot(nz, aes(x = long, y = lat, group = group)) +
+nzmap <- a_plot(nz, aes(x = long, y = lat, group = group)) +
   geom_polygon(fill = "white", colour = "black")
 
 # Plot it in cartesian coordinates
@@ -68,7 +68,7 @@ nzmap + coord_map("cylindrical")
 nzmap + coord_map("azequalarea", orientation = c(-36.92,174.6,0))
 
 states <- map_data("state")
-usamap <- ggplot(states, aes(long, lat, group = group)) +
+usamap <- a_plot(states, aes(long, lat, group = group)) +
   geom_polygon(fill = "white", colour = "black")
 
 # Use cartesian coordinates
@@ -90,7 +90,7 @@ usamap + coord_map("bonne", lat0 = 50)
 
 # World map, using geom_path instead of geom_polygon
 world <- map_data("world")
-worldmap <- ggplot(world, aes(x = long, y = lat, group = group)) +
+worldmap <- a_plot(world, aes(x = long, y = lat, group = group)) +
   geom_path() +
   scale_y_continuous(breaks = (-2:2) * 30) +
   scale_x_continuous(breaks = (-4:4) * 45)

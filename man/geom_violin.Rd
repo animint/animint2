@@ -24,7 +24,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -81,7 +81,7 @@ Violin plot.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "violin")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "violin")}
 }
 
 \section{Computed variables}{
@@ -98,7 +98,7 @@ Violin plot.
 }
 
 \examples{
-p <- ggplot(mtcars, aes(factor(cyl), mpg))
+p <- a_plot(mtcars, aes(factor(cyl), mpg))
 p + geom_violin()
 
 \donttest{
@@ -136,7 +136,7 @@ if (require("ggplot2movies")) {
 # Scale transformations occur before the density statistics are computed.
 # Coordinate transformations occur afterwards.  Observe the effect on the
 # number of outliers.
-m <- ggplot(movies, aes(y = votes, x = rating, group = cut_width(rating, 0.5)))
+m <- a_plot(movies, aes(y = votes, x = rating, group = cut_width(rating, 0.5)))
 m + geom_violin()
 m + geom_violin() + scale_y_log10()
 m + geom_violin() + coord_trans(y = "log10")
@@ -144,8 +144,8 @@ m + geom_violin() + scale_y_log10() + coord_trans(y = "log10")
 
 # Violin plots with continuous x:
 # Use the group aesthetic to group observations in violins
-ggplot(movies, aes(year, budget)) + geom_violin()
-ggplot(movies, aes(year, budget)) +
+a_plot(movies, aes(year, budget)) + geom_violin()
+a_plot(movies, aes(year, budget)) +
   geom_violin(aes(group = cut_width(year, 10)), scale = "width")
 }
 }

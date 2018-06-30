@@ -2,16 +2,16 @@
 % Please edit documentation in R/z_animint.R
 \name{getLegendList}
 \alias{getLegendList}
-\title{Function to get legend information from ggplot}
+\title{Function to get legend information from a_plot}
 \usage{
 getLegendList(plistextra)
 }
 \arguments{
-\item{plistextra}{output from ggplot_build(p)}
+\item{plistextra}{output from a_plot_build(p)}
 }
 \value{
 list containing information for each legend
 }
 \description{
-Function to get legend information from ggplot
+Function to get legend information from a_plot
 }

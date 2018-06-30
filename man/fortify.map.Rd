@@ -21,12 +21,12 @@ plotted with ggplot2.
 if (require("maps")) {
 ca <- map("county", "ca", plot = FALSE, fill = TRUE)
 head(fortify(ca))
-ggplot(ca, aes(long, lat)) +
+a_plot(ca, aes(long, lat)) +
   geom_polygon(aes(group = group))
 
 tx <- map("county", "texas", plot = FALSE, fill = TRUE)
 head(fortify(tx))
-ggplot(tx, aes(long, lat)) +
+a_plot(tx, aes(long, lat)) +
   geom_polygon(aes(group = group), colour = "white")
 }
 }

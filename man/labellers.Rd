@@ -81,9 +81,9 @@ argument.
   attribute of the incoming data frame of labels. The value of this
   attribute reflects the kind of strips your labeller is dealing
   with: \code{"cols"} for columns and \code{"rows"} for rows. Note
-  that \code{\link{facet_wrap}()} has columns by default and rows
+  that \code{\link{a_facet_wrap}()} has columns by default and rows
   when the strips are switched with the \code{switch} option. The
-  \code{facet} attribute also provides metadata on the labels. It
+  \code{a_facet} attribute also provides metadata on the labels. It
   takes the values \code{"grid"} or \code{"wrap"}.
 
   For compatibility with \code{\link{labeller}()}, each labeller
@@ -92,11 +92,11 @@ argument.
 
 \examples{
 mtcars$cyl2 <- factor(mtcars$cyl, labels = c("alpha", "beta", "gamma"))
-p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
+p <- a_plot(mtcars, aes(wt, mpg)) + geom_point()
 
 # Displaying only the values
-p + facet_grid(. ~ cyl)
-p + facet_grid(. ~ cyl, labeller = label_value)
+p + a_facet_grid(. ~ cyl)
+p + a_facet_grid(. ~ cyl, labeller = label_value)
 
 \donttest{
 # Displaying both the values and the variables
@@ -107,9 +107,9 @@ p + facet_grid(. ~ cyl, labeller = label_both)
 p + facet_grid(am ~ vs+cyl, labeller = label_context)
 
 # Interpreting the labels as plotmath expressions
-p + facet_grid(. ~ cyl2)
-p + facet_grid(. ~ cyl2, labeller = label_parsed)
-p + facet_wrap(~vs + cyl2, labeller = label_parsed)
+p + a_facet_grid(. ~ cyl2)
+p + a_facet_grid(. ~ cyl2, labeller = label_parsed)
+p + a_facet_wrap(~vs + cyl2, labeller = label_parsed)
 }
 }
 \seealso{

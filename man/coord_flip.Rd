@@ -24,11 +24,11 @@ statistics which display y conditional on x, to x conditional on y.
 # Very useful for creating boxplots, and other interval
 # geoms in the horizontal instead of vertical position.
 
-ggplot(diamonds, aes(cut, price)) +
+a_plot(diamonds, aes(cut, price)) +
   geom_boxplot() +
   coord_flip()
 
-h <- ggplot(diamonds, aes(carat)) +
+h <- a_plot(diamonds, aes(carat)) +
   geom_histogram()
 h
 h + coord_flip()
@@ -36,7 +36,7 @@ h + coord_flip() + scale_x_reverse()
 
 # You can also use it to flip line and area plots:
 df <- data.frame(x = 1:5, y = (1:5) ^ 2)
-ggplot(df, aes(x, y)) +
+a_plot(df, aes(x, y)) +
   geom_area()
 last_plot() + coord_flip()
 }

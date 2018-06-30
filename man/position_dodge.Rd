@@ -15,16 +15,16 @@ geoms. See the examples for a use case.}
 Adjust position by dodging overlaps to the side.
 }
 \examples{
-ggplot(mtcars, aes(factor(cyl), fill = factor(vs))) +
+a_plot(mtcars, aes(factor(cyl), fill = factor(vs))) +
   geom_bar(position = "dodge")
 \donttest{
-ggplot(diamonds, aes(price, fill = cut)) +
+a_plot(diamonds, aes(price, fill = cut)) +
   geom_histogram(position="dodge")
 # see ?geom_boxplot and ?geom_bar for more examples
 
 # To dodge items with different widths, you need to be explicit
 df <- data.frame(x = c("a","a","b","b"), y = 2:5, g = rep(1:2, 2))
-p <- ggplot(df, aes(x, y, group = g)) +
+p <- a_plot(df, aes(x, y, group = g)) +
   geom_bar(
     stat = "identity", position = "dodge",
     fill = "grey50", colour = "black"

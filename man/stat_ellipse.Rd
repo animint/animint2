@@ -18,7 +18,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -67,26 +67,26 @@ The method for calculating the ellipses has been modified from
 \code{car::ellipse} (Fox and Weisberg, 2011)
 }
 \examples{
-ggplot(faithful, aes(waiting, eruptions)) +
+a_plot(faithful, aes(waiting, eruptions)) +
   geom_point() +
   stat_ellipse()
 
-ggplot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
+a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
   geom_point() +
   stat_ellipse()
 
-ggplot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
+a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
   geom_point() +
   stat_ellipse(type = "norm", linetype = 2) +
   stat_ellipse(type = "t")
 
-ggplot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
+a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
   geom_point() +
   stat_ellipse(type = "norm", linetype = 2) +
   stat_ellipse(type = "euclid", level = 3) +
   coord_fixed()
 
-ggplot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
+a_plot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
   stat_ellipse(geom = "polygon")
 }
 \references{

@@ -86,26 +86,26 @@ df <- data.frame(
 )
 
 # Default colour scale colours from light blue to dark blue
-ggplot(df, aes(x, y)) +
+a_plot(df, aes(x, y)) +
   geom_point(aes(colour = z2))
 
 # For diverging colour scales use gradient2
-ggplot(df, aes(x, y)) +
+a_plot(df, aes(x, y)) +
   geom_point(aes(colour = z1)) +
   scale_colour_gradient2()
 
 # Use your own colour scale with gradientn
-ggplot(df, aes(x, y)) +
+a_plot(df, aes(x, y)) +
   geom_point(aes(colour = z1)) +
   scale_colour_gradientn(colours = terrain.colors(10))
 
 # Equivalent fill scales do the same job for the fill aesthetic
-ggplot(faithfuld, aes(waiting, eruptions)) +
+a_plot(faithfuld, aes(waiting, eruptions)) +
   geom_raster(aes(fill = density)) +
   scale_fill_gradientn(colours = terrain.colors(10))
 
 # Adjust colour choices with low and high
-ggplot(df, aes(x, y)) +
+a_plot(df, aes(x, y)) +
   geom_point(aes(colour = z2)) +
   scale_colour_gradient(low = "white", high = "black")
 # Avoid red-green colour contrasts because ~10\% of men have difficulty

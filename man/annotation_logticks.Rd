@@ -48,7 +48,7 @@ These tick marks probably make sense only for base 10.
 }
 \examples{
 # Make a log-log plot (without log ticks)
-a <- ggplot(msleep, aes(bodywt, brainwt)) +
+a <- a_plot(msleep, aes(bodywt, brainwt)) +
  geom_point(na.rm = TRUE) +
  scale_x_log10(
    breaks = scales::trans_breaks("log10", function(x) 10^x),
@@ -69,7 +69,7 @@ a + annotation_logticks(sides = "trbl") + theme(panel.grid.minor = element_blank
 
 # Another way to get the same results as 'a' above: log-transform the data before
 # plotting it. Also hide the minor grid lines.
-b <- ggplot(msleep, aes(log10(bodywt), log10(brainwt))) +
+b <- a_plot(msleep, aes(log10(bodywt), log10(brainwt))) +
  geom_point(na.rm = TRUE) +
  scale_x_continuous(name = "body", labels = scales::math_format(10^.x)) +
  scale_y_continuous(name = "brain", labels = scales::math_format(10^.x)) +
@@ -78,7 +78,7 @@ b <- ggplot(msleep, aes(log10(bodywt), log10(brainwt))) +
 b + annotation_logticks()
 
 # Using a coordinate transform requires scaled = FALSE
-t <- ggplot(msleep, aes(bodywt, brainwt)) +
+t <- a_plot(msleep, aes(bodywt, brainwt)) +
   geom_point() +
   coord_trans(x = "log10", y = "log10") +
   theme_bw()

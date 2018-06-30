@@ -19,7 +19,7 @@ of aesthetics; linetype, size and shape.
 
 # Data
 df <- data.frame(x = 1:10 , y = 1:10)
-f <- ggplot(df, aes(x, y))
+f <- a_plot(df, aes(x, y))
 f + geom_line(linetype = 2)
 f + geom_line(linetype = "dotdash")
 
@@ -29,13 +29,13 @@ f + geom_line(linetype = "dotdash")
 f + geom_line(linetype = "3313")
 
 # Mapping line type from a variable
-ggplot(economics_long, aes(date, value01)) +
+a_plot(economics_long, aes(date, value01)) +
   geom_line(aes(linetype = variable))
 
 # Size examples
 # Should be specified with a numerical value (in millimetres),
 # or from a variable source
-p <- ggplot(mtcars, aes(wt, mpg))
+p <- a_plot(mtcars, aes(wt, mpg))
 p + geom_point(size = 4)
 p + geom_point(aes(size = qsec))
 p + geom_point(size = 2.5) +
@@ -57,7 +57,7 @@ p + geom_point(aes(shape = factor(cyl)))
 
 # A look at all 25 symbols
 df2 <- data.frame(x = 1:5 , y = 1:25, z = 1:25)
-s <- ggplot(df2, aes(x, y))
+s <- a_plot(df2, aes(x, y))
 s + geom_point(aes(shape = z), size = 4) +
   scale_shape_identity()
 # While all symbols have a foreground colour, symbols 19-25 also take a

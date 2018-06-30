@@ -71,7 +71,7 @@ The following palettes are available for use with these scales:
 
 \examples{
 dsamp <- diamonds[sample(nrow(diamonds), 1000), ]
-(d <- ggplot(dsamp, aes(carat, price)) +
+(d <- a_plot(dsamp, aes(carat, price)) +
   geom_point(aes(colour = clarity)))
 
 # Change scale label
@@ -85,7 +85,7 @@ d + scale_colour_brewer(palette = "Set1")
 \donttest{
 # scale_fill_brewer works just the same as
 # scale_colour_brewer but for fill colours
-p <- ggplot(diamonds, aes(x = price, fill = cut)) +
+p <- a_plot(diamonds, aes(x = price, fill = cut)) +
   geom_histogram(position = "dodge", binwidth = 1000)
 p + scale_fill_brewer()
 # the order of colour can be reversed
@@ -95,7 +95,7 @@ p + scale_fill_brewer(direction = -1) + theme_dark()
 }
 
 # Use distiller variant with continous data
-v <- ggplot(faithfuld) +
+v <- a_plot(faithfuld) +
   geom_tile(aes(waiting, eruptions, fill = density))
 v
 v + scale_fill_distiller()

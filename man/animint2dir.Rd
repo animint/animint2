@@ -159,5 +159,5 @@ animint2dir(popSmooth, "WorldPop-smooth")
 
 }
 \seealso{
-\code{\link{ggplot2}}
+\code{\link{ggplot2Animint}}
 }

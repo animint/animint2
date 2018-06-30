@@ -30,7 +30,7 @@ theme. \code{theme_replace} will completely replace the element, so any
 unspecified values will overwrite the current value in the theme with \code{NULL}s.
 }
 \examples{
-p <- ggplot(mtcars, aes(mpg, wt)) +
+p <- a_plot(mtcars, aes(mpg, wt)) +
   geom_point()
 p
 old <- theme_set(theme_bw())
@@ -55,7 +55,7 @@ theme_set(old)
 theme_get()
 
 
-ggplot(mtcars, aes(mpg, wt)) +
+a_plot(mtcars, aes(mpg, wt)) +
   geom_point(aes(color = mpg)) +
   theme(legend.position = c(0.95, 0.95),
         legend.justification = c(1, 1))
@@ -64,5 +64,5 @@ last_plot() +
 
 }
 \seealso{
-\code{\link{\%+replace\%}} and \code{\link{+.gg}}
+\code{\link{\%+replace\%}} and \code{\link{+.aaa}}
 }

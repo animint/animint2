@@ -18,7 +18,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    options:
 
    If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+   data as specified in the call to \code{\link{a_plot}}.
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
@@ -56,7 +56,7 @@ Polygon, a filled path.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "polygon")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "polygon")}
 }
 
 \examples{
@@ -83,7 +83,7 @@ positions <- data.frame(
 # Currently we need to manually merge the two together
 datapoly <- merge(values, positions, by = c("id"))
 
-(p <- ggplot(datapoly, aes(x = x, y = y)) + geom_polygon(aes(fill = value, group = id)))
+(p <- a_plot(datapoly, aes(x = x, y = y)) + geom_polygon(aes(fill = value, group = id)))
 
 # Which seems like a lot of work, but then it's easy to add on
 # other features in this coordinate system, e.g.:

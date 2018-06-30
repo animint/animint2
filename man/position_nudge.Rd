@@ -19,11 +19,11 @@ df <- data.frame(
   y = c("a","c","d","c")
 )
 
-ggplot(df, aes(x, y)) +
+a_plot(df, aes(x, y)) +
   geom_point() +
   geom_text(aes(label = y))
 
-ggplot(df, aes(x, y)) +
+a_plot(df, aes(x, y)) +
   geom_point() +
   geom_text(aes(label = y), position = position_nudge(y = -0.1))
 }

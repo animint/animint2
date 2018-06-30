@@ -21,7 +21,7 @@ A continuous variable can not be mapped to shape.
 \examples{
 dsmall <- diamonds[sample(nrow(diamonds), 100), ]
 
-(d <- ggplot(dsmall, aes(carat, price)) + geom_point(aes(shape = cut)))
+(d <- a_plot(dsmall, aes(carat, price)) + geom_point(aes(shape = cut)))
 d + scale_shape(solid = TRUE) # the default
 d + scale_shape(solid = FALSE)
 d + scale_shape(name = "Cut of diamond")
@@ -32,7 +32,7 @@ d + scale_shape(name = "Cut of\\ndiamond")
 levels(dsmall$cut) <- c("Fair", "Good", "Very Good", "Premium", "Ideal")
 
 # Need to recreate plot to pick up new data
-ggplot(dsmall, aes(price, carat)) + geom_point(aes(shape = cut))
+a_plot(dsmall, aes(price, carat)) + geom_point(aes(shape = cut))
 
 # Or for short:
 d \%+\% dsmall

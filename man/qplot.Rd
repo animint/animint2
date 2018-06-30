@@ -21,11 +21,11 @@ quickplot(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
 \item{data}{Data frame to use (optional).  If not specified, will create
 one, extracting vectors from the current environment.}
 
-\item{facets}{faceting formula to use. Picks \code{\link{facet_wrap}} or
-\code{\link{facet_grid}} depending on whether the formula is one-
+\item{facets}{faceting formula to use. Picks \code{\link{a_facet_wrap}} or
+\code{\link{a_facet_grid}} depending on whether the formula is one-
 or two-sided}
 
-\item{margins}{See \code{facet_grid}: display marginal facets?}
+\item{margins}{See \code{a_facet_grid}: display marginal facets?}
 
 \item{geom}{Character vector specifying geom(s) to draw. Defaults to
 "point" if x and y are specified, and "histogram" if only x is specified.}
