@@ -77,6 +77,7 @@ a_Position <- a_ggproto("a_Position",
 #'   (will transform x, xmin, xmax, xend etc)
 #' @param df ....
 #' @param ... Additional arguments passed to \code{trans_x} and \code{trans_y}.
+#' @keywords internal
 #' @export
 transform_position <- function(df, trans_x = NULL, trans_y = NULL, ...) {
   scales <- aes_to_scale(names(df))

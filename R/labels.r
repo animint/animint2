@@ -22,23 +22,23 @@ update_labels <- function(p, labels) {
 #' @param subtitle the text for the subtitle for the plot which will be
 #'        displayed below the title. Leave \code{NULL} for no subtitle.
 #' @param ... a list of new names in the form aesthetic = "new name"
-#' @keywords internal
+#' @export
 #' @examples
 #' p <- a_plot(mtcars, aes(mpg, wt)) + geom_point()
-#' p + animint2:::labs(title = "New plot title")
-#' p + animint2:::labs(x = "New x label")
+#' p + labs(title = "New plot title")
+#' p + labs(x = "New x label")
 #' p + xlab("New x label")
 #' p + ylab("New y label")
 #' p + ggtitle("New plot title")
 #'
 #' # Can add a subtitle to plots with either of the following
 #' p + ggtitle("New plot title", subtitle = "A subtitle")
-#' p + animint2:::labs(title = "New plot title", subtitle = "A subtitle")
+#' p + labs(title = "New plot title", subtitle = "A subtitle")
 #'
 #' # Can add a plot caption underneath the whole plot (for sources, notes or
 #' # copyright), similar to the \code{sub} parameter in base R, with the
 #' # following
-#' p + animint2:::labs(caption = "(based on data from ...)")
+#' p + labs(caption = "(based on data from ...)")
 #'
 #' # This should work independently of other functions that modify the
 #' # the scale names
@@ -47,10 +47,10 @@ update_labels <- function(p, labels) {
 #'
 #' # The labs function also modifies legend labels
 #' p <- a_plot(mtcars, aes(mpg, wt, colour = cyl)) + geom_point()
-#' p + animint2:::labs(colour = "Cylinders")
+#' p + labs(colour = "Cylinders")
 #'
 #' # Can also pass in a list, if that is more convenient
-#' p + animint2:::labs(list(title = "Title", subtitle = "Subtitle", x = "X", y = "Y"))
+#' p + labs(list(title = "Title", subtitle = "Subtitle", x = "X", y = "Y"))
 labs <- function(...) {
   args <- list(...)
   if (is.list(args[[1]])) args <- args[[1]]

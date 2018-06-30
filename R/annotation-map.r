@@ -6,14 +6,14 @@ NULL
 #' @param map data frame representing a map.  Most map objects can be
 #'   converted into the right format by using \code{\link{fortify}}
 #' @param ... other arguments used to modify aesthetics
-#' @keywords internal
+#' @export
 #' @examples
 #' if (require("maps")) {
 #' usamap <- map_data("state")
 #'
 #' seal.sub <- subset(seals, long > -130 & lat < 45 & lat > 40)
 #' a_plot(seal.sub, aes(x = long, y = lat)) +
-#'   animint2:::annotation_map(usamap, fill = "NA", colour = "grey50") +
+#'   annotation_map(usamap, fill = "NA", colour = "grey50") +
 #'   geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat))
 #'
 #' seal2 <- transform(seal.sub,
@@ -21,9 +21,9 @@ NULL
 #'   longr = cut(long, 2))
 #'
 #' a_plot(seal2,  aes(x = long, y = lat)) +
-#'   animint2:::annotation_map(usamap, fill = "NA", colour = "grey50") +
+#'   annotation_map(usamap, fill = "NA", colour = "grey50") +
 #'   geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat)) +
-#'   animint2:::a_facet_grid(latr ~ longr, scales = "free", space = "free")
+#'   a_facet_grid(latr ~ longr, scales = "free", space = "free")
 #' }
 annotation_map <- function(map, ...) {
   # Get map input into correct form

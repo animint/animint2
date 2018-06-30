@@ -15,7 +15,7 @@ NULL
 #'   location of raster
 #' @param ymin,ymax y location (in data coordinates) giving vertical
 #'   location of raster
-#' @keywords internal
+#' @export
 #' @note \code{annotation_custom} expects the grob to fill the entire viewport
 #' defined by xmin, xmax, ymin, ymax. Grobs with a different (absolute) size
 #' will be center-justified in that region.
@@ -28,7 +28,7 @@ NULL
 #'   theme_bw()
 #'
 #' # Full panel annotation
-#' base + animint2:::annotation_custom(
+#' base + annotation_custom(
 #'   grob = grid::roundrectGrob(),
 #'   xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf
 #' )
@@ -38,7 +38,7 @@ NULL
 #' g <- ggplotGrob(a_plot(df2, aes(x, y)) +
 #'   geom_point() +
 #'   theme(plot.background = element_rect(colour = "black")))
-#' base + animint2:::annotation_custom(grob = g, xmin = 1, xmax = 10, ymin = 8, ymax = 10)
+#' base + annotation_custom(grob = g, xmin = 1, xmax = 10, ymin = 8, ymax = 10)
 annotation_custom <- function(grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) {
   layer(
     data = NULL,

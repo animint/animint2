@@ -234,7 +234,7 @@ label_bquote <- function(rows = NULL, cols = NULL,
 globalVariables(c("x", "."))
 
 #' @rdname labellers
-#' @keywords internal
+#' @export
 label_wrap_gen <- function(width = 25, multi_line = TRUE) {
   fun <- function(labels) {
     labels <- label_value(labels, multi_line = multi_line)

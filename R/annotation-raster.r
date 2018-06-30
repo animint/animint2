@@ -18,25 +18,25 @@ NULL
 #'   location of raster
 #' @param interpolate If \code{TRUE} interpolate linearly, if \code{FALSE}
 #'   (the default) don't interpolate.
-#' @keywords internal
+#' @export
 #' @examples
 #' # Generate data
 #' rainbow <- matrix(hcl(seq(0, 360, length.out = 50 * 50), 80, 70), nrow = 50)
 #' a_plot(mtcars, aes(mpg, wt)) +
 #'   geom_point() +
-#'   animint2:::annotation_raster(rainbow, 15, 20, 3, 4)
+#'   annotation_raster(rainbow, 15, 20, 3, 4)
 #' # To fill up whole plot
 #' a_plot(mtcars, aes(mpg, wt)) +
-#'   animint2:::annotation_raster(rainbow, -Inf, Inf, -Inf, Inf) +
+#'   annotation_raster(rainbow, -Inf, Inf, -Inf, Inf) +
 #'   geom_point()
 #'
 #' rainbow2 <- matrix(hcl(seq(0, 360, length.out = 10), 80, 70), nrow = 1)
 #' a_plot(mtcars, aes(mpg, wt)) +
-#'   animint2:::annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf) +
+#'   annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf) +
 #'   geom_point()
 #' rainbow2 <- matrix(hcl(seq(0, 360, length.out = 10), 80, 70), nrow = 1)
 #' a_plot(mtcars, aes(mpg, wt)) +
-#'   animint2:::annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf, interpolate = TRUE) +
+#'   annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf, interpolate = TRUE) +
 #'   geom_point()
 annotation_raster <- function(raster, xmin, xmax, ymin, ymax,
                               interpolate = FALSE) {

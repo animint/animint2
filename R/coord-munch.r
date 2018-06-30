@@ -9,6 +9,7 @@
 #'   All other variables are duplicated as needed.
 #' @param range Panel range specification.
 #' @param segment_length Target segment length
+#' @keywords internal
 #' @export
 coord_munch <- function(coord, data, range, segment_length = 0.01) {
   if (coord$is_linear()) return(coord$transform(data, range))

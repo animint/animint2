@@ -57,11 +57,11 @@ fortify.map <- function(model, data, ...) {
 #' choro <- choro[order(choro$order), ]
 #' a_plot(choro, aes(long, lat)) +
 #'   geom_polygon(aes(group = group, fill = assault)) +
-#'   ggplot2Animint:::coord_map("albers",  at0 = 45.5, lat1 = 29.5)
+#'   coord_map("albers",  at0 = 45.5, lat1 = 29.5)
 #'
 #' a_plot(choro, aes(long, lat)) +
 #'   geom_polygon(aes(group = group, fill = assault / murder)) +
-#'   ggplot2Animint:::coord_map("albers",  at0 = 45.5, lat1 = 29.5)
+#'   coord_map("albers",  at0 = 45.5, lat1 = 29.5)
 #' }
 map_data <- function(map, region = ".", exact = FALSE, ...) {
   try_require("maps", "map_data")
@@ -77,7 +77,7 @@ map_data <- function(map, region = ".", exact = FALSE, ...) {
 #' @param xlim,ylim latitudinal and logitudinal range for extracting map
 #'   polygons, see \code{\link[maps]{map}} for details.
 #' @param ... other arguments passed onto \code{\link{geom_polygon}}
-#' @keywords internal
+#' @export
 #' @examples
 #' if (require("maps")) {
 #'
@@ -91,17 +91,17 @@ map_data <- function(map, region = ".", exact = FALSE, ...) {
 #' data(us.cities)
 #' capitals <- subset(us.cities, capital == 2)
 #' a_plot(capitals, aes(long, lat)) +
-#'   ggplot2Animint:::borders("state") +
+#'   borders("state") +
 #'   geom_point(aes(size = pop)) +
 #'   scale_size_area() +
-#'   ggplot2Animint:::coord_quickmap()
+#'   coord_quickmap()
 #'
 #' # Same map, with some world context
 #' a_plot(capitals, aes(long, lat)) +
-#'   ggplot2Animint:::borders("world", xlim = c(-130, -60), ylim = c(20, 50)) +
+#'   borders("world", xlim = c(-130, -60), ylim = c(20, 50)) +
 #'   geom_point(aes(size = pop)) +
 #'   scale_size_area() +
-#'   ggplot2Animint:::coord_quickmap()
+#'   coord_quickmap()
 #' }
 borders <- function(database = "world", regions = ".", fill = NA,
                     colour = "grey50", xlim = NULL, ylim = NULL, ...) {
