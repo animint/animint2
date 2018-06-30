@@ -20,10 +20,10 @@ data_tallrect_error$arclength <- "arclength"
 
 viz.no.time <- list(
   title="both .variable .value aesthetics",
-  path=ggplot()+
+  path=a_plot()+
     theme_bw()+
     theme(panel.margin=grid::unit(0, "lines"))+
-    facet_grid(y.var ~ ., scales="free")+
+    a_facet_grid(y.var ~ ., scales="free")+
     ylab("")+
     scale_color_manual(values=variable.colors)+
     geom_line(aes(arclength, standardized.coef, color=variable, group=variable),
@@ -41,7 +41,7 @@ viz.no.time <- list(
       showSelected=c(arclength="arclength.show"),
       alpha=0.5,
       data=data_tallrect_error),
-  res=ggplot()+
+  res=a_plot()+
     geom_hline(aes(yintercept=residual),
                data=hline.df,
                color="grey")+

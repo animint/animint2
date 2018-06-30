@@ -12,7 +12,7 @@ SCATTER <- function(df)BOTH(df, "Fertility rate", "Life expectancy")
 TS2 <- function(df)BOTH(df, "Fertility rate", "Years")
 viz.data.fun <- list(
   title="make_xrect with data.fun",
-  ts=ggplot()+
+  ts=a_plot()+
     xlab("")+
     make_tallrect(not.na, "year", data.fun=TS)+
     theme_bw()+
@@ -45,7 +45,7 @@ viz.data.fun <- list(
               clickSelects="country",
               data=SCATTER(not.na))+
     scale_size_animint(breaks=10^(5:9))+
-    facet_grid(side ~ top, scales="free"),
+    a_facet_grid(side ~ top, scales="free"),
   duration=list(year=2000),
   first=list(year=1975, country=c("United States", "Vietnam")),
   selector.types=list(country="multiple"))

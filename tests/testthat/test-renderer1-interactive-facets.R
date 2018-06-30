@@ -8,7 +8,7 @@ model.linetypes <- c(margin="dotted",limit="dashed",regression="solid")
 intreg$annotations$logratio <- max(intreg$sig$log)
 
 mmir.facets <- 
-  list(signal=ggplot()+
+  list(signal=a_plot()+
        theme_animint(height=300, width=800)+       
        scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
@@ -35,7 +35,7 @@ mmir.facets <-
                   colour=signal.colors[["estimate"]],
                   linetype="dashed",
                   data=intreg$breaks),
-       penalty=ggplot()+
+       penalty=a_plot()+
        geom_tallrect(aes(xmin=min.L, xmax=max.L),
                      showSelected="signal",
                      clickSelects="segments",
@@ -60,7 +60,7 @@ mmir.facets <-
                     showSelected="signal",
                     data=data.frame(intreg$selection, what="segments"))+
        xlab("penalty value $L=f(x)$")+ # TODO: mathjax.
-       facet_grid(what~.,scales="free"))
+       a_facet_grid(what~.,scales="free"))
 
 info <- animint2HTML(mmir.facets)
 

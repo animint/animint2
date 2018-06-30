@@ -1,7 +1,7 @@
 acontext("Labels")
 
 # create some objects that will be reused
-ggpoint <- ggplot() + geom_point(aes(Petal.Width, Sepal.Width), data = iris)
+ggpoint <- a_plot() + geom_point(aes(Petal.Width, Sepal.Width), data = iris)
 
 test_that("ggtitle converts", {
   viz <- list(scatter=ggpoint + ggtitle("My amazing plot!"))
@@ -30,7 +30,7 @@ test_that("scale_x_continuous(name) converts", {
 
 test_that("scale_x_continuous(breaks)+xlab(name) converts", {
   viz <-
-    list(scatter=ggplot() +
+    list(scatter=a_plot() +
            geom_point(aes(Petal.Length, Sepal.Length), data = iris) +
            scale_x_continuous(breaks = c(1.5, 6.5)) +
            xlab("Petal Length"))
@@ -54,7 +54,7 @@ stocks <- data.frame(
   value = rnorm(90)
 )
 
-series <- ggplot() + geom_line(aes(x = time, y = value, group = vars), data = stocks)
+series <- a_plot() + geom_line(aes(x = time, y = value, group = vars), data = stocks)
 
 test_that("scale_x_time ticks/labels work", { 
   info <- animint2HTML(list(series = series))

@@ -3,12 +3,12 @@ acontext("legends")
 data(WorldBank, package="animint2")
 breaks <- 10^(4:9)
 viz <-
-  list(ts=ggplot()+
+  list(ts=a_plot()+
        make_tallrect(WorldBank, "year")+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
                  clickSelects="country",
                  data=WorldBank, size=3, alpha=3/5),
-       scatter=ggplot()+
+       scatter=a_plot()+
        geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population),
                   clickSelects="country",
                   showSelected=c("year"),
@@ -28,7 +28,7 @@ test_that('breaks are respected', {
 })
 
 test_that('hiding both legends works with geom_point(show.legend=FALSE)', {
-  viz$scatter <- ggplot()+
+  viz$scatter <- a_plot()+
     geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population),
                clickSelects="country",
                showSelected=c("year"),
@@ -70,7 +70,7 @@ error.types <-
   data.frame(x=1:3, status=c("correct", "false positive", "false negative"))
 
 gg <- 
-  ggplot(error.types)+
+  a_plot(error.types)+
     geom_point(aes(x, x))+
     geom_tallrect(aes(xmin=x, xmax=x+0.5, fill=x),
                   color="black")

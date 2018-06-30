@@ -6,7 +6,7 @@ country.counts <- table(not.na$year)
 years <- data.frame(year=as.numeric(names(country.counts)),
                     countries=as.numeric(country.counts))
 viz <-
-  list(scatter=ggplot()+
+  list(scatter=a_plot()+
        geom_point(aes(life.expectancy, fertility.rate,
                       colour=region, size=population,
                       tooltip=paste(country, "population", population),
@@ -32,13 +32,13 @@ viz <-
                  showSelected="year",
                  data=years),
 
-       ts=ggplot()+
+       ts=a_plot()+
        make_tallrect(WorldBank, "year")+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
                  clickSelects="country",
                  data=WorldBank, size=4, alpha=3/5),
 
-       bar=ggplot()+
+       bar=a_plot()+
        theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region),
                 showSelected="year", clickSelects="country",
@@ -86,7 +86,7 @@ test_that("aes() means show no tooltip", {
 
 set.seed(1)
 viz <- list(
-  linetip=ggplot()+
+  linetip=a_plot()+
     geom_line(aes(x, y, tooltip=paste("group", g), group=g),
               size=5,
               data=data.frame(x=c(1,2,1,2), y=rnorm(4), g=c(1,1,2,2))))
@@ -100,7 +100,7 @@ test_that("line tooltip renders as title", {
 
 WorldBank1975 <- WorldBank[WorldBank$year == 1975, ]
 NotNA1975 <- subset(not.na, year==1975)
-ex_plot <- ggplot() +
+ex_plot <- a_plot() +
   geom_point(aes(fertility.rate, life.expectancy, color = region,
                  tooltip = country, href = "https://github.com"),
              data = WorldBank1975)

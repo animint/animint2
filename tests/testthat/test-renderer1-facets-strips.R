@@ -1,16 +1,16 @@
 acontext("facet-strips")
 
-p <- ggplot(mtcars, aes(mpg, wt)) + 
+p <- a_plot(mtcars, aes(mpg, wt)) + 
   geom_point(colour='grey50', size = 4) + 
   geom_point(aes(colour = cyl)) 
 
 gridViz <-
   list(gridPlot=p +
-         facet_grid(cyl~am, labeller = label_both))
+         a_facet_grid(cyl~am, labeller = label_both))
 
 wrapViz <-
   list(wrapPlot=p +
-         facet_wrap(~cyl+am))
+         a_facet_wrap(~cyl+am))
 
 test_that("facet_grid() strip labels are placed correctly", {
   info <- animint2HTML(gridViz)

@@ -63,14 +63,14 @@ sig.labels <- do.call(rbind, sig.labels.list)
 
 ## Plot segments rather than penalty.
 mmir.selection <- 
-  list(error=ggplot()+
+  list(error=a_plot()+
        ggtitle("Select profile and number of segments")+
        make_tallrect(model.selection, "segments",
                      colour=signal.colors[["estimate"]])+
        theme_bw()+
        theme_animint(width=600)+
        theme(panel.margin=grid::unit(0, "lines"))+
-       facet_grid(. ~ geom)+
+       a_facet_grid(. ~ geom)+
        geom_text(aes(0, error, label=signal),
                  clickSelects="signal",
                  data=sig.labels, hjust=1)+
@@ -88,7 +88,7 @@ mmir.selection <-
                      clickSelects="signal",
                  alpha=0.6, size=8),
 
-       signal=ggplot()+
+       signal=a_plot()+
          theme_bw()+
        theme_animint(width=800)+       
        scale_x_continuous("position on chromosome (mega base pairs)",

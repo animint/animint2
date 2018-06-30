@@ -49,7 +49,7 @@ objective2 <- subset(objective, iteration == iteration2)
 grad.desc.viz <- function(hjust) {
   objective2$hjust <- hjust
   
-  contour.plot <- ggplot() + 
+  contour.plot <- a_plot() + 
     geom_contour(data = contour, aes(x = x, y = y, z = z, colour = ..level..), size = .5) + 
     scale_colour_continuous(name = "z value") + 
     geom_path(data = objective, aes(x = x, y = y), 
@@ -62,7 +62,7 @@ grad.desc.viz <- function(hjust) {
     ggtitle("contour of function value") + 
     theme_animint(width = 600, height = 600)
   
-  objective.plot <- ggplot() +
+  objective.plot <- a_plot() +
     geom_line(data = objective2, aes(x = iteration, y = z), colour = "red") + 
     geom_point(data = objective2, aes(x = iteration, y = z), colour = "red") + 
     geom_tallrect(data = objective2, aes(xmin = iteration - 1 / 2, xmax = iteration + 1 / 2), 
@@ -140,7 +140,7 @@ hjust.df <- data.frame(
 hjust.df$label <- paste0("hjust=",hjust.df$hjust)
 rownames(hjust.df) <- hjust.df$label
 viz <- list(
-  text=ggplot()+
+  text=a_plot()+
     geom_text(aes(hjust, hjust, label=label, hjust=hjust),
               data=hjust.df)
   )
@@ -160,7 +160,7 @@ hjust.df <- data.frame(hjust=c(0,0.5,1,1.5),
 hjust.df$label <- paste0("hjust=",hjust.df$hjust)
 rownames(hjust.df) <- hjust.df$label
 viz <- list(
-  text=ggplot()+
+  text=a_plot()+
     geom_text(aes(hjust, hjust, label=label, hjust=hjust),
               data=hjust.df)
   )
@@ -175,7 +175,7 @@ vjust.df <- data.frame(vjust=c(0,0.5,1))
 vjust.df$label <- paste0("vjust=",vjust.df$vjust)
 rownames(vjust.df) <- vjust.df$label
 viz <- list(
-  text=ggplot()+
+  text=a_plot()+
     geom_text(aes(vjust, vjust, label=label, vjust=vjust),
               data=vjust.df)
   )
@@ -187,7 +187,7 @@ test_that("aes(vjust!=0) raises warning", {
 })
 
 viz <- list(
-  text=ggplot()+
+  text=a_plot()+
     geom_text(aes(vjust, vjust, label=0, vjust=0),
               data=vjust.df)
   )
@@ -199,7 +199,7 @@ test_that("aes(vjust=0) does not raise warning", {
 })
 
 viz <- list(
-  text=ggplot()+
+  text=a_plot()+
     geom_text(aes(vjust, vjust, label="no vjust"),
               data=vjust.df)
   )
@@ -212,19 +212,19 @@ test_that("unspecified vjust does not raise warning", {
 })
 
 viz.1 <- list(
-  text=ggplot()+
+  text=a_plot()+
     geom_text(aes(vjust, vjust, label=1),
               vjust=1,
               data=vjust.df)
   )
 viz.0.5 <- list(
-  text=ggplot()+
+  text=a_plot()+
     geom_text(aes(vjust, vjust, label=0),
               vjust=0.5,
               data=vjust.df)
   )
 viz.0.7 <- list(
-  text=ggplot()+
+  text=a_plot()+
     geom_text(aes(vjust, vjust, label=0.7),
               vjust=0.7,
               data=vjust.df)
@@ -243,7 +243,7 @@ test_that("geom_text(vjust!=0) raises warning", {
 })
 
 viz <- list(
-  text=ggplot()+
+  text=a_plot()+
     geom_text(aes(vjust, vjust, label=0),
               vjust=0,
               data=vjust.df)

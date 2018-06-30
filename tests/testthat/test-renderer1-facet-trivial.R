@@ -3,18 +3,18 @@ acontext("facet-trivial")
 miris <- iris
 miris$kingdom <- "plantae"
 
-gg <- ggplot()+
+gg <- a_plot()+
   geom_point(aes(Petal.Length, Petal.Width),
              data=miris)
 
 viz <-
-  list(kk=gg+facet_grid(kingdom ~ kingdom),
-       kx=gg+facet_grid(kingdom ~ .),
-       xk=gg+facet_grid(. ~ kingdom),
-       kS=gg+facet_grid(kingdom ~ Species),
-       Sk=gg+facet_grid(Species ~ kingdom))
+  list(kk=gg+a_facet_grid(kingdom ~ kingdom),
+       kx=gg+a_facet_grid(kingdom ~ .),
+       xk=gg+a_facet_grid(. ~ kingdom),
+       kS=gg+a_facet_grid(kingdom ~ Species),
+       Sk=gg+a_facet_grid(Species ~ kingdom))
 
-test_that("facet_grid(1 row and/or 1 column) is fine", {
+test_that("a_facet_grid(1 row and/or 1 column) is fine", {
   info <- animint2HTML(viz)
   expect_axes <- function(plot.name, expected.x, expected.y){
     svg.xpath <- sprintf("//svg[@id='plot_%s']", plot.name)

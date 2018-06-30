@@ -2,11 +2,11 @@ acontext("url fragment identifier")
 
 iris$observation <- 1:nrow(iris)
 viz <- list(
-  petal=ggplot()+
+  petal=a_plot()+
     geom_point(aes(Petal.Width, Petal.Length, fill=Species,
                    id=paste0("petal", observation)),
                clickSelects="observation", data=iris),
-  sepal=ggplot()+
+  sepal=a_plot()+
     geom_point(aes(Sepal.Width, Sepal.Length, fill=Species,
                    id=paste0("sepal", observation)),
                clickSelects="observation", data=iris),

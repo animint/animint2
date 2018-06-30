@@ -1,16 +1,16 @@
-acontext('facet_grid(space="free")')
+acontext('a_facet_grid(space="free")')
 
-no.panels <- ggplot(mtcars, aes(mpg, wt)) + 
+no.panels <- a_plot(mtcars, aes(mpg, wt)) + 
   geom_point(colour='grey50', size = 4) + 
   geom_point(aes(colour = cyl)) 
 
 viz <-
   list(freeBoth = no.panels +
-         facet_grid(.~am, space = "free", scales = "free", labeller=label_both),
+         a_facet_grid(.~am, space = "free", scales = "free", labeller=label_both),
        freeScale = no.panels +
-         facet_grid(.~am, scales="free", labeller=label_both),
+         a_facet_grid(.~am, scales="free", labeller=label_both),
        fixed = no.panels +
-         facet_grid(.~am, labeller=label_both))
+         a_facet_grid(.~am, labeller=label_both))
 
 info <- animint2HTML(viz)
 
@@ -98,18 +98,18 @@ test_that("width_proportion is constant or variable", {
   expect_true(!both.equal(info$plots$freeBoth$layout$width_proportion))
 })
 
-no.panels <- ggplot(mtcars, aes(wt, mpg)) + 
+no.panels <- a_plot(mtcars, aes(wt, mpg)) + 
   geom_point(colour='grey50', size = 4) + 
   geom_point(aes(colour = cyl)) 
 
 viz <-
   list(freeBoth = no.panels +
-         facet_grid(am ~ ., space = "free", scales = "free",
+         a_facet_grid(am ~ ., space = "free", scales = "free",
                     labeller=label_both),
        freeScale = no.panels +
-         facet_grid(am ~ ., scales="free", labeller=label_both),
+         a_facet_grid(am ~ ., scales="free", labeller=label_both),
        fixed = no.panels +
-         facet_grid(am ~ ., labeller=label_both))
+         a_facet_grid(am ~ ., labeller=label_both))
 
 info <- animint2HTML(viz)
 

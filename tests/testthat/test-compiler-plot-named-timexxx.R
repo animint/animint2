@@ -5,7 +5,7 @@ not.na <- subset(WorldBank, !(is.na(life.expectancy) | is.na(fertility.rate)))
 subset(not.na, is.na(not.na$population))
 not.na[not.na$country=="Kuwait", "population"] <- 1700000
 viz <-
-  list(scatter=ggplot()+
+  list(scatter=a_plot()+
          geom_point(aes(life.expectancy, fertility.rate,
                         colour=region, size=population),
                     clickSelects="country",
@@ -17,7 +17,7 @@ viz <-
        scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
 
-       timeSeries=ggplot()+
+       timeSeries=a_plot()+
        make_tallrect(WorldBank, "year")+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
                  data=WorldBank, size=4, alpha=3/5,
@@ -37,7 +37,7 @@ test_that("plot named timeSeries is OK with time option list", {
 })
 
 bad <-
-  list(scatter=ggplot()+
+  list(scatter=a_plot()+
          geom_point(aes(life.expectancy, fertility.rate,
                         colour=region, size=population),
                     clickSelects="country",
@@ -49,7 +49,7 @@ bad <-
        scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
 
-       time=ggplot()+
+       time=a_plot()+
        make_tallrect(WorldBank, "year")+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
                  data=WorldBank, size=4, alpha=3/5,

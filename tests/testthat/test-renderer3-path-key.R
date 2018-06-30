@@ -15,19 +15,19 @@ for(group.i in 1:2){
 path <- do.call(rbind, path.list)
 
 viz <- list(
-  point=ggplot()+
+  point=a_plot()+
     geom_point(aes(showSelected.i, showSelected.i,
                    id=paste0("point", showSelected.i)),
                clickSelects="showSelected.i",
                size=10,
                data=point),
-  transition=ggplot()+
+  transition=a_plot()+
     ggtitle("should have animated transition")+
     geom_path(aes(x, y, group=group.i, color=group.i,
                   key=group.i),
               showSelected="showSelected.i",
               data=path),
-  noTransition=ggplot()+
+  noTransition=a_plot()+
     ggtitle("should NOT have animated transition")+
     geom_path(aes(x, y, group=group.i, color=group.i,
                   key=paste(group.i, showSelected.i)),

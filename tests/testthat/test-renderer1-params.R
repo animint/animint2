@@ -3,7 +3,7 @@ acontext("params")
 df <- data.frame(z=rnorm(100))
 
 viz <-
-  list(step=ggplot()+
+  list(step=a_plot()+
          geom_step(aes(seq_along(z), z),
                    data=df,
                    size=3,

@@ -2,7 +2,7 @@ acontext("coord")
 
 test_that("coord_flip works", {
   data(worldPop, package="animint2")
-  bars <- ggplot()+
+  bars <- a_plot()+
     geom_bar(aes(x=subcontinent, y=population), showSelected="year",
              data=worldPop, stat="identity", position="identity")
   ## First test without flip.
@@ -17,7 +17,7 @@ test_that("coord_flip works", {
   expect_identical(ax$xtitle, "population")
 })
 
-p <- ggplot(mtcars, aes(mpg, wt)) + 
+p <- a_plot(mtcars, aes(mpg, wt)) + 
   geom_point(colour='grey50', size = 4) + 
   geom_point(aes(colour = cyl))
 

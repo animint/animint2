@@ -25,7 +25,7 @@ min.years <- do.call(rbind, lapply(by.country, subset, year == min(year)))
 min.years$year <- 1958
 
 viz.chunk.none <- 
-  list(ts=ggplot()+
+  list(ts=a_plot()+
          theme_bw()+
          theme(panel.margin=grid::unit(0, "lines"))+
          xlab("")+
@@ -72,7 +72,7 @@ viz.chunk.none <-
                    data=SCATTER(not.na),
                    validate_params = FALSE)+
          scale_size_animint(breaks=10^(5:9))+
-         facet_grid(side ~ top, scales="free")+
+         a_facet_grid(side ~ top, scales="free")+
          geom_text(aes(5, 85, label=paste0("year = ", year)),
                        showSelected="year",
                    data=SCATTER(years)),
@@ -101,10 +101,10 @@ for(col.name in c("x", "y")){
 too.tall <- do.call(rbind, too.tall.list)
 
 viz.too.many <-
-  list(points=ggplot()+
+  list(points=a_plot()+
          geom_point(aes(x, y),
                     data=too.many, clickSelects="row"),
-       bars=ggplot()+
+       bars=a_plot()+
          geom_bar(aes(col.name, value),
                   chunk_vars=c("row"), showSelected="row",
                   stat="identity",

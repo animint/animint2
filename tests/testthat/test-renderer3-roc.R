@@ -15,7 +15,7 @@ algo.colors <-
 
 path.before.params <- list(
   title="Test ROC curves, predicted peaks and errors",
-  roc=ggplot()+
+  roc=a_plot()+
   geom_path(aes(FPR, TPR, group=Model, key=Model, color=Model),
             data=TestROC$roc)+
   scale_color_manual(values=algo.colors, breaks=names(algo.colors))+
@@ -66,7 +66,7 @@ test_that("path before params, 5 paths rendered", {
 
 path.after.params <- list(
   title="Test ROC curves, predicted peaks and errors",
-  roc=ggplot()+
+  roc=a_plot()+
   geom_point(aes(FPR, TPR, color=Model, key=paste(model, parameter),
                  size=parameter,
                  fill=parameter),

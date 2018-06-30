@@ -1,6 +1,6 @@
 acontext("Panel background")
 
-p1 <- ggplot() +
+p1 <- a_plot() +
   geom_point(aes(Sepal.Length, Sepal.Width,
                  colour = Species, size = Species), data = iris) +
   theme_grey() + 
@@ -10,8 +10,8 @@ p1 <- ggplot() +
                                     size = 2,
                                     linetype = "dashed"),
         panel.margin = grid::unit(0.1, "cm")) +
-  facet_wrap(~Species, nrow = 2)
-p2 <- ggplot() +
+  a_facet_wrap(~Species, nrow = 2)
+p2 <- a_plot() +
   geom_point(aes(Petal.Length, Petal.Width,
                  colour = Species, size = Species), data = iris) +
   ggtitle("Petal Data") +
@@ -181,11 +181,11 @@ test_that("grid lines are drawn correctly", {
 data(tips, package = "reshape2")
 tips$sex_smoker <- with(tips, interaction(sex, smoker))
 ss.viz <- list(
-  p1 = ggplot() + theme(legend.position = "none") +
+  p1 = a_plot() + theme(legend.position = "none") +
     geom_point(data = tips, position = "jitter", 
                aes(x = sex, y = smoker, colour = sex_smoker),
                clickSelects = "sex_smoker"), 
-  p2 = ggplot() +
+  p2 = a_plot() +
     geom_point(data = tips,
                aes(x = total_bill, y = tip, colour = sex_smoker),
                showSelected = "sex_smoker")
@@ -224,7 +224,7 @@ test_that("renderer can handle only one grid line", {
 test_that("no minor grid lines is handed correctly", {
   data(geyser, package = "MASS")
   info <- animint2HTML(list(
-    g = ggplot() +  
+    g = a_plot() +  
       geom_point(data = geyser, 
                  aes(x = duration, y = waiting)) + 
       geom_contour(data = geyser, 

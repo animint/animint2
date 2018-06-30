@@ -5,16 +5,16 @@ data(txhousing)
 ## ggplot2 draws separate lines when there are missing values.
 
 ## san.marcos <- subset(txhousing, city=="San Marcos")
-## ggplot()+
+## a_plot()+
 ##   geom_line(aes(x = date, y = median),
 ##             data=san.marcos)
 
 viz <- list(
-  ggdata=ggplot(txhousing)+
+  ggdata=a_plot(txhousing)+
     geom_line(aes(x = date, y = median, group = city), 
               clickSelects="city",
               alpha = 0.6),
-  selected=ggplot()+
+  selected=a_plot()+
     geom_line(aes(x = date, y = median, group = city),
               showSelected="city",
               data=txhousing),

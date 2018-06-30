@@ -5,7 +5,7 @@ data(WorldBank, package = "animint2")
 ## This example is good because it uses constancy
 ## http://bost.ocks.org/mike/constancy/
 no.time <-
-  list(scatter=ggplot()+
+  list(scatter=a_plot()+
        geom_point(aes(life.expectancy, fertility.rate,
                       colour=region, size=population,
                       tooltip=paste(country, "population", population),
@@ -20,13 +20,13 @@ no.time <-
        scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
        
-       ts=ggplot()+
+       ts=a_plot()+
        make_tallrect(WorldBank, "year")+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
                  clickSelects="country",
                  data=WorldBank, size=4, alpha=3/5),
 
-       bar=ggplot()+
+       bar=a_plot()+
        theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region,
                     key=country),

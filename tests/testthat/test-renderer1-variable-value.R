@@ -46,7 +46,7 @@ showSelected.vec <- c(problem.name="peaks", "bases.per.problem")
 clickSelects.vec <- c(problem.name="peaks")
 
 viz <-
-  list(errorLines=ggplot()+
+  list(errorLines=a_plot()+
          scale_color_manual(values=c(one="red", two="black"))+
          scale_size_manual(values=c(one=1, two=2))+
          geom_line(aes(bases.per.problem, errors,
@@ -56,7 +56,7 @@ viz <-
                        color=chunks, size=chunks),
                    data=two.error),
 
-    problems=ggplot()+
+    problems=a_plot()+
          ggtitle("select problem")+
          geom_segment(aes(problemStart, problem.i,
                           xend=problemEnd, yend=problem.i),
@@ -85,18 +85,18 @@ viz <-
                       color="deepskyblue")+
          theme_bw()+
          theme(panel.margin=grid::unit(0, "cm"))+
-         facet_grid(sample.id ~ .),
+         a_facet_grid(sample.id ~ .),
 
        title="viz with .variable .value",
        
-       sizes=ggplot()+
+       sizes=a_plot()+
          ggtitle("select problem size")+
          geom_point(aes(bases.per.problem, problems),
                     clickSelects="bases.per.problem",
                     size=10,
                     data=sizes),
 
-       peaks=ggplot()+
+       peaks=a_plot()+
          ggtitle("select number of peaks")+
          geom_point(aes(peaks, peaks,
                         color=error.type,
@@ -182,7 +182,7 @@ test_that("clicking increases the number of peaks", {
 })
 
 viz.for <-
-  list(problems=ggplot()+
+  list(problems=a_plot()+
          ggtitle("select problem")+
          geom_segment(aes(problemStart, problem.i,
                           xend=problemEnd, yend=problem.i),
@@ -196,18 +196,18 @@ viz.for <-
                    data=data.frame(sizes, sample.id="problems"))+
          theme_bw()+
          theme(panel.margin=grid::unit(0, "cm"))+
-         facet_grid(sample.id ~ .),
+         a_facet_grid(sample.id ~ .),
 
        title="viz with for loop",
        
-       sizes=ggplot()+
+       sizes=a_plot()+
          ggtitle("select problem size")+
          geom_point(aes(bases.per.problem, problems),
                     clickSelects="bases.per.problem",
                     size=10,
                     data=sizes),
 
-       peaks=ggplot()+
+       peaks=a_plot()+
          ggtitle("select number of peaks")+
          geom_text(aes(1, 3, label=problem.name),
                    showSelected="problem.name",

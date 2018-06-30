@@ -9,7 +9,7 @@ temp.time <- data.frame(
   temp.C=rnorm(31))
 
 viz <- list(
-  gg=ggplot()+
+  gg=a_plot()+
     theme_bw()+
     theme_animint(height=200, width=2000)+
     geom_widerect(aes(ymin=min.C, ymax=max.C),
@@ -46,7 +46,7 @@ TS2 <- function(df)BOTH(df, "Fertility rate", "Years")
 years <- unique(not.na[, "year", drop=FALSE])
 years$status <- ifelse(years$year %% 2, "odd", "even")
 wb.facets <-
-  list(ts=ggplot()+
+  list(ts=a_plot()+
        xlab("")+
        geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2,
                          linetype=status),
@@ -88,12 +88,12 @@ wb.facets <-
                  clickSelects="country",
                  data=SCATTER(not.na))+
        scale_size_animint(breaks=10^(5:9))+
-       facet_grid(side ~ top, scales="free")+
+       a_facet_grid(side ~ top, scales="free")+
        geom_text(aes(5, 85, label=paste0("year = ", year)),
                  showSelected="year",
                  data=SCATTER(years)),
 
-       bar=ggplot()+
+       bar=a_plot()+
        theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region,
                     key=country, id=gsub(" ", "_", country)),

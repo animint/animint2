@@ -1,6 +1,6 @@
 acontext("global variables")
 
-viz <- list(scatter=ggplot()+
+viz <- list(scatter=a_plot()+
   geom_point(aes(y=Petal.Length, x=Sepal.Length,
                 color=Species),
              showSelected="Species",
