@@ -1,11 +1,11 @@
-#' @section Stats:
+#' @section a_Stats:
 #'
 #' All \code{stat_*} functions (like \code{stat_bin}) return a layer that
-#' contains a \code{Stat*} object (like \code{StatBin}). The \code{Stat*}
+#' contains a \code{a_Stat*} object (like \code{a_StatBin}). The \code{a_Stat*}
 #' object is responsible for rendering the data in the plot.
 #'
-#' Each of the \code{Stat*} objects is a \code{\link{ggproto}} object, descended
-#' from the top-level \code{Stat}, and each implements various methods and
+#' Each of the \code{a_Stat*} objects is a \code{\link{a_ggproto}} object, descended
+#' from the top-level \code{a_Stat}, and each implements various methods and
 #' fields. To create a new type of Stat object, you typically will want to
 #' implement one or more of the following:
 #'
@@ -46,7 +46,7 @@
 #' @format NULL
 #' @usage NULL
 #' @export
-Stat <- ggproto("Stat",
+a_Stat <- a_ggproto("a_Stat",
   # Should the values produced by the statistic also be transformed
   # in the second pass when recently added statistics are trained to
   # the scales
@@ -123,12 +123,12 @@ Stat <- ggproto("Stat",
   extra_params = "na.rm",
   parameters = function(self, extra = FALSE) {
     # Look first in compute_panel. If it contains ... then look in compute_group
-    panel_args <- names(ggproto_formals(self$compute_panel))
-    group_args <- names(ggproto_formals(self$compute_group))
+    panel_args <- names(a_ggproto_formals(self$compute_panel))
+    group_args <- names(a_ggproto_formals(self$compute_group))
     args <- if ("..." %in% panel_args) group_args else panel_args
 
     # Remove arguments of defaults
-    args <- setdiff(args, names(ggproto_formals(Stat$compute_group)))
+    args <- setdiff(args, names(a_ggproto_formals(a_Stat$compute_group)))
 
     if (extra) {
       args <- union(args, self$extra_params)

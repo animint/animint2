@@ -23,7 +23,7 @@ stat_quantile <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatQuantile,
+    stat = a_StatQuantile,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -44,7 +44,7 @@ stat_quantile <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatQuantile <- ggproto("StatQuantile", Stat,
+a_StatQuantile <- a_ggproto("a_StatQuantile", a_Stat,
   required_aes = c("x", "y"),
 
   compute_group = function(data, scales, quantiles = c(0.25, 0.5, 0.75),

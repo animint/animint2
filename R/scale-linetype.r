@@ -9,7 +9,7 @@
 #' @rdname scale_linetype
 #' @export
 #' @examples
-#' base <- ggplot(economics_long, aes(date, value01))
+#' base <- a_plot(economics_long, aes(date, value01))
 #' base + geom_line(aes(group = variable))
 #' base + geom_line(aes(linetype = variable))
 #'

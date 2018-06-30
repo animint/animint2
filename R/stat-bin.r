@@ -53,7 +53,7 @@ stat_bin <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatBin,
+    stat = a_StatBin,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -71,13 +71,16 @@ stat_bin <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname ggplot2Animint-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export
-StatBin <- ggproto("StatBin", Stat,
+a_StatBin <- a_ggproto("a_StatBin", a_Stat,
   setup_params = function(data, params) {
-    if (!is.null(data$y) || !is.null(params$y)) {
+    if (!is.null(data$y)){
+      stop("stat_bin() must not be used with a y aesthetic.", call. = FALSE)
+    }
+    if (!is.null(params$y)) {
       stop("stat_bin() must not be used with a y aesthetic.", call. = FALSE)
     }
     if (is.integer(data$x)) {

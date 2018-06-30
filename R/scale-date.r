@@ -21,7 +21,7 @@
 #'   date = last_month,
 #'   price = runif(30)
 #' )
-#' base <- ggplot(df, aes(date, price)) +
+#' base <- a_plot(df, aes(date, price)) +
 #'   geom_line()
 #'
 #' # The date scale will attempt to pick sensible defaults for
@@ -127,16 +127,11 @@ scale_datetime <- function(aesthetics, trans,
   if (!is.waive(date_labels)) {
     labels <- date_format(date_labels)
   }
-
+  scale_class <- switch(trans, date = a_ScaleContinuousDate, time = a_ScaleContinuousDatetime)
   sc <- continuous_scale(aesthetics, name, identity,
     breaks = breaks, minor_breaks = minor_breaks, labels = labels,
-    guide = "none", trans = trans, ...)
+    guide = "none", trans = trans, ... , super = scale_class)
 
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
-  # object should in the first place be created with the correct parent.
-  scale_class <- switch(trans, date = ScaleContinuousDate, time = ScaleContinuousDatetime)
-  sc$super <- scale_class
-  class(sc) <- class(scale_class)
   sc
 }
 
@@ -145,7 +140,7 @@ scale_datetime <- function(aesthetics, trans,
 #' @format NULL
 #' @usage NULL
 #' @export
-ScaleContinuousDatetime <- ggproto("ScaleContinuousDatetime", ScaleContinuous,
+a_ScaleContinuousDatetime <- a_ggproto("a_ScaleContinuousDatetime", a_ScaleContinuous,
   map = function(self, x, limits = self$get_limits()) {
     self$oob(x, limits)
   }
@@ -155,7 +150,7 @@ ScaleContinuousDatetime <- ggproto("ScaleContinuousDatetime", ScaleContinuous,
 #' @format NULL
 #' @usage NULL
 #' @export
-ScaleContinuousDate <- ggproto("ScaleContinuousDate", ScaleContinuous,
+a_ScaleContinuousDate <- a_ggproto("a_ScaleContinuousDate", a_ScaleContinuous,
   map = function(self, x, limits = self$get_limits()) {
     self$oob(x, limits)
   }

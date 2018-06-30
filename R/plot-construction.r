@@ -1,9 +1,9 @@
-#' Add a new component to a ggplot or theme object.
+#' Add a new component to a a_plot or theme object.
 #'
-#' This operator allows you to add objects to a ggplot or theme object.
+#' This operator allows you to add objects to a a_plot or theme object.
 #'
-#' If the first object is an object of class \code{ggplot}, you can add
-#' the following types of objects, and it will return a modified ggplot
+#' If the first object is an object of class \code{a_plot}, you can add
+#' the following types of objects, and it will return a modified a_plot
 #' object.
 #'
 #' \itemize{
@@ -14,7 +14,7 @@
 #'   \item \code{theme}: update plot theme
 #'   \item \code{scale}: replace current scale
 #'   \item \code{coord}: override current coordinate system
-#'   \item \code{facet}: override current coordinate faceting
+#'   \item \code{a_facet}: override current coordinate faceting
 #' }
 #'
 #' If the first object is an object of class \code{theme}, you can add
@@ -26,7 +26,7 @@
 #' The \code{+} operator updates the elements of e1 that differ from
 #' elements specified (not NULL) in e2.
 #' Thus this operator can be used to incrementally add or modify attributes
-#' of a ggplot theme.
+#' of a a_plot theme.
 #'
 #' In contrast, the \code{\%+replace\%} operator replaces the
 #' entire element; any element of a theme not specified in e2 will not be
@@ -34,8 +34,8 @@
 #' Thus this operator can be used to overwrite an entire theme.
 #'
 #' @examples
-#' ### Adding objects to a ggplot object
-#' p <- ggplot(mtcars, aes(wt, mpg, colour = disp)) +
+#' ### Adding objects to a a_plot object
+#' p <- a_plot(mtcars, aes(wt, mpg, colour = disp)) +
 #'   geom_point()
 #'
 #' p
@@ -55,28 +55,28 @@
 #' add_el$text
 #' rep_el$text
 #'
-#' @param e1 An object of class \code{ggplot} or \code{theme}
+#' @param e1 An object of class \code{a_plot} or \code{theme}
 #' @param e2 A component to add to \code{e1}
 #' @export
 #' @seealso \code{\link{theme}}
-#' @method + gg
-#' @rdname gg-add
-"+.gg" <- function(e1, e2) {
+#' @method + aaa
+#' @rdname aaa-add
+"+.aaa" <- function(e1, e2) {
   # Get the name of what was passed in as e2, and pass along so that it
   # can be displayed in error messages
   e2name <- deparse(substitute(e2))
 
   if      (is.theme(e1))  add_theme(e1, e2, e2name)
-  else if (is.ggplot(e1)) add_ggplot(e1, e2, e2name)
+  else if (is.a_plot(e1)) add_a_plot(e1, e2, e2name)
 }
 
 
-#' @rdname gg-add
+#' @rdname aaa-add
 #' @export
-"%+%" <- `+.gg`
+"%+%" <- `+.aaa`
 
 
-add_ggplot <- function(p, object, objectname) {
+add_a_plot <- function(p, object, objectname) {
   if (is.null(object)) return(p)
 
   p <- a_plot_clone(p)
@@ -84,7 +84,7 @@ add_ggplot <- function(p, object, objectname) {
     p$data <- object
   } else if (is.theme(object)) {
     p$theme <- update_theme(p$theme, object)
-  } else if (inherits(object, "Scale")) {
+  } else if (inherits(object, "a_Scale")) {
     p$scales$add(object)
   } else if (inherits(object, "labels")) {
     p <- update_labels(p, object)
@@ -99,8 +99,8 @@ add_ggplot <- function(p, object, objectname) {
   } else if (is.Coord(object)) {
       p$coordinates <- object
       p
-  } else if (is.facet(object)) {
-      p$facet <- object
+  } else if (is.a_facet(object)) {
+      p$a_facet <- object
       p
   } else if (is.list(object)) {
     for (o in object) {

@@ -1,7 +1,7 @@
 #' Superimpose a function.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "function")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "function")}
 #'
 #' @param fun function to use
 #' @param n number of points to interpolate along
@@ -21,7 +21,7 @@
 #'   x = rnorm(100)
 #' )
 #' x <- df$x
-#' base <- ggplot(df, aes(x)) + geom_density()
+#' base <- a_plot(df, aes(x)) + geom_density()
 #' base + stat_function(fun = dnorm, colour = "red")
 #' base + stat_function(fun = dnorm, colour = "red", args = list(mean = 3))
 #'
@@ -29,18 +29,18 @@
 #' # Examples adapted from Kohske Takahashi
 #'
 #' # Specify range of x-axis
-#' ggplot(data.frame(x = c(0, 2)), aes(x)) +
+#' a_plot(data.frame(x = c(0, 2)), aes(x)) +
 #'   stat_function(fun = exp, geom = "line")
 #'
 #' # Plot a normal curve
-#' ggplot(data.frame(x = c(-5, 5)), aes(x)) + stat_function(fun = dnorm)
+#' a_plot(data.frame(x = c(-5, 5)), aes(x)) + stat_function(fun = dnorm)
 #'
 #' # To specify a different mean or sd, use the args parameter to supply new values
-#' ggplot(data.frame(x = c(-5, 5)), aes(x)) +
+#' a_plot(data.frame(x = c(-5, 5)), aes(x)) +
 #'   stat_function(fun = dnorm, args = list(mean = 2, sd = .5))
 #'
 #' # Two functions on the same plot
-#' f <- ggplot(data.frame(x = c(0, 10)), aes(x))
+#' f <- a_plot(data.frame(x = c(0, 10)), aes(x))
 #' f + stat_function(fun = sin, colour = "red") +
 #'   stat_function(fun = cos, colour = "blue")
 #'
@@ -60,7 +60,7 @@ stat_function <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatFunction,
+    stat = a_StatFunction,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -80,7 +80,7 @@ stat_function <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatFunction <- ggproto("StatFunction", Stat,
+a_StatFunction <- a_ggproto("a_StatFunction", a_Stat,
   default_aes = aes(y = ..y..),
 
   compute_group = function(data, scales, fun, xlim = NULL, n = 101, args = list()) {

@@ -33,7 +33,7 @@ stat_density <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatDensity,
+    stat = a_StatDensity,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -53,7 +53,7 @@ stat_density <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatDensity <- ggproto("StatDensity", Stat,
+a_StatDensity <- a_ggproto("a_StatDensity", a_Stat,
   required_aes = "x",
   default_aes = aes(y = ..density.., fill = NA),
 

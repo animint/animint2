@@ -17,12 +17,12 @@
 #' @examples
 #' \donttest{
 #' df <- data.frame(x = rnorm(1000))
-#' ggplot(df, aes(x)) + stat_ecdf(geom = "step")
+#' a_plot(df, aes(x)) + stat_ecdf(geom = "step")
 #'
 #' df <- data.frame(x = c(rnorm(100, 0, 3), rnorm(100, 0, 10)),
 #'                  g = gl(2, 100))
 #'
-#' ggplot(df, aes(x, colour = g)) + stat_ecdf()
+#' a_plot(df, aes(x, colour = g)) + stat_ecdf()
 #' }
 stat_ecdf <- function(mapping = NULL, data = NULL,
                       geom = "step", position = "identity",
@@ -35,7 +35,7 @@ stat_ecdf <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatEcdf,
+    stat = a_StatEcdf,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -53,7 +53,7 @@ stat_ecdf <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatEcdf <- ggproto("StatEcdf", Stat,
+a_StatEcdf <- a_ggproto("a_StatEcdf", a_Stat,
   compute_group = function(data, scales, n = NULL, pad = TRUE) {
     # If n is NULL, use raw values; otherwise interpolate
     if (is.null(n)) {

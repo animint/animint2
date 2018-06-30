@@ -11,25 +11,25 @@
 #'   data so it's not possible to see the distinction between the categories.
 #' @export
 #' @examples
-#' ggplot(mtcars, aes(am, vs)) + geom_point()
+#' a_plot(mtcars, aes(am, vs)) + geom_point()
 #'
 #' # Default amount of jittering will generally be too much for
 #' # small datasets:
-#' ggplot(mtcars, aes(am, vs)) + geom_jitter()
+#' a_plot(mtcars, aes(am, vs)) + geom_jitter()
 #'
 #' # Two ways to override
-#' ggplot(mtcars, aes(am, vs)) +
+#' a_plot(mtcars, aes(am, vs)) +
 #'   geom_jitter(width = 0.1, height = 0.1)
-#' ggplot(mtcars, aes(am, vs)) +
+#' a_plot(mtcars, aes(am, vs)) +
 #'   geom_jitter(position = position_jitter(width = 0.1, height = 0.1))
 #'
 #' # The default works better for large datasets, where it will
 #' # take up as much space as a boxplot or a bar
-#' ggplot(mpg, aes(class, hwy)) +
+#' a_plot(mpg, aes(class, hwy)) +
 #'   geom_jitter() +
 #'   geom_boxplot()
 position_jitter <- function(width = NULL, height = NULL) {
-  ggproto(NULL, PositionJitter,
+  a_ggproto(NULL, a_PositionJitter,
     width = width,
     height = height
   )
@@ -39,7 +39,7 @@ position_jitter <- function(width = NULL, height = NULL) {
 #' @format NULL
 #' @usage NULL
 #' @export
-PositionJitter <- ggproto("PositionJitter", Position,
+a_PositionJitter <- a_ggproto("a_PositionJitter", a_Position,
   required_aes = c("x", "y"),
 
   setup_params = function(self, data) {

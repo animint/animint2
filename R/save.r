@@ -25,7 +25,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' ggplot(mtcars, aes(mpg, wt)) + geom_point()
+#' a_plot(mtcars, aes(mpg, wt)) + geom_point()
 #'
 #' ggsave("mtcars.pdf")
 #' ggsave("mtcars.png")
@@ -130,6 +130,6 @@ plot_dev <- function(device, filename, dpi = 300) {
 }
 
 #' @export
-grid.draw.ggplot <- function(x, recording = TRUE) {
+grid.draw.a_plot <- function(x, recording = TRUE) {
   print(x)
 }

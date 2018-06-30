@@ -41,7 +41,7 @@ stat_smooth <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatSmooth,
+    stat = a_StatSmooth,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -65,7 +65,7 @@ stat_smooth <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatSmooth <- ggproto("StatSmooth", Stat,
+a_StatSmooth <- a_ggproto("a_StatSmooth", a_Stat,
 
   setup_params = function(data, params) {
     # Figure out what type of smoothing to do: loess for small datasets,

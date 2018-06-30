@@ -10,7 +10,7 @@
 #' @examples
 #' \donttest{
 #' if (require(ggplot2movies)) {
-#' m <- ggplot(subset(movies, votes > 1000), aes(rating, votes)) +
+#' m <- a_plot(subset(movies, votes > 1000), aes(rating, votes)) +
 #'   geom_point(na.rm = TRUE)
 #' m
 #'
@@ -52,21 +52,21 @@
 #'   x = rnorm(10) * 100000,
 #'   y = seq(0, 1, length.out = 10)
 #' )
-#' p <- ggplot(df, aes(x, y)) + geom_point()
+#' p <- a_plot(df, aes(x, y)) + geom_point()
 #' p + scale_y_continuous(labels = scales::percent)
 #' p + scale_y_continuous(labels = scales::dollar)
 #' p + scale_x_continuous(labels = scales::comma)
 #'
 #' # Other shortcut functions
-#' ggplot(movies, aes(rating, votes)) +
+#' a_plot(movies, aes(rating, votes)) +
 #'   geom_point() +
 #'   ylim(1e4, 5e4)
 #' #   * axis labels
-#' ggplot(movies, aes(rating, votes)) +
+#' a_plot(movies, aes(rating, votes)) +
 #'   geom_point() +
 #'   labs(x = "My x axis", y = "My y axis")
 #' #   * log scaling
-#' ggplot(movies, aes(rating, votes)) +
+#' a_plot(movies, aes(rating, votes)) +
 #'   geom_point() +
 #'   scale_x_log10() +
 #'   scale_y_log10()
@@ -86,14 +86,8 @@ scale_x_continuous <- function(name = waiver(), breaks = waiver(),
     "position_c", identity, name = name, breaks = breaks,
     minor_breaks = minor_breaks, labels = labels, limits = limits,
     expand = expand, oob = oob, na.value = na.value, trans = trans,
-    guide = "none"
+    guide = "none", super=a_ScaleContinuousPosition
   )
-
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
-  # object should in the first place be created with the correct parent.
-  sc$super <- ScaleContinuousPosition
-  class(sc) <- class(ScaleContinuousPosition)
-
   sc
 }
 
@@ -103,19 +97,12 @@ scale_y_continuous <- function(name = waiver(), breaks = waiver(),
                                minor_breaks = waiver(), labels = waiver(),
                                limits = NULL, expand = waiver(), oob = censor,
                                na.value = NA_real_, trans = "identity") {
-  sc <- continuous_scale(
-    c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final", "ymax_final", "lower", "middle", "upper"),
+    sc <- continuous_scale(c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final", "ymax_final", "lower", "middle", "upper"),
     "position_c", identity, name = name, breaks = breaks,
     minor_breaks = minor_breaks, labels = labels, limits = limits,
     expand = expand, oob = oob, na.value = na.value, trans = trans,
-    guide = "none"
+    guide = "none", super=a_ScaleContinuousPosition
   )
-
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
-  # object should in the first place be created with the correct parent.
-  sc$super <- ScaleContinuousPosition
-  class(sc) <- class(ScaleContinuousPosition)
-
   sc
 }
 
@@ -124,7 +111,7 @@ scale_y_continuous <- function(name = waiver(), breaks = waiver(),
 #' @format NULL
 #' @usage NULL
 #' @export
-ScaleContinuousPosition <- ggproto("ScaleContinuousPosition", ScaleContinuous,
+a_ScaleContinuousPosition <- a_ggproto("a_ScaleContinuousPosition", a_ScaleContinuous,
   # Position aesthetics don't map, because the coordinate system takes
   # care of it. But they do need to be made in to doubles, so stat methods
   # can tell the difference between continuous and discrete data.

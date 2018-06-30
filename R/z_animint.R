@@ -1,4 +1,6 @@
 #' Convert a ggplot to a list.
+#' @param plot ...
+#' @param plot.name ...
 #' @param meta environment with previously calculated plot data, and a new plot to parse, already stored in plot and plot.name.
 #' @return nothing, info is stored in meta.
 #' @export
@@ -18,7 +20,7 @@ parsePlot <- function(meta, plot, plot.name){
     }
   }
   
-  built <- ggplot_build(plot)
+  built <- a_plot_build(plot)
   plot.info <- list()
   
   ## Export axis specification as a combination of breaks and
@@ -67,7 +69,7 @@ parsePlot <- function(meta, plot, plot.name){
     L$extra_params <- checkExtraParams(L$extra_params, L$mapping)
     
     ## Add the showSelected/clickSelects params to the aesthetics
-    ## mapping before calling ggplot_build
+    ## mapping before calling a_plot_build
     L$mapping <- addSSandCSasAesthetics(L$mapping, L$extra_params)
   }#layer.i
 
@@ -76,18 +78,18 @@ parsePlot <- function(meta, plot, plot.name){
   ## There's sort of a Catch-22 here because to create the interactivity, 
   ## we need to specify the variable corresponding to each legend. 
   ## To do this, we need to have the legend. 
-  ## And to have the legend, I think that we need to use ggplot_build
-  built <- ggplot_build(plot)
-  ## TODO: implement a compiler that does not call ggplot_build at
+  ## And to have the legend, I think that we need to use a_plot_build
+  built <- a_plot_build(plot)
+  ## TODO: implement a compiler that does not call a_plot_build at
   ## all, and instead does all of the relevant computations in animint
   ## code.
   ## 'strips' are really titles for the different facet panels
-  plot.info$strips <- with(built, getStrips(plot$facet, panel))
+  plot.info$strips <- with(built, getStrips(plot$a_facet, panel))
   
   ## the layout tells us how to subset and where to plot on the JS side
-  plot.info$layout <- with(built, flag_axis(plot$facet, panel$layout))
+  plot.info$layout <- with(built, flag_axis(plot$a_facet, panel$layout))
   plot.info$layout <- with(built, train_layout(
-    plot$facet, plot$coordinates, plot.info$layout, panel$ranges))
+    plot$a_facet, plot$coordinates, plot.info$layout, panel$ranges))
   
   # saving background info
   plot.info$panel_background <- get_bg(theme.pars$panel.background, theme.pars)
@@ -103,7 +105,7 @@ parsePlot <- function(meta, plot, plot.name){
   ## Flip labels if coords are flipped - transform does not take care
   ## of this. Do this BEFORE checking if it is blank or not, so that
   ## individual axes can be hidden appropriately, e.g. #1.
-  if("CoordFlip"%in%attr(plot$coordinates, "class")){
+  if("a_CoordFlip"%in%attr(plot$coordinates, "class")){
     temp <- plot$labels$x
     plot$labels$x <- plot$labels$y
     plot$labels$y <- temp
@@ -189,7 +191,7 @@ parsePlot <- function(meta, plot, plot.name){
 
   list(
     plot.info=plot.info,
-    ggplot=plot,
+    a_plot=plot,
     built=built)
 }
 
@@ -208,13 +210,17 @@ storeLayer <- function(meta, g, g.data.varied){
 
 #' Save a layer to disk, save and return meta-data.
 #' @param l one layer of the ggplot object.
-#' @param d one layer of calculated data from ggplot_build(p).
+#' @param d one layer of calculated data from a_plot_build(p).
 #' @param meta environment of meta-data.
 #' @param geom_num the number of geom in the plot. Each geom gets an increasing
-#' ID number starting from 1
+#' @param layer_name .....
+#' @param a_plot ....
+#' @param built ....
+#' @param AniminationInfo
+#'  ID number starting from 1
 #' @return list representing a layer, with corresponding aesthetics, ranges, and groups.
 #' @export
-saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
+saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
   # Set geom name and layer name
   g <- list(geom=strsplit(layer_name, "_")[[1]][2])
   g$classed <- layer_name
@@ -345,7 +351,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   
   ## Warn if non-identity position is used with animint aes.
   position.type <- class(l$position)[[1]]
-  if(has.show && position.type != "PositionIdentity"){
+  if(has.show && position.type != "a_PositionIdentity"){
     print(l)
     warning("showSelected only works with position=identity, problem: ",
             g$classed)
@@ -531,7 +537,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## doing a piecewise linear interpolation of the shape.
   
   ## Flip axes in case of coord_flip
-  if(inherits(ggplot$coordinates, "CoordFlip")){
+  if(inherits(a_plot$coordinates, "a_CoordFlip")){
     names(g.data) <- switch_axes(names(g.data))
   }
 
@@ -858,7 +864,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
 #' @param css.file character string for non-empty css file to include. Provided file will be copied to the output directory as styles.css
 #' @return invisible list of ggplots in list format.
 #' @export
-#' @seealso \code{\link{ggplot2}}
+#' @seealso \code{\link{ggplot2Animint}}
 #' @example inst/examples/animint.R
 animint2dir <- function(plot.list, out.dir = tempfile(),
                         json.file = "plot.json", open.browser = interactive(),
@@ -899,7 +905,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   ## Extract essential info from ggplots, reality checks.
   for(list.name in names(plot.list)){
     p <- plot.list[[list.name]]
-    if(is.ggplot(p)){
+    if(is.a_plot(p)){
       ## Save original mapping to every layer so that we can use it afterwards
       ## This is required because we edit the original plot list created for the
       ## animint2dir function. See the discussion here:
@@ -921,7 +927,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
         }
       }
       
-      ## Before calling ggplot_build, we do some error checking for
+      ## Before calling a_plot_build, we do some error checking for
       ## some animint extensions.
       checkPlotForAnimintExtensions(p, list.name)
     }else if(is.list(p)){ ## for options.
@@ -931,17 +937,17 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
     }
   }
   
-  ## Call ggplot_build in parsPlot for all ggplots
-  ggplot.list <- list()
+  ## Call a_plot_build in parsPlot for all ggplots
+  a_plot.list <- list()
   AllPlotsInfo <- list()
   for(list.name in names(plot.list)){
     p <- plot.list[[list.name]]
-    if(is.ggplot(p)){
+    if(is.a_plot(p)){
       ## If plot is correct, save to meta for further processing
-      parsed_info <- parsePlot(meta, p, list.name) # calls ggplot_build.
+      parsed_info <- parsePlot(meta, p, list.name) # calls a_plot_build.
       AllPlotsInfo[[list.name]] <- parsed_info$plot.info
-      ggplot.list[[list.name]]$ggplot <- parsed_info$ggplot
-      ggplot.list[[list.name]]$built <- parsed_info$built
+      a_plot.list[[list.name]]$a_plot <- parsed_info$a_plot
+      a_plot.list[[list.name]]$built <- parsed_info$built
     }
   }
   
@@ -949,15 +955,15 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   ## now we have enough info to save the TSV file database.
   geom_num <- 0
   g.list <- list()
-  for(p.name in names(ggplot.list)){
-    ggplot.info <- ggplot.list[[p.name]]
-    for(layer.i in seq_along(ggplot.info$ggplot$layers)){
-      L <- ggplot.info$ggplot$layers[[layer.i]]
-      df <- ggplot.info$built$data[[layer.i]]
+  for(p.name in names(a_plot.list)){
+    a_plot.info <- a_plot.list[[p.name]]
+    for(layer.i in seq_along(a_plot.info$a_plot$layers)){
+      L <- a_plot.info$a_plot$layers[[layer.i]]
+      df <- a_plot.info$built$data[[layer.i]]
       
       ## cat(sprintf(
-      ##   "saving layer %4d / %4d of ggplot %s\n",
-      ##   layer.i, length(ggplot.info$built$data),
+      ##   "saving layer %4d / %4d of a_plot %s\n",
+      ##   layer.i, length(a_plot.info$built$data),
       ##   p.name))
       
       ## Data now contains columns with fill, alpha, colour etc.
@@ -979,7 +985,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       geom_num <- geom_num + 1
       layer_name <- getLayerName(L, geom_num, p.name)
       gl <- saveLayer(L, df, meta, layer_name,
-                      ggplot.info$ggplot, ggplot.info$built, AnimationInfo)
+                      a_plot.info$a_plot, a_plot.info$built, AnimationInfo)
       
       ## Save Animation Info separately
       AnimationInfo$timeValues <- gl$timeValues
@@ -1044,7 +1050,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   setPlotSizes(meta, AllPlotsInfo)
   
   ## Get domains of data subsets if theme_animint(update_axes) is used
-  for(p.name in names(ggplot.list)){
+  for(p.name in names(a_plot.list)){
     axes_to_update <- AllPlotsInfo[[p.name]]$options$update_axes
     if(!is.null(axes_to_update)){
       for (axis in axes_to_update){
@@ -1052,13 +1058,13 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
         # Determine if every panel needs a different domain or not
         # We conclude here if we want to split the data by PANEL
         # for the axes updates. Else every panel uses the same domain
-        panels <- ggplot.list[[p.name]]$built$panel$layout$PANEL
+        panels <- a_plot.list[[p.name]]$built$panel$layout$PANEL
         axes_drawn <- 
-          ggplot.list[[p.name]]$built$panel$layout[[paste0("AXIS_",
+          a_plot.list[[p.name]]$built$panel$layout[[paste0("AXIS_",
                                                            toupper(axis))]]
         panels_used <- panels[axes_drawn]
         split_by_panel <- all(panels == panels_used)
-        for(num in seq_along(ggplot.list[[p.name]]$built$plot$layers)){
+        for(num in seq_along(a_plot.list[[p.name]]$built$plot$layers)){
           # If there is a geom where the axes updates have non numeric values,
           # we stop and throw an informative warning
           # It does not make sense to have axes updates for non numeric values
@@ -1066,7 +1072,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
           
           axis_col_name <- aesthetic_names[grepl(axis, aesthetic_names)]
           axis_col <- g.list[[p.name]][[num]]$g$aes[[ axis_col_name[[1]] ]]
-          axis_is_numeric <- is.numeric(ggplot.list[[p.name]]$built$plot$layers[[num]]$data[[axis_col]])
+          axis_is_numeric <- is.numeric(a_plot.list[[p.name]]$built$plot$layers[[num]]$data[[axis_col]])
           if(!axis_is_numeric){
             stop(paste0("'update_axes' specified for '", toupper(axis),
                         "' axis on plot '", p.name, 
@@ -1094,8 +1100,8 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
             }
           }
           ## Set up built_data to compute domains
-          built_data <- ggplot.list[[p.name]]$built$plot$layers[[num]]$data
-          built_data$PANEL <- ggplot.list[[p.name]]$built$data[[num]]$PANEL
+          built_data <- a_plot.list[[p.name]]$built$plot$layers[[num]]$data
+          built_data$PANEL <- a_plot.list[[p.name]]$built$data[[num]]$PANEL
 
           if(length(ss_selectors) > 0){
             subset_domains[num] <- compute_domains(
@@ -1137,7 +1143,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   }
   
   ## Finally save all the layers 
-  for(p.name in names(ggplot.list)){
+  for(p.name in names(a_plot.list)){
     for(g1 in seq_along(g.list[[p.name]])){
       g <- storeLayer(meta, g.list[[p.name]][[g1]]$g,
                       g.list[[p.name]][[g1]]$g.data.varied)
@@ -1253,10 +1259,10 @@ servr::httd("', normalizePath( out.dir,winslash="/" ), '")')
   ## the same plot.list with minor edits in another viz
   ## See this comment:
   ## https://github.com/tdhock/animint2/pull/5#issuecomment-323074518
-  for(plot_i in ggplot.list){
-    for(layer_i in seq_along(plot_i$ggplot$layers)){
-      plot_i$ggplot$layers[[layer_i]]$mapping <-
-        plot_i$ggplot$layers[[layer_i]]$orig_mapping
+  for(plot_i in a_plot.list){
+    for(layer_i in seq_along(plot_i$a_plot$layers)){
+      plot_i$a_plot$layers[[layer_i]]$mapping <-
+        plot_i$a_plot$layers[[layer_i]]$orig_mapping
     } 
   }
   invisible(meta)
@@ -1264,8 +1270,8 @@ servr::httd("', normalizePath( out.dir,winslash="/" ), '")')
 }
 
 
-#' Function to get legend information from ggplot
-#' @param plistextra output from ggplot_build(p)
+#' Function to get legend information from a_plot
+#' @param plistextra output from a_plot_build(p)
 #' @return list containing information for each legend
 #' @export
 getLegendList <- function(plistextra){
@@ -1314,7 +1320,8 @@ getLegendList <- function(plistextra){
   }
   guides.result <- do.call(guides, guides.args)
   guides.list <- plyr::defaults(plot$guides, guides.result)
-  gdefs <- guides_train(scales = scales,
+  gdefs <-
+    guides_train(scales = scales,
                            theme = theme,
                            guides = guides.list,
                            labels = plot$labels)
@@ -1330,7 +1337,7 @@ getLegendList <- function(plistextra){
     legend_type <- legend_type[legend_type != ".label"]
     gdefs[[leg]]$legend_type <- legend_type
     scale.list <- scales$scales[which(scales$find(legend_type))]
-    discrete.vec <- sapply(scale.list, inherits, "ScaleDiscrete")
+    discrete.vec <- sapply(scale.list, inherits, "a_ScaleDiscrete")
     is.discrete <- all(discrete.vec)
     gdefs[[leg]]$is.discrete <- is.discrete
     ## get the name of the legend/selection variable.

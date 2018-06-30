@@ -6,7 +6,7 @@
 #' @inheritParams geom_point
 #' @export
 #' @examples
-#' p <- ggplot(mtcars, aes(wt, mpg))
+#' p <- a_plot(mtcars, aes(wt, mpg))
 #' p + stat_identity()
 stat_identity <- function(mapping = NULL, data = NULL,
                           geom = "point", position = "identity",
@@ -16,7 +16,7 @@ stat_identity <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatIdentity,
+    stat = a_StatIdentity,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -32,7 +32,7 @@ stat_identity <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatIdentity <- ggproto("StatIdentity", Stat,
+a_StatIdentity <- a_ggproto("a_StatIdentity", a_Stat,
   compute_layer = function(data, scales, params) {
     data
   }

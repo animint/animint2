@@ -11,7 +11,7 @@
 #' @rdname scale_grey
 #' @export
 #' @examples
-#' p <- ggplot(mtcars, aes(mpg, wt)) + geom_point(aes(colour = factor(cyl)))
+#' p <- a_plot(mtcars, aes(mpg, wt)) + geom_point(aes(colour = factor(cyl)))
 #' p + scale_colour_grey()
 #' p + scale_colour_grey(end = 0)
 #'
@@ -20,10 +20,10 @@
 #'
 #' # Colour of missing values is controlled with na.value:
 #' miss <- factor(sample(c(NA, 1:5), nrow(mtcars), replace = TRUE))
-#' ggplot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, aes(mpg, wt)) +
 #'   geom_point(aes(colour = miss)) +
 #'   scale_colour_grey()
-#' ggplot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, aes(mpg, wt)) +
 #'   geom_point(aes(colour = miss)) +
 #'   scale_colour_grey(na.value = "green")
 scale_colour_grey <- function(..., start = 0.2, end = 0.8, na.value = "red") {

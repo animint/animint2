@@ -19,7 +19,7 @@ stat_density_2d <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatDensity2d,
+    stat = a_StatDensity2d,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -43,7 +43,7 @@ stat_density2d <- stat_density_2d
 #' @format NULL
 #' @usage NULL
 #' @export
-StatDensity2d <- ggproto("StatDensity2d", Stat,
+a_StatDensity2d <- a_ggproto("a_StatDensity2d", a_Stat,
   default_aes = aes(colour = "#3366FF", size = 0.5),
 
   required_aes = c("x", "y"),
@@ -63,7 +63,7 @@ StatDensity2d <- ggproto("StatDensity2d", Stat,
     df$group <- data$group[1]
 
     if (contour) {
-      StatContour$compute_panel(df, scales, bins, binwidth)
+      a_StatContour$compute_panel(df, scales, bins, binwidth)
     } else {
       names(df) <- c("x", "y", "density", "group")
       df$level <- 1

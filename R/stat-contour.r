@@ -14,7 +14,7 @@ stat_contour <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatContour,
+    stat = a_StatContour,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -30,7 +30,7 @@ stat_contour <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatContour <- ggproto("StatContour", Stat,
+a_StatContour <- a_ggproto("a_StatContour", a_Stat,
   required_aes = c("x", "y", "z"),
   default_aes = aes(order = ..level..),
 
@@ -60,7 +60,7 @@ StatContour <- ggproto("StatContour", Stat,
 #
 # breaks <- seq(95, 195, length.out = 10)
 # contours <- contourLines(v3d, breaks)
-# ggplot(contours, aes(x, y)) +
+# a_plot(contours, aes(x, y)) +
 #   geom_path() +
 #   facet_wrap(~piece)
 contour_lines <- function(data, breaks, complete = FALSE) {
@@ -106,8 +106,8 @@ poly_dir <- function(x, y) {
 
 # To fix breaks and complete the polygons, we need to add 0-4 corner points.
 #
-# contours <- ddply(contours, "piece", mutate, dir = poly_dir(x, y))
-# ggplot(contours, aes(x, y)) +
+# contours <- ddply(contours, "piece", mutate, dir = animint2:::poly_dir(x, y))
+# a_plot(contours, aes(x, y)) +
 #   geom_path(aes(group = piece, colour = factor(dir)))
 # last_plot() + facet_wrap(~ level)
 

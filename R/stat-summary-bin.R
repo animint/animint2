@@ -15,7 +15,7 @@ stat_summary_bin <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatSummaryBin,
+    stat = a_StatSummaryBin,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -36,7 +36,7 @@ stat_summary_bin <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatSummaryBin <- ggproto("StatSummaryBin", Stat,
+a_StatSummaryBin <- a_ggproto("a_StatSummaryBin", a_Stat,
   required_aes = c("x", "y"),
 
   compute_group = function(data, scales, fun.data = NULL, fun.y = NULL,

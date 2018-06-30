@@ -8,10 +8,10 @@
 #' @param x,y,... Aesthetics passed into each layer
 #' @param data Data frame to use (optional).  If not specified, will create
 #'   one, extracting vectors from the current environment.
-#' @param facets faceting formula to use. Picks \code{\link{facet_wrap}} or
-#'   \code{\link{facet_grid}} depending on whether the formula is one-
+#' @param facets faceting formula to use. Picks \code{\link{a_facet_wrap}} or
+#'   \code{\link{a_facet_grid}} depending on whether the formula is one-
 #'   or two-sided
-#' @param margins See \code{facet_grid}: display marginal facets?
+#' @param margins See \code{a_facet_grid}: display marginal facets?
 #' @param geom Character vector specifying geom(s) to draw. Defaults to
 #'  "point" if x and y are specified, and "histogram" if only x is specified.
 #' @param stat,position DEPRECATED.
@@ -109,14 +109,14 @@ qplot <- function(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
     }
   }
 
-  p <- ggplot(data, aesthetics, environment = env)
+  p <- a_plot(data, aesthetics, environment = env)
 
   if (is.null(facets)) {
-    p <- p + facet_null()
+    p <- p + a_facet_null()
   } else if (is.formula(facets) && length(facets) == 2) {
-    p <- p + facet_wrap(facets)
+    p <- p + a_facet_wrap(facets)
   } else {
-    p <- p + facet_grid(facets = deparse(facets), margins = margins)
+    p <- p + a_facet_grid(facets = deparse(facets), margins = margins)
   }
 
   if (!is.null(main)) p <- p + ggtitle(main)

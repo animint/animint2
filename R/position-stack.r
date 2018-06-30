@@ -9,20 +9,20 @@
 #' @export
 #' @examples
 #' # Stacking is the default behaviour for most area plots:
-#' ggplot(mtcars, aes(factor(cyl), fill = factor(vs))) + geom_bar()
+#' a_plot(mtcars, aes(factor(cyl), fill = factor(vs))) + geom_bar()
 #' # Fill makes it easier to compare proportions
-#' ggplot(mtcars, aes(factor(cyl), fill = factor(vs))) +
+#' a_plot(mtcars, aes(factor(cyl), fill = factor(vs))) +
 #'   geom_bar(position = "fill")
 #'
 #' # To change stacking order, use factor() to change order of levels
 #' mtcars$vs <- factor(mtcars$vs, levels = c(1,0))
-#' ggplot(mtcars, aes(factor(cyl), fill = factor(vs))) + geom_bar()
+#' a_plot(mtcars, aes(factor(cyl), fill = factor(vs))) + geom_bar()
 #'
-#' ggplot(diamonds, aes(price, fill = cut)) +
+#' a_plot(diamonds, aes(price, fill = cut)) +
 #'   geom_histogram(binwidth = 500)
 #' # When used with a histogram, position_fill creates a conditional density
 #' # estimate
-#' ggplot(diamonds, aes(price, fill = cut)) +
+#' a_plot(diamonds, aes(price, fill = cut)) +
 #'   geom_histogram(binwidth = 500, position = "fill")
 #'
 #' # Stacking is also useful for time series
@@ -32,24 +32,24 @@
 #'   Value = rpois(16, 10)
 #' )
 #'
-#' ggplot(data.set, aes(Time, Value)) + geom_area(aes(fill = Type))
+#' a_plot(data.set, aes(Time, Value)) + geom_area(aes(fill = Type))
 #'
 #' # If you want to stack lines, you need to say so:
-#' ggplot(data.set, aes(Time, Value)) + geom_line(aes(colour = Type))
-#' ggplot(data.set, aes(Time, Value)) +
+#' a_plot(data.set, aes(Time, Value)) + geom_line(aes(colour = Type))
+#' a_plot(data.set, aes(Time, Value)) +
 #'   geom_line(position = "stack", aes(colour = Type))
 #'
 #' # But realise that this makes it *much* harder to compare individual
 #' # trends
 position_stack <- function() {
-  PositionStack
+  a_PositionStack
 }
 
 #' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export
-PositionStack <- ggproto("PositionStack", Position,
+a_PositionStack <- a_ggproto("a_PositionStack", a_Position,
   # requires one of c("ymax", "y"),
 
   setup_data = function(self, data, params) {

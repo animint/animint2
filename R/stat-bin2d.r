@@ -17,7 +17,7 @@ stat_bin_2d <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatBin2d,
+    stat = a_StatBin2d,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -42,7 +42,7 @@ stat_bin2d <- stat_bin_2d
 #' @format NULL
 #' @usage NULL
 #' @export
-StatBin2d <- ggproto("StatBin2d", Stat,
+a_StatBin2d <- a_ggproto("a_StatBin2d", a_Stat,
   default_aes = aes(fill = ..count..),
   required_aes = c("x", "y"),
 

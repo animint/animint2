@@ -1,16 +1,16 @@
-#' @section Positions:
+#' @section a_Positions:
 #'
 #' All \code{position_*} functions (like \code{position_dodge}) return a
-#' \code{Position*} object (like \code{PositionDodge}). The \code{Position*}
+#' \code{a_Position*} object (like \code{a_PositionDodge}). The \code{a_Position*}
 #' object is responsible for adjusting the position of overlapping geoms.
 #'
 #' The way that the \code{position_*} functions work is slightly different from
 #' the \code{geom_*} and \code{stat_*} functions, because a \code{position_*}
-#' function actually "instantiates" the \code{Position*} object by creating a
+#' function actually "instantiates" the \code{a_Position*} object by creating a
 #' descendant, and returns that.
 #'
-#' Each of the \code{Position*} objects is a \code{\link{ggproto}} object,
-#' descended from the top-level \code{Position}, and each implements the
+#' Each of the \code{a_Position*} objects is a \code{\link{a_ggproto}} object,
+#' descended from the top-level \code{a_Position}, and each implements the
 #' following methods:
 #'
 #' \itemize{
@@ -45,7 +45,7 @@
 #' @format NULL
 #' @usage NULL
 #' @export
-Position <- ggproto("Position",
+a_Position <- a_ggproto("a_Position",
   required_aes = character(),
 
   setup_params = function(self, data) {
@@ -75,8 +75,8 @@ Position <- ggproto("Position",
 #'
 #' @param trans_x,trans_y Transformation functions for x and y aesthetics.
 #'   (will transform x, xmin, xmax, xend etc)
+#' @param df ....
 #' @param ... Additional arguments passed to \code{trans_x} and \code{trans_y}.
-#' @keywords internal
 #' @export
 transform_position <- function(df, trans_x = NULL, trans_y = NULL, ...) {
   scales <- aes_to_scale(names(df))

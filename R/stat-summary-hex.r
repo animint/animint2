@@ -15,7 +15,7 @@ stat_summary_hex <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatSummaryHex,
+    stat = a_StatSummaryHex,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -36,7 +36,7 @@ stat_summary_hex <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatSummaryHex <- ggproto("StatSummaryHex", Stat,
+a_StatSummaryHex <- a_ggproto("a_StatSummaryHex", a_Stat,
   default_aes = aes(fill = ..value..),
 
   required_aes = c("x", "y", "z"),

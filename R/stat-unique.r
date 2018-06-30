@@ -1,14 +1,14 @@
 #' Remove duplicates.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "unique")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "unique")}
 #'
 #' @export
 #' @inheritParams layer
 #' @inheritParams geom_point
 #' @examples
-#' ggplot(mtcars, aes(vs, am)) + geom_point(alpha = 0.1)
-#' ggplot(mtcars, aes(vs, am)) + geom_point(alpha = 0.1, stat="unique")
+#' a_plot(mtcars, aes(vs, am)) + geom_point(alpha = 0.1)
+#' a_plot(mtcars, aes(vs, am)) + geom_point(alpha = 0.1, stat="unique")
 stat_unique <- function(mapping = NULL, data = NULL,
                         geom = "point", position = "identity",
                         ...,
@@ -18,7 +18,7 @@ stat_unique <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatUnique,
+    stat = a_StatUnique,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -34,6 +34,6 @@ stat_unique <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatUnique <- ggproto("StatUnique", Stat,
+a_StatUnique <- a_ggproto("a_StatUnique", a_Stat,
   compute_panel = function(data, scales) unique(data)
 )

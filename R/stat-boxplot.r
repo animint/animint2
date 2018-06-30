@@ -23,7 +23,7 @@ stat_boxplot <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatBoxplot,
+    stat = a_StatBoxplot,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -41,7 +41,7 @@ stat_boxplot <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatBoxplot <- ggproto("StatBoxplot", Stat,
+a_StatBoxplot <- a_ggproto("a_StatBoxplot", a_Stat,
   required_aes = c("x", "y"),
   non_missing_aes = "weight",
 

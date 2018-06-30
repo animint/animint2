@@ -3,14 +3,14 @@
 #' @family position adjustments
 #' @export
 position_identity <- function() {
-  PositionIdentity
+  a_PositionIdentity
 }
 
 #' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export
-PositionIdentity <- ggproto("PositionIdentity", Position,
+a_PositionIdentity <- a_ggproto("a_PositionIdentity", a_Position,
   compute_layer = function(data, params, scales) {
     data
   }

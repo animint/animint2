@@ -19,26 +19,26 @@
 #' @inheritParams geom_point
 #' @export
 #' @examples
-#' ggplot(faithful, aes(waiting, eruptions)) +
+#' a_plot(faithful, aes(waiting, eruptions)) +
 #'   geom_point() +
 #'   stat_ellipse()
 #'
-#' ggplot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
+#' a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
 #'   geom_point() +
 #'   stat_ellipse()
 #'
-#' ggplot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
+#' a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
 #'   geom_point() +
 #'   stat_ellipse(type = "norm", linetype = 2) +
 #'   stat_ellipse(type = "t")
 #'
-#' ggplot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
+#' a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
 #'   geom_point() +
 #'   stat_ellipse(type = "norm", linetype = 2) +
 #'   stat_ellipse(type = "euclid", level = 3) +
 #'   coord_fixed()
 #'
-#' ggplot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
+#' a_plot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
 #'   stat_ellipse(geom = "polygon")
 stat_ellipse <- function(mapping = NULL, data = NULL,
                          geom = "path", position = "identity",
@@ -52,7 +52,7 @@ stat_ellipse <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatEllipse,
+    stat = a_StatEllipse,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -71,7 +71,7 @@ stat_ellipse <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatEllipse <- ggproto("StatEllipse", Stat,
+a_StatEllipse <- a_ggproto("a_StatEllipse", a_Stat,
   required_aes = c("x", "y"),
 
   compute_group = function(data, scales, type = "t", level = 0.95,

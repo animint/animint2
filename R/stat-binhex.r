@@ -12,7 +12,7 @@ stat_bin_hex <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatBinhex,
+    stat = a_StatBinhex,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -35,7 +35,7 @@ stat_binhex <- stat_bin_hex
 #' @format NULL
 #' @usage NULL
 #' @export
-StatBinhex <- ggproto("StatBinhex", Stat,
+a_StatBinhex <- a_ggproto("a_StatBinhex", a_Stat,
   default_aes = aes(fill = ..value..),
 
   required_aes = c("x", "y"),
@@ -49,4 +49,3 @@ StatBinhex <- ggproto("StatBinhex", Stat,
     hexBinSummarise(data$x, data$y, wt, binwidth, sum)
   }
 )
-

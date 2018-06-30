@@ -34,7 +34,7 @@ stat_ydensity <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatYdensity,
+    stat = a_StatYdensity,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -56,7 +56,7 @@ stat_ydensity <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatYdensity <- ggproto("StatYdensity", Stat,
+a_StatYdensity <- a_ggproto("a_StatYdensity", a_Stat,
   required_aes = c("x", "y"),
   non_missing_aes = "weight",
 
@@ -87,7 +87,7 @@ StatYdensity <- ggproto("StatYdensity", Stat,
   compute_panel = function(self, data, scales, width = NULL, bw = "nrd0", adjust = 1,
                            kernel = "gaussian", trim = TRUE, na.rm = FALSE,
                            scale = "area") {
-    data <- ggproto_parent(Stat, self)$compute_panel(
+    data <- a_ggproto_parent(a_Stat, self)$compute_panel(
       data, scales, width = width, bw = bw, adjust = adjust, kernel = kernel,
       trim = trim, na.rm = na.rm
     )

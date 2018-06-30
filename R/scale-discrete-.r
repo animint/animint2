@@ -15,13 +15,13 @@
 #' @rdname scale_discrete
 #' @export
 #' @examples
-#' ggplot(diamonds, aes(cut)) + geom_bar()
+#' a_plot(diamonds, aes(cut)) + geom_bar()
 #'
 #' \donttest{
 #' # The discrete position scale is added automatically whenever you
 #' # have a discrete position.
 #'
-#' (d <- ggplot(subset(diamonds, carat > 1), aes(cut, clarity)) +
+#' (d <- a_plot(subset(diamonds, carat > 1), aes(cut, clarity)) +
 #'       geom_jitter())
 #'
 #' d + scale_x_discrete("Cut")
@@ -37,23 +37,18 @@
 #' d + ylim("I1", "IF")
 #'
 #' # See ?reorder to reorder based on the values of another variable
-#' ggplot(mpg, aes(manufacturer, cty)) + geom_point()
-#' ggplot(mpg, aes(reorder(manufacturer, cty), cty)) + geom_point()
-#' ggplot(mpg, aes(reorder(manufacturer, displ), cty)) + geom_point()
+#' a_plot(mpg, aes(manufacturer, cty)) + geom_point()
+#' a_plot(mpg, aes(reorder(manufacturer, cty), cty)) + geom_point()
+#' a_plot(mpg, aes(reorder(manufacturer, displ), cty)) + geom_point()
 #'
 #' # Use abbreviate as a formatter to reduce long names
-#' ggplot(mpg, aes(reorder(manufacturer, displ), cty)) +
+#' a_plot(mpg, aes(reorder(manufacturer, displ), cty)) +
 #'   geom_point() +
 #'   scale_x_discrete(labels = abbreviate)
 #' }
 scale_x_discrete <- function(..., expand = waiver()) {
   sc <- discrete_scale(c("x", "xmin", "xmax", "xend"), "position_d", identity, ...,
-    expand = expand, guide = "none")
-
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
-  # object should in the first place be created with the correct parent.
-  sc$super <- ScaleDiscretePosition
-  class(sc) <- class(ScaleDiscretePosition)
+    expand = expand, guide = "none", super=a_ScaleDiscretePosition)
 
   sc$range_c <- continuous_range()
   sc
@@ -62,13 +57,7 @@ scale_x_discrete <- function(..., expand = waiver()) {
 #' @export
 scale_y_discrete <- function(..., expand = waiver()) {
   sc <- discrete_scale(c("y", "ymin", "ymax", "yend"), "position_d", identity, ...,
-    expand = expand, guide = "none")
-
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
-  # object should in the first place be created with the correct parent.
-  sc$super <- ScaleDiscretePosition
-  class(sc) <- class(ScaleDiscretePosition)
-
+    expand = expand, guide = "none", super=a_ScaleDiscretePosition)
   sc$range_c <- continuous_range()
   sc
 }
@@ -82,7 +71,7 @@ scale_y_discrete <- function(..., expand = waiver()) {
 #' @format NULL
 #' @usage NULL
 #' @export
-ScaleDiscretePosition <- ggproto("ScaleDiscretePosition", ScaleDiscrete,
+a_ScaleDiscretePosition <- a_ggproto("a_ScaleDiscretePosition", a_ScaleDiscrete,
 
   train = function(self, x) {
     if (is.discrete(x)) {
@@ -133,7 +122,7 @@ ScaleDiscretePosition <- ggproto("ScaleDiscretePosition", ScaleDiscrete,
   },
 
   clone = function(self) {
-    new <- ggproto(NULL, self)
+    new <- a_ggproto(NULL, self)
     new$range <- discrete_range()
     new$range_c <- continuous_range()
     new

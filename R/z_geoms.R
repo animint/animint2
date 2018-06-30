@@ -4,6 +4,9 @@
 #' @param stat statistic mapping, defaults to identity
 #' @param position position mapping, defaults to identity
 #' @param ... other arguments
+#' @param na.rm ...
+#' @param show.legend ...
+#' @param inherit.aes ...
 #' @return ggplot2 layer
 #' @export
 #' @example inst/examples/breakpoints.R
@@ -14,7 +17,7 @@ geom_tallrect <- function(mapping = NULL, data = NULL,
                           show.legend = NA,
                           inherit.aes = TRUE) {
   layer(
-    geom = GeomTallRect,
+    geom = a_GeomTallRect,
     data = data,
     mapping = mapping,
     stat = stat,
@@ -32,8 +35,8 @@ geom_tallrect <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomTallRect <- ggproto("GeomTallRect",Geom,
-                        default_aes = aes(colour = "grey35",
+a_GeomTallRect <- a_ggproto("a_GeomTallRect", a_Geom,
+                                 default_aes = aes(colour = "grey35",
                                                    fill = "grey35", 
                                                    size = 0.5, 
                                                    linetype = 1,
@@ -56,14 +59,14 @@ GeomTallRect <- ggproto("GeomTallRect",Geom,
                                        col = coords$colour,
                                        fill = scales::alpha(coords$fill, 
                                                             coords$alpha), 
-                                       lwd = coords$size *.pt,
+                                       lwd = coords$size * .pt,
                                        lty = coords$linetype,
                                        lineend = "butt"
                                      )
                                    )
                                  },
                                  
-                                 draw_key = draw_key_rect
+                                 draw_key = a_draw_key_rect
 )
 
 
@@ -73,6 +76,9 @@ GeomTallRect <- ggproto("GeomTallRect",Geom,
 #' @param stat statistic mapping, defaults to identity
 #' @param position position mapping, defaults to identity
 #' @param ... other arguments
+#' @param na.rm ...
+#' @param show.legend ...
+#' @param inherit.aes ...
 #' @return ggplot2 layer
 #' @export
 #' @examples
@@ -86,7 +92,7 @@ geom_widerect <- function(mapping = NULL, data = NULL,
                           show.legend = NA,
                           inherit.aes = TRUE) {
   layer(
-    geom = GeomWideRect,
+    geom = a_GeomWideRect,
     data = data,
     mapping = mapping,
     stat = stat,
@@ -104,8 +110,8 @@ geom_widerect <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomWideRect <- ggproto("GeomWideRect",Geom,
-                                 default_aes =aes(colour = "grey35", 
+a_GeomWideRect <- a_ggproto("a_GeomWideRect", a_Geom,
+                                 default_aes = aes(colour = "grey35", 
                                                    fill = "grey35", 
                                                    size = 0.5, 
                                                    linetype = 1,
@@ -128,14 +134,14 @@ GeomWideRect <- ggproto("GeomWideRect",Geom,
                                        col = coords$colour,
                                        fill = scales::alpha(coords$fill, 
                                                             coords$alpha), 
-                                       lwd = coords$size *.pt,
+                                       lwd = coords$size * .pt,
                                        lty = coords$linetype,
                                        lineend = "butt"
                                      )
                                    )
                                  },
                                  
-                                 draw_key = draw_key_rect
+                                 draw_key = a_draw_key_rect
 )
 
 #' Make a clickSelects geom_tallrect that completely tiles the x

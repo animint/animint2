@@ -5,7 +5,7 @@
 #'   \code{\link{continuous_scale}}
 #' @param guide Guide to use for this scale - defaults to \code{"none"}.
 #' @examples
-#' ggplot(luv_colours, aes(u, v)) +
+#' a_plot(luv_colours, aes(u, v)) +
 #'   geom_point(aes(colour = col), size = 3) +
 #'   scale_color_identity() +
 #'   coord_equal()
@@ -15,26 +15,26 @@
 #'   y = 1:4,
 #'   colour = c("red", "green", "blue", "yellow")
 #' )
-#' ggplot(df, aes(x, y)) + geom_tile(aes(fill = colour))
-#' ggplot(df, aes(x, y)) +
+#' a_plot(df, aes(x, y)) + geom_tile(aes(fill = colour))
+#' a_plot(df, aes(x, y)) +
 #'   geom_tile(aes(fill = colour)) +
 #'   scale_fill_identity()
 #'
 #' # To get a legend guide, specify guide = "legend"
-#' ggplot(df, aes(x, y)) +
+#' a_plot(df, aes(x, y)) +
 #'   geom_tile(aes(fill = colour)) +
 #'   scale_fill_identity(guide = "legend")
 #' # But you'll typically also need to supply breaks and labels:
-#' ggplot(df, aes(x, y)) +
+#' a_plot(df, aes(x, y)) +
 #'   geom_tile(aes(fill = colour)) +
 #'   scale_fill_identity("trt", labels = letters[1:4], breaks = df$colour,
 #'   guide = "legend")
 #'
 #' # cyl scaled to appropriate size
-#' ggplot(mtcars, aes(mpg, wt)) + geom_point(aes(size = cyl))
+#' a_plot(mtcars, aes(mpg, wt)) + geom_point(aes(size = cyl))
 #'
 #' # cyl used as point size
-#' ggplot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, aes(mpg, wt)) +
 #'   geom_point(aes(size = cyl)) +
 #'   scale_size_identity()
 NULL
@@ -42,72 +42,48 @@ NULL
 #' @rdname scale_identity
 #' @export
 scale_colour_identity <- function(..., guide = "none") {
-  sc <- discrete_scale("colour", "identity", identity_pal(), ..., guide = guide)
+  sc <- discrete_scale("colour", "identity", identity_pal(), ..., guide = guide, super = a_ScaleDiscreteIdentity)
 
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
-  # object should in the first place be created with the correct parent.
-  sc$super <- ScaleDiscreteIdentity
-  class(sc) <- class(ScaleDiscreteIdentity)
   sc
 }
 
 #' @rdname scale_identity
 #' @export
 scale_fill_identity <- function(..., guide = "none") {
-  sc <- discrete_scale("fill", "identity", identity_pal(), ..., guide = guide)
+  sc <- discrete_scale("fill", "identity", identity_pal(), ..., guide = guide, super = a_ScaleDiscreteIdentity)
 
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
-  # object should in the first place be created with the correct parent.
-  sc$super <- ScaleDiscreteIdentity
-  class(sc) <- class(ScaleDiscreteIdentity)
   sc
 }
 
 #' @rdname scale_identity
 #' @export
 scale_shape_identity <- function(..., guide = "none") {
-  sc <- continuous_scale("shape", "identity", identity_pal(), ..., guide = guide)
+  sc <- continuous_scale("shape", "identity", identity_pal(), ..., guide = guide, super = a_ScaleContinuousIdentity)
 
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
-  # object should in the first place be created with the correct parent.
-  sc$super <- ScaleContinuousIdentity
-  class(sc) <- class(ScaleContinuousIdentity)
   sc
 }
 
 #' @rdname scale_identity
 #' @export
 scale_linetype_identity <- function(..., guide = "none") {
-  sc <- discrete_scale("linetype", "identity", identity_pal(), ..., guide = guide)
+  sc <- discrete_scale("linetype", "identity", identity_pal(), ..., guide = guide, super = a_ScaleDiscreteIdentity)
 
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
-  # object should in the first place be created with the correct parent.
-  sc$super <- ScaleDiscreteIdentity
-  class(sc) <- class(ScaleDiscreteIdentity)
   sc
 }
 
 #' @rdname scale_identity
 #' @export
 scale_alpha_identity <- function(..., guide = "none") {
-  sc <- continuous_scale("alpha", "identity", identity_pal(), ..., guide = guide)
+  sc <- continuous_scale("alpha", "identity", identity_pal(), ..., guide = guide, super=a_ScaleContinuousIdentity)
 
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
-  # object should in the first place be created with the correct parent.
-  sc$super <- ScaleContinuousIdentity
-  class(sc) <- class(ScaleContinuousIdentity)
   sc
 }
 
 #' @rdname scale_identity
 #' @export
 scale_size_identity <- function(..., guide = "none") {
-  sc <- continuous_scale("size", "identity", identity_pal(), ..., guide = guide)
+  sc <- continuous_scale("size", "identity", identity_pal(), ..., guide = guide, super = a_ScaleContinuousIdentity)
 
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
-  # object should in the first place be created with the correct parent.
-  sc$super <- ScaleContinuousIdentity
-  class(sc) <- class(ScaleContinuousIdentity)
   sc
 }
 
@@ -116,7 +92,7 @@ scale_size_identity <- function(..., guide = "none") {
 #' @format NULL
 #' @usage NULL
 #' @export
-ScaleDiscreteIdentity <- ggproto("ScaleDiscreteIdentity", ScaleDiscrete,
+a_ScaleDiscreteIdentity <- a_ggproto("a_ScaleDiscreteIdentity", a_ScaleDiscrete,
   map = function(x) {
     if (is.factor(x)) {
       as.character(x)
@@ -128,7 +104,7 @@ ScaleDiscreteIdentity <- ggproto("ScaleDiscreteIdentity", ScaleDiscrete,
   train = function(self, x) {
     # do nothing if no guide, otherwise train so we know what breaks to use
     if (self$guide == "none") return()
-    ggproto_parent(ScaleDiscrete, self)$train(x)
+    a_ggproto_parent(a_ScaleDiscrete, self)$train(x)
   }
 )
 
@@ -137,7 +113,7 @@ ScaleDiscreteIdentity <- ggproto("ScaleDiscreteIdentity", ScaleDiscrete,
 #' @format NULL
 #' @usage NULL
 #' @export
-ScaleContinuousIdentity <- ggproto("ScaleContinuousIdentity", ScaleContinuous,
+a_ScaleContinuousIdentity <- a_ggproto("a_ScaleContinuousIdentity", a_ScaleContinuous,
   map = function(x) {
     if (is.factor(x)) {
       as.character(x)
@@ -149,6 +125,6 @@ ScaleContinuousIdentity <- ggproto("ScaleContinuousIdentity", ScaleContinuous,
   train = function(self, x) {
     # do nothing if no guide, otherwise train so we know what breaks to use
     if (self$guide == "none") return()
-    ggproto_parent(ScaleDiscrete, self)$train(x)
+    a_ggproto_parent(a_ScaleDiscrete, self)$train(x)
   }
 )

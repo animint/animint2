@@ -16,7 +16,7 @@ stat_sum <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatSum,
+    stat = a_StatSum,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -32,7 +32,7 @@ stat_sum <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-StatSum <- ggproto("StatSum", Stat,
+a_StatSum <- a_ggproto("a_StatSum", a_Stat,
   default_aes = aes(size = ..n..),
 
   required_aes = c("x", "y"),

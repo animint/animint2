@@ -24,7 +24,7 @@ stat_count <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatCount,
+    stat = a_StatCount,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -42,12 +42,15 @@ stat_count <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 #' @include stat-.r
-StatCount <- ggproto("StatCount", Stat,
+a_StatCount <- a_ggproto("a_StatCount", a_Stat,
   required_aes = "x",
   default_aes = aes(y = ..count..),
 
   setup_params = function(data, params) {
-    if (!is.null(data$y) || !is.null(params$y)) {
+    if (!is.null(data$y)){
+      stop("stat_count() must not be used with a y aesthetic.", call. = FALSE)
+    }
+    if (!is.null(params$y)) {
       stop("stat_count() must not be used with a y aesthetic.", call. = FALSE)
     }
     params

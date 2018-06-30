@@ -240,7 +240,7 @@ colsNotToCopy <- function(g, s.aes){
 checkForNonIdentityAndSS <- function(stat.type, has.show, is.show, l,
                                      g_classed, g_data_names,
                                      aes_names){
-  if(has.show && stat.type != "StatIdentity"){
+  if(has.show && stat.type != "a_StatIdentity"){
     show.names <- aes_names[is.show]
     data.has.show <- show.names %in% g_data_names
     signal <- if(all(data.has.show))warning else stop
@@ -632,6 +632,7 @@ checkSingleShowSelectedValue <- function(selectors){
 
 #' Set plot width and height for all plots
 #' @param meta meta object with all information
+#' @param AllPlotsInfo ....
 #' @return \code{NULL}. Sizes are stored in meta object
 setPlotSizes <- function(meta, AllPlotsInfo){
   # Set both width and height
@@ -639,7 +640,7 @@ setPlotSizes <- function(meta, AllPlotsInfo){
     size <- meta[[d]]
     if(is.list(size)){
       warning("option ", d, " is deprecated, ",
-              "use ggplot()+theme_animint(", d,
+              "use a_plot()+theme_animint(", d,
               "=", size[[1]],
               ") instead")
       if(is.null(names(size))){ #use this size for all plots.

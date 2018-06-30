@@ -12,15 +12,15 @@
 #'   y = c("a","c","d","c")
 #' )
 #'
-#' ggplot(df, aes(x, y)) +
+#' a_plot(df, aes(x, y)) +
 #'   geom_point() +
 #'   geom_text(aes(label = y))
 #'
-#' ggplot(df, aes(x, y)) +
+#' a_plot(df, aes(x, y)) +
 #'   geom_point() +
 #'   geom_text(aes(label = y), position = position_nudge(y = -0.1))
 position_nudge <- function(x = 0, y = 0) {
-  ggproto(NULL, PositionNudge,
+  a_ggproto(NULL, a_PositionNudge,
     x = x,
     y = y
   )
@@ -30,7 +30,7 @@ position_nudge <- function(x = 0, y = 0) {
 #' @format NULL
 #' @usage NULL
 #' @export
-PositionNudge <- ggproto("PositionNudge", Position,
+a_PositionNudge <- a_ggproto("a_PositionNudge", a_Position,
   x = 0,
   y = 0,
 

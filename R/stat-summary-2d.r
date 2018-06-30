@@ -27,7 +27,7 @@
 #' @param fun.args A list of extra arguments to pass to \code{fun}
 #' @export
 #' @examples
-#' d <- ggplot(diamonds, aes(carat, depth, z = price))
+#' d <- a_plot(diamonds, aes(carat, depth, z = price))
 #' d + stat_summary_2d()
 #'
 #' # Specifying function
@@ -52,7 +52,7 @@ stat_summary_2d <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatSummary2d,
+    stat = a_StatSummary2d,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -81,7 +81,7 @@ stat_summary2d <- function(...) {
 #' @format NULL
 #' @usage NULL
 #' @export
-StatSummary2d <- ggproto("StatSummary2d", Stat,
+a_StatSummary2d <- a_ggproto("a_StatSummary2d", a_Stat,
   default_aes = aes(fill = ..value..),
 
   required_aes = c("x", "y", "z"),
