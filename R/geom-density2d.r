@@ -4,7 +4,7 @@
 #' results with contours. This can be useful for dealing with overplotting.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "density_2d")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "density_2d")}
 #'
 #' @seealso \code{\link{geom_contour}} for contour drawing geom,
 #'  \code{\link{stat_sum}} for another way of dealing with overplotting
@@ -15,7 +15,7 @@
 #' @inheritParams geom_path
 #' @export
 #' @examples
-#' m <- ggplot(faithful, aes(x = eruptions, y = waiting)) +
+#' m <- a_plot(faithful, aes(x = eruptions, y = waiting)) +
 #'  geom_point() +
 #'  xlim(0.5, 6) +
 #'  ylim(40, 110)
@@ -25,7 +25,7 @@
 #'
 #' set.seed(4393)
 #' dsmall <- diamonds[sample(nrow(diamonds), 1000), ]
-#' d <- ggplot(dsmall, aes(x, y))
+#' d <- a_plot(dsmall, aes(x, y))
 #' # If you map an aesthetic to a categorical variable, you will get a
 #' # set of contours for each value of that variable
 #' d + geom_density_2d(aes(colour = cut))
@@ -48,7 +48,7 @@ geom_density_2d <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomDensity2d,
+    geom = a_GeomDensity2d,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -72,6 +72,6 @@ geom_density2d <- geom_density_2d
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomDensity2d <- ggproto("GeomDensity2d", GeomPath,
+a_GeomDensity2d <- a_ggproto("a_GeomDensity2d", a_GeomPath,
   default_aes = aes(colour = "#3366FF", size = 0.5, linetype = 1, alpha = NA)
 )

@@ -14,14 +14,14 @@
 #' # grammar.  Use with EXTREME caution.
 #'
 #' #' # A pie chart = stacked bar chart + polar coordinates
-#' pie <- ggplot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
+#' pie <- a_plot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
 #'  geom_bar(width = 1)
 #' pie + coord_polar(theta = "y")
 #'
 #' \donttest{
 #'
 #' # A coxcomb plot = bar chart + polar coordinates
-#' cxc <- ggplot(mtcars, aes(x = factor(cyl))) +
+#' cxc <- a_plot(mtcars, aes(x = factor(cyl))) +
 #'   geom_bar(width = 1, colour = "black")
 #' cxc + coord_polar()
 #' # A new type of plot?
@@ -35,7 +35,7 @@
 #'   variable = c("does not resemble", "resembles"),
 #'   value = c(20, 80)
 #' )
-#' ggplot(df, aes(x = "", y = value, fill = variable)) +
+#' a_plot(df, aes(x = "", y = value, fill = variable)) +
 #'   geom_bar(width = 1, stat = "identity") +
 #'   scale_fill_manual(values = c("red", "yellow")) +
 #'   coord_polar("y", start = pi / 3) +
@@ -46,7 +46,7 @@
 #' movies$rrating <- cut_interval(movies$rating, length = 1)
 #' movies$budgetq <- cut_number(movies$budget, 4)
 #'
-#' doh <- ggplot(movies, aes(x = rrating, fill = budgetq))
+#' doh <- a_plot(movies, aes(x = rrating, fill = budgetq))
 #'
 #' # Wind rose
 #' doh + geom_bar(width = 1) + coord_polar()
@@ -58,7 +58,7 @@ coord_polar <- function(theta = "x", start = 0, direction = 1) {
   theta <- match.arg(theta, c("x", "y"))
   r <- if (theta == "x") "y" else "x"
 
-  ggproto(NULL, CoordPolar,
+  a_ggproto(NULL, a_CoordPolar,
     theta = theta,
     r = r,
     start = start,
@@ -70,7 +70,7 @@ coord_polar <- function(theta = "x", start = 0, direction = 1) {
 #' @format NULL
 #' @usage NULL
 #' @export
-CoordPolar <- ggproto("CoordPolar", Coord,
+a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
 
   aspect = function(details) 1,
 

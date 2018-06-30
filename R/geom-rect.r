@@ -10,7 +10,7 @@ geom_rect <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomRect,
+    geom = a_GeomRect,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -25,7 +25,7 @@ geom_rect <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomRect <- ggproto("GeomRect", Geom,
+a_GeomRect <- a_ggproto("a_GeomRect", a_Geom,
   default_aes = aes(colour = NA, fill = "grey35", size = 0.5, linetype = 1,
     alpha = NA),
 
@@ -42,7 +42,7 @@ GeomRect <- ggproto("GeomRect", Geom,
         aes <- as.data.frame(row[aesthetics],
           stringsAsFactors = FALSE)[rep(1,5), ]
 
-        GeomPolygon$draw_panel(cbind(poly, aes), panel_scales, coord)
+        a_GeomPolygon$draw_panel(cbind(poly, aes), panel_scales, coord)
       })
 
       ggname("bar", do.call("grobTree", polys))
@@ -65,7 +65,7 @@ GeomRect <- ggproto("GeomRect", Geom,
     }
   },
 
-  draw_key = draw_key_polygon
+  draw_key = a_draw_key_polygon
 )
 
 

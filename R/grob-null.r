@@ -1,10 +1,9 @@
 #' The zero grob draws nothing and has zero size.
 #'
-#' @keywords internal
 #' @export
 zeroGrob <- function() .zeroGrob
 
-.zeroGrob <- grob(cl = "zeroGrob", name = "NULL")
+.zeroGrob <- grid::grob(cl = "zeroGrob", name = "NULL")
 #' @export
 #' @method widthDetails zeroGrob
 widthDetails.zeroGrob <- function(x) unit(0, "cm")

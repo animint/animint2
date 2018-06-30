@@ -1,9 +1,9 @@
-# Grob for axes
-#
-# @param position of ticks
-# @param labels at ticks
+#' Grob for axes
+#' @param at ...
+#' @param position of ticks
+#' @param labels at ticks
+#' @param theme ...
 # @param position of axis (top, bottom, left or right)
-# @param range of data values
 guide_axis <- function(at, labels, position = "right", theme) {
   if (length(at) == 0)
     return(zeroGrob())

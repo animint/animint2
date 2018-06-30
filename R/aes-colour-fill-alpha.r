@@ -9,7 +9,7 @@
 #' \donttest{
 #'
 #' # Bar chart example
-#' c <- ggplot(mtcars, aes(factor(cyl)))
+#' c <- a_plot(mtcars, aes(factor(cyl)))
 #' # Default plotting
 #' c + geom_bar()
 #' # To change the interior colouring use fill aesthetic
@@ -21,16 +21,16 @@
 #'
 #' # The aesthetic fill also takes different colouring scales
 #' # setting fill equal to a factor variable uses a discrete colour scale
-#' k <- ggplot(mtcars, aes(factor(cyl), fill = factor(vs)))
+#' k <- a_plot(mtcars, aes(factor(cyl), fill = factor(vs)))
 #' k + geom_bar()
 #'
 #' # Fill aesthetic can also be used with a continuous variable
-#' m <- ggplot(faithfuld, aes(waiting, eruptions))
+#' m <- a_plot(faithfuld, aes(waiting, eruptions))
 #' m + geom_raster()
 #' m + geom_raster(aes(fill = density))
 #'
 #' # Some geoms don't use both aesthetics (i.e. geom_point or geom_line)
-#' b <- ggplot(economics, aes(x = date, y = unemploy))
+#' b <- a_plot(economics, aes(x = date, y = unemploy))
 #' b + geom_line()
 #' b + geom_line(colour = "green")
 #' b + geom_point()
@@ -39,7 +39,7 @@
 #' # For large datasets with overplotting the alpha
 #' # aesthetic will make the points more transparent
 #' df <- data.frame(x = rnorm(5000), y = rnorm(5000))
-#' h  <- ggplot(df, aes(x,y))
+#' h  <- a_plot(df, aes(x,y))
 #' h + geom_point()
 #' h + geom_point(alpha = 0.5)
 #' h + geom_point(alpha = 1/10)

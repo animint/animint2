@@ -19,9 +19,9 @@ geom_vline <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatIdentity,
-    geom = GeomVline,
-    position = PositionIdentity,
+    stat = a_StatIdentity,
+    geom = a_GeomVline,
+    position = a_PositionIdentity,
     show.legend = show.legend,
     inherit.aes = FALSE,
     params = list(
@@ -35,7 +35,7 @@ geom_vline <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomVline <- ggproto("GeomVline", Geom,
+a_GeomVline <- a_ggproto("a_GeomVline", a_Geom,
   draw_panel = function(data, panel_scales, coord) {
     ranges <- coord$range(panel_scales)
 
@@ -44,11 +44,11 @@ GeomVline <- ggproto("GeomVline", Geom,
     data$y    <- ranges$y[1]
     data$yend <- ranges$y[2]
 
-    GeomSegment$draw_panel(unique(data), panel_scales, coord)
+    a_GeomSegment$draw_panel(unique(data), panel_scales, coord)
   },
 
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
   required_aes = "xintercept",
 
-  draw_key = draw_key_vline
+  draw_key = a_draw_key_vline
 )

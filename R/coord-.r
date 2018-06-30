@@ -1,16 +1,16 @@
-#' @section Coordinate systems:
+#' @section a_Coordinate systems:
 #'
-#' All \code{coord_*} functions (like \code{coord_trans}) return a \code{Coord*}
-#' object (like \code{CoordTrans}). The \code{Coord*} object is responsible for
+#' All \code{coord_*} functions (like \code{coord_trans}) return a \code{a_Coord*}
+#' object (like \code{a_CoordTrans}). The \code{a_Coord*} object is responsible for
 #' adjusting the position of overlapping geoms.
 #'
 #' The way that the \code{coord_*} functions work is slightly different from the
 #' \code{geom_*} and \code{stat_*} functions, because a \code{coord_*} function
-#' actually "instantiates" the \code{Coord*} object by creating a descendant,
+#' actually "instantiates" the \code{a_Coord*} object by creating a descendant,
 #' and returns that.
 #'
-#' Each of the \code{Coord*} objects is a \code{\link{ggproto}} object,
-#' descended from the top-level \code{Coord}.  To create a new type of Coord
+#' Each of the \code{a_Coord*} objects is a \code{\link{a_ggproto}} object,
+#' descended from the top-level \code{a_Coord}.  To create a new type of Coord
 #' object, you typically will want to implement one or more of the following:
 #'
 #' \itemize{
@@ -32,7 +32,7 @@
 #' @format NULL
 #' @usage NULL
 #' @export
-Coord <- ggproto("Coord",
+a_Coord <- a_ggproto("a_Coord",
 
   aspect = function(ranges) NULL,
 
@@ -74,7 +74,7 @@ Coord <- ggproto("Coord",
 #'
 #' @export is.Coord
 #' @keywords internal
-is.Coord <- function(x) inherits(x, "Coord")
+is.Coord <- function(x) inherits(x, "a_Coord")
 
 expand_default <- function(scale, discrete = c(0, 0.6), continuous = c(0.05, 0)) {
   scale$expand %|W|% if (scale$is_discrete()) discrete else continuous

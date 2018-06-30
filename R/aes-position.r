@@ -12,13 +12,13 @@
 #' dmod <- lm(price ~ cut, data = diamonds)
 #' cuts <- data.frame(cut = unique(diamonds$cut), predict(dmod, data.frame(cut =
 #' unique(diamonds$cut)), se = TRUE)[c("fit", "se.fit")])
-#' se <- ggplot(cuts, aes(x = cut, y = fit, ymin = fit - se.fit,
+#' se <- a_plot(cuts, aes(x = cut, y = fit, ymin = fit - se.fit,
 #' ymax = fit + se.fit, colour = cut))
 #' se + geom_pointrange()
 #'
 #' # Using annotate
-#' p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
-#' p + annotate("rect", xmin = 2, xmax = 3.5, ymin = 2, ymax = 25,
+#' p <- a_plot(mtcars, aes(wt, mpg)) + geom_point()
+#' p + animint2:::annotate("rect", xmin = 2, xmax = 3.5, ymin = 2, ymax = 25,
 #'   fill = "dark grey", alpha = .5)
 #'
 #' # Geom_segment examples
@@ -34,6 +34,6 @@
 #' counts$x <- as.numeric(as.character(counts$x))
 #' with(counts, plot(x, Freq, type = "h", lwd = 10))
 #'
-#' ggplot(counts, aes(x, Freq)) +
+#' a_plot(counts, aes(x, Freq)) +
 #'   geom_segment(aes(yend = 0, xend = x), size = 10)
 NULL

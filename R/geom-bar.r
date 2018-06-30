@@ -21,7 +21,7 @@
 #' the bars and then stretching or squashing to the same height.
 #'
 #' @section Aesthetics:
-#'   \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "bar")}
+#'   \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "bar")}
 #'
 #' @seealso \code{\link{geom_histogram}} for continuous data,
 #'   \code{\link{position_dodge}} for creating side-by-side barcharts.
@@ -37,7 +37,7 @@
 #' @examples
 #' # geom_bar is designed to make it easy to create bar charts that show
 #' # counts (or sums of weights)
-#' g <- ggplot(mpg, aes(class))
+#' g <- a_plot(mpg, aes(class))
 #' # Number of cars in each class:
 #' g + geom_bar()
 #' # Total engine displacement of each class
@@ -45,19 +45,19 @@
 #'
 #' # To show (e.g.) means, you need stat = "identity"
 #' df <- data.frame(trt = c("a", "b", "c"), outcome = c(2.3, 1.9, 3.2))
-#' ggplot(df, aes(trt, outcome)) +
+#' a_plot(df, aes(trt, outcome)) +
 #'   geom_bar(stat = "identity")
 #' # But geom_point() display exactly the same information and doesn't
 #' # require the y-axis to touch zero.
-#' ggplot(df, aes(trt, outcome)) +
+#' a_plot(df, aes(trt, outcome)) +
 #'   geom_point()
 #'
 #' # You can also use geom_bar() with continuous data, in which case
 #' # it will show counts at unique locations
 #' df <- data.frame(x = rep(c(2.9, 3.1, 4.5), c(5, 10, 4)))
-#' ggplot(df, aes(x)) + geom_bar()
+#' a_plot(df, aes(x)) + geom_bar()
 #' # cf. a histogram of the same data
-#' ggplot(df, aes(x)) + geom_histogram(binwidth = 0.5)
+#' a_plot(df, aes(x)) + geom_histogram(binwidth = 0.5)
 #'
 #' \donttest{
 #' # Bar charts are automatically stacked when multiple bars are placed
@@ -72,7 +72,7 @@
 #' reorder_size <- function(x) {
 #'   factor(x, levels = names(sort(table(x))))
 #' }
-#' ggplot(mpg, aes(reorder_size(class))) + geom_bar()
+#' a_plot(mpg, aes(reorder_size(class))) + geom_bar()
 #' }
 geom_bar <- function(mapping = NULL, data = NULL,
                      stat = "count", position = "stack",
@@ -95,7 +95,7 @@ geom_bar <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomBar,
+    geom = a_GeomBar,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -112,7 +112,7 @@ geom_bar <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 #' @include geom-rect.r
-GeomBar <- ggproto("GeomBar", GeomRect,
+a_GeomBar <- a_ggproto("a_GeomBar", a_GeomRect,
   required_aes = "x",
 
   setup_data = function(data, params) {
@@ -126,6 +126,6 @@ GeomBar <- ggproto("GeomBar", GeomRect,
 
   draw_panel = function(self, data, panel_scales, coord, width = NULL) {
     # Hack to ensure that width is detected as a parameter
-    ggproto_parent(GeomRect, self)$draw_panel(data, panel_scales, coord)
+    a_ggproto_parent(a_GeomRect, self)$draw_panel(data, panel_scales, coord)
   }
 )

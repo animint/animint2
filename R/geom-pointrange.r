@@ -11,7 +11,7 @@ geom_pointrange <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomPointrange,
+    geom = a_GeomPointrange,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -27,22 +27,22 @@ geom_pointrange <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomPointrange <- ggproto("GeomPointrange", Geom,
+a_GeomPointrange <- a_ggproto("a_GeomPointrange", a_Geom,
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, shape = 19,
     fill = NA, alpha = NA, stroke = 1),
 
-  draw_key = draw_key_pointrange,
+  draw_key = a_draw_key_pointrange,
 
   required_aes = c("x", "y", "ymin", "ymax"),
 
   draw_panel = function(data, panel_scales, coord, fatten = 4) {
     if (is.null(data$y))
-      return(GeomLinerange$draw_panel(data, panel_scales, coord))
+      return(a_GeomLinerange$draw_panel(data, panel_scales, coord))
 
     ggname("geom_pointrange",
       gTree(children = gList(
-        GeomLinerange$draw_panel(data, panel_scales, coord),
-        GeomPoint$draw_panel(transform(data, size = size * fatten), panel_scales, coord)
+        a_GeomLinerange$draw_panel(data, panel_scales, coord),
+        a_GeomPoint$draw_panel(transform(data, size = size * fatten), panel_scales, coord)
       ))
     )
   }

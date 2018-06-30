@@ -17,7 +17,7 @@
 #' See McGill et al. (1978) for more details.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "boxplot")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "boxplot")}
 #'
 #' @seealso \code{\link{stat_quantile}} to view quantiles conditioned on a
 #'   continuous variable, \code{\link{geom_jitter}} for another way to look
@@ -46,10 +46,10 @@
 #' @references McGill, R., Tukey, J. W. and Larsen, W. A. (1978) Variations of
 #'     box plots. The American Statistician 32, 12-16.
 #' @examples
-#' p <- ggplot(mpg, aes(class, hwy))
+#' p <- a_plot(mpg, aes(class, hwy))
 #' p + geom_boxplot()
 #' p + geom_boxplot() + geom_jitter(width = 0.2)
-#' p + geom_boxplot() + coord_flip()
+#' p + geom_boxplot() + animint2:::coord_flip()
 #'
 #' p + geom_boxplot(notch = TRUE)
 #' p + geom_boxplot(varwidth = TRUE)
@@ -63,9 +63,9 @@
 #'
 #' # You can also use boxplots with continuous x, as long as you supply
 #' # a grouping variable. cut_width is particularly useful
-#' ggplot(diamonds, aes(carat, price)) +
+#' a_plot(diamonds, aes(carat, price)) +
 #'   geom_boxplot()
-#' ggplot(diamonds, aes(carat, price)) +
+#' a_plot(diamonds, aes(carat, price)) +
 #'   geom_boxplot(aes(group = cut_width(carat, 0.25)))
 #'
 #' \donttest{
@@ -80,7 +80,7 @@
 #'   y75 = quantile(y, 0.75),
 #'   y100 = max(y)
 #' )
-#' ggplot(df, aes(x)) +
+#' a_plot(df, aes(x)) +
 #'   geom_boxplot(
 #'    aes(ymin = y0, lower = y25, middle = y50, upper = y75, ymax = y100),
 #'    stat = "identity"
@@ -104,7 +104,7 @@ geom_boxplot <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomBoxplot,
+    geom = a_GeomBoxplot,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -126,7 +126,7 @@ geom_boxplot <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomBoxplot <- ggproto("GeomBoxplot", Geom,
+a_GeomBoxplot <- a_ggproto("a_GeomBoxplot", a_Geom,
   setup_data = function(data, params) {
     data$width <- data$width %||%
       params$width %||% (resolution(data$x, FALSE) * 0.9)
@@ -207,19 +207,19 @@ GeomBoxplot <- ggproto("GeomBoxplot", Geom,
         alpha = NA,
         stringsAsFactors = FALSE
       )
-      outliers_grob <- GeomPoint$draw_panel(outliers, panel_scales, coord)
+      outliers_grob <- a_GeomPoint$draw_panel(outliers, panel_scales, coord)
     } else {
       outliers_grob <- NULL
     }
 
     ggname("geom_boxplot", grobTree(
       outliers_grob,
-      GeomSegment$draw_panel(whiskers, panel_scales, coord),
-      GeomCrossbar$draw_panel(box, fatten = fatten, panel_scales, coord)
+      a_GeomSegment$draw_panel(whiskers, panel_scales, coord),
+      a_GeomCrossbar$draw_panel(box, fatten = fatten, panel_scales, coord)
     ))
   },
 
-  draw_key = draw_key_boxplot,
+  draw_key = a_draw_key_boxplot,
 
   default_aes = aes(weight = 1, colour = "grey20", fill = "white", size = 0.5,
     alpha = NA, shape = 19, linetype = "solid"),

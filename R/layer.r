@@ -14,7 +14,7 @@
 #'    options:
 #'
 #'    If \code{NULL}, the default, the data is inherited from the plot
-#'    data as specified in the call to \code{\link{ggplot}}.
+#'    data as specified in the call to \code{\link{a_plot}}.
 #'
 #'    A \code{data.frame}, or other object, will override the plot
 #'    data. All objects will be fortified to produce a data frame. See
@@ -40,15 +40,15 @@
 #'   layer.
 #' @examples
 #' # geom calls are just a short cut for layer
-#' ggplot(mpg, aes(displ, hwy)) + geom_point()
+#' a_plot(mpg, aes(displ, hwy)) + geom_point()
 #' # shortcut for
-#' ggplot(mpg, aes(displ, hwy)) +
+#' a_plot(mpg, aes(displ, hwy)) +
 #'   layer(geom = "point", stat = "identity", position = "identity",
 #'     params = list(na.rm = FALSE)
 #'   )
 #'
 #' # use a function as data to plot a subset of global data
-#' ggplot(mpg, aes(displ, hwy)) +
+#' a_plot(mpg, aes(displ, hwy)) +
 #'   layer(geom = "point", stat = "identity", position = "identity",
 #'     data = head, params = list(na.rm = FALSE)
 #'   )
@@ -82,11 +82,11 @@ layer <- function(geom = NULL, stat = NULL,
   }
 
   if (is.character(geom))
-    geom <- find_subclass("Geom", geom)
+    geom <- find_subclass("a_Geom", geom)
   if (is.character(stat))
-    stat <- find_subclass("Stat", stat)
+    stat <- find_subclass("a_Stat", stat)
   if (is.character(position))
-    position <- find_subclass("Position", position)
+    position <- find_subclass("a_Position", position)
 
   # Special case for na.rm parameter needed by all layers
   if (is.null(params$na.rm)) {
@@ -116,9 +116,10 @@ layer <- function(geom = NULL, stat = NULL,
   }else if (length(extra) > 0) {
     extra <- extra[!extra == "validate_params"]
     extra_params <- params[extra]
+    validate_params <- FALSE
   }
 
-  ggproto("LayerInstance", Layer,
+  a_ggproto("a_LayerInstance", a_Layer,
     geom = geom,
     geom_params = geom_params,
     stat = stat,
@@ -134,7 +135,7 @@ layer <- function(geom = NULL, stat = NULL,
   )
 }
 
-Layer <- ggproto("Layer", NULL,
+a_Layer <- a_ggproto("a_Layer", NULL,
   geom = NULL,
   geom_params = NULL,
   stat = NULL,
@@ -145,7 +146,6 @@ Layer <- ggproto("Layer", NULL,
   position = NULL,
   inherit.aes = FALSE,
   extra_params = NULL,
-
   print = function(self) {
     if (!is.null(self$mapping)) {
       cat("mapping:", clist(self$mapping), "\n")
@@ -302,7 +302,7 @@ Layer <- ggproto("Layer", NULL,
   }
 )
 
-is.layer <- function(x) inherits(x, "Layer")
+is.layer <- function(x) inherits(x, "a_Layer")
 
 
 find_subclass <- function(super, class) {

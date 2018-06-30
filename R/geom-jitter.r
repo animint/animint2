@@ -5,7 +5,7 @@
 #' in smaller datasets.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "point")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "point")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point
@@ -16,7 +16,7 @@
 #'     distribution of a variable
 #' @export
 #' @examples
-#' p <- ggplot(mpg, aes(cyl, hwy))
+#' p <- a_plot(mpg, aes(cyl, hwy))
 #' p + geom_point()
 #' p + geom_jitter()
 #'
@@ -24,12 +24,12 @@
 #' p + geom_jitter(aes(colour = class))
 #'
 #' # Use smaller width/height to emphasise categories
-#' ggplot(mpg, aes(cyl, hwy)) + geom_jitter()
-#' ggplot(mpg, aes(cyl, hwy)) + geom_jitter(width = 0.25)
+#' a_plot(mpg, aes(cyl, hwy)) + geom_jitter()
+#' a_plot(mpg, aes(cyl, hwy)) + geom_jitter(width = 0.25)
 #'
 #' # Use larger width/height to completely smooth away discreteness
-#' ggplot(mpg, aes(cty, hwy)) + geom_jitter()
-#' ggplot(mpg, aes(cty, hwy)) + geom_jitter(width = 0.5, height = 0.5)
+#' a_plot(mpg, aes(cty, hwy)) + geom_jitter()
+#' a_plot(mpg, aes(cty, hwy)) + geom_jitter(width = 0.5, height = 0.5)
 geom_jitter <- function(mapping = NULL, data = NULL,
                         stat = "identity", position = "jitter",
                         ...,
@@ -50,7 +50,7 @@ geom_jitter <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomPoint,
+    geom = a_GeomPoint,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

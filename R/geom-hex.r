@@ -1,7 +1,7 @@
 #' Hexagon binning.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "hex")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "hex")}
 #'
 #' @seealso \code{\link{stat_bin2d}} for rectangular binning
 #' @param geom,stat Override the default connection between \code{geom_hex} and
@@ -11,7 +11,7 @@
 #' @inheritParams geom_point
 #' @export
 #' @examples
-#' d <- ggplot(diamonds, aes(carat, price))
+#' d <- a_plot(diamonds, aes(carat, price))
 #' d + geom_hex()
 #'
 #' \donttest{
@@ -34,7 +34,7 @@ geom_hex <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomHex,
+    geom = a_GeomHex,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -50,9 +50,9 @@ geom_hex <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomHex <- ggproto("GeomHex", Geom,
+a_GeomHex <- a_ggproto("a_GeomHex", a_Geom,
   draw_group = function(data, panel_scales, coord) {
-    if (!inherits(coord, "CoordCartesian")) {
+    if (!inherits(coord, "a_CoordCartesian")) {
       stop("geom_hex() only works with Cartesian coordinates", call. = FALSE)
     }
 
@@ -67,7 +67,7 @@ GeomHex <- ggproto("GeomHex", Geom,
 
   default_aes = aes(colour = NA, fill = "grey50", size = 0.5, alpha = NA),
 
-  draw_key = draw_key_polygon
+  draw_key = a_draw_key_polygon
 )
 
 

@@ -1,18 +1,18 @@
 #' @include legend-draw.r
 NULL
 
-#' @section Geoms:
+#' @section a_Geoms:
 #'
 #' All \code{geom_*} functions (like \code{geom_point}) return a layer that
-#' contains a \code{Geom*} object (like \code{GeomPoint}). The \code{Geom*}
+#' contains a \code{a_Geom*} object (like \code{a_GeomPoint}). The \code{a_Geom*}
 #' object is responsible for rendering the data in the plot.
 #'
-#' Each of the \code{Geom*} objects is a \code{\link{ggproto}} object, descended
-#' from the top-level \code{Geom}, and each implements various methods and
+#' Each of the \code{a_Geom*} objects is a \code{\link{a_ggproto}} object, descended
+#' from the top-level \code{a)Geom}, and each implements various methods and
 #' fields. To create a new type of Geom object, you typically will want to
 #' implement one or more of the following:
 #'
-#' Compared to \code{Stat} and \code{Position}, \code{Geom} is a little
+#' Compared to \code{a_Stat} and \code{a_Position}, \code{a_Geom} is a little
 #' different because the execution of the setup and compute functions is
 #' split up. \code{setup_data} runs before position adjustments, and
 #' \code{draw_layer} is not run until render time,  much later. This
@@ -51,13 +51,13 @@ NULL
 #' @format NULL
 #' @usage NULL
 #' @export
-Geom <- ggproto("Geom",
+a_Geom <- a_ggproto("a_Geom",
   required_aes = character(),
   non_missing_aes = character(),
 
   default_aes = aes(),
 
-  draw_key = draw_key_point,
+  draw_key = a_draw_key_point,
 
   handle_na = function(self, data, params) {
     remove_missing(data, params$na.rm,
@@ -127,12 +127,12 @@ Geom <- ggproto("Geom",
 
   parameters = function(self, extra = FALSE) {
     # Look first in draw_panel. If it contains ... then look in draw groups
-    panel_args <- names(ggproto_formals(self$draw_panel))
-    group_args <- names(ggproto_formals(self$draw_group))
+    panel_args <- names(a_ggproto_formals(self$draw_panel))
+    group_args <- names(a_ggproto_formals(self$draw_group))
     args <- if ("..." %in% panel_args) group_args else panel_args
 
     # Remove arguments of defaults
-    args <- setdiff(args, names(ggproto_formals(Geom$draw_group)))
+    args <- setdiff(args, names(a_ggproto_formals(a_Geom$draw_group)))
 
     if (extra) {
       args <- union(args, self$extra_params)

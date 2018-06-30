@@ -12,12 +12,12 @@
 #' if (require("maps")) {
 #' ca <- map("county", "ca", plot = FALSE, fill = TRUE)
 #' head(fortify(ca))
-#' ggplot(ca, aes(long, lat)) +
+#' a_plot(ca, aes(long, lat)) +
 #'   geom_polygon(aes(group = group))
 #'
 #' tx <- map("county", "texas", plot = FALSE, fill = TRUE)
 #' head(fortify(tx))
-#' ggplot(tx, aes(long, lat)) +
+#' a_plot(tx, aes(long, lat)) +
 #'   geom_polygon(aes(group = group), colour = "white")
 #' }
 fortify.map <- function(model, data, ...) {
@@ -55,13 +55,13 @@ fortify.map <- function(model, data, ...) {
 #'
 #' choro <- merge(states, arrests, sort = FALSE, by = "region")
 #' choro <- choro[order(choro$order), ]
-#' ggplot(choro, aes(long, lat)) +
+#' a_plot(choro, aes(long, lat)) +
 #'   geom_polygon(aes(group = group, fill = assault)) +
-#'   coord_map("albers",  at0 = 45.5, lat1 = 29.5)
+#'   ggplot2Animint:::coord_map("albers",  at0 = 45.5, lat1 = 29.5)
 #'
-#' ggplot(choro, aes(long, lat)) +
+#' a_plot(choro, aes(long, lat)) +
 #'   geom_polygon(aes(group = group, fill = assault / murder)) +
-#'   coord_map("albers",  at0 = 45.5, lat1 = 29.5)
+#'   ggplot2Animint:::coord_map("albers",  at0 = 45.5, lat1 = 29.5)
 #' }
 map_data <- function(map, region = ".", exact = FALSE, ...) {
   try_require("maps", "map_data")
@@ -77,31 +77,31 @@ map_data <- function(map, region = ".", exact = FALSE, ...) {
 #' @param xlim,ylim latitudinal and logitudinal range for extracting map
 #'   polygons, see \code{\link[maps]{map}} for details.
 #' @param ... other arguments passed onto \code{\link{geom_polygon}}
-#' @export
+#' @keywords internal
 #' @examples
 #' if (require("maps")) {
 #'
 #' ia <- map_data("county", "iowa")
 #' mid_range <- function(x) mean(range(x))
 #' seats <- plyr::ddply(ia, "subregion", plyr::colwise(mid_range, c("lat", "long")))
-#' ggplot(ia, aes(long, lat)) +
+#' a_plot(ia, aes(long, lat)) +
 #'   geom_polygon(aes(group = group), fill = NA, colour = "grey60") +
 #'   geom_text(aes(label = subregion), data = seats, size = 2, angle = 45)
 #'
 #' data(us.cities)
 #' capitals <- subset(us.cities, capital == 2)
-#' ggplot(capitals, aes(long, lat)) +
-#'   borders("state") +
+#' a_plot(capitals, aes(long, lat)) +
+#'   ggplot2Animint:::borders("state") +
 #'   geom_point(aes(size = pop)) +
 #'   scale_size_area() +
-#'   coord_quickmap()
+#'   ggplot2Animint:::coord_quickmap()
 #'
 #' # Same map, with some world context
-#' ggplot(capitals, aes(long, lat)) +
-#'   borders("world", xlim = c(-130, -60), ylim = c(20, 50)) +
+#' a_plot(capitals, aes(long, lat)) +
+#'   ggplot2Animint:::borders("world", xlim = c(-130, -60), ylim = c(20, 50)) +
 #'   geom_point(aes(size = pop)) +
 #'   scale_size_area() +
-#'   coord_quickmap()
+#'   ggplot2Animint:::coord_quickmap()
 #' }
 borders <- function(database = "world", regions = ".", fill = NA,
                     colour = "grey50", xlim = NULL, ylim = NULL, ...) {

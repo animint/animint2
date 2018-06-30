@@ -15,14 +15,14 @@
 #' # ensures that the ranges of axes are equal to the specified ratio by
 #' # adjusting the plot aspect ratio
 #'
-#' p <- ggplot(mtcars, aes(mpg, wt)) + geom_point()
+#' p <- a_plot(mtcars, aes(mpg, wt)) + geom_point()
 #' p + coord_fixed(ratio = 1)
 #' p + coord_fixed(ratio = 5)
 #' p + coord_fixed(ratio = 1/5)
 #'
 #' # Resize the plot to see that the specified aspect ratio is maintained
 coord_fixed <- function(ratio = 1, xlim = NULL, ylim = NULL, expand = TRUE) {
-  ggproto(NULL, CoordFixed,
+  a_ggproto(NULL, a_CoordFixed,
     limits = list(x = xlim, y = ylim),
     ratio = ratio,
     expand = expand
@@ -39,7 +39,7 @@ coord_equal <- coord_fixed
 #' @format NULL
 #' @usage NULL
 #' @export
-CoordFixed <- ggproto("CoordFixed", CoordCartesian,
+a_CoordFixed <- a_ggproto("a_CoordFixed", a_CoordCartesian,
 
   aspect = function(self, ranges) {
     diff(ranges$y.range) / diff(ranges$x.range) * self$ratio

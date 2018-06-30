@@ -1,7 +1,7 @@
 #' Marginal rug plots.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "rug")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "rug")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point
@@ -10,7 +10,7 @@
 #'   bottom, and left.
 #' @export
 #' @examples
-#' p <- ggplot(mtcars, aes(wt, mpg))
+#' p <- a_plot(mtcars, aes(wt, mpg))
 #' p + geom_point()
 #' p + geom_point() + geom_rug()
 #' p + geom_point() + geom_rug(sides="b")    # Rug on bottom only
@@ -27,7 +27,7 @@ geom_rug <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomRug,
+    geom = a_GeomRug,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -44,7 +44,7 @@ geom_rug <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomRug <- ggproto("GeomRug", Geom,
+a_GeomRug <- a_ggproto("a_GeomRug", a_Geom,
   draw_panel = function(data, panel_scales, coord, sides = "bl") {
     rugs <- list()
     data <- coord$transform(data, panel_scales)
@@ -91,5 +91,5 @@ GeomRug <- ggproto("GeomRug", Geom,
 
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
 
-  draw_key = draw_key_path
+  draw_key = a_draw_key_path
 )

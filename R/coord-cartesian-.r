@@ -14,7 +14,7 @@
 #' # There are two ways of zooming the plot display: with scales or
 #' # with coordinate systems.  They work in two rather different ways.
 #'
-#' p <- ggplot(mtcars, aes(disp, wt)) +
+#' p <- a_plot(mtcars, aes(disp, wt)) +
 #'   geom_point() +
 #'   geom_smooth()
 #' p
@@ -36,7 +36,7 @@
 #' p + coord_cartesian(expand = FALSE)
 #'
 #' # You can see the same thing with this 2d histogram
-#' d <- ggplot(diamonds, aes(carat, price)) +
+#' d <- a_plot(diamonds, aes(carat, price)) +
 #'   stat_bin2d(bins = 25, colour = "white")
 #' d
 #'
@@ -48,7 +48,7 @@
 #' # displayed bigger
 #' d + coord_cartesian(xlim = c(0, 1))
 coord_cartesian <- function(xlim = NULL, ylim = NULL, expand = TRUE) {
-  ggproto(NULL, CoordCartesian,
+  a_ggproto(NULL, a_CoordCartesian,
     limits = list(x = xlim, y = ylim),
     expand = expand
   )
@@ -58,7 +58,7 @@ coord_cartesian <- function(xlim = NULL, ylim = NULL, expand = TRUE) {
 #' @format NULL
 #' @usage NULL
 #' @export
-CoordCartesian <- ggproto("CoordCartesian", Coord,
+a_CoordCartesian <- a_ggproto("a_CoordCartesian", a_Coord,
 
   is_linear = function() TRUE,
 

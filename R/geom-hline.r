@@ -19,9 +19,9 @@ geom_hline <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatIdentity,
-    geom = GeomHline,
-    position = PositionIdentity,
+    stat = a_StatIdentity,
+    geom = a_GeomHline,
+    position = a_PositionIdentity,
     show.legend = show.legend,
     inherit.aes = FALSE,
     params = list(
@@ -35,7 +35,7 @@ geom_hline <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomHline <- ggproto("GeomHline", Geom,
+a_GeomHline <- a_ggproto("a_GeomHline", a_Geom,
   draw_panel = function(data, panel_scales, coord) {
     ranges <- coord$range(panel_scales)
 
@@ -44,11 +44,11 @@ GeomHline <- ggproto("GeomHline", Geom,
     data$y    <- data$yintercept
     data$yend <- data$yintercept
 
-    GeomSegment$draw_panel(unique(data), panel_scales, coord)
+    a_GeomSegment$draw_panel(unique(data), panel_scales, coord)
   },
 
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
   required_aes = "yintercept",
 
-  draw_key = draw_key_path
+  draw_key = a_draw_key_path
 )

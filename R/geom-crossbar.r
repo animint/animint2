@@ -11,7 +11,7 @@ geom_crossbar <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomCrossbar,
+    geom = a_GeomCrossbar,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -27,9 +27,9 @@ geom_crossbar <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomCrossbar <- ggproto("GeomCrossbar", Geom,
+a_GeomCrossbar <- a_ggproto("a_GeomCrossbar", a_Geom,
   setup_data = function(data, params) {
-    GeomErrorbar$setup_data(data, params)
+    a_GeomErrorbar$setup_data(data, params)
   },
 
   default_aes = aes(colour = "black", fill = NA, size = 0.5, linetype = 1,
@@ -37,7 +37,7 @@ GeomCrossbar <- ggproto("GeomCrossbar", Geom,
 
   required_aes = c("x", "y", "ymin", "ymax"),
 
-  draw_key = draw_key_crossbar,
+  draw_key = a_draw_key_crossbar,
 
   draw_panel = function(data, panel_scales, coord, fatten = 2.5, width = NULL) {
     middle <- transform(data, x = xmin, xend = xmax, yend = y, size = size * fatten, alpha = NA)
@@ -88,8 +88,8 @@ GeomCrossbar <- ggproto("GeomCrossbar", Geom,
     }
 
     ggname("geom_crossbar", gTree(children = gList(
-      GeomPolygon$draw_panel(box, panel_scales, coord),
-      GeomSegment$draw_panel(middle, panel_scales, coord)
+      a_GeomPolygon$draw_panel(box, panel_scales, coord),
+      a_GeomSegment$draw_panel(middle, panel_scales, coord)
     )))
   }
 )

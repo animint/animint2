@@ -25,7 +25,7 @@ geom_raster <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomRaster,
+    geom = a_GeomRaster,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -43,7 +43,7 @@ geom_raster <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomRaster <- ggproto("GeomRaster", Geom,
+a_GeomRaster <- a_ggproto("a_GeomRaster", a_Geom,
   default_aes = aes(fill = "grey20", alpha = NA),
   non_missing_aes = "fill",
   required_aes = c("x", "y"),
@@ -64,7 +64,7 @@ GeomRaster <- ggproto("GeomRaster", Geom,
 
   draw_panel = function(data, panel_scales, coord, interpolate = FALSE,
                         hjust = 0.5, vjust = 0.5) {
-    if (!inherits(coord, "CoordCartesian")) {
+    if (!inherits(coord, "a_CoordCartesian")) {
       stop("geom_raster only works with Cartesian coordinates", call. = FALSE)
     }
     data <- coord$transform(data, panel_scales)
@@ -89,5 +89,5 @@ GeomRaster <- ggproto("GeomRaster", Geom,
       default.units = "native", interpolate = interpolate
     )
   },
-  draw_key = draw_key_rect
+  draw_key = a_draw_key_rect
 )

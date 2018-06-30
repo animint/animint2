@@ -4,7 +4,7 @@
 #' differences. Notably, it cleanly supports cross-package inheritance, and has
 #' faster performance.
 #'
-#' @section Calling ggproto methods:
+#' @section Calling a_ggproto methods:
 #'
 #' ggproto methods can take an optional \code{self} argument: if it is present,
 #' it is a regular method; if it's absent, it's a "static" method (i.e. it
@@ -19,7 +19,7 @@
 #' @section Calling methods in a parent:
 #'
 #' To explicitly call a methods in a parent, use
-#' \code{ggproto_parent(Parent, self)}.
+#' \code{a_ggproto_parent(Parent, self)}.
 #'
 #' @param _class Class name to assign to the object. This is stored as the class
 #'   attribute of the object. If \code{NULL} (the default), no class name will
@@ -29,7 +29,7 @@
 #' @param parent,self Access parent class \code{parent} of object \code{self}.
 #' @param ... A list of members in the ggproto object.
 #' @export
-ggproto <- function(`_class` = NULL, `_inherit` = NULL, ...) {
+a_ggproto <- function(`_class` = NULL, `_inherit` = NULL, ...) {
   e <- new.env(parent = emptyenv())
 
   members <- list(...)
@@ -43,27 +43,35 @@ ggproto <- function(`_class` = NULL, `_inherit` = NULL, ...) {
     list2env(members, envir = e)
   }
 
-  if (!is.null(`_inherit`)) {
-    if (!is.ggproto(`_inherit`)) {
-      stop("`_inherit` must be a ggproto object.")
-    }
-    e$super <- `_inherit`
-    class(e) <- c(`_class`, class(`_inherit`))
+  # Dynamically capture parent: this is necessary in order to avoid
+  # capturing the parent at package build time.
+  `_inherit` <- substitute(`_inherit`)
+  env <- parent.frame()
+  find_super <- function() {
+    eval(`_inherit`, env, NULL)
+  }
 
+  super <- find_super()
+  if (!is.null(super)) {
+    if (!is.a_ggproto(super)) {
+      stop("`_inherit` must be a a_ggproto object.")
+    }
+    e$super <- find_super
+    class(e) <- c(`_class`, class(super))
   } else {
-    class(e) <- c(`_class`, "ggproto")
+    class(e) <- c(`_class`, "a_ggproto")
   }
 
   e
 }
 
-#' Is an object a ggproto object?
+#' Is an object a a_ggproto object?
 #'
 #' @param x An object to test.
 #' @export
-is.ggproto <- function(x) inherits(x, "ggproto")
+is.a_ggproto <- function(x) inherits(x, "a_ggproto")
 
-fetch_ggproto <- function(x, name) {
+a_fetch_ggproto <- function(x, name) {
   res <- NULL
 
   val <- .subset2(x, name)
@@ -74,40 +82,49 @@ fetch_ggproto <- function(x, name) {
   } else {
     # If not found here, recurse into super environments
     super <- .subset2(x, "super")
-    if (is.ggproto(super))
-      res <- fetch_ggproto(super, name)
+    if (is.null(super)) {
+      # no super class
+    } else if (is.function(super)) {
+      res <- a_fetch_ggproto(super(), name)
+    } else {
+      stop(
+        class(x)[[1]], " was built with an incompatible version of ggproto.\n",
+        "Please reinstall the package that provides this extension.",
+        call. = FALSE
+      )
+    }
   }
 
   res
 }
 
 #' @export
-#' @rdname ggproto
-ggproto_parent <- function(parent, self) {
-  structure(list(parent = parent, self = self), class = "ggproto_parent")
+#' @rdname a_ggproto
+a_ggproto_parent <- function(parent, self) {
+  structure(list(parent = parent, self = self), class = "a_ggproto_parent")
 }
 
 #' @export
-`$.ggproto` <- function(x, name) {
-  res <- fetch_ggproto(x, name)
+`$.a_ggproto` <- function(x, name) {
+  res <- a_fetch_ggproto(x, name)
   if (!is.function(res)) {
     return(res)
   }
 
-  make_proto_method(x, res)
+  a_make_proto_method(x, res)
 }
 
 #' @export
-`$.ggproto_parent` <- function(x, name) {
-  res <- fetch_ggproto(.subset2(x, "parent"), name)
+`$.a_ggproto_parent` <- function(x, name) {
+  res <- a_fetch_ggproto(.subset2(x, "parent"), name)
   if (!is.function(res)) {
     return(res)
   }
 
-  make_proto_method(.subset2(x, "self"), res)
+  a_make_proto_method(.subset2(x, "self"), res)
 }
 
-make_proto_method <- function(self, f) {
+a_make_proto_method <- function(self, f) {
   args <- formals(f)
   # is.null is a fast path for a common case; the %in% check is slower but also
   # catches the case where there's a `self = NULL` argument.
@@ -119,13 +136,13 @@ make_proto_method <- function(self, f) {
     fun <- function(...) f(...)
   }
 
-  class(fun) <- "ggproto_method"
+  class(fun) <- "a_ggproto_method"
   fun
 }
 
 
 #' @export
-`[[.ggproto` <- `$.ggproto`
+`[[.a_ggproto` <- `$.a_ggproto`
 
 #' Convert a ggproto object to a list
 #'
@@ -136,12 +153,12 @@ make_proto_method <- function(self, f) {
 #'   the returned list. If \code{FALSE}, do not include any inherited items.
 #' @param ... Further arguments to pass to \code{as.list.environment}.
 #' @export
-as.list.ggproto <- function(x, inherit = TRUE, ...) {
+as.list.a_ggproto <- function(x, inherit = TRUE, ...) {
   res <- list()
 
   if (inherit) {
-    if (!is.null(x$super)) {
-      res <- as.list(x$super)
+    if (is.function(x$super)) {
+      res <- as.list(x$super())
     }
   }
 
@@ -165,7 +182,7 @@ as.list.ggproto <- function(x, inherit = TRUE, ...) {
 #'   will be passed to it. Otherwise, these arguments are unused.
 #'
 #' @export
-print.ggproto <- function(x, ..., flat = TRUE) {
+print.a_ggproto <- function(x, ..., flat = TRUE) {
   if (is.function(x$print)) {
     x$print(...)
 
@@ -178,11 +195,11 @@ print.ggproto <- function(x, ..., flat = TRUE) {
 
 #' Format a ggproto object
 #'
-#' @inheritParams print.ggproto
+#' @inheritParams print.a_ggproto
 #' @export
-format.ggproto <-  function(x, ..., flat = TRUE) {
+format.a_ggproto <-  function(x, ..., flat = TRUE) {
   classes_str <- function(obj) {
-    classes <- setdiff(class(obj), "ggproto")
+    classes <- setdiff(class(obj), "a_ggproto")
     if (length(classes) == 0)
       return("")
     paste0(": Class ", paste(classes, collapse = ', '))
@@ -200,11 +217,11 @@ format.ggproto <-  function(x, ..., flat = TRUE) {
     indent(object_summaries(objs, flat = flat), 4)
   )
 
-  if (flat && !is.null(x$super)) {
+  if (flat && is.function(x$super)) {
     str <- paste0(
       str, "\n",
       indent(
-        paste0("super: ", " <ggproto object", classes_str(x$super), ">"),
+        paste0("super: ", " <ggproto object", classes_str(x$super()), ">"),
         4
       )
     )
@@ -229,7 +246,7 @@ object_summaries <- function(x, exclude = NULL, flat = TRUE) {
   values <- vapply(obj_names, function(name) {
     obj <- x[[name]]
     if (is.function(obj)) "function"
-    else if (is.ggproto(obj)) format(obj, flat = flat)
+    else if (is.a_ggproto(obj)) format(obj, flat = flat)
     else if (is.environment(obj)) "environment"
     else if (is.null(obj)) "NULL"
     else if (is.atomic(obj)) trim(paste(as.character(obj), collapse = " "))
@@ -243,9 +260,9 @@ object_summaries <- function(x, exclude = NULL, flat = TRUE) {
 # The exception is to not add spaces after a trailing \n.
 indent <- function(str, indent = 0) {
   gsub("(\\n|^)(?!$)",
-    paste0("\\1", paste(rep(" ", indent), collapse = "")),
-    str,
-    perl = TRUE
+       paste0("\\1", paste(rep(" ", indent), collapse = "")),
+       str,
+       perl = TRUE
   )
 }
 
@@ -256,12 +273,12 @@ trim <- function(str, n = 60) {
 }
 
 #' @export
-print.ggproto_method <- function(x, ...) {
+print.a_ggproto_method <- function(x, ...) {
   cat(format(x), sep = "")
 }
 
 #' @export
-format.ggproto_method <- function(x, ...) {
+format.a_ggproto_method <- function(x, ...) {
 
   # Given a function, return a string from srcref if present. If not present,
   # paste the deparsed lines of code together.
@@ -281,5 +298,5 @@ format.ggproto_method <- function(x, ...) {
   )
 }
 
-# proto2 TODO: better way of getting formals for self$draw
-ggproto_formals <- function(x) formals(environment(x)$f)
+#proto2 TODO: better way of getting formals for self$draw
+a_ggproto_formals <- function(x) formals(environment(x)$f)

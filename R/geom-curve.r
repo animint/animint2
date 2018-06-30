@@ -16,7 +16,7 @@ geom_curve <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomCurve,
+    geom = a_GeomCurve,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -37,7 +37,7 @@ geom_curve <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomCurve <- ggproto("GeomCurve", GeomSegment,
+a_GeomCurve <- a_ggproto("a_GeomCurve", a_GeomSegment,
   draw_panel = function(data, panel_scales, coord, curvature = 0.5, angle = 90,
                         ncp = 5, arrow = NULL, lineend = "butt", na.rm = FALSE) {
     if (!coord$is_linear()) {

@@ -10,7 +10,7 @@ geom_errorbar <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomErrorbar,
+    geom = a_GeomErrorbar,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -25,11 +25,11 @@ geom_errorbar <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomErrorbar <- ggproto("GeomErrorbar", Geom,
+a_GeomErrorbar <- a_ggproto("a_GeomErrorbar", a_Geom,
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, width = 0.5,
     alpha = NA),
 
-  draw_key = draw_key_path,
+  draw_key = a_draw_key_path,
 
   required_aes = c("x", "ymin", "ymax"),
 
@@ -43,7 +43,7 @@ GeomErrorbar <- ggproto("GeomErrorbar", Geom,
   },
 
   draw_panel = function(data, panel_scales, coord, width = NULL) {
-    GeomPath$draw_panel(data.frame(
+    a_GeomPath$draw_panel(data.frame(
       x = as.vector(rbind(data$xmin, data$xmax, NA, data$x,    data$x,    NA, data$xmin, data$xmax)),
       y = as.vector(rbind(data$ymax, data$ymax, NA, data$ymax, data$ymin, NA, data$ymin, data$ymin)),
       colour = rep(data$colour, each = 8),

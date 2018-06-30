@@ -11,7 +11,7 @@
 #' resize a plot, labels stay the same size, but the size of the axes changes.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "text")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "text")}
 #'
 #' @section \code{geom_label}:
 #' Currently \code{geom_label} does not support the \code{rot} parameter and
@@ -36,7 +36,7 @@
 #'   same layer will not be plotted. A quick and dirty way
 #' @export
 #' @examples
-#' p <- ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars)))
+#' p <- a_plot(mtcars, aes(wt, mpg, label = rownames(mtcars)))
 #'
 #' p + geom_text()
 #' # Avoid overlaps
@@ -74,7 +74,8 @@
 #' # Add a text annotation
 #' p +
 #'   geom_text() +
-#'   annotate("text", label = "plot mpg vs. wt", x = 2, y = 15, size = 8, colour = "red")
+#'   animint2:::annotate("text",
+#'   label = "plot mpg vs. wt", x = 2, y = 15, size = 8, colour = "red")
 #'
 #' \donttest{
 #' # Aligning labels and bars --------------------------------------------------
@@ -86,15 +87,15 @@
 #'
 #' # ggplot2 doesn't know you want to give the labels the same virtual width
 #' # as the bars:
-#' ggplot(data = df, aes(x, y, fill = grp, label = y)) +
+#' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
 #'   geom_bar(stat = "identity", position = "dodge") +
 #'   geom_text(position = "dodge")
 #' # So tell it:
-#' ggplot(data = df, aes(x, y, fill = grp, label = y)) +
+#' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
 #'   geom_bar(stat = "identity", position = "dodge") +
 #'   geom_text(position = position_dodge(0.9))
 #' # Use you can't nudge and dodge text, so instead adjust the y postion
-#' ggplot(data = df, aes(x, y, fill = grp, label = y)) +
+#' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
 #'   geom_bar(stat = "identity", position = "dodge") +
 #'   geom_text(aes(y = y + 0.05), position = position_dodge(0.9), vjust = 0)
 #'
@@ -102,7 +103,7 @@
 #' # need to do the computation yourself
 #' df <- transform(df, mid_y = ave(df$y, df$x, FUN = function(val) cumsum(val) - (0.5 * val)))
 #'
-#' ggplot(data = df, aes(x, y, fill = grp, label = y)) +
+#' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
 #'  geom_bar(stat = "identity") +
 #'  geom_text(aes(y = mid_y))
 #'
@@ -112,9 +113,9 @@
 #'   y = c(1, 2, 1, 2, 1.5),
 #'   text = c("bottom-left", "bottom-right", "top-left", "top-right", "center")
 #' )
-#' ggplot(df, aes(x, y)) +
+#' a_plot(df, aes(x, y)) +
 #'   geom_text(aes(label = text))
-#' ggplot(df, aes(x, y)) +
+#' a_plot(df, aes(x, y)) +
 #'   geom_text(aes(label = text), vjust = "inward", hjust = "inward")
 #' }
 geom_text <- function(mapping = NULL, data = NULL,
@@ -140,7 +141,7 @@ geom_text <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomText,
+    geom = a_GeomText,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -158,7 +159,7 @@ geom_text <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomText <- ggproto("GeomText", Geom,
+a_GeomText <- a_ggproto("a_GeomText", a_Geom,
   required_aes = c("x", "y", "label"),
 
   default_aes = aes(
@@ -197,7 +198,7 @@ GeomText <- ggproto("GeomText", Geom,
     )
   },
 
-  draw_key = draw_key_text
+  draw_key = a_draw_key_text
 )
 
 compute_just <- function(just, x) {

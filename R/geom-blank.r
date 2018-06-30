@@ -7,7 +7,7 @@
 #' @inheritParams layer
 #' @inheritParams geom_point
 #' @examples
-#' ggplot(mtcars, aes(wt, mpg))
+#' a_plot(mtcars, aes(wt, mpg))
 #' # Nothing to see here!
 geom_blank <- function(mapping = NULL, data = NULL,
                        stat = "identity", position = "identity",
@@ -18,7 +18,7 @@ geom_blank <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomBlank,
+    geom = a_GeomBlank,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -31,7 +31,7 @@ geom_blank <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomBlank <- ggproto("GeomBlank", Geom,
+a_GeomBlank <- a_ggproto("a_GeomBlank", a_Geom,
   default_aes = aes(),
   handle_na = function(data, params) data,
   draw_panel = function(...) nullGrob()

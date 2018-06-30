@@ -45,11 +45,11 @@
 #'   will be shown, regardless of whether or not they appear in the data.
 #' @export
 #' @examples
-#' p <- ggplot(mpg, aes(displ, cty)) + geom_point()
+#' p <- a_plot(mpg, aes(displ, cty)) + geom_point()
 #'
-#' p + facet_grid(. ~ cyl)
-#' p + facet_grid(drv ~ .)
-#' p + facet_grid(drv ~ cyl)
+#' p + a_facet_grid(. ~ cyl)
+#' p + a_facet_grid(drv ~ .)
+#' p + a_facet_grid(drv ~ cyl)
 #'
 #' # To change plot order of facet grid,
 #' # change the order of variable levels with factor()
@@ -59,70 +59,70 @@
 #' # combinations:
 #' df <- data.frame(displ = mean(mpg$displ), cty = mean(mpg$cty))
 #' p +
-#'   facet_grid(. ~ cyl) +
+#'   a_facet_grid(. ~ cyl) +
 #'   geom_point(data = df, colour = "red", size = 2)
 #'
 #' # Free scales -------------------------------------------------------
 #' # You can also choose whether the scales should be constant
 #' # across all panels (the default), or whether they should be allowed
 #' # to vary
-#' mt <- ggplot(mtcars, aes(mpg, wt, colour = factor(cyl))) +
+#' mt <- a_plot(mtcars, aes(mpg, wt, colour = factor(cyl))) +
 #'   geom_point()
 #'
-#' mt + facet_grid(. ~ cyl, scales = "free")
+#' mt + a_facet_grid(. ~ cyl, scales = "free")
 #'
 #' # If scales and space are free, then the mapping between position
 #' # and values in the data will be the same across all panels. This
 #' # is particularly useful for categorical axes
-#' ggplot(mpg, aes(drv, model)) +
+#' a_plot(mpg, aes(drv, model)) +
 #'   geom_point() +
-#'   facet_grid(manufacturer ~ ., scales = "free", space = "free") +
+#'   a_facet_grid(manufacturer ~ ., scales = "free", space = "free") +
 #'   theme(strip.text.y = element_text(angle = 0))
 #'
 #' # Facet labels ------------------------------------------------------
-#' p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
+#' p <- a_plot(mtcars, aes(wt, mpg)) + geom_point()
 #' p
 #'
 #' # label_both() displays both variable name and value
-#' p + facet_grid(vs ~ cyl, labeller = label_both)
+#' p + a_facet_grid(vs ~ cyl, labeller = label_both)
 #'
 #' # label_parsed() parses text into mathematical expressions, see ?plotmath
 #' mtcars$cyl2 <- factor(mtcars$cyl, labels = c("alpha", "beta", "sqrt(x, y)"))
-#' ggplot(mtcars, aes(wt, mpg)) +
+#' a_plot(mtcars, aes(wt, mpg)) +
 #'   geom_point() +
-#'   facet_grid(. ~ cyl2, labeller = label_parsed)
+#'   a_facet_grid(. ~ cyl2, labeller = label_parsed)
 #'
 #' # label_bquote() makes it easy to construct math expressions
-#' p + facet_grid(. ~ vs, labeller = label_bquote(cols = alpha ^ .(vs)))
+#' p + a_facet_grid(. ~ vs, labeller = label_bquote(cols = alpha ^ .(vs)))
 #'
 #' # The facet strips can be displayed near the axes with switch
 #' data <- transform(mtcars,
 #'   am = factor(am, levels = 0:1, c("Automatic", "Manual")),
 #'   gear = factor(gear, levels = 3:5, labels = c("Three", "Four", "Five"))
 #' )
-#' p <- ggplot(data, aes(mpg, disp)) + geom_point()
-#' p + facet_grid(am ~ gear, switch = "both")
+#' p <- a_plot(data, aes(mpg, disp)) + geom_point()
+#' p + a_facet_grid(am ~ gear, switch = "both")
 #' # It looks better without boxes around the strips
-#' p + facet_grid(am ~ gear, switch = "both") +
+#' p + a_facet_grid(am ~ gear, switch = "both") +
 #'   theme(strip.background = element_blank())
 #'
 #' # Margins ----------------------------------------------------------
 #' \donttest{
 #' # Margins can be specified by logically (all yes or all no) or by specific
 #' # variables as (character) variable names
-#' mg <- ggplot(mtcars, aes(x = mpg, y = wt)) + geom_point()
-#' mg + facet_grid(vs + am ~ gear)
-#' mg + facet_grid(vs + am ~ gear, margins = TRUE)
-#' mg + facet_grid(vs + am ~ gear, margins = "am")
+#' mg <- a_plot(mtcars, aes(x = mpg, y = wt)) + geom_point()
+#' mg + a_facet_grid(vs + am ~ gear)
+#' mg + a_facet_grid(vs + am ~ gear, margins = TRUE)
+#' mg + a_facet_grid(vs + am ~ gear, margins = "am")
 #' # when margins are made over "vs", since the facets for "am" vary
 #' # within the values of "vs", the marginal facet for "vs" is also
 #' # a margin over "am".
-#' mg + facet_grid(vs + am ~ gear, margins = "vs")
-#' mg + facet_grid(vs + am ~ gear, margins = "gear")
-#' mg + facet_grid(vs + am ~ gear, margins = c("gear", "am"))
+#' mg + a_facet_grid(vs + am ~ gear, margins = "vs")
+#' mg + a_facet_grid(vs + am ~ gear, margins = "gear")
+#' mg + a_facet_grid(vs + am ~ gear, margins = c("gear", "am"))
 #' }
 #' @importFrom plyr as.quoted
-facet_grid <- function(facets, margins = FALSE, scales = "fixed", space = "fixed", shrink = TRUE, labeller = "label_value", as.table = TRUE, switch = NULL, drop = TRUE) {
+a_facet_grid <- function(facets, margins = FALSE, scales = "fixed", space = "fixed", shrink = TRUE, labeller = "label_value", as.table = TRUE, switch = NULL, drop = TRUE) {
   scales <- match.arg(scales, c("fixed", "free_x", "free_y", "free"))
   free <- list(
     x = any(scales %in% c("free_x", "free")),
@@ -131,8 +131,8 @@ facet_grid <- function(facets, margins = FALSE, scales = "fixed", space = "fixed
 
   space <- match.arg(space, c("fixed", "free_x", "free_y", "free"))
   space_free <- list(
-      x = any(space %in% c("free_x", "free")),
-      y = any(space %in% c("free_y", "free"))
+    x = any(space %in% c("free_x", "free")),
+    y = any(space %in% c("free_y", "free"))
   )
 
   # Facets can either be a formula, a string, or a list of things to be
@@ -160,7 +160,7 @@ facet_grid <- function(facets, margins = FALSE, scales = "fixed", space = "fixed
   # Check for deprecated labellers
   labeller <- check_labeller(labeller)
 
-  facet(
+  a_facet(
     rows = rows, cols = cols, margins = margins, shrink = shrink,
     free = free, space_free = space_free, labeller = labeller,
     as.table = as.table, switch = switch, drop = drop,
@@ -170,28 +170,28 @@ facet_grid <- function(facets, margins = FALSE, scales = "fixed", space = "fixed
 
 
 #' @export
-facet_train_layout.grid <- function(facet, data) {
-  layout <- layout_grid(data, facet$rows, facet$cols, facet$margins,
-    drop = facet$drop, as.table = facet$as.table)
+a_facet_train_layout.grid <- function(a_facet, data) {
+  layout <- layout_grid(data, a_facet$rows, a_facet$cols, a_facet$margins,
+                        drop = a_facet$drop, as.table = a_facet$as.table)
 
   # Relax constraints, if necessary
-  layout$SCALE_X <- if (facet$free$x) layout$COL else 1L
-  layout$SCALE_Y <- if (facet$free$y) layout$ROW else 1L
+  layout$SCALE_X <- if (a_facet$free$x) layout$COL else 1L
+  layout$SCALE_Y <- if (a_facet$free$y) layout$ROW else 1L
 
   layout
 }
 
 
 #' @export
-facet_map_layout.grid <- function(facet, data, layout) {
-  locate_grid(data, layout, facet$rows, facet$cols, facet$margins)
+a_facet_map_layout.grid <- function(a_facet, data, layout) {
+  locate_grid(data, layout, a_facet$rows, a_facet$cols, a_facet$margins)
 }
 
 #' @export
-facet_render.grid <- function(facet, panel, coord, theme, geom_grobs) {
-  axes <- facet_axes(facet, panel, coord, theme)
-  strips <- facet_strips(facet, panel, theme)
-  panels <- facet_panels(facet, panel, coord, theme, geom_grobs)
+a_facet_render.grid <- function(a_facet, panel, coord, theme, geom_grobs) {
+  axes <- a_facet_axes(a_facet, panel, coord, theme)
+  strips <- a_facet_strips(a_facet, panel, theme)
+  panels <- a_facet_panels(a_facet, panel, coord, theme, geom_grobs)
 
   # adjust the size of axes to the size of panel
   axes$l$heights <- panels$heights
@@ -202,22 +202,22 @@ facet_render.grid <- function(facet, panel, coord, theme, geom_grobs) {
   strips$t$widths <- panels$widths
 
   # Check if switch is consistent with grid layout
-  switch_x <- !is.null(facet$switch) && facet$switch %in% c("both", "x")
-  switch_y <- !is.null(facet$switch) && facet$switch %in% c("both", "y")
+  switch_x <- !is.null(a_facet$switch) && a_facet$switch %in% c("both", "x")
+  switch_y <- !is.null(a_facet$switch) && a_facet$switch %in% c("both", "y")
   if (switch_x && length(strips$t) == 0) {
-    facet$switch <- if (facet$switch == "both") "y" else NULL
+    a_facet$switch <- if (a_facet$switch == "both") "y" else NULL
     switch_x <- FALSE
     warning("Cannot switch x axis strips as they do not exist", call. = FALSE)
   }
   if (switch_y && length(strips$r) == 0) {
-    facet$switch <- if (facet$switch == "both") "x" else NULL
+    a_facet$switch <- if (a_facet$switch == "both") "x" else NULL
     switch_y <- FALSE
     warning("Cannot switch y axis strips as they do not exist", call. = FALSE)
   }
 
 
   # Combine components into complete plot
-  if (is.null(facet$switch)) {
+  if (is.null(a_facet$switch)) {
     top <- strips$t
     top <- gtable_add_cols(top, strips$r$widths)
     top <- gtable_add_cols(top, axes$l$widths, pos = 0)
@@ -237,13 +237,13 @@ facet_render.grid <- function(facet, panel, coord, theme, geom_grobs) {
       t_heights <- c(padding, strips$t$heights)
       gt_t <- gtable(widths = strips$t$widths, heights = unit(t_heights, "cm"))
       gt_t <- gtable_add_grob(gt_t, strips$t, name = strips$t$name, clip = "off",
-        t = 1, l = 1, b = -1, r = -1)
+                              t = 1, l = 1, b = -1, r = -1)
     }
     if (switch_y) {
       r_widths <- c(strips$r$widths, padding)
       gt_r <- gtable(widths = unit(r_widths, "cm"), heights = strips$r$heights)
       gt_r <- gtable_add_grob(gt_r, strips$r, name = strips$r$name, clip = "off",
-        t = 1, l = 1, b = -1, r = -1)
+                              t = 1, l = 1, b = -1, r = -1)
     }
 
     # Combine plot elements according to strip positions
@@ -276,7 +276,7 @@ facet_render.grid <- function(facet, panel, coord, theme, geom_grobs) {
       complete <- rbind(top, center, bottom, z = c(1, 2, 3))
     } else {
       stop("`switch` must be either NULL, 'both', 'x', or 'y'",
-        call. = FALSE)
+           call. = FALSE)
     }
   }
 
@@ -288,29 +288,29 @@ facet_render.grid <- function(facet, panel, coord, theme, geom_grobs) {
 }
 
 #' @export
-facet_strips.grid <- function(facet, panel, theme) {
-  col_vars <- unique(panel$layout[names(facet$cols)])
-  row_vars <- unique(panel$layout[names(facet$rows)])
+a_facet_strips.grid <- function(a_facet, panel, theme) {
+  col_vars <- unique(panel$layout[names(a_facet$cols)])
+  row_vars <- unique(panel$layout[names(a_facet$rows)])
 
   # Adding labels metadata, useful for labellers
   attr(col_vars, "type") <- "cols"
-  attr(col_vars, "facet") <- "grid"
+  attr(col_vars, "a_facet") <- "grid"
   attr(row_vars, "type") <- "rows"
-  attr(row_vars, "facet") <- "grid"
+  attr(row_vars, "a_facet") <- "grid"
 
   dir <- list(r = "r", t = "t")
-  if (!is.null(facet$switch) && facet$switch %in% c("both", "x")) {
+  if (!is.null(a_facet$switch) && a_facet$switch %in% c("both", "x")) {
     dir$t <- "b"
   }
-  if (!is.null(facet$switch) && facet$switch %in% c("both", "y")) {
+  if (!is.null(a_facet$switch) && a_facet$switch %in% c("both", "y")) {
     dir$r <- "l"
   }
 
   strips <- list(
-    r = g_build_strip(panel, row_vars, facet$labeller,
-      theme, dir$r, switch = facet$switch),
-    t = g_build_strip(panel, col_vars, facet$labeller,
-      theme, dir$t, switch = facet$switch)
+    r = a_build_strip(panel, row_vars, a_facet$labeller,
+                    theme, dir$r, switch = a_facet$switch),
+    t = a_build_strip(panel, col_vars, a_facet$labeller,
+                    theme, dir$t, switch = a_facet$switch)
   )
 
   Map(function(strip, side) {
@@ -323,31 +323,31 @@ facet_strips.grid <- function(facet, panel, theme) {
 }
 
 #' @export
-facet_axes.grid <- function(facet, panel, coord, theme) {
+a_facet_axes.grid <- function(a_facet, panel, coord, theme) {
   axes <- list()
 
   # Horizontal axes
   cols <- which(panel$layout$ROW == 1)
   grobs <- lapply(panel$ranges[cols], coord$render_axis_h, theme = theme)
   axes$b <- gtable_add_col_space(gtable_row("axis-b", grobs),
-    theme$panel.margin.x %||% theme$panel.margin)
+                                 theme$panel.margin.x %||% theme$panel.margin)
 
   # Vertical axes
   rows <- which(panel$layout$COL == 1)
   grobs <- lapply(panel$ranges[rows], coord$render_axis_v, theme = theme)
   axes$l <- gtable_add_row_space(gtable_col("axis-l", grobs),
-    theme$panel.margin.y %||% theme$panel.margin)
+                                 theme$panel.margin.y %||% theme$panel.margin)
 
   axes
 }
 
 #' @export
-facet_panels.grid <- function(facet, panel, coord, theme, geom_grobs) {
+a_facet_panels.grid <- function(a_facet, panel, coord, theme, geom_grobs) {
 
   # If user hasn't set aspect ratio, and we have fixed scales, then
   # ask the coordinate system if it wants to specify one
   aspect_ratio <- theme$aspect.ratio
-  if (is.null(aspect_ratio) && !facet$free$x && !facet$free$y) {
+  if (is.null(aspect_ratio) && !a_facet$free$x && !a_facet$free$y) {
     aspect_ratio <- coord$aspect(panel$ranges[[1]])
   }
   if (is.null(aspect_ratio)) {
@@ -384,15 +384,15 @@ facet_panels.grid <- function(facet, panel, coord, theme, geom_grobs) {
   # coord_train called by train_range.
   # So here, "scale" need not to be referred.
   #
-  # In general, panel has all information for building facet.
-  if (facet$space_free$x) {
+  # In general, panel has all information for building a_facet.
+  if (a_facet$space_free$x) {
     ps <- panel$layout$PANEL[panel$layout$ROW == 1]
     widths <- vapply(ps, function(i) diff(panel$ranges[[i]]$x.range), numeric(1))
     panel_widths <- unit(widths, "null")
   } else {
     panel_widths <- rep(unit(1, "null"), ncol)
   }
-  if (facet$space_free$y) {
+  if (a_facet$space_free$y) {
     ps <- panel$layout$PANEL[panel$layout$COL == 1]
     heights <- vapply(ps, function(i) diff(panel$ranges[[i]]$y.range), numeric(1))
     panel_heights <- unit(heights, "null")
@@ -401,7 +401,7 @@ facet_panels.grid <- function(facet, panel, coord, theme, geom_grobs) {
   }
 
   panels <- gtable_matrix("panel", panel_matrix,
-    panel_widths, panel_heights, respect = respect)
+                          panel_widths, panel_heights, respect = respect)
   panels <- gtable_add_col_space(panels, theme$panel.margin.x %||% theme$panel.margin)
   panels <- gtable_add_row_space(panels, theme$panel.margin.y %||% theme$panel.margin)
 
@@ -409,7 +409,7 @@ facet_panels.grid <- function(facet, panel, coord, theme, geom_grobs) {
 }
 
 #' @export
-facet_vars.grid <- function(facet) {
-  paste(lapply(list(facet$rows, facet$cols), paste, collapse = ", "),
-    collapse = " ~ ")
+a_facet_vars.grid <- function(a_facet) {
+  paste(lapply(list(a_facet$rows, a_facet$cols), paste, collapse = ", "),
+        collapse = " ~ ")
 }

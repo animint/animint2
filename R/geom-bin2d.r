@@ -1,7 +1,7 @@
 #' Add heatmap of 2d bin counts.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "bin2d")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "bin2d")}
 #'
 #' @export
 #' @inheritParams layer
@@ -10,7 +10,7 @@
 #'   \code{geom_bin2d} and \code{stat_bin2d}.
 #' @seealso \code{\link{stat_binhex}} for hexagonal binning
 #' @examples
-#' d <- ggplot(diamonds, aes(x, y)) + xlim(4, 10) + ylim(4, 10)
+#' d <- a_plot(diamonds, aes(x, y)) + xlim(4, 10) + ylim(4, 10)
 #' d + geom_bin2d()
 #'
 #' # You can control the size of the bins by specifying the number of
@@ -31,7 +31,7 @@ geom_bin2d <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomTile,
+    geom = a_GeomTile,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

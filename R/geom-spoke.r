@@ -1,7 +1,7 @@
 #' A line segment parameterised by location, direction and distance.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "spoke")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "spoke")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_segment
@@ -11,11 +11,11 @@
 #' df$angle <- runif(100, 0, 2*pi)
 #' df$speed <- runif(100, 0, sqrt(0.1 * df$x))
 #'
-#' ggplot(df, aes(x, y)) +
+#' a_plot(df, aes(x, y)) +
 #'   geom_point() +
 #'   geom_spoke(aes(angle = angle), radius = 0.5)
 #'
-#' ggplot(df, aes(x, y)) +
+#' a_plot(df, aes(x, y)) +
 #'   geom_point() +
 #'   geom_spoke(aes(angle = angle, radius = speed))
 geom_spoke <- function(mapping = NULL, data = NULL,
@@ -27,7 +27,7 @@ geom_spoke <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    geom = GeomSpoke,
+    geom = a_GeomSpoke,
     stat = stat,
     position = position,
     show.legend = show.legend,
@@ -51,7 +51,7 @@ stat_spoke <- function(...) {
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomSpoke <- ggproto("GeomSpoke", GeomSegment,
+a_GeomSpoke <- a_ggproto("a_GeomSpoke", a_GeomSegment,
   setup_data = function(data, params) {
     data$radius <- data$radius %||% params$radius
     data$angle <- data$angle %||% params$angle

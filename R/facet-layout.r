@@ -1,11 +1,15 @@
-# Layout panels in a 2d grid.
-#
-# @params data list of data frames, one for each layer
-# @params rows variables that form the rows
-# @params cols variables that form the columns
-# @return a data frame with columns \code{PANEL}, \code{ROW} and \code{COL},
-#   that match the facetting variable values up with their position in the
-#   grid
+#' Layout panels in a 2d grid.
+#'
+#' @param data list of data frames, one for each layer
+#' @param rows variables that form the rows
+#' @param cols variables that form the columns
+#' @param margins ......
+#' @param drop ....
+#' @param as.table ....
+#' @return a data frame with columns \code{PANEL}, \code{ROW} and \code{COL},
+#'   that match the facetting variable values up with their position in the
+#'   grid
+#' @export
 layout_grid <- function(data, rows = NULL, cols = NULL, margins = NULL,
                        drop = TRUE, as.table = TRUE) {
   if (length(rows) == 0 && length(cols) == 0) return(layout_null())
@@ -39,10 +43,10 @@ layout_grid <- function(data, rows = NULL, cols = NULL, margins = NULL,
   panels
 }
 
-# Layout out panels in a 1d ribbon.
-#
-# @params drop should missing combinations be excluded from the plot?
-# @keywords internal
+#' Layout out panels in a 1d ribbon.
+#'
+#' @param drop should missing combinations be excluded from the plot?
+#' @keywords internal
 layout_wrap <- function(data, vars = NULL, nrow = NULL, ncol = NULL,
                         as.table = TRUE, drop = TRUE, dir = "h") {
   vars <- as.quoted(vars)
@@ -78,13 +82,13 @@ layout_null <- function() {
    data.frame(PANEL = 1, ROW = 1, COL = 1)
 }
 
-# Base layout function that generates all combinations of data needed for
-# facetting
-# The first data frame in the list should be the default data for the plot.
-# Other data frames in the list are ones that are added to layers.
-#
-# @params data list of data frames (one for each layer)
-# @keywords internal
+#' Base layout function that generates all combinations of data needed for
+#' facetting
+#' The first data frame in the list should be the default data for the plot.
+#' Other data frames in the list are ones that are added to layers.
+#'
+#' @param data list of data frames (one for each layer)
+#' @keywords internal
 layout_base <- function(data, vars = NULL, drop = TRUE) {
   if (length(vars) == 0) return(data.frame())
 

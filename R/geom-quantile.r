@@ -3,7 +3,7 @@
 #' This can be used as a continuous analogue of a geom_boxplot.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "quantile")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "quantile")}
 #'
 #' @export
 #' @inheritParams layer
@@ -14,7 +14,7 @@
 #' @param geom,stat Use to override the default connection between
 #'   \code{geom_quantile} and \code{stat_quantile}.
 #' @examples
-#' m <- ggplot(mpg, aes(displ, 1 / hwy)) + geom_point()
+#' m <- a_plot(mpg, aes(displ, 1 / hwy)) + geom_point()
 #' m + geom_quantile()
 #' m + geom_quantile(quantiles = 0.5)
 #' q10 <- seq(0.05, 0.95, by = 0.05)
@@ -42,7 +42,7 @@ geom_quantile <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomQuantile,
+    geom = a_GeomQuantile,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -61,9 +61,9 @@ geom_quantile <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 #' @include geom-path.r
-GeomQuantile <- ggproto("GeomQuantile", GeomPath,
+a_GeomQuantile <- a_ggproto("a_GeomQuantile", a_GeomPath,
   default_aes = defaults(
     aes(weight = 1, colour = "#3366FF", size = 0.5),
-    GeomPath$default_aes
+    a_GeomPath$default_aes
   )
 )

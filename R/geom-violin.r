@@ -1,7 +1,7 @@
 #' Violin plot.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "violin")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "violin")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point
@@ -15,7 +15,7 @@
 #' @references Hintze, J. L., Nelson, R. D. (1998) Violin Plots: A Box
 #' Plot-Density Trace Synergism. The American Statistician 52, 181-184.
 #' @examples
-#' p <- ggplot(mtcars, aes(factor(cyl), mpg))
+#' p <- a_plot(mtcars, aes(factor(cyl), mpg))
 #' p + geom_violin()
 #'
 #' \donttest{
@@ -53,7 +53,7 @@
 #' # Scale transformations occur before the density statistics are computed.
 #' # Coordinate transformations occur afterwards.  Observe the effect on the
 #' # number of outliers.
-#' m <- ggplot(movies, aes(y = votes, x = rating, group = cut_width(rating, 0.5)))
+#' m <- a_plot(movies, aes(y = votes, x = rating, group = cut_width(rating, 0.5)))
 #' m + geom_violin()
 #' m + geom_violin() + scale_y_log10()
 #' m + geom_violin() + coord_trans(y = "log10")
@@ -61,8 +61,8 @@
 #'
 #' # Violin plots with continuous x:
 #' # Use the group aesthetic to group observations in violins
-#' ggplot(movies, aes(year, budget)) + geom_violin()
-#' ggplot(movies, aes(year, budget)) +
+#' a_plot(movies, aes(year, budget)) + geom_violin()
+#' a_plot(movies, aes(year, budget)) +
 #'   geom_violin(aes(group = cut_width(year, 10)), scale = "width")
 #' }
 #' }
@@ -79,7 +79,7 @@ geom_violin <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomViolin,
+    geom = a_GeomViolin,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -97,7 +97,7 @@ geom_violin <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomViolin <- ggproto("GeomViolin", Geom,
+a_GeomViolin <- a_ggproto("a_GeomViolin", a_Geom,
   setup_data = function(data, params) {
     data$width <- data$width %||%
       params$width %||% (resolution(data$x, FALSE) * 0.9)
@@ -138,18 +138,18 @@ GeomViolin <- ggproto("GeomViolin", Geom,
         drop = FALSE
       ]
       both <- cbind(quantiles, aesthetics)
-      quantile_grob <- GeomPath$draw_panel(both, ...)
+      quantile_grob <- a_GeomPath$draw_panel(both, ...)
 
       ggname("geom_violin", grobTree(
-        GeomPolygon$draw_panel(newdata, ...),
+        a_GeomPolygon$draw_panel(newdata, ...),
         quantile_grob)
       )
     } else {
-      ggname("geom_violin", GeomPolygon$draw_panel(newdata, ...))
+      ggname("geom_violin", a_GeomPolygon$draw_panel(newdata, ...))
     }
   },
 
-  draw_key = draw_key_polygon,
+  draw_key = a_draw_key_polygon,
 
   default_aes = aes(weight = 1, colour = "grey20", fill = "white", size = 0.5,
     alpha = NA, linetype = "solid"),

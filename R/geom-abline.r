@@ -39,7 +39,7 @@ NULL
 #'   \code{show.legend} are overridden
 #' @export
 #' @examples
-#' p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
+#' p <- a_plot(mtcars, aes(wt, mpg)) + geom_point()
 #'
 #' # Fixed values
 #' p + geom_vline(xintercept = 5)
@@ -56,18 +56,18 @@ NULL
 #' p + geom_smooth(method = "lm", se = FALSE)
 #'
 #' # To show different lines in different facets, use aesthetics
-#' p <- ggplot(mtcars, aes(mpg, wt)) +
+#' p <- a_plot(mtcars, aes(mpg, wt)) +
 #'   geom_point() +
-#'   facet_wrap(~ cyl)
+#'   a_facet_wrap(~ cyl)
 #'
 #' mean_wt <- data.frame(cyl = c(4, 6, 8), wt = c(2.28, 3.11, 4.00))
 #' p + geom_hline(aes(yintercept = wt), mean_wt)
 #'
 #' # You can also control other aesthetics
-#' ggplot(mtcars, aes(mpg, wt, colour = wt)) +
+#' a_plot(mtcars, aes(mpg, wt, colourffa = wt)) +
 #'   geom_point() +
 #'   geom_hline(aes(yintercept = wt, colour = wt), mean_wt) +
-#'   facet_wrap(~ cyl)
+#'   a_facet_wrap(~ cyl)
 geom_abline <- function(mapping = NULL, data = NULL,
                         ...,
                         slope,
@@ -94,9 +94,9 @@ geom_abline <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = StatIdentity,
-    geom = GeomAbline,
-    position = PositionIdentity,
+    stat = a_StatIdentity,
+    geom = a_GeomAbline,
+    position = a_PositionIdentity,
     show.legend = show.legend,
     inherit.aes = FALSE,
     params = list(
@@ -110,7 +110,7 @@ geom_abline <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomAbline <- ggproto("GeomAbline", Geom,
+a_GeomAbline <- a_ggproto("a_GeomAbline", a_Geom,
   draw_panel = function(data, panel_scales, coord) {
     ranges <- coord$range(panel_scales)
 
@@ -119,11 +119,11 @@ GeomAbline <- ggproto("GeomAbline", Geom,
     data$y    <- ranges$x[1] * data$slope + data$intercept
     data$yend <- ranges$x[2] * data$slope + data$intercept
 
-    GeomSegment$draw_panel(unique(data), panel_scales, coord)
+    a_GeomSegment$draw_panel(unique(data), panel_scales, coord)
   },
 
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
   required_aes = c("slope", "intercept"),
 
-  draw_key = draw_key_abline
+  draw_key = a_draw_key_abline
 )

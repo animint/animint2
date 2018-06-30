@@ -18,25 +18,25 @@ NULL
 #'   location of raster
 #' @param interpolate If \code{TRUE} interpolate linearly, if \code{FALSE}
 #'   (the default) don't interpolate.
-#' @export
+#' @keywords internal
 #' @examples
 #' # Generate data
 #' rainbow <- matrix(hcl(seq(0, 360, length.out = 50 * 50), 80, 70), nrow = 50)
-#' ggplot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, aes(mpg, wt)) +
 #'   geom_point() +
-#'   annotation_raster(rainbow, 15, 20, 3, 4)
+#'   animint2:::annotation_raster(rainbow, 15, 20, 3, 4)
 #' # To fill up whole plot
-#' ggplot(mtcars, aes(mpg, wt)) +
-#'   annotation_raster(rainbow, -Inf, Inf, -Inf, Inf) +
+#' a_plot(mtcars, aes(mpg, wt)) +
+#'   animint2:::annotation_raster(rainbow, -Inf, Inf, -Inf, Inf) +
 #'   geom_point()
 #'
 #' rainbow2 <- matrix(hcl(seq(0, 360, length.out = 10), 80, 70), nrow = 1)
-#' ggplot(mtcars, aes(mpg, wt)) +
-#'   annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf) +
+#' a_plot(mtcars, aes(mpg, wt)) +
+#'   animint2:::annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf) +
 #'   geom_point()
 #' rainbow2 <- matrix(hcl(seq(0, 360, length.out = 10), 80, 70), nrow = 1)
-#' ggplot(mtcars, aes(mpg, wt)) +
-#'   annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf, interpolate = TRUE) +
+#' a_plot(mtcars, aes(mpg, wt)) +
+#'   animint2:::annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf, interpolate = TRUE) +
 #'   geom_point()
 annotation_raster <- function(raster, xmin, xmax, ymin, ymax,
                               interpolate = FALSE) {
@@ -45,9 +45,9 @@ annotation_raster <- function(raster, xmin, xmax, ymin, ymax,
   layer(
     data = NULL,
     mapping = NULL,
-    stat = StatIdentity,
-    position = PositionIdentity,
-    geom = GeomRasterAnn,
+    stat = a_StatIdentity,
+    position = a_PositionIdentity,
+    geom = a_GeomRasterAnn,
     inherit.aes = TRUE,
     params = list(
       raster = raster,
@@ -65,7 +65,7 @@ annotation_raster <- function(raster, xmin, xmax, ymin, ymax,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomRasterAnn <- ggproto("GeomRasterAnn", Geom,
+a_GeomRasterAnn <- a_ggproto("a_GeomRasterAnn", a_Geom,
   extra_params = "",
   handle_na = function(data, params) {
     data
@@ -73,7 +73,7 @@ GeomRasterAnn <- ggproto("GeomRasterAnn", Geom,
 
   draw_panel = function(data, panel_scales, coord, raster, xmin, xmax,
                         ymin, ymax, interpolate = FALSE) {
-    if (!inherits(coord, "CoordCartesian")) {
+    if (!inherits(coord, "a_CoordCartesian")) {
       stop("annotation_raster only works with Cartesian coordinates",
         call. = FALSE)
     }

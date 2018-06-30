@@ -27,7 +27,7 @@ geom_label <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomLabel,
+    geom = a_GeomLabel,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -47,7 +47,7 @@ geom_label <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomLabel <- ggproto("GeomLabel", Geom,
+a_GeomLabel <- a_ggproto("a_GeomLabel", a_Geom,
   required_aes = c("x", "y", "label"),
 
   default_aes = aes(
@@ -101,7 +101,7 @@ GeomLabel <- ggproto("GeomLabel", Geom,
     ggname("geom_label", grobTree(children = grobs))
   },
 
-  draw_key = draw_key_label
+  draw_key = a_draw_key_label
 )
 
 labelGrob <- function(label, x = unit(0.5, "npc"), y = unit(0.5, "npc"),

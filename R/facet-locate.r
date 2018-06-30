@@ -21,11 +21,11 @@ locate_grid <- function(data, panels, rows = NULL, cols = NULL, margins = FALSE)
     intersect(names(cols), names(data)))
   data <- reshape2::add_margins(data, margin_vars, margins)
 
-  facet_vals <- quoted_df(data, c(rows, cols))
+  a_facet_vals <- quoted_df(data, c(rows, cols))
 
   # If any facetting variables are missing, add them in by
   # duplicating the data
-  missing_facets <- setdiff(vars, names(facet_vals))
+  missing_facets <- setdiff(vars, names(a_facet_vals))
   if (length(missing_facets) > 0) {
     to_add <- unique(panels[missing_facets])
 
@@ -33,20 +33,20 @@ locate_grid <- function(data, panels, rows = NULL, cols = NULL, margins = FALSE)
     facet_rep <- rep(1:nrow(to_add), each = nrow(data))
 
     data <- plyr::unrowname(data[data_rep, , drop = FALSE])
-    facet_vals <- plyr::unrowname(cbind(
-      facet_vals[data_rep, ,  drop = FALSE],
+    a_facet_vals <- plyr::unrowname(cbind(
+      a_facet_vals[data_rep, ,  drop = FALSE],
       to_add[facet_rep, , drop = FALSE]))
   }
 
   # Add PANEL variable
-  if (nrow(facet_vals) == 0) {
+  if (nrow(a_facet_vals) == 0) {
     # Special case of no facetting
     data$PANEL <- NO_PANEL
   } else {
-    facet_vals[] <- lapply(facet_vals[], as.factor)
-    facet_vals[] <- lapply(facet_vals[], addNA, ifany = TRUE)
+    a_facet_vals[] <- lapply(a_facet_vals[], as.factor)
+    a_facet_vals[] <- lapply(a_facet_vals[], addNA, ifany = TRUE)
 
-    keys <- plyr::join.keys(facet_vals, panels, by = vars)
+    keys <- plyr::join.keys(a_facet_vals, panels, by = vars)
 
     data$PANEL <- panels$PANEL[match(keys$x, keys$y)]
   }
@@ -60,10 +60,10 @@ locate_wrap <- function(data, panels, vars) {
   }
   vars <- as.quoted(vars)
 
-  facet_vals <- quoted_df(data, vars)
-  facet_vals[] <- lapply(facet_vals[], as.factor)
+  a_facet_vals <- quoted_df(data, vars)
+  a_facet_vals[] <- lapply(a_facet_vals[], as.factor)
 
-  missing_facets <- setdiff(names(vars), names(facet_vals))
+  missing_facets <- setdiff(names(vars), names(a_facet_vals))
   if (length(missing_facets) > 0) {
 
     to_add <- unique(panels[missing_facets])
@@ -72,12 +72,12 @@ locate_wrap <- function(data, panels, vars) {
     facet_rep <- rep(1:nrow(to_add), each = nrow(data))
 
     data <- plyr::unrowname(data[data_rep, , drop = FALSE])
-    facet_vals <- plyr::unrowname(cbind(
-      facet_vals[data_rep, ,  drop = FALSE],
+    a_facet_vals <- plyr::unrowname(cbind(
+      a_facet_vals[data_rep, ,  drop = FALSE],
       to_add[facet_rep, , drop = FALSE]))
   }
 
-  keys <- plyr::join.keys(facet_vals, panels, by = names(vars))
+  keys <- plyr::join.keys(a_facet_vals, panels, by = names(vars))
 
   data$PANEL <- panels$PANEL[match(keys$x, keys$y)]
   data[order(data$PANEL), ]

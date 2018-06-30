@@ -1,7 +1,7 @@
 #' Display contours of a 3d surface in 2d.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "contour")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "contour")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point
@@ -11,11 +11,11 @@
 #' @export
 #' @examples
 #' #' # Basic plot
-#' v <- ggplot(faithfuld, aes(waiting, eruptions, z = density))
+#' v <- a_plot(faithfuld, aes(waiting, eruptions, z = density))
 #' v + geom_contour()
 #'
 #' # Or compute from raw data
-#' ggplot(faithful, aes(waiting, eruptions)) +
+#' a_plot(faithful, aes(waiting, eruptions)) +
 #'   geom_density_2d()
 #'
 #' \donttest{
@@ -47,7 +47,7 @@ geom_contour <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomContour,
+    geom = a_GeomContour,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -66,7 +66,7 @@ geom_contour <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 #' @include geom-path.r
-GeomContour <- ggproto("GeomContour", GeomPath,
+a_GeomContour <- a_ggproto("a_GeomContour", a_GeomPath,
   default_aes = aes(weight = 1, colour = "#3366FF", size = 0.5, linetype = 1,
     alpha = NA)
 )

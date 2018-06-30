@@ -4,7 +4,7 @@
 #' \code{ymin} and \code{ymax}.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "linerange")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "linerange")}
 #'
 #' @param fatten A multiplicative factor used to increase the size of the
 #'   middle bar in \code{geom_crossbar()} and the middle point in
@@ -25,7 +25,7 @@
 #'   lower = c(0.8, 4.6, 2.4, 3.6)
 #' )
 #'
-#' p <- ggplot(df, aes(trt, resp, colour = group))
+#' p <- a_plot(df, aes(trt, resp, colour = group))
 #' p + geom_linerange(aes(ymin = lower, ymax = upper))
 #' p + geom_pointrange(aes(ymin = lower, ymax = upper))
 #' p + geom_crossbar(aes(ymin = lower, ymax = upper), width = 0.2)
@@ -38,7 +38,7 @@
 #'
 #' # If you want to dodge bars and errorbars, you need to manually
 #' # specify the dodge width
-#' p <- ggplot(df, aes(trt, resp, fill = group))
+#' p <- a_plot(df, aes(trt, resp, fill = group))
 #' p +
 #'  geom_bar(position = "dodge", stat = "identity") +
 #'  geom_errorbar(aes(ymin = lower, ymax = upper), position = "dodge", width = 0.25)
@@ -59,7 +59,7 @@ geom_linerange <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomLinerange,
+    geom = a_GeomLinerange,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -74,15 +74,15 @@ geom_linerange <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomLinerange <- ggproto("GeomLinerange", Geom,
+a_GeomLinerange <- a_ggproto("a_GeomLinerange", a_Geom,
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
 
-  draw_key = draw_key_vpath,
+  draw_key = a_draw_key_vpath,
 
   required_aes = c("x", "ymin", "ymax"),
 
   draw_panel = function(data, panel_scales, coord) {
     data <- transform(data, xend = x, y = ymin, yend = ymax)
-    ggname("geom_linerange", GeomSegment$draw_panel(data, panel_scales, coord))
+    ggname("geom_linerange", a_GeomSegment$draw_panel(data, panel_scales, coord))
   }
 )

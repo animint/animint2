@@ -19,15 +19,15 @@
 #'
 #' # Three ways of doing transformation in ggplot:
 #' #  * by transforming the data
-#' ggplot(diamonds, aes(log10(carat), log10(price))) +
+#' a_plot(diamonds, aes(log10(carat), log10(price))) +
 #'   geom_point()
 #' #  * by transforming the scales
-#' ggplot(diamonds, aes(carat, price)) +
+#' a_plot(diamonds, aes(carat, price)) +
 #'   geom_point() +
 #'   scale_x_log10() +
 #'   scale_y_log10()
 #' #  * by transforming the coordinate system:
-#' ggplot(diamonds, aes(carat, price)) +
+#' a_plot(diamonds, aes(carat, price)) +
 #'   geom_point() +
 #'   coord_trans(x = "log10", y = "log10")
 #'
@@ -39,13 +39,13 @@
 #'
 #' d <- subset(diamonds, carat > 0.5)
 #'
-#' ggplot(d, aes(carat, price)) +
+#' a_plot(d, aes(carat, price)) +
 #'   geom_point() +
 #'   geom_smooth(method = "lm") +
 #'   scale_x_log10() +
 #'   scale_y_log10()
 #'
-#' ggplot(d, aes(carat, price)) +
+#' a_plot(d, aes(carat, price)) +
 #'   geom_point() +
 #'   geom_smooth(method = "lm") +
 #'   coord_trans(x = "log10", y = "log10")
@@ -56,7 +56,7 @@
 #'
 #' # With a combination of scale and coordinate transformation, it's
 #' # possible to do back-transformations:
-#' ggplot(diamonds, aes(carat, price)) +
+#' a_plot(diamonds, aes(carat, price)) +
 #'   geom_point() +
 #'   geom_smooth(method = "lm") +
 #'   scale_x_log10() +
@@ -64,13 +64,13 @@
 #'   coord_trans(x = scales::exp_trans(10), y = scales::exp_trans(10))
 #'
 #' # cf.
-#' ggplot(diamonds, aes(carat, price)) +
+#' a_plot(diamonds, aes(carat, price)) +
 #'   geom_point() +
 #'   geom_smooth(method = "lm")
 #'
 #' # Also works with discrete scales
 #' df <- data.frame(a = abs(rnorm(26)),letters)
-#' plot <- ggplot(df,aes(a,letters)) + geom_point()
+#' plot <- a_plot(df,aes(a,letters)) + geom_point()
 #'
 #' plot + coord_trans(x = "log10")
 #' plot + coord_trans(x = "sqrt")
@@ -97,7 +97,7 @@ coord_trans <- function(x = "identity", y = "identity", limx = NULL, limy = NULL
   if (is.character(y)) y <- as.trans(y)
 
 
-  ggproto(NULL, CoordTrans,
+  a_ggproto(NULL, a_CoordTrans,
     trans = list(x = x, y = y),
     limits = list(x = limx, y = limy)
   )
@@ -108,7 +108,7 @@ coord_trans <- function(x = "identity", y = "identity", limx = NULL, limy = NULL
 #' @format NULL
 #' @usage NULL
 #' @export
-CoordTrans <- ggproto("CoordTrans", Coord,
+a_CoordTrans <- a_ggproto("a_CoordTrans", a_Coord,
 
   distance = function(self, x, y, scale_details) {
     max_dist <- dist_euclidean(scale_details$x.range, scale_details$y.range)

@@ -17,16 +17,16 @@
 #' xlim(c(10, 20))
 #' xlim("a", "b", "c")
 #'
-#' ggplot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, aes(mpg, wt)) +
 #'   geom_point() +
 #'   xlim(15, 20)
 #' # with automatic lower limit
-#' ggplot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, aes(mpg, wt)) +
 #'   geom_point() +
 #'   xlim(NA, 20)
 #'
 #' # Change both xlim and ylim
-#' ggplot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, aes(mpg, wt)) +
 #'   geom_point() +
 #'   lims(x = c(10, 20), y = c(3, 5))
 lims <- function(...) {
@@ -53,15 +53,15 @@ ylim <- function(...) {
 
 #' Generate correct scale type for specified limits
 #'
-#' @param limits vector of limits
+#' @param lims vector of limits
 #' @param var name of variable
-#' @keywords internal
+#' @export
 #' @examples
-#' animint2:::limits(c(1, 5), "x")
-#' animint2:::limits(c(5, 1), "x")
-#' animint2:::limits(c("A", "b", "c"), "x")
-#' animint2:::limits(c("A", "b", "c"), "fill")
-#' animint2:::limits(as.Date(c("2008-01-01", "2009-01-01")), "x")
+#' limits(c(1, 5), "x")
+#' limits(c(5, 1), "x")
+#' limits(c("A", "b", "c"), "x")
+#' limits(c("A", "b", "c"), "fill")
+#' limits(as.Date(c("2008-01-01", "2009-01-01")), "x")
 limits <- function(lims, var) UseMethod("limits")
 #' @export
 limits.numeric <- function(lims, var) {
@@ -114,15 +114,15 @@ limits.POSIXlt <- function(lims, var) {
 #'   should be included in each scale.
 #' @export
 #' @examples
-#' p <- ggplot(mtcars, aes(mpg, wt)) + geom_point()
+#' p <- a_plot(mtcars, aes(mpg, wt)) + geom_point()
 #' p + expand_limits(x = 0)
 #' p + expand_limits(y = c(1, 9))
 #' p + expand_limits(x = 0, y = 0)
 #'
-#' ggplot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, aes(mpg, wt)) +
 #'   geom_point(aes(colour = cyl)) +
 #'   expand_limits(colour = seq(2, 10, by = 2))
-#' ggplot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, aes(mpg, wt)) +
 #'   geom_point(aes(colour = factor(cyl))) +
 #'   expand_limits(colour = factor(seq(2, 10, by = 2)))
 expand_limits <- function(...) {

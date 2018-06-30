@@ -10,11 +10,11 @@
 #' # Very useful for creating boxplots, and other interval
 #' # geoms in the horizontal instead of vertical position.
 #'
-#' ggplot(diamonds, aes(cut, price)) +
+#' a_plot(diamonds, aes(cut, price)) +
 #'   geom_boxplot() +
 #'   coord_flip()
 #'
-#' h <- ggplot(diamonds, aes(carat)) +
+#' h <- a_plot(diamonds, aes(carat)) +
 #'   geom_histogram()
 #' h
 #' h + coord_flip()
@@ -22,11 +22,11 @@
 #'
 #' # You can also use it to flip line and area plots:
 #' df <- data.frame(x = 1:5, y = (1:5) ^ 2)
-#' ggplot(df, aes(x, y)) +
+#' a_plot(df, aes(x, y)) +
 #'   geom_area()
 #' last_plot() + coord_flip()
 coord_flip <- function(xlim = NULL, ylim = NULL, expand = TRUE) {
-  ggproto(NULL, CoordFlip,
+  a_ggproto(NULL, a_CoordFlip,
     limits = list(x = xlim, y = ylim),
     expand = expand
   )
@@ -36,11 +36,11 @@ coord_flip <- function(xlim = NULL, ylim = NULL, expand = TRUE) {
 #' @format NULL
 #' @usage NULL
 #' @export
-CoordFlip <- ggproto("CoordFlip", CoordCartesian,
+a_CoordFlip <- a_ggproto("a_CoordFlip", a_CoordCartesian,
 
   transform = function(data, scale_details) {
     data <- flip_labels(data)
-    CoordCartesian$transform(data, scale_details)
+    a_CoordCartesian$transform(data, scale_details)
   },
 
   range = function(scale_details) {
@@ -48,12 +48,12 @@ CoordFlip <- ggproto("CoordFlip", CoordCartesian,
   },
 
   train = function(self, scale_details) {
-    trained <- ggproto_parent(CoordCartesian, self)$train(scale_details)
+    trained <- a_ggproto_parent(a_CoordCartesian, self)$train(scale_details)
     flip_labels(trained)
   },
 
   labels = function(scale_details) {
-    flip_labels(CoordCartesian$labels(scale_details))
+    flip_labels(a_CoordCartesian$labels(scale_details))
   }
 )
 

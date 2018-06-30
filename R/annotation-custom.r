@@ -15,7 +15,7 @@ NULL
 #'   location of raster
 #' @param ymin,ymax y location (in data coordinates) giving vertical
 #'   location of raster
-#' @export
+#' @keywords internal
 #' @note \code{annotation_custom} expects the grob to fill the entire viewport
 #' defined by xmin, xmax, ymin, ymax. Grobs with a different (absolute) size
 #' will be center-justified in that region.
@@ -23,31 +23,31 @@ NULL
 #' @examples
 #' # Dummy plot
 #' df <- data.frame(x = 1:10, y = 1:10)
-#' base <- ggplot(df, aes(x, y)) +
+#' base <- a_plot(df, aes(x, y)) +
 #'   geom_blank() +
 #'   theme_bw()
 #'
 #' # Full panel annotation
-#' base + annotation_custom(
+#' base + animint2:::annotation_custom(
 #'   grob = grid::roundrectGrob(),
 #'   xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf
 #' )
 #'
 #' # Inset plot
 #' df2 <- data.frame(x = 1 , y = 1)
-#' g <- ggplotGrob(ggplot(df2, aes(x, y)) +
+#' g <- ggplotGrob(a_plot(df2, aes(x, y)) +
 #'   geom_point() +
 #'   theme(plot.background = element_rect(colour = "black")))
-#' base +
-#'   annotation_custom(grob = g, xmin = 1, xmax = 10, ymin = 8, ymax = 10)
+#' base + animint2:::annotation_custom(grob = g, xmin = 1, xmax = 10, ymin = 8, ymax = 10)
 annotation_custom <- function(grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) {
   layer(
     data = NULL,
-    stat = StatIdentity,
-    position = PositionIdentity,
-    geom = GeomCustomAnn,
+    stat = a_StatIdentity,
+    position = a_PositionIdentity,
+    geom = a_GeomCustomAnn,
     inherit.aes = TRUE,
     params = list(
+
       grob = grob,
       xmin = xmin,
       xmax = xmax,
@@ -61,7 +61,7 @@ annotation_custom <- function(grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax =
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomCustomAnn <- ggproto("GeomCustomAnn", Geom,
+a_GeomCustomAnn <- a_ggproto("a_GeomCustomAnn", a_Geom,
   extra_params = "",
   handle_na = function(data, params) {
     data
@@ -69,7 +69,7 @@ GeomCustomAnn <- ggproto("GeomCustomAnn", Geom,
 
   draw_panel = function(data, panel_scales, coord, grob, xmin, xmax,
                         ymin, ymax) {
-    if (!inherits(coord, "CoordCartesian")) {
+    if (!inherits(coord, "a_CoordCartesian")) {
       stop("annotation_custom only works with Cartesian coordinates",
         call. = FALSE)
     }

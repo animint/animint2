@@ -13,7 +13,7 @@
 #'
 #' dat <- data.frame(x = 1:5, y = 1:5, p = 1:5, q = factor(1:5),
 #'  r = factor(1:5))
-#' p <- ggplot(dat, aes(x, y, colour = p, size = q, shape = r)) + geom_point()
+#' p <- a_plot(dat, aes(x, y, colour = p, size = q, shape = r)) + geom_point()
 #'
 #' # without guide specification
 #' p
@@ -48,7 +48,7 @@
 #' p + theme(legend.position = "bottom", legend.box = "horizontal")
 #'
 #' # Set order for multiple guides
-#' ggplot(mpg, aes(displ, cty)) +
+#' a_plot(mpg, aes(displ, cty)) +
 #'   geom_point(aes(size = hwy, colour = cyl, shape = drv)) +
 #'   guides(
 #'    colour = guide_colourbar(order = 1),
@@ -140,7 +140,10 @@ build_guides <- function(scales, layers, default_mapping, position, theme, guide
   grobs
 }
 
-# validate_guide function
+#' validate_guide function
+#'
+#' @param guide ...
+#' @export
 validate_guide <- function(guide) {
   # if guide is specified by character, then find the corresponding guide
   if (is.character(guide))
@@ -150,8 +153,13 @@ validate_guide <- function(guide) {
   else
     stop("Unknown guide: ", guide)
 }
-# train each scale in scales and generate the definition of guide
 
+#' train each scale in scales and generate the definition of guide
+#' @param scales ...
+#' @param theme ...
+#' @param guides ...
+#' @param labels ....
+#' @export
 guides_train <- function(scales, theme, guides, labels) {
 
   gdefs <- list()
@@ -191,7 +199,9 @@ guides_train <- function(scales, theme, guides, labels) {
   gdefs
 }
 
-# merge overlapped guides
+#' merge overlapped guides
+#' @param gdefs ...
+#' @export
 guides_merge <- function(gdefs) {
   # split gdefs based on hash, and apply Reduce (guide_merge) to each gdef group.
   gdefs <- lapply(gdefs, function(g) {
@@ -206,7 +216,11 @@ guides_merge <- function(gdefs) {
   tapply(gdefs, sapply(gdefs, function(g)g$hash), function(gs)Reduce(guide_merge, gs))
 }
 
-# guides_geom function
+#' guides_geom function
+#' @param gdefs ...
+#' @param layers ....
+#' @param default_mapping ...
+#' @export
 guides_geom <- function(gdefs, layers, default_mapping) {
   compact(lapply(gdefs, guide_geom, layers, default_mapping))
 }
@@ -225,7 +239,10 @@ guides_gengrob <- function(gdefs, theme) {
   lapply(gdefs, guide_gengrob, theme)
 }
 
-# build up all guide boxes into one guide-boxes.
+#' build up all guide boxes into one guide-boxes.
+#' @param ggrobs ...
+#' @param theme ...
+#' @export
 guides_build <- function(ggrobs, theme) {
   theme$legend.margin <- theme$legend.margin %||% unit(0.5, "lines")
   theme$legend.vmargin <- theme$legend.vmargin  %||% theme$legend.margin

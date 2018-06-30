@@ -34,7 +34,7 @@
 #' if (require("maps")) {
 #' nz <- map_data("nz")
 #' # Prepare a map of NZ
-#' nzmap <- ggplot(nz, aes(x = long, y = lat, group = group)) +
+#' nzmap <- a_plot(nz, aes(x = long, y = lat, group = group)) +
 #'   geom_polygon(fill = "white", colour = "black")
 #'
 #' # Plot it in cartesian coordinates
@@ -49,7 +49,7 @@
 #' nzmap + coord_map("azequalarea", orientation = c(-36.92,174.6,0))
 #'
 #' states <- map_data("state")
-#' usamap <- ggplot(states, aes(long, lat, group = group)) +
+#' usamap <- a_plot(states, aes(long, lat, group = group)) +
 #'   geom_polygon(fill = "white", colour = "black")
 #'
 #' # Use cartesian coordinates
@@ -71,7 +71,7 @@
 #'
 #' # World map, using geom_path instead of geom_polygon
 #' world <- map_data("world")
-#' worldmap <- ggplot(world, aes(x = long, y = lat, group = group)) +
+#' worldmap <- a_plot(world, aes(x = long, y = lat, group = group)) +
 #'   geom_path() +
 #'   scale_y_continuous(breaks = (-2:2) * 30) +
 #'   scale_x_continuous(breaks = (-4:4) * 45)
@@ -84,7 +84,7 @@
 #' worldmap + coord_map("ortho", orientation = c(41, -74, 0))
 #' }
 coord_map <- function(projection="mercator", ..., orientation = NULL, xlim = NULL, ylim = NULL) {
-  ggproto(NULL, CoordMap,
+  a_ggproto(NULL, a_CoordMap,
     projection = projection,
     orientation = orientation,
     limits = list(x = xlim, y = ylim),
@@ -96,7 +96,7 @@ coord_map <- function(projection="mercator", ..., orientation = NULL, xlim = NUL
 #' @format NULL
 #' @usage NULL
 #' @export
-CoordMap <- ggproto("CoordMap", Coord,
+a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
 
   transform = function(self, data, scale_details) {
     trans <- mproject(self, data$x, data$y, scale_details$orientation)

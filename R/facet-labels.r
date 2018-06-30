@@ -47,9 +47,9 @@
 #'   attribute of the incoming data frame of labels. The value of this
 #'   attribute reflects the kind of strips your labeller is dealing
 #'   with: \code{"cols"} for columns and \code{"rows"} for rows. Note
-#'   that \code{\link{facet_wrap}()} has columns by default and rows
+#'   that \code{\link{a_facet_wrap}()} has columns by default and rows
 #'   when the strips are switched with the \code{switch} option. The
-#'   \code{facet} attribute also provides metadata on the labels. It
+#'   \code{a_facet} attribute also provides metadata on the labels. It
 #'   takes the values \code{"grid"} or \code{"wrap"}.
 #'
 #'   For compatibility with \code{\link{labeller}()}, each labeller
@@ -62,17 +62,17 @@
 #'   on separate lines.
 #' @param sep String separating variables and values.
 #' @param width Maximum number of characters before wrapping the strip.
-#' @family facet
+#' @family a_facet
 #' @seealso \code{\link{labeller}()}, \code{\link{as_labeller}()},
 #'   \code{\link{label_bquote}()}
 #' @name labellers
 #' @examples
 #' mtcars$cyl2 <- factor(mtcars$cyl, labels = c("alpha", "beta", "gamma"))
-#' p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
+#' p <- a_plot(mtcars, aes(wt, mpg)) + geom_point()
 #'
 #' # Displaying only the values
-#' p + facet_grid(. ~ cyl)
-#' p + facet_grid(. ~ cyl, labeller = label_value)
+#' p + a_facet_grid(. ~ cyl)
+#' p + a_facet_grid(. ~ cyl, labeller = label_value)
 #'
 #' \donttest{
 #' # Displaying both the values and the variables
@@ -83,9 +83,9 @@
 #' p + facet_grid(am ~ vs+cyl, labeller = label_context)
 #'
 #' # Interpreting the labels as plotmath expressions
-#' p + facet_grid(. ~ cyl2)
-#' p + facet_grid(. ~ cyl2, labeller = label_parsed)
-#' p + facet_wrap(~vs + cyl2, labeller = label_parsed)
+#' p + a_facet_grid(. ~ cyl2)
+#' p + a_facet_grid(. ~ cyl2, labeller = label_parsed)
+#' p + a_facet_wrap(~vs + cyl2, labeller = label_parsed)
 #' }
 NULL
 
@@ -192,10 +192,10 @@ find_names <- function(expr) {
 #' @examples
 #' # The variables mentioned in the plotmath expression must be
 #' # backquoted and referred to by their names.
-#' p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
-#' p + facet_grid(vs ~ ., labeller = label_bquote(alpha ^ .(vs)))
-#' p + facet_grid(. ~ vs, labeller = label_bquote(cols = .(vs) ^ .(vs)))
-#' p + facet_grid(. ~ vs + am, labeller = label_bquote(cols = .(am) ^ .(vs)))
+#' p <- a_plot(mtcars, aes(wt, mpg)) + geom_point()
+#' p + a_facet_grid(vs ~ ., labeller = label_bquote(alpha ^ .(vs)))
+#' p + a_facet_grid(. ~ vs, labeller = label_bquote(cols = .(vs) ^ .(vs)))
+#' p + a_facet_grid(. ~ vs + am, labeller = label_bquote(cols = .(am) ^ .(vs)))
 label_bquote <- function(rows = NULL, cols = NULL,
                          default = label_value) {
   cols_quoted <- substitute(cols)
@@ -234,7 +234,7 @@ label_bquote <- function(rows = NULL, cols = NULL,
 globalVariables(c("x", "."))
 
 #' @rdname labellers
-#' @export
+#' @keywords internal
 label_wrap_gen <- function(width = 25, multi_line = TRUE) {
   fun <- function(labels) {
     labels <- label_value(labels, multi_line = multi_line)
@@ -252,10 +252,10 @@ resolve_labeller <- function(rows, cols, labels) {
   if (is.null(cols) && is.null(rows)) {
     stop("Supply one of rows or cols", call. = FALSE)
   }
-  if (attr(labels, "facet") == "wrap") {
+  if (attr(labels, "a_facet") == "wrap") {
     # Return either rows or cols for facet_wrap()
     if (!is.null(cols) && !is.null(rows)) {
-      stop("Cannot supply both rows and cols to facet_wrap()", call. = FALSE)
+      stop("Cannot supply both rows and cols to a_facet_wrap()", call. = FALSE)
     }
     cols %||% rows
   } else {
@@ -283,21 +283,21 @@ resolve_labeller <- function(rows, cols, labels) {
 #' @seealso \code{\link{labeller}()}, \link{labellers}
 #' @export
 #' @examples
-#' p <- ggplot(mtcars, aes(disp, drat)) + geom_point()
-#' p + facet_wrap(~am)
+#' p <- a_plot(mtcars, aes(disp, drat)) + geom_point()
+#' p + a_facet_wrap(~am)
 #'
 #' # Rename labels on the fly with a lookup character vector
 #' to_string <- as_labeller(c(`0` = "Zero", `1` = "One"))
-#' p + facet_wrap(~am, labeller = to_string)
+#' p + a_facet_wrap(~am, labeller = to_string)
 #'
 #' # Quickly transform a function operating on character vectors to a
 #' # labeller function:
 #' appender <- function(string, suffix = "-foo") paste0(string, suffix)
-#' p + facet_wrap(~am, labeller = as_labeller(appender))
+#' p + a_facet_wrap(~am, labeller = as_labeller(appender))
 #'
 #' # If you have more than one facetting variable, be sure to dispatch
 #' # your labeller to the right variable with labeller()
-#' p + facet_grid(cyl ~ am, labeller = labeller(am = to_string))
+#' p + a_facet_grid(cyl ~ am, labeller = labeller(am = to_string))
 as_labeller <- function(x, default = label_value, multi_line = TRUE) {
   force(x)
   fun <- function(labels) {
@@ -352,14 +352,14 @@ as_labeller <- function(x, default = label_value, multi_line = TRUE) {
 #'   function.
 #' @param .default Default labeller for variables not specified. Also
 #'   used with lookup tables or non-labeller functions.
-#' @family facet labeller
+#' @family a_facet labeller
 #' @seealso \code{\link{as_labeller}()}, \link{labellers}
-#' @return A labeller function to supply to \code{\link{facet_grid}}
+#' @return A labeller function to supply to \code{\link{a_facet_grid}}
 #'   for the argument \code{labeller}.
 #' @export
 #' @examples
 #' \donttest{
-#' p1 <- ggplot(mtcars, aes(x = mpg, y = wt)) + geom_point()
+#' p1 <- a_plot(mtcars, aes(x = mpg, y = wt)) + geom_point()
 #'
 #' # You can assign different labellers to variables:
 #' p1 + facet_grid(vs + am ~ gear,
@@ -374,7 +374,7 @@ as_labeller <- function(x, default = label_value, multi_line = TRUE) {
 #'   substr(string, 1, 1) <- toupper(substr(string, 1, 1))
 #'   string
 #' }
-#' p2 <- ggplot(msleep, aes(x = sleep_total, y = awake)) + geom_point()
+#' p2 <- a_plot(msleep, aes(x = sleep_total, y = awake)) + geom_point()
 #' p2 + facet_grid(vore ~ conservation, labeller = labeller(vore = capitalize))
 #'
 #' # Or use character vectors as lookup tables:
@@ -471,8 +471,16 @@ labeller <- function(..., .rows = NULL, .cols = NULL,
   }
 }
 
-
-g_build_strip <- function(panel, label_df, labeller, theme, side = "right", switch = NULL) {
+#' a_build strip function
+#' @param panel ....
+#' @param label_df ....
+#' @param labeller ....
+#' @param theme .....
+#' @param side .....
+#' @param switch ....
+#' @export
+## TODO: define params in detail
+a_build_strip <- function(panel, label_df, labeller, theme, side = "right", switch = NULL) {
   side <- match.arg(side, c("top", "left", "bottom", "right"))
   horizontal <- side %in% c("top", "bottom")
   labeller <- match.fun(labeller)

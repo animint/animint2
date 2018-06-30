@@ -6,7 +6,7 @@ NULL
 #' Does not affect position scales.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "map")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "map")}
 #'
 #' @export
 #' @param map Data frame that contains the map coordinates.  This will
@@ -36,29 +36,29 @@ NULL
 #'   2.2, 2.1, 1.7, 2.1, 3.2, 2.8, 2.1, 2.2, 3.3, 3.2)
 #' )
 #'
-#' ggplot(values) + geom_map(aes(map_id = id), map = positions) +
-#'   expand_limits(positions)
-#' ggplot(values, aes(fill = value)) +
+#' a_plot(values) + geom_map(aes(map_id = id), map = positions) +
+#'   animint2:::expand_limits(positions)
+#' a_plot(values, aes(fill = value)) +
 #'   geom_map(aes(map_id = id), map = positions) +
-#'   expand_limits(positions)
-#' ggplot(values, aes(fill = value)) +
+#'   animint2:::expand_limits(positions)
+#' a_plot(values, aes(fill = value)) +
 #'   geom_map(aes(map_id = id), map = positions) +
-#'   expand_limits(positions) + ylim(0, 3)
+#'   animint2:::expand_limits(positions) + ylim(0, 3)
 #'
 #' # Better example
 #' crimes <- data.frame(state = tolower(rownames(USArrests)), USArrests)
 #' crimesm <- reshape2::melt(crimes, id = 1)
 #' if (require(maps)) {
 #'   states_map <- map_data("state")
-#'   ggplot(crimes, aes(map_id = state)) +
+#'   a_plot(crimes, aes(map_id = state)) +
 #'     geom_map(aes(fill = Murder), map = states_map) +
-#'     expand_limits(x = states_map$long, y = states_map$lat)
+#'     animint2:::expand_limits(x = states_map$long, y = states_map$lat)
 #'
-#'   last_plot() + coord_map()
-#'   ggplot(crimesm, aes(map_id = state)) +
+#'   last_plot() + animint2:::coord_map()
+#'   a_plot(crimesm, aes(map_id = state)) +
 #'     geom_map(aes(fill = value), map = states_map) +
-#'     expand_limits(x = states_map$long, y = states_map$lat) +
-#'     facet_wrap( ~ variable)
+#'     animint2:::expand_limits(x = states_map$long, y = states_map$lat) +
+#'     animint2:::a_facet_wrap( ~ variable)
 #' }
 geom_map <- function(mapping = NULL, data = NULL,
                      stat = "identity",
@@ -78,8 +78,8 @@ geom_map <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomMap,
-    position = PositionIdentity,
+    geom = a_GeomMap,
+    position = a_PositionIdentity,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(
@@ -94,7 +94,7 @@ geom_map <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomMap <- ggproto("GeomMap", GeomPolygon,
+a_GeomMap <- a_ggproto("a_GeomMap", a_GeomPolygon,
   draw_panel = function(data, panel_scales, coord, map) {
     # Only use matching data and map ids
     common <- intersect(data$map_id, map$id)

@@ -1,24 +1,24 @@
 #' Facet specification: a single panel.
 #'
-#' @inheritParams facet_grid
+#' @inheritParams a_facet_grid
 #' @export
 #' @examples
 #' # facet_null is the default facetting specification if you
 #' # don't override it with facet_grid or facet_wrap
-#' ggplot(mtcars, aes(mpg, wt)) + geom_point()
-facet_null <- function(shrink = TRUE) {
-  facet(shrink = shrink, subclass = "null")
+#' a_plot(mtcars, aes(mpg, wt)) + geom_point()
+a_facet_null <- function(shrink = TRUE) {
+  a_facet(shrink = shrink, subclass = "null")
 }
 
 #' @export
-facet_train_layout.null <- function(facet, data) {
+a_facet_train_layout.null <- function(a_facet, data) {
   data.frame(
     PANEL = 1L, ROW = 1L, COL = 1L,
     SCALE_X = 1L, SCALE_Y = 1L)
 }
 
 #' @export
-facet_map_layout.null <- function(facet, data, layout) {
+a_facet_map_layout.null <- function(a_facet, data, layout) {
   # Need the is.waive check for special case where no data, but aesthetics
   # are mapped to vectors
   if (is.waive(data) || empty(data))
@@ -28,7 +28,7 @@ facet_map_layout.null <- function(facet, data, layout) {
 }
 
 #' @export
-facet_render.null <- function(facet, panel, coord, theme, geom_grobs) {
+a_facet_render.null <- function(a_facet, panel, coord, theme, geom_grobs) {
   range <- panel$ranges[[1]]
 
   # Figure out aspect ratio
@@ -73,4 +73,4 @@ facet_render.null <- function(facet, panel, coord, theme, geom_grobs) {
 }
 
 #' @export
-facet_vars.null <- function(facet) ""
+a_facet_vars.null <- function(a_facet) ""

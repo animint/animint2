@@ -6,24 +6,24 @@ NULL
 #' @param map data frame representing a map.  Most map objects can be
 #'   converted into the right format by using \code{\link{fortify}}
 #' @param ... other arguments used to modify aesthetics
-#' @export
+#' @keywords internal
 #' @examples
 #' if (require("maps")) {
 #' usamap <- map_data("state")
 #'
 #' seal.sub <- subset(seals, long > -130 & lat < 45 & lat > 40)
-#' ggplot(seal.sub, aes(x = long, y = lat)) +
-#'   annotation_map(usamap, fill = "NA", colour = "grey50") +
+#' a_plot(seal.sub, aes(x = long, y = lat)) +
+#'   animint2:::annotation_map(usamap, fill = "NA", colour = "grey50") +
 #'   geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat))
 #'
 #' seal2 <- transform(seal.sub,
 #'   latr = cut(lat, 2),
 #'   longr = cut(long, 2))
 #'
-#' ggplot(seal2,  aes(x = long, y = lat)) +
-#'   annotation_map(usamap, fill = "NA", colour = "grey50") +
+#' a_plot(seal2,  aes(x = long, y = lat)) +
+#'   animint2:::annotation_map(usamap, fill = "NA", colour = "grey50") +
 #'   geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat)) +
-#'   facet_grid(latr ~ longr, scales = "free", space = "free")
+#'   animint2:::a_facet_grid(latr ~ longr, scales = "free", space = "free")
 #' }
 annotation_map <- function(map, ...) {
   # Get map input into correct form
@@ -35,9 +35,9 @@ annotation_map <- function(map, ...) {
 
   layer(
     data = NULL,
-    stat = StatIdentity,
-    geom = GeomAnnotationMap,
-    position = PositionIdentity,
+    stat = a_StatIdentity,
+    geom = a_GeomAnnotationMap,
+    position = a_PositionIdentity,
     inherit.aes = FALSE,
     params = list(map = map, ...)
   )
@@ -47,7 +47,7 @@ annotation_map <- function(map, ...) {
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomAnnotationMap <- ggproto("GeomAnnotationMap", GeomMap,
+a_GeomAnnotationMap <- a_ggproto("a_GeomAnnotationMap", a_GeomMap,
   extra_params = "",
   handle_na = function(data, params) {
     data
