@@ -86,8 +86,14 @@ scale_x_continuous <- function(name = waiver(), breaks = waiver(),
     "position_c", identity, name = name, breaks = breaks,
     minor_breaks = minor_breaks, labels = labels, limits = limits,
     expand = expand, oob = oob, na.value = na.value, trans = trans,
-    guide = "none", super=a_ScaleContinuousPosition
+    guide = "none"
   )
+  
+  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
+  # object should in the first place be created with the correct parent.
+  sc$super <- a_ScaleContinuousPosition
+  class(sc) <- class(a_ScaleContinuousPosition)
+  
   sc
 }
 
@@ -97,12 +103,19 @@ scale_y_continuous <- function(name = waiver(), breaks = waiver(),
                                minor_breaks = waiver(), labels = waiver(),
                                limits = NULL, expand = waiver(), oob = censor,
                                na.value = NA_real_, trans = "identity") {
-    sc <- continuous_scale(c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final", "ymax_final", "lower", "middle", "upper"),
+  sc <- continuous_scale(
+    c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final", "ymax_final", "lower", "middle", "upper"),
     "position_c", identity, name = name, breaks = breaks,
     minor_breaks = minor_breaks, labels = labels, limits = limits,
     expand = expand, oob = oob, na.value = na.value, trans = trans,
-    guide = "none", super=a_ScaleContinuousPosition
+    guide = "none"
   )
+  
+  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
+  # object should in the first place be created with the correct parent.
+  sc$super <- a_ScaleContinuousPosition
+  class(sc) <- class(a_ScaleContinuousPosition)
+  
   sc
 }
 
@@ -112,13 +125,13 @@ scale_y_continuous <- function(name = waiver(), breaks = waiver(),
 #' @usage NULL
 #' @export
 a_ScaleContinuousPosition <- a_ggproto("a_ScaleContinuousPosition", a_ScaleContinuous,
-  # Position aesthetics don't map, because the coordinate system takes
-  # care of it. But they do need to be made in to doubles, so stat methods
-  # can tell the difference between continuous and discrete data.
-  map = function(self, x, limits = self$get_limits()) {
-    scaled <- as.numeric(self$oob(x, limits))
-    ifelse(!is.na(scaled), scaled, self$na.value)
-  }
+                                   # Position aesthetics don't map, because the coordinate system takes
+                                   # care of it. But they do need to be made in to doubles, so stat methods
+                                   # can tell the difference between continuous and discrete data.
+                                   map = function(self, x, limits = self$get_limits()) {
+                                     scaled <- as.numeric(self$oob(x, limits))
+                                     ifelse(!is.na(scaled), scaled, self$na.value)
+                                   }
 )
 
 # Transformed scales ---------------------------------------------------------
