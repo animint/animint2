@@ -8,7 +8,7 @@ data(worldPop)
 ## Linked bar and line plots of world population by subcontinent,
 ## inspired by polychartjs.
 viz <-
-  list(bars=ggplot()+
+  list(bars=a_plot()+
        geom_bar(aes(x=subcontinent, y=population),
                     clickSelects="subcontinent", showSelected="year",
                 data=worldPop, stat="identity", position="identity")+
@@ -16,7 +16,7 @@ viz <-
        ## selected value of the year variable.
        make_text(worldPop, 1, 3e6, "year")+
        coord_flip(),
-       lines=ggplot()+
+       lines=a_plot()+
        ## This make_tallrect tiles the background of the lineplot with
        ## rects that can be clicked to select the year variable.
        make_tallrect(worldPop, "year")+

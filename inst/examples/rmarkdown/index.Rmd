@@ -5,7 +5,7 @@ date: "June 23, 2014"
 runtime: shiny
 ---
 
-[Animint](https://github.com/tdhock/animint) is an R package for creating web-based interactive graphics and animations using ggplot2’s grammar of graphics approach. Now you can embed animint plots inside [shiny apps](http://shiny.rstudio.com/). In the shiny app below, you can change the x/y/color variables and both plots will update.
+[Animint](https://github.com/tdhock/animint) is an R package for creating web-based interactive graphics and animations using a_plot2’s grammar of graphics approach. Now you can embed animint plots inside [shiny apps](http://shiny.rstudio.com/). In the shiny app below, you can change the x/y/color variables and both plots will update.
 
 ```{r embedded}
 library(shiny)
@@ -26,10 +26,10 @@ data(WorldBank, package = "animint2")
 WorldBank$region <- gsub("(all income levels)", "", WorldBank$region, fixed = TRUE)
 ```
 
-Now, we construct a time-series and scatterplot using ggplot2's grammar with the addition of animint's `clickSelects` and `showSelected` aesthetics to create an interactive link between the plots.
+Now, we construct a time-series and scatterplot using a_plot2's grammar with the addition of animint's `clickSelects` and `showSelected` aesthetics to create an interactive link between the plots.
 
 ```{r plots}
-ts <- ggplot() +
+ts <- a_plot() +
       make_tallrect(WorldBank, "year") +
       # plot the lines *on top of rectangles* so lines are clickable
       geom_line(aes(year, life.expectancy, group = country, colour = region),
@@ -38,7 +38,7 @@ ts <- ggplot() +
       guides(color = "none")
 
 not.na <- subset(WorldBank, !(is.na(life.expectancy) | is.na(fertility.rate)))
-scatter <- ggplot() +
+scatter <- a_plot() +
        geom_point(aes(fertility.rate, life.expectancy,
                       colour = region, size = population,
                       key = country), # key aesthetic for animated transitions!
@@ -63,7 +63,7 @@ In this example, the plot aesthetics are fixed, but we could integrate shiny's r
 
 ```{r reactives}
 getPlotList <- reactive({
-  # think of animint objects as a list of ggplots and specially named options
+  # think of animint objects as a list of a_plots and specially named options
   list(# the plots we constructed earlier
        ts = ts,
        scatter = scatter,

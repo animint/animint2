@@ -19,7 +19,6 @@ Define $d_{ijk} = (m_{ijk} - f_{ijk})/n_{k}$. In english, $d_{ijk}$ is a measure
 ```
 
 ```{r libs, cache=TRUE}
-library(ggplot2Animint)
 library(animint2)
 library(dplyr)
 library(magrittr)
@@ -46,7 +45,7 @@ getDat <- reactive({
 renderPlot({
   map_data("state") %>% 
     tbl_df() %>% left_join(getDat()) %>%
-  ggplot() + 
+  a_plot() + 
     geom_polygon(aes(x = long, y = lat, group = group, fill = diff), colour = "grey") +
     scale_fill_gradient2(midpoint = 0) +
     ggtitle(paste("Gender difference by state for", input$babyname, "in", input$year))
@@ -56,7 +55,7 @@ renderPlot({
 Throw out that don't occur in *both* genders?
 
 ```{r, eval=FALSE}
-ggplot() + 
+a_plot() + 
   geom_polygon(aes(x = long, y = lat, group = group, fill = diff), colour = "grey") +
   scale_fill_gradient2(midpoint = 0) +
   ggtitle(paste("Gender difference by state for", input$babyname, "in", input$year))

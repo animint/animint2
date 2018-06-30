@@ -9,10 +9,10 @@ addY <- function(dt, y){
 }
 viz <- list(
   title="Lasso on the prostate cancer data set",
-  path=ggplot()+
+  path=a_plot()+
     theme_bw()+
     theme(panel.margin=grid::unit(0, "lines"))+
-    facet_grid(y.var ~ ., scales="free")+
+    a_facet_grid(y.var ~ ., scales="free")+
     ylab("")+
     scale_color_manual(values=variable.colors)+
     geom_line(aes(arclength, standardized.coef, color=variable, group=variable),
@@ -20,7 +20,7 @@ viz <- list(
     geom_line(aes(arclength, mse, linetype=set, group=set),
               data=addY(prostateLasso$error, "error"))+
     make_tallrect(prostateLasso$error, "arclength"),
-  res=ggplot()+
+  res=a_plot()+
     geom_hline(aes(yintercept=residual),
                data=hline.df,
                color="grey")+

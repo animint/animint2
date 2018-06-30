@@ -9,7 +9,6 @@
 #' Image Inspiration -  http://www.kulfoto.com/pic/0001/0033/b/h4n5832833.jpg
 library(maps)
 library(plyr)
-library(ggplot2Animint)
 library(animint2)
 data(UStornadoes)
 stateOrder <- data.frame(state = unique(UStornadoes$state)[order(unique(UStornadoes$TornadoesSqMile), decreasing=T)], rank = 1:49) # order states by tornadoes per square mile
@@ -27,7 +26,7 @@ UStornadoCounts <-
 ## why?
 ## 2017-08-24: TODO: Do we still have this bug? Find and fix
 tornado.points.anim <-
-  list(map=ggplot()+
+  list(map=a_plot()+
        make_text(UStornadoes, -100, 50, "year",
                  "Tornado paths and endpoints in %d")+
        geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
@@ -42,7 +41,7 @@ tornado.points.anim <-
                     data=USpolygons, fill="grey", colour="black", alpha=3/4)+
        theme(axis.line=element_blank(), axis.text=element_blank(), 
              axis.ticks=element_blank(), axis.title=element_blank()),
-       bug=ggplot()+
+       bug=a_plot()+
        ggtitle("There should be state = XXX below")+
        make_text(UStornadoes, 1980, 200, "state")+
        geom_bar(aes(year, count),
@@ -55,7 +54,7 @@ animint2dir(tornado.points.anim, "tornado-points-anim")
 
 ## Works. I moved the make_text after geom_bar.
 tornado.points.anim <-
-  list(map=ggplot()+
+  list(map=a_plot()+
        make_text(UStornadoes, -100, 50, "year",
                  "Tornado paths and endpoints in %d")+
        geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
@@ -70,7 +69,7 @@ tornado.points.anim <-
                     data=USpolygons, fill="grey", colour="black", alpha=3/4)+
        theme(axis.line=element_blank(), axis.text=element_blank(), 
              axis.ticks=element_blank(), axis.title=element_blank()),
-       bug=ggplot()+
+       bug=a_plot()+
        ggtitle("There should be state = XXX below")+
        geom_bar(aes(year, count),
                 clickSelects="year", showSelected="state",
@@ -83,7 +82,7 @@ animint2dir(tornado.points.anim, "tornado-points-anim")
 
 ## Works. I deleted the last geom_text.
 tornado.points.anim <-
-  list(map=ggplot()+
+  list(map=a_plot()+
        make_text(UStornadoes, -100, 50, "year",
                  "Tornado paths and endpoints in %d")+
        geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
@@ -98,7 +97,7 @@ tornado.points.anim <-
                     data=USpolygons, fill="grey", colour="black", alpha=3/4)+
        theme(axis.line=element_blank(), axis.text=element_blank(), 
              axis.ticks=element_blank(), axis.title=element_blank()),
-       bug=ggplot()+
+       bug=a_plot()+
        ggtitle("There should be state = XXX below")+
        make_text(UStornadoes, 1980, 200, "state")+
        geom_bar(aes(year, count),

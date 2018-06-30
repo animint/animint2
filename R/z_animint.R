@@ -1320,8 +1320,7 @@ getLegendList <- function(plistextra){
   }
   guides.result <- do.call(guides, guides.args)
   guides.list <- plyr::defaults(plot$guides, guides.result)
-  gdefs <-
-    guides_train(scales = scales,
+  gdefs <- guides_train(scales = scales,
                            theme = theme,
                            guides = guides.list,
                            labels = plot$labels)

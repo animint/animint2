@@ -5,14 +5,14 @@ prior$accuracy$percent <- prior$accuracy$accuracy.mean * 100
 prior$accuracy$percent.se <- prior$accuracy$accuracy.se * 100
 sqLab <- "squared error of the prior estimate"
 priorBands <-
-  list(set=ggplot()+
+  list(set=a_plot()+
        geom_abline()+
        geom_text(aes(positive, negative, label=set), data=prior$data)+
        geom_point(aes(positive, negative, size=dimension),
                   clickSelects="set",
                   data=prior$data)+
        scale_size_continuous(range=c(3,20),breaks=prior$data$dim),
-       error=ggplot()+
+       error=a_plot()+
        make_text(prior$accuracy, 86, 0.3, "prior")+
        make_text(prior$accuracy, 86, 0.32, "samples")+
        geom_point(aes(percent, sqErr.mean, fill=method, colour=classifier),
@@ -23,7 +23,7 @@ priorBands <-
                              "Least squares probabalistic classifier"="white"))+
        ylab(sqLab)+
        xlab("percent classification accuracy"),
-       samples=ggplot()+
+       samples=a_plot()+
        make_tallrect(prior$accuracy, "samples")+
        make_text(prior$accuracy, 175, 97.5, "prior")+
        make_text(prior$accuracy, 175, 95, "set")+
@@ -41,7 +41,7 @@ priorBands <-
        guides(colour="none",linetype="none",fill="none")+
        xlab("number of points sampled")+
        ylab("percent classification accuracy"),
-       prior=ggplot()+
+       prior=a_plot()+
        make_tallrect(prior$accuracy, "prior")+
        make_text(prior$accuracy, 0.5, 97.5, "samples")+
        make_text(prior$accuracy, 0.5, 95, "set")+
@@ -56,7 +56,7 @@ priorBands <-
                  data=prior$accuracy)+
        xlab("class prior")+
        ylab("percent classification accuracy"),
-       samplessqErr=ggplot()+
+       samplessqErr=a_plot()+
        make_tallrect(prior$accuracy, "samples")+
        geom_ribbon(aes(samples,
                        ymin=sqErr.mean-sqErr.se,
@@ -72,7 +72,7 @@ priorBands <-
        guides(colour="none",linetype="none",fill="none")+
        xlab("number of points sampled")+
        ylab(sqLab),
-       priorsqErr=ggplot()+
+       priorsqErr=a_plot()+
        make_tallrect(prior$accuracy, "prior")+
        geom_ribbon(aes(prior,
                        ymin=sqErr.mean-sqErr.se,

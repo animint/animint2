@@ -71,7 +71,7 @@ stat_bin <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname ggplot2Animint-ggproto
+#' @rdname animint2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export

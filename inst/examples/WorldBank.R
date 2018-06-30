@@ -2,7 +2,7 @@ library(animint2)
 data(WorldBank)
 
 wb.all <-
-  list(scatter=ggplot()+
+  list(scatter=a_plot()+
        geom_point(aes(life.expectancy, fertility.rate, colour=region, size=population,
                       tooltip=paste(country, "population", population),
                       key=country), # key aesthetic for animated transitions!
@@ -15,13 +15,13 @@ wb.all <-
                  data=WorldBank)+
        scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
-       ts=ggplot()+
+       ts=a_plot()+
        make_tallrect(WorldBank, "year")+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
                  clickSelects="country",
                  data=WorldBank, size=4, alpha=3/5),
        time=list(variable="year",ms=3000),
-       bar=ggplot()+
+       bar=a_plot()+
        theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region),
                 showSelected="year", clickSelects="country",
@@ -46,7 +46,7 @@ not.na <- subset(WorldBank, !(is.na(life.expectancy) | is.na(fertility.rate)))
 subset(not.na, is.na(not.na$population))
 not.na[not.na$country=="Kuwait", "population"] <- 1700000
 bad <-
-  list(scatter=ggplot()+
+  list(scatter=a_plot()+
        geom_point(aes(life.expectancy, fertility.rate, colour=region, size=population),
                   clickSelects="country",
                   showSelected="year",
@@ -56,13 +56,13 @@ bad <-
                  data=not.na)+
        scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
-       ts=ggplot()+
+       ts=a_plot()+
        make_tallrect(WorldBank, "year")+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
                  clickSelects="country",
                  data=WorldBank, size=4, alpha=3/5),
        time=list(variable="year",ms=3000),
-       bar=ggplot()+
+       bar=a_plot()+
        theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region),
                 showSelected="year", clickSelects="country",
@@ -74,7 +74,7 @@ animint2dir(bad, "WorldBank-bad")
 ## This example is good because it uses constancy
 ## http://bost.ocks.org/mike/constancy/
 good <-
-  list(scatter=ggplot()+
+  list(scatter=a_plot()+
        geom_point(aes(life.expectancy, fertility.rate, colour=region, size=population,
                       tooltip=paste(country, "population", population),
                       key=country), # key aesthetic for animated transitions!
@@ -87,13 +87,13 @@ good <-
                  data=not.na)+
        scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
-       ts=ggplot()+
+       ts=a_plot()+
        make_tallrect(WorldBank, "year")+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
                  clickSelects="country",
                  data=WorldBank, size=4, alpha=3/5),
        time=list(variable="year",ms=3000),
-       bar=ggplot()+
+       bar=a_plot()+
        theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region,
                     key=country),
@@ -112,7 +112,7 @@ max.years <- not.na %>%
   filter(year==max(year)) %>%
   mutate(year=2012)
 wb.mult <-
-  list(ts=ggplot()+
+  list(ts=a_plot()+
        make_tallrect(not.na, "year")+
        theme_animint(width=500)+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
@@ -126,7 +126,7 @@ wb.mult <-
                  showSelected="country",
                  clickSelects="country",
                  data=max.years, hjust=0),
-       scatter=ggplot()+
+       scatter=a_plot()+
        geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population,
                       key=country), # key aesthetic for animated transitions!
                   clickSelects="country",
@@ -156,14 +156,14 @@ animint2dir(wb.mult, "WorldBank-multiple")
 short.regions <- not.na %>%
   mutate(region=sub(" [(].*", "", region))
 wb.paper.single <-
-  list(ts=ggplot()+
+  list(ts=a_plot()+
        make_tallrect(short.regions, "year")+
        guides(color="none")+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
                  showSelected="region",
                  clickSelects="country",
                  data=short.regions, size=4, alpha=3/5),
-       scatter=ggplot()+
+       scatter=a_plot()+
        geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population,
                       key=country), # key aesthetic for animated transitions!
                   clickSelects="country",
@@ -186,14 +186,14 @@ animint2dir(wb.paper.single, "WorldBank-paper-single")
 ## This is the example from the animint paper, with multiple
 ## selection.
 wb.paper <-
-  list(ts=ggplot()+
+  list(ts=a_plot()+
        make_tallrect(short.regions, "year")+
        guides(color="none")+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
                  showSelected="region",
                  clickSelects="country",
                  data=short.regions, size=4, alpha=3/5),
-       scatter=ggplot()+
+       scatter=a_plot()+
        geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population,
                       key=country), # key aesthetic for animated transitions!
                   clickSelects="country",
@@ -227,7 +227,7 @@ min.years <- not.na %>%
   filter(year==min(year)) %>%
   mutate(year=1958)
 wb.facets <-
-  list(ts=ggplot()+
+  list(ts=a_plot()+
        xlab("")+
        ylab("")+
        geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2),
@@ -266,7 +266,7 @@ wb.facets <-
                  clickSelects="country",
                  data=SCATTER(not.na))+
        scale_size_animint(breaks=10^(5:9))+
-       facet_grid(side ~ top, scales="free")+
+       a_facet_grid(side ~ top, scales="free")+
        geom_text(aes(5, 85, label=paste0("year = ", year)),
                  showSelected="year",
                  data=SCATTER(years)),

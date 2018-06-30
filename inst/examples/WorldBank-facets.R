@@ -17,7 +17,7 @@ by.country <- split(not.na, not.na$country)
 min.years <- do.call(rbind, lapply(by.country, subset, year == min(year)))
 min.years$year <- 1958
 wb.facets <-
-  list(ts=ggplot()+
+  list(ts=a_plot()+
          theme_bw()+
          theme(panel.margin=grid::unit(0, "lines"))+
          xlab("")+
@@ -58,7 +58,7 @@ wb.facets <-
                    clickSelects="country",
                    data=SCATTER(not.na))+
          scale_size_animint(breaks=10^(9:5))+
-         facet_grid(side ~ top, scales="free")+
+         a_facet_grid(side ~ top, scales="free")+
          geom_text(aes(5, 85, label=paste0("year = ", year)),
                    showSelected="year",
                    data=SCATTER(years)),

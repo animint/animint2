@@ -10,7 +10,7 @@ shinyServer(function(input, output) {
   plotWorld <- reactive({
     world <- subsetDat(world)
     pirates <- subsetDat(pirates)
-    ggplot() + 
+    a_plot() + 
       geom_polygon(data = world, 
                    aes(x = long, y = lat, group = group), 
                    fill = "black", colour = "grey", alpha = I(0.1)) +
@@ -20,7 +20,7 @@ shinyServer(function(input, output) {
       theme_animint(height = 600, width = 800)
   })
   
-  # renderAnimint() expects a list of ggplots and animint options
+  # renderAnimint() expects a list of a_plots and animint options
   output$animint <- renderAnimint({ 
     list(plot1 = plotWorld(),
          time = list(variable = "year", ms = 2000))

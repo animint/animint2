@@ -1,5 +1,4 @@
 library(animint2)
-library(ggplot2Animint)
 library(gridExtra)
 
 #' Demonstrates axis specification, serves as a tutorial to introduce animint (eventually?)
@@ -18,9 +17,9 @@ scatterdata$class4 <- factor(rowSums(sapply(quantile(scatterdata$x)+c(0,0,0,0,.1
 p <- qplot(data=scatterdata, x=x, y=y, geom="point", colour=floor(x))
 # gg2animint(list(p=p))
 
-#' Should use empty ggplot() statement because of structure of ggplot/qplot object
+#' Should use empty a_plot() statement because of structure of a_plot/qplot object
 #' Must provide a named list of ggplots.
-s1 <- ggplot() + geom_point(data=scatterdata, aes(x=x, y=y)) +
+s1 <- a_plot() + geom_point(data=scatterdata, aes(x=x, y=y)) +
   xlab("very long x axis label") + 
   ylab("very long y axis label") +
   ggtitle("Titles are awesome")
@@ -29,13 +28,13 @@ s1
 
 #' Colors, Demonstrates axis -- works with factor data
 #' Specify colors using R color names
-s2 <- ggplot() + geom_point(data=scatterdata, aes(x=xnew, y=y), colour="blue") +
+s2 <- a_plot() + geom_point(data=scatterdata, aes(x=xnew, y=y), colour="blue") +
   ggtitle("Colors are cool")
 s2
 # gg2animint(list(s1=s1, s2=s2))
 
 #' Specify colors manually using hex values
-s3 <- ggplot() + 
+s3 <- a_plot() + 
   geom_point(data=scatterdata, aes(x=xnew, y=y, colour=class, fill=class)) + 
   scale_colour_manual(values=c("#FF0000", "#0000FF")) + 
   scale_fill_manual(values=c("#FF0000", "#0000FF")) +
@@ -44,19 +43,19 @@ s3
 # gg2animint(list(s1=s1, s2=s2, s3=s3))
 
 #' Categorical color scales 
-s4 <- ggplot() + geom_point(data=scatterdata, aes(x=xnew, y=y, colour=xnew, fill=xnew)) +
+s4 <- a_plot() + geom_point(data=scatterdata, aes(x=xnew, y=y, colour=xnew, fill=xnew)) +
   ggtitle("Categorical color/fill scales")
 s4
 # gg2animint(list(s1=s1, s2=s2, s3=s3, s4=s4))
 
 #' Use geom_jitter and color by another variable
-s5 <- ggplot() + geom_jitter(data=scatterdata, aes(x=xnew, y=y, colour=class4, fill=class4)) +
+s5 <- a_plot() + geom_jitter(data=scatterdata, aes(x=xnew, y=y, colour=class4, fill=class4)) +
   ggtitle("geom_jitter")
 s5
 # gg2animint(list(s1=s1, s2=s2, s3=s3, s4=s4, s5=s5))
 
 #' Color by x*y axis (no binning)
-s6 <- ggplot() + geom_point(data=scatterdata, aes(x=x, y=y, color=x*y, fill=x*y)) +
+s6 <- a_plot() + geom_point(data=scatterdata, aes(x=x, y=y, color=x*y, fill=x*y)) +
   ggtitle("Continuous color scales")
 s6
 # gg2animint(list(s1=s1, s2=s2, s3=s3, s4=s4, s5=s5, s6=s6))
@@ -71,7 +70,7 @@ scatterdata2.summary <- ddply(scatterdata2, .(quad), summarise, xmin=min(x), xma
 qplot(data=scatterdata2, x=x, y=y, geom="point", colour=quad)
 
 #' Interactive plots...
-s7 <- ggplot() + 
+s7 <- a_plot() + 
   geom_rect(data=scatterdata2.summary,
             aes(xmax=xmax, xmin=xmin, ymax=ymax, ymin=ymin, colour=quad, fill=quad),
             clickSelects = "quad", alpha=.3) +
@@ -85,7 +84,7 @@ s7
 # gg2animint(list(s1=s1, s2=s2, s3=s3, s4=s4, s5=s5, s6=s6, s7=s7))
 
 #' Single alpha value
-s8 <- ggplot() + 
+s8 <- a_plot() + 
   geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad),alpha=.2)+
   geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad), 
              clickSelects="quad", showSelected="quad", alpha=.6) +
@@ -96,7 +95,7 @@ s8
 # gg2animint(list(s1=s1, s2=s2, s3=s3, s4=s4, s5=s5, s6=s6, s7=s7, s8=s8))
 
 #' Continuous alpha
-s9 <- ggplot() +
+s9 <- a_plot() +
   geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad),alpha=.2)+
   geom_point(data=scatterdata2,
              aes(x=x, y=y, colour=quad, fill=quad, alpha=str),
@@ -110,7 +109,7 @@ s9
 
 #' Categorical alpha and scale_alpha_discrete()
 #' Note, to get unselected points to show up, need to have two copies of geom_point: One for anything that isn't selected, one for only the selected points.
-s10 <- ggplot() + 
+s10 <- a_plot() + 
   geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, alpha=quad))+
   geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, alpha=quad),
              clickSelects="quad", showSelected="quad") +
@@ -125,7 +124,7 @@ s10
 
 #' Point Size Scaling
 #' Scale defaults to radius, but area is more easily interpreted by the brain (Tufte).
-s11 <- ggplot() + 
+s11 <- a_plot() + 
   geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, size=str), alpha=.5) +
   geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, size=str),
              clickSelects="quad", showSelected="quad", alpha=.3) +
@@ -134,7 +133,7 @@ s11
 
 # gg2animint(list(s1=s1, s2=s2, s3=s3, s4=s4, s5=s5, s6=s6, s7=s7, s8=s8, s9=s9, s10=s10, s11=s11))
 
-s12 <- ggplot() + 
+s12 <- a_plot() + 
   geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, size=str), alpha=.5) + 
   scale_size_area() +
   ggtitle("Scale Area")

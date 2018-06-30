@@ -3,14 +3,14 @@ data(WorldBank)
 WorldBank$region <-
   sub(" (all income levels)", "", WorldBank$region, fixed=TRUE)
 wb.paper <-
-  list(ts=ggplot()+
+  list(ts=a_plot()+
        make_tallrect(WorldBank, "year")+
        guides(color="none")+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
                  showSelected="region",
                  clickSelects="country",
                  data=WorldBank, size=4, alpha=3/5),
-       scatter=ggplot()+
+       scatter=a_plot()+
        geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population,
                       tooltip=paste(country, "population", population),
                       key=country), # key aesthetic for animated transitions!

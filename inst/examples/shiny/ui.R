@@ -21,7 +21,7 @@ shinyUI(fluidPage(
       selectInput("size", "Choose a size variable", choices = nms, selected = nms[5])
     ),
     column(5,
-      plotOutput("ggplot", height = "300px")
+      plotOutput("a_plot", height = "300px")
     ),
     column(5, 
       animintOutput("animint")

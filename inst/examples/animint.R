@@ -4,14 +4,14 @@ library(animint2)
 data(WorldBank)
 gapminder <-
   list(title="Linked scatterplot and time series",
-       ts=ggplot()+
+       ts=a_plot()+
        make_tallrect(WorldBank, "year")+
        geom_line(aes(year, life.expectancy, group=country, color=region),
                  clickSelects="country",
                  data=WorldBank, size=4, alpha=3/5),
        time=list(variable="year",ms=3000),
        duration=list(year=1000),
-       scatter=ggplot()+
+       scatter=a_plot()+
        geom_point(aes(fertility.rate, life.expectancy,
                       key=country, colour=region, size=population),
                   showSelected="year",
@@ -28,7 +28,7 @@ data(worldPop)
 ## Linked bar and line plots of world population by subcontinent,
 ## inspired by polychartjs.
 popPlots <-
-  list(bars=ggplot()+
+  list(bars=a_plot()+
        geom_bar(aes(x=subcontinent, y=population),
                 clickSelects="subcontinent",
                 showSelected="year",
@@ -37,7 +37,7 @@ popPlots <-
        ## selected value of the year variable.
        make_text(worldPop, 1, 3e6, "year")+
        coord_flip(),
-       lines=ggplot()+
+       lines=a_plot()+
        ## This make_tallrect tiles the background of the lineplot with
        ## rects that can be clicked to select the year variable.
        make_tallrect(worldPop, "year")+

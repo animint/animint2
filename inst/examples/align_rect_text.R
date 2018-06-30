@@ -1,6 +1,6 @@
 library(animint2)
 centers <- expand.grid(x=1:10, y=1:20)
-aligned <- ggplot(centers)+
+aligned <- a_plot(centers)+
   geom_rect(aes(xmin=x-1/2, ymin=y-1/2,
                 xmax=x+1/2, ymax=y+1/2),
             fill="white", colour="black")+

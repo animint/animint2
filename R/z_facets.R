@@ -65,13 +65,10 @@ getStrips.null <- function(a_facet, panel, ...) {
   list(top = list(""), right = list(""), n = list(top = 0, right = 0))
 }
 
-#' Attach AXIS_X/AXIS_Y columns to the panel layout if 
-#' facet_grids is used.
-#' Currently every axis is rendered,
-#' but this could be helpful if we decide not to that.
-#' @param a_facet ....
-#' @param layout ...
-#' @export
+# Attach AXIS_X/AXIS_Y columns to the panel layout if 
+# facet_grids is used.
+# Currently every axis is rendered,
+# but this could be helpful if we decide not to that.
 flag_axis <- function(a_facet, layout) 
   UseMethod("flag_axis")
 
