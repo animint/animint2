@@ -8,8 +8,11 @@ Chapter 1 | Preface
           | What's new? Comparison with animint
           
 Chapter 2 | animint2
+
           | Inside animint2. Dependencies
+          
           | Structure of the pacakge
+          
           | Possibilities
             
 Chapter 3 | ggplot2 and animint2
@@ -21,10 +24,13 @@ Chapter 4 | What's the grammar of graphics? Overview of data analysis and visual
 Chapter 5 | animint2, the basics. How to create an interactive graphic from ggplot2 in seconds.
 
 Chapter 6 | Advanced options
+
           | showSelected
+          
           | clickSelects
           
 Chapter 7 | Customizing animint2
+
           | hyperlinks, tooltips, data-driven selector variable names
 
 Chapter 8 | Publishing your interactive data visualizations on the web.
@@ -38,6 +44,7 @@ Chapter 10 | How to implement real examples from the web, media in animint2
 ## Future implementations
 
 Chapter 11 | Open Source
+
            | How you can contribute
           
 Chapter 12 | Future implementation
@@ -96,6 +103,8 @@ install.packages("ggplot2")
 Once installed, let's create our first graphic. We are going to start with one of the most basic: a histogram. Regarding the data, we are going to use diamonds as our source.
 
 ```
+library(ggplot2)
+
 ggplot(diamonds, aes(carat)) +
   geom_histogram()
 ```
@@ -109,6 +118,14 @@ To install animint2 we have to run this code in R:
 devtools::install_github("faizan-khan-iit/ggplot2@validate-params")
 devtools::install_github("tdhock/animint2")
 ```
+
+After installing animint2, remember to load the library:
+
+```
+library(animint2)
+
+```
+
 
 
 ## [Chapter 6: ](#)
