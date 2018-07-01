@@ -63,7 +63,7 @@ useful when you have discrete data.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "point")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "point")}
 }
 
 \section{Computed variables}{

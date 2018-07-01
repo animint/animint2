@@ -1,7 +1,7 @@
 #' Polygon, a filled path.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "polygon")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "polygon")}
 #'
 #' @seealso
 #'  \code{\link{geom_path}} for an unfilled polygon,

@@ -46,15 +46,13 @@ a_PositionJitterdodge <- a_ggproto("a_PositionJitterdodge", a_Position,
     }
     ndodge    <- lapply(data[dodgecols], levels)  # returns NULL for numeric, i.e. non-dodge layers
     ndodge    <- length(unique(unlist(ndodge)))
-
     list(
       dodge.width = self$dodge.width,
       jitter.height = self$jitter.height,
       jitter.width = width / (ndodge + 2)
     )
   },
-
-
+  
   compute_panel = function(data, params, scales) {
     data <- collide(data, params$dodge.width, "position_jitterdodge", pos_dodge,
       check.width = FALSE)

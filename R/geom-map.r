@@ -6,7 +6,7 @@ NULL
 #' Does not affect position scales.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "map")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "map")}
 #'
 #' @export
 #' @param map Data frame that contains the map coordinates.  This will
@@ -37,13 +37,13 @@ NULL
 #' )
 #'
 #' a_plot(values) + geom_map(aes(map_id = id), map = positions) +
-#'   animint2:::expand_limits(positions)
+#'   expand_limits(positions)
 #' a_plot(values, aes(fill = value)) +
 #'   geom_map(aes(map_id = id), map = positions) +
-#'   animint2:::expand_limits(positions)
+#'   expand_limits(positions)
 #' a_plot(values, aes(fill = value)) +
 #'   geom_map(aes(map_id = id), map = positions) +
-#'   animint2:::expand_limits(positions) + ylim(0, 3)
+#'   expand_limits(positions) + ylim(0, 3)
 #'
 #' # Better example
 #' crimes <- data.frame(state = tolower(rownames(USArrests)), USArrests)
@@ -52,13 +52,13 @@ NULL
 #'   states_map <- map_data("state")
 #'   a_plot(crimes, aes(map_id = state)) +
 #'     geom_map(aes(fill = Murder), map = states_map) +
-#'     animint2:::expand_limits(x = states_map$long, y = states_map$lat)
+#'     expand_limits(x = states_map$long, y = states_map$lat)
 #'
-#'   last_plot() + animint2:::coord_map()
+#'   last_plot() + coord_map()
 #'   a_plot(crimesm, aes(map_id = state)) +
 #'     geom_map(aes(fill = value), map = states_map) +
-#'     animint2:::expand_limits(x = states_map$long, y = states_map$lat) +
-#'     animint2:::a_facet_wrap( ~ variable)
+#'     expand_limits(x = states_map$long, y = states_map$lat) +
+#'     a_facet_wrap( ~ variable)
 #' }
 geom_map <- function(mapping = NULL, data = NULL,
                      stat = "identity",

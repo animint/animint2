@@ -4,7 +4,7 @@
 #' \code{ymin} and \code{ymax}.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "linerange")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "linerange")}
 #'
 #' @param fatten A multiplicative factor used to increase the size of the
 #'   middle bar in \code{geom_crossbar()} and the middle point in

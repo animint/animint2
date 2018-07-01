@@ -28,7 +28,7 @@ se + geom_pointrange()
 
 # Using annotate
 p <- a_plot(mtcars, aes(wt, mpg)) + geom_point()
-p + animint2:::annotate("rect", xmin = 2, xmax = 3.5, ymin = 2, ymax = 25,
+p + annotate("rect", xmin = 2, xmax = 3.5, ymin = 2, ymax = 25,
   fill = "dark grey", alpha = .5)
 
 # Geom_segment examples

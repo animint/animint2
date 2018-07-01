@@ -5,7 +5,7 @@
 #' in smaller datasets.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "point")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "point")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point

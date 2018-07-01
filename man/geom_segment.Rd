@@ -80,7 +80,7 @@ the default plot specification, e.g. \code{\link{borders}}.}
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "segment")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "segment")}
 }
 
 \examples{
@@ -103,7 +103,7 @@ b + geom_curve(
 a_plot(seals, aes(long, lat)) +
   geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat),
     arrow = arrow(length = unit(0.1,"cm"))) +
-  animint2:::borders("state")
+    borders("state")
 
 # You can also use geom_segment to recreate plot(type = "h") :
 counts <- as.data.frame(table(x = rpois(100,5)))

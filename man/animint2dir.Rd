@@ -158,6 +158,3 @@ popSmooth <- c(popAnim, list(duration=list(year=1000)))
 animint2dir(popSmooth, "WorldPop-smooth")
 
 }
-\seealso{
-\code{\link{ggplot2Animint}}
-}

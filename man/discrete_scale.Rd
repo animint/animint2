@@ -59,4 +59,3 @@ guide. See \code{\link{guides}} for more info.}
 \description{
 Discrete scale constructor.
 }
-\keyword{internal}

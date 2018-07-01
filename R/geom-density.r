@@ -4,7 +4,7 @@
 #' with underlying smoothness.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "density")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "density")}
 #'
 #' @seealso See \code{\link{geom_histogram}}, \code{\link{geom_freqpoly}} for
 #'   other methods of displaying continuous distribution.

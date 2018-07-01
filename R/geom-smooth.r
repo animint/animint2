@@ -13,7 +13,7 @@
 #' scale, and then back-transformed to the response scale.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "smooth")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "smooth")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point
@@ -54,7 +54,7 @@
 #' a_plot(mpg, aes(displ, hwy)) +
 #'   geom_point() +
 #'   geom_smooth(span = 0.8) +
-#'   animint2:::a_facet_wrap(~drv)
+#'   a_facet_wrap(~drv)
 #'
 #' \donttest{
 #' binomial_smooth <- function(...) {

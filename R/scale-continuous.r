@@ -88,12 +88,12 @@ scale_x_continuous <- function(name = waiver(), breaks = waiver(),
     expand = expand, oob = oob, na.value = na.value, trans = trans,
     guide = "none"
   )
-  
+
   # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
   # object should in the first place be created with the correct parent.
   sc$super <- a_ScaleContinuousPosition
   class(sc) <- class(a_ScaleContinuousPosition)
-  
+
   sc
 }
 
@@ -110,12 +110,12 @@ scale_y_continuous <- function(name = waiver(), breaks = waiver(),
     expand = expand, oob = oob, na.value = na.value, trans = trans,
     guide = "none"
   )
-  
+
   # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
   # object should in the first place be created with the correct parent.
   sc$super <- a_ScaleContinuousPosition
   class(sc) <- class(a_ScaleContinuousPosition)
-  
+
   sc
 }
 

@@ -6,7 +6,7 @@
 #' when changes occur.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "path")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "path")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point

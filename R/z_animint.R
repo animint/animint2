@@ -864,7 +864,6 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
 #' @param css.file character string for non-empty css file to include. Provided file will be copied to the output directory as styles.css
 #' @return invisible list of ggplots in list format.
 #' @export
-#' @seealso \code{\link{ggplot2Animint}}
 #' @example inst/examples/animint.R
 animint2dir <- function(plot.list, out.dir = tempfile(),
                         json.file = "plot.json", open.browser = interactive(),

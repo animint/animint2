@@ -5,7 +5,7 @@
 #' useful when you have discrete data.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "point")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "point")}
 #' @param geom,stat Use to override the default connection between
 #'   \code{geom_count} and \code{stat_sum}.
 #' @inheritParams layer

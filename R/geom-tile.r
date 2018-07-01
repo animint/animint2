@@ -8,7 +8,7 @@
 #' performance special case for when all the tiles are the same size.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "tile")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "tile")}
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point

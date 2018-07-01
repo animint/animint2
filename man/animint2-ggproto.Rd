@@ -132,7 +132,7 @@ contains a \code{a_Geom*} object (like \code{a_GeomPoint}). The \code{a_Geom*}
 object is responsible for rendering the data in the plot.
 
 Each of the \code{a_Geom*} objects is a \code{\link{a_ggproto}} object, descended
-from the top-level \code{a)Geom}, and each implements various methods and
+from the top-level \code{a_Geom}, and each implements various methods and
 fields. To create a new type of Geom object, you typically will want to
 implement one or more of the following:
 

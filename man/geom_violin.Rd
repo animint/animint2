@@ -81,7 +81,7 @@ Violin plot.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "violin")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "violin")}
 }
 
 \section{Computed variables}{

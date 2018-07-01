@@ -43,8 +43,8 @@ NULL
 #' @export
 scale_colour_identity <- function(..., guide = "none") {
   sc <- discrete_scale("colour", "identity", identity_pal(), ..., guide = guide)
-  
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
+
+  # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
   sc$super <- a_ScaleDiscreteIdentity
   class(sc) <- class(a_ScaleDiscreteIdentity)
@@ -55,8 +55,8 @@ scale_colour_identity <- function(..., guide = "none") {
 #' @export
 scale_fill_identity <- function(..., guide = "none") {
   sc <- discrete_scale("fill", "identity", identity_pal(), ..., guide = guide)
-  
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
+
+  # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
   sc$super <- a_ScaleDiscreteIdentity
   class(sc) <- class(a_ScaleDiscreteIdentity)
@@ -67,8 +67,8 @@ scale_fill_identity <- function(..., guide = "none") {
 #' @export
 scale_shape_identity <- function(..., guide = "none") {
   sc <- continuous_scale("shape", "identity", identity_pal(), ..., guide = guide)
-  
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
+
+  # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
   sc$super <- a_ScaleContinuousIdentity
   class(sc) <- class(a_ScaleContinuousIdentity)
@@ -79,8 +79,8 @@ scale_shape_identity <- function(..., guide = "none") {
 #' @export
 scale_linetype_identity <- function(..., guide = "none") {
   sc <- discrete_scale("linetype", "identity", identity_pal(), ..., guide = guide)
-  
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
+
+  # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
   sc$super <- a_ScaleDiscreteIdentity
   class(sc) <- class(a_ScaleDiscreteIdentity)
@@ -91,8 +91,8 @@ scale_linetype_identity <- function(..., guide = "none") {
 #' @export
 scale_alpha_identity <- function(..., guide = "none") {
   sc <- continuous_scale("alpha", "identity", identity_pal(), ..., guide = guide)
-  
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
+
+  # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
   sc$super <- a_ScaleContinuousIdentity
   class(sc) <- class(a_ScaleContinuousIdentity)
@@ -103,8 +103,8 @@ scale_alpha_identity <- function(..., guide = "none") {
 #' @export
 scale_size_identity <- function(..., guide = "none") {
   sc <- continuous_scale("size", "identity", identity_pal(), ..., guide = guide)
-  
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
+
+  # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
   sc$super <- a_ScaleContinuousIdentity
   class(sc) <- class(a_ScaleContinuousIdentity)
@@ -124,7 +124,7 @@ a_ScaleDiscreteIdentity <- a_ggproto("a_ScaleDiscreteIdentity", a_ScaleDiscrete,
                                      x
                                    }
                                  },
-                                 
+
                                  train = function(self, x) {
                                    # do nothing if no guide, otherwise train so we know what breaks to use
                                    if (self$guide == "none") return()
@@ -145,7 +145,7 @@ a_ScaleContinuousIdentity <- a_ggproto("a_ScaleContinuousIdentity", a_ScaleConti
                                        x
                                      }
                                    },
-                                   
+
                                    train = function(self, x) {
                                      # do nothing if no guide, otherwise train so we know what breaks to use
                                      if (self$guide == "none") return()

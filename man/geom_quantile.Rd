@@ -78,7 +78,7 @@ This can be used as a continuous analogue of a geom_boxplot.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "quantile")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "quantile")}
 }
 
 \section{Computed variables}{

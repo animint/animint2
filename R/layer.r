@@ -116,7 +116,6 @@ layer <- function(geom = NULL, stat = NULL,
   }else if (length(extra) > 0) {
     extra <- extra[!extra == "validate_params"]
     extra_params <- params[extra]
-    validate_params <- FALSE
   }
 
   a_ggproto("a_LayerInstance", a_Layer,

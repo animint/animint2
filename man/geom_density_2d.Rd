@@ -78,7 +78,7 @@ results with contours. This can be useful for dealing with overplotting.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "density_2d")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "density_2d")}
 }
 
 \section{Computed variables}{

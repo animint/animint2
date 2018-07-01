@@ -64,7 +64,7 @@ NULL
 #' p + geom_hline(aes(yintercept = wt), mean_wt)
 #'
 #' # You can also control other aesthetics
-#' a_plot(mtcars, aes(mpg, wt, colourffa = wt)) +
+#' a_plot(mtcars, aes(mpg, wt, colour = wt)) +
 #'   geom_point() +
 #'   geom_hline(aes(yintercept = wt, colour = wt), mean_wt) +
 #'   a_facet_wrap(~ cyl)

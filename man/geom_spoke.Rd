@@ -57,7 +57,7 @@ A line segment parameterised by location, direction and distance.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "spoke")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "spoke")}
 }
 
 \examples{

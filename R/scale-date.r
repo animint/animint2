@@ -21,7 +21,7 @@
 #'   date = last_month,
 #'   price = runif(30)
 #' )
-#' base <- ggplot(df, aes(date, price)) +
+#' base <- a_plot(df, aes(date, price)) +
 #'   geom_line()
 #'
 #' # The date scale will attempt to pick sensible defaults for
@@ -42,7 +42,7 @@ scale_x_date <- function(name = waiver(),
                          labels = waiver(), date_labels = waiver(),
                          minor_breaks = waiver(), date_minor_breaks = waiver(),
                          limits = NULL, expand = waiver()) {
-  
+
   scale_datetime(c("x", "xmin", "xmax", "xend"), "date",
                  name = name,
                  breaks = breaks, date_breaks = date_breaks,
@@ -59,7 +59,7 @@ scale_y_date <- function(name = waiver(),
                          labels = waiver(), date_labels = waiver(),
                          minor_breaks = waiver(), date_minor_breaks = waiver(),
                          limits = NULL, expand = waiver()) {
-  
+
   scale_datetime(c("y", "ymin", "ymax", "yend"), "date",
                  name = name,
                  breaks = breaks, date_breaks = date_breaks,
@@ -77,7 +77,7 @@ scale_x_datetime <- function(name = waiver(),
                              labels = waiver(), date_labels = waiver(),
                              minor_breaks = waiver(), date_minor_breaks = waiver(),
                              limits = NULL, expand = waiver()) {
-  
+
   scale_datetime(c("x", "xmin", "xmax", "xend"), "time",
                  name = name,
                  breaks = breaks, date_breaks = date_breaks,
@@ -95,7 +95,7 @@ scale_y_datetime <- function(name = waiver(),
                              labels = waiver(), date_labels = waiver(),
                              minor_breaks = waiver(), date_minor_breaks = waiver(),
                              limits = NULL, expand = waiver()) {
-  
+
   scale_datetime(c("y", "ymin", "ymax", "yend"), "time",
                  name = name,
                  breaks = breaks, date_breaks = date_breaks,
@@ -111,13 +111,13 @@ scale_datetime <- function(aesthetics, trans,
                            date_labels = waiver(),
                            date_minor_breaks = waiver(),
                            ...) {
-  
+
   name <- switch(trans, date = "date", time = "datetime")
-  
+
   # Backward compatibility
   if (is.character(breaks)) breaks <- date_breaks(breaks)
   if (is.character(minor_breaks)) minor_breaks <- date_breaks(minor_breaks)
-  
+
   if (!is.waive(date_breaks)) {
     breaks <- date_breaks(date_breaks)
   }
@@ -127,11 +127,11 @@ scale_datetime <- function(aesthetics, trans,
   if (!is.waive(date_labels)) {
     labels <- date_format(date_labels)
   }
-  
+
   sc <- continuous_scale(aesthetics, name, identity,
                          breaks = breaks, minor_breaks = minor_breaks, labels = labels,
                          guide = "none", trans = trans, ...)
-  
+
   # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
   scale_class <- switch(trans, date = a_ScaleContinuousDate, time = a_ScaleContinuousDatetime)

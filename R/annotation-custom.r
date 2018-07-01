@@ -47,7 +47,6 @@ annotation_custom <- function(grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax =
     geom = a_GeomCustomAnn,
     inherit.aes = TRUE,
     params = list(
-
       grob = grob,
       xmin = xmin,
       xmax = xmax,

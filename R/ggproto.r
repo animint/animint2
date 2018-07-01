@@ -49,7 +49,6 @@ a_ggproto <- function(`_class` = NULL, `_inherit` = NULL, ...) {
     }
     e$super <- `_inherit`
     class(e) <- c(`_class`, class(`_inherit`))
-    
   } else {
     class(e) <- c(`_class`, "a_ggproto")
   }
@@ -103,7 +102,6 @@ a_ggproto_parent <- function(parent, self) {
   if (!is.function(res)) {
     return(res)
   }
-  
   make_proto_method(.subset2(x, "self"), res)
 }
 
@@ -112,13 +110,11 @@ make_proto_method <- function(self, f) {
   # is.null is a fast path for a common case; the %in% check is slower but also
   # catches the case where there's a `self = NULL` argument.
   has_self  <- !is.null(args[["self"]]) || "self"  %in% names(args)
-  
   if (has_self) {
     fun <- function(...) f(..., self = self)
   } else {
     fun <- function(...) f(...)
   }
-  
   class(fun) <- "a_ggproto_method"
   fun
 }
@@ -138,7 +134,6 @@ make_proto_method <- function(self, f) {
 #' @export
 as.list.a_ggproto <- function(x, inherit = TRUE, ...) {
   res <- list()
-  
   if (inherit) {
     if (!is.null(x$super)) {
       res <- as.list(x$super)
@@ -168,7 +163,6 @@ as.list.a_ggproto <- function(x, inherit = TRUE, ...) {
 print.a_ggproto <- function(x, ..., flat = TRUE) {
   if (is.function(x$print)) {
     x$print(...)
-    
   } else {
     cat(format(x, flat = flat), "\n", sep = "")
     invisible(x)

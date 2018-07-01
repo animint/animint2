@@ -82,4 +82,3 @@ discrete variables.}
 \description{
 Continuous scale constructor.
 }
-\keyword{internal}

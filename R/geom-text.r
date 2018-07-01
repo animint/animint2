@@ -11,7 +11,7 @@
 #' resize a plot, labels stay the same size, but the size of the axes changes.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "text")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "text")}
 #'
 #' @section \code{geom_label}:
 #' Currently \code{geom_label} does not support the \code{rot} parameter and
@@ -72,10 +72,8 @@
 #'   parse = TRUE)
 #'
 #' # Add a text annotation
-#' p +
-#'   geom_text() +
-#'   animint2:::annotate("text",
-#'   label = "plot mpg vs. wt", x = 2, y = 15, size = 8, colour = "red")
+#' p + geom_text() + annotate("text",
+#' label = "plot mpg vs. wt", x = 2, y = 15, size = 8, colour = "red")
 #'
 #' \donttest{
 #' # Aligning labels and bars --------------------------------------------------

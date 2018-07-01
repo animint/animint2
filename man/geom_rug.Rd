@@ -60,7 +60,7 @@ Marginal rug plots.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "rug")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "rug")}
 }
 
 \examples{

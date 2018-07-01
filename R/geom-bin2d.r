@@ -1,7 +1,7 @@
 #' Add heatmap of 2d bin counts.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "bin2d")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "bin2d")}
 #'
 #' @export
 #' @inheritParams layer
