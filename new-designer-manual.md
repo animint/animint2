@@ -187,4 +187,9 @@ https://www.washingtonpost.com/graphics/2018/politics/house-primaries-candidates
 
 * Test-driven development
 
+Test-driven development (TDD) is a software development process that relies on the repetition of a very short development cycle. Requirements are turned into very specific test cases, then the software is improved to pass the new tests, only. Basically the idea is the following one:
+* start by pushing some test code
+* expect a fail
+* edit the code and push more commits until the tests pass
+
 ## [Chapter 12: ](#)
