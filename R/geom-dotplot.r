@@ -134,7 +134,7 @@ geom_dotplot <- function(mapping = NULL, data = NULL,
   # to use stackgroups=TRUE instead. Need to use identical() instead of ==,
   # because == will fail if object is position_stack() or position_dodge()
   if (!is.null(position) &&
-      (identical(position, "stack") || (inherits(position, "PositionStack"))))
+      (identical(position, "stack") || (inherits(position, "a_PositionStack"))))
     message("position=\"stack\" doesn't work properly with geom_dotplot. Use stackgroups=TRUE instead.")
 
   if (stackgroups && method == "dotdensity" && binpositions == "bygroup")
@@ -260,7 +260,7 @@ a_GeomDotplot <- a_ggproto("a_GeomDotplot", a_Geom,
     tdata <- coord$transform(data, panel_scales)
 
     # Swap axes if using coord_flip
-    if (inherits(coord, "CoordFlip"))
+    if (inherits(coord, "a_CoordFlip"))
       binaxis <- ifelse(binaxis == "x", "y", "x")
 
     if (binaxis == "x") {

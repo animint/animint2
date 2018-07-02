@@ -30,7 +30,7 @@ summary.a_plot <- function(object, ...) {
   }
 
   cat("faceting: ")
-  print(object$facet)
+  print(object$a_facet)
 
   if (length(object$layers) > 0)
     cat("-----------------------------------\n")

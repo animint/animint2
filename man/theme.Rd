@@ -190,9 +190,9 @@ geom_text(data = data.frame(), aes(4.5, 30, label = "Pearson-R = -.87"))
 # Change the axis labels
 # Original plot
 p
-p + animint2:::labs(x = "Vehicle Weight", y = "Miles per Gallon")
+p + labs(x = "Vehicle Weight", y = "Miles per Gallon")
 # Or
-p + animint2:::labs(x = "Vehicle Weight", y = "Miles per Gallon")
+p + labs(x = "Vehicle Weight", y = "Miles per Gallon")
 
 # Change title appearance
 p <- p + labs(title = "Vehicle Weight-Gas Mileage Relationship")

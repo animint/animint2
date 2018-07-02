@@ -75,7 +75,7 @@ aggregate.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "summary")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "summary")}
 }
 
 \section{Summary functions}{

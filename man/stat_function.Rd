@@ -63,7 +63,7 @@ Superimpose a function.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "function")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "function")}
 }
 
 \section{Computed variables}{
