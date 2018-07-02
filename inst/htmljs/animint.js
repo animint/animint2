@@ -1476,6 +1476,7 @@ var animint = function (to_select, json_file) {
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size)
           .style("fill", get_fill);
+          .style("stroke-opacity", get_alpha_stroke)
 	      if(g_info.select_style != "stroke"){
           e.style("stroke", get_colour);
         }
