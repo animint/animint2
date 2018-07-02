@@ -28,17 +28,18 @@ test_that("alpha_stroke parameter is rendered as stroke-opacity style", {
   expect_equal(opacity.num, opacity.exp)
 })
 
-# Working on geom_rect test
-# test_that("alpha_stroke parameter is rendered as stroke-opacity style in rects", {
-#  viz <- list(segs = ggplot() +
-#                geom_rect(data = df, size = 0.01, color = "violet",
-#                          alpha_stroke = 1/10,
-#                          validate_params = FALSE,
-#                          aes(xmin = xmin, ymin = ymin,
-#                              xmax = xmax, ymax = ymax)))
-#  info <- animint2HTML(viz)
-#
-# opacity.str <- getStyleValue(info$html, "//rect[@class='geom']", "stroke-opacity")
-# opacity.num <- as.numeric(opacity.str)
-# opacity.exp <- rep(1/10, nrow(states.data))
-# expect_equal(opacity.num, opacity.exp)
+
+test_that("alpha_stroke parameter is rendered as stroke-opacity style in rects", {
+  viz <- list(segs = ggplot() +
+                geom_rect(data = df, size = 0.01, color = "violet",
+                          alpha_stroke = 1/10,
+                          validate_params = FALSE,
+                          aes(xmin = xmin, ymin = ymin,
+                              xmax = xmax, ymax = ymax)))
+  info <- animint2HTML(viz)
+
+opacity.str <- getStyleValue(info$html, "//rect[@class='geom']", "stroke-opacity")
+opacity.num <- as.numeric(opacity.str)
+opacity.exp <- rep(1/10, nrow(states.data))
+expect_equal(opacity.num, opacity.exp)
+})
