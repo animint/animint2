@@ -103,9 +103,9 @@ info <- animint2HTML(viz)
 ## e <- remDr$findElement("id", "chrY")
 ## remDr$mouseMoveToLocation(webElement=e)
 
-## getStyleValue(getHTML(), '//g[@class="geom4_point_chroms"]//circle', "opacity")
+## getStyleValue(getHTML(), '//g[@class="geom4_a_point_chroms"]//circle', "opacity")
 
-## getNodeSet(getHTML(), '//g[@class="geom4_point_chroms"]//circle')
+## getNodeSet(getHTML(), '//g[@class="geom4_a_point_chroms"]//circle')
 
 test_that("without selectize option, only render chrom widget", {
   widget.vec <- getSelectorWidgets(info$html)
@@ -113,7 +113,7 @@ test_that("without selectize option, only render chrom widget", {
 })
 
 getSorted <- function(){
-  text.list <- getNodeSet(getHTML(), '//g[@class="geom1_text_oneChrom"]//text')
+  text.list <- getNodeSet(getHTML(), '//g[@class="geom1_a_text_oneChrom"]//text')
   value.vec <- sapply(text.list, xmlValue)
   sort(as.numeric(value.vec))
 }
@@ -248,7 +248,7 @@ test_that("lines in color legend", {
 })
 
 specific_hlines <- function(html=getHTML()){
-  getNodeSet(html, '//g[@class="geom7_hline_scatter"]//line')
+  getNodeSet(html, '//g[@class="geom7_a_hline_scatter"]//line')
 }
 
 specific.id <- "plot_scatter_thresh_type_variable_specific"

@@ -192,22 +192,22 @@ test_that("no duplicated rows in common data", {
 })
 
 test_that("error lines rendered in all panels", {
-  panel.list <- getNodeSet(info$html, '//g[@class="geom8_line_error"]//g')
+  panel.list <- getNodeSet(info$html, '//g[@class="geom8_a_line_error"]//g')
   computed.counts <- sapply(panel.list, function(x)length(xmlChildren(x)))
   expected.counts <- rep(3, 20)
   expect_equal(computed.counts, expected.counts)
 })
 
 xpath.vec <- 
-  c('//g[@class="geom1_point_auc"]//circle',
-    '//g[@class="geom2_point_auc"]//circle',
-    '//g[@class="geom3_path_roc"]//path',
-    '//g[@class="geom4_point_roc"]//circle',
-    '//g[@class="geom5_point_roc"]//circle',
-    '//g[@class="geom6_hline_error"]//line',
-    '//g[@class="geom7_vline_error"]//line',
-    '//g[@class="geom8_line_error"]//path',
-    '//g[@class="geom9_tallrect_error"]//rect')
+  c('//g[@class="geom1_a_point_auc"]//circle',
+    '//g[@class="geom2_a_point_auc"]//circle',
+    '//g[@class="geom3_a_path_roc"]//path',
+    '//g[@class="geom4_a_point_roc"]//circle',
+    '//g[@class="geom5_a_point_roc"]//circle',
+    '//g[@class="geom6_a_hline_error"]//line',
+    '//g[@class="geom7_a_vline_error"]//line',
+    '//g[@class="geom8_a_line_error"]//path',
+    '//g[@class="geom9_a_tallrect_error"]//rect')
 
 countGeoms <- function(html=getHTML()){
   count.vec <- c()

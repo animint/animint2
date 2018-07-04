@@ -54,12 +54,12 @@ info <- animint2HTML(viz.data.fun)
 n.years <- length(unique(not.na$year))
 
 test_that("correct number of widerects rendered", {
-  rect.list <- getNodeSet(info$html, '//g[@class="geom6_widerect_ts"]//rect')
+  rect.list <- getNodeSet(info$html, '//g[@class="geom6_a_widerect_ts"]//rect')
   expect_equal(length(rect.list), n.years)
 })
 
 test_that("correct number of tallrects rendered", {
-  rect.list <- getNodeSet(info$html, '//g[@class="geom1_tallrect_ts"]//rect')
+  rect.list <- getNodeSet(info$html, '//g[@class="geom1_a_tallrect_ts"]//rect')
   expect_equal(length(rect.list), n.years)
 })
 

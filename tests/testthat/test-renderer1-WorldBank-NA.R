@@ -42,13 +42,13 @@ no.time <-
 
 bar.attributes <- function(html){
   node.set <-
-    getNodeSet(info$html, '//g[@class="geom6_bar_bar"]//rect')
+    getNodeSet(info$html, '//g[@class="geom6_a_bar_bar"]//rect')
   sapply(node.set, xmlAttrs)
 }
 
 info <- animint2HTML(no.time)
 
-chunk1.tsv <- file.path("animint-htmltest", "geom6_bar_bar_chunk1.tsv")
+chunk1.tsv <- file.path("animint-htmltest", "geom6_a_bar_bar_chunk1.tsv")
 chunk1 <- read.table(chunk1.tsv, sep="\t", header=TRUE,
                      comment.char="", quote="")
 

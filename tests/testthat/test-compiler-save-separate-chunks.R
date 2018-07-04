@@ -269,7 +269,7 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   year.num <- as.numeric(year.str)
   expected.data <- subset(points.not.na, year == year.num)
   chunk.num <- chunk.info[[year.str]]
-  tsv.name <- sprintf("geom1_point_scatter_chunk%d.tsv", chunk.num)
+  tsv.name <- sprintf("geom1_a_point_scatter_chunk%d.tsv", chunk.num)
   tsv.path <- file.path(out.dir, tsv.name)
   varied.data <- read.csv(tsv.path, sep = "\t", comment.char = "")
   expect_equal(nrow(varied.data), nrow(expected.data))

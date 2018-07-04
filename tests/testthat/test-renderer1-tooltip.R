@@ -55,27 +55,27 @@ info <- animint2HTML(viz)
 
 test_that("aes(tooltip, clickSelects) means show tooltip", {
   nodes <-
-    getNodeSet(info$html, '//g[@class="geom1_point_scatter"]//circle//title')
+    getNodeSet(info$html, '//g[@class="geom1_a_point_scatter"]//circle//title')
   tooltips <- sapply(nodes, xmlValue)
   expect_match(tooltips, "population")
 })
 
 test_that("aes(clickSelects) means show 'variable value'", {
   nodes <-
-    getNodeSet(info$html, '//g[@class="geom7_line_ts"]//path//title')
+    getNodeSet(info$html, '//g[@class="geom7_a_line_ts"]//path//title')
   tooltips <- sapply(nodes, xmlValue)
   expect_match(tooltips, "country")
 })
 
 test_that("aes(tooltip) means show tooltip", {
   nodes <-
-    getNodeSet(info$html, '//g[@class="geom3_rect_scatter"]//rect//title')
+    getNodeSet(info$html, '//g[@class="geom3_a_rect_scatter"]//rect//title')
   tooltips <- sapply(nodes, xmlValue)
   expect_match(tooltips, "not NA")
 })
 
 test_that("aes() means show no tooltip", {
-  rect.xpath <- '//g[@class="geom4_rect_scatter"]//rect'
+  rect.xpath <- '//g[@class="geom4_a_rect_scatter"]//rect'
   rect.nodes <- getNodeSet(info$html, rect.xpath)
   expect_equal(length(rect.nodes), 1)
   
@@ -93,7 +93,7 @@ viz <- list(
 
 test_that("line tooltip renders as title", {
   info <- animint2HTML(viz)
-  title.nodes <- getNodeSet(info$html, '//g[@class="geom1_line_linetip"]//title')
+  title.nodes <- getNodeSet(info$html, '//g[@class="geom1_a_line_linetip"]//title')
   value.vec <- sapply(title.nodes, xmlValue)
   expect_identical(value.vec, c("group 1", "group 2"))
 })
@@ -111,12 +111,12 @@ info <- animint2HTML(viz)
 test_that("tooltip works with href",{
   # Test for bug when points are not rendered with both href + tooltip
   point_nodes <-
-    getNodeSet(info$html, '//g[@class="geom1_point_ex"]//a//circle')
+    getNodeSet(info$html, '//g[@class="geom1_a_point_ex"]//a//circle')
   expected.countries <- NotNA1975$country
   expect_equal(length(point_nodes), length(expected.countries))
   # See that every <a> element has a title (the country name) initially
   title_nodes <-
-    getNodeSet(info$html, '//g[@class="geom1_point_ex"]//a//title')
+    getNodeSet(info$html, '//g[@class="geom1_a_point_ex"]//a//title')
   rendered_titles <- sapply(title_nodes, xmlValue)
   expect_identical(sort(rendered_titles), sort(expected.countries))
 })

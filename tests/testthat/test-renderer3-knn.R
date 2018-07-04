@@ -122,7 +122,7 @@ viz.neighbors <- list(
 info <- animint2HTML(viz.neighbors)
 
 get_nodes <- function(html=getHTML()){
-  line.list <- getNodeSet(html, "//g[@class='geom2_segment_error']//line")
+  line.list <- getNodeSet(html, "//g[@class='geom2_a_segment_error']//line")
   rect.list <- getNodeSet(
     html, "//svg[@id='plot_error']//rect[@class='border_rect']")
   rect.attr.mat <- sapply(rect.list, xmlAttrs)
@@ -131,14 +131,14 @@ get_nodes <- function(html=getHTML()){
   rect.right <- rect.x + rect.width
   line.attr.mat <- sapply(line.list, xmlAttrs)
   list(
-    ribbon=getNodeSet(html, "//g[@class='geom3_ribbon_error']//path"),
-    validation=getNodeSet(html, "//g[@class='geom4_line_error']//path"),
-    train.test=getNodeSet(html, "//g[@class='geom5_line_error']//path"),
+    ribbon=getNodeSet(html, "//g[@class='geom3_a_ribbon_error']//path"),
+    validation=getNodeSet(html, "//g[@class='geom4_a_line_error']//path"),
+    train.test=getNodeSet(html, "//g[@class='geom5_a_line_error']//path"),
     Bayes=line.list,
     Bayes.x2=if(is.matrix(line.attr.mat))as.numeric(line.attr.mat["x2",]),
     border.right=rect.right,
-    boundary.KNN=getNodeSet(html, "//g[@class='geom8_path_data']//path"),
-    boundary.Bayes=getNodeSet(html, "//g[@class='geom9_path_data']//path")
+    boundary.KNN=getNodeSet(html, "//g[@class='geom8_a_path_data']//path"),
+    boundary.Bayes=getNodeSet(html, "//g[@class='geom9_a_path_data']//path")
     )
 }
 

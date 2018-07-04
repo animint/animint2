@@ -82,14 +82,14 @@ info <- animint2HTML(viz)
 
 test_that("unspecified hjust means text-anchor: middle (other hjust=0)", {
   style.value <-
-    getStyleValue(info$html, '//g[@class="geom4_text_contour"]//text', 
+    getStyleValue(info$html, '//g[@class="geom4_a_text_contour"]//text', 
                   "text-anchor")
   expect_match(style.value, "middle")
 })  
 
 test_that('geom_text(hjust=0) => <text style="text-anchor: start">', {
   style.value <-
-    getStyleValue(info$html, '//g[@class="geom8_text_objective"]//text', 
+    getStyleValue(info$html, '//g[@class="geom8_a_text_objective"]//text', 
                   "text-anchor")
   expect_match(style.value, "start")
 })
@@ -99,14 +99,14 @@ info <- animint2HTML(viz)
 
 test_that("unspecified hjust means text-anchor: middle (other hjust=1)", {
   style.value <-
-    getStyleValue(info$html, '//g[@class="geom4_text_contour"]//text', 
+    getStyleValue(info$html, '//g[@class="geom4_a_text_contour"]//text', 
                   "text-anchor")
   expect_match(style.value, "middle")
 })  
 
 test_that('geom_text(hjust=1) => <text style="text-anchor: end">', {
   style.value <-
-    getStyleValue(info$html, '//g[@class="geom8_text_objective"]//text', 
+    getStyleValue(info$html, '//g[@class="geom8_a_text_objective"]//text', 
                   "text-anchor")
   expect_match(style.value, "end")
 })
@@ -116,14 +116,14 @@ info <- animint2HTML(viz)
 
 test_that("unspecified hjust means text-anchor: middle (other hjust=0.5)", {
   style.value <-
-    getStyleValue(info$html, '//g[@class="geom4_text_contour"]//text', 
+    getStyleValue(info$html, '//g[@class="geom4_a_text_contour"]//text', 
                   "text-anchor")
   expect_match(style.value, "middle")
 })  
 
 test_that('geom_text(hjust=0.5) => <text style="text-anchor: middle">', {
   style.value <-
-    getStyleValue(info$html, '//g[@class="geom8_text_objective"]//text', 
+    getStyleValue(info$html, '//g[@class="geom8_a_text_objective"]//text', 
                   "text-anchor")
   expect_match(style.value, "middle")
 })
@@ -147,7 +147,7 @@ viz <- list(
 
 test_that("aes(hjust) works fine for 0, 0.5, 1", {
   info <- animint2HTML(viz)
-  xpath <- '//g[@class="geom1_text_text"]//text'
+  xpath <- '//g[@class="geom1_a_text_text"]//text'
   text.list <- getNodeSet(info$html, xpath)
   computed.anchor <- getStyleValue(info$html, xpath, "text-anchor")
   label.vec <- sapply(text.list, xmlValue)

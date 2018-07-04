@@ -119,10 +119,10 @@ test_that("Two plots with both color and fill", {
   expect_equal(length(right.circles), 2)
   ## Lines should be rendered in both plots:
   left.lines <-
-    getNodeSet(info$html, '//g[@class="geom2_segment_numeric"]//line')
+    getNodeSet(info$html, '//g[@class="geom2_a_segment_numeric"]//line')
   expect_equal(length(left.lines), 1)
   right.lines <-
-    getNodeSet(info$html, '//g[@class="geom4_segment_factor"]//line')
+    getNodeSet(info$html, '//g[@class="geom4_a_segment_factor"]//line')
   expect_equal(length(right.lines), 1)
 })
 

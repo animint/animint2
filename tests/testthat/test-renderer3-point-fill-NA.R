@@ -19,7 +19,7 @@ viz <- list(
 test_that("geom_point(aes(color), fill=NA) renders fill transparent", {
   info <- animint2HTML(viz)
   style.mat <- getStyleValue(
-    info$html, '//g[@class="geom1_point_petals"]//circle', c("fill", "stroke"))
+    info$html, '//g[@class="geom1_a_point_petals"]//circle', c("fill", "stroke"))
   expected.stroke <- species.colors[paste(iris$Species)]
   expect_color(style.mat["stroke", ], expected.stroke)
   expected.fill <- rep("transparent", nrow(iris))

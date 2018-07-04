@@ -29,7 +29,7 @@ test_that("no NA in tsv files", {
 })
 
 test_that("three <path> rendered for highlighted San Marcos", {
-  xpath <- '//g[@class="geom1_line_ggdata"]//path'
+  xpath <- '//g[@class="geom1_a_line_ggdata"]//path'
   path.list <- getNodeSet(info$html, xpath)
   opacity.str <- getStyleValue(info$html, xpath, "opacity")
   opacity.num <- as.numeric(opacity.str)
@@ -38,6 +38,6 @@ test_that("three <path> rendered for highlighted San Marcos", {
 })
 
 test_that("three <path> rendered for selected San Marcos", {
-  path.list <- getNodeSet(info$html, '//g[@class="geom2_line_selected"]//path')
+  path.list <- getNodeSet(info$html, '//g[@class="geom2_a_line_selected"]//path')
   expect_equal(length(path.list), 3)
 })

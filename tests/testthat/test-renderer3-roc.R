@@ -57,7 +57,7 @@ test_that("path before params, 5 paths rendered", {
   linetype.computed <- sapply(entry.list, "[[", "pathlinetype")
   linetype.expected <- rep(1, 5)
   expect_identical(linetype.computed, linetype.expected)
-  path.list <- getNodeSet(info$html, '//g[@class="geom1_path_roc"]//path')
+  path.list <- getNodeSet(info$html, '//g[@class="geom1_a_path_roc"]//path')
   expect_equal(length(path.list), 5)
   stroke.vec <- getStyleValue(
     info$html, '//td[@class="roc_legend"]//line', "stroke")
@@ -108,7 +108,7 @@ test_that("path after params, 5 paths rendered", {
   linetype.computed <- sapply(entry.list, "[[", "pathlinetype")
   linetype.expected <- rep(1, 5)
   expect_identical(linetype.computed, linetype.expected)
-  path.list <- getNodeSet(info$html, '//g[@class="geom3_path_roc"]//path')
+  path.list <- getNodeSet(info$html, '//g[@class="geom3_a_path_roc"]//path')
   expect_equal(length(path.list), 5)
   stroke.vec <- getStyleValue(
     info$html, '//td[@class="roc_legend"]//line', "stroke")

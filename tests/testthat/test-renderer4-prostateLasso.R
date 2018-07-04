@@ -70,7 +70,7 @@ Sys.sleep(5)
 html.after <- getHTML()
 
 getGreyRect <- function(html){
-  xpath <- '//g[@class="geom3_tallrect_path"]//rect'
+  xpath <- '//g[@class="geom3_a_tallrect_path"]//rect'
   node.list <- getNodeSet(html, xpath)
   opacity.str <- getStyleValue(html, xpath, "opacity")
   opacity.num <- as.numeric(opacity.str)

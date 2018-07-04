@@ -222,6 +222,9 @@ storeLayer <- function(meta, g, g.data.varied){
 #' @export
 saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
   # Set geom name and layer name
+  # Now that layer_name have become geom_a_position like we need to spilit with [3] index
+  # ToDO: write a if statement with warning message if correct geom name
+  # and layer names are not passed
   g <- list(geom=strsplit(layer_name, "_")[[1]][3])
   g$classed <- layer_name
   

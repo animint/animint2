@@ -13,7 +13,7 @@ info <- animint2HTML(viz)
 
 test_that("points are rendered with stroke-width", {
   stroke_vals <-
-    getStyleValue(info$html, '//g[@class="geom1_point_p1"]//circle', 
+    getStyleValue(info$html, '//g[@class="geom1_a_point_p1"]//circle', 
                   "stroke-width")
   # stroke-width is rendered for every point
   expect_equal(length(stroke_vals), length(mtcars$wt))
@@ -27,7 +27,7 @@ test_that("points are rendered with stroke-width", {
 
 test_that("aes(stroke) works", {
   stroke_vals_2 <-
-    getStyleValue(info$html, '//g[@class="geom2_point_p2"]//circle',
+    getStyleValue(info$html, '//g[@class="geom2_a_point_p2"]//circle',
                   "stroke-width")
   
   expect_equal(length(stroke_vals_2), length(mtcars$wt))

@@ -71,7 +71,7 @@ system.time({
 })
 
 getFill <- function(html=getHTML()){
-  getStyleValue(html, '//g[@class="geom2_point_parameters"]//circle', "fill")
+  getStyleValue(html, '//g[@class="geom2_a_point_parameters"]//circle', "fill")
 }
 
 test_that("animation starts by default", {

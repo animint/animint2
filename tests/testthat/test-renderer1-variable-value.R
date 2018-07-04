@@ -163,21 +163,21 @@ test_that(".variable and .value makes compiler create selectors", {
 
 test_that(".variable and .value renders correctly at first", {
   node.list <-
-    getNodeSet(info$html, '//g[@class="geom6_segment_problems"]//line')
+    getNodeSet(info$html, '//g[@class="geom6_a_segment_problems"]//line')
   expect_equal(length(node.list), 2)
 })
 
 test_that("clicking reduces the number of peaks", {
   no.peaks.html <- clickHTML(id=0)
   node.list <-
-    getNodeSet(no.peaks.html, '//g[@class="geom6_segment_problems"]//line')
+    getNodeSet(no.peaks.html, '//g[@class="geom6_a_segment_problems"]//line')
   expect_equal(length(node.list), 1)
 })
 
 test_that("clicking increases the number of peaks", {
   more.peaks.html <- clickHTML(id=2)
   node.list <-
-    getNodeSet(more.peaks.html, '//g[@class="geom6_segment_problems"]//line')
+    getNodeSet(more.peaks.html, '//g[@class="geom6_a_segment_problems"]//line')
   expect_equal(length(node.list), 3)
 })
 

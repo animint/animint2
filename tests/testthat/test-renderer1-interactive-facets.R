@@ -80,7 +80,7 @@ test_that("y axes align in facet_grid(variable~.)", {
 test_that("red lines are only drawn in panel 2", {
   panelPath <- function(panel.i){
     paste0("//svg[@id='plot_penalty']",
-           "//g[@class='geom9_segment_penalty']",
+           "//g[@class='geom9_a_segment_penalty']",
            "//g[@class='PANEL", panel.i, "']",
            "//line")
   }

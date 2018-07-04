@@ -59,6 +59,6 @@ test_that("if group is in nest_order, it is last", {
 })
 
 test_that("a <path> is rendered for every country", {
-  node.set <- getNodeSet(info$html, '//g[@class="geom2_line_ts"]//path')
+  node.set <- getNodeSet(info$html, '//g[@class="geom2_a_line_ts"]//path')
   expect_equal(length(node.set), nrow(countries))
 })

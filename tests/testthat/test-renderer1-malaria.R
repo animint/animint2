@@ -176,12 +176,12 @@ expected.dot.df <-
          filterVar.thresh==malaria$filterVar$best.thresh)
 test_that("expected number of <circle> rendered", {
   circle.list <-
-    getNodeSet(info$html, '//g[@class="geom13_point_variants"]//circle')
+    getNodeSet(info$html, '//g[@class="geom13_a_point_variants"]//circle')
   expect_equal(length(circle.list), nrow(expected.dot.df))
 })
 
 region.lines <-
-  getNodeSet(info$html, '//g[@class="geom12_segment_variants"]//line')
+  getNodeSet(info$html, '//g[@class="geom12_a_segment_variants"]//line')
 test_that("one line is rendered for each region", {
   expect_equal(length(region.lines), nrow(malaria$regions))
 })

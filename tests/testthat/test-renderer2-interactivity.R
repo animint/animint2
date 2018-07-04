@@ -60,12 +60,12 @@ get.dasharray <- function(node.set){
 }
 
 dashed.xpaths <-
-  c('//g[@class="geom4_vline_signal"]//g[@class="PANEL1"]//line')
+  c('//g[@class="geom4_a_vline_signal"]//g[@class="PANEL1"]//line')
 solid.xpaths <- 
-  c('//g[@class="geom2_line_signal"]//g[@class="PANEL1"]//path',
-    '//g[@class="geom3_segment_signal"]//g[@class="PANEL1"]//line',
-    '//g[@class="geom6_vline_error"]//g[@class="PANEL1"]//line',
-    '//g[@class="geom7_line_error"]//g[@class="PANEL1"]//path')
+  c('//g[@class="geom2_a_line_signal"]//g[@class="PANEL1"]//path',
+    '//g[@class="geom3_a_segment_signal"]//g[@class="PANEL1"]//line',
+    '//g[@class="geom6_a_vline_error"]//g[@class="PANEL1"]//line',
+    '//g[@class="geom7_a_line_error"]//g[@class="PANEL1"]//path')
 
 test_that("stroke-dasharray: 8,8 for dashed", {
   for(xpath in dashed.xpaths){
@@ -95,29 +95,29 @@ test_that("aes(id) geoms have ids", {
 })
 
 test_that("4 <circle> elements in second plot", {
-  nodes <- getNodeSet(info$html, '//g[@class="geom5_point_points"]//circle')
+  nodes <- getNodeSet(info$html, '//g[@class="geom5_a_point_points"]//circle')
   expect_equal(length(nodes), 4)
 })
 
 test_that("default is 150 <circle> elements", {
-  nodes <- getNodeSet(info$html, '//g[@class="geom1_point_signal"]//circle')
+  nodes <- getNodeSet(info$html, '//g[@class="geom1_a_point_signal"]//circle')
   expect_equal(length(nodes), 150)
 })
 
 test_that("default is 4 <line> segments", {
-  nodes <- getNodeSet(info$html, '//g[@class="geom3_segment_signal"]//line')
+  nodes <- getNodeSet(info$html, '//g[@class="geom3_a_segment_signal"]//line')
   expect_equal(length(nodes), 4)
 })
 
 test_that("clickSelects 300 makes 300 <circle> elements", {
   html <- clickHTML(id=paste0("samples", 300))
-  nodes <- getNodeSet(html, '//g[@class="geom1_point_signal"]//circle')
+  nodes <- getNodeSet(html, '//g[@class="geom1_a_point_signal"]//circle')
   expect_equal(length(nodes), 300)
 })
 
 test_that("clickSelects 1 changes to 1 <line> element", {
   html <- clickHTML(id=paste0("segments", 1))
-  nodes <- getNodeSet(html, '//g[@class="geom3_segment_signal"]//line')
+  nodes <- getNodeSet(html, '//g[@class="geom3_a_segment_signal"]//line')
   expect_equal(length(nodes), 1)
 })
 
@@ -135,39 +135,39 @@ test_that("selector.types are converted to JSON", {
 })
 
 test_that("default is 150 and 4 <circle> elements", {
-  nodes <- getNodeSet(info$html, '//g[@class="geom1_point_signal"]//circle')
+  nodes <- getNodeSet(info$html, '//g[@class="geom1_a_point_signal"]//circle')
   expect_equal(length(nodes), 150)
-  nodes <- getNodeSet(info$html, '//g[@class="geom5_point_points"]//circle')
+  nodes <- getNodeSet(info$html, '//g[@class="geom5_a_point_points"]//circle')
   expect_equal(length(nodes), 4)
 })
 
 test_that("clickSelects 300 makes 300 <circle> elements", {
   html <- clickHTML(id=paste0("samples", 300))
-  nodes <- getNodeSet(html, '//g[@class="geom1_point_signal"]//circle')
+  nodes <- getNodeSet(html, '//g[@class="geom1_a_point_signal"]//circle')
   expect_equal(length(nodes), 300)
 })
 
 test_that("clickSelects 1 adds 1 <line> and 4 <circle>", {
   html <- clickHTML(id=paste0("segments", 1))
-  nodes <- getNodeSet(html, '//g[@class="geom3_segment_signal"]//line')
+  nodes <- getNodeSet(html, '//g[@class="geom3_a_segment_signal"]//line')
   expect_equal(length(nodes), 5)
-  nodes <- getNodeSet(html, '//g[@class="geom5_point_points"]//circle')
+  nodes <- getNodeSet(html, '//g[@class="geom5_a_point_points"]//circle')
   expect_equal(length(nodes), 8)
 })
 
 test_that("clickSelects 4 removes 4 <line> elements and 4 <circle>", {
   html <- clickHTML(id=paste0("segments", 4))
-  nodes <- getNodeSet(html, '//g[@class="geom3_segment_signal"]//line')
+  nodes <- getNodeSet(html, '//g[@class="geom3_a_segment_signal"]//line')
   expect_equal(length(nodes), 1)
-  nodes <- getNodeSet(html, '//g[@class="geom5_point_points"]//circle')
+  nodes <- getNodeSet(html, '//g[@class="geom5_a_point_points"]//circle')
   expect_equal(length(nodes), 4)
 })
 
 test_that("clickSelects 1 removes all <line> elements and all <circle>", {
   html <- clickHTML(id=paste0("segments", 1))
-  nodes <- getNodeSet(html, '//g[@class="geom3_segment_signal"]//line')
+  nodes <- getNodeSet(html, '//g[@class="geom3_a_segment_signal"]//line')
   expect_equal(length(nodes), 0)
-  nodes <- getNodeSet(html, '//g[@class="geom5_point_points"]//circle')
+  nodes <- getNodeSet(html, '//g[@class="geom5_a_point_points"]//circle')
   expect_equal(length(nodes), 0)
 })
 
@@ -217,28 +217,28 @@ test_that("1950 <circle> and <line> elements", {
     info <- animint2HTML(tornado.lines)
   })
   t1950 <- subset(UStornadoes, year==1950)
-  nodes <- getNodeSet(info$html, '//g[@class="geom3_segment_map"]//line')
+  nodes <- getNodeSet(info$html, '//g[@class="geom3_a_segment_map"]//line')
   expect_equal(length(nodes), nrow(t1950))
-  nodes <- getNodeSet(info$html, '//g[@class="geom4_point_map"]//circle')
+  nodes <- getNodeSet(info$html, '//g[@class="geom4_a_point_map"]//circle')
   expect_equal(length(nodes), nrow(t1950))
-  nodes <- getNodeSet(info$html, '//g[@class="geom7_line_ts"]//path')
+  nodes <- getNodeSet(info$html, '//g[@class="geom7_a_line_ts"]//path')
   expect_equal(length(nodes), 2)
-  nodes <- getNodeSet(info$html, '//g[@class="geom5_text_ts"]//text')
+  nodes <- getNodeSet(info$html, '//g[@class="geom5_a_text_ts"]//text')
   expect_equal(length(nodes), 2)
 })
 
 test_that("clickSelects CO adds 1 <path> and 1 <text>", {
   html <- clickHTML(id="CO")
-  nodes <- getNodeSet(html, '//g[@class="geom7_line_ts"]//path')
+  nodes <- getNodeSet(html, '//g[@class="geom7_a_line_ts"]//path')
   expect_equal(length(nodes), 3)
-  nodes <- getNodeSet(html, '//g[@class="geom5_text_ts"]//text')
+  nodes <- getNodeSet(html, '//g[@class="geom5_a_text_ts"]//text')
   expect_equal(length(nodes), 3)
 })
 
 test_that("clickSelects CA removes 1 <path> and 1 <text>", {
   html <- clickHTML(id="CA")
-  nodes <- getNodeSet(html, '//g[@class="geom7_line_ts"]//path')
+  nodes <- getNodeSet(html, '//g[@class="geom7_a_line_ts"]//path')
   expect_equal(length(nodes), 2)
-  nodes <- getNodeSet(html, '//g[@class="geom5_text_ts"]//text')
+  nodes <- getNodeSet(html, '//g[@class="geom5_a_text_ts"]//text')
   expect_equal(length(nodes), 2)
 })

@@ -32,14 +32,14 @@ with(some.lines, table(data.i, piece.i))
 test_that("one line rendered for min envelope", {
   path.list <- getNodeSet(
     info$html, 
-    '//g[@class="geom1_line_pruning"]//path')
+    '//g[@class="geom1_a_line_pruning"]//path')
   expect_equal(length(path.list), 1)
 })
 
 test_that("four lines rendered for cost candidates", {
   path.list <- getNodeSet(
     info$html, 
-    '//g[@class="geom2_line_pruning"]//path')
+    '//g[@class="geom2_a_line_pruning"]//path')
   expect_equal(length(path.list), 4)
 })
 
@@ -48,14 +48,14 @@ html <- clickHTML(id="segs1time4")
 test_that("min envelope line disappears", {
   path.list <- getNodeSet(
     html, 
-    '//g[@class="geom1_line_pruning"]//path')
+    '//g[@class="geom1_a_line_pruning"]//path')
   expect_equal(length(path.list), 0)
 })
 
 test_that("cost candidates lines disappear", {
   path.list <- getNodeSet(
     html, 
-    '//g[@class="geom2_line_pruning"]//path')
+    '//g[@class="geom2_a_line_pruning"]//path')
   expect_equal(length(path.list), 0)
 })
 

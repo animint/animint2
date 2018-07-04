@@ -45,7 +45,7 @@ getStroke <- function(element.list){
 
 test_that("15 segments of both colors", {
   line.list <-
-    getNodeSet(info$html, '//g[@class="geom1_segment_signals"]//line')
+    getNodeSet(info$html, '//g[@class="geom1_a_segment_signals"]//line')
   computed.vec <- getStroke(line.list)
   color.counts <- as.numeric(table(computed.vec))
   expect_equal(color.counts, c(15, 15))
@@ -106,7 +106,7 @@ info <- animint2HTML(viz)
 
 test_that("4 paths of both colors in second plot", {
   path.list <- 
-    getNodeSet(info$html, '//g[@class="geom4_line_errors"]//path')
+    getNodeSet(info$html, '//g[@class="geom4_a_line_errors"]//path')
   computed.vec <- getStroke(path.list)
   color.counts <- as.numeric(table(computed.vec))
   expect_equal(color.counts, c(4, 4))
@@ -114,7 +114,7 @@ test_that("4 paths of both colors in second plot", {
 
 test_that("15 segments of both colors in last plot", {
   line.list <-
-    getNodeSet(info$html, '//g[@class="geom7_segment_signals"]//line')
+    getNodeSet(info$html, '//g[@class="geom7_a_segment_signals"]//line')
   computed.vec <- getStroke(line.list)
   color.counts <- as.numeric(table(computed.vec))
   expect_equal(color.counts, c(15, 15))
@@ -134,13 +134,13 @@ test_that("15 segments of both colors in last plot", {
 
 test_that("20 truth <line> in last plot", {
   line.list <-
-    getNodeSet(info$html, '//g[@class="geom6_vline_signals"]//line')
+    getNodeSet(info$html, '//g[@class="geom6_a_vline_signals"]//line')
   expect_equal(length(line.list), 20)
 })
 
 test_that("20 prediction <line> in last plot", {
   line.list <-
-    getNodeSet(info$html, '//g[@class="geom8_vline_signals"]//line')
+    getNodeSet(info$html, '//g[@class="geom8_a_vline_signals"]//line')
   expect_equal(length(line.list), 20)
 })
 

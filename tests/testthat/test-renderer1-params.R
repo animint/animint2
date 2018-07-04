@@ -35,7 +35,7 @@ test_that("color is converted to RGB colour", {
   expected.colour <- as.character(toRGB("grey50"))
   expect_identical(g$params$colour, expected.colour)
   
-  node.list <- getNodeSet(info$html, '//g[@class="geom1_step_step"]//path')
+  node.list <- getNodeSet(info$html, '//g[@class="geom1_a_step_step"]//path')
   expect_equal(length(node.list), 1)
   node <- node.list[[1]]
   attr.vec <- xmlAttrs(node)

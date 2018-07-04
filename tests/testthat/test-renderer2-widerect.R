@@ -130,7 +130,7 @@ test_that("three unique border_rect y values (no vert space)", {
   expect_equal(length(y.values), 3)
 })
 
-line.xpath <- '//g[@class="geom2_line_ts"]//g[@class="PANEL4"]//path'
+line.xpath <- '//g[@class="geom2_a_line_ts"]//g[@class="PANEL4"]//path'
 opacityPattern <-
   paste0("opacity:",
          "(?<value>.*?)",
@@ -167,8 +167,8 @@ dasharrayPattern <-
          ";")
 
 rect.xpaths <-
-  c('//g[@class="geom6_widerect_ts"]//g[@class="PANEL1"]//rect',
-    '//g[@class="geom1_tallrect_ts"]//g[@class="PANEL4"]//rect')
+  c('//g[@class="geom6_a_widerect_ts"]//g[@class="PANEL1"]//rect',
+    '//g[@class="geom1_a_tallrect_ts"]//g[@class="PANEL4"]//rect')
 
 test_that("wide/tallrect renders a <rect> for every year", {
   for(rect.xpath in rect.xpaths){
@@ -192,7 +192,7 @@ test_that("wide/tallrect renders a <rect> for every year", {
 })
 
 getYear <- function(){
-  node.set <- getNodeSet(getHTML(), '//g[@class="geom9_text_ts"]//text')
+  node.set <- getNodeSet(getHTML(), '//g[@class="geom9_a_text_ts"]//text')
   expect_equal(length(node.set), 1)
   value <- xmlValue(node.set[[1]])
   sub("year = ", "", value)
@@ -245,7 +245,7 @@ test_that("clicking status legend hides tallrects", {
 test_that("clicking status legend does not hide text", {
   node.set <-
     getNodeSet(html.no.rects,
-               '//g[@class="geom9_text_ts"]//text[@class="geom"]')
+               '//g[@class="geom9_a_text_ts"]//text[@class="geom"]')
   expect_equal(length(node.set), 1)
 })
 
@@ -347,7 +347,7 @@ test_that("down arrow key changes year to 1963", {
 })
 
 getCountries <- function(){
-  country.labels <- getNodeSet(getHTML(), '//g[@class="geom8_text_ts"]//text')
+  country.labels <- getNodeSet(getHTML(), '//g[@class="geom8_a_text_ts"]//text')
   sapply(country.labels, xmlValue)
 }
 
@@ -384,7 +384,7 @@ test_that("backspace removes US from selected countries", {
 
 getWidth <- function(){
   node.set <-
-    getNodeSet(getHTML(), '//g[@class="geom10_bar_bar"]//rect[@id="Vietnam"]')
+    getNodeSet(getHTML(), '//g[@class="geom10_a_bar_bar"]//rect[@id="Vietnam"]')
   expect_equal(length(node.set), 1)
   alist <- xmlAttrs(node.set[[1]])
   alist[["width"]]
