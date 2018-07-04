@@ -7,7 +7,7 @@ viz <- list(
                data=iris)
   )
 info <- animint2HTML(viz)
-ss.list <- with(info$geoms$geom1_point_points, c(chunk_order, subset_order))
+ss.list <- with(info$geoms$geom1_a_point_points, c(chunk_order, subset_order))
 ss.vec <- unlist(ss.list)
 
 test_that("redundant showSelected are optimized out", {

@@ -185,7 +185,7 @@ viz$error+
   }, scales="free", space="fixed")
 
 test_that("no duplicated rows in common data", {
-  common.tsv <- file.path("animint-htmltest", "geom8_line_error_chunk_common.tsv")
+  common.tsv <- file.path("animint-htmltest", "geom8_a_line_error_chunk_common.tsv")
   common.df <- read.table(common.tsv, comment.char="", header=TRUE)
   common.unique <- unique(common.df)
   expect_identical(common.unique, common.df)

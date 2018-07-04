@@ -61,7 +61,7 @@ test_that("chunk1 does not contain NA", {
   expect_true(all(not.missing))
 })
 
-common.tsv <- file.path("animint-htmltest", "geom6_bar_bar_chunk_common.tsv")
+common.tsv <- file.path("animint-htmltest", "geom6_a_bar_bar_chunk_common.tsv")
 common <- read.table(common.tsv, sep="\t", header=TRUE,
                      comment.char="", quote="")
 
