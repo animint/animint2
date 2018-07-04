@@ -64,10 +64,10 @@ test_that("save separate chunks for geom_polygon", {
   animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
   
   common.chunk <-
-    list.files(path = out.dir, pattern = "geom.+polygon.+chunk_common.tsv", 
+    list.files(path = out.dir, pattern = "geom.+a_polygon.+chunk_common.tsv", 
                full.names = TRUE)
   varied.chunks <-
-    list.files(path = out.dir, pattern = "geom.+polygon.+chunk[0-9]+.tsv", 
+    list.files(path = out.dir, pattern = "geom.+a_polygon.+chunk[0-9]+.tsv", 
                full.names = TRUE)
   ## number of chunks
   expect_equal(length(common.chunk), 1L)
@@ -235,10 +235,10 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   
   ## multiple vars selected
   common.chunk <-
-    list.files(path = out.dir, pattern = "geom2_text.+chunk_common.tsv", 
+    list.files(path = out.dir, pattern = "geom2_a_text.+chunk_common.tsv", 
                full.names = TRUE)
   varied.chunks <-
-    list.files(path = out.dir, pattern = "geom2_text.+chunk[0-9]+.tsv", 
+    list.files(path = out.dir, pattern = "geom2_a_text.+chunk[0-9]+.tsv", 
                full.names = TRUE)
   ## number of chunks
   expect_equal(length(common.chunk), 0L)
@@ -250,10 +250,10 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   
   ## single var selected
   common.chunk <-
-    list.files(path = out.dir, pattern = "geom.+point.+chunk_common.tsv", 
+    list.files(path = out.dir, pattern = "geom.+a_point.+chunk_common.tsv", 
                full.names = TRUE)
   varied.chunks <-
-    list.files(path = out.dir, pattern = "geom.+point.+chunk[0-9]+.tsv", 
+    list.files(path = out.dir, pattern = "geom.+a_point.+chunk[0-9]+.tsv", 
                full.names = TRUE)
   ## number of chunks
   expect_equal(length(common.chunk), 1L)

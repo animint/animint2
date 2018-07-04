@@ -222,7 +222,7 @@ storeLayer <- function(meta, g, g.data.varied){
 #' @export
 saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
   # Set geom name and layer name
-  g <- list(geom=strsplit(layer_name, "_")[[1]][2])
+  g <- list(geom=strsplit(layer_name, "_")[[1]][3])
   g$classed <- layer_name
   
   ranges <- built$panel$ranges

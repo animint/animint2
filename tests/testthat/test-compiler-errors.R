@@ -87,7 +87,7 @@ test_that("warn no key for geom_text with showSelected=duration var", {
   viz.duration$duration <- list(year=2000)
   expect_warning({
     info <- animint2dir(viz.duration, open.browser=FALSE)
-  }, "to ensure that smooth transitions are interpretable, aes(key) should be specifed for geoms with showSelected=year, problem: geom2_text_scatter", fixed=TRUE)
+  }, "to ensure that smooth transitions are interpretable, aes(key) should be specifed for geoms with showSelected=year, problem: geom2_a_text_scatter", fixed=TRUE)
 })
 
 viz.key.duration <- list(
@@ -141,7 +141,7 @@ test_that("warning for position=stack and showSelected", {
   )
   expect_warning({
     animint2dir(complicated, open.browser=FALSE)
-  }, "showSelected only works with position=identity, problem: geom1_bar_plot")
+  }, "showSelected only works with position=identity, problem: geom1_a_bar_plot")
 })
 
 test_that("no warning for position=stack without showSelected", {
