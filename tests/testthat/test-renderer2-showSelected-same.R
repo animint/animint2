@@ -55,7 +55,7 @@ test_that("150 <circle> rendered in first plot", {
 })
 
 test_that("redundant showSelected and color optimized", {
-  var.list <- with(info$geoms$geom1_point_length, c(chunk_order, subset_order))
+  var.list <- with(info$geoms$geom1_a_point_length, c(chunk_order, subset_order))
   expect_equal(length(var.list), 1)
 })
 
@@ -85,7 +85,7 @@ test_that("50 <circle> rendered in first plot", {
 })
 
 test_that("redundant showSelected and color optimized", {
-  var.list <- with(info$geoms$geom1_point_length, c(chunk_order, subset_order))
+  var.list <- with(info$geoms$geom1_a_point_length, c(chunk_order, subset_order))
   expect_equal(length(var.list), 1)
 })
 

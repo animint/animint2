@@ -250,24 +250,24 @@ test_that("minor grids are updated",{
 
 ## Get ranges of geoms
 no_updates_ranges1 <- get_pixel_ranges(info$html_updated1,
-                                       "geom1_point_neither")
+                                       "geom1_a_point_neither")
 no_updates_ranges2 <- get_pixel_ranges(info$html_updated2,
-                                       "geom1_point_neither")
+                                       "geom1_a_point_neither")
 
 x_updates_ranges1 <- get_pixel_ranges(info$html_updated1,
-                                       "geom2_point_x")
+                                       "geom2_a_point_x")
 x_updates_ranges2 <- get_pixel_ranges(info$html_updated2,
-                                       "geom2_point_x")
+                                       "geom2_a_point_x")
 
 y_updates_ranges1 <- get_pixel_ranges(info$html_updated1,
-                                       "geom3_point_y")
+                                       "geom3_a_point_y")
 y_updates_ranges2 <- get_pixel_ranges(info$html_updated2,
-                                       "geom3_point_y")
+                                       "geom3_a_point_y")
 
 xy_updates_ranges1 <- get_pixel_ranges(info$html_updated1,
-                                       "geom4_point_both")
+                                       "geom4_a_point_both")
 xy_updates_ranges2 <- get_pixel_ranges(info$html_updated2,
-                                       "geom4_point_both")
+                                       "geom4_a_point_both")
 
 test_that("geoms get zoomed-in upon changing selection", {
   # no_updates

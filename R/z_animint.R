@@ -1104,11 +1104,11 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
           ## Set up built_data to compute domains
           built_data <- a_plot.list[[p.name]]$built$plot$layers[[num]]$data
           built_data$PANEL <- a_plot.list[[p.name]]$built$data[[num]]$PANEL
-
+          ## since geom names are now like geom_a_point strsplit changes to [[1]][[3]]
           if(length(ss_selectors) > 0){
             subset_domains[num] <- compute_domains(
               built_data,
-              axis, strsplit(names(g.list[[p.name]])[[num]], "_")[[1]][[2]],
+              axis, strsplit(names(g.list[[p.name]])[[num]], "_")[[1]][[3]],
               names(sort(ss_selectors)), split_by_panel, g.list[[p.name]][[num]]$g$aes)
           }
         }

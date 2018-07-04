@@ -264,7 +264,7 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   common.must.have <- c("colour", "clickSelects", "key", "showSelectedlegendcolour", "fill", "group")
   expect_true(all(common.must.have %in% names(common.data)))
   ## choose first varied.chunk to test
-  chunk.info <- info$geoms$geom1_point_scatter$chunks
+  chunk.info <- info$geoms$geom1_a_point_scatter$chunks
   year.str <- names(chunk.info)[[1]]
   year.num <- as.numeric(year.str)
   expected.data <- subset(points.not.na, year == year.num)
