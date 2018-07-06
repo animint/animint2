@@ -43,3 +43,35 @@ opacity.num <- as.numeric(opacity.str)
 opacity.exp <- rep(1/10, nrow(states.data))
 expect_equal(opacity.num, opacity.exp)
 })
+
+
+test_that("alpha_stroke parameter is rendered as stroke-opacity style in widerect", {
+recommendation <- data.frame(
+  min.C=21,
+  max.C=23)
+set.seed(1)
+temp.time <- data.frame(
+  time=strptime(paste0("2015-10-", 1:31), "%Y-%m-%d"),
+  temp.C=rnorm(31))
+
+viz <- list(
+  gg=ggplot()+
+    theme_bw()+
+    theme_animint(height=200, width=2000)+
+    geom_widerect(aes(ymin=min.C, ymax=max.C),
+                  color=NA,
+                  fill="grey",
+                  data=recommendation,
+                  alpha_stroke = 1/10,
+                  validate_params = FALSE)+
+    geom_line(aes(time, temp.C),
+              data=temp.time)
+  )
+
+info <- animint2HTML(viz)
+
+opacity.str <- getStyleValue(info$html, "//widerect[@class='geom_widerect']", "stroke-opacity")
+opacity.num <- as.numeric(opacity.str)
+opacity.exp <- rep(1/10, nrow(states.data))
+expect_equal(opacity.num, opacity.exp)
+})
