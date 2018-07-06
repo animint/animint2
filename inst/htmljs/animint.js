@@ -1457,6 +1457,7 @@ var animint = function (to_select, json_file) {
           .attr("width", scales.x.range()[1] - scales.x.range()[0])
           .style("fill", get_fill)
           .style("stroke-dasharray", get_dasharray)
+          .style("stroke-opacity", get_alpha_stroke)
           .style("stroke-width", get_size)
           .style("stroke", get_colour);
       };
