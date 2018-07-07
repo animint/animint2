@@ -196,7 +196,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
         xlines$x, xlines$y, default.units = "native"
       )
     } else {
-      grob.xlines <- zeroGrob()
+      grob.xlines <- a_zeroGrob()
     }
 
     if (nrow(ylines) > 0) {
@@ -205,7 +205,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
         ylines$x, ylines$y, default.units = "native"
       )
     } else {
-      grob.ylines <- zeroGrob()
+      grob.ylines <- a_zeroGrob()
     }
 
     ggname("grill", grobTree(
@@ -215,7 +215,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
   },
 
   render_axis_h = function(self, scale_details, theme) {
-    if (is.null(scale_details$x.major)) return(zeroGrob())
+    if (is.null(scale_details$x.major)) return(a_zeroGrob())
 
     x_intercept <- with(scale_details, data.frame(
       x = x.major,
@@ -227,7 +227,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
   },
 
   render_axis_v = function(self, scale_details, theme) {
-    if (is.null(scale_details$y.major)) return(zeroGrob())
+    if (is.null(scale_details$y.major)) return(a_zeroGrob())
 
     x_intercept <- with(scale_details, data.frame(
       x = x.range[1],

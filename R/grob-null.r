@@ -2,23 +2,23 @@
 #'
 #' @keywords internal
 #' @export
-zeroGrob <- function() .zeroGrob
+a_zeroGrob <- function() .a_zeroGrob
 
-.zeroGrob <- grob(cl = "zeroGrob", name = "NULL")
+.a_zeroGrob <- grob(cl = "a_zeroGrob", name = "NULL")
 #' @export
-#' @method widthDetails zeroGrob
-widthDetails.zeroGrob <- function(x) unit(0, "cm")
+#' @method widthDetails a_zeroGrob
+widthDetails.a_zeroGrob <- function(x) unit(0, "cm")
 #' @export
-#' @method heightDetails zeroGrob
-heightDetails.zeroGrob <- function(x) unit(0, "cm")
+#' @method heightDetails a_zeroGrob
+heightDetails.a_zeroGrob <- function(x) unit(0, "cm")
 #' @export
-#' @method grobWidth zeroGrob
-grobWidth.zeroGrob <- function(x) unit(0, "cm")
+#' @method grobWidth a_zeroGrob
+grobWidth.a_zeroGrob <- function(x) unit(0, "cm")
 #' @export
-#' @method grobHeight zeroGrob
-grobHeight.zeroGrob <- function(x) unit(0, "cm")
+#' @method grobHeight a_zeroGrob
+grobHeight.a_zeroGrob <- function(x) unit(0, "cm")
 #' @export
-#' @method drawDetails zeroGrob
-drawDetails.zeroGrob <- function(x, recording) {}
+#' @method drawDetails a_zeroGrob
+drawDetails.a_zeroGrob <- function(x, recording) {}
 
-is.zero <- function(x) is.null(x) || inherits(x, "zeroGrob")
+is.zero <- function(x) is.null(x) || inherits(x, "a_zeroGrob")

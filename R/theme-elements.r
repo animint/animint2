@@ -111,7 +111,7 @@ element_render <- function(theme, element, ..., name = NULL) {
   el <- calc_element(element, theme)
   if (is.null(el)) {
     message("Theme element ", element, " missing")
-    return(zeroGrob())
+    return(a_zeroGrob())
   }
 
   ggname(paste(element, name, sep = "."), element_grob(el, ...))
@@ -137,7 +137,7 @@ element_grob <- function(element, ...) {
 }
 
 #' @export
-element_grob.element_blank <- function(element, ...)  zeroGrob()
+element_grob.element_blank <- function(element, ...)  a_zeroGrob()
 
 #' @export
 element_grob.element_rect <- function(element, x = 0.5, y = 0.5,
@@ -160,7 +160,7 @@ element_grob.element_text <- function(element, label = "", x = NULL, y = NULL,
   margin = NULL, expand_x = FALSE, expand_y = FALSE, ...) {
 
   if (is.null(label))
-    return(zeroGrob())
+    return(a_zeroGrob())
 
   vj <- vjust %||% element$vjust
   hj <- hjust %||% element$hjust

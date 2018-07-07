@@ -290,7 +290,7 @@ guide_gengrob.colorbar <- function(guide, theme) {
   label.theme <- guide$label.theme %||% calc_element("legend.text", theme)
   grob.label <- {
     if (!guide$label)
-      zeroGrob()
+      a_zeroGrob()
     else {
       hjust <- x <- guide$label.hjust %||% theme$legend.text.align %||%
         if (any(is.expression(guide$key$.label))) 1 else switch(guide$direction, horizontal = 0.5, vertical = 0)
@@ -321,7 +321,7 @@ guide_gengrob.colorbar <- function(guide, theme) {
 
   # ticks
   grob.ticks <-
-    if (!guide$ticks) zeroGrob()
+    if (!guide$ticks) a_zeroGrob()
     else {
       switch(guide$direction,
         "horizontal" = {

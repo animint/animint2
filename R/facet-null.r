@@ -58,7 +58,7 @@ a_facet_render.null <- function(a_facet, panel, coord, theme, geom_grobs) {
 
   all <- matrix(list(
     axis_v,     panel_grob,
-    zeroGrob(), axis_h
+    a_zeroGrob(), axis_h
   ), ncol = 2, byrow = TRUE)
 
   layout <- gtable_matrix("layout", all,

@@ -6,7 +6,7 @@
 # @param position of axis (top, bottom, left or right)
 guide_axis <- function(at, labels, position = "right", theme) {
   if (length(at) == 0)
-    return(zeroGrob())
+    return(a_zeroGrob())
 
   at <- unit(at, "native")
   position <- match.arg(position, c("top", "bottom", "right", "left"))

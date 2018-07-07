@@ -533,7 +533,7 @@ ggstrip <- function(text, horizontal = TRUE, theme) {
 
   element <- calc_element(text_theme, theme)
   if (inherits(element, "element_blank"))
-    return(zeroGrob())
+    return(a_zeroGrob())
 
   gp <- gpar(fontsize = element$size, col = element$colour,
     fontfamily = element$family, fontface = element$face,

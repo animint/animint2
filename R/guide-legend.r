@@ -324,7 +324,7 @@ guide_gengrob.legend <- function(guide, theme) {
 
   # Labels
   if (!guide$label || is.null(guide$key$.label)) {
-    grob.labels <- rep(list(zeroGrob()), nrow(guide$key))
+    grob.labels <- rep(list(a_zeroGrob()), nrow(guide$key))
   } else {
     label.theme <- guide$label.theme %||% calc_element("legend.text", theme)
 

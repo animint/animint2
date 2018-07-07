@@ -1329,7 +1329,7 @@ getLegendList <- function(plistextra){
   if (length(gdefs) != 0) {
     gdefs <- guides_merge(gdefs)
     gdefs <- guides_geom(gdefs, layers, default_mapping)
-  } else (zeroGrob())
+  } else (a_zeroGrob())
   names(gdefs) <- sapply(gdefs, function(i) i$title)
   
   ## adding the variable used to each LegendList

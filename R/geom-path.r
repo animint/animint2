@@ -164,7 +164,7 @@ a_GeomPath <- a_ggproto("a_GeomPath", a_Geom,
     # Silently drop lines with less than two points, preserving order
     rows <- stats::ave(seq_len(nrow(munched)), munched$group, FUN = length)
     munched <- munched[rows >= 2, ]
-    if (nrow(munched) < 2) return(zeroGrob())
+    if (nrow(munched) < 2) return(a_zeroGrob())
 
     # Work out whether we should use lines or segments
     attr <- plyr::ddply(munched, "group", function(df) {

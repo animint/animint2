@@ -37,7 +37,7 @@ NULL
 #'     or polygon), and then pass on to the corresponding draw method
 #'     for munching.
 #'
-#'     Must return a grob. Use \code{\link{zeroGrob}} if there's nothing to
+#'     Must return a grob. Use \code{\link{a_zeroGrob}} if there's nothing to
 #'     draw.
 #'   \item \code{draw_key}: Renders a single legend key.
 #'   \item \code{required_aes}: A character vector of aesthetics needed to
@@ -69,7 +69,7 @@ a_Geom <- a_ggproto("a_Geom",
   draw_layer = function(self, data, params, panel, coord) {
     if (empty(data)) {
       n <- if (is.factor(data$PANEL)) nlevels(data$PANEL) else 1L
-      return(rep(list(zeroGrob()), n))
+      return(rep(list(a_zeroGrob()), n))
     }
 
     # Trim off extra parameters
@@ -77,7 +77,7 @@ a_Geom <- a_ggproto("a_Geom",
 
     args <- c(list(quote(data), quote(panel_scales), quote(coord)), params)
     plyr::dlply(data, "PANEL", function(data) {
-      if (empty(data)) return(zeroGrob())
+      if (empty(data)) return(a_zeroGrob())
 
       panel_scales <- panel$ranges[[data$PANEL[1]]]
       do.call(self$draw_panel, args)

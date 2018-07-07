@@ -59,7 +59,7 @@ gdefs <- guides_train(scales = scales,
                       theme = theme,
                       guides = guides,
                       labels = labels)
-if (length(gdefs) == 0) return(zeroGrob())
+if (length(gdefs) == 0) return(a_zeroGrob())
 gdefs <- guides_merge(gdefs)
 gdefs
 

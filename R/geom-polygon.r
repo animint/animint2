@@ -75,7 +75,7 @@ geom_polygon <- function(mapping = NULL, data = NULL,
 a_GeomPolygon <- a_ggproto("a_GeomPolygon", a_Geom,
   draw_panel = function(data, panel_scales, coord) {
     n <- nrow(data)
-    if (n == 1) return(zeroGrob())
+    if (n == 1) return(a_zeroGrob())
 
     munched <- coord_munch(coord, data, panel_scales)
     # Sort by group to make sure that colors, fill, etc. come in same order

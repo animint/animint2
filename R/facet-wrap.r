@@ -383,7 +383,7 @@ a_facet_axes.wrap <- function(a_facet, panel, coord, theme) {
     if (panel$layout$AXIS_X[i]) {
       grob <- coord$render_axis_h(panel$ranges[[i]], theme)
     } else {
-      grob <- zeroGrob()
+      grob <- a_zeroGrob()
     }
     ggname(paste("axis-b-", i, sep = ""), grob)
   })
@@ -392,7 +392,7 @@ a_facet_axes.wrap <- function(a_facet, panel, coord, theme) {
     if (panel$layout$AXIS_Y[i]) {
       grob <- coord$render_axis_v(panel$ranges[[i]], theme)
     } else {
-      grob <- zeroGrob()
+      grob <- a_zeroGrob()
     }
     ggname(paste("axis-l-", i, sep = ""), grob)
   })

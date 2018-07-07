@@ -122,14 +122,14 @@ build_guides <- function(scales, layers, default_mapping, position, theme, guide
 
   # scales -> data for guides
   gdefs <- guides_train(scales = scales, theme = theme, guides = guides, labels = labels)
-  if (length(gdefs) == 0) return(zeroGrob())
+  if (length(gdefs) == 0) return(a_zeroGrob())
 
   # merge overlay guides
   gdefs <- guides_merge(gdefs)
 
   # process layer information
   gdefs <- guides_geom(gdefs, layers, default_mapping)
-  if (length(gdefs) == 0) return(zeroGrob())
+  if (length(gdefs) == 0) return(a_zeroGrob())
 
   # generate grob of each guides
   ggrobs <- guides_gengrob(gdefs, theme)

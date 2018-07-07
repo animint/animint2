@@ -161,7 +161,7 @@ the changes.
     or polygon), and then pass on to the corresponding draw method
     for munching.
 
-    Must return a grob. Use \code{\link{zeroGrob}} if there's nothing to
+    Must return a grob. Use \code{\link{a_zeroGrob}} if there's nothing to
     draw.
   \item \code{draw_key}: Renders a single legend key.
   \item \code{required_aes}: A character vector of aesthetics needed to

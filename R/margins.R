@@ -34,7 +34,7 @@ titleGrob <- function(label, x, y, hjust, vjust, angle = 0, gp = gpar(),
                       debug = FALSE) {
 
   if (is.null(label))
-    return(zeroGrob())
+    return(a_zeroGrob())
 
   if (is.null(margin)) {
     margin <- margin(0, 0, 0, 0)

@@ -68,7 +68,7 @@ a_draw_key_polygon <- function(data, params, size) {
 #' @export
 #' @rdname draw_key
 a_draw_key_blank <- function(data, params, size) {
-  zeroGrob()
+  a_zeroGrob()
 }
 
 #' @export

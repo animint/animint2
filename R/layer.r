@@ -293,7 +293,7 @@ a_Layer <- a_ggproto("a_Layer", NULL,
   draw_geom = function(self, data, panel, coord) {
     if (empty(data)) {
       n <- nrow(panel$layout)
-      return(rep(list(zeroGrob()), n))
+      return(rep(list(a_zeroGrob()), n))
     }
 
     data <- self$geom$handle_na(data, self$geom_params)

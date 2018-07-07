@@ -84,7 +84,7 @@ a_GeomSegment <- a_ggproto("a_GeomSegment", a_Geom,
     data <- remove_missing(data, na.rm = na.rm,
       c("x", "y", "xend", "yend", "linetype", "size", "shape"),
       name = "geom_segment")
-    if (empty(data)) return(zeroGrob())
+    if (empty(data)) return(a_zeroGrob())
 
     if (coord$is_linear()) {
       coord <- coord$transform(data, panel_scales)
