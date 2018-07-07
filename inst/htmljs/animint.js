@@ -1476,6 +1476,7 @@ var animint = function (to_select, json_file) {
             return Math.abs(scales.y(d.ymin) - scales.y(d.ymax));
           })
           .style("stroke-dasharray", get_dasharray)
+          .style("stroke-opacity", get_alpha_stroke)
           .style("stroke-width", get_size)
           .style("fill", get_fill);
 	      if(g_info.select_style != "stroke"){
@@ -1483,6 +1484,10 @@ var animint = function (to_select, json_file) {
         }
       };
       eAppend = "rect";
+    }
+    if (g_info.geom == "polygon") {
+      elements = elements.data(data);
+      e.style("stroke-opacity", get_alpha_stroke)
     }
     if (g_info.geom == "boxplot") {
 
