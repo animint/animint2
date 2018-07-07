@@ -84,7 +84,9 @@ test_that("alpha_stroke parameter is rendered as stroke-opacity style in tallrec
       geom_point(aes(x, x))+
       geom_tallrect(aes(xmin=x, xmax=x+0.5, linetype=status),
                     fill="grey",
-                    color="black"))
+                    color="black",
+                    alpha_stroke = 1/10,
+                    validate_params = FALSE))
 
   info <- animint2HTML(viz)
 
@@ -93,3 +95,44 @@ opacity.num <- as.numeric(opacity.str)
 opacity.exp <- rep(1/10, nrow(states.data))
 expect_equal(opacity.num, opacity.exp)
 })
+
+test_that("alpha_stroke parameter is rendered as stroke-opacity style", {
+  #' NOAA SVRGIS data (Severe Report Database + Geographic Information System)
+  #' http://www.spc.noaa.gov/gis/svrgis/
+  #' Data - http://www.spc.noaa.gov/wcm/#data
+  #' Location Codes - http://www.spc.noaa.gov/wcm/loccodes.html
+  #' State FIPS Codes - http://www.spc.noaa.gov/wcm/fips_usa.gif
+  #' County FIPS Codes - http://www.spc.noaa.gov/wcm/stnindex_all.txt
+  #' State/County Area and Population - http://quickfacts.census.gov/qfd/download/DataSet.txt
+  #'
+  #' Image Inspiration -  http://www.kulfoto.com/pic/0001/0033/b/h4n5832833.jpg
+
+  library(animint2)
+  data(UStornadoes)
+
+  stateOrder <- data.frame(state = unique(UStornadoes$state)[order(unique(UStornadoes$TornadoesSqMile), decreasing=T)], rank = 1:49) # order states by tornadoes per square mile
+  UStornadoes$state <- factor(UStornadoes$state, levels=stateOrder$state, ordered=TRUE)
+  UStornadoes$weight <- 1/UStornadoes$LandArea
+  # useful for stat_bin, etc.
+
+  USpolygons <- map_data("state")
+  USpolygons$state = state.abb[match(USpolygons$region, tolower(state.name))]
+
+  viz <- list(map=ggplot()+
+         geom_polygon(aes(x=long, y=lat, group=group),
+                      data=USpolygons,
+                      fill="black", 
+                      colour="grey",
+                      alpha_stroke = 1/10,
+                      validate_params = FALSE,) +
+         geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
+                      showSelected="year",
+                      colour="#55B1F7", data=UStornadoes))
+
+  info <- animint2HTML(viz)
+
+  opacity.str <- getStyleValue(info$html, "//polygon[@class='geom_polygon']", "stroke-opacity")
+  opacity.num <- as.numeric(opacity.str)
+  opacity.exp <- rep(1/10, nrow(states.data))
+  expect_equal(opacity.num, opacity.exp)
+  })
