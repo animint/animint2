@@ -1064,6 +1064,16 @@ var animint = function (to_select, json_file) {
       }
       return a;
     };
+    // test-renderer1-get_alpha_stroke.R includes alpha_stoke aes
+    var get_alpha_stroke = function (d) {
+      var a;
+      if (aes.hasOwnProperty("alpha_stroke") && d.hasOwnProperty("alpha_stroke")) {
+        a = d["alpha_stroke"];
+      } else {
+        a = base_opacity;
+      }
+      return a;
+    };
     var size = 2;
     if(g_info.geom == "text"){
       size = 12;
@@ -1415,6 +1425,7 @@ var animint = function (to_select, json_file) {
           .attr("r", get_size)
           .style("fill", get_fill)
           .style("stroke", get_colour)
+          .style("stroke-opacity", get_alpha_stroke)
           .style("stroke-width", get_stroke_width);
       };
       eAppend = "circle";
@@ -1430,6 +1441,7 @@ var animint = function (to_select, json_file) {
           .attr("height", scales.y.range()[0] - scales.y.range()[1])
           .style("fill", get_fill)
           .style("stroke-dasharray", get_dasharray)
+          .style("stroke-opacity", get_alpha_stroke)
           .style("stroke-width", get_size)
           .style("stroke", get_colour);
       };
@@ -1446,6 +1458,7 @@ var animint = function (to_select, json_file) {
           .attr("width", scales.x.range()[1] - scales.x.range()[0])
           .style("fill", get_fill)
           .style("stroke-dasharray", get_dasharray)
+          .style("stroke-opacity", get_alpha_stroke)
           .style("stroke-width", get_size)
           .style("stroke", get_colour);
       };
@@ -1463,6 +1476,7 @@ var animint = function (to_select, json_file) {
             return Math.abs(scales.y(d.ymin) - scales.y(d.ymax));
           })
           .style("stroke-dasharray", get_dasharray)
+          .style("stroke-opacity", get_alpha_stroke)
           .style("stroke-width", get_size)
           .style("fill", get_fill);
 	      if(g_info.select_style != "stroke"){
@@ -1470,6 +1484,10 @@ var animint = function (to_select, json_file) {
         }
       };
       eAppend = "rect";
+    }
+    if (g_info.geom == "polygon") {
+      elements = elements.data(data);
+      e.style("stroke-opacity", get_alpha_stroke)
     }
     if (g_info.geom == "boxplot") {
 
