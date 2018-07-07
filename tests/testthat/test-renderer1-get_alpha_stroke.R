@@ -75,3 +75,21 @@ opacity.num <- as.numeric(opacity.str)
 opacity.exp <- rep(1/10, nrow(states.data))
 expect_equal(opacity.num, opacity.exp)
 })
+
+test_that("alpha_stroke parameter is rendered as stroke-opacity style in tallrect", {
+
+  error.types <- data.frame(x=1:3, status=c("correct", "false positive", "false negative"))
+
+  viz <- list(gg = ggplot(error.types)+
+      geom_point(aes(x, x))+
+      geom_tallrect(aes(xmin=x, xmax=x+0.5, linetype=status),
+                    fill="grey",
+                    color="black"))
+
+  info <- animint2HTML(viz)
+
+opacity.str <- getStyleValue(info$html, "//tallrect[@class='geom_tallrect']", "stroke-opacity")
+opacity.num <- as.numeric(opacity.str)
+opacity.exp <- rep(1/10, nrow(states.data))
+expect_equal(opacity.num, opacity.exp)
+})
