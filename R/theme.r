@@ -440,11 +440,11 @@ add_theme <- function(t1, t2, t2name) {
     x <- t1[[item]]
     y <- t2[[item]]
 
-    if (is.null(x) || inherits(x, "element_blank")) {
+    if (is.null(x) || inherits(x, "a_element_blank")) {
       # If x is NULL or element_blank, then just assign it y
       x <- y
     } else if (is.null(y) || is.character(y) || is.numeric(y) ||
-               is.logical(y) || inherits(y, "element_blank")) {
+               is.logical(y) || inherits(y, "a_element_blank")) {
       # If y is NULL, or a string or numeric vector, or is element_blank, just replace x
       x <- y
     } else {
@@ -484,7 +484,7 @@ add_theme <- function(t1, t2, t2name) {
 #' it adds elements from newtheme to oldtheme.
 #' This makes it possible to do things like:
 #'   a_plot(data.frame(x = 1:3, y = 1:3)) +
-#'   geom_point() + theme(text = element_text(colour = 'red'))
+#'   geom_point() + theme(text = a_element_text(colour = 'red'))
 #' and have 'text' keep properties from the default theme. Otherwise
 #' you would have to set all the element properties, like family, size,
 #' etc.

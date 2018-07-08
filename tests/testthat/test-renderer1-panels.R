@@ -4,8 +4,8 @@ p1 <- a_plot() +
   geom_point(aes(Sepal.Length, Sepal.Width,
                  colour = Species, size = Species), data = iris) +
   theme_grey() + 
-  theme(panel.background = element_rect(fill = "lightblue"),
-        panel.border = element_rect(fill = NA,
+  theme(panel.background = a_element_rect(fill = "lightblue"),
+        panel.border = a_element_rect(fill = NA,
                                     color = "black",
                                     size = 2,
                                     linetype = "dashed"),
@@ -17,24 +17,24 @@ p2 <- a_plot() +
   ggtitle("Petal Data") +
   theme_bw()
 p3 <- p2 + 
-  theme(panel.background = element_blank(), 
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank())
+  theme(panel.background = a_element_blank(), 
+        panel.grid.major = a_element_blank(), 
+        panel.grid.minor = a_element_blank())
 p4 <- p2 + 
   ## recreating theme_fivethirtyeight from ggthemes package
-  theme(rect = element_rect(fill = "#F0F0F0", colour = NA,
+  theme(rect = a_element_rect(fill = "#F0F0F0", colour = NA,
                             size = 0.5, linetype = 0),
-        line = element_line(colour = "#D2D2D2", size = 0.5, linetype = 1,
+        line = a_element_line(colour = "#D2D2D2", size = 0.5, linetype = 1,
                             lineend = "butt"),
-        text = element_text(family = "sans", face = "plain",
+        text = a_element_text(family = "sans", face = "plain",
                             colour = "#3C3C3C", size = 12,
                             hjust = 0.5, vjust = 0.5, angle = 0,
                             lineheight = 0.9, margin = c(0, 0, 0, 0),
                             debug = FALSE),
-        panel.background = element_rect(), 
-        panel.grid = element_line(), 
-        panel.grid.major = element_line(), 
-        panel.grid.minor = element_blank(), 
+        panel.background = a_element_rect(), 
+        panel.grid = a_element_line(), 
+        panel.grid.major = a_element_line(), 
+        panel.grid.minor = a_element_blank(), 
         complete = T)
 
 info <- animint2HTML(list(sepal = p1, petal = p2, blank = p3, gg538 = p4))
@@ -122,7 +122,7 @@ test_that("panel backgrounds render correctly", {
   # testing that there are the correct number of panels
   expect_equal(length(background_sepal), 3)
   expect_equal(length(background_petal), 1)
-  expect_equal(length(blank_petal), 0)  # no rectangle for element_blank()
+  expect_equal(length(blank_petal), 0)  # no rectangle for a_element_blank()
   expect_equal(length(gg538), 1)
 
   # test background fills
