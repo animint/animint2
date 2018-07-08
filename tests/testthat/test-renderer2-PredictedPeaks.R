@@ -18,8 +18,8 @@ viz <- list(
     theme_bw()+
     coord_cartesian(xlim=c(0, 1))+
     theme_animint(width=1500, height=100)+
-    theme(axis.line.x=element_blank(), axis.text.x=element_blank(), 
-          axis.ticks.x=element_blank(), axis.title.x=element_blank())+
+    theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
+          axis.ticks.x=a_element_blank(), axis.title.x=a_element_blank())+
     ## geom_text(aes(relative.middle, type.fac, label=samples.up,
     ##               clickSelects=peak.name,
     ##               showSelected2=chrom,
@@ -154,8 +154,8 @@ viz <- list(
     theme_bw()+
     coord_cartesian(xlim=c(0, 1))+
     theme_animint(width=1500, height=100)+
-    theme(axis.line.x=element_blank(), axis.text.x=element_blank(), 
-          axis.ticks.x=element_blank(), axis.title.x=element_blank())+
+    theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
+          axis.ticks.x=a_element_blank(), axis.title.x=a_element_blank())+
     geom_text(aes(relative.middle, type.fac, label=samples.up),
               showSelected=c("dotID", "chrom"),
               clickSelects="peak.name",

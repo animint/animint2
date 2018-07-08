@@ -143,7 +143,7 @@ viz <- list(
     theme_bw()+
     theme_animint(width=1800, height=500)+
     theme(panel.margin=grid::unit(0, "cm"))+
-    theme(axis.text.x=element_text(angle=90))+
+    theme(axis.text.x=a_element_text(angle=90))+
     a_facet_grid(. ~ filterVar.fac, labeller=function(label_df){
       label_df <- mapply(sub, "balanced", "b", label_df, SIMPLIFY = FALSE)
       label_df <- mapply(sub, "one", "1", label_df, SIMPLIFY = FALSE)
