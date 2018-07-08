@@ -62,7 +62,7 @@ addShowSelectedForLegend <- function(meta, legend, L){
 
 ## extract panel background and borders from theme.pars
 get_bg <- function(pars, theme.pars) {
-  # if pars is not an empty list - occurs when using element_blank()
+  # if pars is not an empty list - occurs when using a_element_blank()
   if(length(pars) > 0) {
     
     ## if elements are not specified, they inherit from theme.pars$rect
@@ -85,7 +85,7 @@ get_bg <- function(pars, theme.pars) {
 
 ### function to extract grid info
 get_grid <- function(pars, theme.pars, plot.meta, meta, built, major = T) {
-  # if pars is not an empty list - occurs when using element_blank()
+  # if pars is not an empty list - occurs when using a_element_blank()
   if(length(pars) > 0) {
     
     ## if elements are not specified, they inherit from 
@@ -136,7 +136,7 @@ getUniqueAxisLabels <- function(plot.meta){
 
 
 getPlotTitle <- function(plot.title, meta.title){
-  if("element_blank"%in%attr(plot.title, "class")){
+  if("a_element_blank"%in%attr(plot.title, "class")){
     return("")
   } else {
     return(meta.title)
@@ -296,7 +296,7 @@ removeUniquePanelValue <- function(g.data, plot.has.panels){
 
 #' Check plot.list for errors
 #' 
-#' Check that plot.list is a list and every element is named
+#' Check that plot.list is a list and every a_element is named
 #' @param plot.list from \code{animint2dir} to check for errors
 #' @return Throws an error for invalid values
 checkPlotList <- function(plot.list){

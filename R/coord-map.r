@@ -191,7 +191,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
     ylines <- self$transform(ygrid, scale_details)
 
     if (nrow(xlines) > 0) {
-      grob.xlines <- element_render(
+      grob.xlines <- a_element_render(
         theme, "panel.grid.major.x",
         xlines$x, xlines$y, default.units = "native"
       )
@@ -200,7 +200,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
     }
 
     if (nrow(ylines) > 0) {
-      grob.ylines <- element_render(
+      grob.ylines <- a_element_render(
         theme, "panel.grid.major.y",
         ylines$x, ylines$y, default.units = "native"
       )
@@ -209,7 +209,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
     }
 
     ggname("grill", grobTree(
-      element_render(theme, "panel.background"),
+      a_element_render(theme, "panel.background"),
       grob.xlines, grob.ylines
     ))
   },

@@ -1,15 +1,15 @@
-#' Theme element: blank.
+#' Theme a_element: blank.
 #' This theme element draws nothing, and assigns no space
 #'
 #' @export
-element_blank <- function() {
+a_element_blank <- function() {
   structure(
     list(),
-    class = c("element_blank", "element")
+    class = c("a_element_blank", "a_element")
   )
 }
 
-#' Theme element: rectangle.
+#' Theme a_element: rectangle.
 #'
 #' Most often used for backgrounds and borders.
 #'
@@ -19,17 +19,17 @@ element_blank <- function() {
 #' @param linetype border linetype
 #' @param color an alias for \code{colour}
 #' @export
-element_rect <- function(fill = NULL, colour = NULL, size = NULL,
+a_element_rect <- function(fill = NULL, colour = NULL, size = NULL,
   linetype = NULL, color = NULL) {
 
   if (!is.null(color))  colour <- color
   structure(
     list(fill = fill, colour = colour, size = size, linetype = linetype),
-    class = c("element_rect", "element")
+    class = c("a_element_rect", "a_element")
   )
 }
 
-#' Theme element: line.
+#' Theme a_element: line.
 #'
 #' @param colour line colour
 #' @param size line size
@@ -37,18 +37,18 @@ element_rect <- function(fill = NULL, colour = NULL, size = NULL,
 #' @param lineend line end
 #' @param color an alias for \code{colour}
 #' @export
-element_line <- function(colour = NULL, size = NULL, linetype = NULL,
+a_element_line <- function(colour = NULL, size = NULL, linetype = NULL,
   lineend = NULL, color = NULL) {
 
   if (!is.null(color))  colour <- color
   structure(
     list(colour = colour, size = size, linetype = linetype, lineend = lineend),
-    class = c("element_line", "element")
+    class = c("a_element_line", "a_element")
   )
 }
 
 
-#' Theme element: text.
+#' Theme a_element: text.
 #'
 #' @param family font family
 #' @param face font face ("plain", "italic", "bold", "bold.italic")
@@ -66,7 +66,7 @@ element_line <- function(colour = NULL, size = NULL, linetype = NULL,
 #'   rectangle behind the complete text area, and a point where each label
 #'   is anchored.
 #' @export
-element_text <- function(family = NULL, face = NULL, colour = NULL,
+a_element_text <- function(family = NULL, face = NULL, colour = NULL,
   size = NULL, hjust = NULL, vjust = NULL, angle = NULL, lineheight = NULL,
   color = NULL, margin = NULL, debug = NULL) {
 
@@ -75,13 +75,13 @@ element_text <- function(family = NULL, face = NULL, colour = NULL,
     list(family = family, face = face, colour = colour, size = size,
       hjust = hjust, vjust = vjust, angle = angle, lineheight = lineheight,
       margin = margin, debug = debug),
-    class = c("element_text", "element")
+    class = c("a_element_text", "a_element")
   )
 }
 
 
 #' @export
-print.element <- function(x, ...) utils::str(x)
+print.a_element <- function(x, ...) utils::str(x)
 
 
 #' Relative sizing for theme elements
@@ -91,7 +91,7 @@ print.element <- function(x, ...) utils::str(x)
 #' df <- data.frame(x = 1:3, y = 1:3)
 #' a_plot(df, aes(x, y)) +
 #'   geom_point() +
-#'   theme(axis.title.x = element_text(size = rel(2.5)))
+#'   theme(axis.title.x = a_element_text(size = rel(2.5)))
 #' @export
 rel <- function(x) {
   structure(x, class = "rel")
@@ -105,16 +105,16 @@ print.rel <- function(x, ...) print(noquote(paste(x, " *", sep = "")))
 is.rel <- function(x) inherits(x, "rel")
 
 # Given a theme object and element name, return a grob for the element
-element_render <- function(theme, element, ..., name = NULL) {
+a_element_render <- function(theme, a_element, ..., name = NULL) {
 
-  # Get the element from the theme, calculating inheritance
-  el <- calc_element(element, theme)
+  # Get the a_element from the theme, calculating inheritance
+  el <- calc_element(a_element, theme)
   if (is.null(el)) {
-    message("Theme element ", element, " missing")
+    message("Theme element ", a_element, " missing")
     return(a_zeroGrob())
   }
 
-  ggname(paste(element, name, sep = "."), element_grob(el, ...))
+  ggname(paste(a_element, name, sep = "."), a_element_grob(el, ...))
 }
 
 
@@ -125,36 +125,36 @@ len0_null <- function(x) {
 }
 
 
-#' Generate grid grob from theme element
+#' Generate grid grob from theme a_element
 #'
-#' @param element Theme element, i.e. \code{element_rect} or similar.
+#' @param a_element Theme a_element, i.e. \code{a_element_rect} or similar.
 #' @param ... Other arguments to control specific of rendering. This is
 #'   usually at least position. See the source code for individual methods.
 #' @keywords internal
 #' @export
-element_grob <- function(element, ...) {
-  UseMethod("element_grob")
+a_element_grob <- function(a_element, ...) {
+  UseMethod("a_element_grob")
 }
 
 #' @export
-element_grob.element_blank <- function(element, ...)  a_zeroGrob()
+a_element_grob.a_element_blank <- function(a_element, ...)  a_zeroGrob()
 
 #' @export
-element_grob.element_rect <- function(element, x = 0.5, y = 0.5,
+a_element_grob.a_element_rect <- function(a_element, x = 0.5, y = 0.5,
   width = 1, height = 1,
   fill = NULL, colour = NULL, size = NULL, linetype = NULL, ...) {
 
-  # The gp settings can override element_gp
+  # The gp settings can override a_element_gp
   gp <- gpar(lwd = len0_null(size * .pt), col = colour, fill = fill, lty = linetype)
-  element_gp <- gpar(lwd = len0_null(element$size * .pt), col = element$colour,
-    fill = element$fill, lty = element$linetype)
+  a_element_gp <- gpar(lwd = len0_null(a_element$size * .pt), col = a_element$colour,
+    fill = a_element$fill, lty = a_element$linetype)
 
-  rectGrob(x, y, width, height, gp = utils::modifyList(element_gp, gp), ...)
+  rectGrob(x, y, width, height, gp = utils::modifyList(a_element_gp, gp), ...)
 }
 
 
 #' @export
-element_grob.element_text <- function(element, label = "", x = NULL, y = NULL,
+a_element_grob.a_element_text <- function(a_element, label = "", x = NULL, y = NULL,
   family = NULL, face = NULL, colour = NULL, size = NULL,
   hjust = NULL, vjust = NULL, angle = NULL, lineheight = NULL,
   margin = NULL, expand_x = FALSE, expand_y = FALSE, ...) {
@@ -162,43 +162,43 @@ element_grob.element_text <- function(element, label = "", x = NULL, y = NULL,
   if (is.null(label))
     return(a_zeroGrob())
 
-  vj <- vjust %||% element$vjust
-  hj <- hjust %||% element$hjust
-  margin <- margin %||% element$margin
+  vj <- vjust %||% a_element$vjust
+  hj <- hjust %||% a_element$hjust
+  margin <- margin %||% a_element$margin
 
-  angle <- angle %||% element$angle
+  angle <- angle %||% a_element$angle
   if (is.null(angle)) {
     stop("Text element requires non-NULL value for 'angle'.")
   }
 
-  # The gp settings can override element_gp
+  # The gp settings can override a_element_gp
   gp <- gpar(fontsize = size, col = colour,
     fontfamily = family, fontface = face,
     lineheight = lineheight)
-  element_gp <- gpar(fontsize = element$size, col = element$colour,
-    fontfamily = element$family, fontface = element$face,
-    lineheight = element$lineheight)
+  a_element_gp <- gpar(fontsize = a_element$size, col = a_element$colour,
+    fontfamily = a_element$family, fontface = a_element$face,
+    lineheight = a_element$lineheight)
 
   titleGrob(label, x, y, hjust = hj, vjust = vj, angle = angle,
-    gp = utils::modifyList(element_gp, gp), margin = margin,
-    expand_x = expand_x, expand_y = expand_y, debug = element$debug)
+    gp = utils::modifyList(a_element_gp, gp), margin = margin,
+    expand_x = expand_x, expand_y = expand_y, debug = a_element$debug)
 }
 
 
 
 #' @export
-element_grob.element_line <- function(element, x = 0:1, y = 0:1,
+a_element_grob.a_element_line <- function(a_element, x = 0:1, y = 0:1,
   colour = NULL, size = NULL, linetype = NULL, lineend = NULL,
   default.units = "npc", id.lengths = NULL, ...) {
 
-  # The gp settings can override element_gp
+  # The gp settings can override a_element_gp
   gp <- gpar(lwd = len0_null(size * .pt), col = colour, lty = linetype, lineend = lineend)
-  element_gp <- gpar(lwd = len0_null(element$size * .pt), col = element$colour,
-    lty = element$linetype, lineend = element$lineend)
+  a_element_gp <- gpar(lwd = len0_null(a_element$size * .pt), col = a_element$colour,
+    lty = a_element$linetype, lineend = a_element$lineend)
 
   polylineGrob(
     x, y, default.units = default.units,
-    gp = utils::modifyList(element_gp, gp),
+    gp = utils::modifyList(a_element_gp, gp),
     id.lengths = id.lengths, ...
   )
 }
@@ -207,7 +207,7 @@ element_grob.element_line <- function(element, x = 0:1, y = 0:1,
 
 # Define an element's class and what other elements it inherits from
 #
-# @param class The name of class (like "element_line", "element_text",
+# @param class The name of class (like "a_element_line", "a_element_text",
 #  or the reserved "character", which means a character vector (not
 #  "character" class)
 # @param inherit A vector of strings, naming the elements that this
@@ -219,39 +219,39 @@ el_def <- function(class = NULL, inherit = NULL, description = NULL) {
 
 # This data structure represents the theme elements and the inheritance
 # among them.
-.element_tree <- list(
-  line                = el_def("element_line"),
-  rect                = el_def("element_rect"),
-  text                = el_def("element_text"),
-  title               = el_def("element_text", "text"),
-  axis.line           = el_def("element_line", "line"),
-  axis.text           = el_def("element_text", "text"),
-  axis.title          = el_def("element_text", "title"),
-  axis.ticks          = el_def("element_line", "line"),
+.a_element_tree <- list(
+  line                = el_def("a_element_line"),
+  rect                = el_def("a_element_rect"),
+  text                = el_def("a_element_text"),
+  title               = el_def("a_element_text", "text"),
+  axis.line           = el_def("a_element_line", "line"),
+  axis.text           = el_def("a_element_text", "text"),
+  axis.title          = el_def("a_element_text", "title"),
+  axis.ticks          = el_def("a_element_line", "line"),
   legend.key.size     = el_def("unit"),
-  panel.grid          = el_def("element_line", "line"),
-  panel.grid.major    = el_def("element_line", "panel.grid"),
-  panel.grid.minor    = el_def("element_line", "panel.grid"),
-  strip.text          = el_def("element_text", "text"),
+  panel.grid          = el_def("a_element_line", "line"),
+  panel.grid.major    = el_def("a_element_line", "panel.grid"),
+  panel.grid.minor    = el_def("a_element_line", "panel.grid"),
+  strip.text          = el_def("a_element_text", "text"),
 
-  axis.line.x         = el_def("element_line", "axis.line"),
-  axis.line.y         = el_def("element_line", "axis.line"),
-  axis.text.x         = el_def("element_text", "axis.text"),
-  axis.text.y         = el_def("element_text", "axis.text"),
+  axis.line.x         = el_def("a_element_line", "axis.line"),
+  axis.line.y         = el_def("a_element_line", "axis.line"),
+  axis.text.x         = el_def("a_element_text", "axis.text"),
+  axis.text.y         = el_def("a_element_text", "axis.text"),
   axis.ticks.length   = el_def("unit"),
-  axis.ticks.x        = el_def("element_line", "axis.ticks"),
-  axis.ticks.y        = el_def("element_line", "axis.ticks"),
-  axis.title.x        = el_def("element_text", "axis.title"),
-  axis.title.y        = el_def("element_text", "axis.title"),
+  axis.ticks.x        = el_def("a_element_line", "axis.ticks"),
+  axis.ticks.y        = el_def("a_element_line", "axis.ticks"),
+  axis.title.x        = el_def("a_element_text", "axis.title"),
+  axis.title.y        = el_def("a_element_text", "axis.title"),
 
-  legend.background   = el_def("element_rect", "rect"),
+  legend.background   = el_def("a_element_rect", "rect"),
   legend.margin       = el_def("unit"),
-  legend.key          = el_def("element_rect", "rect"),
+  legend.key          = el_def("a_element_rect", "rect"),
   legend.key.height   = el_def("unit", "legend.key.size"),
   legend.key.width    = el_def("unit", "legend.key.size"),
-  legend.text         = el_def("element_text", "text"),
+  legend.text         = el_def("a_element_text", "text"),
   legend.text.align   = el_def("character"),
-  legend.title        = el_def("element_text", "title"),
+  legend.title        = el_def("a_element_text", "title"),
   legend.title.align  = el_def("character"),
   legend.position     = el_def("character"),  # Need to also accept numbers
   legend.direction    = el_def("character"),
@@ -259,27 +259,27 @@ el_def <- function(class = NULL, inherit = NULL, description = NULL) {
   legend.box          = el_def("character"),
   legend.box.just     = el_def("character"),
 
-  panel.background    = el_def("element_rect", "rect"),
-  panel.border        = el_def("element_rect", "rect"),
+  panel.background    = el_def("a_element_rect", "rect"),
+  panel.border        = el_def("a_element_rect", "rect"),
   panel.margin        = el_def("unit"),
   panel.margin.x      = el_def("unit", "panel.margin"),
   panel.margin.y      = el_def("unit", "panel.margin"),
-  panel.grid.major.x  = el_def("element_line", "panel.grid.major"),
-  panel.grid.major.y  = el_def("element_line", "panel.grid.major"),
-  panel.grid.minor.x  = el_def("element_line", "panel.grid.minor"),
-  panel.grid.minor.y  = el_def("element_line", "panel.grid.minor"),
+  panel.grid.major.x  = el_def("a_element_line", "panel.grid.major"),
+  panel.grid.major.y  = el_def("a_element_line", "panel.grid.major"),
+  panel.grid.minor.x  = el_def("a_element_line", "panel.grid.minor"),
+  panel.grid.minor.y  = el_def("a_element_line", "panel.grid.minor"),
   panel.ontop         = el_def("logical"),
 
-  strip.background    = el_def("element_rect", "rect"),
-  strip.text.x        = el_def("element_text", "strip.text"),
-  strip.text.y        = el_def("element_text", "strip.text"),
+  strip.background    = el_def("a_element_rect", "rect"),
+  strip.text.x        = el_def("a_element_text", "strip.text"),
+  strip.text.y        = el_def("a_element_text", "strip.text"),
   strip.switch.pad.grid = el_def("unit"),
   strip.switch.pad.wrap = el_def("unit"),
 
-  plot.background     = el_def("element_rect", "rect"),
-  plot.title          = el_def("element_text", "title"),
-  plot.subtitle       = el_def("element_text", "title"),
-  plot.caption        = el_def("element_text", "title"),
+  plot.background     = el_def("a_element_rect", "rect"),
+  plot.title          = el_def("a_element_text", "title"),
+  plot.subtitle       = el_def("a_element_text", "title"),
+  plot.caption        = el_def("a_element_text", "title"),
   plot.margin         = el_def("margin"),
 
   aspect.ratio        = el_def("character")
@@ -297,7 +297,7 @@ el_def <- function(class = NULL, inherit = NULL, description = NULL) {
 # @param el an element
 # @param elname the name of the element
 validate_element <- function(el, elname) {
-  eldef <- .element_tree[[elname]]
+  eldef <- .a_element_tree[[elname]]
 
   if (is.null(eldef)) {
     stop('"', elname, '" is not a valid theme element name.')
@@ -314,7 +314,7 @@ validate_element <- function(el, elname) {
   } else if (eldef$class == "margin") {
     if (!is.unit(el) && length(el) == 4)
       stop("Element ", elname, " must be a unit vector of length 4.")
-  } else if (!inherits(el, eldef$class) && !inherits(el, "element_blank")) {
+  } else if (!inherits(el, eldef$class) && !inherits(el, "a_element_blank")) {
       stop("Element ", elname, " must be a ", eldef$class, " object.")
   }
   invisible()

@@ -32,7 +32,7 @@ specified in \code{\link{labs}} is used for the title.}
 (default for a horizontal guide), or "right."}
 
 \item{title.theme}{A theme object for rendering the title text. Usually the
-object of \code{\link{element_text}} is expected. By default, the theme is
+object of \code{\link{a_element_text}} is expected. By default, the theme is
 specified by \code{legend.title} in \code{\link{theme}} or theme.}
 
 \item{title.hjust}{A number specifying horizontal justification of the
@@ -49,7 +49,7 @@ label. One of "top", "bottom" (default for horizontal guide), "left", or
 "right" (default for vertical guide).}
 
 \item{label.theme}{A theme object for rendering the label text. Usually the
-object of \code{\link{element_text}} is expected. By default, the theme is
+object of \code{\link{a_element_text}} is expected. By default, the theme is
 specified by \code{legend.text} in \code{\link{theme}} or theme.}
 
 \item{label.hjust}{A numeric specifying horizontal justification of the
@@ -141,7 +141,7 @@ p1 + guides(fill = guide_colorbar(ticks = FALSE))
 p1 + guides(fill = guide_colorbar(label.position = "left"))
 
 # label theme
-p1 + guides(fill = guide_colorbar(label.theme = element_text(colour = "blue", angle = 0)))
+p1 + guides(fill = guide_colorbar(label.theme = a_element_text(colour = "blue", angle = 0)))
 
 # small number of bins
 p1 + guides(fill = guide_colorbar(nbin = 3))

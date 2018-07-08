@@ -48,6 +48,6 @@ base + annotation_custom(
 df2 <- data.frame(x = 1 , y = 1)
 g <- ggplotGrob(a_plot(df2, aes(x, y)) +
   geom_point() +
-  theme(plot.background = element_rect(colour = "black")))
+  theme(plot.background = a_element_rect(colour = "black")))
 base + annotation_custom(grob = g, xmin = 1, xmax = 10, ymin = 8, ymax = 10)
 }

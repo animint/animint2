@@ -112,7 +112,7 @@ parsePlot <- function(meta, plot, plot.name){
   }
   is.blank <- function(el.name){
     x <- calc_element(el.name, plot$theme)
-    "element_blank"%in%attr(x,"class")
+    "a_element_blank"%in%attr(x,"class")
   }
 
   # Instead of an "axis" JSON object for each plot,
@@ -850,7 +850,7 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
 #' \item fill/colour (brewer, gradient, identity, manual)
 #' \item linetype
 #' \item x and y axis scales, manual break specification, label formatting
-#' \item x and y axis theme elements: axis.line, axis.ticks, axis.text, axis.title can be set to element_blank(); other theme modifications not supported at this time, but would be possible with custom css files.
+#' \item x and y axis theme elements: axis.line, axis.ticks, axis.text, axis.title can be set to a_element_blank(); other theme modifications not supported at this time, but would be possible with custom css files.
 #' \item area
 #' \item size
 #' }

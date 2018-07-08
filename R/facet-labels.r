@@ -531,20 +531,20 @@ ggstrip <- function(text, horizontal = TRUE, theme) {
   text_theme <- if (horizontal) "strip.text.x" else "strip.text.y"
   if (is.list(text)) text <- text[[1]]
 
-  element <- calc_element(text_theme, theme)
-  if (inherits(element, "element_blank"))
+  a_element <- calc_element(text_theme, theme)
+  if (inherits(a_element, "a_element_blank"))
     return(a_zeroGrob())
 
-  gp <- gpar(fontsize = element$size, col = element$colour,
-    fontfamily = element$family, fontface = element$face,
-    lineheight = element$lineheight)
+  gp <- gpar(fontsize = a_element$size, col = a_element$colour,
+    fontfamily = a_element$family, fontface = a_element$face,
+    lineheight = a_element$lineheight)
 
-  label <- stripGrob(text, element$hjust, element$vjust, element$angle,
-    margin = element$margin, gp = gp, debug = element$debug)
+  label <- stripGrob(text, a_element$hjust, a_element$vjust, a_element$angle,
+    margin = a_element$margin, gp = gp, debug = a_element$debug)
 
   ggname("strip", absoluteGrob(
     gList(
-      element_render(theme, "strip.background"),
+      a_element_render(theme, "strip.background"),
       label
     ),
     width = grobWidth(label),

@@ -41,13 +41,13 @@ p
 #theme_replace NULLs out the fill attribute of panel.background,
 #resulting in a white background:
 theme_get()$panel.background
-old <- theme_replace(panel.background = element_rect(colour = "pink"))
+old <- theme_replace(panel.background = a_element_rect(colour = "pink"))
 theme_get()$panel.background
 p
 theme_set(old)
 
 #theme_update only changes the colour attribute, leaving the others intact:
-old <- theme_update(panel.background = element_rect(colour = "pink"))
+old <- theme_update(panel.background = a_element_rect(colour = "pink"))
 theme_get()$panel.background
 p
 theme_set(old)
@@ -60,7 +60,7 @@ a_plot(mtcars, aes(mpg, wt)) +
   theme(legend.position = c(0.95, 0.95),
         legend.justification = c(1, 1))
 last_plot() +
- theme(legend.background = element_rect(fill = "white", colour = "white", size = 3))
+ theme(legend.background = a_element_rect(fill = "white", colour = "white", size = 3))
 
 }
 \seealso{

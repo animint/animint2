@@ -4,14 +4,14 @@
 \alias{calc_element}
 \title{Calculate the element properties, by inheriting properties from its parents}
 \usage{
-calc_element(element, theme, verbose = FALSE)
+calc_element(a_element, theme, verbose = FALSE)
 }
 \arguments{
-\item{element}{The name of the theme element to calculate}
-
 \item{theme}{A theme object (like theme_grey())}
 
 \item{verbose}{If TRUE, print out which elements this one inherits from}
+
+\item{element}{The name of the theme element to calculate}
 }
 \description{
 Calculate the element properties, by inheriting properties from its parents

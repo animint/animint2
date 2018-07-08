@@ -49,8 +49,8 @@
 #'
 #' ### Adding objects to a theme object
 #' # Compare these results of adding theme objects to other theme objects
-#' add_el <- theme_grey() + theme(text = element_text(family = "Times"))
-#' rep_el <- theme_grey() %+replace% theme(text = element_text(family = "Times"))
+#' add_el <- theme_grey() + theme(text = a_element_text(family = "Times"))
+#' rep_el <- theme_grey() %+replace% theme(text = a_element_text(family = "Times"))
 #'
 #' add_el$text
 #' rep_el$text

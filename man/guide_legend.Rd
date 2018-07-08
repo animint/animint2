@@ -23,7 +23,7 @@ specified in \code{\link{labs}} is used for the title.}
 (default for a horizontal guide), or "right."}
 
 \item{title.theme}{A theme object for rendering the title text. Usually the
-object of \code{\link{element_text}} is expected. By default, the theme is
+object of \code{\link{a_element_text}} is expected. By default, the theme is
 specified by \code{legend.title} in \code{\link{theme}} or theme.}
 
 \item{title.hjust}{A number specifying horizontal justification of the
@@ -40,7 +40,7 @@ label. One of "top", "bottom" (default for horizontal guide), "left", or
 "right" (default for vertical guide).}
 
 \item{label.theme}{A theme object for rendering the label text. Usually the
-object of \code{\link{element_text}} is expected. By default, the theme is
+object of \code{\link{a_element_text}} is expected. By default, the theme is
 specified by \code{legend.text} in \code{\link{theme}} or theme.}
 
 \item{label.hjust}{A numeric specifying horizontal justification of the
@@ -119,10 +119,10 @@ p1 + guides(fill = guide_legend(keywidth = 3, keyheight = 1))
 # title position
 p1 + guides(fill = guide_legend(title = "LEFT", title.position = "left"))
 
-# title text styles via element_text
+# title text styles via a_element_text
 p1 + guides(fill =
   guide_legend(
-    title.theme = element_text(
+    title.theme = a_element_text(
       size = 15,
       face = "italic",
       colour = "red",
@@ -143,7 +143,7 @@ p1 + scale_fill_continuous(breaks = c(5, 10, 15),
     label.position = "bottom",
     label.hjust = 0.5,
     label.vjust = 1,
-    label.theme = element_text(angle = 90)
+    label.theme = a_element_text(angle = 90)
   )
 )
 

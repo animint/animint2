@@ -48,7 +48,7 @@
 #' a + annotation_logticks(sides = "trbl")  # All four sides
 #'
 #' # Hide the minor grid lines because they don't align with the ticks
-#' a + annotation_logticks(sides = "trbl") + theme(panel.grid.minor = element_blank())
+#' a + annotation_logticks(sides = "trbl") + theme(panel.grid.minor = a_element_blank())
 #'
 #' # Another way to get the same results as 'a' above: log-transform the data before
 #' # plotting it. Also hide the minor grid lines.
@@ -56,7 +56,7 @@
 #'  geom_point(na.rm = TRUE) +
 #'  scale_x_continuous(name = "body", labels = scales::math_format(10^.x)) +
 #'  scale_y_continuous(name = "brain", labels = scales::math_format(10^.x)) +
-#'  theme_bw() + theme(panel.grid.minor = element_blank())
+#'  theme_bw() + theme(panel.grid.minor = a_element_blank())
 #'
 #' b + annotation_logticks()
 #'

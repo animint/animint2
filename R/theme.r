@@ -24,13 +24,13 @@
 #' #theme_replace NULLs out the fill attribute of panel.background,
 #' #resulting in a white background:
 #' theme_get()$panel.background
-#' old <- theme_replace(panel.background = element_rect(colour = "pink"))
+#' old <- theme_replace(panel.background = a_element_rect(colour = "pink"))
 #' theme_get()$panel.background
 #' p
 #' theme_set(old)
 #'
 #' #theme_update only changes the colour attribute, leaving the others intact:
-#' old <- theme_update(panel.background = element_rect(colour = "pink"))
+#' old <- theme_update(panel.background = a_element_rect(colour = "pink"))
 #' theme_get()$panel.background
 #' p
 #' theme_set(old)
@@ -43,7 +43,7 @@
 #'   theme(legend.position = c(0.95, 0.95),
 #'         legend.justification = c(1, 1))
 #' last_plot() +
-#'  theme(legend.background = element_rect(fill = "white", colour = "white", size = 3))
+#'  theme(legend.background = a_element_rect(fill = "white", colour = "white", size = 3))
 #'
 theme_update <- function(...) {
   theme_set(theme_get() + theme(...))
@@ -85,48 +85,48 @@ print.theme <- function(x, ...) utils::str(x)
 #'
 #' \tabular{ll}{
 #'   line             \tab all line elements
-#'                    (\code{element_line}) \cr
-#'   rect             \tab all rectangular elements
-#'                    (\code{element_rect}) \cr
-#'   text             \tab all text elements
-#'                    (\code{element_text}) \cr
+#'                    (\code{a_element_line}) \cr
+#'   rect             \tab all rectangular a_elements
+#'                    (\code{a_element_rect}) \cr
+#'   text             \tab all text a_elements
+#'                    (\code{a_element_text}) \cr
 #'   title            \tab all title elements: plot, axes, legends
-#'                    (\code{element_text}; inherits from \code{text}) \cr
+#'                    (\code{a_element_text}; inherits from \code{text}) \cr
 #'   aspect.ratio     \tab aspect ratio of the panel \cr
 #'
 #'   axis.title       \tab label of axes
-#'                    (\code{element_text}; inherits from \code{text}) \cr
+#'                    (\code{a_element_text}; inherits from \code{text}) \cr
 #'   axis.title.x     \tab x axis label
-#'                    (\code{element_text}; inherits from \code{axis.title}) \cr
+#'                    (\code{a_element_text}; inherits from \code{axis.title}) \cr
 #'   axis.title.y     \tab y axis label
-#'                    (\code{element_text}; inherits from \code{axis.title}) \cr
+#'                    (\code{a_element_text}; inherits from \code{axis.title}) \cr
 #'   axis.text        \tab tick labels along axes
-#'                    (\code{element_text}; inherits from \code{text}) \cr
+#'                    (\code{a_element_text}; inherits from \code{text}) \cr
 #'   axis.text.x      \tab x axis tick labels
-#'                    (\code{element_text}; inherits from \code{axis.text}) \cr
+#'                    (\code{a_element_text}; inherits from \code{axis.text}) \cr
 #'   axis.text.y      \tab y axis tick labels
-#'                    (\code{element_text}; inherits from \code{axis.text}) \cr
+#'                    (\code{a_element_text}; inherits from \code{axis.text}) \cr
 #'   axis.ticks       \tab tick marks along axes
-#'                    (\code{element_line}; inherits from \code{line}) \cr
+#'                    (\code{a_element_line}; inherits from \code{line}) \cr
 #'   axis.ticks.x     \tab x axis tick marks
-#'                    (\code{element_line}; inherits from \code{axis.ticks}) \cr
+#'                    (\code{a_element_line}; inherits from \code{axis.ticks}) \cr
 #'   axis.ticks.y     \tab y axis tick marks
-#'                    (\code{element_line}; inherits from \code{axis.ticks}) \cr
+#'                    (\code{a_element_line}; inherits from \code{axis.ticks}) \cr
 #'   axis.ticks.length  \tab length of tick marks
 #'                    (\code{unit}) \cr
 #'   axis.line        \tab lines along axes
-#'                    (\code{element_line}; inherits from \code{line}) \cr
+#'                    (\code{a_element_line}; inherits from \code{line}) \cr
 #'   axis.line.x      \tab line along x axis
-#'                    (\code{element_line}; inherits from \code{axis.line}) \cr
+#'                    (\code{a_element_line}; inherits from \code{axis.line}) \cr
 #'   axis.line.y      \tab line along y axis
-#'                    (\code{element_line}; inherits from \code{axis.line}) \cr
+#'                    (\code{a_element_line}; inherits from \code{axis.line}) \cr
 #'
 #'   legend.background  \tab background of legend
-#'                    (\code{element_rect}; inherits from \code{rect}) \cr
+#'                    (\code{a_element_rect}; inherits from \code{rect}) \cr
 #'   legend.margin    \tab extra space added around legend
 #'                    (\code{unit}) \cr
 #'   legend.key       \tab background underneath legend keys
-#'                    (\code{element_rect}; inherits from \code{rect}) \cr
+#'                    (\code{a_element_rect}; inherits from \code{rect}) \cr
 #'   legend.key.size  \tab size of legend keys
 #'                    (\code{unit}; inherits from \code{legend.key.size}) \cr
 #'   legend.key.height  \tab key background height
@@ -134,11 +134,11 @@ print.theme <- function(x, ...) utils::str(x)
 #'   legend.key.width   \tab key background width
 #'                    (\code{unit}; inherits from \code{legend.key.size}) \cr
 #'   legend.text      \tab legend item labels
-#'                    (\code{element_text}; inherits from \code{text}) \cr
+#'                    (\code{a_element_text}; inherits from \code{text}) \cr
 #'   legend.text.align  \tab alignment of legend labels
 #'                    (number from 0 (left) to 1 (right)) \cr
 #'   legend.title     \tab title of legend
-#'                    (\code{element_text}; inherits from \code{title}) \cr
+#'                    (\code{a_element_text}; inherits from \code{title}) \cr
 #'   legend.title.align \tab alignment of legend title
 #'                    (number from 0 (left) to 1 (right)) \cr
 #'   legend.position  \tab the position of legends
@@ -155,11 +155,11 @@ print.theme <- function(x, ...) utils::str(x)
 #'                    ("top", "bottom", "left", or "right")\cr
 #'
 #'   panel.background \tab background of plotting area, drawn underneath plot
-#'                    (\code{element_rect}; inherits from \code{rect}) \cr
+#'                    (\code{a_element_rect}; inherits from \code{rect}) \cr
 #'   panel.border     \tab border around plotting area, drawn on top of plot
 #'                    so that it covers tick marks and grid lines. This should
 #'                    be used with \code{fill=NA}
-#'                    (\code{element_rect}; inherits from \code{rect}) \cr
+#'                    (\code{a_element_rect}; inherits from \code{rect}) \cr
 #'   panel.margin     \tab margin around facet panels
 #'                    (\code{unit}) \cr
 #'   panel.margin.x   \tab horizontal margin around facet panels
@@ -167,53 +167,53 @@ print.theme <- function(x, ...) utils::str(x)
 #'   panel.margin.y   \tab vertical margin around facet panels
 #'                    (\code{unit}; inherits from \code{panel.margin}) \cr
 #'   panel.grid       \tab grid lines
-#'                    (\code{element_line}; inherits from \code{line}) \cr
+#'                    (\code{a_element_line}; inherits from \code{line}) \cr
 #'   panel.grid.major \tab major grid lines
-#'                    (\code{element_line}; inherits from \code{panel.grid}) \cr
+#'                    (\code{a_element_line}; inherits from \code{panel.grid}) \cr
 #'   panel.grid.minor \tab minor grid lines
-#'                    (\code{element_line}; inherits from \code{panel.grid}) \cr
+#'                    (\code{a_element_line}; inherits from \code{panel.grid}) \cr
 #'   panel.grid.major.x \tab vertical major grid lines
-#'                    (\code{element_line}; inherits from \code{panel.grid.major}) \cr
+#'                    (\code{a_element_line}; inherits from \code{panel.grid.major}) \cr
 #'   panel.grid.major.y \tab horizontal major grid lines
-#'                    (\code{element_line}; inherits from \code{panel.grid.major}) \cr
+#'                    (\code{a_element_line}; inherits from \code{panel.grid.major}) \cr
 #'   panel.grid.minor.x \tab vertical minor grid lines
-#'                    (\code{element_line}; inherits from \code{panel.grid.minor}) \cr
+#'                    (\code{a_element_line}; inherits from \code{panel.grid.minor}) \cr
 #'   panel.grid.minor.y \tab horizontal minor grid lines
-#'                    (\code{element_line}; inherits from \code{panel.grid.minor}) \cr
+#'                    (\code{a_element_line}; inherits from \code{panel.grid.minor}) \cr
 #'   panel.ontop        \tab option to place the panel (background, gridlines)
 #'                           over the data layers.  Usually used with a transparent
 #'                           or blank \code{panel.background}. (\code{logical}) \cr
 #'
 #'   plot.background  \tab background of the entire plot
-#'                    (\code{element_rect}; inherits from \code{rect}) \cr
+#'                    (\code{a_element_rect}; inherits from \code{rect}) \cr
 #'   plot.title       \tab plot title (text appearance)
-#'                    (\code{element_text}; inherits from \code{title})
+#'                    (\code{a_element_text}; inherits from \code{title})
 #'                    left-aligned by default\cr
 #'   plot.subtitle    \tab plot subtitle (text appearance)
-#'                    (\code{element_text}; inherits from \code{title})
+#'                    (\code{a_element_text}; inherits from \code{title})
 #'                    left-aligned by default\cr
 #'   plot.caption     \tab caption below the plot (text appearance)
-#'                    (\code{element_text}; inherits from \code{title})
+#'                    (\code{a_element_text}; inherits from \code{title})
 #'                    right-aligned by default\cr
 #'   plot.margin      \tab margin around entire plot
 #'                    (\code{unit} with the sizes of the top, right, bottom, and
 #'                     left margins) \cr
 #'
 #'   strip.background \tab background of facet labels
-#'                    (\code{element_rect}; inherits from \code{rect}) \cr
+#'                    (\code{a_element_rect}; inherits from \code{rect}) \cr
 #'   strip.text       \tab facet labels
-#'                    (\code{element_text}; inherits from \code{text}) \cr
+#'                    (\code{a_element_text}; inherits from \code{text}) \cr
 #'   strip.text.x     \tab facet labels along horizontal direction
-#'                    (\code{element_text}; inherits from \code{strip.text}) \cr
+#'                    (\code{a_element_text}; inherits from \code{strip.text}) \cr
 #'   strip.text.y     \tab facet labels along vertical direction
-#'                    (\code{element_text}; inherits from \code{strip.text}) \cr
+#'                    (\code{a_element_text}; inherits from \code{strip.text}) \cr
 #'   strip.switch.pad.grid \tab space between strips and axes when strips are switched
 #'                    (\code{unit}) \cr
 #'   strip.switch.pad.wrap \tab space between strips and axes when strips are switched
 #'                    (\code{unit}) \cr
 #' }
 #'
-#' @param ... a list of element name, element pairings that modify the
+#' @param ... a list of a_element name, element pairings that modify the
 #'   existing theme.
 #' @param complete set this to TRUE if this is a complete theme, such as
 #'   the one returned \code{by theme_grey()}. Complete themes behave
@@ -223,17 +223,17 @@ print.theme <- function(x, ...) utils::str(x)
 #' @seealso \code{\link{+.aaa}}
 #' @seealso \code{\link{\%+replace\%}}
 #' @seealso \code{\link{rel}}
-#' @seealso \code{\link{element_blank}}
-#' @seealso \code{\link{element_line}}
-#' @seealso \code{\link{element_rect}}
-#' @seealso \code{\link{element_text}}
+#' @seealso \code{\link{a_element_blank}}
+#' @seealso \code{\link{a_element_line}}
+#' @seealso \code{\link{a_element_rect}}
+#' @seealso \code{\link{a_element_text}}
 #' @export
 #' @examples
 #' \donttest{
 #' p <- a_plot(mtcars, aes(mpg, wt)) +
 #'   geom_point()
 #' p
-#' p + theme(panel.background = element_rect(colour = "pink"))
+#' p + theme(panel.background = a_element_rect(colour = "pink"))
 #' p + theme_bw()
 #'
 #' # Scatter plot of gas mileage by vehicle weight
@@ -258,13 +258,13 @@ print.theme <- function(x, ...) utils::str(x)
 #' # Change title appearance
 #' p <- p + labs(title = "Vehicle Weight-Gas Mileage Relationship")
 #' # Set title to twice the base font size
-#' p + theme(plot.title = element_text(size = rel(2)))
-#' p + theme(plot.title = element_text(size = rel(2), colour = "blue"))
+#' p + theme(plot.title = a_element_text(size = rel(2)))
+#' p + theme(plot.title = a_element_text(size = rel(2), colour = "blue"))
 #'
 #' # Add a subtitle and adjust bottom margin
 #' p + labs(title = "Vehicle Weight-Gas Mileage Relationship",
 #'          subtitle = "You need to wrap long subtitleson manually") +
-#'     theme(plot.subtitle = element_text(margin = margin(b = 20)))
+#'     theme(plot.subtitle = a_element_text(margin = margin(b = 20)))
 #'
 #' # Changing plot look with themes
 #' DF <- data.frame(x = rnorm(400))
@@ -276,12 +276,12 @@ print.theme <- function(x, ...) utils::str(x)
 #' m + theme_bw()
 #'
 #' # Manipulate Axis Attributes
-#' m + theme(axis.line = element_line(size = 3, colour = "red", linetype = "dotted"))
-#' m + theme(axis.text = element_text(colour = "blue"))
-#' m + theme(axis.text.y = element_blank())
-#' m + theme(axis.ticks = element_line(size = 2))
-#' m + theme(axis.title.y = element_text(size = rel(1.5), angle = 90))
-#' m + theme(axis.title.x = element_blank())
+#' m + theme(axis.line = a_element_line(size = 3, colour = "red", linetype = "dotted"))
+#' m + theme(axis.text = a_element_text(colour = "blue"))
+#' m + theme(axis.text.y = a_element_blank())
+#' m + theme(axis.ticks = a_element_line(size = 2))
+#' m + theme(axis.title.y = a_element_text(size = rel(1.5), angle = 90))
+#' m + theme(axis.title.x = a_element_blank())
 #' m + theme(axis.ticks.length = unit(.85, "cm"))
 #'
 #' # Legend Attributes
@@ -293,18 +293,18 @@ print.theme <- function(x, ...) utils::str(x)
 #' # Or use relative coordinates between 0 and 1
 #' z + theme(legend.position = c(.5, .5))
 #' # Add a border to the whole legend
-#' z + theme(legend.background = element_rect(colour = "black"))
+#' z + theme(legend.background = a_element_rect(colour = "black"))
 #' # Legend margin controls extra space around outside of legend:
-#' z + theme(legend.background = element_rect(),
+#' z + theme(legend.background = a_element_rect(),
 #'           legend.margin = unit(1, "cm"))
-#' z + theme(legend.background = element_rect(),
+#' z + theme(legend.background = a_element_rect(),
 #'           legend.margin = unit(0, "cm"))
 #' # Or to just the keys
-#' z + theme(legend.key = element_rect(colour = "black"))
-#' z + theme(legend.key = element_rect(fill = "yellow"))
+#' z + theme(legend.key = a_element_rect(colour = "black"))
+#' z + theme(legend.key = a_element_rect(fill = "yellow"))
 #' z + theme(legend.key.size = unit(2.5, "cm"))
-#' z + theme(legend.text = element_text(size = 20, colour = "red", angle = 45))
-#' z + theme(legend.title = element_text(face = "italic"))
+#' z + theme(legend.text = a_element_text(size = 20, colour = "red", angle = 45))
+#' z + theme(legend.title = a_element_text(face = "italic"))
 #'
 #' # To change the title of the legend use the name argument
 #' # in one of the scale options
@@ -312,15 +312,15 @@ print.theme <- function(x, ...) utils::str(x)
 #' z + scale_colour_grey(name = "Number of \nCylinders")
 #'
 #' # Panel and Plot Attributes
-#' z + theme(panel.background = element_rect(fill = "black"))
-#' z + theme(panel.border = element_rect(linetype = "dashed", colour = "black"))
-#' z + theme(panel.grid.major = element_line(colour = "blue"))
-#' z + theme(panel.grid.minor = element_line(colour = "red", linetype = "dotted"))
-#' z + theme(panel.grid.major = element_line(size = 2))
-#' z + theme(panel.grid.major.y = element_blank(),
-#'           panel.grid.minor.y = element_blank())
-#' z + theme(plot.background = element_rect())
-#' z + theme(plot.background = element_rect(fill = "green"))
+#' z + theme(panel.background = a_element_rect(fill = "black"))
+#' z + theme(panel.border = a_element_rect(linetype = "dashed", colour = "black"))
+#' z + theme(panel.grid.major = a_element_line(colour = "blue"))
+#' z + theme(panel.grid.minor = a_element_line(colour = "red", linetype = "dotted"))
+#' z + theme(panel.grid.major = a_element_line(size = 2))
+#' z + theme(panel.grid.major.y = a_element_blank(),
+#'           panel.grid.minor.y = a_element_blank())
+#' z + theme(plot.background = a_element_rect())
+#' z + theme(plot.background = a_element_rect(fill = "green"))
 #'
 #' # Faceting Attributes
 #' set.seed(4940)
@@ -328,9 +328,9 @@ print.theme <- function(x, ...) utils::str(x)
 #' k <- a_plot(dsmall, aes(carat, ..density..)) +
 #'   geom_histogram(binwidth = 0.2) +
 #'   a_facet_grid(. ~ cut)
-#' k + theme(strip.background = element_rect(colour = "purple", fill = "pink",
+#' k + theme(strip.background = a_element_rect(colour = "purple", fill = "pink",
 #'                                           size = 3, linetype = "dashed"))
-#' k + theme(strip.text.x = element_text(colour = "red", angle = 45, size = 10,
+#' k + theme(strip.text.x = a_element_text(colour = "red", angle = 45, size = 10,
 #'                                       hjust = 0.5, vjust = 0.5))
 #' k + theme(panel.margin = unit(5, "lines"))
 #' k + theme(panel.margin.y = unit(0, "lines"))
@@ -341,14 +341,14 @@ print.theme <- function(x, ...) utils::str(x)
 #' df <- data.frame(meanprice, cut)
 #' g <- a_plot(df, aes(cut, meanprice)) + geom_bar(stat = "identity")
 #' g + geom_bar(stat = "identity") +
-#'     theme(panel.background = element_blank(),
-#'           panel.grid.major.x = element_blank(),
-#'           panel.grid.minor.x = element_blank(),
-#'           panel.grid.minor.y = element_blank(),
+#'     theme(panel.background = a_element_blank(),
+#'           panel.grid.major.x = a_element_blank(),
+#'           panel.grid.minor.x = a_element_blank(),
+#'           panel.grid.minor.y = a_element_blank(),
 #'           panel.ontop = TRUE)
 #'
 #' # Modify a theme and save it
-#' mytheme <- theme_grey() + theme(plot.title = element_text(colour = "red"))
+#' mytheme <- theme_grey() + theme(plot.title = a_element_text(colour = "red"))
 #' p + mytheme
 #'
 #' }
@@ -361,7 +361,7 @@ theme <- function(..., complete = FALSE, validate = TRUE) {
     elements$axis.ticks.margin <- NULL
   }
 
-  # Check that all elements have the correct class (element_text, unit, etc)
+  # Check that all elements have the correct class (a_element_text, unit, etc)
   if (validate) {
     mapply(validate_element, elements, names(elements))
   }
@@ -538,36 +538,36 @@ update_theme <- function(oldtheme, newtheme) {
 #' t$text
 #'
 #' @export
-calc_element <- function(element, theme, verbose = FALSE) {
-  if (verbose) message(element, " --> ", appendLF = FALSE)
+calc_element <- function(a_element, theme, verbose = FALSE) {
+  if (verbose) message(a_element, " --> ", appendLF = FALSE)
 
-  # If this is element_blank, don't inherit anything from parents
-  if (inherits(theme[[element]], "element_blank")) {
-    if (verbose) message("element_blank (no inheritance)")
-    return(theme[[element]])
+  # If this is a_element_blank, don't inherit anything from parents
+  if (inherits(theme[[a_element]], "a_element_blank")) {
+    if (verbose) message("a_element_blank (no inheritance)")
+    return(theme[[a_element]])
   }
 
-  # If the element is defined (and not just inherited), check that
-  # it is of the class specified in .element_tree
-  if (!is.null(theme[[element]]) &&
-      !inherits(theme[[element]], .element_tree[[element]]$class)) {
-    stop(element, " should have class ", .element_tree[[element]]$class)
+  # If the a_element is defined (and not just inherited), check that
+  # it is of the class specified in .a_element_tree
+  if (!is.null(theme[[a_element]]) &&
+      !inherits(theme[[a_element]], .a_element_tree[[a_element]]$class)) {
+    stop(a_element, " should have class ", .a_element_tree[[a_element]]$class)
   }
 
   # Get the names of parents from the inheritance tree
-  pnames <- .element_tree[[element]]$inherit
+  pnames <- .a_element_tree[[a_element]]$inherit
 
-  # If no parents, this is a "root" node. Just return this element.
+  # If no parents, this is a "root" node. Just return this a_element.
   if (is.null(pnames)) {
-    # Check that all the properties of this element are non-NULL
-    nullprops <- vapply(theme[[element]], is.null, logical(1))
+    # Check that all the properties of this a_element are non-NULL
+    nullprops <- vapply(theme[[a_element]], is.null, logical(1))
     if (any(nullprops)) {
-      stop("Theme element '", element, "' has NULL property: ",
+      stop("Theme element '", a_element, "' has NULL property: ",
         paste(names(nullprops)[nullprops], collapse = ", "))
     }
 
     if (verbose) message("nothing (top level)")
-    return(theme[[element]])
+    return(theme[[a_element]])
   }
 
   # Calculate the parent objects' inheritance
@@ -575,7 +575,7 @@ calc_element <- function(element, theme, verbose = FALSE) {
   parents <- lapply(pnames, calc_element, theme, verbose)
 
   # Combine the properties of this element with all parents
-  Reduce(combine_elements, parents, theme[[element]])
+  Reduce(combine_elements, parents, theme[[a_element]])
 }
 
 
@@ -588,8 +588,8 @@ combine_elements <- function(e1, e2) {
   # If e2 is NULL, nothing to inherit
   if (is.null(e2))  return(e1)
 
-  # If e1 is NULL, or if e2 is element_blank, inherit everything from e2
-  if (is.null(e1) || inherits(e2, "element_blank"))  return(e2)
+  # If e1 is NULL, or if e2 is a_element_blank, inherit everything from e2
+  if (is.null(e1) || inherits(e2, "a_element_blank"))  return(e2)
 
   # If e1 has any NULL properties, inherit them from e2
   n <- vapply(e1[names(e2)], is.null, logical(1))

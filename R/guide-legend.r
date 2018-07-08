@@ -17,7 +17,7 @@
 #'   title. One of "top" (default for a vertical guide), "bottom", "left"
 #'  (default for a horizontal guide), or "right."
 #' @param title.theme A theme object for rendering the title text. Usually the
-#'   object of \code{\link{element_text}} is expected. By default, the theme is
+#'   object of \code{\link{a_element_text}} is expected. By default, the theme is
 #'   specified by \code{legend.title} in \code{\link{theme}} or theme.
 #' @param title.hjust A number specifying horizontal justification of the
 #'   title text.
@@ -29,7 +29,7 @@
 #'   label. One of "top", "bottom" (default for horizontal guide), "left", or
 #'   "right" (default for vertical guide).
 #' @param label.theme A theme object for rendering the label text. Usually the
-#'   object of \code{\link{element_text}} is expected. By default, the theme is
+#'   object of \code{\link{a_element_text}} is expected. By default, the theme is
 #'   specified by \code{legend.text} in \code{\link{theme}} or theme.
 #' @param label.hjust A numeric specifying horizontal justification of the
 #'   label text.
@@ -83,10 +83,10 @@
 #' # title position
 #' p1 + guides(fill = guide_legend(title = "LEFT", title.position = "left"))
 #'
-#' # title text styles via element_text
+#' # title text styles via a_element_text
 #' p1 + guides(fill =
 #'   guide_legend(
-#'     title.theme = element_text(
+#'     title.theme = a_element_text(
 #'       size = 15,
 #'       face = "italic",
 #'       colour = "red",
@@ -107,7 +107,7 @@
 #'     label.position = "bottom",
 #'     label.hjust = 0.5,
 #'     label.vjust = 1,
-#'     label.theme = element_text(angle = 90)
+#'     label.theme = a_element_text(angle = 90)
 #'   )
 #' )
 #'
@@ -309,7 +309,7 @@ guide_gengrob.legend <- function(guide, theme) {
   vgap <- hgap
 
   grob.title <- ggname("guide.title",
-    element_grob(
+    a_element_grob(
       guide$title.theme %||% calc_element("legend.title", theme),
       label = guide$title,
       hjust = guide$title.hjust %||% theme$legend.title.align %||% 0,
@@ -335,8 +335,8 @@ guide_gengrob.legend <- function(guide, theme) {
     vjust <- y <- guide$label.vjust %||% 0.5
 
     grob.labels <- lapply(guide$key$.label, function(label, ...) {
-      g <- element_grob(
-        element = label.theme,
+      g <- a_element_grob(
+        a_element = label.theme,
         label = label,
         x = x,
         y = y,
@@ -477,7 +477,7 @@ guide_gengrob.legend <- function(guide, theme) {
   key_size <- c(key_width, key_height) * 10
 
   draw_key <- function(i) {
-    bg <- element_render(theme, "legend.key")
+    bg <- a_element_render(theme, "legend.key")
     keys <- lapply(guide$geoms, function(g) {
       g$draw_key(g$data[i, ], g$params, key_size)
     })
@@ -486,7 +486,7 @@ guide_gengrob.legend <- function(guide, theme) {
   grob.keys <- unlist(lapply(seq_len(nbreak), draw_key), recursive = FALSE)
 
   # background
-  grob.background <- element_render(theme, "legend.background")
+  grob.background <- a_element_render(theme, "legend.background")
 
   ngeom <- length(guide$geoms) + 1
   kcols <- rep(vps$key.col, each = ngeom)

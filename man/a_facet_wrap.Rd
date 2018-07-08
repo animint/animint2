@@ -107,6 +107,6 @@ a_plot(mpg, aes(displ, hwy)) +
 a_plot(economics_long, aes(date, value)) +
   geom_line() +
   facet_wrap(~variable, scales = "free_y", nrow = 2, switch = "x") +
-  theme(strip.background = element_blank())
+  theme(strip.background = a_element_blank())
 }
 }

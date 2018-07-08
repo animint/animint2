@@ -38,7 +38,7 @@ a_Coord <- a_ggproto("a_Coord",
 
   labels = function(scale_details) scale_details,
 
-  render_fg = function(scale_details, theme) element_render(theme, "panel.border"),
+  render_fg = function(scale_details, theme) a_element_render(theme, "panel.border"),
 
   render_bg = function(scale_details, theme) {
     x.major <- if (length(scale_details$x.major) > 0) unit(scale_details$x.major, "native")

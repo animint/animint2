@@ -66,7 +66,7 @@
 #' p1 + guides(fill = guide_colorbar(label.position = "left"))
 #'
 #' # label theme
-#' p1 + guides(fill = guide_colorbar(label.theme = element_text(colour = "blue", angle = 0)))
+#' p1 + guides(fill = guide_colorbar(label.theme = a_element_text(colour = "blue", angle = 0)))
 #'
 #' # small number of bins
 #' p1 + guides(fill = guide_colorbar(nbin = 3))
@@ -272,7 +272,7 @@ guide_gengrob.colorbar <- function(guide, theme) {
 
   # title
   grob.title <- ggname("guide.title",
-    element_grob(
+    a_element_grob(
       guide$title.theme %||% calc_element("legend.title", theme),
       label = guide$title,
       hjust = guide$title.hjust %||% theme$legend.title.align %||% 0,
@@ -308,7 +308,7 @@ guide_gengrob.colorbar <- function(guide, theme) {
         })
         label <- do.call(c, label)
       }
-      g <- element_grob(element = label.theme, label = label,
+      g <- a_element_grob(a_element = label.theme, label = label,
         x = x, y = y, hjust = hjust, vjust = vjust)
       ggname("guide.label", g)
     }
@@ -409,7 +409,7 @@ guide_gengrob.colorbar <- function(guide, theme) {
     })
 
   # background
-  grob.background <- element_render(theme, "legend.background")
+  grob.background <- a_element_render(theme, "legend.background")
 
   # padding
   padding <- unit(1.5, "mm")

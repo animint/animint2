@@ -13,5 +13,5 @@ checkPlotList(plot.list)
 Throws an error for invalid values
 }
 \description{
-Check that plot.list is a list and every element is named
+Check that plot.list is a list and every a_element is named
 }

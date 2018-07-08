@@ -97,7 +97,7 @@ mt + a_facet_grid(. ~ cyl, scales = "free")
 a_plot(mpg, aes(drv, model)) +
   geom_point() +
   a_facet_grid(manufacturer ~ ., scales = "free", space = "free") +
-  theme(strip.text.y = element_text(angle = 0))
+  theme(strip.text.y = a_element_text(angle = 0))
 
 # Facet labels ------------------------------------------------------
 p <- a_plot(mtcars, aes(wt, mpg)) + geom_point()
@@ -124,7 +124,7 @@ p <- a_plot(data, aes(mpg, disp)) + geom_point()
 p + a_facet_grid(am ~ gear, switch = "both")
 # It looks better without boxes around the strips
 p + a_facet_grid(am ~ gear, switch = "both") +
-  theme(strip.background = element_blank())
+  theme(strip.background = a_element_blank())
 
 # Margins ----------------------------------------------------------
 \donttest{
