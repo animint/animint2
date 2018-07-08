@@ -520,7 +520,7 @@ update_theme <- function(oldtheme, newtheme) {
 
 #' Calculate the element properties, by inheriting properties from its parents
 #'
-#' @param element The name of the theme element to calculate
+#' @param a_element The name of the theme element to calculate
 #' @param theme A theme object (like theme_grey())
 #' @param verbose If TRUE, print out which elements this one inherits from
 #' @examples
