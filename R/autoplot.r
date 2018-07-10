@@ -8,7 +8,7 @@
 #' @param ... other arguments passed to specific methods
 #' @return a ggplot object
 #' @export
-#' @seealso \code{\link{a_plot}} and \code{\link{fortify}}
+#' @seealso \code{\link{a_plot}} and \code{\link{a_fortify}}
 autoplot <- function(object, ...) {
   UseMethod("autoplot")
 }

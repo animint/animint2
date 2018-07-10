@@ -11,16 +11,16 @@
 #' @examples
 #' if (require("maps")) {
 #' ca <- map("county", "ca", plot = FALSE, fill = TRUE)
-#' head(fortify(ca))
+#' head(a_fortify(ca))
 #' a_plot(ca, aes(long, lat)) +
 #'   geom_polygon(aes(group = group))
 #'
 #' tx <- map("county", "texas", plot = FALSE, fill = TRUE)
-#' head(fortify(tx))
+#' head(a_fortify(tx))
 #' a_plot(tx, aes(long, lat)) +
 #'   geom_polygon(aes(group = group), colour = "white")
 #' }
-fortify.map <- function(model, data, ...) {
+a_fortify.map <- function(model, data, ...) {
   df <- as.data.frame(model[c("x", "y")])
   names(df) <- c("long", "lat")
   df$group <- cumsum(is.na(df$long) & is.na(df$lat)) + 1
@@ -65,7 +65,7 @@ fortify.map <- function(model, data, ...) {
 #' }
 map_data <- function(map, region = ".", exact = FALSE, ...) {
   try_require("maps", "map_data")
-  fortify(map(map, region, exact = exact, plot = FALSE, fill = TRUE, ...))
+  a_fortify(map(map, region, exact = exact, plot = FALSE, fill = TRUE, ...))
 }
 
 #' Create a layer of map borders.

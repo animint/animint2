@@ -26,7 +26,7 @@ same name as those from newtheme, and puts them in oldtheme. Then
 it adds elements from newtheme to oldtheme.
 This makes it possible to do things like:
   a_plot(data.frame(x = 1:3, y = 1:3)) +
-  geom_point() + theme(text = element_text(colour = 'red'))
+  geom_point() + theme(text = a_element_text(colour = 'red'))
 and have 'text' keep properties from the default theme. Otherwise
 you would have to set all the element properties, like family, size,
 etc.

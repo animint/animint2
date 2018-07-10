@@ -10,7 +10,7 @@ NULL
 #'
 #' @export
 #' @param map Data frame that contains the map coordinates.  This will
-#'   typically be created using \code{\link{fortify}} on a spatial object.
+#'   typically be created using \code{\link{a_fortify}} on a spatial object.
 #'   It must contain columns \code{x} or \code{long}, \code{y} or
 #'   \code{lat}, and \code{region} or \code{id}.
 #' @inheritParams layer

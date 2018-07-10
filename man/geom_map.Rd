@@ -21,7 +21,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
 
    A \code{data.frame}, or other object, will override the plot
    data. All objects will be fortified to produce a data frame. See
-   \code{\link{fortify}} for which variables will be created.
+   \code{\link{a_fortify}} for which variables will be created.
 
    A \code{function} will be called with a single argument,
    the plot data. The return value must be a \code{data.frame.}, and
@@ -36,7 +36,7 @@ often aesthetics, used to set an aesthetic to a fixed value, like
 to the paired geom/stat.}
 
 \item{map}{Data frame that contains the map coordinates.  This will
-typically be created using \code{\link{fortify}} on a spatial object.
+typically be created using \code{\link{a_fortify}} on a spatial object.
 It must contain columns \code{x} or \code{long}, \code{y} or
 \code{lat}, and \code{region} or \code{id}.}
 

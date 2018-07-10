@@ -17,8 +17,8 @@
 #' @export
 #' @examples
 #' mod <- lm(mpg ~ wt, data = mtcars)
-#' head(fortify(mod))
-#' head(fortify(mod, mtcars))
+#' head(a_fortify(mod))
+#' head(a_fortify(mod, mtcars))
 #'
 #' plot(mod, which = 1)
 #'
@@ -32,10 +32,10 @@
 #'   geom_hline(yintercept = 0) +
 #'   geom_smooth(se = FALSE)
 #'
-#' a_plot(fortify(mod, mtcars), aes(.fitted, .stdresid)) +
+#' a_plot(a_fortify(mod, mtcars), aes(.fitted, .stdresid)) +
 #'   geom_point(aes(colour = factor(cyl)))
 #'
-#' a_plot(fortify(mod, mtcars), aes(mpg, .stdresid)) +
+#' a_plot(a_fortify(mod, mtcars), aes(mpg, .stdresid)) +
 #'   geom_point(aes(colour = factor(cyl)))
 #'
 #' plot(mod, which = 2)
@@ -72,7 +72,7 @@
 #' a_plot(mod, aes(.hat, .cooksd)) +
 #'   geom_point(aes(size = .cooksd / .hat)) +
 #'   scale_size_area()
-fortify.lm <- function(model, data = model$model, ...) {
+a_fortify.lm <- function(model, data = model$model, ...) {
   infl <- stats::influence(model, do.coef = FALSE)
   data$.hat <- infl$hat
   data$.sigma <- infl$sigma

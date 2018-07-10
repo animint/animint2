@@ -32,7 +32,7 @@
 #' is often the case in complex graphics.
 #'
 #' @param data Default dataset to use for plot. If not already a data.frame,
-#'   will be converted to one by \code{\link{fortify}}. If not specified,
+#'   will be converted to one by \code{\link{a_fortify}}. If not specified,
 #'   must be suppled in each layer added to the plot.
 #' @param mapping Default list of aesthetic mappings to use for plot.
 #'   If not specified, must be suppled in each layer added to the plot.
@@ -81,7 +81,7 @@ a_plot <- function(data = NULL, mapping = aes(), ...,
 #' @usage NULL
 a_plot.default <- function(data = NULL, mapping = aes(), ...,
                            environment = parent.frame()) {
-  a_plot.data.frame(fortify(data, ...), mapping, environment = environment)
+  a_plot.data.frame(a_fortify(data, ...), mapping, environment = environment)
 }
 
 #' @export
