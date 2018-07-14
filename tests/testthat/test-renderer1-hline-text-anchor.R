@@ -60,7 +60,7 @@ grad.desc.viz <- function(hjust) {
     scale_x_continuous(expand = c(0, 0)) + 
     scale_y_continuous(expand = c(0, 0)) + 
     ggtitle("contour of function value") + 
-    theme_animint(width = 600, height = 600)
+    a_theme_animint(width = 600, height = 600)
   
   objective.plot <- a_plot() +
     geom_line(data = objective2, aes(x = iteration, y = z), colour = "red") + 
@@ -70,7 +70,7 @@ grad.desc.viz <- function(hjust) {
     geom_text(data = objective2, aes(x = iteration, y = z + 0.3, 
                                      label = iteration), showSelected = "iteration2", hjust = hjust) + 
     ggtitle("objective value vs. iteration") + 
-    theme_animint(width = 600, height = 600)
+    a_theme_animint(width = 600, height = 600)
   
   viz <- list(contour = contour.plot, objective = objective.plot, 
               time = list(variable = "iteration2", ms = 2000), 
