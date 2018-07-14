@@ -12,7 +12,7 @@ wb.facets <-
          geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2),
                        clickSelects="year",
                        data=TS(years), alpha=1/2)+
-         theme_animint(width=1000)+
+         a_theme_animint(width=1000)+
          geom_line(aes(year, life.expectancy, group=country, colour=region),
                    clickSelects="country", showSelected="region",
                    data=TS(not.na), size=4, alpha=3/5)+
@@ -35,7 +35,7 @@ wb.facets <-
                    data=SCATTER(years)),
        time=list(variable="year",ms=3000),
        bar=a_plot()+
-         theme_animint(height=2400)+
+         a_theme_animint(height=2400)+
          geom_bar(aes(country, life.expectancy, fill=region,
                       key=country),
                   showSelected="year", clickSelects="country",

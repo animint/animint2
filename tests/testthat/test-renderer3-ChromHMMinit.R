@@ -22,9 +22,9 @@ viz <- list(
               ##chunk_vars=c("repeat.fac"),
               data=data.frame(ChromHMMinit$emission, parameters="emission"))+
     scale_color_gradient(low="white", high="red")+
-    theme_bw()+
-    theme_animint(height=500, width=400)+
-    theme(panel.margin=grid::unit(0, "cm"))+
+    a_theme_bw()+
+    a_theme_animint(height=500, width=400)+
+    a_theme(panel.margin=grid::unit(0, "cm"))+
     a_facet_grid(parameters ~ .,
                space="free",
                scales="free_y")+
@@ -45,15 +45,15 @@ viz <- list(
               size=3,
               alpha=0.6,
               data=subset(ChromHMMinit$metrics, metric.name != "Change"))+
-    theme_bw()+
-    theme_animint(height=500)+
-    theme(panel.margin=grid::unit(0, "cm"))+
+    a_theme_bw()+
+    a_theme_animint(height=500)+
+    a_theme(panel.margin=grid::unit(0, "cm"))+
     a_facet_grid(metric.name ~ ., scales="free_y"),
   last=a_plot()+
     ggtitle("last iteration, select initialization")+
-    theme_bw()+
-    theme_animint(height=500, width=400)+
-    theme(panel.margin=grid::unit(0, "cm"))+
+    a_theme_bw()+
+    a_theme_animint(height=500, width=400)+
+    a_theme(panel.margin=grid::unit(0, "cm"))+
     a_facet_grid(metric.name ~ ., space="fixed", scales="free")+
     geom_point(aes(repeat.fac, metric.value),
                clickSelects="repeat.fac",

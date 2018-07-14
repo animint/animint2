@@ -2,9 +2,9 @@
 #' @param at ...
 #' @param position of ticks
 #' @param labels at ticks
-#' @param theme ...
+#' @param a_theme ...
 # @param position of axis (top, bottom, left or right)
-guide_axis <- function(at, labels, position = "right", theme) {
+guide_axis <- function(at, labels, position = "right", a_theme) {
   if (length(at) == 0)
     return(a_zeroGrob())
 
@@ -22,12 +22,12 @@ guide_axis <- function(at, labels, position = "right", theme) {
   label_x <- switch(position,
     top = ,
     bottom = at,
-    right = theme$axis.ticks.length,
-    left = one - theme$axis.ticks.length
+    right = a_theme$axis.ticks.length,
+    left = one - a_theme$axis.ticks.length
   )
   label_y <- switch(position,
-    top = theme$axis.ticks.length,
-    bottom = one - theme$axis.ticks.length,
+    top = a_theme$axis.ticks.length,
+    bottom = one - a_theme$axis.ticks.length,
     right = ,
     left = at
   )
@@ -42,34 +42,34 @@ guide_axis <- function(at, labels, position = "right", theme) {
 
   labels <- switch(position,
     top = ,
-    bottom = a_element_render(theme, label_render, labels, x = label_x, expand_y = TRUE),
+    bottom = a_element_render(a_theme, label_render, labels, x = label_x, expand_y = TRUE),
     right = ,
-    left =  a_element_render(theme, label_render, labels, y = label_y, expand_x = TRUE))
+    left =  a_element_render(a_theme, label_render, labels, y = label_y, expand_x = TRUE))
 
   line <- switch(position,
-    top =    a_element_render(theme, "axis.line.x", c(0, 1), c(0, 0), id.lengths = 2),
-    bottom = a_element_render(theme, "axis.line.x", c(0, 1), c(1, 1), id.lengths = 2),
-    right =  a_element_render(theme, "axis.line.y", c(0, 0), c(0, 1), id.lengths = 2),
-    left =   a_element_render(theme, "axis.line.y", c(1, 1), c(0, 1), id.lengths = 2)
+    top =    a_element_render(a_theme, "axis.line.x", c(0, 1), c(0, 0), id.lengths = 2),
+    bottom = a_element_render(a_theme, "axis.line.x", c(0, 1), c(1, 1), id.lengths = 2),
+    right =  a_element_render(a_theme, "axis.line.y", c(0, 0), c(0, 1), id.lengths = 2),
+    left =   a_element_render(a_theme, "axis.line.y", c(1, 1), c(0, 1), id.lengths = 2)
   )
 
   nticks <- length(at)
 
   ticks <- switch(position,
-    top = a_element_render(theme, "axis.ticks.x",
+    top = a_element_render(a_theme, "axis.ticks.x",
       x          = rep(at, each = 2),
-      y          = rep(unit.c(zero, theme$axis.ticks.length), nticks),
+      y          = rep(unit.c(zero, a_theme$axis.ticks.length), nticks),
       id.lengths = rep(2, nticks)),
-    bottom = a_element_render(theme, "axis.ticks.x",
+    bottom = a_element_render(a_theme, "axis.ticks.x",
       x          = rep(at, each = 2),
-      y          = rep(unit.c(one - theme$axis.ticks.length, one), nticks),
+      y          = rep(unit.c(one - a_theme$axis.ticks.length, one), nticks),
       id.lengths = rep(2, nticks)),
-    right = a_element_render(theme, "axis.ticks.y",
-      x          = rep(unit.c(zero, theme$axis.ticks.length), nticks),
+    right = a_element_render(a_theme, "axis.ticks.y",
+      x          = rep(unit.c(zero, a_theme$axis.ticks.length), nticks),
       y          = rep(at, each = 2),
       id.lengths = rep(2, nticks)),
-    left = a_element_render(theme, "axis.ticks.y",
-      x          = rep(unit.c(one - theme$axis.ticks.length, one), nticks),
+    left = a_element_render(a_theme, "axis.ticks.y",
+      x          = rep(unit.c(one - a_theme$axis.ticks.length, one), nticks),
       y          = rep(at, each = 2),
       id.lengths = rep(2, nticks))
   )
@@ -79,21 +79,21 @@ guide_axis <- function(at, labels, position = "right", theme) {
     top    = gtable_col("axis",
       grobs   = list(labels, ticks),
       width   = one,
-      heights = unit.c(grobHeight(labels), theme$axis.ticks.length)
+      heights = unit.c(grobHeight(labels), a_theme$axis.ticks.length)
     ),
     bottom = gtable_col("axis",
       grobs   = list(ticks, labels),
       width   = one,
-      heights = unit.c(theme$axis.ticks.length, grobHeight(labels))
+      heights = unit.c(a_theme$axis.ticks.length, grobHeight(labels))
     ),
     right  = gtable_row("axis",
       grobs   = list(ticks, labels),
-      widths  = unit.c(theme$axis.ticks.length, grobWidth(labels)),
+      widths  = unit.c(a_theme$axis.ticks.length, grobWidth(labels)),
       height  = one
     ),
     left   = gtable_row("axis",
       grobs   = list(labels, ticks),
-      widths  = unit.c(grobWidth(labels), theme$axis.ticks.length),
+      widths  = unit.c(grobWidth(labels), a_theme$axis.ticks.length),
       height  = one
     )
   )

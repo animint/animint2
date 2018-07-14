@@ -25,7 +25,7 @@ NULL
 #' df <- data.frame(x = 1:10, y = 1:10)
 #' base <- a_plot(df, aes(x, y)) +
 #'   geom_blank() +
-#'   theme_bw()
+#'   a_theme_bw()
 #'
 #' # Full panel annotation
 #' base + annotation_custom(
@@ -37,7 +37,7 @@ NULL
 #' df2 <- data.frame(x = 1 , y = 1)
 #' g <- ggplotGrob(a_plot(df2, aes(x, y)) +
 #'   geom_point() +
-#'   theme(plot.background = a_element_rect(colour = "black")))
+#'   a_theme(plot.background = a_element_rect(colour = "black")))
 #' base + annotation_custom(grob = g, xmin = 1, xmax = 10, ymin = 8, ymax = 10)
 annotation_custom <- function(grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) {
   layer(

@@ -14,9 +14,9 @@ viz <- list(
               showSelected="iteration",
               data=emission)+
     scale_color_gradient(low="white", high="red")+
-    theme_bw()+
-    theme_animint(height=600, width=350)+
-    theme(panel.margin=grid::unit(0, "cm"))+
+    a_theme_bw()+
+    a_theme_animint(height=600, width=350)+
+    a_theme(panel.margin=grid::unit(0, "cm"))+
     a_facet_grid(parameters ~ .,
                space="free",
                scales="free_y")+
@@ -31,9 +31,9 @@ viz <- list(
     make_tallrect(ChromHMMiterations$metrics, "iteration")+
     geom_line(aes(iteration, metric.value),
               data=ChromHMMiterations$metrics)+
-    theme_bw()+
-    theme_animint(height=500)+
-    theme(panel.margin=grid::unit(0, "cm"))+
+    a_theme_bw()+
+    a_theme_animint(height=500)+
+    a_theme(panel.margin=grid::unit(0, "cm"))+
     a_facet_grid(metric.name ~ ., scales="free_y"),
   duration=list(iteration=500),
   first=list(iteration=100),

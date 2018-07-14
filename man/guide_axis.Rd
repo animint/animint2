@@ -4,7 +4,7 @@
 \alias{guide_axis}
 \title{Grob for axes}
 \usage{
-guide_axis(at, labels, position = "right", theme)
+guide_axis(at, labels, position = "right", a_theme)
 }
 \arguments{
 \item{at}{...}
@@ -13,7 +13,7 @@ guide_axis(at, labels, position = "right", theme)
 
 \item{position}{of ticks}
 
-\item{theme}{...}
+\item{a_theme}{...}
 }
 \description{
 Grob for axes

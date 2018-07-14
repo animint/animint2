@@ -21,8 +21,8 @@ set.colors <-
 
 errorPlot <- a_plot()+
   ggtitle("Select number of neighbors")+
-  theme_bw()+
-  theme_animint(height=500)+
+  a_theme_bw()+
+  a_theme_animint(height=500)+
   geom_text(aes(min.neighbors, error.prop,
                 color=set, label="Bayes"),
             showSelected="classifier",
@@ -62,8 +62,8 @@ errorPlot
 
 scatterPlot <- a_plot()+
   ggtitle("Mis-classification errors in train set")+
-  theme_bw()+
-  theme_animint(width=500, height=500)+
+  a_theme_bw()+
+  a_theme_animint(width=500, height=500)+
   xlab("Input feature 1")+
   ylab("Input feature 2")+
   coord_equal()+
@@ -112,7 +112,7 @@ scatterPlot <- a_plot()+
             data=mixtureKNN$show.text)
 scatterPlot+
   a_facet_wrap("neighbors")+
-  theme(panel.margin=grid::unit(0, "lines"))
+  a_theme(panel.margin=grid::unit(0, "lines"))
 
 viz.neighbors <- list(
   error=errorPlot,

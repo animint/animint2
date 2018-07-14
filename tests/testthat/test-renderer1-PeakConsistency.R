@@ -14,9 +14,9 @@ color.code <-
 
 second.small <-
   list(signals=a_plot()+
-         theme_bw()+
-         theme_animint(width=1000, height=800)+
-         theme(panel.margin=grid::unit(0, "cm"))+
+         a_theme_bw()+
+         a_theme_animint(width=1000, height=800)+
+         a_theme(panel.margin=grid::unit(0, "cm"))+
          a_facet_grid(sample.id ~ ., labeller=function(val){
            mapply(paste, "sample", val, SIMPLIFY = FALSE)
          })+
@@ -68,9 +68,9 @@ viz <-
                    alpha=0.7,
                    data=PeakConsistency$error),
        signals=a_plot()+
-         theme_bw()+
-         theme_animint(width=1000, height=800)+
-         theme(panel.margin=grid::unit(0, "cm"))+
+         a_theme_bw()+
+         a_theme_animint(width=1000, height=800)+
+         a_theme(panel.margin=grid::unit(0, "cm"))+
          a_facet_grid(sample.id ~ ., labeller=function(val){
            mapply(paste, "sample", val, SIMPLIFY = FALSE)
          })+

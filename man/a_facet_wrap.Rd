@@ -103,10 +103,10 @@ a_plot(mpg, aes(displ, hwy)) +
 
 # Use `switch` to display the facet labels near an axis, acting as
 # a subtitle for this axis. This is typically used with free scales
-# and a theme without boxes around strip labels.
+# and a a_theme without boxes around strip labels.
 a_plot(economics_long, aes(date, value)) +
   geom_line() +
   facet_wrap(~variable, scales = "free_y", nrow = 2, switch = "x") +
-  theme(strip.background = a_element_blank())
+  a_theme(strip.background = a_element_blank())
 }
 }

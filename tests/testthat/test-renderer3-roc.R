@@ -39,7 +39,7 @@ path.before.params <- list(
   scale_size_manual(values=c(default=7, learned=10))+
   scale_shape_manual(values=c(default=20, learned=1))+
   coord_equal()+
-  theme_grey()+
+  a_theme_grey()+
   scale_x_continuous(paste(
     "False positive rate in test labels",
     "= Probability(peak | no peak)"),
@@ -48,7 +48,7 @@ path.before.params <- list(
     "True positive rate in test labels",
     "= Probability(peak | peak)"),
                      breaks=seq(0, 1, by=0.2))+
-  theme(panel.margin=grid::unit(0, "lines")),
+  a_theme(panel.margin=grid::unit(0, "lines")),
   first=list(ModelParam="PeakSegJoint -0.8"))
 
 test_that("path before params, 5 paths rendered", {
@@ -90,7 +90,7 @@ path.after.params <- list(
   scale_size_manual(values=c(default=7, learned=10))+
   scale_shape_manual(values=c(default=20, learned=1))+
   coord_equal()+
-  theme_grey()+
+  a_theme_grey()+
   scale_x_continuous(paste(
     "False positive rate in test labels",
     "= Probability(peak | no peak)"),
@@ -99,7 +99,7 @@ path.after.params <- list(
     "True positive rate in test labels",
     "= Probability(peak | peak)"),
                      breaks=seq(0, 1, by=0.2))+
-  theme(panel.margin=grid::unit(0, "lines")),
+  a_theme(panel.margin=grid::unit(0, "lines")),
   first=list(ModelParam="PeakSegJoint -0.8"))
 
 test_that("path after params, 5 paths rendered", {

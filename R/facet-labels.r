@@ -475,12 +475,12 @@ labeller <- function(..., .rows = NULL, .cols = NULL,
 #' @param panel ....
 #' @param label_df ....
 #' @param labeller ....
-#' @param theme .....
+#' @param a_theme .....
 #' @param side .....
 #' @param switch ....
 #' @export
 ## TODO: define params in detail
-a_build_strip <- function(panel, label_df, labeller, theme, side = "right", switch = NULL) {
+a_build_strip <- function(panel, label_df, labeller, a_theme, side = "right", switch = NULL) {
   side <- match.arg(side, c("top", "left", "bottom", "right"))
   horizontal <- side %in% c("top", "bottom")
   labeller <- match.fun(labeller)
@@ -502,11 +502,11 @@ a_build_strip <- function(panel, label_df, labeller, theme, side = "right", swit
 
   # Display the mirror of the y strip labels if switched
   if (!is.null(switch) && switch %in% c("both", "y")) {
-    theme$strip.text.y$angle <- adjust_angle(theme$strip.text.y$angle)
+    a_theme$strip.text.y$angle <- adjust_angle(a_theme$strip.text.y$angle)
   }
 
   # Render as grobs
-  grobs <- apply(labels, c(1, 2), ggstrip, theme = theme,
+  grobs <- apply(labels, c(1, 2), ggstrip, a_theme = a_theme,
     horizontal = horizontal)
 
   # Create layout
@@ -527,11 +527,11 @@ a_build_strip <- function(panel, label_df, labeller, theme, side = "right", swit
 }
 
 # Grob for strip labels
-ggstrip <- function(text, horizontal = TRUE, theme) {
-  text_theme <- if (horizontal) "strip.text.x" else "strip.text.y"
+ggstrip <- function(text, horizontal = TRUE, a_theme) {
+  text_a_theme <- if (horizontal) "strip.text.x" else "strip.text.y"
   if (is.list(text)) text <- text[[1]]
 
-  a_element <- calc_element(text_theme, theme)
+  a_element <- calc_element(text_a_theme, a_theme)
   if (inherits(a_element, "a_element_blank"))
     return(a_zeroGrob())
 
@@ -544,7 +544,7 @@ ggstrip <- function(text, horizontal = TRUE, theme) {
 
   ggname("strip", absoluteGrob(
     gList(
-      a_element_render(theme, "strip.background"),
+      a_element_render(a_theme, "strip.background"),
       label
     ),
     width = grobWidth(label),

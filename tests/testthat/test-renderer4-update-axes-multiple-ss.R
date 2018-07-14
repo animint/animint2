@@ -13,7 +13,7 @@ data_f1$ss3 <- as.factor(c("A", "A", "B"))
 plot1 <- a_plot() + geom_point(aes(a,b),
                                showSelected=c("ss1","ss2","ss3"),
                                data = data_f1) +
-  theme_animint(update_axes=c("x"))
+  a_theme_animint(update_axes=c("x"))
 viz <- list(p=plot1)
 
 viz$selector.types <- list(ss1="single", ss2="single", ss3="single")
@@ -28,7 +28,7 @@ data_f2$ss2 <- as.factor(c("alpha", "beta"))
 plot2 <- a_plot() + geom_point(aes(a,b),
                                showSelected=c("ss1", "ss2"),
                                data = data_f2) +
-  theme_animint(update_axes=c("x"))
+  a_theme_animint(update_axes=c("x"))
 viz <- list(p=plot2)
 
 viz$selector.types <- list(ss1="single", ss2="single")
@@ -43,7 +43,7 @@ plot3 <- a_plot() + geom_point(aes(a,b, colour=ss1),
                                showSelected="ss2",
                                data = data_f3)
   
-viz <- list(p=plot3 + theme_animint(update_axes=c("x")))
+viz <- list(p=plot3 + a_theme_animint(update_axes=c("x")))
 
 viz$selector.types <- list(ss1="single", ss2="single")
 expect_no_warning(animint2HTML(viz))
@@ -55,11 +55,11 @@ expect_no_warning(animint2HTML(viz))
 no_updates <- plot3
 
 update_x <- no_updates+
-  theme_animint(update_axes=c("x"))
+  a_theme_animint(update_axes=c("x"))
 update_y <- no_updates+
-  theme_animint(update_axes=c("y"))
+  a_theme_animint(update_axes=c("y"))
 update_xy <- no_updates+
-  theme_animint(update_axes=c("x","y"))
+  a_theme_animint(update_axes=c("x","y"))
 
 viz <- (list(neither=no_updates, 
              x=update_x, 

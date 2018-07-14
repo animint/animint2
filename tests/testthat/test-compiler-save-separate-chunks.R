@@ -25,11 +25,11 @@ level.heatmap <- a_plot() +
                     clickSelects = "WEEKEND") + 
   scale_x_date(expand = c(0, 0)) + 
   scale_fill_gradient2(low = "white", high = "red", breaks = 0:10) + 
-  theme_animint(width = 1200, height = 700) + 
+  a_theme_animint(width = 1200, height = 700) + 
   ggtitle("CDC ILI Activity Level in Lower 48 States")
 
 # state map
-theme_opts <- list(theme(panel.grid.minor = a_element_blank(), 
+a_theme_opts <- list(a_theme(panel.grid.minor = a_element_blank(), 
                          panel.grid.major = a_element_blank(), 
                          panel.background = a_element_blank(), 
                          panel.border = a_element_blank(), 
@@ -46,8 +46,8 @@ p <- a_plot() +
             "CDC FluView in Lower 48 States ending %s") + 
   scale_fill_gradient2(low = "white", high = "red", breaks = 0:10,
                        guide = "none") + 
-  theme_opts + 
-  theme_animint(width = 750, height= 500)
+  a_theme_opts + 
+  a_theme_animint(width = 750, height= 500)
 
 test_that("save separate chunks for geom_polygon", {
   state.map <- p + 

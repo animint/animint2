@@ -67,9 +67,9 @@ mmir.selection <-
        ggtitle("Select profile and number of segments")+
        make_tallrect(model.selection, "segments",
                      colour=signal.colors[["estimate"]])+
-       theme_bw()+
-       theme_animint(width=600)+
-       theme(panel.margin=grid::unit(0, "lines"))+
+       a_theme_bw()+
+       a_theme_animint(width=600)+
+       a_theme(panel.margin=grid::unit(0, "lines"))+
        a_facet_grid(. ~ geom)+
        geom_text(aes(0, error, label=signal),
                  clickSelects="signal",
@@ -89,8 +89,8 @@ mmir.selection <-
                  alpha=0.6, size=8),
 
        signal=a_plot()+
-         theme_bw()+
-       theme_animint(width=800)+       
+         a_theme_bw()+
+       a_theme_animint(width=800)+       
        scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
        scale_fill_manual(values=breakpoint.colors,guide="none")+

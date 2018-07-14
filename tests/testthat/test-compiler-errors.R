@@ -125,8 +125,8 @@ test_that("warning for position=stack and showSelected", {
     )
   df$key <- with(df, paste(stack, letter))
   gg <- a_plot() +
-    theme_bw()+
-    theme(panel.margin=grid::unit(0, "lines"))+
+    a_theme_bw()+
+    a_theme(panel.margin=grid::unit(0, "lines"))+
     geom_bar(
       aes(letter, count, fill = stack, key=key),
       showSelected="a_facet",
@@ -153,8 +153,8 @@ test_that("no warning for position=stack without showSelected", {
     a_facet = rep(1:2, each = 10)
   )
   gg <- a_plot() +
-    theme_bw()+
-    theme(panel.margin=grid::unit(0, "lines"))+
+    a_theme_bw()+
+    a_theme(panel.margin=grid::unit(0, "lines"))+
     geom_bar(
       aes(letter, count, fill = stack),
       data = df,

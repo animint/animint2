@@ -4,8 +4,8 @@ viz <- list(
   gg=a_plot()+
     geom_point(aes(Petal.Length, Sepal.Length),
                data=iris)+
-    theme_bw()+
-    theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
+    a_theme_bw()+
+    a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
           axis.ticks=a_element_blank(), axis.title=a_element_blank(),
           panel.background = a_element_blank(),
           panel.border = a_element_blank())

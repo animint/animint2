@@ -6,14 +6,14 @@ n.circles <- 40
 df <- data.frame(x=0, y=0, a_facet=1:n.circles)
 gg <- a_plot()+
   geom_point(aes(x, y), data=df)+
-  theme_bw()+
-  theme(panel.margin=grid::unit(0, "cm"))
+  a_theme_bw()+
+  a_theme(panel.margin=grid::unit(0, "cm"))
 viz <-
   list(horizontal=gg+
-         theme_animint(width=n.circles * 30 + 50)+
+         a_theme_animint(width=n.circles * 30 + 50)+
          a_facet_grid(. ~ a_facet),
        vertical=gg+
-         theme_animint(height=n.circles * 30 + 50)+
+         a_theme_animint(height=n.circles * 30 + 50)+
          a_facet_grid(a_facet ~ .))
 
 info <- animint2HTML(viz)

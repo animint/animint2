@@ -166,7 +166,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
     details
   },
 
-  render_bg = function(self, scale_details, theme) {
+  render_bg = function(self, scale_details, a_theme) {
     xrange <- expand_range(scale_details$x.range, 0.2)
     yrange <- expand_range(scale_details$y.range, 0.2)
 
@@ -192,7 +192,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
 
     if (nrow(xlines) > 0) {
       grob.xlines <- a_element_render(
-        theme, "panel.grid.major.x",
+        a_theme, "panel.grid.major.x",
         xlines$x, xlines$y, default.units = "native"
       )
     } else {
@@ -201,7 +201,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
 
     if (nrow(ylines) > 0) {
       grob.ylines <- a_element_render(
-        theme, "panel.grid.major.y",
+        a_theme, "panel.grid.major.y",
         ylines$x, ylines$y, default.units = "native"
       )
     } else {
@@ -209,12 +209,12 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
     }
 
     ggname("grill", grobTree(
-      a_element_render(theme, "panel.background"),
+      a_element_render(a_theme, "panel.background"),
       grob.xlines, grob.ylines
     ))
   },
 
-  render_axis_h = function(self, scale_details, theme) {
+  render_axis_h = function(self, scale_details, a_theme) {
     if (is.null(scale_details$x.major)) return(a_zeroGrob())
 
     x_intercept <- with(scale_details, data.frame(
@@ -223,10 +223,10 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
     ))
     pos <- self$transform(x_intercept, scale_details)
 
-    guide_axis(pos$x, scale_details$x.labels, "bottom", theme)
+    guide_axis(pos$x, scale_details$x.labels, "bottom", a_theme)
   },
 
-  render_axis_v = function(self, scale_details, theme) {
+  render_axis_v = function(self, scale_details, a_theme) {
     if (is.null(scale_details$y.major)) return(a_zeroGrob())
 
     x_intercept <- with(scale_details, data.frame(
@@ -235,7 +235,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
     ))
     pos <- self$transform(x_intercept, scale_details)
 
-    guide_axis(pos$y, scale_details$y.labels, "left", theme)
+    guide_axis(pos$y, scale_details$y.labels, "left", a_theme)
   }
 )
 

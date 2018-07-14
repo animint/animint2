@@ -3,8 +3,8 @@ acontext("Panel background")
 p1 <- a_plot() +
   geom_point(aes(Sepal.Length, Sepal.Width,
                  colour = Species, size = Species), data = iris) +
-  theme_grey() + 
-  theme(panel.background = a_element_rect(fill = "lightblue"),
+  a_theme_grey() + 
+  a_theme(panel.background = a_element_rect(fill = "lightblue"),
         panel.border = a_element_rect(fill = NA,
                                     color = "black",
                                     size = 2,
@@ -15,14 +15,14 @@ p2 <- a_plot() +
   geom_point(aes(Petal.Length, Petal.Width,
                  colour = Species, size = Species), data = iris) +
   ggtitle("Petal Data") +
-  theme_bw()
+  a_theme_bw()
 p3 <- p2 + 
-  theme(panel.background = a_element_blank(), 
+  a_theme(panel.background = a_element_blank(), 
         panel.grid.major = a_element_blank(), 
         panel.grid.minor = a_element_blank())
 p4 <- p2 + 
-  ## recreating theme_fivethirtyeight from ggthemes package
-  theme(rect = a_element_rect(fill = "#F0F0F0", colour = NA,
+  ## recreating a_theme_fivethirtyeight from gga_themes package
+  a_theme(rect = a_element_rect(fill = "#F0F0F0", colour = NA,
                             size = 0.5, linetype = 0),
         line = a_element_line(colour = "#D2D2D2", size = 0.5, linetype = 1,
                             lineend = "butt"),
@@ -181,7 +181,7 @@ test_that("grid lines are drawn correctly", {
 data(tips, package = "reshape2")
 tips$sex_smoker <- with(tips, interaction(sex, smoker))
 ss.viz <- list(
-  p1 = a_plot() + theme(legend.position = "none") +
+  p1 = a_plot() + a_theme(legend.position = "none") +
     geom_point(data = tips, position = "jitter", 
                aes(x = sex, y = smoker, colour = sex_smoker),
                clickSelects = "sex_smoker"), 

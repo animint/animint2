@@ -147,16 +147,16 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
     data
   },
 
-  render_axis_v = function(self, scale_details, theme) {
+  render_axis_v = function(self, scale_details, a_theme) {
     x <- r_rescale(self, scale_details$r.major, scale_details) + 0.5
-    guide_axis(x, scale_details$r.labels, "left", theme)
+    guide_axis(x, scale_details$r.labels, "left", a_theme)
   },
 
-  render_axis_h = function(scale_details, theme) {
-    guide_axis(NA, "", "bottom", theme)
+  render_axis_h = function(scale_details, a_theme) {
+    guide_axis(NA, "", "bottom", a_theme)
   },
 
-  render_bg = function(self, scale_details, theme) {
+  render_bg = function(self, scale_details, a_theme) {
     scale_details <- rename_data(self, scale_details)
 
     theta <- if (length(scale_details$theta.major) > 0)
@@ -167,23 +167,23 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
 
     rfine <- c(r_rescale(self, scale_details$r.major, scale_details), 0.45)
 
-    # This gets the proper theme element for theta and r grid lines:
+    # This gets the proper a_theme element for theta and r grid lines:
     #   panel.grid.major.x or .y
     majortheta <- paste("panel.grid.major.", self$theta, sep = "")
     minortheta <- paste("panel.grid.minor.", self$theta, sep = "")
     majorr     <- paste("panel.grid.major.", self$r,     sep = "")
 
     ggname("grill", grobTree(
-      a_element_render(theme, "panel.background"),
+      a_element_render(a_theme, "panel.background"),
       if (length(theta) > 0) a_element_render(
-        theme, majortheta, name = "angle",
+        a_theme, majortheta, name = "angle",
         x = c(rbind(0, 0.45 * sin(theta))) + 0.5,
         y = c(rbind(0, 0.45 * cos(theta))) + 0.5,
         id.lengths = rep(2, length(theta)),
         default.units = "native"
       ),
       if (length(thetamin) > 0) a_element_render(
-        theme, minortheta, name = "angle",
+        a_theme, minortheta, name = "angle",
         x = c(rbind(0, 0.45 * sin(thetamin))) + 0.5,
         y = c(rbind(0, 0.45 * cos(thetamin))) + 0.5,
         id.lengths = rep(2, length(thetamin)),
@@ -191,7 +191,7 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
       ),
 
       a_element_render(
-        theme, majorr, name = "radius",
+        a_theme, majorr, name = "radius",
         x = rep(rfine, each = length(thetafine)) * sin(thetafine) + 0.5,
         y = rep(rfine, each = length(thetafine)) * cos(thetafine) + 0.5,
         id.lengths = rep(length(thetafine), length(rfine)),
@@ -200,9 +200,9 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
     ))
   },
 
-  render_fg = function(self, scale_details, theme) {
+  render_fg = function(self, scale_details, a_theme) {
     if (is.null(scale_details$theta.major)) {
-      return(a_element_render(theme, "panel.border"))
+      return(a_element_render(a_theme, "panel.border"))
     }
 
     theta <- theta_rescale(self, scale_details$theta.major, scale_details)
@@ -226,18 +226,18 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
 
     grobTree(
       if (length(labels) > 0) a_element_render(
-        theme, "axis.text.x",
+        a_theme, "axis.text.x",
         labels, 0.45 * sin(theta) + 0.5, 0.45 * cos(theta) + 0.5,
         hjust = 0.5, vjust = 0.5,
         default.units = "native"
       ),
-      a_element_render(theme, "panel.border")
+      a_element_render(a_theme, "panel.border")
     )
   },
 
-  render_fg = function(self, scale_details, theme) {
+  render_fg = function(self, scale_details, a_theme) {
     if (is.null(scale_details$theta.major)) {
-      return(a_element_render(theme, "panel.border"))
+      return(a_element_render(a_theme, "panel.border"))
     }
 
     theta <- theta_rescale(self, scale_details$theta.major, scale_details)
@@ -261,13 +261,13 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
 
     grobTree(
       if (length(labels) > 0) a_element_render(
-        theme, "axis.text.x",
+        a_theme, "axis.text.x",
         labels,
         unit(0.45 * sin(theta) + 0.5, "native"),
         unit(0.45 * cos(theta) + 0.5, "native"),
         hjust = 0.5, vjust = 0.5
       ),
-      a_element_render(theme, "panel.border")
+      a_element_render(a_theme, "panel.border")
     )
   },
 

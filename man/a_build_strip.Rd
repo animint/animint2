@@ -4,7 +4,7 @@
 \alias{a_build_strip}
 \title{a_build strip function}
 \usage{
-a_build_strip(panel, label_df, labeller, theme, side = "right",
+a_build_strip(panel, label_df, labeller, a_theme, side = "right",
   switch = NULL)
 }
 \arguments{
@@ -14,7 +14,7 @@ a_build_strip(panel, label_df, labeller, theme, side = "right",
 
 \item{labeller}{....}
 
-\item{theme}{.....}
+\item{a_theme}{.....}
 
 \item{side}{.....}
 

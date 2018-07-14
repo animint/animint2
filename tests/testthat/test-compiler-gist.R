@@ -26,14 +26,14 @@ min.years$year <- 1958
 
 viz.chunk.none <- 
   list(ts=a_plot()+
-         theme_bw()+
-         theme(panel.margin=grid::unit(0, "lines"))+
+         a_theme_bw()+
+         a_theme(panel.margin=grid::unit(0, "lines"))+
          xlab("")+
          ylab("")+
          geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2),
                        clickSelects="year",
                        data=TS(years), alpha=1/2)+
-         theme_animint(width=1000, height=800)+
+         a_theme_animint(width=1000, height=800)+
          geom_line(aes(year, life.expectancy, group=country, colour=region),
                    clickSelects="country",                   
                    data=TS(not.na), size=4, alpha=3/5)+

@@ -83,8 +83,8 @@ viz <-
                       data=samples,
                       size=10,
                       color="deepskyblue")+
-         theme_bw()+
-         theme(panel.margin=grid::unit(0, "cm"))+
+         a_theme_bw()+
+         a_theme(panel.margin=grid::unit(0, "cm"))+
          a_facet_grid(sample.id ~ .),
 
        title="viz with .variable .value",
@@ -194,8 +194,8 @@ viz.for <-
                        label=paste("problem size", bases.per.problem)),
                    showSelected="bases.per.problem",
                    data=data.frame(sizes, sample.id="problems"))+
-         theme_bw()+
-         theme(panel.margin=grid::unit(0, "cm"))+
+         a_theme_bw()+
+         a_theme(panel.margin=grid::unit(0, "cm"))+
          a_facet_grid(sample.id ~ .),
 
        title="viz with for loop",

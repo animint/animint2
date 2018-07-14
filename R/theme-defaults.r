@@ -1,6 +1,6 @@
-#' ggplot2 themes
+#' ggplot2 a_themes
 #'
-#' Themes set the general aspect of the plot such as the colour of the
+#' a_themes set the general aspect of the plot such as the colour of the
 #' background, gridlines, the size and colour of fonts.
 #'
 #' @param base_size base font size
@@ -8,35 +8,35 @@
 #'
 #' @details \describe{
 #'
-#' \item{\code{theme_gray}}{
-#' The signature ggplot2 theme with a grey background and white gridlines,
+#' \item{\code{a_theme_gray}}{
+#' The signature ggplot2 a_theme with a grey background and white gridlines,
 #' designed to put the data forward yet make comparisons easy.}
 #'
-#' \item{\code{theme_bw}}{
-#' The classic dark-on-light ggplot2 theme. May work better for presentations
+#' \item{\code{a_theme_bw}}{
+#' The classic dark-on-light ggplot2 a_theme. May work better for presentations
 #' displayed with a projector.}
 #'
-#' \item{\code{theme_linedraw}}{
-#' A theme with only black lines of various widths on white backgrounds,
-#' reminiscent of a line drawings. Serves a purpose similar to \code{theme_bw}.
-#' Note that this theme has some very thin lines (<< 1 pt) which some journals
+#' \item{\code{a_theme_linedraw}}{
+#' A a_theme with only black lines of various widths on white backgrounds,
+#' reminiscent of a line drawings. Serves a purpose similar to \code{a_theme_bw}.
+#' Note that this a_theme has some very thin lines (<< 1 pt) which some journals
 #' may refuse.}
 #'
-#' \item{\code{theme_light}}{
-#' A theme similar to \code{theme_linedraw} but with light grey lines and axes,
+#' \item{\code{a_theme_light}}{
+#' A a_theme similar to \code{a_theme_linedraw} but with light grey lines and axes,
 #' to direct more attention towards the data.}
 #'
-#' \item{\code{theme_dark}}{
-#' The dark cousin of \code{theme_light}, with similar line sizes but a dark background. Useful to make thin coloured lines pop out.}
+#' \item{\code{a_theme_dark}}{
+#' The dark cousin of \code{a_theme_light}, with similar line sizes but a dark background. Useful to make thin coloured lines pop out.}
 #'
-#' \item{\code{theme_minimal}}{
-#' A minimalistic theme with no background annotations.}
+#' \item{\code{a_theme_minimal}}{
+#' A minimalistic a_theme with no background annotations.}
 #'
-#' \item{\code{theme_classic}}{
-#' A classic-looking theme, with x and y axis lines and no gridlines.}
+#' \item{\code{a_theme_classic}}{
+#' A classic-looking a_theme, with x and y axis lines and no gridlines.}
 #'
-#' \item{\code{theme_void}}{
-#' A completely empty theme.}
+#' \item{\code{a_theme_void}}{
+#' A completely empty a_theme.}
 #'
 #' }
 #'
@@ -45,24 +45,24 @@
 #'      colour = factor(gear))) + a_facet_wrap(~am)
 #'
 #' p
-#' p + theme_gray()
-#' p + theme_bw()
-#' p + theme_linedraw()
-#' p + theme_light()
-#' p + theme_dark()
-#' p + theme_minimal()
-#' p + theme_classic()
-#' p + theme_void()
+#' p + a_theme_gray()
+#' p + a_theme_bw()
+#' p + a_theme_linedraw()
+#' p + a_theme_light()
+#' p + a_theme_dark()
+#' p + a_theme_minimal()
+#' p + a_theme_classic()
+#' p + a_theme_void()
 #'
-#' @name ggtheme
+#' @name aa_theme
 NULL
 
 #' @export
-#' @rdname ggtheme
-theme_grey <- function(base_size = 11, base_family = "") {
+#' @rdname aa_theme
+a_theme_grey <- function(base_size = 11, base_family = "") {
   half_line <- base_size / 2
 
-  theme(
+  a_theme(
     # Elements in this first block aren't used directly, but are inherited
     # by others
     line =               a_element_line(colour = "black", size = 0.5, linetype = 1,
@@ -145,15 +145,15 @@ theme_grey <- function(base_size = 11, base_family = "") {
   )
 }
 #' @export
-#' @rdname ggtheme
-theme_gray <- theme_grey
+#' @rdname aa_theme
+a_theme_gray <- a_theme_grey
 
 #' @export
-#' @rdname ggtheme
-theme_bw <- function(base_size = 12, base_family = "") {
-  # Starts with theme_grey and then modify some parts
-  theme_grey(base_size = base_size, base_family = base_family) %+replace%
-    theme(
+#' @rdname aa_theme
+a_theme_bw <- function(base_size = 12, base_family = "") {
+  # Starts with a_theme_grey and then modify some parts
+  a_theme_grey(base_size = base_size, base_family = base_family) %+replace%
+    a_theme(
       axis.text         = a_element_text(size = rel(0.8)),
       axis.ticks        = a_element_line(colour = "black"),
       legend.key        = a_element_rect(colour = "grey80"),
@@ -166,12 +166,12 @@ theme_bw <- function(base_size = 12, base_family = "") {
 }
 
 #' @export
-#' @rdname ggtheme
-theme_linedraw <- function(base_size = 12, base_family = "") {
+#' @rdname aa_theme
+a_theme_linedraw <- function(base_size = 12, base_family = "") {
   half_line <- base_size / 2
-  # Starts with theme_grey and then modify some parts
-  theme_grey(base_size = base_size, base_family = base_family) %+replace%
-    theme(
+  # Starts with a_theme_grey and then modify some parts
+  a_theme_grey(base_size = base_size, base_family = base_family) %+replace%
+    a_theme(
       axis.text         = a_element_text(colour = "black", size = rel(0.8)),
       axis.ticks        = a_element_line(colour = "black", size = 0.25),
       legend.key        = a_element_rect(colour = "black", size = 0.25),
@@ -193,12 +193,12 @@ theme_linedraw <- function(base_size = 12, base_family = "") {
 }
 
 #' @export
-#' @rdname ggtheme
-theme_light <- function(base_size = 12, base_family = "") {
+#' @rdname aa_theme
+a_theme_light <- function(base_size = 12, base_family = "") {
   half_line <- base_size / 2
-  # Starts with theme_grey and then modify some parts
-  theme_grey(base_size = base_size, base_family = base_family) %+replace%
-    theme(
+  # Starts with a_theme_grey and then modify some parts
+  a_theme_grey(base_size = base_size, base_family = base_family) %+replace%
+    a_theme(
       axis.ticks        = a_element_line(colour = "grey70", size = 0.25),
       legend.key        = a_element_rect(fill = "white", colour = "grey50", size = 0.25),
       panel.background  = a_element_rect(fill = "white", colour = NA),
@@ -220,11 +220,11 @@ theme_light <- function(base_size = 12, base_family = "") {
 }
 
 #' @export
-#' @rdname ggtheme
-theme_minimal <- function(base_size = 12, base_family = "") {
-  # Starts with theme_bw and then modify some parts
-  theme_bw(base_size = base_size, base_family = base_family) %+replace%
-    theme(
+#' @rdname aa_theme
+a_theme_minimal <- function(base_size = 12, base_family = "") {
+  # Starts with a_theme_bw and then modify some parts
+  a_theme_bw(base_size = base_size, base_family = base_family) %+replace%
+    a_theme(
       legend.background = a_element_blank(),
       legend.key        = a_element_blank(),
       panel.background  = a_element_blank(),
@@ -239,10 +239,10 @@ theme_minimal <- function(base_size = 12, base_family = "") {
 }
 
 #' @export
-#' @rdname ggtheme
-theme_classic <- function(base_size = 12, base_family = ""){
-  theme_bw(base_size = base_size, base_family = base_family) %+replace%
-    theme(
+#' @rdname aa_theme
+a_theme_classic <- function(base_size = 12, base_family = ""){
+  a_theme_bw(base_size = base_size, base_family = base_family) %+replace%
+    a_theme(
       panel.border     = a_element_blank(),
       axis.line        = a_element_line(colour = "black"),
       panel.grid.major   = a_element_line(),
@@ -257,12 +257,12 @@ theme_classic <- function(base_size = 12, base_family = ""){
 }
 
 #' @export
-#' @rdname ggtheme
-theme_dark <- function(base_size = 12, base_family = "") {
+#' @rdname aa_theme
+a_theme_dark <- function(base_size = 12, base_family = "") {
   half_line <- base_size / 2
-  # Starts with theme_grey and then modify some parts
-  theme_grey(base_size = base_size, base_family = base_family) %+replace%
-    theme(
+  # Starts with a_theme_grey and then modify some parts
+  a_theme_grey(base_size = base_size, base_family = base_family) %+replace%
+    a_theme(
       axis.ticks        = a_element_line(colour = "grey40", size = 0.25),
       legend.key        = a_element_rect(fill = "grey50", colour = "grey40", size = 0.25),
       panel.background  = a_element_rect(fill = "grey50", colour = NA),
@@ -282,9 +282,9 @@ theme_dark <- function(base_size = 12, base_family = "") {
 }
 
 #' @export
-#' @rdname ggtheme
-theme_void <- function(base_size = 12, base_family = "") {
-  theme(
+#' @rdname aa_theme
+a_theme_void <- function(base_size = 12, base_family = "") {
+  a_theme(
     # Use only inherited elements and make everything blank
     line =               a_element_blank(),
     rect =               a_element_blank(),

@@ -15,9 +15,9 @@ viz.data.fun <- list(
   ts=a_plot()+
     xlab("")+
     make_tallrect(not.na, "year", data.fun=TS)+
-    theme_bw()+
-    theme_animint(width=1000, height=800)+
-    theme(panel.margin=grid::unit(0, "lines"))+
+    a_theme_bw()+
+    a_theme_animint(width=1000, height=800)+
+    a_theme(panel.margin=grid::unit(0, "lines"))+
     geom_line(aes(year, life.expectancy, group=country, colour=region,
                   id = country),
               clickSelects="country",

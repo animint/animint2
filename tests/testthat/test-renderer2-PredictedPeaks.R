@@ -15,10 +15,10 @@ hover.dots <- subset(PredictedPeaks$chromCounts, nonInputType==type)
 viz <- list(
   oneChrom=a_plot()+
     ggtitle("PeakSegJoint detections on selected chromosome")+
-    theme_bw()+
+    a_theme_bw()+
     coord_cartesian(xlim=c(0, 1))+
-    theme_animint(width=1500, height=100)+
-    theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
+    a_theme_animint(width=1500, height=100)+
+    a_theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
           axis.ticks.x=a_element_blank(), axis.title.x=a_element_blank())+
     ## geom_text(aes(relative.middle, type.fac, label=samples.up,
     ##               clickSelects=peak.name,
@@ -35,8 +35,8 @@ viz <- list(
               data=PredictedPeaks$chromCounts)+
     scale_y_discrete("cell type", drop=FALSE),
   chroms=a_plot()+
-    theme_bw()+
-    theme_animint(width=1500, height=330)+
+    a_theme_bw()+
+    a_theme_animint(width=1500, height=330)+
     scale_y_discrete("chromosome", drop=FALSE)+ 
     scale_x_continuous("position on chromosome (mega bases)")+
     geom_text(aes(0, chrom, label=paste0(peaks, "_")),
@@ -65,10 +65,10 @@ viz <- list(
                data=PredictedPeaks$counts.Input)+
     scale_x_continuous("number of samples with a peak")+
     a_facet_grid(nonInputType ~ .)+
-    theme_bw()+
+    a_theme_bw()+
     scale_fill_gradient(low="grey", high="red")+
-    theme_animint(width=1500)+
-    theme(panel.margin=grid::unit(0, "cm"))+
+    a_theme_animint(width=1500)+
+    a_theme(panel.margin=grid::unit(0, "cm"))+
     geom_vline(aes(xintercept=N),
                color="grey",
                data=PredictedPeaks$counts.not.Input)+
@@ -151,10 +151,10 @@ PredictedPeaks$counts.Input$thresh.type <- "max samples"
 viz <- list(
   oneChrom=a_plot()+
     ggtitle("PeakSegJoint detections on selected chromosome")+
-    theme_bw()+
+    a_theme_bw()+
     coord_cartesian(xlim=c(0, 1))+
-    theme_animint(width=1500, height=100)+
-    theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
+    a_theme_animint(width=1500, height=100)+
+    a_theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
           axis.ticks.x=a_element_blank(), axis.title.x=a_element_blank())+
     geom_text(aes(relative.middle, type.fac, label=samples.up),
               showSelected=c("dotID", "chrom"),
@@ -163,8 +163,8 @@ viz <- list(
               data=PredictedPeaks$chromCounts)+
     scale_y_discrete("cell type", drop=FALSE),
   chroms=a_plot()+
-    theme_bw()+
-    theme_animint(width=1500, height=330)+
+    a_theme_bw()+
+    a_theme_animint(width=1500, height=330)+
     scale_y_discrete("chromosome", drop=FALSE)+ 
     scale_x_continuous("position on chromosome (mega bases)")+
     geom_text(aes(0, chrom, label=paste0(peaks, "_")),
@@ -201,10 +201,10 @@ viz <- list(
                data=PredictedPeaks$counts.Input)+
     scale_x_continuous("number of samples with a peak")+
     a_facet_grid(nonInputType ~ .)+
-    theme_bw()+
+    a_theme_bw()+
     scale_fill_gradient(low="grey", high="red")+
-    theme_animint(width=1500)+
-    theme(panel.margin=grid::unit(0, "cm"))+
+    a_theme_animint(width=1500)+
+    a_theme(panel.margin=grid::unit(0, "cm"))+
     geom_rect(aes(xmin=up-size, xmax=up+size,
                   ymin=Input-size, ymax=Input+size,
                   tooltip=totals,

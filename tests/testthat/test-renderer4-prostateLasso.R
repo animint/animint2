@@ -21,8 +21,8 @@ data_tallrect_error$arclength <- "arclength"
 viz.no.time <- list(
   title="both .variable .value aesthetics",
   path=a_plot()+
-    theme_bw()+
-    theme(panel.margin=grid::unit(0, "lines"))+
+    a_theme_bw()+
+    a_theme(panel.margin=grid::unit(0, "lines"))+
     a_facet_grid(y.var ~ ., scales="free")+
     ylab("")+
     scale_color_manual(values=variable.colors)+

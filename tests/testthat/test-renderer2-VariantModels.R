@@ -62,9 +62,9 @@ data_error$clickVar <- with(data_error,
 viz <- list(
   auc=a_plot()+
     ggtitle("Performance on 3 test folds")+
-    theme_bw()+
-    theme_animint(height=500)+
-    theme(panel.margin=grid::unit(0, "cm"))+
+    a_theme_bw()+
+    a_theme_animint(height=500)+
+    a_theme(panel.margin=grid::unit(0, "cm"))+
     a_facet_grid(.~metric.name, scales="free", space="fixed")+
     scale_y_discrete("method . weights")+
     scale_x_continuous("")+
@@ -95,9 +95,9 @@ viz <- list(
                        labels=c("0", "0.25", "0.5", "0.75", "1"))+
     scale_color_manual(values=method.colors)+
     coord_equal()+
-    theme_bw()+
-    theme_animint(width=500, height=500)+
-    theme(panel.margin=grid::unit(0, "cm"))+
+    a_theme_bw()+
+    a_theme_animint(width=500, height=500)+
+    a_theme(panel.margin=grid::unit(0, "cm"))+
     a_facet_grid(test.fold ~ type, labeller=function(label_df){
       if(names(label_df)=="test.fold"){
         label_names <- mapply(paste, "test fold", label_df, SIMPLIFY = FALSE)
@@ -140,10 +140,10 @@ viz <- list(
                showSelected=c("test.fold", "thresh.type", "method"),
                data=add.filterVar.fac(auc.min.error),
                color="grey50")+
-    theme_bw()+
-    theme_animint(width=1800, height=500)+
-    theme(panel.margin=grid::unit(0, "cm"))+
-    theme(axis.text.x=a_element_text(angle=90))+
+    a_theme_bw()+
+    a_theme_animint(width=1800, height=500)+
+    a_theme(panel.margin=grid::unit(0, "cm"))+
+    a_theme(axis.text.x=a_element_text(angle=90))+
     a_facet_grid(. ~ filterVar.fac, labeller=function(label_df){
       label_df <- mapply(sub, "balanced", "b", label_df, SIMPLIFY = FALSE)
       label_df <- mapply(sub, "one", "1", label_df, SIMPLIFY = FALSE)

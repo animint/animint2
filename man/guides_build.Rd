@@ -4,12 +4,12 @@
 \alias{guides_build}
 \title{build up all guide boxes into one guide-boxes.}
 \usage{
-guides_build(ggrobs, theme)
+guides_build(ggrobs, a_theme)
 }
 \arguments{
 \item{ggrobs}{...}
 
-\item{theme}{...}
+\item{a_theme}{...}
 }
 \description{
 build up all guide boxes into one guide-boxes.

@@ -8,11 +8,11 @@ no_updates <- a_plot()+geom_point(aes(mpg, disp,
                                   data = mtcars)
 
 update_x <- no_updates+
-  theme_animint(update_axes=c("x"))
+  a_theme_animint(update_axes=c("x"))
 update_y <- no_updates+
-  theme_animint(update_axes=c("y"))
+  a_theme_animint(update_axes=c("y"))
 update_xy <- no_updates+
-  theme_animint(update_axes=c("x","y"))
+  a_theme_animint(update_axes=c("x","y"))
 
 viz <- (list(neither=no_updates, 
             x=update_x, 
@@ -37,7 +37,7 @@ d <- mtcars
 d$disp <- as.factor(d$disp)
 non_numeric_updates <- a_plot()+geom_point(aes(mpg, disp, colour=cyl),
                                            data = d) +
-  theme_animint(update_axes = c("x", "y"))
+  a_theme_animint(update_axes = c("x", "y"))
 viz_fac <- list(nonNum = non_numeric_updates)
 viz_fac$selector.types = list(cyl="single")
 # No error for X(mpg) axis, but one for Y(disp) axis
@@ -306,7 +306,7 @@ ribbondata[23:33,2:3] <- ribbondata[12:22,2:3]+runif(11, 1, 10)
 ribbon <- a_plot() + 
   geom_ribbon(data=ribbondata, aes(x=x, ymin=ymin, ymax=ymax, group=group, fill=group), alpha=.5) + 
   ggtitle("geom_ribbon") +
-  theme_animint(update_axes = c("y"))
+  a_theme_animint(update_axes = c("y"))
 viz <- list(ribbon=ribbon, selector.types=list(group="single"))
 expect_no_warning(info <- animint2HTML(viz))
 
@@ -353,7 +353,7 @@ data_f <- data.frame(xmin=c(1, 3, 9, 19),
 rect <- a_plot() + geom_rect(aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax,
                               colour=z,fill=z),
                           data = data_f) +
-  theme_animint(update_axes=c("x", "y"))
+  a_theme_animint(update_axes=c("x", "y"))
 viz <- list(rect=rect)
 viz$selector.types <- list(z="single")
 expect_no_warning(info <- animint2HTML(viz))
@@ -414,7 +414,7 @@ data_f <- data.frame(x1=c(runif(10, 0, 10),runif(10, 10, 20),runif(10, 20, 30),
 segment <- a_plot() +
   geom_segment(aes(x=x1, y=y1, xend=x2, yend=y2, colour=ss),
                data=data_f) + 
-  theme_animint(update_axes=c("x", "y"))
+  a_theme_animint(update_axes=c("x", "y"))
 viz <- list(segment=segment, selector.types=list(ss="single"))
 expect_no_warning(info <- animint2HTML(viz))
 
@@ -465,7 +465,7 @@ test_that("geom_segment has axis tick updates", {
 ##  ------------------------- geom_text ------------------------- ##
 text <- a_plot() + geom_text(aes(mpg, disp, colour=cyl, label=hp), 
                              data = mtcars) +
-  theme_animint(update_axes=c("x", "y"))
+  a_theme_animint(update_axes=c("x", "y"))
 viz <- list(text=text, selector.types=list(cyl="single"))
 expect_no_warning(info <- animint2HTML(viz))
 

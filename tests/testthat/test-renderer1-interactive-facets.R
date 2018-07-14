@@ -9,7 +9,7 @@ intreg$annotations$logratio <- max(intreg$sig$log)
 
 mmir.facets <- 
   list(signal=a_plot()+
-       theme_animint(height=300, width=800)+       
+       a_theme_animint(height=300, width=800)+       
        scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
        geom_tallrect(aes(xmin=first.base/1e6, xmax=last.base/1e6,
@@ -42,7 +42,7 @@ mmir.facets <-
                      data=data.frame(intreg$selection, what="segments"),
                      alpha=1/2)+
        ylab("")+
-       theme_animint(height=500, width=800)+
+       a_theme_animint(height=500, width=800)+
        geom_segment(aes(min.L, feature, xend=max.L, yend=feature),
                     clickSelects="signal",
                     size=5,

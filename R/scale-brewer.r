@@ -51,7 +51,7 @@
 #' # the order of colour can be reversed
 #' p + scale_fill_brewer(direction = -1)
 #' # the brewer scales look better on a darker background
-#' p + scale_fill_brewer(direction = -1) + theme_dark()
+#' p + scale_fill_brewer(direction = -1) + a_theme_dark()
 #' }
 #'
 #' # Use distiller variant with continous data

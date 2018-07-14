@@ -137,7 +137,7 @@ qplot <- function(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
   if (logv("x")) p <- p + scale_x_log10()
   if (logv("y")) p <- p + scale_y_log10()
 
-  if (!is.na(asp)) p <- p + theme(aspect.ratio = asp)
+  if (!is.na(asp)) p <- p + a_theme(aspect.ratio = asp)
 
   if (!missing(xlab)) p <- p + xlab(xlab)
   if (!missing(ylab)) p <- p + ylab(ylab)

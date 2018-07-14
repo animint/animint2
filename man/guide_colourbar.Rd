@@ -6,16 +6,16 @@
 \title{Continuous colour bar guide.}
 \usage{
 guide_colourbar(title = waiver(), title.position = NULL,
-  title.theme = NULL, title.hjust = NULL, title.vjust = NULL,
-  label = TRUE, label.position = NULL, label.theme = NULL,
+  title.a_theme = NULL, title.hjust = NULL, title.vjust = NULL,
+  label = TRUE, label.position = NULL, label.a_theme = NULL,
   label.hjust = NULL, label.vjust = NULL, barwidth = NULL,
   barheight = NULL, nbin = 20, raster = TRUE, ticks = TRUE,
   draw.ulim = TRUE, draw.llim = TRUE, direction = NULL,
   default.unit = "line", reverse = FALSE, order = 0, ...)
 
 guide_colorbar(title = waiver(), title.position = NULL,
-  title.theme = NULL, title.hjust = NULL, title.vjust = NULL,
-  label = TRUE, label.position = NULL, label.theme = NULL,
+  title.a_theme = NULL, title.hjust = NULL, title.vjust = NULL,
+  label = TRUE, label.position = NULL, label.a_theme = NULL,
   label.hjust = NULL, label.vjust = NULL, barwidth = NULL,
   barheight = NULL, nbin = 20, raster = TRUE, ticks = TRUE,
   draw.ulim = TRUE, draw.llim = TRUE, direction = NULL,
@@ -31,9 +31,9 @@ specified in \code{\link{labs}} is used for the title.}
  title. One of "top" (default for a vertical guide), "bottom", "left"
 (default for a horizontal guide), or "right."}
 
-\item{title.theme}{A theme object for rendering the title text. Usually the
-object of \code{\link{a_element_text}} is expected. By default, the theme is
-specified by \code{legend.title} in \code{\link{theme}} or theme.}
+\item{title.a_theme}{A a_theme object for rendering the title text. Usually the
+object of \code{\link{a_element_text}} is expected. By default, the a_theme is
+specified by \code{legend.title} in \code{\link{a_theme}} or a_theme.}
 
 \item{title.hjust}{A number specifying horizontal justification of the
 title text.}
@@ -48,9 +48,9 @@ text.}
 label. One of "top", "bottom" (default for horizontal guide), "left", or
 "right" (default for vertical guide).}
 
-\item{label.theme}{A theme object for rendering the label text. Usually the
-object of \code{\link{a_element_text}} is expected. By default, the theme is
-specified by \code{legend.text} in \code{\link{theme}} or theme.}
+\item{label.a_theme}{A a_theme object for rendering the label text. Usually the
+object of \code{\link{a_element_text}} is expected. By default, the a_theme is
+specified by \code{legend.text} in \code{\link{a_theme}} or a_theme.}
 
 \item{label.hjust}{A numeric specifying horizontal justification of the
 label text.}
@@ -60,11 +60,11 @@ text.}
 
 \item{barwidth}{A numeric or a \code{\link[grid]{unit}} object specifying
 the width of the colorbar. Default value is \code{legend.key.width} or
-\code{legend.key.size} in \code{\link{theme}} or theme.}
+\code{legend.key.size} in \code{\link{a_theme}} or a_theme.}
 
 \item{barheight}{A numeric or a \code{\link[grid]{unit}} object specifying
 the height of the colorbar. Default value is \code{legend.key.height} or
-\code{legend.key.size} in \code{\link{theme}} or theme.}
+\code{legend.key.size} in \code{\link{a_theme}} or a_theme.}
 
 \item{nbin}{A numeric specifying the number of bins for drawing colorbar. A
 smoother colorbar for a larger value.}
@@ -140,8 +140,8 @@ p1 + guides(fill = guide_colorbar(ticks = FALSE))
 # label position
 p1 + guides(fill = guide_colorbar(label.position = "left"))
 
-# label theme
-p1 + guides(fill = guide_colorbar(label.theme = a_element_text(colour = "blue", angle = 0)))
+# label a_theme
+p1 + guides(fill = guide_colorbar(label.a_theme = a_element_text(colour = "blue", angle = 0)))
 
 # small number of bins
 p1 + guides(fill = guide_colorbar(nbin = 3))

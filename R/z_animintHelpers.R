@@ -60,14 +60,14 @@ addShowSelectedForLegend <- function(meta, legend, L){
 }
 
 
-## extract panel background and borders from theme.pars
-get_bg <- function(pars, theme.pars) {
+## extract panel background and borders from a_theme.pars
+get_bg <- function(pars, a_theme.pars) {
   # if pars is not an empty list - occurs when using a_element_blank()
   if(length(pars) > 0) {
     
-    ## if elements are not specified, they inherit from theme.pars$rect
+    ## if elements are not specified, they inherit from a_theme.pars$rect
     for(i in 1:length(pars)) {
-      if(is.null(pars[[i]])) pars[[i]] <- unname(theme.pars$rect[[i]])
+      if(is.null(pars[[i]])) pars[[i]] <- unname(a_theme.pars$rect[[i]])
     }
     
     # convert fill to RGB if necessary
@@ -84,18 +84,18 @@ get_bg <- function(pars, theme.pars) {
 
 
 ### function to extract grid info
-get_grid <- function(pars, theme.pars, plot.meta, meta, built, major = T) {
+get_grid <- function(pars, a_theme.pars, plot.meta, meta, built, major = T) {
   # if pars is not an empty list - occurs when using a_element_blank()
   if(length(pars) > 0) {
     
     ## if elements are not specified, they inherit from 
-    ##    theme.pars$panel.grid then from theme.pars$line
+    ##    a_theme.pars$panel.grid then from a_theme.pars$line
     for(i in names(pars)) {
       if(is.null(pars[[i]])) pars[[i]] <- 
-          if(!is.null(theme.pars$panel.grid[[i]])) {
-            theme.pars$panel.grid[[i]]
+          if(!is.null(a_theme.pars$panel.grid[[i]])) {
+            a_theme.pars$panel.grid[[i]]
           } else {
-            theme.pars$line[[i]]
+            a_theme.pars$line[[i]]
           }
     }
     # convert colour to RGB if necessary
@@ -144,12 +144,12 @@ getPlotTitle <- function(plot.title, meta.title){
 }
 
 
-getWidthAndHeight <- function(theme){
+getWidthAndHeight <- function(a_theme){
   options_list <- list()
   for(wh in c("width", "height")){
     awh <- paste0("animint.", wh)
-    options_list[[wh]] <- if(awh %in% names(theme)){
-      theme[[awh]]
+    options_list[[wh]] <- if(awh %in% names(a_theme)){
+      a_theme[[awh]]
     }else{
       400
     }
@@ -158,10 +158,10 @@ getWidthAndHeight <- function(theme){
 }
 
 
-setUpdateAxes <- function(theme, options_list){
+setUpdateAxes <- function(a_theme, options_list){
   update_axes <- "animint.update_axes"
-  if(update_axes %in% names(theme)){
-    options_list$update_axes <- theme[[update_axes]]
+  if(update_axes %in% names(a_theme)){
+    options_list$update_axes <- a_theme[[update_axes]]
   }
   options_list
 }
@@ -640,7 +640,7 @@ setPlotSizes <- function(meta, AllPlotsInfo){
     size <- meta[[d]]
     if(is.list(size)){
       warning("option ", d, " is deprecated, ",
-              "use a_plot()+theme_animint(", d,
+              "use a_plot()+a_theme_animint(", d,
               "=", size[[1]],
               ") instead")
       if(is.null(names(size))){ #use this size for all plots.

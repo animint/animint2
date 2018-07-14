@@ -27,7 +27,7 @@ no.time <-
                  data=WorldBank, size=4, alpha=3/5),
 
        bar=a_plot()+
-       theme_animint(height=2400)+
+       a_theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region,
                     key=country),
                 showSelected="year", clickSelects="country",

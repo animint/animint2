@@ -28,16 +28,16 @@ parsePlot <- function(meta, plot, plot.name){
   ## be passed into d3 on the x axis scale instead of on the
   ## grid 0-1 scale). This allows transformations to be used
   ## out of the box, with no additional d3 coding.
-  theme.pars <- plot_theme(plot)
+  a_theme.pars <- plot_a_theme(plot)
 
   ## Interpret panel.margin as the number of lines between facets
   ## (ignoring whatever grid::unit such as cm that was specified).
   
   ## Now ggplot specifies panel.margin in 'pt' instead of 'lines'
-  plot.info$panel_margin_lines <- pt.to.lines(theme.pars$panel.margin)
+  plot.info$panel_margin_lines <- pt.to.lines(a_theme.pars$panel.margin)
   
-  ## No legend if theme(legend.postion="none").
-  plot.info$legend <- if(theme.pars$legend.position != "none"){
+  ## No legend if a_theme(legend.postion="none").
+  plot.info$legend <- if(a_theme.pars$legend.position != "none"){
     getLegendList(built)
   }
   
@@ -92,14 +92,14 @@ parsePlot <- function(meta, plot, plot.name){
     plot$a_facet, plot$coordinates, plot.info$layout, panel$ranges))
   
   # saving background info
-  plot.info$panel_background <- get_bg(theme.pars$panel.background, theme.pars)
-  plot.info$panel_border <- get_bg(theme.pars$panel.border, theme.pars)
+  plot.info$panel_background <- get_bg(a_theme.pars$panel.background, a_theme.pars)
+  plot.info$panel_border <- get_bg(a_theme.pars$panel.border, a_theme.pars)
   
   # extract major grid lines
-  plot.info$grid_major <- get_grid(theme.pars$panel.grid.major, theme.pars,
+  plot.info$grid_major <- get_grid(a_theme.pars$panel.grid.major, a_theme.pars,
                                    plot.info, meta, built)
   # extract minor grid lines
-  plot.info$grid_minor <- get_grid(theme.pars$panel.grid.minor, theme.pars,
+  plot.info$grid_minor <- get_grid(a_theme.pars$panel.grid.minor, a_theme.pars,
                                    plot.info, meta, built, major = F)
   
   ## Flip labels if coords are flipped - transform does not take care
@@ -111,7 +111,7 @@ parsePlot <- function(meta, plot, plot.name){
     plot$labels$y <- temp
   }
   is.blank <- function(el.name){
-    x <- calc_element(el.name, plot$theme)
+    x <- calc_element(el.name, plot$a_theme)
     "a_element_blank"%in%attr(x,"class")
   }
 
@@ -141,8 +141,8 @@ parsePlot <- function(meta, plot, plot.name){
         lab.or.null
       }
     }
-    # theme settings are shared across panels
-    axis.text <- theme.pars[[s("axis.text.%s")]]
+    # a_theme settings are shared across panels
+    axis.text <- a_theme.pars[[s("axis.text.%s")]]
     ## TODO: also look at axis.text! (and text?)
     anchor <- hjust2anchor(axis.text$hjust)
     angle <- if(is.numeric(axis.text$angle)){
@@ -180,13 +180,13 @@ parsePlot <- function(meta, plot, plot.name){
   plot.info <- getUniqueAxisLabels(plot.info)
 
   # grab plot title if present
-  plot.info$title <- getPlotTitle(theme.pars$plot.tiltle,
+  plot.info$title <- getPlotTitle(a_theme.pars$plot.tiltle,
                                   plot$labels$title)
 
   ## Set plot width and height from animint.* options if they are
   ## present.
-  options_list <- getWidthAndHeight(plot$theme)
-  options_list <- setUpdateAxes(plot$theme, options_list)
+  options_list <- getWidthAndHeight(plot$a_theme)
+  options_list <- setUpdateAxes(plot$a_theme, options_list)
   plot.info$options <- options_list
 
   list(
@@ -850,7 +850,7 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
 #' \item fill/colour (brewer, gradient, identity, manual)
 #' \item linetype
 #' \item x and y axis scales, manual break specification, label formatting
-#' \item x and y axis theme elements: axis.line, axis.ticks, axis.text, axis.title can be set to a_element_blank(); other theme modifications not supported at this time, but would be possible with custom css files.
+#' \item x and y axis a_theme elements: axis.line, axis.ticks, axis.text, axis.title can be set to a_element_blank(); other a_theme modifications not supported at this time, but would be possible with custom css files.
 #' \item area
 #' \item size
 #' }
@@ -1051,7 +1051,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   ## Set plot sizes.
   setPlotSizes(meta, AllPlotsInfo)
   
-  ## Get domains of data subsets if theme_animint(update_axes) is used
+  ## Get domains of data subsets if a_theme_animint(update_axes) is used
   for(p.name in names(a_plot.list)){
     axes_to_update <- AllPlotsInfo[[p.name]]$options$update_axes
     if(!is.null(axes_to_update)){
@@ -1281,32 +1281,32 @@ getLegendList <- function(plistextra){
   scales <- plot$scales
   layers <- plot$layers
   default_mapping <- plot$mapping
-  theme <- plot_theme(plot)
-  position <- theme$legend.position
+  a_theme <- plot_a_theme(plot)
+  position <- a_theme$legend.position
   # by default, guide boxes are vertically aligned
-  if(is.null(theme$legend.box)) theme$legend.box <- "vertical" else theme$legend.box
+  if(is.null(a_theme$legend.box)) a_theme$legend.box <- "vertical" else a_theme$legend.box
 
   # size of key (also used for bar in colorbar guide)
-  if(is.null(theme$legend.key.width)) theme$legend.key.width <- theme$legend.key.size
-  if(is.null(theme$legend.key.height)) theme$legend.key.height <- theme$legend.key.size
+  if(is.null(a_theme$legend.key.width)) a_theme$legend.key.width <- a_theme$legend.key.size
+  if(is.null(a_theme$legend.key.height)) a_theme$legend.key.height <- a_theme$legend.key.size
   # by default, direction of each guide depends on the position of the guide.
-  if(is.null(theme$legend.direction)){
-    theme$legend.direction <- 
+  if(is.null(a_theme$legend.direction)){
+    a_theme$legend.direction <- 
       if (length(position) == 1 && position %in% c("top", "bottom", "left", "right"))
         switch(position[1], top =, bottom = "horizontal", left =, right = "vertical")
     else
       "vertical"
   }
   # justification of legend boxes
-  theme$legend.box.just <-
-    if(is.null(theme$legend.box.just)) {
+  a_theme$legend.box.just <-
+    if(is.null(a_theme$legend.box.just)) {
       if (length(position) == 1 && position %in% c("top", "bottom", "left", "right"))
         switch(position, bottom =, top = c("center", "top"), left =, right = c("left", "top"))
       else
         c("center", "center")
     }
 
-  position <- theme$legend.position
+  position <- a_theme$legend.position
   # locate guide argument in scale_*, and use that for a default.
   # Note, however, that guides(colour = ...) has precendence! See https://gist.github.com/cpsievert/ece28830a6c992b29ab6
   guides.args <- list()
@@ -1323,7 +1323,7 @@ getLegendList <- function(plistextra){
   guides.result <- do.call(guides, guides.args)
   guides.list <- plyr::defaults(plot$guides, guides.result)
   gdefs <- guides_train(scales = scales,
-                           theme = theme,
+                           a_theme = a_theme,
                            guides = guides.list,
                            labels = plot$labels)
   if (length(gdefs) != 0) {

@@ -74,8 +74,8 @@ is.blank <- function(ticks){
   all(ticks == "")
 }
 
-test_that("plot renders with theme(axis.text.x=a_element_blank())", {
-  viz <- list(series=series+theme(axis.text.x=a_element_blank()))
+test_that("plot renders with a_theme(axis.text.x=a_element_blank())", {
+  viz <- list(series=series+a_theme(axis.text.x=a_element_blank()))
   info <- animint2HTML(viz)
   xticks <- getTickText(info$html, "xaxis")
   expect_true(is.blank(xticks))
@@ -83,8 +83,8 @@ test_that("plot renders with theme(axis.text.x=a_element_blank())", {
   expect_true(!is.blank(yticks))
 })
 
-test_that("plot renders with theme(axis.text.y=a_element_blank())", {
-  viz <- list(series=series+theme(axis.text.y=a_element_blank()))
+test_that("plot renders with a_theme(axis.text.y=a_element_blank())", {
+  viz <- list(series=series+a_theme(axis.text.y=a_element_blank()))
   info <- animint2HTML(viz)
   xticks <- getTickText(info$html, "xaxis")
   expect_true(!is.blank(xticks))
@@ -92,8 +92,8 @@ test_that("plot renders with theme(axis.text.y=a_element_blank())", {
   expect_true(is.blank(yticks))
 })
 
-test_that("plot renders with theme(axis.text=a_element_blank())", {
-  viz <- list(series=series+theme(axis.text=a_element_blank()))
+test_that("plot renders with a_theme(axis.text=a_element_blank())", {
+  viz <- list(series=series+a_theme(axis.text=a_element_blank()))
   info <- animint2HTML(viz)
   xticks <- getTickText(info$html, "xaxis")
   expect_true(is.blank(xticks))

@@ -91,7 +91,7 @@ print.a_element <- function(x, ...) utils::str(x)
 #' df <- data.frame(x = 1:3, y = 1:3)
 #' a_plot(df, aes(x, y)) +
 #'   geom_point() +
-#'   theme(axis.title.x = a_element_text(size = rel(2.5)))
+#'   a_theme(axis.title.x = a_element_text(size = rel(2.5)))
 #' @export
 rel <- function(x) {
   structure(x, class = "rel")
@@ -105,10 +105,10 @@ print.rel <- function(x, ...) print(noquote(paste(x, " *", sep = "")))
 is.rel <- function(x) inherits(x, "rel")
 
 # Given a theme object and element name, return a grob for the element
-a_element_render <- function(theme, a_element, ..., name = NULL) {
+a_element_render <- function(a_theme, a_element, ..., name = NULL) {
 
-  # Get the a_element from the theme, calculating inheritance
-  el <- calc_element(a_element, theme)
+  # Get the a_element from the a_theme, calculating inheritance
+  el <- calc_element(a_element, a_theme)
   if (is.null(el)) {
     message("Theme element ", a_element, " missing")
     return(a_zeroGrob())

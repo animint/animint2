@@ -17,8 +17,8 @@ df <- rbind(
 
 test_that("error for stat=bin and showSelected", {
   gg <- a_plot() +
-    theme_bw()+
-    theme(panel.margin=grid::unit(0, "lines"))+
+    a_theme_bw()+
+    a_theme(panel.margin=grid::unit(0, "lines"))+
     geom_bar(
       aes(count, group=stack, fill=stack),
       showSelected="a_facet",
@@ -38,8 +38,8 @@ test_that("error for stat=bin and showSelected", {
 
 test_that("no warning for stat=bin without showSelected", {
   gg <- a_plot() +
-    theme_bw()+
-    theme(panel.margin=grid::unit(0, "lines"))+
+    a_theme_bw()+
+    a_theme(panel.margin=grid::unit(0, "lines"))+
     geom_bar(
       aes(count, group=stack, fill=stack),
       binwidth=1,

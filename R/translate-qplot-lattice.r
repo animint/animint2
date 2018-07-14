@@ -68,8 +68,8 @@
 #' xyplot(wt ~ mpg, mtcars, aspect = 1)
 #' qplot(mpg, wt, data = mtcars, asp = 1)
 #'
-#' # par.settings() is equivalent to + theme() and trellis.options.set()
-#' # and trellis.par.get() to theme_set() and theme_get().
+#' # par.settings() is equivalent to + a_theme() and trellis.options.set()
+#' # and trellis.par.get() to a_theme_set() and a_theme_get().
 #' # More complicated lattice formulas are equivalent to rearranging the data
 #' # before using ggplot2.
 #' }

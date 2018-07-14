@@ -10,8 +10,8 @@ temp.time <- data.frame(
 
 viz <- list(
   gg=a_plot()+
-    theme_bw()+
-    theme_animint(height=200, width=2000)+
+    a_theme_bw()+
+    a_theme_animint(height=200, width=2000)+
     geom_widerect(aes(ymin=min.C, ymax=max.C),
                   color=NA,
                   fill="grey",
@@ -52,9 +52,9 @@ wb.facets <-
                          linetype=status),
                      clickSelects="year",
                      data=TS(years), alpha=1/2)+
-       theme_bw()+
-       theme_animint(width=1000, height=800)+
-       theme(panel.margin=grid::unit(0, "lines"))+
+       a_theme_bw()+
+       a_theme_animint(width=1000, height=800)+
+       a_theme(panel.margin=grid::unit(0, "lines"))+
        geom_line(aes(year, life.expectancy, group=country, colour=region,
                      id = country),
                  clickSelects="country",
@@ -94,7 +94,7 @@ wb.facets <-
                  data=SCATTER(years)),
 
        bar=a_plot()+
-       theme_animint(height=2400)+
+       a_theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region,
                     key=country, id=gsub(" ", "_", country)),
                 showSelected="year", clickSelects="country",

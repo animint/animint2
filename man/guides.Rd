@@ -50,11 +50,11 @@ p + guides(colour = guide_legend("title"), size = guide_legend("title"),
 g <- guide_legend("title")
 p + guides(colour = g, size = g, shape = g)
 
-p + theme(legend.position = "bottom")
+p + a_theme(legend.position = "bottom")
 
 # position of guides
 
-p + theme(legend.position = "bottom", legend.box = "horizontal")
+p + a_theme(legend.position = "bottom", legend.box = "horizontal")
 
 # Set order for multiple guides
 a_plot(mpg, aes(displ, cty)) +

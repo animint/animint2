@@ -76,7 +76,7 @@
 #' # Plot options
 #'
 #' # qplot() recognises the same options as plot does, and converts them to their
-#' # ggplot2 equivalents. See ?theme for more on ggplot options
+#' # ggplot2 equivalents. See ?a_theme for more on ggplot options
 #' # qplot(x, y, data = data, main="title", asp = 1)
-#' # a_plot(data, aes(x, y)) + geom_point() + labs(title = "title") + theme(aspect.ratio = 1)
+#' # a_plot(data, aes(x, y)) + geom_point() + labs(title = "title") + a_theme(aspect.ratio = 1)
 NULL

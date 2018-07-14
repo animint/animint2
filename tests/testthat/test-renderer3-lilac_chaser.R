@@ -31,8 +31,8 @@ vi_lilac_chaser <- function(np = 10,
         xlim(c(-1.33, 1.33)) +
         ylim(c(-1.33, 1.33)) +
         # Hide the axes, titles and others..
-        theme_bw() +
-        theme(axis.line=a_element_blank(),
+        a_theme_bw() +
+        a_theme(axis.line=a_element_blank(),
               axis.text.x=a_element_blank(), axis.text.y=a_element_blank(),
               axis.ticks=a_element_blank(),
               axis.title.x=a_element_blank(), axis.title.y=a_element_blank(),

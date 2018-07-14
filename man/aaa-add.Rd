@@ -4,7 +4,7 @@
 \alias{+.aaa}
 \alias{\%+\%}
 \alias{\%+replace\%}
-\title{Add a new component to a a_plot or theme object.}
+\title{Add a new component to a a_plot or a_theme object.}
 \usage{
 \method{+}{aaa}(e1, e2)
 
@@ -13,12 +13,12 @@ e1 \%+\% e2
 e1 \%+replace\% e2
 }
 \arguments{
-\item{e1}{An object of class \code{a_plot} or \code{theme}}
+\item{e1}{An object of class \code{a_plot} or \code{a_theme}}
 
 \item{e2}{A component to add to \code{e1}}
 }
 \description{
-This operator allows you to add objects to a a_plot or theme object.
+This operator allows you to add objects to a a_plot or a_theme object.
 }
 \details{
 If the first object is an object of class \code{a_plot}, you can add
@@ -30,27 +30,27 @@ object.
      (must use \code{\%+\%})
   \item \code{uneval}: replace current aesthetics
   \item \code{layer}: add new layer
-  \item \code{theme}: update plot theme
+  \item \code{a_theme}: update plot a_theme
   \item \code{scale}: replace current scale
   \item \code{coord}: override current coordinate system
   \item \code{a_facet}: override current coordinate faceting
 }
 
-If the first object is an object of class \code{theme}, you can add
-another theme object. This will return a modified theme object.
+If the first object is an object of class \code{a_theme}, you can add
+another a_theme object. This will return a modified a_theme object.
 
-For theme objects, the \code{+} operator and the \code{\%+replace\%}
-can be used to modify elements in themes.
+For a_theme objects, the \code{+} operator and the \code{\%+replace\%}
+can be used to modify elements in a_themes.
 
 The \code{+} operator updates the elements of e1 that differ from
 elements specified (not NULL) in e2.
 Thus this operator can be used to incrementally add or modify attributes
-of a a_plot theme.
+of a a_plot a_theme.
 
 In contrast, the \code{\%+replace\%} operator replaces the
-entire element; any element of a theme not specified in e2 will not be
-present in the resulting theme (i.e. NULL).
-Thus this operator can be used to overwrite an entire theme.
+entire element; any element of a a_theme not specified in e2 will not be
+present in the resulting a_theme (i.e. NULL).
+Thus this operator can be used to overwrite an entire a_theme.
 }
 \examples{
 ### Adding objects to a a_plot object
@@ -66,15 +66,15 @@ p + guides(colour = "colourbar")
 m <- mtcars[1:10, ]
 p \%+\% m
 
-### Adding objects to a theme object
-# Compare these results of adding theme objects to other theme objects
-add_el <- theme_grey() + theme(text = a_element_text(family = "Times"))
-rep_el <- theme_grey() \%+replace\% theme(text = a_element_text(family = "Times"))
+### Adding objects to a a_theme object
+# Compare these results of adding a_theme objects to other a_theme objects
+add_el <- a_theme_grey() + a_theme(text = a_element_text(family = "Times"))
+rep_el <- a_theme_grey() \%+replace\% a_theme(text = a_element_text(family = "Times"))
 
 add_el$text
 rep_el$text
 
 }
 \seealso{
-\code{\link{theme}}
+\code{\link{a_theme}}
 }

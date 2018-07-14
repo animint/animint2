@@ -38,23 +38,23 @@ a_Coord <- a_ggproto("a_Coord",
 
   labels = function(scale_details) scale_details,
 
-  render_fg = function(scale_details, theme) a_element_render(theme, "panel.border"),
+  render_fg = function(scale_details, a_theme) a_element_render(a_theme, "panel.border"),
 
-  render_bg = function(scale_details, theme) {
+  render_bg = function(scale_details, a_theme) {
     x.major <- if (length(scale_details$x.major) > 0) unit(scale_details$x.major, "native")
     x.minor <- if (length(scale_details$x.minor) > 0) unit(scale_details$x.minor, "native")
     y.major <- if (length(scale_details$y.major) > 0) unit(scale_details$y.major, "native")
     y.minor <- if (length(scale_details$y.minor) > 0) unit(scale_details$y.minor, "native")
 
-    guide_grid(theme, x.minor, x.major, y.minor, y.major)
+    guide_grid(a_theme, x.minor, x.major, y.minor, y.major)
   },
 
-  render_axis_h = function(scale_details, theme) {
-    guide_axis(scale_details$x.major, scale_details$x.labels, "bottom", theme)
+  render_axis_h = function(scale_details, a_theme) {
+    guide_axis(scale_details$x.major, scale_details$x.labels, "bottom", a_theme)
   },
 
-  render_axis_v = function(scale_details, theme) {
-    guide_axis(scale_details$y.major, scale_details$y.labels, "left", theme)
+  render_axis_v = function(scale_details, a_theme) {
+    guide_axis(scale_details$y.major, scale_details$y.labels, "left", a_theme)
   },
 
   range = function(scale_details) {

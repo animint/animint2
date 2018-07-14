@@ -54,7 +54,7 @@ malaria$amplicons$lastVariant.norm <- with(malaria$amplicons, {
 
 viz <-
   list(errorCurves=a_plot()+
-         theme_bw()+
+         a_theme_bw()+
          ggtitle(paste("error curves, select MQ threshold"))+
          xlab("MQ threshold")+
          ylab("incorrectly called variants")+
@@ -72,9 +72,9 @@ viz <-
                    data=malaria$error.curves),
 
        chroms=a_plot()+
-         theme_bw()+
+         a_theme_bw()+
          ggtitle("Sanger sequenced amplicons")+
-         theme_animint(width=600)+
+         a_theme_animint(width=600)+
          geom_text(aes(chrom.fac, position/1e3,
                        label=sprintf("MQ threshold = %.1f",
                          filterVar.thresh)),
@@ -112,9 +112,9 @@ viz <-
          ylab("position on chromosome (kilo bases = kb)"),
 
        variants=a_plot()+
-         theme_bw()+
+         a_theme_bw()+
          ggtitle("Variants in each sanger sequenced amplicon")+
-         theme_animint(width=1000, height=600)+
+         a_theme_animint(width=1000, height=600)+
          scale_fill_manual(values=fp.fn.colors)+
          scale_y_discrete("amplicon LOCUS_ID", drop=FALSE)+
          scale_x_continuous("relative position on amplicon",

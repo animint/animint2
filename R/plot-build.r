@@ -139,21 +139,21 @@ a_plot_gtable <- function(data) {
   plot <- data$plot
   panel <- data$panel
   data <- data$data
-  theme <- plot_theme(plot)
+  a_theme <- plot_a_theme(plot)
 
   geom_grobs <- Map(function(l, d) l$draw_geom(d, panel, plot$coordinates),
     plot$layers, data)
 
   plot_table <- a_facet_render(plot$a_facet, panel, plot$coordinates,
-    theme, geom_grobs)
+    a_theme, geom_grobs)
 
   # Axis labels
   labels <- plot$coordinates$labels(list(
     x = xlabel(panel, plot$labels),
     y = ylabel(panel, plot$labels)
   ))
-  xlabel <- a_element_render(theme, "axis.title.x", labels$x, expand_y = TRUE)
-  ylabel <- a_element_render(theme, "axis.title.y", labels$y, expand_x = TRUE)
+  xlabel <- a_element_render(a_theme, "axis.title.x", labels$x, expand_y = TRUE)
+  ylabel <- a_element_render(a_theme, "axis.title.y", labels$y, expand_x = TRUE)
 
   # helper function return the position of panels in plot_table
   find_panel <- function(table) {
@@ -180,13 +180,13 @@ a_plot_gtable <- function(data) {
     l = 1, b = panel_dim$b, t = panel_dim$t, clip = "off")
 
   # Legends
-  position <- theme$legend.position
+  position <- a_theme$legend.position
   if (length(position) == 2) {
     position <- "manual"
   }
 
   legend_box <- if (position != "none") {
-    build_guides(plot$scales, plot$layers, plot$mapping, position, theme, plot$guides, plot$labels)
+    build_guides(plot$scales, plot$layers, plot$mapping, position, a_theme, plot$guides, plot$labels)
   } else {
     a_zeroGrob()
   }
@@ -195,25 +195,25 @@ a_plot_gtable <- function(data) {
     position <- "none"
   } else {
     # these are a bad hack, since it modifies the contents of viewpoint directly...
-    legend_width  <- gtable_width(legend_box)  + theme$legend.margin
-    legend_height <- gtable_height(legend_box) + theme$legend.margin
+    legend_width  <- gtable_width(legend_box)  + a_theme$legend.margin
+    legend_height <- gtable_height(legend_box) + a_theme$legend.margin
 
     # Set the justification of the legend box
     # First value is xjust, second value is yjust
-    just <- valid.just(theme$legend.justification)
+    just <- valid.just(a_theme$legend.justification)
     xjust <- just[1]
     yjust <- just[2]
 
     if (position == "manual") {
-      xpos <- theme$legend.position[1]
-      ypos <- theme$legend.position[2]
+      xpos <- a_theme$legend.position[1]
+      ypos <- a_theme$legend.position[2]
 
-      # x and y are specified via theme$legend.position (i.e., coords)
+      # x and y are specified via a_theme$legend.position (i.e., coords)
       legend_box <- editGrob(legend_box,
         vp = viewport(x = xpos, y = ypos, just = c(xjust, yjust),
           height = legend_height, width = legend_width))
     } else {
-      # x and y are adjusted using justification of legend box (i.e., theme$legend.justification)
+      # x and y are adjusted using justification of legend box (i.e., a_theme$legend.justification)
       legend_box <- editGrob(legend_box,
         vp = viewport(x = xjust, y = yjust, just = c(xjust, yjust)))
     }
@@ -247,15 +247,15 @@ a_plot_gtable <- function(data) {
   }
 
   # Title
-  title <- a_element_render(theme, "plot.title", plot$labels$title, expand_y = TRUE)
+  title <- a_element_render(a_theme, "plot.title", plot$labels$title, expand_y = TRUE)
   title_height <- grobHeight(title)
 
   # Subtitle
-  subtitle <- a_element_render(theme, "plot.subtitle", plot$labels$subtitle, expand_y = TRUE)
+  subtitle <- a_element_render(a_theme, "plot.subtitle", plot$labels$subtitle, expand_y = TRUE)
   subtitle_height <- grobHeight(subtitle)
 
   # whole plot annotation
-  caption <- a_element_render(theme, "plot.caption", plot$labels$caption, expand_y = TRUE)
+  caption <- a_element_render(a_theme, "plot.caption", plot$labels$caption, expand_y = TRUE)
   caption_height <- grobHeight(caption)
 
   pans <- plot_table$layout[grepl("^panel", plot_table$layout$name), ,
@@ -274,14 +274,14 @@ a_plot_gtable <- function(data) {
     t = -1, b = -1, l = min(pans$l), r = max(pans$r), clip = "off")
 
   # Margins
-  plot_table <- gtable_add_rows(plot_table, theme$plot.margin[1], pos = 0)
-  plot_table <- gtable_add_cols(plot_table, theme$plot.margin[2])
-  plot_table <- gtable_add_rows(plot_table, theme$plot.margin[3])
-  plot_table <- gtable_add_cols(plot_table, theme$plot.margin[4], pos = 0)
+  plot_table <- gtable_add_rows(plot_table, a_theme$plot.margin[1], pos = 0)
+  plot_table <- gtable_add_cols(plot_table, a_theme$plot.margin[2])
+  plot_table <- gtable_add_rows(plot_table, a_theme$plot.margin[3])
+  plot_table <- gtable_add_cols(plot_table, a_theme$plot.margin[4], pos = 0)
 
-  if (inherits(theme$plot.background, "a_element")) {
+  if (inherits(a_theme$plot.background, "a_element")) {
     plot_table <- gtable_add_grob(plot_table,
-      a_element_render(theme, "plot.background"),
+      a_element_render(a_theme, "plot.background"),
       t = 1, l = 1, b = -1, r = -1, name = "background", z = -Inf)
     plot_table$layout <- plot_table$layout[c(nrow(plot_table$layout), 1:(nrow(plot_table$layout) - 1)),]
     plot_table$grobs <- plot_table$grobs[c(nrow(plot_table$layout), 1:(nrow(plot_table$layout) - 1))]

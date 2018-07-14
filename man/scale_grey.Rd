@@ -29,7 +29,7 @@ p + scale_colour_grey()
 p + scale_colour_grey(end = 0)
 
 # You may want to turn off the pale grey background with this scale
-p + scale_colour_grey() + theme_bw()
+p + scale_colour_grey() + a_theme_bw()
 
 # Colour of missing values is controlled with na.value:
 miss <- factor(sample(c(NA, 1:5), nrow(mtcars), replace = TRUE))
