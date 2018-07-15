@@ -18,7 +18,7 @@ bottom, and left.}
 
 \item{scaled}{is the data already log-scaled? This should be \code{TRUE}
 (default) when the data is already transformed with \code{log10()} or when
-using \code{scale_y_log10}. It should be \code{FALSE} when using
+using \code{a_scale_y_log10}. It should be \code{FALSE} when using
 \code{coord_trans(y = "log10")}.}
 
 \item{short}{a \code{\link[grid]{unit}} object specifying the length of the
@@ -50,11 +50,11 @@ These tick marks probably make sense only for base 10.
 # Make a log-log plot (without log ticks)
 a <- a_plot(msleep, aes(bodywt, brainwt)) +
  geom_point(na.rm = TRUE) +
- scale_x_log10(
+ a_scale_x_log10(
    breaks = scales::trans_breaks("log10", function(x) 10^x),
    labels = scales::trans_format("log10", scales::math_format(10^.x))
  ) +
- scale_y_log10(
+ a_scale_y_log10(
    breaks = scales::trans_breaks("log10", function(x) 10^x),
    labels = scales::trans_format("log10", scales::math_format(10^.x))
  ) +
@@ -71,8 +71,8 @@ a + annotation_logticks(sides = "trbl") + a_theme(panel.grid.minor = a_element_b
 # plotting it. Also hide the minor grid lines.
 b <- a_plot(msleep, aes(log10(bodywt), log10(brainwt))) +
  geom_point(na.rm = TRUE) +
- scale_x_continuous(name = "body", labels = scales::math_format(10^.x)) +
- scale_y_continuous(name = "brain", labels = scales::math_format(10^.x)) +
+ a_scale_x_continuous(name = "body", labels = scales::math_format(10^.x)) +
+ a_scale_y_continuous(name = "brain", labels = scales::math_format(10^.x)) +
  a_theme_bw() + a_theme(panel.grid.minor = a_element_blank())
 
 b + annotation_logticks()
@@ -92,7 +92,7 @@ a + annotation_logticks(
 )
 }
 \seealso{
-\code{\link{scale_y_continuous}}, \code{\link{scale_y_log10}} for log scale
+\code{\link{a_scale_y_continuous}}, \code{\link{a_scale_y_log10}} for log scale
   transformations.
 
 \code{\link{coord_trans}} for log coordinate transformations.

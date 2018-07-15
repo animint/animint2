@@ -19,7 +19,7 @@ test_that("segment size range translates to stroke-width", {
   viz <- list(segs=a_plot()+
               geom_segment(aes(x, y, xend=xend, yend=yend, size=size),
                            data=df)+
-              scale_size_identity())
+              a_scale_size_identity())
   info <- animint2HTML(viz)
   expect_styles(info$html, list("stroke-width"=c("^5[a-z]*$", "^10[a-z]*$")))
 })

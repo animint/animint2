@@ -18,12 +18,12 @@
 #' a_plot(mpg, aes(cty, hwy)) +
 #'  geom_count()
 #'
-#' # Best used in conjunction with scale_size_area which ensures that
+#' # Best used in conjunction with a_scale_size_area which ensures that
 #' # counts of zero would be given size 0. Doesn't make much different
 #' # here because the smallest count is already close to 0.
 #' a_plot(mpg, aes(cty, hwy)) +
 #'  geom_count()
-#'  scale_size_area()
+#'  a_scale_size_area()
 #'
 #' # Display proportions instead of counts -------------------------------------
 #' # By default, all categorical variables in the plot form the groups.
@@ -34,13 +34,13 @@
 #' # To correct this problem and achieve a more desirable plot, we need
 #' # to specify which group the proportion is to be calculated over.
 #' d + geom_count(aes(size = ..prop.., group = 1)) +
-#'   scale_size_area(max_size = 10)
+#'   a_scale_size_area(max_size = 10)
 #'
 #' # Or group by x/y variables to have rows/columns sum to 1.
 #' d + geom_count(aes(size = ..prop.., group = cut)) +
-#'   scale_size_area(max_size = 10)
+#'   a_scale_size_area(max_size = 10)
 #' d + geom_count(aes(size = ..prop.., group = clarity)) +
-#'   scale_size_area(max_size = 10)
+#'   a_scale_size_area(max_size = 10)
 geom_count <- function(mapping = NULL, data = NULL,
                        stat = "sum", position = "identity",
                        ...,

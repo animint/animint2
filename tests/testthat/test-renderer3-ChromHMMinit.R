@@ -15,20 +15,20 @@ last.iteration <- subset(ChromHMMinit$metrics, iteration==100)
 viz <- list(
   parameters=a_plot()+
     ggtitle("parameters at selected iteration")+
-    scale_fill_gradient(low="white", high="blue")+
+    a_scale_fill_gradient(low="white", high="blue")+
     geom_tile(aes(state, experiment, fill=frequency,
                   key=paste(state, experiment)),
               showSelected=c("repeat.fac", "iteration"),
               ##chunk_vars=c("repeat.fac"),
               data=data.frame(ChromHMMinit$emission, parameters="emission"))+
-    scale_color_gradient(low="white", high="red")+
+    a_scale_color_gradient(low="white", high="red")+
     a_theme_bw()+
     a_theme_animint(height=500, width=400)+
     a_theme(panel.margin=grid::unit(0, "cm"))+
     a_facet_grid(parameters ~ .,
                space="free",
                scales="free_y")+
-    scale_y_discrete(drop=FALSE)+
+    a_scale_y_discrete(drop=FALSE)+
     geom_point(aes(state.to, state.from, color=probability,
                    key=paste(state.from, state.to)),
                showSelected=c("repeat.fac", "iteration"),
@@ -59,8 +59,8 @@ viz <- list(
                clickSelects="repeat.fac",
                size=5,
                data=subset(last.iteration, metric.name != "Change"))+
-    scale_x_discrete("random initialization")+
-    scale_y_continuous(""),
+    a_scale_x_discrete("random initialization")+
+    a_scale_y_continuous(""),
   duration=list(iteration=500),
   first=list(iteration=100),
   time=list(variable="iteration", ms=500),

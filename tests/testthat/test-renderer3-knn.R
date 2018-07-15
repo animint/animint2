@@ -33,12 +33,12 @@ errorPlot <- a_plot()+
                    color=set, linetype=classifier),
                showSelected="classifier",
                data=mixtureKNN$Bayes.segment)+
-  scale_color_manual(values=set.colors, breaks=names(set.colors))+
-  scale_fill_manual(values=set.colors)+
+  a_scale_color_manual(values=set.colors, breaks=names(set.colors))+
+  a_scale_fill_manual(values=set.colors)+
   guides(fill="none", linetype="none")+
-  scale_linetype_manual(values=classifier.linetypes)+
+  a_scale_linetype_manual(values=classifier.linetypes)+
   ylab("Misclassification Errors")+
-  scale_x_continuous(
+  a_scale_x_continuous(
     "Number of Neighbors",
     limits=c(-1, 30),
     breaks=c(1, 10, 20, 29))+
@@ -67,8 +67,8 @@ scatterPlot <- a_plot()+
   xlab("Input feature 1")+
   ylab("Input feature 2")+
   coord_equal()+
-  scale_color_manual(values=label.colors)+
-  scale_linetype_manual(values=classifier.linetypes)+
+  a_scale_color_manual(values=label.colors)+
+  a_scale_linetype_manual(values=classifier.linetypes)+
   geom_point(aes(V1, V2, color=label),
              showSelected="neighbors",
              size=0.2,
@@ -87,7 +87,7 @@ scatterPlot <- a_plot()+
              size=3,
              shape=21,
              data=mixtureKNN$show.points)+
-  scale_fill_manual(values=c(error="black", correct="transparent"))+
+  a_scale_fill_manual(values=c(error="black", correct="transparent"))+
   geom_text(aes(text.V1.error, text.V2.bottom, label=paste(set, "Error:")),
             data=mixtureKNN$Bayes.error,
             hjust=0)+

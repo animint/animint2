@@ -71,7 +71,7 @@
 #'
 #' a_plot(mod, aes(.hat, .cooksd)) +
 #'   geom_point(aes(size = .cooksd / .hat)) +
-#'   scale_size_area()
+#'   a_scale_size_area()
 a_fortify.lm <- function(model, data = model$model, ...) {
   infl <- stats::influence(model, do.coef = FALSE)
   data$.hat <- infl$hat

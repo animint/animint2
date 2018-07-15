@@ -131,9 +131,9 @@ parsePlot <- function(meta, plot, plot.name){
     plot.info[[s("%stitle")]] <- if(is.blank(s("axis.title.%s"))){
       ""
     } else {
-      scale.i <- which(plot$scales$find(xy))
-      lab.or.null <- if(length(scale.i) == 1){
-        plot$scales$scales[[scale.i]]$name
+      a_scale.i <- which(plot$scales$find(xy))
+      lab.or.null <- if(length(a_scale.i) == 1){
+        plot$scales$scales[[a_scale.i]]$name
       }
       if(is.null(unlist(lab.or.null))){
         plot$labels[[xy]]
@@ -1307,7 +1307,7 @@ getLegendList <- function(plistextra){
     }
 
   position <- a_theme$legend.position
-  # locate guide argument in scale_*, and use that for a default.
+  # locate guide argument in a_scale_*, and use that for a default.
   # Note, however, that guides(colour = ...) has precendence! See https://gist.github.com/cpsievert/ece28830a6c992b29ab6
   guides.args <- list()
   for(aes.name in c("colour", "fill")){
@@ -1337,8 +1337,8 @@ getLegendList <- function(plistextra){
     legend_type <- names(gdefs[[leg]]$key)
     legend_type <- legend_type[legend_type != ".label"]
     gdefs[[leg]]$legend_type <- legend_type
-    scale.list <- scales$scales[which(scales$find(legend_type))]
-    discrete.vec <- sapply(scale.list, inherits, "a_ScaleDiscrete")
+    a_scale.list <- scales$scales[which(scales$find(legend_type))]
+    discrete.vec <- sapply(a_scale.list, inherits, "a_ScaleDiscrete")
     is.discrete <- all(discrete.vec)
     gdefs[[leg]]$is.discrete <- is.discrete
     ## get the name of the legend/selection variable.
@@ -1401,9 +1401,9 @@ getLegendList <- function(plistextra){
   for(legend.name in names(gdefs)){
     key.df <- gdefs[[legend.name]]$key
     aes.name <- names(key.df)[1]
-    scale.i <- which(scales$find(aes.name))
-    if(length(scale.i) == 1){
-      sc <- scales$scales[[scale.i]]
+    a_scale.i <- which(scales$find(aes.name))
+    if(length(a_scale.i) == 1){
+      sc <- scales$scales[[a_scale.i]]
       gdefs[[legend.name]]$breaks <- sc$breaks
     }
   }

@@ -1,12 +1,12 @@
 #' Continuous position scales (x & y).
 #'
-#' \code{scale_x_continuous} and \code{scale_y_continuous} are the key functions.
-#' The others, \code{scale_x_log10}, \code{scale_y_sqrt} etc, are aliases
+#' \code{a_scale_x_continuous} and \code{a_scale_y_continuous} are the key functions.
+#' The others, \code{a_scale_x_log10}, \code{a_scale_y_sqrt} etc, are aliases
 #' that set the \code{trans} argument to commonly used transformations.
 #'
-#' @inheritParams continuous_scale
-#' @seealso \code{\link{scale_date}} for date/time position scales.
-#' @param ... Other arguments passed on to \code{scale_(x|y)_continuous}
+#' @inheritParams continuous_a_scale
+#' @seealso \code{\link{a_scale_date}} for date/time position scales.
+#' @param ... Other arguments passed on to \code{a_scale_(x|y)_continuous}
 #' @examples
 #' \donttest{
 #' if (require(ggplot2movies)) {
@@ -17,13 +17,13 @@
 #' # Manipulating the default position scales lets you:
 #'
 #' #  * change the axis labels
-#' m + scale_y_continuous("number of votes")
-#' m + scale_y_continuous(quote(votes ^ alpha))
+#' m + a_scale_y_continuous("number of votes")
+#' m + a_scale_y_continuous(quote(votes ^ alpha))
 #'
 #' #  * modify the axis limits
-#' m + scale_y_continuous(limits = c(0, 5000))
-#' m + scale_y_continuous(limits = c(1000, 10000))
-#' m + scale_x_continuous(limits = c(7, 8))
+#' m + a_scale_y_continuous(limits = c(0, 5000))
+#' m + a_scale_y_continuous(limits = c(1000, 10000))
+#' m + a_scale_x_continuous(limits = c(7, 8))
 #'
 #' # you can also use the short hand functions xlim and ylim
 #' m + ylim(0, 5000)
@@ -31,18 +31,18 @@
 #' m + xlim(7, 8)
 #'
 #' #  * choose where the ticks appear
-#' m + scale_x_continuous(breaks = 1:10)
-#' m + scale_x_continuous(breaks = c(1,3,7,9))
+#' m + a_scale_x_continuous(breaks = 1:10)
+#' m + a_scale_x_continuous(breaks = c(1,3,7,9))
 #'
 #' #  * manually label the ticks
-#' m + scale_x_continuous(breaks = c(2,5,8), labels = c("two", "five", "eight"))
-#' m + scale_x_continuous(breaks = c(2,5,8), labels = c("horrible", "ok", "awesome"))
-#' m + scale_x_continuous(breaks = c(2,5,8), labels = expression(Alpha, Beta, Omega))
+#' m + a_scale_x_continuous(breaks = c(2,5,8), labels = c("two", "five", "eight"))
+#' m + a_scale_x_continuous(breaks = c(2,5,8), labels = c("horrible", "ok", "awesome"))
+#' m + a_scale_x_continuous(breaks = c(2,5,8), labels = expression(Alpha, Beta, Omega))
 #'
 #' # There are a few built in transformation that you can use:
-#' m + scale_y_log10()
-#' m + scale_y_sqrt()
-#' m + scale_y_reverse()
+#' m + a_scale_y_log10()
+#' m + a_scale_y_sqrt()
+#' m + a_scale_y_reverse()
 #' # You can also create your own and supply them to the trans argument.
 #' # See ?scales::trans_new
 #'
@@ -53,9 +53,9 @@
 #'   y = seq(0, 1, length.out = 10)
 #' )
 #' p <- a_plot(df, aes(x, y)) + geom_point()
-#' p + scale_y_continuous(labels = scales::percent)
-#' p + scale_y_continuous(labels = scales::dollar)
-#' p + scale_x_continuous(labels = scales::comma)
+#' p + a_scale_y_continuous(labels = scales::percent)
+#' p + a_scale_y_continuous(labels = scales::dollar)
+#' p + a_scale_x_continuous(labels = scales::comma)
 #'
 #' # Other shortcut functions
 #' a_plot(movies, aes(rating, votes)) +
@@ -68,20 +68,20 @@
 #' #   * log scaling
 #' a_plot(movies, aes(rating, votes)) +
 #'   geom_point() +
-#'   scale_x_log10() +
-#'   scale_y_log10()
+#'   a_scale_x_log10() +
+#'   a_scale_y_log10()
 #' }
 #' }
-#' @name scale_continuous
+#' @name a_scale_continuous
 NULL
 
-#' @rdname scale_continuous
+#' @rdname a_scale_continuous
 #' @export
-scale_x_continuous <- function(name = waiver(), breaks = waiver(),
+a_scale_x_continuous <- function(name = waiver(), breaks = waiver(),
                                minor_breaks = waiver(), labels = waiver(),
                                limits = NULL, expand = waiver(), oob = censor,
                                na.value = NA_real_, trans = "identity") {
-  sc <- continuous_scale(
+  sc <- continuous_a_scale(
     c("x", "xmin", "xmax", "xend", "xintercept", "xmin_final", "xmax_final", "xlower", "xmiddle", "xupper"),
     "position_c", identity, name = name, breaks = breaks,
     minor_breaks = minor_breaks, labels = labels, limits = limits,
@@ -97,13 +97,13 @@ scale_x_continuous <- function(name = waiver(), breaks = waiver(),
   sc
 }
 
-#' @rdname scale_continuous
+#' @rdname a_scale_continuous
 #' @export
-scale_y_continuous <- function(name = waiver(), breaks = waiver(),
+a_scale_y_continuous <- function(name = waiver(), breaks = waiver(),
                                minor_breaks = waiver(), labels = waiver(),
                                limits = NULL, expand = waiver(), oob = censor,
                                na.value = NA_real_, trans = "identity") {
-  sc <- continuous_scale(
+  sc <- continuous_a_scale(
     c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final", "ymax_final", "lower", "middle", "upper"),
     "position_c", identity, name = name, breaks = breaks,
     minor_breaks = minor_breaks, labels = labels, limits = limits,
@@ -136,33 +136,33 @@ a_ScaleContinuousPosition <- a_ggproto("a_ScaleContinuousPosition", a_ScaleConti
 
 # Transformed scales ---------------------------------------------------------
 
-#' @rdname scale_continuous
+#' @rdname a_scale_continuous
 #' @export
-scale_x_log10 <- function(...) {
-  scale_x_continuous(..., trans = log10_trans())
+a_scale_x_log10 <- function(...) {
+  a_scale_x_continuous(..., trans = log10_trans())
 }
-#' @rdname scale_continuous
+#' @rdname a_scale_continuous
 #' @export
-scale_y_log10 <- function(...) {
-  scale_y_continuous(..., trans = log10_trans())
+a_scale_y_log10 <- function(...) {
+  a_scale_y_continuous(..., trans = log10_trans())
 }
-#' @rdname scale_continuous
+#' @rdname a_scale_continuous
 #' @export
-scale_x_reverse <- function(...) {
-  scale_x_continuous(..., trans = reverse_trans())
+a_scale_x_reverse <- function(...) {
+  a_scale_x_continuous(..., trans = reverse_trans())
 }
-#' @rdname scale_continuous
+#' @rdname a_scale_continuous
 #' @export
-scale_y_reverse <- function(...) {
-  scale_y_continuous(..., trans = reverse_trans())
+a_scale_y_reverse <- function(...) {
+  a_scale_y_continuous(..., trans = reverse_trans())
 }
-#' @rdname scale_continuous
+#' @rdname a_scale_continuous
 #' @export
-scale_x_sqrt <- function(...) {
-  scale_x_continuous(..., trans = sqrt_trans())
+a_scale_x_sqrt <- function(...) {
+  a_scale_x_continuous(..., trans = sqrt_trans())
 }
-#' @rdname scale_continuous
+#' @rdname a_scale_continuous
 #' @export
-scale_y_sqrt <- function(...) {
-  scale_y_continuous(..., trans = sqrt_trans())
+a_scale_y_sqrt <- function(...) {
+  a_scale_y_continuous(..., trans = sqrt_trans())
 }

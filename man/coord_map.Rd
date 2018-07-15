@@ -92,8 +92,8 @@ usamap + coord_map("bonne", lat0 = 50)
 world <- map_data("world")
 worldmap <- a_plot(world, aes(x = long, y = lat, group = group)) +
   geom_path() +
-  scale_y_continuous(breaks = (-2:2) * 30) +
-  scale_x_continuous(breaks = (-4:4) * 45)
+  a_scale_y_continuous(breaks = (-2:2) * 30) +
+  a_scale_x_continuous(breaks = (-4:4) * 45)
 
 # Orthographic projection with default orientation (looking down at North pole)
 worldmap + coord_map("ortho")

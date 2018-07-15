@@ -40,38 +40,38 @@ temp.seq <- a_plot() +
 clouds.high <- a_plot() + 
   geom_tile(data=climate, aes(x=long, y=lat, fill=cloudhigh),
             clickSelects="id", showSelected="time2", colour="grey")+ 
-  scale_fill_gradient("Coverage", low="skyblue", high="white", limits=c(0, 75)) + 
+  a_scale_fill_gradient("Coverage", low="skyblue", high="white", limits=c(0, 75)) + 
   geom_path(data=countries, aes(x=long, y=lat, group=group)) + 
   ggtitle("High Altitute Cloud Cover")+ 
-  theme(axis.line=element_blank(), axis.text=element_blank(), 
-        axis.ticks=element_blank(), axis.title=element_blank())
+  a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
+        axis.ticks=a_element_blank(), axis.title=a_element_blank())
 
 clouds.mid <- a_plot() + 
   geom_tile(data=climate, aes(x=long, y=lat, fill=cloudmid),
             clickSelects="id", showSelected="time2", colour="grey")+ 
-  scale_fill_gradient("Coverage", low="skyblue", high="white", limits=c(0, 75)) + 
+  a_scale_fill_gradient("Coverage", low="skyblue", high="white", limits=c(0, 75)) + 
   geom_path(data=countries, aes(x=long, y=lat, group=group)) + 
   ggtitle("Mid Altitute Cloud Cover")+ 
-  theme(axis.line=element_blank(), axis.text=element_blank(), 
-        axis.ticks=element_blank(), axis.title=element_blank())
+  a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
+        axis.ticks=a_element_blank(), axis.title=a_element_blank())
 
 clouds.low <- a_plot() + 
   geom_tile(data=climate, aes(x=long, y=lat, fill=cloudlow),
             clickSelects="id", showSelected="time2", colour="grey")+ 
-  scale_fill_gradient("Coverage", low="skyblue", high="white", limits=c(0, 75)) + 
+  a_scale_fill_gradient("Coverage", low="skyblue", high="white", limits=c(0, 75)) + 
   geom_path(data=countries, aes(x=long, y=lat, group=group)) + 
   ggtitle("Low Altitute Cloud Cover")+ 
-  theme(axis.line=element_blank(), axis.text=element_blank(), 
-        axis.ticks=element_blank(), axis.title=element_blank())
+  a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
+        axis.ticks=a_element_blank(), axis.title=a_element_blank())
 
 ozone.map <- a_plot() + 
   geom_tile(data=climate, aes(x=long, y=lat, fill=ozone),
             clickSelects="id", showSelected="time2", colour="grey")+ 
-  scale_fill_gradient("Concentration", low="white", high="brown") + 
+  a_scale_fill_gradient("Concentration", low="white", high="brown") + 
   geom_path(data=countries, aes(x=long, y=lat, group=group)) + 
   ggtitle("Ozone Concentration")+ 
-  theme(axis.line=element_blank(), axis.text=element_blank(), 
-        axis.ticks=element_blank(), axis.title=element_blank())
+  a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
+        axis.ticks=a_element_blank(), axis.title=a_element_blank())
 
 # Create variable showing temp-avg.monthly.temp at that location
 climate <- ddply(climate, .(id, month), transform, tempdev = temperature - mean(temperature))
@@ -79,11 +79,11 @@ climate <- ddply(climate, .(id, month), transform, tempdev = temperature - mean(
 temperature.map <- a_plot() + 
   geom_tile(data=climate, aes(x=long, y=lat, fill=tempdev),
             clickSelects="id", showSelected="time2", colour="grey")+ 
-  scale_fill_gradient2("Temperature", low="blue", mid="white", high="red", limits=c(-20, 20), midpoint=0) + 
+  a_scale_fill_gradient2("Temperature", low="blue", mid="white", high="red", limits=c(-20, 20), midpoint=0) + 
   geom_path(data=countries, aes(x=long, y=lat, group=group)) + 
   ggtitle("Temperature Deviation from Monthly Norm")+ 
-  theme(axis.line=element_blank(), axis.text=element_blank(), 
-        axis.ticks=element_blank(), axis.title=element_blank())
+  a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
+        axis.ticks=a_element_blank(), axis.title=a_element_blank())
 
 animint2dir(list(temperature = temp.seq, 
                 cloudslow = clouds.low, 

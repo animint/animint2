@@ -13,7 +13,7 @@ guides(...)
 A list containing the mapping between scale and guide.
 }
 \description{
-Guides for each scale can be set in call of \code{scale_*} with argument
+Guides for each scale can be set in call of \code{a_scale_*} with argument
 \code{guide}, or in \code{guides}.
 }
 \examples{
@@ -34,9 +34,9 @@ p + guides(colour = "colorbar", size = "legend", shape = "legend")
 p + guides(colour = guide_colorbar(), size = guide_legend(),
   shape = guide_legend())
 p +
- scale_colour_continuous(guide = "colorbar") +
- scale_size_discrete(guide = "legend") +
- scale_shape(guide = "legend")
+ a_scale_colour_continuous(guide = "colorbar") +
+ a_scale_size_discrete(guide = "legend") +
+ a_scale_shape(guide = "legend")
 
  # Remove some guides
  p + guides(colour = "none")

@@ -5,7 +5,7 @@
 \title{Save a ggplot (or other grid object) with sensible defaults}
 \usage{
 ggsave(filename, plot = last_plot(), device = NULL, path = NULL,
-  scale = 1, width = NA, height = NA, units = c("in", "cm", "mm"),
+  a_scale = 1, width = NA, height = NA, units = c("in", "cm", "mm"),
   dpi = 300, limitsize = TRUE, ...)
 }
 \arguments{
@@ -20,7 +20,7 @@ png, bmp, svg and wmf (windows only).}
 
 \item{path}{Path to save plot to (combined with filename).}
 
-\item{scale}{Multiplicative scaling factor.}
+\item{a_scale}{Multiplicative scaling factor.}
 
 \item{width, height}{Plot dimensions, defaults to size of current graphics
 device.}

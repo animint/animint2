@@ -19,27 +19,27 @@ p1
 
 #' Simple line plot with colors...
 p2 <- a_plot() + geom_line(data=data, aes(x=x, y=y, colour=group, group=group)) +
-  ggtitle("geom_line + scale_colour_discrete")
+  ggtitle("geom_line + a_scale_colour_discrete")
 p2
 # gg2animint(list(p1=p1, p2=p2))
 
 #' Simple line plot with colors and linetype
 p3 <- a_plot() + geom_line(data=data, aes(x=x, y=y, colour=group, group=group, linetype=lt)) +
-  ggtitle("geom_line + scale_linetype_manual")
+  ggtitle("geom_line + a_scale_linetype_manual")
 p3
 # gg2animint(list(p1=p1, p2=p2, p3=p3))
 
 #' Use automatic linetypes from ggplot with coerced factors
 p4 <- a_plot() + geom_line(data=data, aes(x=x, y=y, colour=group, group=group, linetype=group)) +
-  ggtitle("geom_line + scale_linetype automatic")
+  ggtitle("geom_line + a_scale_linetype automatic")
 p4
 # gg2animint(list(p1=p1, p2=p2, p3=p3, p4=p4))
 
 #' Manually specify linetypes using <length, space, length, space...> notation
 data$lt <- rep(c("2423", "2415", "331323", "F2F4", "solid"), each=10)
 p5 <- a_plot() + geom_line(data=data, aes(x=x, y=y, colour=group, group=group, linetype=lt)) + 
-  scale_linetype_identity("group", guide="legend", labels = c("1", "2", "3", "4", "5")) + 
-  scale_colour_discrete("group") + 
+  a_scale_linetype_identity("group", guide="legend", labels = c("1", "2", "3", "4", "5")) + 
+  a_scale_colour_discrete("group") + 
   ggtitle("Manual Linetypes: dash-space length")
 p5
 # gg2animint(list(p1=p1, p2=p2, p3=p3, p4=p4, p5=p5))
@@ -48,14 +48,14 @@ p5
 lts <- scales::linetype_pal()(13)
 lt1 <- data.frame(x=0, xend=.25, y=1:13, yend=1:13, lt=lts, lx = -.125)
 p6 <- a_plot()+geom_segment(data=lt1, aes(x=x, xend=xend, y=y, yend=yend, linetype=lt)) + 
-  scale_linetype_identity() + geom_text(data=lt1, aes(x=lx, y=y, label=lt), hjust=0) + 
+  a_scale_linetype_identity() + geom_text(data=lt1, aes(x=lx, y=y, label=lt), hjust=0) + 
   ggtitle("Scales package: all linetypes")
 # gg2animint(list(p1=p1, p2=p2, p3=p3, p4=p4, p5=p5, p6=p6))
 
 lts2 <- c("solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
 lt2 <- data.frame(x=0, xend=.25, y=1:6, yend=1:6, lt=lts2, lx=-.125)
 p7 <- a_plot() + geom_segment(data=lt2, aes(x=x, xend=xend, y=y, yend=yend, linetype=lt)) + 
-  scale_linetype_identity() + geom_text(data=lt2, aes(x=lx, y=y, label=lt), hjust=0) +
+  a_scale_linetype_identity() + geom_text(data=lt2, aes(x=lx, y=y, label=lt), hjust=0) +
   ggtitle("Named linetypes")
 # gg2animint(list(p1=p1, p2=p2, p3=p3, p4=p4, p5=p5, p6=p6, p7=p7))
 
@@ -72,7 +72,7 @@ data2$below0 <- factor(sign(data2$miny)<0)
   
 qplot(data=data2, x=x, y=y, group=group, geom="line", alpha=I(.2))
 
-#' Check whether scale_alpha works.
+#' Check whether a_scale_alpha works.
 p8 <- a_plot() + geom_line(data=data2, aes(x=x, y=y, group=group), alpha=.1) +
   ggtitle("Constant alpha")
 p8
@@ -80,14 +80,14 @@ p8
 
 p9 <- a_plot() + geom_line(data=subset(data2, as.numeric(group) < 50), 
                            aes(x=x, y=y, group=group, linetype=lty), alpha=.2) +
-  scale_linetype_identity() + 
+  a_scale_linetype_identity() + 
   ggtitle("Constant alpha, I(linetype)")
 p9
 # gg2animint(list(p1=p1, p2=p2, p3=p3, p4=p4, p5=p5, p6=p6, p7=p7, p8=p8, p9=p9))
 
 p10 <- a_plot() + geom_line(data=subset(data2, as.numeric(group) < 50), 
                             aes(x=x, y=y, group=group, linetype=below0, alpha=maxy)) + 
-  scale_alpha_continuous(range=c(.1, .5)) + 
+  a_scale_alpha_continuous(range=c(.1, .5)) + 
   ggtitle("Continuous alpha")
 p10
 # gg2animint(list(p1=p1, p2=p2, p3=p3, p4=p4, p5=p5, p6=p6, p7=p7, p8=p8, p9=p9, p10=p10))
@@ -95,13 +95,13 @@ p10
 #' Size Scaling
 p11 <- a_plot() + geom_line(data=subset(data2, as.numeric(group)%%50 ==1), 
                             aes(x=x, y=y, group=group, size=(floor(miny)+3)/3)) + 
-  scale_size_continuous("Line Size", range=c(1,3)) +
+  a_scale_size_continuous("Line Size", range=c(1,3)) +
   ggtitle("Continuous size")
 p11
 # gg2animint(list(p1=p1, p2=p2, p3=p3, p4=p4, p5=p5, p6=p6, p7=p7, p8=p8, p9=p9, p10=p10, p11=p11))
 
 p12 <- a_plot() + geom_line(data=data2, aes(x=x, y=y, group=group, alpha=miny, colour=maxy)) + 
-  scale_alpha_continuous(range=c(.1, .3)) + 
+  a_scale_alpha_continuous(range=c(.1, .3)) + 
   ggtitle("Continuous Alpha and Color")
 p12
 animint2dir(list(p1=p1, p2=p2, p3=p3, p4=p4, p5=p5, p6=p6, p7=p7, p8=p8, p9=p9, p10=p10, p11=p11, p12=p12))

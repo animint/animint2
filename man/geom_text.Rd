@@ -131,12 +131,12 @@ p + geom_text(family = "Times New Roman")
 # Add aesthetic mappings
 p + geom_text(aes(colour = factor(cyl)))
 p + geom_text(aes(colour = factor(cyl))) +
-  scale_colour_discrete(l = 40)
+  a_scale_colour_discrete(l = 40)
 p + geom_label(aes(fill = factor(cyl)), colour = "white", fontface = "bold")
 
 p + geom_text(aes(size = wt))
-# Scale height of text, rather than sqrt(height)
-p + geom_text(aes(size = wt)) + scale_radius(range = c(3,6))
+# a_scale height of text, rather than sqrt(height)
+p + geom_text(aes(size = wt)) + a_scale_radius(range = c(3,6))
 
 # You can display expressions by setting parse = TRUE.  The
 # details of the display are described in ?plotmath, but note that

@@ -21,7 +21,7 @@
 #' a_plot(mapping = aes(lhs, estimate)) +
 #'    geom_linerange(aes(ymin = lwr, ymax = upr), data = CI) +
 #'    geom_point(aes(size = p), data = summary(wht)) +
-#'    scale_size(trans = "reverse")
+#'    a_scale_size(trans = "reverse")
 #'
 #' cld <- cld(wht)
 #' a_fortify(cld)

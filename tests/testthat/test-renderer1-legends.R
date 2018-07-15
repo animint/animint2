@@ -17,7 +17,7 @@ viz <-
                  showSelected=c("country", "year"),
                  data=WorldBank)+
        make_text(WorldBank, 5, 80, "year")+
-       scale_size_animint(breaks=breaks))
+       a_scale_size_animint(breaks=breaks))
 
 test_that('breaks are respected', {
   info <- animint2dir(viz, open.browser=FALSE)
@@ -42,9 +42,9 @@ test_that('hiding both legends works with geom_point(show.legend=FALSE)', {
   expect_identical(length(generated.names), 0L)
 })
 
-test_that('hiding the color legend works with scale_color(guide="none")',{
+test_that('hiding the color legend works with a_scale_color(guide="none")',{
   viz$scatter <- viz$scatter+
-    scale_color_discrete(guide="none")
+    a_scale_color_discrete(guide="none")
   info <- animint2dir(viz, open.browser=FALSE)
   generated.names <- names(info$plots$scatter$legend)
   expect_identical(generated.names, "population")
@@ -83,9 +83,9 @@ expected.legend.list <-
 test_that("renderer shows legend entries in correct order", {
   viz <-
     list(increasing=gg+
-           scale_fill_continuous(breaks=1:3),
+           a_scale_fill_continuous(breaks=1:3),
          decreasing=gg+
-           scale_fill_continuous(breaks=3:1),
+           a_scale_fill_continuous(breaks=3:1),
          default=gg)
   info <- animint2HTML(viz)
   ##sapply(info$plots, function(p)sapply(p$legend$x$entries, "[[", "label"))

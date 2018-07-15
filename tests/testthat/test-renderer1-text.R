@@ -15,7 +15,7 @@ viz <- list(scatter=a_plot()+
   geom_text(aes(y=fertility.rate, x=life.expectancy,
                 label=country, size=population, colour=population),
             data=wb)+
-  scale_size_continuous(range=c(10,20)))
+  a_scale_size_continuous(range=c(10,20)))
 
 test_that("text size range translates to <text font-size>", {
   info <- animint2HTML(viz)

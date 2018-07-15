@@ -59,11 +59,11 @@ p + geom_point(aes(shape = factor(cyl)))
 df2 <- data.frame(x = 1:5 , y = 1:25, z = 1:25)
 s <- a_plot(df2, aes(x, y))
 s + geom_point(aes(shape = z), size = 4) +
-  scale_shape_identity()
+  a_scale_shape_identity()
 # While all symbols have a foreground colour, symbols 19-25 also take a
 # background colour (fill)
 s + geom_point(aes(shape = z), size = 4, colour = "Red") +
-  scale_shape_identity()
+  a_scale_shape_identity()
 s + geom_point(aes(shape = z), size = 4, colour = "Red", fill = "Black") +
-  scale_shape_identity()
+  a_scale_shape_identity()
 }

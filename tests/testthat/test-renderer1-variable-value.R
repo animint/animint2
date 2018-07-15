@@ -47,8 +47,8 @@ clickSelects.vec <- c(problem.name="peaks")
 
 viz <-
   list(errorLines=a_plot()+
-         scale_color_manual(values=c(one="red", two="black"))+
-         scale_size_manual(values=c(one=1, two=2))+
+         a_scale_color_manual(values=c(one="red", two="black"))+
+         a_scale_size_manual(values=c(one=1, two=2))+
          geom_line(aes(bases.per.problem, errors,
                        color=chunks, size=chunks),
                    data=one.error)+

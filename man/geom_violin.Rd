@@ -7,11 +7,11 @@
 \usage{
 geom_violin(mapping = NULL, data = NULL, stat = "ydensity",
   position = "dodge", ..., draw_quantiles = NULL, trim = TRUE,
-  scale = "area", na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  a_scale = "area", na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
 stat_ydensity(mapping = NULL, data = NULL, geom = "violin",
   position = "dodge", ..., bw = "nrd0", adjust = 1, kernel = "gaussian",
-  trim = TRUE, scale = "area", na.rm = FALSE, show.legend = NA,
+  trim = TRUE, a_scale = "area", na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 }
 \arguments{
@@ -48,7 +48,7 @@ at the given quantiles of the density estimate.}
 \item{trim}{If \code{TRUE} (default), trim the tails of the violins
 to the range of the data. If \code{FALSE}, don't trim the tails.}
 
-\item{scale}{if "area" (default), all violins have the same area (before trimming
+\item{a_scale}{if "area" (default), all violins have the same area (before trimming
 the tails). If "count", areas are scaled proportionally to the number of
 observations. If "width", all violins have the same maximum width.}
 
@@ -106,10 +106,10 @@ p + geom_violin() + geom_jitter(height = 0)
 p + geom_violin() + coord_flip()
 
 # Scale maximum width proportional to sample size:
-p + geom_violin(scale = "count")
+p + geom_violin(a_scale = "count")
 
 # Scale maximum width to 1 for all violins:
-p + geom_violin(scale = "width")
+p + geom_violin(a_scale = "width")
 
 # Default is to trim violins to the range of the data. To disable:
 p + geom_violin(trim = FALSE)
@@ -138,15 +138,15 @@ if (require("ggplot2movies")) {
 # number of outliers.
 m <- a_plot(movies, aes(y = votes, x = rating, group = cut_width(rating, 0.5)))
 m + geom_violin()
-m + geom_violin() + scale_y_log10()
+m + geom_violin() + a_scale_y_log10()
 m + geom_violin() + coord_trans(y = "log10")
-m + geom_violin() + scale_y_log10() + coord_trans(y = "log10")
+m + geom_violin() + a_scale_y_log10() + coord_trans(y = "log10")
 
 # Violin plots with continuous x:
 # Use the group aesthetic to group observations in violins
 a_plot(movies, aes(year, budget)) + geom_violin()
 a_plot(movies, aes(year, budget)) +
-  geom_violin(aes(group = cut_width(year, 10)), scale = "width")
+  geom_violin(aes(group = cut_width(year, 10)), a_scale = "width")
 }
 }
 }

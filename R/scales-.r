@@ -21,12 +21,12 @@ a_ScalesList <- a_ggproto("a_ScalesList", NULL,
     any(self$find(aesthetic))
   },
 
-  add = function(self, scale) {
-    if (is.null(scale)) {
+  add = function(self, a_scale) {
+    if (is.null(a_scale)) {
       return()
     }
 
-    prev_aes <- self$find(scale$aesthetics)
+    prev_aes <- self$find(a_scale$aesthetics)
     if (any(prev_aes)) {
       # Get only the first aesthetic name in the returned vector -- it can
       # sometimes be c("x", "xmin", "xmax", ....)
@@ -37,7 +37,7 @@ a_ScalesList <- a_ggproto("a_ScalesList", NULL,
     }
 
     # Remove old scale for this aesthetic (if it exists)
-    self$scales <- c(self$scales[!prev_aes], list(scale))
+    self$scales <- c(self$scales[!prev_aes], list(a_scale))
   },
 
   n = function(self) {
@@ -59,9 +59,9 @@ a_ScalesList <- a_ggproto("a_ScalesList", NULL,
   },
 
   get_scales = function(self, output) {
-    scale <- self$scales[self$find(output)]
-    if (length(scale) == 0) return()
-    scale[[1]]
+    a_scale <- self$scales[self$find(output)]
+    if (length(a_scale) == 0) return()
+    a_scale[[1]]
   }
 )
 
@@ -69,14 +69,14 @@ a_ScalesList <- a_ggproto("a_ScalesList", NULL,
 scales_train_df <- function(scales, df, drop = FALSE) {
   if (empty(df) || length(scales$scales) == 0) return()
 
-  lapply(scales$scales, function(scale) scale$train_df(df = df))
+  lapply(scales$scales, function(a_scale) a_scale$train_df(df = df))
 }
 
 # Map values from a data.frame. Returns data.frame
 scales_map_df <- function(scales, df) {
   if (empty(df) || length(scales$scales) == 0) return(df)
 
-  mapped <- unlist(lapply(scales$scales, function(scale) scale$map_df(df = df)), recursive = FALSE)
+  mapped <- unlist(lapply(scales$scales, function(a_scale) a_scale$map_df(df = df)), recursive = FALSE)
 
   plyr::quickdf(c(mapped, df[setdiff(names(df), names(mapped))]))
 }
@@ -106,7 +106,7 @@ scales_add_defaults <- function(scales, data, aesthetics, env) {
   )
 
   for (aes in names(datacols)) {
-    scales$add(find_scale(aes, datacols[[aes]], env))
+    scales$add(find_a_scale(aes, datacols[[aes]], env))
   }
 
 }
@@ -119,10 +119,10 @@ scales_add_missing <- function(plot, aesthetics, env) {
   aesthetics <- setdiff(aesthetics, plot$scales$input())
 
   for (aes in aesthetics) {
-    scale_name <- paste("scale", aes, "continuous", sep = "_")
+    scale_name <- paste("a_scale", aes, "continuous", sep = "_")
 
-    scale_f <- find_global(scale_name, env, mode = "function")
-    plot$scales$add(scale_f())
+    a_scale_f <- find_global(scale_name, env, mode = "function")
+    plot$scales$add(a_scale_f())
   }
 }
 

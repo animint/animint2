@@ -24,8 +24,8 @@
 #' #  * by transforming the scales
 #' a_plot(diamonds, aes(carat, price)) +
 #'   geom_point() +
-#'   scale_x_log10() +
-#'   scale_y_log10()
+#'   a_scale_x_log10() +
+#'   a_scale_y_log10()
 #' #  * by transforming the coordinate system:
 #' a_plot(diamonds, aes(carat, price)) +
 #'   geom_point() +
@@ -42,8 +42,8 @@
 #' a_plot(d, aes(carat, price)) +
 #'   geom_point() +
 #'   geom_smooth(method = "lm") +
-#'   scale_x_log10() +
-#'   scale_y_log10()
+#'   a_scale_x_log10() +
+#'   a_scale_y_log10()
 #'
 #' a_plot(d, aes(carat, price)) +
 #'   geom_point() +
@@ -59,8 +59,8 @@
 #' a_plot(diamonds, aes(carat, price)) +
 #'   geom_point() +
 #'   geom_smooth(method = "lm") +
-#'   scale_x_log10() +
-#'   scale_y_log10() +
+#'   a_scale_x_log10() +
+#'   a_scale_y_log10() +
 #'   coord_trans(x = scales::exp_trans(10), y = scales::exp_trans(10))
 #'
 #' # cf.

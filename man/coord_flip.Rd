@@ -32,7 +32,7 @@ h <- a_plot(diamonds, aes(carat)) +
   geom_histogram()
 h
 h + coord_flip()
-h + coord_flip() + scale_x_reverse()
+h + coord_flip() + a_scale_x_reverse()
 
 # You can also use it to flip line and area plots:
 df <- data.frame(x = 1:5, y = (1:5) ^ 2)

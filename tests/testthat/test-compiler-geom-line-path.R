@@ -74,7 +74,7 @@ mmir.selection <-
        geom_text(aes(0, error, label=signal),
                  clickSelects="signal",
                  data=sig.labels, hjust=1)+
-       scale_x_continuous("segments", breaks=c(1, 5, 10, 20),
+       a_scale_x_continuous("segments", breaks=c(1, 5, 10, 20),
                           limits=c(-2, 20))+
        xlab("squared error")+
        geom_line(aes(segments, error,
@@ -91,9 +91,9 @@ mmir.selection <-
        signal=a_plot()+
          a_theme_bw()+
        a_theme_animint(width=800)+       
-       scale_x_continuous("position on chromosome (mega base pairs)",
+       a_scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
-       scale_fill_manual(values=breakpoint.colors,guide="none")+
+       a_scale_fill_manual(values=breakpoint.colors,guide="none")+
        geom_blank(aes(first.base/1e6, logratio+2/8), data=intreg$ann)+
        ggtitle("Copy number profile and maximum likelihood segmentation")+
        ylab("logratio")+

@@ -3,17 +3,17 @@
 #' A continuous variable can not be mapped to shape.
 #'
 #' @param solid Are the shapes solid, \code{TRUE}, or hollow \code{FALSE}?
-#' @inheritParams scale_x_discrete
-#' @rdname scale_shape
+#' @inheritParams a_scale_x_discrete
+#' @rdname a_scale_shape
 #' @export
 #' @examples
 #' dsmall <- diamonds[sample(nrow(diamonds), 100), ]
 #'
 #' (d <- a_plot(dsmall, aes(carat, price)) + geom_point(aes(shape = cut)))
-#' d + scale_shape(solid = TRUE) # the default
-#' d + scale_shape(solid = FALSE)
-#' d + scale_shape(name = "Cut of diamond")
-#' d + scale_shape(name = "Cut of\ndiamond")
+#' d + a_scale_shape(solid = TRUE) # the default
+#' d + a_scale_shape(solid = FALSE)
+#' d + a_scale_shape(name = "Cut of diamond")
+#' d + a_scale_shape(name = "Cut of\ndiamond")
 #'
 #' # To change order of levels, change order of
 #' # underlying factor
@@ -24,18 +24,18 @@
 #'
 #' # Or for short:
 #' d %+% dsmall
-scale_shape <- function(..., solid = TRUE) {
-  discrete_scale("shape", "shape_d", shape_pal(solid), ...)
+a_scale_shape <- function(..., solid = TRUE) {
+  discrete_a_scale("shape", "shape_d", shape_pal(solid), ...)
 }
 
-#' @rdname scale_shape
+#' @rdname a_scale_shape
 #' @export
 #' @usage NULL
-scale_shape_discrete <- scale_shape
+a_scale_shape_discrete <- a_scale_shape
 
-#' @rdname scale_shape
+#' @rdname a_scale_shape
 #' @export
 #' @usage NULL
-scale_shape_continuous <- function(...) {
+a_scale_shape_continuous <- function(...) {
   stop("A continuous variable can not be mapped to shape", call. = FALSE)
 }

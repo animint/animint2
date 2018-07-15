@@ -25,7 +25,7 @@ dots <-
        geom_point(aes(Xtp.1, Xtp.2, colour=factor(yt)),
                   showSelected="set.id",
                   data=subset(compare$train, yt==1))+
-       scale_colour_manual("label",values=c("1"="red","-1"="black"))+
+       a_scale_colour_manual("label",values=c("1"="red","-1"="black"))+
        xl+yl+
        ggtitle("training data"),
        error=a_plot()+
@@ -38,7 +38,7 @@ dots <-
                   clickSelects="set.id",
                  lwd=3,alpha=3/4,data=compare$err)+
        ylab("percent incorrectly predicted test pairs")+
-       scale_colour_manual("model", values=c(model.colors[1:2],latent="black"),
+       a_scale_colour_manual("model", values=c(model.colors[1:2],latent="black"),
                            breaks=ord)+
        xlab(x.lab)+
        ggtitle("test error, select data set"),
@@ -59,7 +59,7 @@ for(model in c("compare", "rank")){
   L <- list(a_plot()+
     geom_contour(aes(x1, x2, z=rank, group=interaction(what, norm, seed, N),
                      colour=what), showSelected="set.id", data=sub.df)+
-    scale_colour_manual("model",values=model.colors)+
+    a_scale_colour_manual("model",values=model.colors)+
             xl+yl+
     ggtitle(sprintf("learned SVM%s model",model)))
   names(L) <- model

@@ -33,12 +33,12 @@ viz <- list(
               showSelected=c("dotID", "chrom"),
               size=11,
               data=PredictedPeaks$chromCounts)+
-    scale_y_discrete("cell type", drop=FALSE),
+    a_scale_y_discrete("cell type", drop=FALSE),
   chroms=a_plot()+
     a_theme_bw()+
     a_theme_animint(width=1500, height=330)+
-    scale_y_discrete("chromosome", drop=FALSE)+ 
-    scale_x_continuous("position on chromosome (mega bases)")+
+    a_scale_y_discrete("chromosome", drop=FALSE)+ 
+    a_scale_x_continuous("position on chromosome (mega bases)")+
     geom_text(aes(0, chrom, label=paste0(peaks, "_")),
               clickSelects="chrom",
               showSelected="dotID",
@@ -63,10 +63,10 @@ viz <- list(
     geom_hline(aes(yintercept=N),
                color="grey",
                data=PredictedPeaks$counts.Input)+
-    scale_x_continuous("number of samples with a peak")+
+    a_scale_x_continuous("number of samples with a peak")+
     a_facet_grid(nonInputType ~ .)+
     a_theme_bw()+
-    scale_fill_gradient(low="grey", high="red")+
+    a_scale_fill_gradient(low="grey", high="red")+
     a_theme_animint(width=1500)+
     a_theme(panel.margin=grid::unit(0, "cm"))+
     geom_vline(aes(xintercept=N),
@@ -161,12 +161,12 @@ viz <- list(
               clickSelects="peak.name",
               size=11,
               data=PredictedPeaks$chromCounts)+
-    scale_y_discrete("cell type", drop=FALSE),
+    a_scale_y_discrete("cell type", drop=FALSE),
   chroms=a_plot()+
     a_theme_bw()+
     a_theme_animint(width=1500, height=330)+
-    scale_y_discrete("chromosome", drop=FALSE)+ 
-    scale_x_continuous("position on chromosome (mega bases)")+
+    a_scale_y_discrete("chromosome", drop=FALSE)+ 
+    a_scale_x_continuous("position on chromosome (mega bases)")+
     geom_text(aes(0, chrom, label=paste0(peaks, "_")),
               clickSelects="chrom",
               showSelected="dotID",
@@ -190,7 +190,7 @@ viz <- list(
   scatter=a_plot()+
     geom_vline(aes(xintercept=N, color=thresh.type),
                data=PredictedPeaks$counts.not.Input)+
-    scale_color_manual("threshold", values=c(
+    a_scale_color_manual("threshold", values=c(
                                       "max samples"="grey",
                                       specific="grey30"))+
     geom_hline(aes(yintercept=max.input.samples+0.5, color=thresh.type),
@@ -199,10 +199,10 @@ viz <- list(
     geom_hline(aes(yintercept=N, color=thresh.type),
                show.legend=TRUE,
                data=PredictedPeaks$counts.Input)+
-    scale_x_continuous("number of samples with a peak")+
+    a_scale_x_continuous("number of samples with a peak")+
     a_facet_grid(nonInputType ~ .)+
     a_theme_bw()+
-    scale_fill_gradient(low="grey", high="red")+
+    a_scale_fill_gradient(low="grey", high="red")+
     a_theme_animint(width=1500)+
     a_theme(panel.margin=grid::unit(0, "cm"))+
     geom_rect(aes(xmin=up-size, xmax=up+size,

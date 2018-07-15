@@ -39,8 +39,8 @@ tornado.points.anim <-
        geom_polygon(aes(x=long, y=lat, group=group),
                     clickSelects="state",
                     data=USpolygons, fill="grey", colour="black", alpha=3/4)+
-       theme(axis.line=element_blank(), axis.text=element_blank(), 
-             axis.ticks=element_blank(), axis.title=element_blank()),
+       a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
+             axis.ticks=a_element_blank(), axis.title=a_element_blank()),
        bug=a_plot()+
        ggtitle("There should be state = XXX below")+
        make_text(UStornadoes, 1980, 200, "state")+
@@ -67,8 +67,8 @@ tornado.points.anim <-
        geom_polygon(aes(x=long, y=lat, group=group),
                     clickSelects="state",
                     data=USpolygons, fill="grey", colour="black", alpha=3/4)+
-       theme(axis.line=element_blank(), axis.text=element_blank(), 
-             axis.ticks=element_blank(), axis.title=element_blank()),
+       a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
+             axis.ticks=a_element_blank(), axis.title=a_element_blank()),
        bug=a_plot()+
        ggtitle("There should be state = XXX below")+
        geom_bar(aes(year, count),
@@ -95,8 +95,8 @@ tornado.points.anim <-
        geom_polygon(aes(x=long, y=lat, group=group),
                     clickSelects="state",
                     data=USpolygons, fill="grey", colour="black", alpha=3/4)+
-       theme(axis.line=element_blank(), axis.text=element_blank(), 
-             axis.ticks=element_blank(), axis.title=element_blank()),
+       a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
+             axis.ticks=a_element_blank(), axis.title=a_element_blank()),
        bug=a_plot()+
        ggtitle("There should be state = XXX below")+
        make_text(UStornadoes, 1980, 200, "state")+

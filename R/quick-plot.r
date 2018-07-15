@@ -134,8 +134,8 @@ qplot <- function(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
 
   logv <- function(var) var %in% strsplit(log, "")[[1]]
 
-  if (logv("x")) p <- p + scale_x_log10()
-  if (logv("y")) p <- p + scale_y_log10()
+  if (logv("x")) p <- p + a_scale_x_log10()
+  if (logv("y")) p <- p + a_scale_y_log10()
 
   if (!is.na(asp)) p <- p + a_theme(aspect.ratio = asp)
 

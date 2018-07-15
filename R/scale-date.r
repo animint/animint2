@@ -1,10 +1,10 @@
 #' Position scale, date & date times
 #'
-#' Use \code{scale_*_date} with \code{Date} variables, and
-#' \code{scale_*_datetime} with \code{POSIXct} variables.
+#' Use \code{a_scale_*_date} with \code{Date} variables, and
+#' \code{a_scale_*_datetime} with \code{POSIXct} variables.
 #'
-#' @name scale_date
-#' @inheritParams continuous_scale
+#' @name a_scale_date
+#' @inheritParams continuous_a_scale
 #' @param date_breaks A string giving the distance between breaks like "2
 #'   weeks", or "10 years". If both \code{breaks} and \code{date_breaks} are
 #'   specified, \code{date_breaks} wins.
@@ -14,7 +14,7 @@
 #' @param date_labels A string giving the formatting specification for the
 #'   labels. Codes are defined in \code{\link{strftime}}. If both \code{labels}
 #'   and \code{date_labels} are specified, \code{date_labels} wins.
-#' @seealso \code{\link{scale_continuous}} for continuous position scales.
+#' @seealso \code{\link{a_scale_continuous}} for continuous position scales.
 #' @examples
 #' last_month <- Sys.Date() - 0:29
 #' df <- data.frame(
@@ -27,23 +27,23 @@
 #' # The date scale will attempt to pick sensible defaults for
 #' # major and minor tick marks. Override with date_breaks, date_labels
 #' # date_minor_breaks arguments.
-#' base + scale_x_date(date_labels = "%b %d")
-#' base + scale_x_date(date_breaks = "1 week", date_labels = "%W")
-#' base + scale_x_date(date_minor_breaks = "1 day")
+#' base + a_scale_x_date(date_labels = "%b %d")
+#' base + a_scale_x_date(date_breaks = "1 week", date_labels = "%W")
+#' base + a_scale_x_date(date_minor_breaks = "1 day")
 #'
 #' # Set limits
-#' base + scale_x_date(limits = c(Sys.Date() - 7, NA))
+#' base + a_scale_x_date(limits = c(Sys.Date() - 7, NA))
 NULL
 
-#' @rdname scale_date
+#' @rdname a_scale_date
 #' @export
-scale_x_date <- function(name = waiver(),
+a_scale_x_date <- function(name = waiver(),
                          breaks = waiver(), date_breaks = waiver(),
                          labels = waiver(), date_labels = waiver(),
                          minor_breaks = waiver(), date_minor_breaks = waiver(),
                          limits = NULL, expand = waiver()) {
 
-  scale_datetime(c("x", "xmin", "xmax", "xend"), "date",
+  a_scale_datetime(c("x", "xmin", "xmax", "xend"), "date",
                  name = name,
                  breaks = breaks, date_breaks = date_breaks,
                  labels = labels, date_labels = date_labels,
@@ -52,15 +52,15 @@ scale_x_date <- function(name = waiver(),
   )
 }
 
-#' @rdname scale_date
+#' @rdname a_scale_date
 #' @export
-scale_y_date <- function(name = waiver(),
+a_scale_y_date <- function(name = waiver(),
                          breaks = waiver(), date_breaks = waiver(),
                          labels = waiver(), date_labels = waiver(),
                          minor_breaks = waiver(), date_minor_breaks = waiver(),
                          limits = NULL, expand = waiver()) {
 
-  scale_datetime(c("y", "ymin", "ymax", "yend"), "date",
+  a_scale_datetime(c("y", "ymin", "ymax", "yend"), "date",
                  name = name,
                  breaks = breaks, date_breaks = date_breaks,
                  labels = labels, date_labels = date_labels,
@@ -71,14 +71,14 @@ scale_y_date <- function(name = waiver(),
 
 
 #' @export
-#' @rdname scale_date
-scale_x_datetime <- function(name = waiver(),
+#' @rdname a_scale_date
+a_scale_x_datetime <- function(name = waiver(),
                              breaks = waiver(), date_breaks = waiver(),
                              labels = waiver(), date_labels = waiver(),
                              minor_breaks = waiver(), date_minor_breaks = waiver(),
                              limits = NULL, expand = waiver()) {
 
-  scale_datetime(c("x", "xmin", "xmax", "xend"), "time",
+  a_scale_datetime(c("x", "xmin", "xmax", "xend"), "time",
                  name = name,
                  breaks = breaks, date_breaks = date_breaks,
                  labels = labels, date_labels = date_labels,
@@ -88,15 +88,15 @@ scale_x_datetime <- function(name = waiver(),
 }
 
 
-#' @rdname scale_date
+#' @rdname a_scale_date
 #' @export
-scale_y_datetime <- function(name = waiver(),
+a_scale_y_datetime <- function(name = waiver(),
                              breaks = waiver(), date_breaks = waiver(),
                              labels = waiver(), date_labels = waiver(),
                              minor_breaks = waiver(), date_minor_breaks = waiver(),
                              limits = NULL, expand = waiver()) {
 
-  scale_datetime(c("y", "ymin", "ymax", "yend"), "time",
+  a_scale_datetime(c("y", "ymin", "ymax", "yend"), "time",
                  name = name,
                  breaks = breaks, date_breaks = date_breaks,
                  labels = labels, date_labels = date_labels,
@@ -105,7 +105,7 @@ scale_y_datetime <- function(name = waiver(),
   )
 }
 
-scale_datetime <- function(aesthetics, trans,
+a_scale_datetime <- function(aesthetics, trans,
                            breaks = pretty_breaks(), minor_breaks = waiver(),
                            labels = waiver(), date_breaks = waiver(),
                            date_labels = waiver(),
@@ -128,15 +128,15 @@ scale_datetime <- function(aesthetics, trans,
     labels <- date_format(date_labels)
   }
 
-  sc <- continuous_scale(aesthetics, name, identity,
+  sc <- continuous_a_scale(aesthetics, name, identity,
                          breaks = breaks, minor_breaks = minor_breaks, labels = labels,
                          guide = "none", trans = trans, ...)
 
   # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
-  scale_class <- switch(trans, date = a_ScaleContinuousDate, time = a_ScaleContinuousDatetime)
-  sc$super <- scale_class
-  class(sc) <- class(scale_class)
+  a_scale_class <- switch(trans, date = a_ScaleContinuousDate, time = a_ScaleContinuousDatetime)
+  sc$super <- a_scale_class
+  class(sc) <- class(a_scale_class)
   sc
 }
 

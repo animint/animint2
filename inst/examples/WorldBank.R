@@ -13,7 +13,7 @@ wb.all <-
                      key=country), #also use key here!
                  showSelected=c("country", "year"),
                  data=WorldBank)+
-       scale_size_animint(breaks=10^(5:9))+
+       a_scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
        ts=a_plot()+
        make_tallrect(WorldBank, "year")+
@@ -22,7 +22,7 @@ wb.all <-
                  data=WorldBank, size=4, alpha=3/5),
        time=list(variable="year",ms=3000),
        bar=a_plot()+
-       theme_animint(height=2400)+
+       a_theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region),
                 showSelected="year", clickSelects="country",
                 data=WorldBank, stat="identity", position="identity")+
@@ -54,7 +54,7 @@ bad <-
        geom_text(aes(life.expectancy, fertility.rate, label=country),
                  showSelected=c("country", "year"),
                  data=not.na)+
-       scale_size_animint(breaks=10^(5:9))+
+       a_scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
        ts=a_plot()+
        make_tallrect(WorldBank, "year")+
@@ -63,7 +63,7 @@ bad <-
                  data=WorldBank, size=4, alpha=3/5),
        time=list(variable="year",ms=3000),
        bar=a_plot()+
-       theme_animint(height=2400)+
+       a_theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region),
                 showSelected="year", clickSelects="country",
                 data=WorldBank, stat="identity", position="identity")+
@@ -85,7 +85,7 @@ good <-
                      key=country), #also use key here!
                  showSelected=c("country", "year"),
                  data=not.na)+
-       scale_size_animint(breaks=10^(5:9))+
+       a_scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
        ts=a_plot()+
        make_tallrect(WorldBank, "year")+
@@ -94,7 +94,7 @@ good <-
                  data=WorldBank, size=4, alpha=3/5),
        time=list(variable="year",ms=3000),
        bar=a_plot()+
-       theme_animint(height=2400)+
+       a_theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region,
                     key=country),
                 showSelected="year", clickSelects="country",
@@ -114,14 +114,14 @@ max.years <- not.na %>%
 wb.mult <-
   list(ts=a_plot()+
        make_tallrect(not.na, "year")+
-       theme_animint(width=500)+
+       a_theme_animint(width=500)+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
                  clickSelects="country",
                  data=not.na, size=4, alpha=3/5)+
        geom_point(aes(year, life.expectancy, color=region),
                   showSelected="country", clickSelects="country",
                   data=not.na)+
-       scale_x_continuous(limits=c(1960, 2030), breaks=seq(1960, 2010, by=10))+
+       a_scale_x_continuous(limits=c(1960, 2030), breaks=seq(1960, 2010, by=10))+
        geom_text(aes(year, life.expectancy, colour=region, label=country),
                  showSelected="country",
                  clickSelects="country",
@@ -137,7 +137,7 @@ wb.mult <-
                  showSelected=c("country", "year"),
                  clickSelects="country",
                  data=not.na)+
-       scale_size_animint(breaks=10^(5:9))+
+       a_scale_size_animint(breaks=10^(5:9))+
        make_text(not.na, 5, 85, "year"),
        
        time=list(variable="year",ms=3000),
@@ -174,7 +174,7 @@ wb.paper.single <-
                  showSelected=c("country", "year", "region"),
                  clickSelects="country",
                  data=short.regions)+
-       scale_size_animint(breaks=10^(5:9))+
+       a_scale_size_animint(breaks=10^(5:9))+
        make_text(short.regions, 5, 85, "year"),
        time=list(variable="year", ms=3000),
        duration=list(year=1000),
@@ -204,7 +204,7 @@ wb.paper <-
                  showSelected=c("country", "year", "region"),
                  clickSelects="country",
                  data=short.regions)+
-       scale_size_animint(breaks=10^(5:9))+
+       a_scale_size_animint(breaks=10^(5:9))+
        make_text(short.regions, 5, 85, "year"),
        time=list(variable="year", ms=3000),
        duration=list(year=1000),
@@ -233,7 +233,7 @@ wb.facets <-
        geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2),
                      clickSelects="year",
                      data=TS(years), alpha=1/2)+
-       theme_animint(width=1000, height=800)+
+       a_theme_animint(width=1000, height=800)+
        geom_line(aes(year, life.expectancy, group=country, colour=region),
                  clickSelects="country",
                  data=TS(not.na), size=4, alpha=3/5)+
@@ -265,7 +265,7 @@ wb.facets <-
                  showSelected=c("country", "year", "region"),
                  clickSelects="country",
                  data=SCATTER(not.na))+
-       scale_size_animint(breaks=10^(5:9))+
+       a_scale_size_animint(breaks=10^(5:9))+
        a_facet_grid(side ~ top, scales="free")+
        geom_text(aes(5, 85, label=paste0("year = ", year)),
                  showSelected="year",

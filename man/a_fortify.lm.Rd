@@ -83,5 +83,5 @@ a_plot(mod, aes(.hat, .cooksd)) +
 
 a_plot(mod, aes(.hat, .cooksd)) +
   geom_point(aes(size = .cooksd / .hat)) +
-  scale_size_area()
+  a_scale_size_area()
 }

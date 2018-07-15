@@ -66,10 +66,10 @@ viz <- list(
     a_theme_animint(height=500)+
     a_theme(panel.margin=grid::unit(0, "cm"))+
     a_facet_grid(.~metric.name, scales="free", space="fixed")+
-    scale_y_discrete("method . weights")+
-    scale_x_continuous("")+
-    scale_color_manual(values=method.colors, guide="none")+
-    scale_fill_manual("threshold", values=thresh.colors, guide="none")+
+    a_scale_y_discrete("method . weights")+
+    a_scale_x_continuous("")+
+    a_scale_color_manual(values=method.colors, guide="none")+
+    a_scale_fill_manual("threshold", values=thresh.colors, guide="none")+
     geom_point(aes(metric.value, filterVar.fac, color=method,
                    fill=thresh.type),
                clickSelects="test.fold",
@@ -89,11 +89,11 @@ viz <- list(
                data=data_auc),
   roc=a_plot()+
     ggtitle("ROC curves by weights and test fold")+
-    scale_y_continuous("True positive rate")+
-    scale_x_continuous("False positive rate",
+    a_scale_y_continuous("True positive rate")+
+    a_scale_x_continuous("False positive rate",
                        breaks=c(0, 0.25, 0.5, 0.75, 1),
                        labels=c("0", "0.25", "0.5", "0.75", "1"))+
-    scale_color_manual(values=method.colors)+
+    a_scale_color_manual(values=method.colors)+
     coord_equal()+
     a_theme_bw()+
     a_theme_animint(width=500, height=500)+
@@ -112,7 +112,7 @@ viz <- list(
               clickSelects="test.fold",
               size=5,
               data=VariantModels$roc)+
-    scale_fill_manual("threshold", values=thresh.colors)+
+    a_scale_fill_manual("threshold", values=thresh.colors)+
     geom_point(aes(FPR, TPR, color=method,
                    ##showSelected=method, #not needed!
                    fill=thresh.type),
@@ -149,12 +149,12 @@ viz <- list(
       label_df <- mapply(sub, "one", "1", label_df, SIMPLIFY = FALSE)
       label_value(label_df)
     }, scales="free", space="fixed")+
-    scale_color_manual(values=fp.fn.colors)+
+    a_scale_color_manual(values=fp.fn.colors)+
     geom_line(aes(threshold, error.value,
                   group=error.type, color=error.type),
               showSelected=c("test.fold", "thresh.type", "method"),
               data=add.filterVar.fac(VariantModels$error))+
-    scale_fill_manual(values=method.colors, guide="none")+
+    a_scale_fill_manual(values=method.colors, guide="none")+
     geom_tallrect(aes(
       xmin=xmin, xmax=xmax,
       fill=method),

@@ -72,36 +72,36 @@ limits.numeric <- function(lims, var) {
     trans <- "identity"
   }
 
-  make_scale("continuous", var, limits = lims, trans = trans)
+  make_a_scale("continuous", var, limits = lims, trans = trans)
 }
 
-make_scale <- function(type, var, ...) {
-  scale <- match.fun(paste("scale_", var, "_", type, sep = ""))
-  scale(...)
+make_a_scale <- function(type, var, ...) {
+  a_scale <- match.fun(paste("a_scale_", var, "_", type, sep = ""))
+  a_scale(...)
 }
 
 #' @export
 limits.character <- function(lims, var) {
-  make_scale("discrete", var, limits = lims)
+  make_a_scale("discrete", var, limits = lims)
 }
 #' @export
 limits.factor <- function(lims, var) {
-  make_scale("discrete", var, limits = as.character(lims))
+  make_a_scale("discrete", var, limits = as.character(lims))
 }
 #' @export
 limits.Date <- function(lims, var) {
   stopifnot(length(lims) == 2)
-  make_scale("date", var, limits = lims)
+  make_a_scale("date", var, limits = lims)
 }
 #' @export
 limits.POSIXct <- function(lims, var) {
   stopifnot(length(lims) == 2)
-  make_scale("datetime", var, limits = lims)
+  make_a_scale("datetime", var, limits = lims)
 }
 #' @export
 limits.POSIXlt <- function(lims, var) {
   stopifnot(length(lims) == 2)
-  make_scale("datetime", var, limits = as.POSIXct(lims))
+  make_a_scale("datetime", var, limits = as.POSIXct(lims))
 }
 
 #' Expand the plot limits with data.

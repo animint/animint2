@@ -9,7 +9,7 @@ species.colors <-
     "#A65628", "#F781BF", "#999999")
 viz <- list(
   petals=a_plot()+
-    scale_color_manual(values=species.colors)+
+    a_scale_color_manual(values=species.colors)+
     geom_point(aes(Petal.Length, Petal.Width, color=Species),
                fill=NA,
                shape=21,

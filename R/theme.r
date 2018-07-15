@@ -308,8 +308,8 @@ print.a_theme <- function(x, ...) utils::str(x)
 #'
 #' # To change the title of the legend use the name argument
 #' # in one of the scale options
-#' z + scale_colour_brewer(name = "My Legend")
-#' z + scale_colour_grey(name = "Number of \nCylinders")
+#' z + a_scale_colour_brewer(name = "My Legend")
+#' z + a_scale_colour_grey(name = "Number of \nCylinders")
 #'
 #' # Panel and Plot Attributes
 #' z + a_theme(panel.background = a_element_rect(fill = "black"))

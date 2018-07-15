@@ -1,107 +1,107 @@
 # Default scales -------------------------------------------------------------
 
 #' @export
-#' @rdname scale_hue
+#' @rdname a_scale_hue
 #' @usage NULL
-scale_colour_discrete <- scale_colour_hue
+a_scale_colour_discrete <- a_scale_colour_hue
 
 #' @export
-#' @rdname scale_gradient
+#' @rdname a_scale_gradient
 #' @usage NULL
-scale_colour_continuous <- scale_colour_gradient
+a_scale_colour_continuous <- a_scale_colour_gradient
 
 #' @export
-#' @rdname scale_gradient
+#' @rdname a_scale_gradient
 #' @usage NULL
-scale_colour_datetime <- function() {
-  scale_colour_continuous(trans = "time")
+a_scale_colour_datetime <- function() {
+  a_scale_colour_continuous(trans = "time")
 }
 
 #' @export
-#' @rdname scale_gradient
+#' @rdname a_scale_gradient
 #' @usage NULL
-scale_colour_date <- function() {
-  scale_colour_continuous(trans = "date")
+a_scale_colour_date <- function() {
+  a_scale_colour_continuous(trans = "date")
 }
 
 #' @export
-#' @rdname scale_hue
+#' @rdname a_scale_hue
 #' @usage NULL
-scale_fill_discrete <- scale_fill_hue
+a_scale_fill_discrete <- a_scale_fill_hue
 
 #' @export
-#' @rdname scale_gradient
+#' @rdname a_scale_gradient
 #' @usage NULL
-scale_fill_continuous <- scale_fill_gradient
+a_scale_fill_continuous <- a_scale_fill_gradient
 
 #' @export
-#' @rdname scale_gradient
+#' @rdname a_scale_gradient
 #' @usage NULL
-scale_fill_datetime <- function() {
-  scale_fill_continuous(trans = "time")
+a_scale_fill_datetime <- function() {
+  a_scale_fill_continuous(trans = "time")
 }
 
 #' @export
-#' @rdname scale_gradient
+#' @rdname a_scale_gradient
 #' @usage NULL
-scale_fill_date <- function() {
-  scale_fill_continuous(trans = "date")
+a_scale_fill_date <- function() {
+  a_scale_fill_continuous(trans = "date")
 }
 
 
 # British to American spellings ----------------------------------------------
 
 #' @export
-#' @rdname scale_brewer
+#' @rdname a_scale_brewer
 #' @usage NULL
-scale_color_brewer <- scale_colour_brewer
+a_scale_color_brewer <- a_scale_colour_brewer
 
 #' @export
-#' @rdname scale_brewer
+#' @rdname a_scale_brewer
 #' @usage NULL
-scale_color_distiller <- scale_colour_distiller
+a_scale_color_distiller <- a_scale_colour_distiller
 
 #' @export
-#' @rdname scale_gradient
+#' @rdname a_scale_gradient
 #' @usage NULL
-scale_color_continuous <- scale_colour_gradient
+a_scale_color_continuous <- a_scale_colour_gradient
 
 #' @export
-#' @rdname scale_hue
+#' @rdname a_scale_hue
 #' @usage NULL
-scale_color_discrete <- scale_colour_hue
+a_scale_color_discrete <- a_scale_colour_hue
 
 #' @export
-#' @rdname scale_gradient
+#' @rdname a_scale_gradient
 #' @usage NULL
-scale_color_gradient <- scale_colour_gradient
+a_scale_color_gradient <- a_scale_colour_gradient
 
 #' @export
-#' @rdname scale_gradient
+#' @rdname a_scale_gradient
 #' @usage NULL
-scale_color_gradient2 <- scale_colour_gradient2
+a_scale_color_gradient2 <- a_scale_colour_gradient2
 
 #' @export
-#' @rdname scale_gradient
+#' @rdname a_scale_gradient
 #' @usage NULL
-scale_color_gradientn <- scale_colour_gradientn
+a_scale_color_gradientn <- a_scale_colour_gradientn
 
 #' @export
-#' @rdname scale_grey
+#' @rdname a_scale_grey
 #' @usage NULL
-scale_color_grey <- scale_colour_grey
+a_scale_color_grey <- a_scale_colour_grey
 
 #' @export
-#' @rdname scale_hue
+#' @rdname a_scale_hue
 #' @usage NULL
-scale_color_hue <- scale_colour_hue
+a_scale_color_hue <- a_scale_colour_hue
 
 #' @export
-#' @rdname scale_identity
+#' @rdname a_scale_identity
 #' @usage NULL
-scale_color_identity <- scale_colour_identity
+a_scale_color_identity <- a_scale_colour_identity
 
 #' @export
-#' @rdname scale_manual
+#' @rdname a_scale_manual
 #' @usage NULL
-scale_color_manual <- scale_colour_manual
+a_scale_color_manual <- a_scale_colour_manual

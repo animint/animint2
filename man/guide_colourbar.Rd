@@ -104,14 +104,14 @@ A guide object
 }
 \description{
 Colour bar guide shows continuous color scales mapped onto values.
-Colour bar is available with \code{scale_fill} and \code{scale_colour}.
+Colour bar is available with \code{a_scale_fill} and \code{a_scale_colour}.
 For more information, see the inspiration for this function:
 \href{http://www.mathworks.com/help/techdoc/ref/colorbar.html}{Matlab's colorbar function}.
 }
 \details{
-Guides can be specified in each \code{scale_*} or in \code{\link{guides}}.
-\code{guide="legend"} in \code{scale_*} is syntactic sugar for
-\code{guide=guide_legend()} (e.g. \code{scale_color_manual(guide = "legend")}).
+Guides can be specified in each \code{a_scale_*} or in \code{\link{guides}}.
+\code{guide="legend"} in \code{a_scale_*} is syntactic sugar for
+\code{guide=guide_legend()} (e.g. \code{a_scale_color_manual(guide = "legend")}).
 As for how to specify the guide for each scale in more detail,
 see \code{\link{guides}}.
 }
@@ -122,8 +122,8 @@ p1 <- a_plot(df, aes(X1, X2)) + geom_tile(aes(fill = value))
 p2 <- p1 + geom_point(aes(size = value))
 
 # Basic form
-p1 + scale_fill_continuous(guide = "colorbar")
-p1 + scale_fill_continuous(guide = guide_colorbar())
+p1 + a_scale_fill_continuous(guide = "colorbar")
+p1 + a_scale_fill_continuous(guide = guide_colorbar())
 p1 + guides(fill = guide_colorbar())
 
 # Control styles
@@ -150,18 +150,18 @@ p1 + guides(fill = guide_colorbar(nbin = 3))
 p1 + guides(fill = guide_colorbar(nbin = 100))
 
 # make top- and bottom-most ticks invisible
-p1 + scale_fill_continuous(limits = c(0,20), breaks = c(0, 5, 10, 15, 20),
+p1 + a_scale_fill_continuous(limits = c(0,20), breaks = c(0, 5, 10, 15, 20),
  guide = guide_colorbar(nbin=100, draw.ulim = FALSE, draw.llim = FALSE))
 
 # guides can be controlled independently
 p2 +
-  scale_fill_continuous(guide = "colorbar") +
-  scale_size(guide = "legend")
+  a_scale_fill_continuous(guide = "colorbar") +
+  a_scale_size(guide = "legend")
 p2 + guides(fill = "colorbar", size = "legend")
 
 p2 +
-  scale_fill_continuous(guide = guide_colorbar(direction = "horizontal")) +
-  scale_size(guide = guide_legend(direction = "vertical"))
+  a_scale_fill_continuous(guide = guide_colorbar(direction = "horizontal")) +
+  a_scale_size(guide = guide_legend(direction = "vertical"))
 }
 \seealso{
 Other guides: \code{\link{guide_legend}},

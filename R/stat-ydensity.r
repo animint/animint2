@@ -1,7 +1,7 @@
 #' @inheritParams layer
 #' @inheritParams geom_point
 #' @inheritParams stat_density
-#' @param scale if "area" (default), all violins have the same area (before trimming
+#' @param a_scale if "area" (default), all violins have the same area (before trimming
 #'   the tails). If "count", areas are scaled proportionally to the number of
 #'   observations. If "width", all violins have the same maximum width.
 #' @section Computed variables:
@@ -25,11 +25,11 @@ stat_ydensity <- function(mapping = NULL, data = NULL,
                           adjust = 1,
                           kernel = "gaussian",
                           trim = TRUE,
-                          scale = "area",
+                          a_scale = "area",
                           na.rm = FALSE,
                           show.legend = NA,
                           inherit.aes = TRUE) {
-  scale <- match.arg(scale, c("area", "count", "width"))
+  a_scale <- match.arg(a_scale, c("area", "count", "width"))
 
   layer(
     data = data,
@@ -44,7 +44,7 @@ stat_ydensity <- function(mapping = NULL, data = NULL,
       adjust = adjust,
       kernel = kernel,
       trim = trim,
-      scale = scale,
+      a_scale = a_scale,
       na.rm = na.rm,
       ...
     )
@@ -86,15 +86,15 @@ a_StatYdensity <- a_ggproto("a_StatYdensity", a_Stat,
 
   compute_panel = function(self, data, scales, width = NULL, bw = "nrd0", adjust = 1,
                            kernel = "gaussian", trim = TRUE, na.rm = FALSE,
-                           scale = "area") {
+                           a_scale = "area") {
     data <- a_ggproto_parent(a_Stat, self)$compute_panel(
       data, scales, width = width, bw = bw, adjust = adjust, kernel = kernel,
       trim = trim, na.rm = na.rm
     )
 
     # choose how violins are scaled relative to each other
-    data$violinwidth <- switch(scale,
-      # area : keep the original densities but scale them to a max width of 1
+    data$violinwidth <- switch(a_scale,
+      # area : keep the original densities but a_scale them to a max width of 1
       #        for plotting purposes only
       area = data$density / max(data$density),
       # count: use the original densities scaled to a maximum of 1 (as above)

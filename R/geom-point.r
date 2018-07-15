@@ -26,7 +26,7 @@
 #' @section Aesthetics:
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "point")}
 #'
-#' @seealso \code{\link{scale_size}} to see scale area of points, instead of
+#' @seealso \code{\link{a_scale_size}} to see scale area of points, instead of
 #'   radius, \code{\link{geom_jitter}} to jitter points to reduce (mild)
 #'   overplotting
 #' @inheritParams layer
@@ -48,8 +48,8 @@
 #' p + geom_point(aes(size = qsec))
 #'
 #' # Change scales
-#' p + geom_point(aes(colour = cyl)) + scale_colour_gradient(low = "blue")
-#' p + geom_point(aes(shape = factor(cyl))) + scale_shape(solid = FALSE)
+#' p + geom_point(aes(colour = cyl)) + a_scale_colour_gradient(low = "blue")
+#' p + geom_point(aes(shape = factor(cyl))) + a_scale_shape(solid = FALSE)
 #'
 #' # Set aesthetics to fixed value
 #' a_plot(mtcars, aes(wt, mpg)) + geom_point(colour = "red", size = 3)

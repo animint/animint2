@@ -29,7 +29,7 @@ two.selectors.color <-
        geom_text(aes(generation,frequency,
                      label=sprintf("locus %d",locus)), showSelected="locus",
                  data=data.frame(loci,generation=50,frequency=1.05))+
-       scale_colour_manual(values=colormap)+
+       a_scale_colour_manual(values=colormap)+
        geom_line(aes(generation, frequency, group=population,
                      colour=color), showSelected="locus",
                  data=generation.loci)+
@@ -39,8 +39,8 @@ two.selectors.color <-
        make_tallrect(generation.loci, "locus")+
        ## TODO: why do we have to specify color AND fill to get the
        ## points and legend to look right?
-       scale_fill_manual(values=colormap)+
-       scale_colour_manual(values=colormap)+
+       a_scale_fill_manual(values=colormap)+
+       a_scale_colour_manual(values=colormap)+
        geom_point(aes(locus, frequency, colour=color, fill=color),
                   showSelected="generation",
                   data=generation.loci, pch=21)+

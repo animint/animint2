@@ -63,7 +63,7 @@ viz <-
                        group=metric.name,
                        color=metric.name),
                    data=malaria$error.curves)+
-         scale_color_manual(values=fp.fn.colors)+
+         a_scale_color_manual(values=fp.fn.colors)+
          geom_text(aes(filterVar.thresh, metric.value+offset,
                        color=metric.name,
                        label=paste(metric.value, metric.name, " ")),
@@ -106,8 +106,8 @@ viz <-
                     size=5,
                     pch=21,
                     data=malaria$amplicons)+
-         scale_color_manual(values=c(none="white", some="black"))+
-         scale_x_discrete("Malaria parasite yoelii yoelii chromosome",
+         a_scale_color_manual(values=c(none="white", some="black"))+
+         a_scale_x_discrete("Malaria parasite yoelii yoelii chromosome",
                           drop=FALSE)+
          ylab("position on chromosome (kilo bases = kb)"),
 
@@ -115,9 +115,9 @@ viz <-
          a_theme_bw()+
          ggtitle("Variants in each sanger sequenced amplicon")+
          a_theme_animint(width=1000, height=600)+
-         scale_fill_manual(values=fp.fn.colors)+
-         scale_y_discrete("amplicon LOCUS_ID", drop=FALSE)+
-         scale_x_continuous("relative position on amplicon",
+         a_scale_fill_manual(values=fp.fn.colors)+
+         a_scale_y_discrete("amplicon LOCUS_ID", drop=FALSE)+
+         a_scale_x_continuous("relative position on amplicon",
                             limits=c(-0.05, 1.05),
                             breaks=c())+
          geom_text(aes(firstVariant.norm, LOCUS_ID,
@@ -144,7 +144,7 @@ viz <-
                       showSelected=c("highly.divergent.regions", "annotation"),
                       size=8,
                       data=malaria$regions)+
-         scale_color_manual(values=c("#E41A1C", #red
+         a_scale_color_manual(values=c("#E41A1C", #red
                               "#377EB8", #blue
                               "#4DAF4A", #green
                               "#984EA3", #purple

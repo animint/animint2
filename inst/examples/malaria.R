@@ -39,7 +39,7 @@ normalize <- function(LOCUS_ID, position){
 
 viz <-
   list(errorCurves=a_plot()+
-         theme_bw()+
+         a_theme_bw()+
          ggtitle(paste("error curves, select",
                        filterVar, "threshold"))+
          xlab(paste(filterVar, "threshold"))+
@@ -49,7 +49,7 @@ viz <-
                        group=metric.name,
                        color=metric.name),
                    data=malaria$error.curves)+
-         scale_color_manual(values=fp.fn.colors)+
+         a_scale_color_manual(values=fp.fn.colors)+
          geom_text(aes(filterVar.thresh, metric.value+offset,
                        color=metric.name,
                        label=paste(metric.value, metric.name, " ")),
@@ -58,9 +58,9 @@ viz <-
                    data=malaria$error.curves),
 
        chroms=a_plot()+
-         theme_bw()+
+         a_theme_bw()+
          ggtitle("Sanger sequenced amplicons")+
-         theme_animint(width=600)+
+         a_theme_animint(width=600)+
          geom_text(aes(chrom2int(chrom), position/1e3,
                        label=sprintf("%s threshold = %.1f",
                          filterVar, filterVar.thresh)),
@@ -93,18 +93,18 @@ viz <-
                     clickSelects="LOCUS_ID",
                     size=5,
                     data=malaria$amplicons)+
-         scale_color_manual(values=c(none="white", some="black"))+
-         scale_x_discrete("Malaria parasite yoelii yoelii chromosome",
+         a_scale_color_manual(values=c(none="white", some="black"))+
+         a_scale_x_discrete("Malaria parasite yoelii yoelii chromosome",
                           drop=FALSE)+
          ylab("position on chromosome (kilo bases = kb)"),
 
        variants=a_plot()+
-         theme_bw()+
+         a_theme_bw()+
          ggtitle("Variants in each sanger sequenced amplicon")+
-         theme_animint(width=1000, height=600)+
-         scale_fill_manual(values=fp.fn.colors)+
-         scale_y_discrete("amplicon LOCUS_ID", drop=FALSE)+
-         scale_x_continuous("relative position on amplicon",
+         a_theme_animint(width=1000, height=600)+
+         a_scale_fill_manual(values=fp.fn.colors)+
+         a_scale_y_discrete("amplicon LOCUS_ID", drop=FALSE)+
+         a_scale_x_continuous("relative position on amplicon",
                             limits=c(-0.05, 1.05),
                             breaks=c())+
          geom_text(aes(normalize(LOCUS_ID, firstVariant), LOCUS_ID,
@@ -132,7 +132,7 @@ viz <-
                       showSelected=c("highly.divergent.regions", "annotation"),
                       size=8,
                       data=malaria$regions)+
-         scale_color_manual(values=c("#E41A1C", #red
+         a_scale_color_manual(values=c("#E41A1C", #red
                               "#377EB8", #blue
                               "#4DAF4A", #green
                               "#984EA3", #purple

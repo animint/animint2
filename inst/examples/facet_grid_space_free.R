@@ -3,10 +3,10 @@ fake <- data.frame(year=c(1900, 1950, 2000, 2010),
                    period=c(1, 1, 2, 2))
 viz <-
   list(free=a_plot()+
-       theme_bw()+
-       theme(panel.margin=grid::unit(0, "cm"))+
+       a_theme_bw()+
+       a_theme(panel.margin=grid::unit(0, "cm"))+
        geom_point(aes(year, y), data=fake)+
-       scale_x_continuous(breaks=seq(1900, 2010, by=10))+
+       a_scale_x_continuous(breaks=seq(1900, 2010, by=10))+
          a_facet_grid(.~period, scales="free", space="free"))
 viz$fixed <- viz$free+a_facet_grid(.~period, scales="free")
 viz$freeY <- viz$free+a_facet_grid(.~period, scales="free", space="free_y")

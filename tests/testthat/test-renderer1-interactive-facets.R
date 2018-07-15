@@ -10,13 +10,13 @@ intreg$annotations$logratio <- max(intreg$sig$log)
 mmir.facets <- 
   list(signal=a_plot()+
        a_theme_animint(height=300, width=800)+       
-       scale_x_continuous("position on chromosome (mega base pairs)",
+       a_scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
        geom_tallrect(aes(xmin=first.base/1e6, xmax=last.base/1e6,
                          fill=annotation),
                      showSelected="signal",
                      data=intreg$annotations)+
-       scale_fill_manual(values=breakpoint.colors,guide="none")+
+       a_scale_fill_manual(values=breakpoint.colors,guide="none")+
        geom_text(aes((first.base+last.base)/2e6, logratio+1/8,
                      label=annotation),
                  showSelected="signal",
@@ -52,7 +52,7 @@ mmir.facets <-
                     colour="red",
                     size=3,
                     data=data.frame(intreg$model, what="regression"))+
-       scale_linetype_manual(values=model.linetypes)+
+       a_scale_linetype_manual(values=model.linetypes)+
        geom_segment(aes(min.L, cost, xend=max.L, yend=cost),
                     showSelected="signal",
                     data=data.frame(intreg$selection, what="error"))+

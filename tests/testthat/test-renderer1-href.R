@@ -15,7 +15,7 @@ test_that("clickSelects and href is an error", {
          geom_point(aes(x, university, color=color, href=color),
                     clickSelects="university",
                     data=color.df)+
-         scale_color_identity())
+         a_scale_color_identity())
   expect_error({
     animint2dir(viz, open.browser=FALSE)
   }, "clickSelects can not be used with aes(href)", fixed=TRUE)
@@ -33,7 +33,7 @@ test_that("aes(href) becomes <a href>", {
                         href=paste0("http://en.wikipedia.org/wiki/", color)),
                     showSelected="university",
                     data=color.df, size=5)+
-         scale_color_identity(),
+         a_scale_color_identity(),
          first=list(university="UC Berkeley"))
   info <- animint2HTML(viz)
   expect_links(info$html,

@@ -56,6 +56,6 @@ yrng <- range(economics$unemploy)
 j <- j + geom_rect(aes(NULL, NULL, xmin = start, xmax = end, fill = party),
 ymin = yrng[1], ymax = yrng[2], data = presidential)
 j
-j + scale_fill_manual(values = alpha(c("blue", "red"), .3))
+j + a_scale_fill_manual(values = alpha(c("blue", "red"), .3))
 }
 }

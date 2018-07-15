@@ -87,12 +87,12 @@ set.linetypes["Bayes"] <- classifier.linetypes[["Bayes"]]
 cbind(set.linetypes, set.colors)
 
 errorPlot <- a_plot()+
-  theme_bw()+
+  a_theme_bw()+
   geom_hline(aes(yintercept=error.prop, color=set, linetype=set),
              data=Bayes.error)+
-  scale_color_manual(
+  a_scale_color_manual(
     "error type", values=set.colors, breaks=names(set.colors))+
-  scale_linetype_manual(
+  a_scale_linetype_manual(
     "error type", values=set.linetypes, breaks=names(set.linetypes))+
   ylab("Misclassification Errors")+
   xlab("Number of Neighbors")+
@@ -151,13 +151,13 @@ label.colors <- c(
   "0"="#377EB8",
   "1"="#FF7F00")
 scatterPlot <- a_plot()+
-  theme_bw()+
-  theme(axis.text=element_blank(),
-        axis.ticks=element_blank(),
-        axis.title=element_blank())+
+  a_theme_bw()+
+  a_theme(axis.text=a_element_blank(),
+        axis.ticks=a_element_blank(),
+        axis.title=a_element_blank())+
   ggtitle("7-Nearest Neighbors")+
-  scale_color_manual(values=label.colors)+
-  scale_linetype_manual(values=classifier.linetypes)+
+  a_scale_color_manual(values=label.colors)+
+  a_scale_linetype_manual(values=classifier.linetypes)+
   geom_point(aes(V1, V2, color=label),
              size=0.2,
              data=show.grid)+
@@ -201,8 +201,8 @@ set.colors <-
     train="black")
 errorPlot <- a_plot()+
   ggtitle("Select number of neighbors")+
-  theme_bw()+
-  theme_animint(height=500)+
+  a_theme_bw()+
+  a_theme_animint(height=500)+
   geom_text(aes(min.neighbors, error.prop,
                 color=set, label="Bayes"),
             showSelected="classifier",
@@ -213,12 +213,12 @@ errorPlot <- a_plot()+
                    color=set, linetype=classifier),
                showSelected="classifier",
                data=Bayes.segment)+
-  scale_color_manual(values=set.colors, breaks=names(set.colors))+
-  scale_fill_manual(values=set.colors)+
+  a_scale_color_manual(values=set.colors, breaks=names(set.colors))+
+  a_scale_fill_manual(values=set.colors)+
   guides(fill="none", linetype="none")+
-  scale_linetype_manual(values=classifier.linetypes)+
+  a_scale_linetype_manual(values=classifier.linetypes)+
   ylab("Misclassification Errors")+
-  scale_x_continuous(
+  a_scale_x_continuous(
     "Number of Neighbors",
     limits=c(-1, 30),
     breaks=c(1, 10, 20, 29))+
@@ -256,13 +256,13 @@ Bayes.error <- data.table(
   error.prop=0.21)
 scatterPlot <- a_plot()+
   ggtitle("Mis-classification errors in train set")+
-  theme_bw()+
-  theme_animint(width=500, height=500)+
+  a_theme_bw()+
+  a_theme_animint(width=500, height=500)+
   xlab("Input feature 1")+
   ylab("Input feature 2")+
   coord_equal()+
-  scale_color_manual(values=label.colors)+
-  scale_linetype_manual(values=classifier.linetypes)+
+  a_scale_color_manual(values=label.colors)+
+  a_scale_linetype_manual(values=classifier.linetypes)+
   geom_point(aes(V1, V2, color=label),
              showSelected="neighbors",
              size=0.2,
@@ -281,7 +281,7 @@ scatterPlot <- a_plot()+
              size=3,
              shape=21,
              data=show.points)+
-  scale_fill_manual(values=c(error="black", correct="transparent"))+
+  a_scale_fill_manual(values=c(error="black", correct="transparent"))+
   geom_text(aes(text.V1.error, text.V2.bottom, label=paste(set, "Error:")),
             data=Bayes.error,
             hjust=0)+
@@ -306,7 +306,7 @@ scatterPlot <- a_plot()+
             data=show.text)
 scatterPlot+
   a_facet_wrap("neighbors")+
-  theme(panel.margin=grid::unit(0, "lines"))
+  a_theme(panel.margin=grid::unit(0, "lines"))
 viz.neighbors <- list(
   error=errorPlot,
   data=scatterPlot,

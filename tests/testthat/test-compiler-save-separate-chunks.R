@@ -23,8 +23,8 @@ level.heatmap <- a_plot() +
   geom_tallrect(aes(xmin = WEEKEND - 3, xmax = WEEKEND + 3), 
                 data = state_flu, alpha = .5,
                     clickSelects = "WEEKEND") + 
-  scale_x_date(expand = c(0, 0)) + 
-  scale_fill_gradient2(low = "white", high = "red", breaks = 0:10) + 
+  a_scale_x_date(expand = c(0, 0)) + 
+  a_scale_fill_gradient2(low = "white", high = "red", breaks = 0:10) + 
   a_theme_animint(width = 1200, height = 700) + 
   ggtitle("CDC ILI Activity Level in Lower 48 States")
 
@@ -44,7 +44,7 @@ a_theme_opts <- list(a_theme(panel.grid.minor = a_element_blank(),
 p <- a_plot() + 
   make_text(map_flu, -100, 50, "WEEKEND",
             "CDC FluView in Lower 48 States ending %s") + 
-  scale_fill_gradient2(low = "white", high = "red", breaks = 0:10,
+  a_scale_fill_gradient2(low = "white", high = "red", breaks = 0:10,
                        guide = "none") + 
   a_theme_opts + 
   a_theme_animint(width = 750, height= 500)
@@ -212,7 +212,7 @@ scatter <- a_plot()+
             showSelected=c("country", "year"),
             chunk_vars=c("year", "country"),
             validate_params = FALSE)+
-  scale_size_animint(breaks=10^(5:9))+
+  a_scale_size_animint(breaks=10^(5:9))+
   make_text(no.israel, 55, 9, "year")
 
 ts <- a_plot()+

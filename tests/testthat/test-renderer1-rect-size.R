@@ -30,7 +30,7 @@ test_that("rect size range translates to stroke-width", {
   viz <- list(segs = a_plot() + geom_rect(data = df, color = "violet",
                                           aes(xmin = xmin, ymin = ymin,
                                               xmax = xmax, ymax = ymax, size = size)) +
-                scale_size_identity())
+                a_scale_size_identity())
   info <- suppressWarnings(animint2HTML(viz))
   expect_styles(info$html, list("stroke-width"=c("^0.01[a-z]*$", "^5[a-z]*$")))
 })

@@ -155,7 +155,7 @@ m2
 
 # Transforming the scale means the data are transformed
 # first, after which statistics are computed:
-m2 + scale_y_log10()
+m2 + a_scale_y_log10()
 # Transforming the coordinate system occurs after the
 # statistic has been computed. This means we're calculating the summary on the raw data
 # and stretching the geoms onto the log scale.  Compare the widths of the

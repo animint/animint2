@@ -3,9 +3,9 @@
 #' Legend type guide shows key (i.e., geoms) mapped onto values.
 #' Legend guides for various scales are integrated if possible.
 #'
-#' Guides can be specified in each \code{scale_*} or in \code{\link{guides}}.
-#' \code{guide="legend"} in \code{scale_*} is syntactic sugar for
-#' \code{guide=guide_legend()} (e.g. \code{scale_color_manual(guide = "legend")}).
+#' Guides can be specified in each \code{a_scale_*} or in \code{\link{guides}}.
+#' \code{guide="legend"} in \code{a_scale_*} is syntactic sugar for
+#' \code{guide=guide_legend()} (e.g. \code{a_scale_color_manual(guide = "legend")}).
 #' As for how to specify the guide for each scale in more detail,
 #' see \code{\link{guides}}.
 #'
@@ -68,12 +68,12 @@
 #' p2 <- p1 + geom_point(aes(size = value))
 #'
 #' # Basic form
-#' p1 + scale_fill_continuous(guide = "legend")
-#' p1 + scale_fill_continuous(guide = guide_legend())
+#' p1 + a_scale_fill_continuous(guide = "legend")
+#' p1 + a_scale_fill_continuous(guide = guide_legend())
 #'
 #' # Guide title
-#' p1 + scale_fill_continuous(guide = guide_legend(title = "V")) # title text
-#' p1 + scale_fill_continuous(guide = guide_legend(title = NULL)) # no title
+#' p1 + a_scale_fill_continuous(guide = guide_legend(title = "V")) # title text
+#' p1 + a_scale_fill_continuous(guide = guide_legend(title = NULL)) # no title
 #'
 #' # Control styles
 #'
@@ -99,7 +99,7 @@
 #' p1 + guides(fill = guide_legend(label.position = "left", label.hjust = 1))
 #'
 #' # label styles
-#' p1 + scale_fill_continuous(breaks = c(5, 10, 15),
+#' p1 + a_scale_fill_continuous(breaks = c(5, 10, 15),
 #'   labels = paste("long", c(5, 10, 15)),
 #'   guide = guide_legend(
 #'     direction = "horizontal",
@@ -207,14 +207,14 @@ guide_legend <- function(
 }
 
 #' @export
-guide_train.legend <- function(guide, scale) {
-  breaks <- scale$get_breaks()
+guide_train.legend <- function(guide, a_scale) {
+  breaks <- a_scale$get_breaks()
   if (length(breaks) == 0 || all(is.na(breaks)))
     return()
 
-  key <- as.data.frame(setNames(list(scale$map(breaks)), scale$aesthetics[1]),
+  key <- as.data.frame(setNames(list(a_scale$map(breaks)), a_scale$aesthetics[1]),
     stringsAsFactors = FALSE)
-  key$.label <- scale$get_labels(breaks)
+  key$.label <- a_scale$get_labels(breaks)
 
   # this is a quick fix for #118
   # some scales have NA as na.value (e.g., size)
@@ -223,10 +223,10 @@ guide_train.legend <- function(guide, scale) {
   #
   # Also, drop out-of-range values for continuous scale
   # (should use scale$oob?)
-  if (scale$is_discrete()) {
+  if (a_scale$is_discrete()) {
     key <- key[!is.na(breaks), , drop = FALSE]
   } else {
-    limits <- scale$get_limits()
+    limits <- a_scale$get_limits()
     noob <- !is.na(breaks) & limits[1] <= breaks & breaks <= limits[2]
     key <- key[noob, , drop = FALSE]
   }

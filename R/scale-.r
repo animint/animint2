@@ -1,6 +1,6 @@
 #' @section a_Scales:
 #'
-#' All \code{scale_*} functions (like \code{scale_x_continuous}) return a
+#' All \code{scale_*} functions (like \code{a_scale_x_continuous}) return a
 #' \code{a_Scale*} object (like \code{a_ScaleContinuous}). The \code{a_Scale*}
 #' object represents a single scale.
 #'
@@ -39,7 +39,7 @@ a_Scale <- a_ggproto("a_Scale", NULL,
                  # Train scale from a data frame.
                  #
                  # @return updated range (invisibly)
-                 # @seealso \code{\link{scale_train}} for scale specific generic method
+                 # @seealso \code{\link{a_scale_train}} for a_scale specific generic method
                  train_df = function(self, df) {
                    if (empty(df)) return()
 
@@ -97,7 +97,7 @@ a_Scale <- a_ggproto("a_Scale", NULL,
                  # map tentatively accept limits argument.
                  # map replaces oob (i.e., outside limits) values with NA.
                  #
-                 # Previously limits are always scale_limits(scale).
+                 # Previously limits are always a_scale_limits(a_scale).
                  # But if this function is called to get breaks,
                  # and breaks spans oob, the oob breaks is replaces by NA.
                  # This makes impossible to display oob breaks.
@@ -106,8 +106,8 @@ a_Scale <- a_ggproto("a_Scale", NULL,
                    stop("Not implemented", call. = FALSE)
                  },
 
-                 #  if scale contains a NULL, use the default scale range
-                 #  if scale contains a NA, use the default range for that axis, otherwise
+                 #  if a_scale contains a NULL, use the default a_scale range
+                 #  if a_scale contains a NA, use the default range for that axis, otherwise
                  #  use the user defined limit for that axis
                  get_limits = function(self) {
                    if (self$is_empty()) return(c(0, 1))
@@ -465,7 +465,7 @@ a_ScaleDiscrete <- a_ggproto("a_ScaleDiscrete", a_Scale,
 #' Continuous scale constructor.
 #'
 #' @export
-#' @inheritParams discrete_scale
+#' @inheritParams discrete_a_scale
 #' @param name The name of the scale. Used as axis or legend title. If
 #'   \code{NULL}, the default, the name of the scale is taken from the first
 #'   mapping used for that aesthetic.
@@ -495,7 +495,7 @@ a_ScaleDiscrete <- a_ggproto("a_ScaleDiscrete", a_Scale,
 #' @param limits A numeric vector of length two providing limits of the scale.
 #'   Use \code{NA} to refer to the existing minimum or maximum.
 #' @param rescaler  Used by diverging and n colour gradients
-#'   (i.e. \code{\link{scale_colour_gradient2}}, \code{\link{scale_colour_gradientn}}).
+#'   (i.e. \code{\link{a_scale_colour_gradient2}}, \code{\link{a_scale_colour_gradientn}}).
 #'   A function used to scale the input values to the range [0, 1].
 #' @param oob Function that handles limits outside of the scale limits
 #'   (out of bounds). The default replaces out of bounds values with NA.
@@ -517,7 +517,7 @@ a_ScaleDiscrete <- a_ggproto("a_ScaleDiscrete", a_Scale,
 #'   discrete variables.
 #' @param guide Name of guide object, or object itself.
 #' @export
-continuous_scale <- function(aesthetics, scale_name, palette, name = waiver(),
+continuous_a_scale <- function(aesthetics, scale_name, palette, name = waiver(),
                              breaks = waiver(), minor_breaks = waiver(),
                              labels = waiver(), limits = NULL,
                              rescaler = rescale, oob = censor,
@@ -600,7 +600,7 @@ continuous_scale <- function(aesthetics, scale_name, palette, name = waiver(),
 #' @param guide the name of, or actual function, used to create the
 #'   guide. See \code{\link{guides}} for more info.
 #' @export
-discrete_scale <- function(aesthetics, scale_name, palette, name = waiver(), breaks = waiver(),
+discrete_a_scale <- function(aesthetics, scale_name, palette, name = waiver(), breaks = waiver(),
                            labels = waiver(), limits = NULL, expand = waiver(), na.value = NA, drop = TRUE,
                            guide = "legend") {
 

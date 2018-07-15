@@ -17,7 +17,7 @@ no.time <-
                      key=country), # also use key here!
                  showSelected=c("country", "year"),
                  data=WorldBank)+
-       scale_size_animint(breaks=10^(5:9))+
+       a_scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
        
        ts=a_plot()+

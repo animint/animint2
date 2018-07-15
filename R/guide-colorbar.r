@@ -1,13 +1,13 @@
 #' Continuous colour bar guide.
 #'
 #' Colour bar guide shows continuous color scales mapped onto values.
-#' Colour bar is available with \code{scale_fill} and \code{scale_colour}.
+#' Colour bar is available with \code{a_scale_fill} and \code{a_scale_colour}.
 #' For more information, see the inspiration for this function:
 #' \href{http://www.mathworks.com/help/techdoc/ref/colorbar.html}{Matlab's colorbar function}.
 #'
-#' Guides can be specified in each \code{scale_*} or in \code{\link{guides}}.
-#' \code{guide="legend"} in \code{scale_*} is syntactic sugar for
-#' \code{guide=guide_legend()} (e.g. \code{scale_color_manual(guide = "legend")}).
+#' Guides can be specified in each \code{a_scale_*} or in \code{\link{guides}}.
+#' \code{guide="legend"} in \code{a_scale_*} is syntactic sugar for
+#' \code{guide=guide_legend()} (e.g. \code{a_scale_color_manual(guide = "legend")}).
 #' As for how to specify the guide for each scale in more detail,
 #' see \code{\link{guides}}.
 #'
@@ -47,8 +47,8 @@
 #' p2 <- p1 + geom_point(aes(size = value))
 #'
 #' # Basic form
-#' p1 + scale_fill_continuous(guide = "colorbar")
-#' p1 + scale_fill_continuous(guide = guide_colorbar())
+#' p1 + a_scale_fill_continuous(guide = "colorbar")
+#' p1 + a_scale_fill_continuous(guide = guide_colorbar())
 #' p1 + guides(fill = guide_colorbar())
 #'
 #' # Control styles
@@ -75,18 +75,18 @@
 #' p1 + guides(fill = guide_colorbar(nbin = 100))
 #'
 #' # make top- and bottom-most ticks invisible
-#' p1 + scale_fill_continuous(limits = c(0,20), breaks = c(0, 5, 10, 15, 20),
+#' p1 + a_scale_fill_continuous(limits = c(0,20), breaks = c(0, 5, 10, 15, 20),
 #'  guide = guide_colorbar(nbin=100, draw.ulim = FALSE, draw.llim = FALSE))
 #'
 #' # guides can be controlled independently
 #' p2 +
-#'   scale_fill_continuous(guide = "colorbar") +
-#'   scale_size(guide = "legend")
+#'   a_scale_fill_continuous(guide = "colorbar") +
+#'   a_scale_size(guide = "legend")
 #' p2 + guides(fill = "colorbar", size = "legend")
 #'
 #' p2 +
-#'   scale_fill_continuous(guide = guide_colorbar(direction = "horizontal")) +
-#'   scale_size(guide = guide_legend(direction = "vertical"))
+#'   a_scale_fill_continuous(guide = guide_colorbar(direction = "horizontal")) +
+#'   a_scale_size(guide = guide_legend(direction = "vertical"))
 guide_colourbar <- function(
 
   # title
@@ -164,37 +164,37 @@ guide_colourbar <- function(
 }
 
 #' @export
-guide_train.colorbar <- function(guide, scale) {
+guide_train.colorbar <- function(guide, a_scale) {
 
-  # do nothing if scale are inappropriate
-  if (length(intersect(scale$aesthetics, c("color", "colour", "fill"))) == 0) {
+  # do nothing if a_scale are inappropriate
+  if (length(intersect(a_scale$aesthetics, c("color", "colour", "fill"))) == 0) {
     warning("colorbar guide needs colour or fill scales.")
     return(NULL)
   }
-  if (scale$is_discrete()) {
+  if (a_scale$is_discrete()) {
     warning("colorbar guide needs continuous scales.")
     return(NULL)
   }
 
 
   # create data frame for tick display
-  breaks <- scale$get_breaks()
+  breaks <- a_scale$get_breaks()
   if (length(breaks) == 0 || all(is.na(breaks)))
     return()
 
-  ticks <- as.data.frame(setNames(list(scale$map(breaks)), scale$aesthetics[1]))
+  ticks <- as.data.frame(setNames(list(a_scale$map(breaks)), a_scale$aesthetics[1]))
   ticks$.value <- breaks
-  ticks$.label <- scale$get_labels(breaks)
+  ticks$.label <- a_scale$get_labels(breaks)
 
   guide$key <- ticks
 
   # bar specification (number of divs etc)
-  .limits <- scale$get_limits()
-  .bar <- discard(pretty(.limits, n = guide$nbin), scale$get_limits())
+  .limits <- a_scale$get_limits()
+  .bar <- discard(pretty(.limits, n = guide$nbin), a_scale$get_limits())
   if (length(.bar) == 0) {
     .bar = unique(.limits)
   }
-  guide$bar <- data.frame(colour = scale$map(.bar), value = .bar, stringsAsFactors = FALSE)
+  guide$bar <- data.frame(colour = a_scale$map(.bar), value = .bar, stringsAsFactors = FALSE)
   if (guide$reverse) {
     guide$key <- guide$key[nrow(guide$key):1, ]
     guide$bar <- guide$bar[nrow(guide$bar):1, ]

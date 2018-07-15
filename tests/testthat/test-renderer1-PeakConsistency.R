@@ -26,8 +26,8 @@ second.small <-
                           color=model, size=model),
                       showSelected=c("seed", "sample.size"),
                       data=subset(PeakConsistency$model, increase==1))+
-         scale_size_manual(values=c(PeakSegJoint=0.5, PeakSeg=1))+
-         scale_color_manual(values=color.code),
+         a_scale_size_manual(values=c(PeakSegJoint=0.5, PeakSeg=1))+
+         a_scale_color_manual(values=color.code),
        first=list(sample.size=5))
 
 info <- animint2HTML(second.small)
@@ -57,7 +57,7 @@ viz <-
          geom_line(aes(increase, mean.diff), data=PeakConsistency$increase),
        errors=a_plot()+
          ylab("distance from true peaks to estimated peaks")+
-         scale_color_manual(values=color.code)+
+         a_scale_color_manual(values=color.code)+
          make_tallrect(PeakConsistency$error, "sample.size")+
          geom_line(aes(sample.size, errors,
                        group=interaction(model, seed),
@@ -95,8 +95,8 @@ viz <-
                     show.legend=TRUE,
                     linetype="dashed",
                     data=PeakConsistency$guess)+
-         scale_size_manual(values=c(PeakSegJoint=1, PeakSeg=2))+
-         scale_color_manual(values=color.code),
+         a_scale_size_manual(values=c(PeakSegJoint=1, PeakSeg=2))+
+         a_scale_color_manual(values=color.code),
        first=list(sample.size=5))
 
 ## viz$errors+a_facet_grid(. ~ increase)

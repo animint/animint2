@@ -21,7 +21,7 @@ gapminder <-
                  showSelected=c("country", "year"),
                  data=WorldBank)+
        make_text(WorldBank, 5, 80, "year")+
-       scale_size_animint(pixel.range=c(2,20), breaks=10^(4:9)))
+       a_scale_size_animint(pixel.range=c(2,20), breaks=10^(4:9)))
 animint2dir(gapminder, "WorldBank-viz")
 
 data(worldPop)

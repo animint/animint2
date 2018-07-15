@@ -15,7 +15,7 @@
 #'   long tick marks. In base 10, these are the "1" (or "10") ticks.
 #' @param scaled is the data already log-scaled? This should be \code{TRUE}
 #'   (default) when the data is already transformed with \code{log10()} or when
-#'   using \code{scale_y_log10}. It should be \code{FALSE} when using
+#'   using \code{a_scale_y_log10}. It should be \code{FALSE} when using
 #'   \code{coord_trans(y = "log10")}.
 #' @param colour Colour of the tick marks.
 #' @param size Thickness of tick marks, in mm.
@@ -25,7 +25,7 @@
 #' @param ... Other parameters passed on to the layer
 #'
 #' @export
-#' @seealso \code{\link{scale_y_continuous}}, \code{\link{scale_y_log10}} for log scale
+#' @seealso \code{\link{a_scale_y_continuous}}, \code{\link{a_scale_y_log10}} for log scale
 #'   transformations.
 #' @seealso \code{\link{coord_trans}} for log coordinate transformations.
 #'
@@ -33,11 +33,11 @@
 #' # Make a log-log plot (without log ticks)
 #' a <- a_plot(msleep, aes(bodywt, brainwt)) +
 #'  geom_point(na.rm = TRUE) +
-#'  scale_x_log10(
+#'  a_scale_x_log10(
 #'    breaks = scales::trans_breaks("log10", function(x) 10^x),
 #'    labels = scales::trans_format("log10", scales::math_format(10^.x))
 #'  ) +
-#'  scale_y_log10(
+#'  a_scale_y_log10(
 #'    breaks = scales::trans_breaks("log10", function(x) 10^x),
 #'    labels = scales::trans_format("log10", scales::math_format(10^.x))
 #'  ) +
@@ -54,8 +54,8 @@
 #' # plotting it. Also hide the minor grid lines.
 #' b <- a_plot(msleep, aes(log10(bodywt), log10(brainwt))) +
 #'  geom_point(na.rm = TRUE) +
-#'  scale_x_continuous(name = "body", labels = scales::math_format(10^.x)) +
-#'  scale_y_continuous(name = "brain", labels = scales::math_format(10^.x)) +
+#'  a_scale_x_continuous(name = "body", labels = scales::math_format(10^.x)) +
+#'  a_scale_y_continuous(name = "brain", labels = scales::math_format(10^.x)) +
 #'  a_theme_bw() + a_theme(panel.grid.minor = a_element_blank())
 #'
 #' b + annotation_logticks()

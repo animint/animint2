@@ -147,7 +147,7 @@ vs0 <- subset(mtcars, vs == 0)
 vs1 <- subset(mtcars, vs == 1)
 viz <- list(
   p=a_plot()+
-    scale_color_discrete("vs")+
+    a_scale_color_discrete("vs")+
     geom_point(aes(mpg, hp, color = "vs0"),
                data=vs0)+
     geom_point(aes(mpg, hp, color = "vs1"),
@@ -203,7 +203,7 @@ test_that('aes(color=vs, fill=vs.fac) aes(color=vs.num, fill=vs.fac) is OK"', {
 
 viz <- list(
   p=a_plot()+
-    scale_color_discrete("vs")+
+    a_scale_color_discrete("vs")+
     geom_point(aes(mpg, hp, color = vs.fac),
                data=vs0)+
     geom_point(aes(mpg, hp, color = vs.fac),
@@ -219,7 +219,7 @@ test_that('aes(color=vs.fac) is OK"', {
 
 viz <- list(
   p=a_plot()+
-    scale_color_discrete("vs")+
+    a_scale_color_discrete("vs")+
     geom_point(aes(mpg, hp, color = vs.fac),
                data=vs0)+
     geom_point(aes(mpg, hp, color = vs.fac2),

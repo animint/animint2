@@ -44,7 +44,7 @@ viz.data.fun <- list(
               showSelected=c("country", "year"),
               clickSelects="country",
               data=SCATTER(not.na))+
-    scale_size_animint(breaks=10^(5:9))+
+    a_scale_size_animint(breaks=10^(5:9))+
     a_facet_grid(side ~ top, scales="free"),
   duration=list(year=2000),
   first=list(year=1975, country=c("United States", "Vietnam")),

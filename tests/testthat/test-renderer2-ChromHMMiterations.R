@@ -8,19 +8,19 @@ transition <- data.frame(ChromHMMiterations$transition, parameters="transition")
 viz <- list(
   parameters=a_plot()+
     ggtitle("parameters at selected iteration")+
-    scale_fill_gradient(low="white", high="blue")+
+    a_scale_fill_gradient(low="white", high="blue")+
     geom_tile(aes(state, experiment, fill=frequency,
                   key=paste(state, experiment)),
               showSelected="iteration",
               data=emission)+
-    scale_color_gradient(low="white", high="red")+
+    a_scale_color_gradient(low="white", high="red")+
     a_theme_bw()+
     a_theme_animint(height=600, width=350)+
     a_theme(panel.margin=grid::unit(0, "cm"))+
     a_facet_grid(parameters ~ .,
                space="free",
                scales="free_y")+
-    scale_y_discrete(drop=FALSE)+
+    a_scale_y_discrete(drop=FALSE)+
     geom_point(aes(state.to, state.from, color=probability,
                   key=paste(state.from, state.to)),
                showSelected="iteration",

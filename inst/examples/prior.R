@@ -11,7 +11,7 @@ priorBands <-
        geom_point(aes(positive, negative, size=dimension),
                   clickSelects="set",
                   data=prior$data)+
-       scale_size_continuous(range=c(3,20),breaks=prior$data$dim),
+       a_scale_size_continuous(range=c(3,20),breaks=prior$data$dim),
        error=a_plot()+
        make_text(prior$accuracy, 86, 0.3, "prior")+
        make_text(prior$accuracy, 86, 0.32, "samples")+
@@ -19,7 +19,7 @@ priorBands <-
                   showSelected=c("prior", "samples"),
                   clickSelects="set",
                   data=prior$accuracy, size=4)+
-       scale_colour_manual(values=c("Kernel logistic regression"="black",
+       a_scale_colour_manual(values=c("Kernel logistic regression"="black",
                              "Least squares probabalistic classifier"="white"))+
        ylab(sqLab)+
        xlab("percent classification accuracy"),

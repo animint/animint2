@@ -124,18 +124,18 @@ train_layout <- function(a_facet, coord, layout, ranges) {
       for (xy in vars) {
         u.type <- toupper(xy)
         l.type <- tolower(xy)
-        scale.type <- paste0("SCALE_", u.type)
+        a_scale.type <- paste0("SCALE_", u.type)
         range.type <- paste0(l.type, ".range")
         space.type <- paste0("SPACE_", u.type)
-        vals <- layout[[scale.type]]
+        vals <- layout[[a_scale.type]]
         uv <- unique(vals)
         diffs <- sapply(ranges[which(vals %in% uv)],
                         function(x) { diff(x[[range.type]]) })
         udiffs <- unique(diffs)
         # decide the proportion of the height/width each scale deserves based on the range
         props <- data.frame(tmp1 = uv, tmp2 = udiffs / sum(udiffs))
-        names(props) <- c(scale.type, space.type)
-        layout <- plyr::join(layout, props, by = scale.type)
+        names(props) <- c(a_scale.type, space.type)
+        layout <- plyr::join(layout, props, by = a_scale.type)
       }
       names(layout) <- gsub("SPACE_X", "width_proportion", names(layout), fixed = TRUE)
       names(layout) <- gsub("SPACE_Y", "height_proportion", names(layout), fixed = TRUE)

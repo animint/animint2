@@ -8,7 +8,7 @@ boxplotdata <- rbind(data.frame(x=1:50, y=sort(rnorm(50, 3, 1)), group="N(3,1)")
 boxplotdata <- ddply(boxplotdata, .(group), transform, ymax=max(y), ymin=min(y), med=median(y))
 
 f1 <- a_plot() + geom_density(data=boxplotdata, aes(x=y, group=group, fill=group), alpha=.5) +
-  scale_fill_discrete("Distribution") + xlab("x") + 
+  a_scale_fill_discrete("Distribution") + xlab("x") + 
   ggtitle("geom_density") + a_facet_wrap(~group)
 f1
 

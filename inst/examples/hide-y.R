@@ -23,8 +23,8 @@ hide.y <- a_plot()+
            clickSelects="subcontinent",
            data=worldPop, 
            stat="identity", position="identity")+ coord_flip()+
-  theme(axis.line.y=element_blank(), axis.text.y=element_blank(), 
-        axis.ticks.y=element_blank(), axis.title.y=element_blank())
+  a_theme(axis.line.y=a_element_blank(), axis.text.y=a_element_blank(), 
+        axis.ticks.y=a_element_blank(), axis.title.y=a_element_blank())
 print(hide.y)
 pop.no.y <- popPlots
 pop.no.y$bars <- hide.y

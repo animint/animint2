@@ -76,6 +76,6 @@ a_Coord <- a_ggproto("a_Coord",
 #' @keywords internal
 is.Coord <- function(x) inherits(x, "a_Coord")
 
-expand_default <- function(scale, discrete = c(0, 0.6), continuous = c(0.05, 0)) {
-  scale$expand %|W|% if (scale$is_discrete()) discrete else continuous
+expand_default <- function(a_scale, discrete = c(0, 0.6), continuous = c(0.05, 0)) {
+  a_scale$expand %|W|% if (a_scale$is_discrete()) discrete else continuous
 }

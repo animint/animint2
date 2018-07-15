@@ -22,7 +22,7 @@ wb.paper <-
                  clickSelects="country",
                  showSelected=c("country", "year", "region"),
                  data=WorldBank)+
-       scale_size_animint(breaks=10^(9:5))+
+       a_scale_size_animint(breaks=10^(9:5))+
        make_text(WorldBank, 5, 80, "year"),
        time=list(variable="year",ms=3000),
        duration=list(year=1000),

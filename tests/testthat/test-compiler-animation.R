@@ -44,7 +44,7 @@ motion <-
                         showSelected="year",
                   data=WorldBank)+
        make_text(WorldBank, 55, 9, "year")+
-       scale_size_continuous(range=c(1.5,20)),
+       a_scale_size_continuous(range=c(1.5,20)),
        ts=a_plot()+
        make_tallrect(WorldBank, "year")+
        geom_line(aes(year, life.expectancy, group=country),

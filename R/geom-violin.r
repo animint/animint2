@@ -23,10 +23,10 @@
 #' p + geom_violin() + coord_flip()
 #'
 #' # Scale maximum width proportional to sample size:
-#' p + geom_violin(scale = "count")
+#' p + geom_violin(a_scale = "count")
 #'
 #' # Scale maximum width to 1 for all violins:
-#' p + geom_violin(scale = "width")
+#' p + geom_violin(a_scale = "width")
 #'
 #' # Default is to trim violins to the range of the data. To disable:
 #' p + geom_violin(trim = FALSE)
@@ -55,15 +55,15 @@
 #' # number of outliers.
 #' m <- a_plot(movies, aes(y = votes, x = rating, group = cut_width(rating, 0.5)))
 #' m + geom_violin()
-#' m + geom_violin() + scale_y_log10()
+#' m + geom_violin() + a_scale_y_log10()
 #' m + geom_violin() + coord_trans(y = "log10")
-#' m + geom_violin() + scale_y_log10() + coord_trans(y = "log10")
+#' m + geom_violin() + a_scale_y_log10() + coord_trans(y = "log10")
 #'
 #' # Violin plots with continuous x:
 #' # Use the group aesthetic to group observations in violins
 #' a_plot(movies, aes(year, budget)) + geom_violin()
 #' a_plot(movies, aes(year, budget)) +
-#'   geom_violin(aes(group = cut_width(year, 10)), scale = "width")
+#'   geom_violin(aes(group = cut_width(year, 10)), a_scale = "width")
 #' }
 #' }
 geom_violin <- function(mapping = NULL, data = NULL,
@@ -71,7 +71,7 @@ geom_violin <- function(mapping = NULL, data = NULL,
                         ...,
                         draw_quantiles = NULL,
                         trim = TRUE,
-                        scale = "area",
+                        a_scale = "area",
                         na.rm = FALSE,
                         show.legend = NA,
                         inherit.aes = TRUE) {
@@ -85,7 +85,7 @@ geom_violin <- function(mapping = NULL, data = NULL,
     inherit.aes = inherit.aes,
     params = list(
       trim = trim,
-      scale = scale,
+      a_scale = a_scale,
       draw_quantiles = draw_quantiles,
       na.rm = na.rm,
       ...

@@ -51,8 +51,8 @@ structure(popPlots, class = "animint")
 
 ```{r "ggbarplots"}
 ## Population barplots broken down by year.
-popPlots$bars + a_facet_wrap("year") + theme_bw() + 
-  theme(panel.margin = unit(0,"cm"))
+popPlots$bars + a_facet_wrap("year") +a_theme_bw() + 
+ a_theme(panel.margin = unit(0,"cm"))
 ```
 
 ```{r "ggbarplots2"}
@@ -116,15 +116,15 @@ popPlots3 <-
          geom_point(aes(year, population, colour = type), 
                     clickSelects = "subcontinent",
                     data = worldPop, size = 4, alpha = .6) +
-         scale_colour_manual(values = c("black", "red")),
+         a_scale_colour_manual(values = c("black", "red")),
        stack = a_plot() + 
          geom_rect(aes(xmin = 0, xmax = 0.4, ymin = cumPop.lower, ymax = cumPop,
                        fill = factor(subcontinent)), 
                    showSelected = "year", clickSelects = "subcontinent",
                    data = popCumSum, colour = "#000000") +
-         scale_y_continuous(limits = c(0,1), breaks = c(0, 1), labels = NULL) + 
-         scale_x_continuous(labels = NULL) + 
-         scale_fill_discrete("Subcontinent") +
+         a_scale_y_continuous(limits = c(0,1), breaks = c(0, 1), labels = NULL) + 
+         a_scale_x_continuous(labels = NULL) + 
+         a_scale_fill_discrete("Subcontinent") +
          xlab("") + ylab(""),
       width = list(bars  =  400, lines  =  400, stack  =  200), height = list(400)
   )

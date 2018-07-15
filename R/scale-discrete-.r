@@ -8,11 +8,11 @@
 #'
 #' @param ... common discrete scale parameters: \code{name}, \code{breaks},
 #'  \code{labels}, \code{na.value}, \code{limits} and \code{guide}.  See
-#'  \code{\link{discrete_scale}} for more details
+#'  \code{\link{discrete_a_scale}} for more details
 #' @param expand a numeric vector of length two giving multiplicative and
 #'   additive expansion constants. These constants ensure that the data is
 #'   placed some distance away from the axes.
-#' @rdname scale_discrete
+#' @rdname a_scale_discrete
 #' @export
 #' @examples
 #' a_plot(diamonds, aes(cut)) + geom_bar()
@@ -24,13 +24,13 @@
 #' (d <- a_plot(subset(diamonds, carat > 1), aes(cut, clarity)) +
 #'       geom_jitter())
 #'
-#' d + scale_x_discrete("Cut")
-#' d + scale_x_discrete("Cut", labels = c("Fair" = "F","Good" = "G",
+#' d + a_scale_x_discrete("Cut")
+#' d + a_scale_x_discrete("Cut", labels = c("Fair" = "F","Good" = "G",
 #'   "Very Good" = "VG","Perfect" = "P","Ideal" = "I"))
 #'
 #' # Use limits to adjust the which levels (and in what order)
 #' # are displayed
-#' d + scale_x_discrete(limits = c("Fair","Ideal"))
+#' d + a_scale_x_discrete(limits = c("Fair","Ideal"))
 #'
 #' # you can also use the short hand functions xlim and ylim
 #' d + xlim("Fair","Ideal", "Good")
@@ -44,10 +44,10 @@
 #' # Use abbreviate as a formatter to reduce long names
 #' a_plot(mpg, aes(reorder(manufacturer, displ), cty)) +
 #'   geom_point() +
-#'   scale_x_discrete(labels = abbreviate)
+#'   a_scale_x_discrete(labels = abbreviate)
 #' }
-scale_x_discrete <- function(..., expand = waiver()) {
-  sc <- discrete_scale(c("x", "xmin", "xmax", "xend"), "position_d", identity, ...,
+a_scale_x_discrete <- function(..., expand = waiver()) {
+  sc <- discrete_a_scale(c("x", "xmin", "xmax", "xend"), "position_d", identity, ...,
                        expand = expand, guide = "none")
 
   # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
@@ -58,10 +58,10 @@ scale_x_discrete <- function(..., expand = waiver()) {
   sc$range_c <- continuous_range()
   sc
 }
-#' @rdname scale_discrete
+#' @rdname a_scale_discrete
 #' @export
-scale_y_discrete <- function(..., expand = waiver()) {
-  sc <- discrete_scale(c("y", "ymin", "ymax", "yend"), "position_d", identity, ...,
+a_scale_y_discrete <- function(..., expand = waiver()) {
+  sc <- discrete_a_scale(c("y", "ymin", "ymax", "yend"), "position_d", identity, ...,
                        expand = expand, guide = "none")
 
   # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this

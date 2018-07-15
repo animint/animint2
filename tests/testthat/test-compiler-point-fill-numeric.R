@@ -13,7 +13,7 @@ viz <-
        geom_point(aes(Sepal.Width, Petal.Width,
                       color=Petal.Length),
                   data=iris, size=5)+
-       scale_color_continuous("petal length"))
+       a_scale_color_continuous("petal length"))
 
 test_that("legends are produced", {
   info <- animint2dir(viz, open.browser=FALSE)

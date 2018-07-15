@@ -47,7 +47,7 @@ df <- data.frame(
 )
 a_plot(df, aes(x = "", y = value, fill = variable)) +
   geom_bar(width = 1, stat = "identity") +
-  scale_fill_manual(values = c("red", "yellow")) +
+  a_scale_fill_manual(values = c("red", "yellow")) +
   coord_polar("y", start = pi / 3) +
   labs(title = "Pac man")
 

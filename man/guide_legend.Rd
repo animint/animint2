@@ -90,9 +90,9 @@ Legend type guide shows key (i.e., geoms) mapped onto values.
 Legend guides for various scales are integrated if possible.
 }
 \details{
-Guides can be specified in each \code{scale_*} or in \code{\link{guides}}.
-\code{guide="legend"} in \code{scale_*} is syntactic sugar for
-\code{guide=guide_legend()} (e.g. \code{scale_color_manual(guide = "legend")}).
+Guides can be specified in each \code{a_scale_*} or in \code{\link{guides}}.
+\code{guide="legend"} in \code{a_scale_*} is syntactic sugar for
+\code{guide=guide_legend()} (e.g. \code{a_scale_color_manual(guide = "legend")}).
 As for how to specify the guide for each scale in more detail,
 see \code{\link{guides}}.
 }
@@ -104,12 +104,12 @@ p1 <- a_plot(df, aes(X1, X2)) + geom_tile(aes(fill = value))
 p2 <- p1 + geom_point(aes(size = value))
 
 # Basic form
-p1 + scale_fill_continuous(guide = "legend")
-p1 + scale_fill_continuous(guide = guide_legend())
+p1 + a_scale_fill_continuous(guide = "legend")
+p1 + a_scale_fill_continuous(guide = guide_legend())
 
 # Guide title
-p1 + scale_fill_continuous(guide = guide_legend(title = "V")) # title text
-p1 + scale_fill_continuous(guide = guide_legend(title = NULL)) # no title
+p1 + a_scale_fill_continuous(guide = guide_legend(title = "V")) # title text
+p1 + a_scale_fill_continuous(guide = guide_legend(title = NULL)) # no title
 
 # Control styles
 
@@ -135,7 +135,7 @@ p1 + guides(fill =
 p1 + guides(fill = guide_legend(label.position = "left", label.hjust = 1))
 
 # label styles
-p1 + scale_fill_continuous(breaks = c(5, 10, 15),
+p1 + a_scale_fill_continuous(breaks = c(5, 10, 15),
   labels = paste("long", c(5, 10, 15)),
   guide = guide_legend(
     direction = "horizontal",

@@ -20,19 +20,19 @@ test_that("ylab converts", {
   expect_identical(xmlValue(ylabel[[1]]), "Sepal Width")
 })
 
-test_that("scale_x_continuous(name) converts", {
-  viz <- list(scatter=ggpoint + scale_x_continuous("Petal Width"))
+test_that("a_scale_x_continuous(name) converts", {
+  viz <- list(scatter=ggpoint + a_scale_x_continuous("Petal Width"))
   info <- animint2HTML(viz)
   expect_identical(info$plots$scatter$xtitle, "Petal Width")
   xlabel <- getNodeSet(info$html, "//text[@class='xtitle']")
   expect_identical(xmlValue(xlabel[[1]]), "Petal Width")
 })
 
-test_that("scale_x_continuous(breaks)+xlab(name) converts", {
+test_that("a_scale_x_continuous(breaks)+xlab(name) converts", {
   viz <-
     list(scatter=a_plot() +
            geom_point(aes(Petal.Length, Sepal.Length), data = iris) +
-           scale_x_continuous(breaks = c(1.5, 6.5)) +
+           a_scale_x_continuous(breaks = c(1.5, 6.5)) +
            xlab("Petal Length"))
   
   info <- animint2HTML(viz)  
@@ -56,7 +56,7 @@ stocks <- data.frame(
 
 series <- a_plot() + geom_line(aes(x = time, y = value, group = vars), data = stocks)
 
-test_that("scale_x_time ticks/labels work", { 
+test_that("a_scale_x_time ticks/labels work", { 
   info <- animint2HTML(list(series = series))
   xticks <- getNodeSet(
     info$html, "//g[contains(@class, 'xaxis')]/g[@class='tick major']")

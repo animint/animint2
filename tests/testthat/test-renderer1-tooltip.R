@@ -18,7 +18,7 @@ viz <-
                      key=country), #also use key here!
                  showSelected=c("country", "year"),
                  data=WorldBank)+
-       scale_size_animint(breaks=10^(5:9))+
+       a_scale_size_animint(breaks=10^(5:9))+
        geom_rect(aes(xmin=45, xmax=70,
                      ymin=8, ymax=10,
                      tooltip=paste(countries, "not NA in", year)),

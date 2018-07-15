@@ -76,7 +76,7 @@
 #'
 #' # y axis isn't really meaningful, so hide it
 #' a_plot(mtcars, aes(x = mpg)) + geom_dotplot(binwidth = 1.5) +
-#'   scale_y_continuous(NULL, breaks = NULL)
+#'   a_scale_y_continuous(NULL, breaks = NULL)
 #'
 #' # Overlap dots vertically
 #' a_plot(mtcars, aes(x = mpg)) + geom_dotplot(binwidth = 1.5, stackratio = .7)

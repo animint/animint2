@@ -20,7 +20,7 @@
 #' p
 #'
 #' # Setting the limits on a scale converts all values outside the range to NA.
-#' p + scale_x_continuous(limits = c(325, 500))
+#' p + a_scale_x_continuous(limits = c(325, 500))
 #'
 #' # Setting the limits on the coordinate system performs a visual zoom.
 #' # The data is unchanged, and we just view a small portion of the original
@@ -42,7 +42,7 @@
 #'
 #' # When zooming the scale, the we get 25 new bins that are the same
 #' # size on the plot, but represent smaller regions of the data space
-#' d + scale_x_continuous(limits = c(0, 1))
+#' d + a_scale_x_continuous(limits = c(0, 1))
 #'
 #' # When zooming the coordinate system, we see a subset of original 50 bins,
 #' # displayed bigger

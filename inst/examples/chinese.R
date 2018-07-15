@@ -39,7 +39,7 @@ scatter = a_plot()+
              showSelected = c("name", "time"),
              data=data ) +
   ##make_text( data, 80, 90, "time" ) +
-  continuous_scale("size","area",palette = function(x){
+  continuous_a_scale("size","area",palette = function(x){
     scales:::rescale(sqrt(abs(x)), c(1,15), c(0,1))
   }) +
   xlim(0, 50)

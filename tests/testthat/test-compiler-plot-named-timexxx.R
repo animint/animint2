@@ -14,7 +14,7 @@ viz <-
        geom_text(aes(life.expectancy, fertility.rate, label=country),
                  data=not.na,
                      showSelected="country", showSelected2="year")+
-       scale_size_animint(breaks=10^(5:9))+
+       a_scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
 
        timeSeries=a_plot()+
@@ -46,7 +46,7 @@ bad <-
        geom_text(aes(life.expectancy, fertility.rate, label=country),
                  data=not.na,
                      showSelected=c("country", "year"))+
-       scale_size_animint(breaks=10^(5:9))+
+       a_scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
 
        time=a_plot()+

@@ -25,7 +25,7 @@ viz.no.time <- list(
     a_theme(panel.margin=grid::unit(0, "lines"))+
     a_facet_grid(y.var ~ ., scales="free")+
     ylab("")+
-    scale_color_manual(values=variable.colors)+
+    a_scale_color_manual(values=variable.colors)+
     geom_line(aes(arclength, standardized.coef, color=variable, group=variable),
               data=addY(prostateLasso$path, "weights"))+
     geom_line(aes(arclength, mse, linetype=set, group=set),

@@ -12,7 +12,7 @@
 #'   \code{ggsave} currently recognises eps/ps, tex (pictex), pdf, jpeg, tiff,
 #'   png, bmp, svg and wmf (windows only).
 #' @param path Path to save plot to (combined with filename).
-#' @param scale Multiplicative scaling factor.
+#' @param a_scale Multiplicative scaling factor.
 #' @param width,height Plot dimensions, defaults to size of current graphics
 #'   device.
 #' @param units Units for width and height when specified explicitly (in, cm,
@@ -43,12 +43,12 @@
 #' unlink(file)
 #' }
 ggsave <- function(filename, plot = last_plot(),
-                   device = NULL, path = NULL, scale = 1,
+                   device = NULL, path = NULL, a_scale = 1,
                    width = NA, height = NA, units = c("in", "cm", "mm"),
                    dpi = 300, limitsize = TRUE, ...) {
 
   dev <- plot_dev(device, filename, dpi = dpi)
-  dim <- plot_dim(c(width, height), scale = scale, units = units,
+  dim <- plot_dim(c(width, height), a_scale = a_scale, units = units,
     limitsize = limitsize)
 
   if (!is.null(path)) {
@@ -61,20 +61,20 @@ ggsave <- function(filename, plot = last_plot(),
   invisible()
 }
 
-plot_dim <- function(dim = c(NA, NA), scale = 1, units = c("in", "cm", "mm"),
+plot_dim <- function(dim = c(NA, NA), a_scale = 1, units = c("in", "cm", "mm"),
                      limitsize = TRUE) {
 
   units <- match.arg(units)
   to_inches <- function(x) x / c(`in` = 1, cm = 2.54, mm = 2.54 * 10)[units]
   from_inches <- function(x) x * c(`in` = 1, cm = 2.54, mm = 2.54 * 10)[units]
 
-  dim <- to_inches(dim) * scale
+  dim <- to_inches(dim) * a_scale
 
   if (any(is.na(dim))) {
     if (length(grDevices::dev.list()) == 0) {
       default_dim <- c(7, 7)
     } else {
-      default_dim <- grDevices::dev.size() * scale
+      default_dim <- grDevices::dev.size() * a_scale
     }
     dim[is.na(dim)] <- default_dim[is.na(dim)]
     dim_f <- prettyNum(from_inches(dim), digits = 3)

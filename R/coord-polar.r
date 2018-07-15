@@ -37,7 +37,7 @@
 #' )
 #' a_plot(df, aes(x = "", y = value, fill = variable)) +
 #'   geom_bar(width = 1, stat = "identity") +
-#'   scale_fill_manual(values = c("red", "yellow")) +
+#'   a_scale_fill_manual(values = c("red", "yellow")) +
 #'   coord_polar("y", start = pi / 3) +
 #'   labs(title = "Pac man")
 #'
@@ -98,21 +98,21 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
     ret <- list(x = list(), y = list())
     for (n in c("x", "y")) {
 
-      scale <- scale_details[[n]]
+      a_scale <- scale_details[[n]]
       limits <- self$limits[[n]]
 
       if (is.null(limits)) {
         if (self$theta == n) {
-          expand <- expand_default(scale, c(0, 0.5), c(0, 0))
+          expand <- expand_default(a_scale, c(0, 0.5), c(0, 0))
         } else {
-          expand <- expand_default(scale, c(0, 0),   c(0, 0))
+          expand <- expand_default(a_scale, c(0, 0),   c(0, 0))
         }
-        range <- scale$dimension(expand)
+        range <- a_scale$dimension(expand)
       } else {
-        range <- range(scale_transform(scale, limits))
+        range <- range(a_scale_transform(a_scale, limits))
       }
 
-      out <- scale$break_info(range)
+      out <- a_scale$break_info(range)
       ret[[n]]$range <- out$range
       ret[[n]]$major <- out$major_source
       ret[[n]]$minor <- out$minor_source

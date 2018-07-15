@@ -20,8 +20,8 @@ USpolygons$state = state.abb[match(USpolygons$region, tolower(state.name))]
 statemap <- a_plot() + geom_polygon(data=USpolygons, aes(x=long, y=lat, group=group), fill="black", colour="grey") +
   geom_segment(data=UStornadoes, aes(x=startLong, y=startLat, xend=endLong, yend=endLat, size=trackWidth), colour="#55B1F7", alpha=.2) +
   geom_segment(data=UStornadoes, aes(x=startLong, y=startLat, xend=endLong, yend=endLat, size=trackWidth, alpha=f), colour="#55B1F7") +
-  scale_size_continuous("Width (yd)", range=c(.5, 2)) + 
-  scale_alpha_continuous("Strength (F or EF scale)", range=c(.3, 1)) + 
+  a_scale_size_continuous("Width (yd)", range=c(.5, 2)) + 
+  a_scale_alpha_continuous("Strength (F or EF scale)", range=c(.3, 1)) + 
   ggtitle("Tornado Paths, 1950-2006")
 
 ## ERROR: geom_bar + stat_bin + clickSelects does not make sense! We
@@ -95,7 +95,7 @@ tornado.points <-
        ## geom_point(aes(startLong, startLat, fill=place, showSelected=year),
        ##              colour=seg.color,
        ##            data=data.frame(UStornadoes,place="start"))+
-       scale_fill_manual(values=c(end=seg.color))+
+       a_scale_fill_manual(values=c(end=seg.color))+
        geom_point(aes(endLong, endLat, fill=place),
                   showSelected="year",
                   colour=seg.color,
@@ -121,8 +121,8 @@ tornado.points <-
        geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
                     showSelected="year",
                     colour=seg.color, data=UStornadoes)+
-       scale_fill_manual(values=c(end=seg.color))+
-       theme_animint(width=750, height=500)+
+       a_scale_fill_manual(values=c(end=seg.color))+
+       a_theme_animint(width=750, height=500)+
        geom_point(aes(endLong, endLat, fill=place),
                   showSelected="year",
                   colour=seg.color,
@@ -148,8 +148,8 @@ tornado.points.anim <-
        geom_polygon(aes(x=long, y=lat, group=group),
                     clickSelects="state",
                     data=USpolygons, fill="grey", colour="black", alpha=3/4)+
-       theme(axis.line=element_blank(), axis.text=element_blank(), 
-             axis.ticks=element_blank(), axis.title=element_blank()),
+       a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
+             axis.ticks=a_element_blank(), axis.title=a_element_blank()),
        width=list(map=750, ts=300),
        height=list(map=500, ts=400),
        ##time=list(variable="year", ms=2000),

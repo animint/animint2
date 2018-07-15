@@ -61,17 +61,17 @@
 #' # xlab and ylab arguments
 #' # qplot(x, y, data = data, xlim = c(1, 5), xlab = "my label")
 #' # a_plot(data, aes(x, y)) + geom_point() +
-#' # scale_x_continuous("my label", limits = c(1, 5))
+#' # a_scale_x_continuous("my label", limits = c(1, 5))
 #'
 #' # qplot(x, y, data = data, xlim = c(1, 5), ylim = c(10, 20))
 #' # a_plot(data, aes(x, y)) + geom_point() +
-#' # scale_x_continuous(limits = c(1, 5)) + scale_y_continuous(limits = c(10, 20))
+#' # a_scale_x_continuous(limits = c(1, 5)) + a_scale_y_continuous(limits = c(10, 20))
 #'
 #' # Like plot(), qplot() has a convenient way of log transforming the axes.
 #' # qplot(x, y, data = data, log = "xy")
-#' # a_plot(data, aes(x, y)) + geom_point() + scale_x_log10() + scale_y_log10()
+#' # a_plot(data, aes(x, y)) + geom_point() + a_scale_x_log10() + a_scale_y_log10()
 #' # There are many other possible transformations, but not all are
-#' # accessible from within qplot(), see ?scale_continuous for more
+#' # accessible from within qplot(), see ?a_scale_continuous for more
 #'
 #' # Plot options
 #'

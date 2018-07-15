@@ -1,13 +1,13 @@
 #' Use values without scaling.
 #'
-#' @name scale_identity
-#' @param ... Other arguments passed on to \code{\link{discrete_scale}} or
-#'   \code{\link{continuous_scale}}
+#' @name a_scale_identity
+#' @param ... Other arguments passed on to \code{\link{discrete_a_scale}} or
+#'   \code{\link{continuous_a_scale}}
 #' @param guide Guide to use for this scale - defaults to \code{"none"}.
 #' @examples
 #' a_plot(luv_colours, aes(u, v)) +
 #'   geom_point(aes(colour = col), size = 3) +
-#'   scale_color_identity() +
+#'   a_scale_color_identity() +
 #'   coord_equal()
 #'
 #' df <- data.frame(
@@ -18,16 +18,16 @@
 #' a_plot(df, aes(x, y)) + geom_tile(aes(fill = colour))
 #' a_plot(df, aes(x, y)) +
 #'   geom_tile(aes(fill = colour)) +
-#'   scale_fill_identity()
+#'   a_scale_fill_identity()
 #'
 #' # To get a legend guide, specify guide = "legend"
 #' a_plot(df, aes(x, y)) +
 #'   geom_tile(aes(fill = colour)) +
-#'   scale_fill_identity(guide = "legend")
+#'   a_scale_fill_identity(guide = "legend")
 #' # But you'll typically also need to supply breaks and labels:
 #' a_plot(df, aes(x, y)) +
 #'   geom_tile(aes(fill = colour)) +
-#'   scale_fill_identity("trt", labels = letters[1:4], breaks = df$colour,
+#'   a_scale_fill_identity("trt", labels = letters[1:4], breaks = df$colour,
 #'   guide = "legend")
 #'
 #' # cyl scaled to appropriate size
@@ -36,13 +36,13 @@
 #' # cyl used as point size
 #' a_plot(mtcars, aes(mpg, wt)) +
 #'   geom_point(aes(size = cyl)) +
-#'   scale_size_identity()
+#'   a_scale_size_identity()
 NULL
 
-#' @rdname scale_identity
+#' @rdname a_scale_identity
 #' @export
-scale_colour_identity <- function(..., guide = "none") {
-  sc <- discrete_scale("colour", "identity", identity_pal(), ..., guide = guide)
+a_scale_colour_identity <- function(..., guide = "none") {
+  sc <- discrete_a_scale("colour", "identity", identity_pal(), ..., guide = guide)
 
   # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
@@ -51,10 +51,10 @@ scale_colour_identity <- function(..., guide = "none") {
   sc
 }
 
-#' @rdname scale_identity
+#' @rdname a_scale_identity
 #' @export
-scale_fill_identity <- function(..., guide = "none") {
-  sc <- discrete_scale("fill", "identity", identity_pal(), ..., guide = guide)
+a_scale_fill_identity <- function(..., guide = "none") {
+  sc <- discrete_a_scale("fill", "identity", identity_pal(), ..., guide = guide)
 
   # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
@@ -63,10 +63,10 @@ scale_fill_identity <- function(..., guide = "none") {
   sc
 }
 
-#' @rdname scale_identity
+#' @rdname a_scale_identity
 #' @export
-scale_shape_identity <- function(..., guide = "none") {
-  sc <- continuous_scale("shape", "identity", identity_pal(), ..., guide = guide)
+a_scale_shape_identity <- function(..., guide = "none") {
+  sc <- continuous_a_scale("shape", "identity", identity_pal(), ..., guide = guide)
 
   # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
@@ -75,10 +75,10 @@ scale_shape_identity <- function(..., guide = "none") {
   sc
 }
 
-#' @rdname scale_identity
+#' @rdname a_scale_identity
 #' @export
-scale_linetype_identity <- function(..., guide = "none") {
-  sc <- discrete_scale("linetype", "identity", identity_pal(), ..., guide = guide)
+a_scale_linetype_identity <- function(..., guide = "none") {
+  sc <- discrete_a_scale("linetype", "identity", identity_pal(), ..., guide = guide)
 
   # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
@@ -87,10 +87,10 @@ scale_linetype_identity <- function(..., guide = "none") {
   sc
 }
 
-#' @rdname scale_identity
+#' @rdname a_scale_identity
 #' @export
-scale_alpha_identity <- function(..., guide = "none") {
-  sc <- continuous_scale("alpha", "identity", identity_pal(), ..., guide = guide)
+a_scale_alpha_identity <- function(..., guide = "none") {
+  sc <- continuous_a_scale("alpha", "identity", identity_pal(), ..., guide = guide)
 
   # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
@@ -99,10 +99,10 @@ scale_alpha_identity <- function(..., guide = "none") {
   sc
 }
 
-#' @rdname scale_identity
+#' @rdname a_scale_identity
 #' @export
-scale_size_identity <- function(..., guide = "none") {
-  sc <- continuous_scale("size", "identity", identity_pal(), ..., guide = guide)
+a_scale_size_identity <- function(..., guide = "none") {
+  sc <- continuous_a_scale("size", "identity", identity_pal(), ..., guide = guide)
 
   # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.

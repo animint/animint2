@@ -73,8 +73,8 @@
 #' world <- map_data("world")
 #' worldmap <- a_plot(world, aes(x = long, y = lat, group = group)) +
 #'   geom_path() +
-#'   scale_y_continuous(breaks = (-2:2) * 30) +
-#'   scale_x_continuous(breaks = (-4:4) * 45)
+#'   a_scale_y_continuous(breaks = (-2:2) * 30) +
+#'   a_scale_x_continuous(breaks = (-4:4) * 45)
 #'
 #' # Orthographic projection with default orientation (looking down at North pole)
 #' worldmap + coord_map("ortho")
@@ -122,13 +122,13 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
     ranges <- list()
     for (n in c("x", "y")) {
 
-      scale <- scale_details[[n]]
+      a_scale <- scale_details[[n]]
       limits <- self$limits[[n]]
 
       if (is.null(limits)) {
-        range <- scale$dimension(expand_default(scale))
+        range <- a_scale$dimension(expand_default(a_scale))
       } else {
-        range <- range(scale$transform(limits))
+        range <- range(a_scale$transform(limits))
       }
       ranges[[n]] <- range
     }

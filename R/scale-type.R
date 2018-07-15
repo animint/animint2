@@ -1,11 +1,11 @@
-find_scale <- function(aes, x, env = parent.frame()) {
-  type <- scale_type(x)
-  candidates <- paste("scale", aes, type, sep = "_")
+find_a_scale <- function(aes, x, env = parent.frame()) {
+  type <- a_scale_type(x)
+  candidates <- paste("a_scale", aes, type, sep = "_")
 
-  for (scale in candidates) {
-    scale_f <- find_global(scale, env, mode = "function")
-    if (!is.null(scale_f))
-      return(scale_f())
+  for (a_scale in candidates) {
+    a_scale_f <- find_global(a_scale, env, mode = "function")
+    if (!is.null(a_scale_f))
+      return(a_scale_f())
   }
 
   # Failure to find a scale is not an error because some "aesthetics" don't
@@ -32,35 +32,35 @@ find_global <- function(name, env, mode = "any") {
 }
 
 # Determine default type of a scale
-scale_type <- function(x) UseMethod("scale_type")
+a_scale_type <- function(x) UseMethod("a_scale_type")
 
 #' @export
-scale_type.default <- function(x) {
+a_scale_type.default <- function(x) {
   message("Don't know how to automatically pick scale for object of type ",
           paste(class(x), collapse = "/"), ". Defaulting to continuous.")
   "continuous"
 }
 
 #' @export
-scale_type.AsIs <- function(x) "identity"
+a_scale_type.AsIs <- function(x) "identity"
 
 #' @export
-scale_type.logical <- function(x) "discrete"
+a_scale_type.logical <- function(x) "discrete"
 
 #' @export
-scale_type.character <- function(x) "discrete"
+a_scale_type.character <- function(x) "discrete"
 
 #' @export
-scale_type.ordered <- function(x) c("ordinal", "discrete")
+a_scale_type.ordered <- function(x) c("ordinal", "discrete")
 
 #' @export
-scale_type.factor <- function(x) "discrete"
+a_scale_type.factor <- function(x) "discrete"
 
 #' @export
-scale_type.POSIXt <- function(x) c("datetime", "continuous")
+a_scale_type.POSIXt <- function(x) c("datetime", "continuous")
 
 #' @export
-scale_type.Date <- function(x) c("date", "continuous")
+a_scale_type.Date <- function(x) c("date", "continuous")
 
 #' @export
-scale_type.numeric <- function(x) "continuous"
+a_scale_type.numeric <- function(x) "continuous"

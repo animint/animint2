@@ -24,13 +24,13 @@ rect.xpaths <-
 test_that("linetypes render correctly", {
   viz <-
     list(numeric=gg+
-           scale_linetype_manual(values=c(correct=0,
+           a_scale_linetype_manual(values=c(correct=0,
                                    "false positive"=1,
                                    "false negative"=3),
                                 limits=c("correct", "false positive",
                                  "false negative")),
 
-         character=gg+scale_linetype_manual(values=c(correct="blank",
+         character=gg+a_scale_linetype_manual(values=c(correct="blank",
                                               "false positive"="solid",
                                               "false negative"="dotted"),
                                 limits=c("correct", "false positive",
