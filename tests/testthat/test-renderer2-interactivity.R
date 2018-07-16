@@ -192,7 +192,7 @@ tornado.lines <-
        geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
                     showSelected="year",
                     colour=seg.color, data=UStornadoes)+
-       scale_fill_manual(values=c(end=seg.color))+
+       a_scale_fill_manual(values=c(end=seg.color))+
        a_theme_animint(width=750, height=500)+
        geom_point(aes(endLong, endLat, fill=place),
                   colour=seg.color, showSelected="year",

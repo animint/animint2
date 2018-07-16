@@ -51,14 +51,14 @@ grad.desc.viz <- function(hjust) {
   
   contour.plot <- a_plot() + 
     geom_contour(data = contour, aes(x = x, y = y, z = z, colour = ..level..), size = .5) + 
-    scale_colour_continuous(name = "z value") + 
+    a_scale_colour_continuous(name = "z value") + 
     geom_path(data = objective, aes(x = x, y = y), 
               showSelected = "iteration2", colour = "red", size = 1) + 
     geom_point(data = objective, aes(x = x, y = y), showSelected = "iteration2", colour = "green", 
                size = 2) + 
     geom_text(data = objective2, aes(x = x, y = y - 0.2, label = round(z, 2)), showSelected = "iteration2") + 
-    scale_x_continuous(expand = c(0, 0)) + 
-    scale_y_continuous(expand = c(0, 0)) + 
+    a_scale_x_continuous(expand = c(0, 0)) + 
+    a_scale_y_continuous(expand = c(0, 0)) + 
     ggtitle("contour of function value") + 
     a_theme_animint(width = 600, height = 600)
   

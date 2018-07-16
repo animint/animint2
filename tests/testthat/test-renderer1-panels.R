@@ -212,7 +212,7 @@ test_that("multiple selection sex_smoker plot", {
 
 test_that("renderer can handle only one grid line", {
   info <- animint2HTML(list(
-    petal = p2 + scale_y_log10()
+    petal = p2 + a_scale_y_log10()
   ))
   # extract grids
   grid_minor_hor <- getNodeSet(info$html, '//svg//g[@class="grid_minor"]//g[@class="hor"]//line')
@@ -230,7 +230,7 @@ test_that("no minor grid lines is handed correctly", {
       geom_contour(data = geyser, 
                    aes(x = duration, y = waiting), 
                    colour = "blue", size = .5, stat = "density2d") + 
-      xlim(0.5, 6) + scale_y_log10(limits = c(40,110)) +
+      xlim(0.5, 6) + a_scale_y_log10(limits = c(40,110)) +
       ggtitle("geom_contour 2d density")
   ))
   # extract grids
