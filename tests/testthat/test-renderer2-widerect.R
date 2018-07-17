@@ -99,7 +99,7 @@ wb.facets <-
                     key=country, id=gsub(" ", "_", country)),
                 showSelected="year", clickSelects="country",
                 data=not.na, stat="identity", position="identity")+
-       coord_flip(),
+       a_coord_flip(),
 
        time=list(variable="year", ms=2000),
        duration=list(year=2000),
