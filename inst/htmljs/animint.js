@@ -380,7 +380,7 @@ var animint = function (to_select, json_file) {
     // proportions calculated by the compiler. This has to be done on the
     // rendering side since the precomputed proportions apply to the *graph*
     // and the graph size depends upon results of measureText()
-    if (p_info.layout.coord_fixed[0]) {
+    if (p_info.layout.a_coord_fixed[0]) {
       var aspect = (graph_height / nrows) / (graph_width / ncols);
     } else {
       var aspect = 1;
