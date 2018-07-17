@@ -2,7 +2,7 @@
 #'
 #' The representation of a portion of the earth, which is approximately spherical,
 #' onto a flat 2D plane requires a projection. This is what
-#' \code{\link{coord_map}} does. These projections account for the fact that the
+#' \code{\link{a_coord_map}} does. These projections account for the fact that the
 #' actual length (in km) of one degree of longitude varies between the equator
 #' and the pole. Near the equator, the ratio between the lengths of one degree
 #' of latitude and one degree of longitude is approximately 1. Near the pole, it
@@ -10,9 +10,9 @@
 #' towards 0. For regions that span only a few degrees and are not too close to
 #' the poles, setting the aspect ratio of the plot to the appropriate lat/lon
 #' ratio approximates the usual mercator projection. This is what
-#' \code{coord_quickmap} does. With \code{\link{coord_map}} all elements of the
+#' \code{a_coord_quickmap} does. With \code{\link{a_coord_map}} all elements of the
 #' graphic have to be projected which is not the case here. So
-#' \code{\link{coord_quickmap}} has the advantage of being much faster, in
+#' \code{\link{a_coord_quickmap}} has the advantage of being much faster, in
 #' particular for complex plots such as those using with
 #' \code{\link{geom_tile}}, at the expense of correctness in the projection.
 #' This coordinate system provides the full range of map projections available
@@ -40,13 +40,13 @@
 #' # Plot it in cartesian coordinates
 #' nzmap
 #' # With correct mercator projection
-#' nzmap + coord_map()
+#' nzmap + a_coord_map()
 #' # With the aspect ratio approximation
-#' nzmap + coord_quickmap()
+#' nzmap + a_coord_quickmap()
 #'
 #' # Other projections
-#' nzmap + coord_map("cylindrical")
-#' nzmap + coord_map("azequalarea", orientation = c(-36.92,174.6,0))
+#' nzmap + a_coord_map("cylindrical")
+#' nzmap + a_coord_map("azequalarea", orientation = c(-36.92,174.6,0))
 #'
 #' states <- map_data("state")
 #' usamap <- a_plot(states, aes(long, lat, group = group)) +
@@ -55,19 +55,19 @@
 #' # Use cartesian coordinates
 #' usamap
 #' # With mercator projection
-#' usamap + coord_map()
-#' usamap + coord_quickmap()
+#' usamap + a_coord_map()
+#' usamap + a_coord_quickmap()
 #' # See ?mapproject for coordinate systems and their parameters
-#' usamap + coord_map("gilbert")
-#' usamap + coord_map("lagrange")
+#' usamap + a_coord_map("gilbert")
+#' usamap + a_coord_map("lagrange")
 #'
 #' # For most projections, you'll need to set the orientation yourself
 #' # as the automatic selection done by mapproject is not available to
 #' # ggplot
-#' usamap + coord_map("orthographic")
-#' usamap + coord_map("stereographic")
-#' usamap + coord_map("conic", lat0 = 30)
-#' usamap + coord_map("bonne", lat0 = 50)
+#' usamap + a_coord_map("orthographic")
+#' usamap + a_coord_map("stereographic")
+#' usamap + a_coord_map("conic", lat0 = 30)
+#' usamap + a_coord_map("bonne", lat0 = 50)
 #'
 #' # World map, using geom_path instead of geom_polygon
 #' world <- map_data("world")
@@ -77,13 +77,13 @@
 #'   a_scale_x_continuous(breaks = (-4:4) * 45)
 #'
 #' # Orthographic projection with default orientation (looking down at North pole)
-#' worldmap + coord_map("ortho")
+#' worldmap + a_coord_map("ortho")
 #' # Looking up up at South Pole
-#' worldmap + coord_map("ortho", orientation = c(-90, 0, 0))
+#' worldmap + a_coord_map("ortho", orientation = c(-90, 0, 0))
 #' # Centered on New York (currently has issues with closing polygons)
-#' worldmap + coord_map("ortho", orientation = c(41, -74, 0))
+#' worldmap + a_coord_map("ortho", orientation = c(41, -74, 0))
 #' }
-coord_map <- function(projection="mercator", ..., orientation = NULL, xlim = NULL, ylim = NULL) {
+a_coord_map <- function(projection="mercator", ..., orientation = NULL, xlim = NULL, ylim = NULL) {
   a_ggproto(NULL, a_CoordMap,
     projection = projection,
     orientation = orientation,
@@ -240,10 +240,10 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
 )
 
 
-mproject <- function(coord, x, y, orientation) {
+mproject <- function(a_coord, x, y, orientation) {
   suppressWarnings(mapproj::mapproject(x, y,
-    projection = coord$projection,
-    parameters  = coord$params,
+    projection = a_coord$projection,
+    parameters  = a_coord$params,
     orientation = orientation
   ))
 }

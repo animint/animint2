@@ -2,7 +2,7 @@
 % Please edit documentation in R/z_animintHelpers.R
 \name{switch_axes}
 \alias{switch_axes}
-\title{Flip axes in case of coord_flip
+\title{Flip axes in case of a_coord_flip
 Switches column names. Eg. xmin to ymin, yntercept to xintercept etc.}
 \usage{
 switch_axes(col.names)
@@ -14,6 +14,6 @@ switch_axes(col.names)
 Column names with x and y axes switched
 }
 \description{
-Flip axes in case of coord_flip
+Flip axes in case of a_coord_flip
 Switches column names. Eg. xmin to ymin, yntercept to xintercept etc.
 }

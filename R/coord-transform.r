@@ -1,6 +1,6 @@
 #' Transformed cartesian coordinate system.
 #'
-#' \code{coord_trans} is different to scale transformations in that it occurs after
+#' \code{a_coord_trans} is different to scale transformations in that it occurs after
 #' statistical transformation and will affect the visual appearance of geoms - there is
 #' no guarantee that straight lines will continue to be straight.
 #'
@@ -29,7 +29,7 @@
 #' #  * by transforming the coordinate system:
 #' a_plot(diamonds, aes(carat, price)) +
 #'   geom_point() +
-#'   coord_trans(x = "log10", y = "log10")
+#'   a_coord_trans(x = "log10", y = "log10")
 #'
 #' # The difference between transforming the scales and
 #' # transforming the coordinate system is that scale
@@ -48,7 +48,7 @@
 #' a_plot(d, aes(carat, price)) +
 #'   geom_point() +
 #'   geom_smooth(method = "lm") +
-#'   coord_trans(x = "log10", y = "log10")
+#'   a_coord_trans(x = "log10", y = "log10")
 #'
 #' # Here I used a subset of diamonds so that the smoothed line didn't
 #' # drop below zero, which obviously causes problems on the log-transformed
@@ -61,7 +61,7 @@
 #'   geom_smooth(method = "lm") +
 #'   a_scale_x_log10() +
 #'   a_scale_y_log10() +
-#'   coord_trans(x = scales::exp_trans(10), y = scales::exp_trans(10))
+#'   a_coord_trans(x = scales::exp_trans(10), y = scales::exp_trans(10))
 #'
 #' # cf.
 #' a_plot(diamonds, aes(carat, price)) +
@@ -72,10 +72,10 @@
 #' df <- data.frame(a = abs(rnorm(26)),letters)
 #' plot <- a_plot(df,aes(a,letters)) + geom_point()
 #'
-#' plot + coord_trans(x = "log10")
-#' plot + coord_trans(x = "sqrt")
+#' plot + a_coord_trans(x = "log10")
+#' plot + a_coord_trans(x = "sqrt")
 #' }
-coord_trans <- function(x = "identity", y = "identity", limx = NULL, limy = NULL,
+a_coord_trans <- function(x = "identity", y = "identity", limx = NULL, limy = NULL,
   xtrans, ytrans)
 {
   if (!missing(xtrans)) {
@@ -91,7 +91,7 @@ coord_trans <- function(x = "identity", y = "identity", limx = NULL, limy = NULL
   # Now limits are implemented.
   # But for backward compatibility, xlim -> limx, ylim -> ylim
   # Because there are many examples such as
-  # > coord_trans(x = "log10", y = "log10")
+  # > a_coord_trans(x = "log10", y = "log10")
   # Maybe this is changed.
   if (is.character(x)) x <- as.trans(x)
   if (is.character(y)) y <- as.trans(y)

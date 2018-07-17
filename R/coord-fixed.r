@@ -9,19 +9,19 @@
 #' \code{\link[MASS]{eqscplot}}, but it works for all types of graphics.
 #'
 #' @export
-#' @inheritParams coord_cartesian
+#' @inheritParams a_coord_cartesian
 #' @param ratio aspect ratio, expressed as \code{y / x}
 #' @examples
 #' # ensures that the ranges of axes are equal to the specified ratio by
 #' # adjusting the plot aspect ratio
 #'
 #' p <- a_plot(mtcars, aes(mpg, wt)) + geom_point()
-#' p + coord_fixed(ratio = 1)
-#' p + coord_fixed(ratio = 5)
-#' p + coord_fixed(ratio = 1/5)
+#' p + a_coord_fixed(ratio = 1)
+#' p + a_coord_fixed(ratio = 5)
+#' p + a_coord_fixed(ratio = 1/5)
 #'
 #' # Resize the plot to see that the specified aspect ratio is maintained
-coord_fixed <- function(ratio = 1, xlim = NULL, ylim = NULL, expand = TRUE) {
+a_coord_fixed <- function(ratio = 1, xlim = NULL, ylim = NULL, expand = TRUE) {
   a_ggproto(NULL, a_CoordFixed,
     limits = list(x = xlim, y = ylim),
     ratio = ratio,
@@ -30,9 +30,9 @@ coord_fixed <- function(ratio = 1, xlim = NULL, ylim = NULL, expand = TRUE) {
 }
 
 #' @export
-#' @rdname coord_fixed
+#' @rdname a_coord_fixed
 #' @usage NULL
-coord_equal <- coord_fixed
+a_coord_equal <- a_coord_fixed
 
 
 #' @rdname animint2-ggproto

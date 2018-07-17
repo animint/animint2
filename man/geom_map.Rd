@@ -99,7 +99,7 @@ if (require(maps)) {
     geom_map(aes(fill = Murder), map = states_map) +
     expand_limits(x = states_map$long, y = states_map$lat)
 
-  last_plot() + coord_map()
+  last_plot() + a_coord_map()
   a_plot(crimesm, aes(map_id = state)) +
     geom_map(aes(fill = value), map = states_map) +
     expand_limits(x = states_map$long, y = states_map$lat) +

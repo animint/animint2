@@ -144,8 +144,8 @@ means there is no \code{setup_params} because it's hard to communicate
 the changes.
 
 \itemize{
-  \item Override either \code{draw_panel(self, data, panel_scales, coord)} or
-    \code{draw_group(self, data, panel_scales, coord)}. \code{draw_panel} is
+  \item Override either \code{draw_panel(self, data, panel_scales, a_coord)} or
+    \code{draw_group(self, data, panel_scales, a_coord)}. \code{draw_panel} is
     called once per panel, \code{draw_group} is called once per group.
 
     Use \code{draw_panel} if each row in the data represents a
@@ -154,8 +154,8 @@ the changes.
 
     \code{data} is a data frame of scaled aesthetics. \code{panel_scales}
     is a list containing information about the scales in the current
-    panel. \code{coord} is a coordinate specification. You'll
-    need to call \code{coord$transform(data, panel_scales)} to work
+    panel. \code{a_coord} is a coordinate specification. You'll
+    need to call \code{a_coord$transform(data, panel_scales)} to work
     with non-Cartesian coords. To work with non-linear coordinate systems,
     you typically need to convert into a primitive geom (e.g. point, path
     or polygon), and then pass on to the corresponding draw method
@@ -176,12 +176,12 @@ the changes.
 \section{a_Coordinate systems}{
 
 
-All \code{coord_*} functions (like \code{coord_trans}) return a \code{a_Coord*}
+All \code{a_coord_*} functions (like \code{a_coord_trans}) return a \code{a_Coord*}
 object (like \code{a_CoordTrans}). The \code{a_Coord*} object is responsible for
 adjusting the position of overlapping geoms.
 
-The way that the \code{coord_*} functions work is slightly different from the
-\code{geom_*} and \code{stat_*} functions, because a \code{coord_*} function
+The way that the \code{a_coord_*} functions work is slightly different from the
+\code{geom_*} and \code{stat_*} functions, because a \code{a_coord_*} function
 actually "instantiates" the \code{a_Coord*} object by creating a descendant,
 and returns that.
 

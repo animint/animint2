@@ -45,8 +45,8 @@ a_GeomTallRect <- a_ggproto("a_GeomTallRect", a_Geom,
                                  required_aes = c("xmin", "xmax"),
                                  
                                  draw_panel = function(self, data, 
-                                                       panel_scales, coord) {
-                                   coords <- coord$transform(data, panel_scales)
+                                                       panel_scales, a_coord) {
+                                   coords <- a_coord$transform(data, panel_scales)
                                    ymax <- grid::unit(1, "npc")
                                    ymin <- grid::unit(0, "npc")
                                    grid::rectGrob(
@@ -120,8 +120,8 @@ a_GeomWideRect <- a_ggproto("a_GeomWideRect", a_Geom,
                                  required_aes = c("ymin", "ymax"),
                                  
                                  draw_panel = function(self, data, 
-                                                       panel_scales, coord) {
-                                   coords <- coord$transform(data, panel_scales)
+                                                       panel_scales, a_coord) {
+                                   coords <- a_coord$transform(data, panel_scales)
                                    xmax <- grid::unit(1, "npc")
                                    xmin <- grid::unit(0, "npc")
                                    grid::rectGrob(

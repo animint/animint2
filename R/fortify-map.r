@@ -57,11 +57,11 @@ a_fortify.map <- function(model, data, ...) {
 #' choro <- choro[order(choro$order), ]
 #' a_plot(choro, aes(long, lat)) +
 #'   geom_polygon(aes(group = group, fill = assault)) +
-#'   coord_map("albers",  at0 = 45.5, lat1 = 29.5)
+#'   a_coord_map("albers",  at0 = 45.5, lat1 = 29.5)
 #'
 #' a_plot(choro, aes(long, lat)) +
 #'   geom_polygon(aes(group = group, fill = assault / murder)) +
-#'   coord_map("albers",  at0 = 45.5, lat1 = 29.5)
+#'   a_coord_map("albers",  at0 = 45.5, lat1 = 29.5)
 #' }
 map_data <- function(map, region = ".", exact = FALSE, ...) {
   try_require("maps", "map_data")
@@ -94,14 +94,14 @@ map_data <- function(map, region = ".", exact = FALSE, ...) {
 #'   borders("state") +
 #'   geom_point(aes(size = pop)) +
 #'   a_scale_size_area() +
-#'   coord_quickmap()
+#'   a_coord_quickmap()
 #'
 #' # Same map, with some world context
 #' a_plot(capitals, aes(long, lat)) +
 #'   borders("world", xlim = c(-130, -60), ylim = c(20, 50)) +
 #'   geom_point(aes(size = pop)) +
 #'   a_scale_size_area() +
-#'   coord_quickmap()
+#'   a_coord_quickmap()
 #' }
 borders <- function(database = "world", regions = ".", fill = NA,
                     colour = "grey50", xlim = NULL, ylim = NULL, ...) {

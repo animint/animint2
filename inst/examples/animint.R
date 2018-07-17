@@ -36,7 +36,7 @@ popPlots <-
        ## This make_text creates a geom_text that shows the current
        ## selected value of the year variable.
        make_text(worldPop, 1, 3e6, "year")+
-       coord_flip(),
+       a_coord_flip(),
        lines=a_plot()+
        ## This make_tallrect tiles the background of the lineplot with
        ## rects that can be clicked to select the year variable.

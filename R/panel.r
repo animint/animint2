@@ -168,11 +168,11 @@ panel_scales <- function(panel, i) {
   )
 }
 
-# Compute ranges and dimensions of each panel, using the coord.
-train_ranges <- function(panel, coord) {
+# Compute ranges and dimensions of each panel, using the a_coord.
+train_ranges <- function(panel, a_coord) {
   compute_range <- function(ix, iy) {
-    # TODO: change coord_train method to take individual x and y scales
-    coord$train(list(x = panel$x_scales[[ix]], y = panel$y_scales[[iy]]))
+    # TODO: change a_coord_train method to take individual x and y scales
+    a_coord$train(list(x = panel$x_scales[[ix]], y = panel$y_scales[[iy]]))
   }
 
   panel$ranges <- Map(compute_range,

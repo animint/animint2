@@ -54,7 +54,7 @@ NULL
 #'     geom_map(aes(fill = Murder), map = states_map) +
 #'     expand_limits(x = states_map$long, y = states_map$lat)
 #'
-#'   last_plot() + coord_map()
+#'   last_plot() + a_coord_map()
 #'   a_plot(crimesm, aes(map_id = state)) +
 #'     geom_map(aes(fill = value), map = states_map) +
 #'     expand_limits(x = states_map$long, y = states_map$lat) +
@@ -95,7 +95,7 @@ geom_map <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomMap <- a_ggproto("a_GeomMap", a_GeomPolygon,
-  draw_panel = function(data, panel_scales, coord, map) {
+  draw_panel = function(data, panel_scales, a_coord, map) {
     # Only use matching data and map ids
     common <- intersect(data$map_id, map$id)
     data <- data[data$map_id %in% common, , drop = FALSE]
@@ -103,7 +103,7 @@ a_GeomMap <- a_ggproto("a_GeomMap", a_GeomPolygon,
 
     # Munch, then set up id variable for polygonGrob -
     # must be sequential integers
-    coords <- coord_munch(coord, map, panel_scales)
+    coords <- a_coord_munch(a_coord, map, panel_scales)
     coords$group <- coords$group %||% coords$id
     grob_id <- match(coords$group, unique(coords$group))
 

@@ -13,7 +13,7 @@
 #'   \code{"norm"} assumes a multivariate normal distribution.
 #'   \code{"euclid"} draws a circle with the radius equal to \code{level},
 #'   representing the euclidean distance from the center.
-#'   This ellipse probably won't appear circular unless \code{coord_fixed()} is applied.
+#'   This ellipse probably won't appear circular unless \code{a_coord_fixed()} is applied.
 #' @param segments The number of segments to be used in drawing the ellipse.
 #' @inheritParams layer
 #' @inheritParams geom_point
@@ -36,7 +36,7 @@
 #'   geom_point() +
 #'   stat_ellipse(type = "norm", linetype = 2) +
 #'   stat_ellipse(type = "euclid", level = 3) +
-#'   coord_fixed()
+#'   a_coord_fixed()
 #'
 #' a_plot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
 #'   stat_ellipse(geom = "polygon")

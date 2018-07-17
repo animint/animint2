@@ -36,15 +36,15 @@ geom_vline <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomVline <- a_ggproto("a_GeomVline", a_Geom,
-  draw_panel = function(data, panel_scales, coord) {
-    ranges <- coord$range(panel_scales)
+  draw_panel = function(data, panel_scales, a_coord) {
+    ranges <- a_coord$range(panel_scales)
 
     data$x    <- data$xintercept
     data$xend <- data$xintercept
     data$y    <- ranges$y[1]
     data$yend <- ranges$y[2]
 
-    a_GeomSegment$draw_panel(unique(data), panel_scales, coord)
+    a_GeomSegment$draw_panel(unique(data), panel_scales, a_coord)
   },
 
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),

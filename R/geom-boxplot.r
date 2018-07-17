@@ -49,7 +49,7 @@
 #' p <- a_plot(mpg, aes(class, hwy))
 #' p + geom_boxplot()
 #' p + geom_boxplot() + geom_jitter(width = 0.2)
-#' p + geom_boxplot() + coord_flip()
+#' p + geom_boxplot() + a_coord_flip()
 #'
 #' p + geom_boxplot(notch = TRUE)
 #' p + geom_boxplot(varwidth = TRUE)
@@ -157,7 +157,7 @@ a_GeomBoxplot <- a_ggproto("a_GeomBoxplot", a_Geom,
     data
   },
 
-  draw_group = function(data, panel_scales, coord, fatten = 2,
+  draw_group = function(data, panel_scales, a_coord, fatten = 2,
                         outlier.colour = NULL, outlier.shape = 19,
                         outlier.size = 1.5, outlier.stroke = 0.5,
                         notch = FALSE, notchwidth = 0.5, varwidth = FALSE) {
@@ -207,15 +207,15 @@ a_GeomBoxplot <- a_ggproto("a_GeomBoxplot", a_Geom,
         alpha = NA,
         stringsAsFactors = FALSE
       )
-      outliers_grob <- a_GeomPoint$draw_panel(outliers, panel_scales, coord)
+      outliers_grob <- a_GeomPoint$draw_panel(outliers, panel_scales, a_coord)
     } else {
       outliers_grob <- NULL
     }
 
     ggname("geom_boxplot", grobTree(
       outliers_grob,
-      a_GeomSegment$draw_panel(whiskers, panel_scales, coord),
-      a_GeomCrossbar$draw_panel(box, fatten = fatten, panel_scales, coord)
+      a_GeomSegment$draw_panel(whiskers, panel_scales, a_coord),
+      a_GeomCrossbar$draw_panel(box, fatten = fatten, panel_scales, a_coord)
     ))
   },
 

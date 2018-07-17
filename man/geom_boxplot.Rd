@@ -120,7 +120,7 @@ See McGill et al. (1978) for more details.
 p <- a_plot(mpg, aes(class, hwy))
 p + geom_boxplot()
 p + geom_boxplot() + geom_jitter(width = 0.2)
-p + geom_boxplot() + coord_flip()
+p + geom_boxplot() + a_coord_flip()
 
 p + geom_boxplot(notch = TRUE)
 p + geom_boxplot(varwidth = TRUE)

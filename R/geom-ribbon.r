@@ -69,7 +69,7 @@ a_GeomRibbon <- a_ggproto("a_GeomRibbon", a_Geom,
     data
   },
 
-  draw_group = function(data, panel_scales, coord, na.rm = FALSE) {
+  draw_group = function(data, panel_scales, a_coord, na.rm = FALSE) {
     if (na.rm) data <- data[stats::complete.cases(data[c("x", "ymin", "ymax")]), ]
     data <- data[order(data$group, data$x), ]
 
@@ -93,7 +93,7 @@ a_GeomRibbon <- a_ggproto("a_GeomRibbon", a_Geom,
 
     positions <- plyr::summarise(data,
       x = c(x, rev(x)), y = c(ymax, rev(ymin)), id = c(ids, rev(ids)))
-    munched <- coord_munch(coord, positions, panel_scales)
+    munched <- a_coord_munch(a_coord, positions, panel_scales)
 
     ggname("geom_ribbon", polygonGrob(
       munched$x, munched$y, id = munched$id,

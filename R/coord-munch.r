@@ -3,7 +3,7 @@
 #' This function "munches" lines, dividing each line into many small pieces
 #' so they can be transformed independently. Used inside geom functions.
 #'
-#' @param coord Coordinate system definition.
+#' @param a_coord Coordinate system definition.
 #' @param data Data set to transform - should have variables \code{x} and
 #'   \code{y} are chopped up into small pieces (as defined by \code{group}).
 #'   All other variables are duplicated as needed.
@@ -11,11 +11,11 @@
 #' @param segment_length Target segment length
 #' @keywords internal
 #' @export
-coord_munch <- function(coord, data, range, segment_length = 0.01) {
-  if (coord$is_linear()) return(coord$transform(data, range))
+a_coord_munch <- function(a_coord, data, range, segment_length = 0.01) {
+  if (a_coord$is_linear()) return(a_coord$transform(data, range))
 
   # range has theta and r values; get corresponding x and y values
-  ranges <- coord$range(range)
+  ranges <- a_coord$range(range)
 
   # Convert any infinite locations into max/min
   # Only need to work with x and y because for munching, those are the
@@ -25,13 +25,13 @@ coord_munch <- function(coord, data, range, segment_length = 0.01) {
   data$y[data$y == -Inf] <- ranges$y[1]
   data$y[data$y == Inf]  <- ranges$y[2]
 
-  # Calculate distances using coord distance metric
-  dist <- coord$distance(data$x, data$y, range)
+  # Calculate distances using a_coord distance metric
+  dist <- a_coord$distance(data$x, data$y, range)
   dist[data$group[-1] != data$group[-nrow(data)]] <- NA
 
   # Munch and then transform result
   munched <- munch_data(data, dist, segment_length)
-  coord$transform(munched, range)
+  a_coord$transform(munched, range)
 }
 
 #' For munching, only grobs are lines and polygons: everything else is

@@ -1,7 +1,7 @@
-#' @inheritParams coord_cartesian
+#' @inheritParams a_coord_cartesian
 #' @export
-#' @rdname coord_map
-coord_quickmap <- function(xlim = NULL, ylim = NULL, expand = TRUE) {
+#' @rdname a_coord_map
+a_coord_quickmap <- function(xlim = NULL, ylim = NULL, expand = TRUE) {
   a_ggproto(NULL, a_CoordQuickmap,
     limits = list(x = xlim, y = ylim),
     expand = expand

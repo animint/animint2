@@ -188,10 +188,10 @@ a_facet_map_layout.grid <- function(a_facet, data, layout) {
 }
 
 #' @export
-a_facet_render.grid <- function(a_facet, panel, coord, a_theme, geom_grobs) {
-  axes <- a_facet_axes(a_facet, panel, coord, a_theme)
+a_facet_render.grid <- function(a_facet, panel, a_coord, a_theme, geom_grobs) {
+  axes <- a_facet_axes(a_facet, panel, a_coord, a_theme)
   strips <- a_facet_strips(a_facet, panel, a_theme)
-  panels <- a_facet_panels(a_facet, panel, coord, a_theme, geom_grobs)
+  panels <- a_facet_panels(a_facet, panel, a_coord, a_theme, geom_grobs)
 
   # adjust the size of axes to the size of panel
   axes$l$heights <- panels$heights
@@ -323,18 +323,18 @@ a_facet_strips.grid <- function(a_facet, panel, a_theme) {
 }
 
 #' @export
-a_facet_axes.grid <- function(a_facet, panel, coord, a_theme) {
+a_facet_axes.grid <- function(a_facet, panel, a_coord, a_theme) {
   axes <- list()
 
   # Horizontal axes
   cols <- which(panel$layout$ROW == 1)
-  grobs <- lapply(panel$ranges[cols], coord$render_axis_h, a_theme = a_theme)
+  grobs <- lapply(panel$ranges[cols], a_coord$render_axis_h, a_theme = a_theme)
   axes$b <- gtable_add_col_space(gtable_row("axis-b", grobs),
                                  a_theme$panel.margin.x %||% a_theme$panel.margin)
 
   # Vertical axes
   rows <- which(panel$layout$COL == 1)
-  grobs <- lapply(panel$ranges[rows], coord$render_axis_v, a_theme = a_theme)
+  grobs <- lapply(panel$ranges[rows], a_coord$render_axis_v, a_theme = a_theme)
   axes$l <- gtable_add_row_space(gtable_col("axis-l", grobs),
                                  a_theme$panel.margin.y %||% a_theme$panel.margin)
 
@@ -342,13 +342,13 @@ a_facet_axes.grid <- function(a_facet, panel, coord, a_theme) {
 }
 
 #' @export
-a_facet_panels.grid <- function(a_facet, panel, coord, a_theme, geom_grobs) {
+a_facet_panels.grid <- function(a_facet, panel, a_coord, a_theme, geom_grobs) {
 
   # If user hasn't set aspect ratio, and we have fixed scales, then
   # ask the coordinate system if it wants to specify one
   aspect_ratio <- a_theme$aspect.ratio
   if (is.null(aspect_ratio) && !a_facet$free$x && !a_facet$free$y) {
-    aspect_ratio <- coord$aspect(panel$ranges[[1]])
+    aspect_ratio <- a_coord$aspect(panel$ranges[[1]])
   }
   if (is.null(aspect_ratio)) {
     aspect_ratio <- 1
@@ -363,8 +363,8 @@ a_facet_panels.grid <- function(a_facet, panel, coord, a_theme, geom_grobs) {
   nrow <- max(panel$layout$ROW)
 
   panel_grobs <- lapply(panels, function(i) {
-    fg <- coord$render_fg(panel$ranges[[i]], a_theme)
-    bg <- coord$render_bg(panel$ranges[[i]], a_theme)
+    fg <- a_coord$render_fg(panel$ranges[[i]], a_theme)
+    bg <- a_coord$render_bg(panel$ranges[[i]], a_theme)
 
     geom_grobs <- lapply(geom_grobs, `[[`, i)
 
@@ -381,7 +381,7 @@ a_facet_panels.grid <- function(a_facet, panel, coord, a_theme, geom_grobs) {
 
   # @kohske
   # Now size of each panel is calculated using PANEL$ranges, which is given by
-  # coord_train called by train_range.
+  # a_coord_train called by train_range.
   # So here, "scale" need not to be referred.
   #
   # In general, panel has all information for building a_facet.

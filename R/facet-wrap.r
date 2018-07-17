@@ -138,11 +138,11 @@ a_facet_map_layout.wrap <- function(a_facet, data, layout) {
 #  * combine panels, strips and axes, then wrap into 2d
 #  * finally: add title, labels and legend
 #' @export
-a_facet_render.wrap <- function(a_facet, panel, coord, a_theme, geom_grobs) {
+a_facet_render.wrap <- function(a_facet, panel, a_coord, a_theme, geom_grobs) {
 
-  # If coord is (non-cartesian or flip) and (x is free or y is free)
+  # If a_coord is (non-cartesian or flip) and (x is free or y is free)
   # then print a warning
-  if ((!inherits(coord, "a_CoordCartesian") || inherits(coord, "a_CoordFlip")) &&
+  if ((!inherits(a_coord, "a_CoordCartesian") || inherits(a_coord, "a_CoordFlip")) &&
     (a_facet$free$x || a_facet$free$y)) {
     stop("ggplot2 does not currently support free scales with a non-cartesian coord or coord_flip.\n")
   }
@@ -151,7 +151,7 @@ a_facet_render.wrap <- function(a_facet, panel, coord, a_theme, geom_grobs) {
   # ask the coordinate system if it wants to specify one
   aspect_ratio <- a_theme$aspect.ratio
   if (is.null(aspect_ratio) && !a_facet$free$x && !a_facet$free$y) {
-    aspect_ratio <- coord$aspect(panel$ranges[[1]])
+    aspect_ratio <- a_coord$aspect(panel$ranges[[1]])
   }
 
   if (is.null(aspect_ratio)) {
@@ -178,8 +178,8 @@ a_facet_render.wrap <- function(a_facet, panel, coord, a_theme, geom_grobs) {
     a_facet$switch <- NULL
   }
 
-  panels <- a_facet_panels(a_facet, panel, coord, a_theme, geom_grobs)
-  axes <- a_facet_axes(a_facet, panel, coord, a_theme)
+  panels <- a_facet_panels(a_facet, panel, a_coord, a_theme, geom_grobs)
+  axes <- a_facet_axes(a_facet, panel, a_coord, a_theme)
   strips <- a_facet_strips(a_facet, panel, a_theme)
 
 
@@ -318,11 +318,11 @@ a_facet_render.wrap <- function(a_facet, panel, coord, a_theme, geom_grobs) {
 }
 
 #' @export
-a_facet_panels.wrap <- function(a_facet, panel, coord, a_theme, geom_grobs) {
+a_facet_panels.wrap <- function(a_facet, panel, a_coord, a_theme, geom_grobs) {
   panels <- panel$layout$PANEL
   lapply(panels, function(i) {
-    fg <- coord$render_fg(panel$ranges[[i]], a_theme)
-    bg <- coord$render_bg(panel$ranges[[i]], a_theme)
+    fg <- a_coord$render_fg(panel$ranges[[i]], a_theme)
+    bg <- a_coord$render_bg(panel$ranges[[i]], a_theme)
 
     geom_grobs <- lapply(geom_grobs, "[[", i)
 
@@ -375,13 +375,13 @@ a_facet_strips.wrap <- function(a_facet, panel, a_theme) {
 
 
 #' @export
-a_facet_axes.wrap <- function(a_facet, panel, coord, a_theme) {
+a_facet_axes.wrap <- function(a_facet, panel, a_coord, a_theme) {
   panels <- panel$layout$PANEL
 
   axes <- list()
   axes$b <- lapply(panels, function(i) {
     if (panel$layout$AXIS_X[i]) {
-      grob <- coord$render_axis_h(panel$ranges[[i]], a_theme)
+      grob <- a_coord$render_axis_h(panel$ranges[[i]], a_theme)
     } else {
       grob <- a_zeroGrob()
     }
@@ -390,7 +390,7 @@ a_facet_axes.wrap <- function(a_facet, panel, coord, a_theme) {
 
   axes$l <- lapply(panels, function(i) {
     if (panel$layout$AXIS_Y[i]) {
-      grob <- coord$render_axis_v(panel$ranges[[i]], a_theme)
+      grob <- a_coord$render_axis_v(panel$ranges[[i]], a_theme)
     } else {
       grob <- a_zeroGrob()
     }

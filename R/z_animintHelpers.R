@@ -254,7 +254,7 @@ checkForNonIdentityAndSS <- function(stat.type, has.show, is.show, l,
 }
 
 
-#' Flip axes in case of coord_flip
+#' Flip axes in case of a_coord_flip
 #' Switches column names. Eg. xmin to ymin, yntercept to xintercept etc.
 #' @param col.names Column names which need to be switched
 #' @return Column names with x and y axes switched

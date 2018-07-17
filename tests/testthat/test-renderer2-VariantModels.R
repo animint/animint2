@@ -94,7 +94,7 @@ viz <- list(
                        breaks=c(0, 0.25, 0.5, 0.75, 1),
                        labels=c("0", "0.25", "0.5", "0.75", "1"))+
     a_scale_color_manual(values=method.colors)+
-    coord_equal()+
+    a_coord_equal()+
     a_theme_bw()+
     a_theme_animint(width=500, height=500)+
     a_theme(panel.margin=grid::unit(0, "cm"))+

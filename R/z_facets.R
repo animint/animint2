@@ -97,7 +97,7 @@ flag_axis.null <- function(a_facet, layout) {
 # https://github.com/hadley/ggplot2/blob/dfcb56ec067910e1a3a04693d8f1e146cc7fb796/R/coord-.r
 
 #' @export
-train_layout <- function(a_facet, coord, layout, ranges) {
+train_layout <- function(a_facet, a_coord, layout, ranges) {
   npanels <- dim(layout)[1]
   nrows <- max(layout$ROW)
   ncols <- max(layout$COL)
@@ -105,11 +105,11 @@ train_layout <- function(a_facet, coord, layout, ranges) {
   xdiffs <- sapply(ranges, function(z) diff(z$x.range))
   # if x or y scale is 'free', then ignore the ratio
   if (length(unique(xdiffs)) > 1 || length(unique(ydiffs)) > 1) 
-    coord$ratio <- NULL
-  has.ratio <- !is.null(coord$ratio)
-  layout$coord_fixed <- has.ratio
+    a_coord$ratio <- NULL
+  has.ratio <- !is.null(a_coord$ratio)
+  layout$a_coord_fixed <- has.ratio
   if (has.ratio) { 
-    spaces <- fixed_spaces(ranges, coord$ratio)
+    spaces <- fixed_spaces(ranges, a_coord$ratio)
     layout <- cbind(layout, width_proportion = spaces$x, height_proportion = spaces$y)
     layout$width_proportion <- layout$width_proportion/ncols
     layout$height_proportion <- layout$height_proportion/nrows

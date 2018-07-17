@@ -40,7 +40,7 @@ wb.facets <-
                       key=country),
                   showSelected="year", clickSelects="country",
                   data=not.na, stat="identity", position="identity")+
-         coord_flip(),
+         a_coord_flip(),
        duration=list(year=1000),
        first=list(year=1975, country=c("United States", "Vietnam")),
        selector.types=list(country="multiple"),

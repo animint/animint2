@@ -53,10 +53,10 @@ a_GeomAnnotationMap <- a_ggproto("a_GeomAnnotationMap", a_GeomMap,
     data
   },
 
-  draw_panel = function(data, panel_scales, coord, map) {
+  draw_panel = function(data, panel_scales, a_coord, map) {
     # Munch, then set up id variable for polygonGrob -
     # must be sequential integers
-    coords <- coord_munch(coord, map, panel_scales)
+    coords <- a_coord_munch(a_coord, map, panel_scales)
     coords$group <- coords$group %||% coords$id
     grob_id <- match(coords$group, unique(coords$group))
 

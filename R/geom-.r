@@ -20,8 +20,8 @@ NULL
 #' the changes.
 #'
 #' \itemize{
-#'   \item Override either \code{draw_panel(self, data, panel_scales, coord)} or
-#'     \code{draw_group(self, data, panel_scales, coord)}. \code{draw_panel} is
+#'   \item Override either \code{draw_panel(self, data, panel_scales, a_coord)} or
+#'     \code{draw_group(self, data, panel_scales, a_coord)}. \code{draw_panel} is
 #'     called once per panel, \code{draw_group} is called once per group.
 #'
 #'     Use \code{draw_panel} if each row in the data represents a
@@ -30,8 +30,8 @@ NULL
 #'
 #'     \code{data} is a data frame of scaled aesthetics. \code{panel_scales}
 #'     is a list containing information about the scales in the current
-#'     panel. \code{coord} is a coordinate specification. You'll
-#'     need to call \code{coord$transform(data, panel_scales)} to work
+#'     panel. \code{a_coord} is a coordinate specification. You'll
+#'     need to call \code{a_coord$transform(data, panel_scales)} to work
 #'     with non-Cartesian coords. To work with non-linear coordinate systems,
 #'     you typically need to convert into a primitive geom (e.g. point, path
 #'     or polygon), and then pass on to the corresponding draw method
@@ -66,7 +66,7 @@ a_Geom <- a_ggproto("a_Geom",
     )
   },
 
-  draw_layer = function(self, data, params, panel, coord) {
+  draw_layer = function(self, data, params, panel, a_coord) {
     if (empty(data)) {
       n <- if (is.factor(data$PANEL)) nlevels(data$PANEL) else 1L
       return(rep(list(a_zeroGrob()), n))
@@ -75,7 +75,7 @@ a_Geom <- a_ggproto("a_Geom",
     # Trim off extra parameters
     params <- params[intersect(names(params), self$parameters())]
 
-    args <- c(list(quote(data), quote(panel_scales), quote(coord)), params)
+    args <- c(list(quote(data), quote(panel_scales), quote(a_coord)), params)
     plyr::dlply(data, "PANEL", function(data) {
       if (empty(data)) return(a_zeroGrob())
 
@@ -84,10 +84,10 @@ a_Geom <- a_ggproto("a_Geom",
     }, .drop = FALSE)
   },
 
-  draw_panel = function(self, data, panel_scales, coord, ...) {
+  draw_panel = function(self, data, panel_scales, a_coord, ...) {
     groups <- split(data, factor(data$group))
     grobs <- lapply(groups, function(group) {
-      self$draw_group(group, panel_scales, coord, ...)
+      self$draw_group(group, panel_scales, a_coord, ...)
     })
 
     ggname(snake_class(self), gTree(
@@ -95,7 +95,7 @@ a_Geom <- a_ggproto("a_Geom",
     ))
   },
 
-  draw_group = function(self, data, panel_scales, coord) {
+  draw_group = function(self, data, panel_scales, a_coord) {
     stop("Not implemented")
   },
 

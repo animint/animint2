@@ -5,27 +5,27 @@
 #' statistics which display y conditional on x, to x conditional on y.
 #'
 #' @export
-#' @inheritParams coord_cartesian
+#' @inheritParams a_coord_cartesian
 #' @examples
 #' # Very useful for creating boxplots, and other interval
 #' # geoms in the horizontal instead of vertical position.
 #'
 #' a_plot(diamonds, aes(cut, price)) +
 #'   geom_boxplot() +
-#'   coord_flip()
+#'   a_coord_flip()
 #'
 #' h <- a_plot(diamonds, aes(carat)) +
 #'   geom_histogram()
 #' h
-#' h + coord_flip()
-#' h + coord_flip() + a_scale_x_reverse()
+#' h + a_coord_flip()
+#' h + a_coord_flip() + a_scale_x_reverse()
 #'
 #' # You can also use it to flip line and area plots:
 #' df <- data.frame(x = 1:5, y = (1:5) ^ 2)
 #' a_plot(df, aes(x, y)) +
 #'   geom_area()
-#' last_plot() + coord_flip()
-coord_flip <- function(xlim = NULL, ylim = NULL, expand = TRUE) {
+#' last_plot() + a_coord_flip()
+a_coord_flip <- function(xlim = NULL, ylim = NULL, expand = TRUE) {
   a_ggproto(NULL, a_CoordFlip,
     limits = list(x = xlim, y = ylim),
     expand = expand

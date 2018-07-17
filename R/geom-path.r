@@ -149,7 +149,7 @@ a_GeomPath <- a_ggproto("a_GeomPath", a_Geom,
     data
   },
 
-  draw_panel = function(data, panel_scales, coord, arrow = NULL,
+  draw_panel = function(data, panel_scales, a_coord, arrow = NULL,
                         lineend = "butt", linejoin = "round", linemitre = 1,
                         na.rm = FALSE) {
     if (!anyDuplicated(data$group)) {
@@ -159,7 +159,7 @@ a_GeomPath <- a_ggproto("a_GeomPath", a_Geom,
 
     # must be sorted on group
     data <- data[order(data$group), , drop = FALSE]
-    munched <- coord_munch(coord, data, panel_scales)
+    munched <- a_coord_munch(a_coord, data, panel_scales)
 
     # Silently drop lines with less than two points, preserving order
     rows <- stats::ave(seq_len(nrow(munched)), munched$group, FUN = length)
@@ -283,9 +283,9 @@ geom_step <- function(mapping = NULL, data = NULL, stat = "identity",
 #' @export
 #' @include geom-path.r
 a_GeomStep <- a_ggproto("a_GeomStep", a_GeomPath,
-  draw_panel = function(data, panel_scales, coord, direction = "hv") {
+  draw_panel = function(data, panel_scales, a_coord, direction = "hv") {
     data <- plyr::ddply(data, "group", stairstep, direction = direction)
-    a_GeomPath$draw_panel(data, panel_scales, coord)
+    a_GeomPath$draw_panel(data, panel_scales, a_coord)
   }
 )
 

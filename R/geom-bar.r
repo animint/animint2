@@ -124,8 +124,8 @@ a_GeomBar <- a_ggproto("a_GeomBar", a_GeomRect,
     )
   },
 
-  draw_panel = function(self, data, panel_scales, coord, width = NULL) {
+  draw_panel = function(self, data, panel_scales, a_coord, width = NULL) {
     # Hack to ensure that width is detected as a parameter
-    a_ggproto_parent(a_GeomRect, self)$draw_panel(data, panel_scales, coord)
+    a_ggproto_parent(a_GeomRect, self)$draw_panel(data, panel_scales, a_coord)
   }
 )

@@ -532,7 +532,7 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
   if(zero.size && has.no.fill){
     warning(sprintf("geom_%s with size=0 will be invisible",g$geom))
   }
-  ## TODO: coord_transform maybe won't work for
+  ## TODO: a_coord_transform maybe won't work for
   ## geom_dotplot|rect|segment and polar/log transformations, which
   ## could result in something nonlinear. For the time being it is
   ## best to just ignore this, but you can look at the source of

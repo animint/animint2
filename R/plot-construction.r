@@ -13,7 +13,7 @@
 #'   \item \code{layer}: add new layer
 #'   \item \code{a_theme}: update plot a_theme
 #'   \item \code{a_scale}: replace current scale
-#'   \item \code{coord}: override current coordinate system
+#'   \item \code{a_coord}: override current coordinate system
 #'   \item \code{a_facet}: override current coordinate faceting
 #' }
 #'
@@ -39,7 +39,7 @@
 #'   geom_point()
 #'
 #' p
-#' p + coord_cartesian(ylim = c(0, 40))
+#' p + a_coord_cartesian(ylim = c(0, 40))
 #' p + a_scale_colour_continuous(breaks = c(100, 300))
 #' p + guides(colour = "colourbar")
 #'
@@ -96,7 +96,7 @@ add_a_plot <- function(p, object, objectname) {
       labels <- lapply(object, deparse)
       names(labels) <- names(object)
       p <- update_labels(p, labels)
-  } else if (is.Coord(object)) {
+  } else if (is.a_Coord(object)) {
       p$coordinates <- object
       p
   } else if (is.a_facet(object)) {

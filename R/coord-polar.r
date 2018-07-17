@@ -16,19 +16,19 @@
 #' #' # A pie chart = stacked bar chart + polar coordinates
 #' pie <- a_plot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
 #'  geom_bar(width = 1)
-#' pie + coord_polar(theta = "y")
+#' pie + a_coord_polar(theta = "y")
 #'
 #' \donttest{
 #'
 #' # A coxcomb plot = bar chart + polar coordinates
 #' cxc <- a_plot(mtcars, aes(x = factor(cyl))) +
 #'   geom_bar(width = 1, colour = "black")
-#' cxc + coord_polar()
+#' cxc + a_coord_polar()
 #' # A new type of plot?
-#' cxc + coord_polar(theta = "y")
+#' cxc + a_coord_polar(theta = "y")
 #'
 #' # The bullseye chart
-#' pie + coord_polar()
+#' pie + a_coord_polar()
 #'
 #' # Hadley's favourite pie chart
 #' df <- data.frame(
@@ -38,7 +38,7 @@
 #' a_plot(df, aes(x = "", y = value, fill = variable)) +
 #'   geom_bar(width = 1, stat = "identity") +
 #'   a_scale_fill_manual(values = c("red", "yellow")) +
-#'   coord_polar("y", start = pi / 3) +
+#'   a_coord_polar("y", start = pi / 3) +
 #'   labs(title = "Pac man")
 #'
 #' # Windrose + doughnut plot
@@ -49,12 +49,12 @@
 #' doh <- a_plot(movies, aes(x = rrating, fill = budgetq))
 #'
 #' # Wind rose
-#' doh + geom_bar(width = 1) + coord_polar()
+#' doh + geom_bar(width = 1) + a_coord_polar()
 #' # Race track plot
-#' doh + geom_bar(width = 0.9, position = "fill") + coord_polar(theta = "y")
+#' doh + geom_bar(width = 0.9, position = "fill") + a_coord_polar(theta = "y")
 #' }
 #' }
-coord_polar <- function(theta = "x", start = 0, direction = 1) {
+a_coord_polar <- function(theta = "x", start = 0, direction = 1) {
   theta <- match.arg(theta, c("x", "y"))
   r <- if (theta == "x") "y" else "x"
 
@@ -281,24 +281,24 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
 )
 
 
-rename_data <- function(coord, data) {
-  if (coord$theta == "y") {
+rename_data <- function(a_coord, data) {
+  if (a_coord$theta == "y") {
     plyr::rename(data, c("y" = "theta", "x" = "r"), warn_missing = FALSE)
   } else {
     plyr::rename(data, c("y" = "r", "x" = "theta"), warn_missing = FALSE)
   }
 }
 
-theta_rescale_no_clip <- function(coord, x, scale_details) {
-  rotate <- function(x) (x + coord$start) * coord$direction
+theta_rescale_no_clip <- function(a_coord, x, scale_details) {
+  rotate <- function(x) (x + a_coord$start) * a_coord$direction
   rotate(rescale(x, c(0, 2 * pi), scale_details$theta.range))
 }
 
-theta_rescale <- function(coord, x, scale_details) {
-  rotate <- function(x) (x + coord$start) %% (2 * pi) * coord$direction
+theta_rescale <- function(a_coord, x, scale_details) {
+  rotate <- function(x) (x + a_coord$start) %% (2 * pi) * a_coord$direction
   rotate(rescale(x, c(0, 2 * pi), scale_details$theta.range))
 }
 
-r_rescale <- function(coord, x, scale_details) {
+r_rescale <- function(a_coord, x, scale_details) {
   rescale(x, c(0, 0.4), scale_details$r.range)
 }

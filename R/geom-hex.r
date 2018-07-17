@@ -51,15 +51,15 @@ geom_hex <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomHex <- a_ggproto("a_GeomHex", a_Geom,
-  draw_group = function(data, panel_scales, coord) {
-    if (!inherits(coord, "a_CoordCartesian")) {
+  draw_group = function(data, panel_scales, a_coord) {
+    if (!inherits(a_coord, "a_CoordCartesian")) {
       stop("geom_hex() only works with Cartesian coordinates", call. = FALSE)
     }
 
-    coord <- coord$transform(data, panel_scales)
+    a_coord <- a_coord$transform(data, panel_scales)
     ggname("geom_hex", hexGrob(
-      coord$x, coord$y, colour = coord$colour,
-      fill = alpha(coord$fill, coord$alpha)
+      a_coord$x, a_coord$y, colour = a_coord$colour,
+      fill = alpha(a_coord$fill, a_coord$alpha)
     ))
   },
 

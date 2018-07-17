@@ -40,13 +40,13 @@ a_plot(capitals, aes(long, lat)) +
   borders("state") +
   geom_point(aes(size = pop)) +
   a_scale_size_area() +
-  coord_quickmap()
+  a_coord_quickmap()
 
 # Same map, with some world context
 a_plot(capitals, aes(long, lat)) +
   borders("world", xlim = c(-130, -60), ylim = c(20, 50)) +
   geom_point(aes(size = pop)) +
   a_scale_size_area() +
-  coord_quickmap()
+  a_coord_quickmap()
 }
 }

@@ -81,8 +81,8 @@ a_GeomLinerange <- a_ggproto("a_GeomLinerange", a_Geom,
 
   required_aes = c("x", "ymin", "ymax"),
 
-  draw_panel = function(data, panel_scales, coord) {
+  draw_panel = function(data, panel_scales, a_coord) {
     data <- transform(data, xend = x, y = ymin, yend = ymax)
-    ggname("geom_linerange", a_GeomSegment$draw_panel(data, panel_scales, coord))
+    ggname("geom_linerange", a_GeomSegment$draw_panel(data, panel_scales, a_coord))
   }
 )

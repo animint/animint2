@@ -32,7 +32,7 @@ object.
   \item \code{layer}: add new layer
   \item \code{a_theme}: update plot a_theme
   \item \code{a_scale}: replace current scale
-  \item \code{coord}: override current coordinate system
+  \item \code{a_coord}: override current coordinate system
   \item \code{a_facet}: override current coordinate faceting
 }
 
@@ -58,7 +58,7 @@ p <- a_plot(mtcars, aes(wt, mpg, colour = disp)) +
   geom_point()
 
 p
-p + coord_cartesian(ylim = c(0, 40))
+p + a_coord_cartesian(ylim = c(0, 40))
 p + a_scale_colour_continuous(breaks = c(100, 300))
 p + guides(colour = "colourbar")
 

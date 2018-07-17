@@ -16,7 +16,7 @@
 #' @param scaled is the data already log-scaled? This should be \code{TRUE}
 #'   (default) when the data is already transformed with \code{log10()} or when
 #'   using \code{a_scale_y_log10}. It should be \code{FALSE} when using
-#'   \code{coord_trans(y = "log10")}.
+#'   \code{a_coord_trans(y = "log10")}.
 #' @param colour Colour of the tick marks.
 #' @param size Thickness of tick marks, in mm.
 #' @param linetype Linetype of tick marks (\code{solid}, \code{dashed}, etc.)
@@ -27,7 +27,7 @@
 #' @export
 #' @seealso \code{\link{a_scale_y_continuous}}, \code{\link{a_scale_y_log10}} for log scale
 #'   transformations.
-#' @seealso \code{\link{coord_trans}} for log coordinate transformations.
+#' @seealso \code{\link{a_coord_trans}} for log coordinate transformations.
 #'
 #' @examples
 #' # Make a log-log plot (without log ticks)
@@ -63,7 +63,7 @@
 #' # Using a coordinate transform requires scaled = FALSE
 #' t <- a_plot(msleep, aes(bodywt, brainwt)) +
 #'   geom_point() +
-#'   coord_trans(x = "log10", y = "log10") +
+#'   a_coord_trans(x = "log10", y = "log10") +
 #'   a_theme_bw()
 #' t + annotation_logticks(scaled = FALSE)
 #'
@@ -114,7 +114,7 @@ a_GeomLogticks <- a_ggproto("a_GeomLogticks", a_Geom,
     data
   },
 
-  draw_panel = function(data, panel_scales, coord, base = 10, sides = "bl",
+  draw_panel = function(data, panel_scales, a_coord, base = 10, sides = "bl",
     scaled = TRUE, short = unit(0.1, "cm"), mid = unit(0.2, "cm"),
     long = unit(0.3, "cm"))
   {
@@ -143,7 +143,7 @@ a_GeomLogticks <- a_ggproto("a_GeomLogticks", a_Geom,
         xticks$value <- log(xticks$value, base)
 
       names(xticks)[names(xticks) == "value"] <- "x"   # Rename to 'x' for coordinates$transform
-      xticks <- coord$transform(xticks, panel_scales)
+      xticks <- a_coord$transform(xticks, panel_scales)
 
       # Make the grobs
       if (grepl("b", sides)) {
@@ -178,7 +178,7 @@ a_GeomLogticks <- a_ggproto("a_GeomLogticks", a_Geom,
         yticks$value <- log(yticks$value, base)
 
       names(yticks)[names(yticks) == "value"] <- "y"   # Rename to 'y' for coordinates$transform
-      yticks <- coord$transform(yticks, panel_scales)
+      yticks <- a_coord$transform(yticks, panel_scales)
 
       # Make the grobs
       if (grepl("l", sides)) {

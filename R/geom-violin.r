@@ -20,7 +20,7 @@
 #'
 #' \donttest{
 #' p + geom_violin() + geom_jitter(height = 0)
-#' p + geom_violin() + coord_flip()
+#' p + geom_violin() + a_coord_flip()
 #'
 #' # Scale maximum width proportional to sample size:
 #' p + geom_violin(a_scale = "count")
@@ -56,8 +56,8 @@
 #' m <- a_plot(movies, aes(y = votes, x = rating, group = cut_width(rating, 0.5)))
 #' m + geom_violin()
 #' m + geom_violin() + a_scale_y_log10()
-#' m + geom_violin() + coord_trans(y = "log10")
-#' m + geom_violin() + a_scale_y_log10() + coord_trans(y = "log10")
+#' m + geom_violin() + a_coord_trans(y = "log10")
+#' m + geom_violin() + a_scale_y_log10() + a_coord_trans(y = "log10")
 #'
 #' # Violin plots with continuous x:
 #' # Use the group aesthetic to group observations in violins
@@ -123,7 +123,7 @@ a_GeomViolin <- a_ggproto("a_GeomViolin", a_Geom,
     )
 
     # Close the polygon: set first and last point the same
-    # Needed for coord_polar and such
+    # Needed for a_coord_polar and such
     newdata <- rbind(newdata, newdata[1,])
 
     # Draw quantiles if requested

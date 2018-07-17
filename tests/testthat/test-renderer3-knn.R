@@ -66,7 +66,7 @@ scatterPlot <- a_plot()+
   a_theme_animint(width=500, height=500)+
   xlab("Input feature 1")+
   ylab("Input feature 2")+
-  coord_equal()+
+  a_coord_equal()+
   a_scale_color_manual(values=label.colors)+
   a_scale_linetype_manual(values=classifier.linetypes)+
   geom_point(aes(V1, V2, color=label),

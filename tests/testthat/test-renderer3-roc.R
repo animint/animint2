@@ -38,7 +38,7 @@ path.before.params <- list(
   a_scale_fill_manual(values=c(default="black", learned="white"))+
   a_scale_size_manual(values=c(default=7, learned=10))+
   a_scale_shape_manual(values=c(default=20, learned=1))+
-  coord_equal()+
+  a_coord_equal()+
   a_theme_grey()+
   a_scale_x_continuous(paste(
     "False positive rate in test labels",
@@ -89,7 +89,7 @@ path.after.params <- list(
   a_scale_fill_manual(values=c(default="black", learned="white"))+
   a_scale_size_manual(values=c(default=7, learned=10))+
   a_scale_shape_manual(values=c(default=20, learned=1))+
-  coord_equal()+
+  a_coord_equal()+
   a_theme_grey()+
   a_scale_x_continuous(paste(
     "False positive rate in test labels",

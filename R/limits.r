@@ -8,7 +8,7 @@
 #'   character, will create a discrete scale.  For \code{lims}, every
 #'   argument must be named.
 #' @seealso For changing x or y axis limits \strong{without} dropping data
-#'   observations, see \code{\link{coord_cartesian}}.
+#'   observations, see \code{\link{a_coord_cartesian}}.
 #' @export
 #' @examples
 #' # xlim

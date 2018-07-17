@@ -165,14 +165,14 @@ a_GeomText <- a_ggproto("a_GeomText", a_Geom,
     vjust = 0.5, alpha = NA, family = "", fontface = 1, lineheight = 1.2
   ),
 
-  draw_panel = function(data, panel_scales, coord, parse = FALSE,
+  draw_panel = function(data, panel_scales, a_coord, parse = FALSE,
                         na.rm = FALSE, check_overlap = FALSE) {
     lab <- data$label
     if (parse) {
       lab <- parse(text = as.character(lab))
     }
 
-    data <- coord$transform(data, panel_scales)
+    data <- a_coord$transform(data, panel_scales)
     if (is.character(data$vjust)) {
       data$vjust <- compute_just(data$vjust, data$y)
     }

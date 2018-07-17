@@ -290,14 +290,14 @@ a_Layer <- a_ggproto("a_Layer", NULL,
     self$geom$use_defaults(data, self$aes_params)
   },
 
-  draw_geom = function(self, data, panel, coord) {
+  draw_geom = function(self, data, panel, a_coord) {
     if (empty(data)) {
       n <- nrow(panel$layout)
       return(rep(list(a_zeroGrob()), n))
     }
 
     data <- self$geom$handle_na(data, self$geom_params)
-    self$geom$draw_layer(data, self$geom_params, panel, coord)
+    self$geom$draw_layer(data, self$geom_params, panel, a_coord)
   }
 )
 

@@ -32,7 +32,7 @@ no.time <-
                     key=country),
                 showSelected="year", clickSelects="country",
                 data=WorldBank, stat="identity", position="identity")+
-       coord_flip(),
+       a_coord_flip(),
        
        duration=list(year=1000),
        

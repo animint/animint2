@@ -46,7 +46,7 @@
 #' p + geom_line(data = stream, colour = "grey30", size = 5)
 #'
 #' # And if the positions are in longitude and latitude, you can use
-#' # coord_map to produce different map projections.
+#' # a_coord_map to produce different map projections.
 geom_polygon <- function(mapping = NULL, data = NULL,
                          stat = "identity", position = "identity",
                          ...,
@@ -73,11 +73,11 @@ geom_polygon <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomPolygon <- a_ggproto("a_GeomPolygon", a_Geom,
-  draw_panel = function(data, panel_scales, coord) {
+  draw_panel = function(data, panel_scales, a_coord) {
     n <- nrow(data)
     if (n == 1) return(a_zeroGrob())
 
-    munched <- coord_munch(coord, data, panel_scales)
+    munched <- a_coord_munch(a_coord, data, panel_scales)
     # Sort by group to make sure that colors, fill, etc. come in same order
     munched <- munched[order(munched$group), ]
 

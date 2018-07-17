@@ -96,7 +96,7 @@ stream <- data.frame(
 p + geom_line(data = stream, colour = "grey30", size = 5)
 
 # And if the positions are in longitude and latitude, you can use
-# coord_map to produce different map projections.
+# a_coord_map to produce different map projections.
 }
 \seealso{
 \code{\link{geom_path}} for an unfilled polygon,

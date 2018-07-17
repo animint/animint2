@@ -62,12 +62,12 @@ a_GeomRaster <- a_ggproto("a_GeomRaster", a_Geom,
     data
   },
 
-  draw_panel = function(data, panel_scales, coord, interpolate = FALSE,
+  draw_panel = function(data, panel_scales, a_coord, interpolate = FALSE,
                         hjust = 0.5, vjust = 0.5) {
-    if (!inherits(coord, "a_CoordCartesian")) {
+    if (!inherits(a_coord, "a_CoordCartesian")) {
       stop("geom_raster only works with Cartesian coordinates", call. = FALSE)
     }
-    data <- coord$transform(data, panel_scales)
+    data <- a_coord$transform(data, panel_scales)
 
     # Convert vector of data to raster
     x_pos <- as.integer((data$x - min(data$x)) / resolution(data$x, FALSE))

@@ -17,7 +17,7 @@ popPlots <-
                        label=title),
                    showSelected="year",
                    data=years) +
-         coord_flip(),
+         a_coord_flip(),
        lines=a_plot()+
          geom_vline(aes(xintercept=year),
                     clickSelects="year",
@@ -60,7 +60,7 @@ popPlots2 <-
                        label=title),
                    showSelected="year",
                    data=years) +
-         coord_flip(),
+         a_coord_flip(),
        lines=a_plot()+
          make_tallrect(worldPop, "year")+
          geom_point(aes(year, population, colour=type),
@@ -89,7 +89,7 @@ popPlots3 <-
                        label=title),
                    showSelected="year",
                    data=years) +
-         coord_flip(),
+         a_coord_flip(),
        lines=a_plot()+
          make_tallrect(worldPop, "year")+
          geom_line(aes(year, population, group=subcontinent),

@@ -39,7 +39,7 @@ a_GeomCrossbar <- a_ggproto("a_GeomCrossbar", a_Geom,
 
   draw_key = a_draw_key_crossbar,
 
-  draw_panel = function(data, panel_scales, coord, fatten = 2.5, width = NULL) {
+  draw_panel = function(data, panel_scales, a_coord, fatten = 2.5, width = NULL) {
     middle <- transform(data, x = xmin, xend = xmax, yend = y, size = size * fatten, alpha = NA)
 
     has_notch <- !is.null(data$ynotchlower) && !is.null(data$ynotchupper) &&
@@ -88,8 +88,8 @@ a_GeomCrossbar <- a_ggproto("a_GeomCrossbar", a_Geom,
     }
 
     ggname("geom_crossbar", gTree(children = gList(
-      a_GeomPolygon$draw_panel(box, panel_scales, coord),
-      a_GeomSegment$draw_panel(middle, panel_scales, coord)
+      a_GeomPolygon$draw_panel(box, panel_scales, a_coord),
+      a_GeomSegment$draw_panel(middle, panel_scales, a_coord)
     )))
   }
 )

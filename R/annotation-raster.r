@@ -71,14 +71,14 @@ a_GeomRasterAnn <- a_ggproto("a_GeomRasterAnn", a_Geom,
     data
   },
 
-  draw_panel = function(data, panel_scales, coord, raster, xmin, xmax,
+  draw_panel = function(data, panel_scales, a_coord, raster, xmin, xmax,
                         ymin, ymax, interpolate = FALSE) {
-    if (!inherits(coord, "a_CoordCartesian")) {
+    if (!inherits(a_coord, "a_CoordCartesian")) {
       stop("annotation_raster only works with Cartesian coordinates",
         call. = FALSE)
     }
     corners <- data.frame(x = c(xmin, xmax), y = c(ymin, ymax))
-    data <- coord$transform(corners, panel_scales)
+    data <- a_coord$transform(corners, panel_scales)
 
     x_rng <- range(data$x, na.rm = TRUE)
     y_rng <- range(data$y, na.rm = TRUE)

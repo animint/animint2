@@ -111,15 +111,15 @@ geom_abline <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomAbline <- a_ggproto("a_GeomAbline", a_Geom,
-  draw_panel = function(data, panel_scales, coord) {
-    ranges <- coord$range(panel_scales)
+  draw_panel = function(data, panel_scales, a_coord) {
+    ranges <- a_coord$range(panel_scales)
 
     data$x    <- ranges$x[1]
     data$xend <- ranges$x[2]
     data$y    <- ranges$x[1] * data$slope + data$intercept
     data$yend <- ranges$x[2] * data$slope + data$intercept
 
-    a_GeomSegment$draw_panel(unique(data), panel_scales, coord)
+    a_GeomSegment$draw_panel(unique(data), panel_scales, a_coord)
   },
 
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),

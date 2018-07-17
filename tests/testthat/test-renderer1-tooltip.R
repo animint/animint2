@@ -43,7 +43,7 @@ viz <-
        geom_bar(aes(country, life.expectancy, fill=region),
                 showSelected="year", clickSelects="country",
                 data=WorldBank, stat="identity", position="identity")+
-       coord_flip(),
+       a_coord_flip(),
        duration=list(year=1000),
        first=list(year=1975, country="United States"),
        title="World Bank data (single selection)")

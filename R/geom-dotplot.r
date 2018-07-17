@@ -250,17 +250,17 @@ a_GeomDotplot <- a_ggproto("a_GeomDotplot", a_Geom,
   },
 
 
-  draw_group = function(data, panel_scales, coord, na.rm = FALSE,
+  draw_group = function(data, panel_scales, a_coord, na.rm = FALSE,
                         binaxis = "x", stackdir = "up", stackratio = 1,
                         dotsize = 1, stackgroups = FALSE) {
-    if (!coord$is_linear()) {
+    if (!a_coord$is_linear()) {
       warning("geom_dotplot does not work properly with non-linear coordinates.")
     }
 
-    tdata <- coord$transform(data, panel_scales)
+    tdata <- a_coord$transform(data, panel_scales)
 
-    # Swap axes if using coord_flip
-    if (inherits(coord, "a_CoordFlip"))
+    # Swap axes if using a_coord_flip
+    if (inherits(a_coord, "a_CoordFlip"))
       binaxis <- ifelse(binaxis == "x", "y", "x")
 
     if (binaxis == "x") {

@@ -1,11 +1,11 @@
 #' @section a_Coordinate systems:
 #'
-#' All \code{coord_*} functions (like \code{coord_trans}) return a \code{a_Coord*}
+#' All \code{a_coord_*} functions (like \code{a_coord_trans}) return a \code{a_Coord*}
 #' object (like \code{a_CoordTrans}). The \code{a_Coord*} object is responsible for
 #' adjusting the position of overlapping geoms.
 #'
-#' The way that the \code{coord_*} functions work is slightly different from the
-#' \code{geom_*} and \code{stat_*} functions, because a \code{coord_*} function
+#' The way that the \code{a_coord_*} functions work is slightly different from the
+#' \code{geom_*} and \code{stat_*} functions, because a \code{a_coord_*} function
 #' actually "instantiates" the \code{a_Coord*} object by creating a descendant,
 #' and returns that.
 #'
@@ -72,9 +72,9 @@ a_Coord <- a_ggproto("a_Coord",
 
 #' Is this object a coordinate system?
 #'
-#' @export is.Coord
+#' @export is.a_Coord
 #' @keywords internal
-is.Coord <- function(x) inherits(x, "a_Coord")
+is.a_Coord <- function(x) inherits(x, "a_Coord")
 
 expand_default <- function(a_scale, discrete = c(0, 0.6), continuous = c(0.05, 0)) {
   a_scale$expand %|W|% if (a_scale$is_discrete()) discrete else continuous

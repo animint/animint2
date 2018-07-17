@@ -59,7 +59,7 @@ test_that("aes(href) works with geom_polygon", {
   viz.href <- list(
     map=a_plot()+
       ggtitle("click a state to read its Wikipedia page")+
-      coord_equal()+
+      a_coord_equal()+
       geom_polygon(
         aes(x=long, y=lat, group=group, href=href),
         data=USpolygons, fill="black", colour="grey")

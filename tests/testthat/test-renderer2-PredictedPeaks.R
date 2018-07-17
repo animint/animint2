@@ -16,7 +16,7 @@ viz <- list(
   oneChrom=a_plot()+
     ggtitle("PeakSegJoint detections on selected chromosome")+
     a_theme_bw()+
-    coord_cartesian(xlim=c(0, 1))+
+    a_coord_cartesian(xlim=c(0, 1))+
     a_theme_animint(width=1500, height=100)+
     a_theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
           axis.ticks.x=a_element_blank(), axis.title.x=a_element_blank())+
@@ -152,7 +152,7 @@ viz <- list(
   oneChrom=a_plot()+
     ggtitle("PeakSegJoint detections on selected chromosome")+
     a_theme_bw()+
-    coord_cartesian(xlim=c(0, 1))+
+    a_coord_cartesian(xlim=c(0, 1))+
     a_theme_animint(width=1500, height=100)+
     a_theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
           axis.ticks.x=a_element_blank(), axis.title.x=a_element_blank())+
