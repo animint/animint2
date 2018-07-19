@@ -2,14 +2,14 @@
 % Please edit documentation in R/geom-count.r, R/stat-sum.r
 \name{geom_count}
 \alias{geom_count}
-\alias{stat_sum}
+\alias{a_stat_sum}
 \title{Count the number of observations at each location.}
 \usage{
-geom_count(mapping = NULL, data = NULL, stat = "sum",
+geom_count(mapping = NULL, data = NULL, a_stat = "sum",
   position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
-stat_sum(mapping = NULL, data = NULL, geom = "point",
+a_stat_sum(mapping = NULL, data = NULL, geom = "point",
   position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 }
@@ -39,7 +39,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{na.rm}{If \code{FALSE} (the default), removes missing values with
 a warning.  If \code{TRUE} silently removes missing values.}
@@ -53,8 +53,8 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
 
-\item{geom, stat}{Use to override the default connection between
-\code{geom_count} and \code{stat_sum}.}
+\item{geom, a_stat}{Use to override the default connection between
+\code{geom_count} and \code{a_stat_sum}.}
 }
 \description{
 This is a variant \code{\link{geom_point}} that counts the number of

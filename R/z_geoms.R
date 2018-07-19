@@ -1,7 +1,7 @@
 #' ggplot2 geom with xmin and xmax aesthetics that covers the entire y range, useful for clickSelects background elements.
 #' @param mapping aesthetic mapping
 #' @param data data set
-#' @param stat statistic mapping, defaults to identity
+#' @param a_stat statistic mapping, defaults to identity
 #' @param position position mapping, defaults to identity
 #' @param ... other arguments
 #' @param na.rm ...
@@ -11,7 +11,7 @@
 #' @export
 #' @example inst/examples/breakpoints.R
 geom_tallrect <- function(mapping = NULL, data = NULL,
-                          stat = "identity", position = "identity",
+                          a_stat = "identity", position = "identity",
                           ...,
                           na.rm = FALSE,
                           show.legend = NA,
@@ -20,7 +20,7 @@ geom_tallrect <- function(mapping = NULL, data = NULL,
     geom = a_GeomTallRect,
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -73,7 +73,7 @@ a_GeomTallRect <- a_ggproto("a_GeomTallRect", a_Geom,
 #' ggplot2 geom with ymin and ymax aesthetics that covers the entire x range, useful for clickSelects background elements.
 #' @param mapping aesthetic mapping
 #' @param data data set
-#' @param stat statistic mapping, defaults to identity
+#' @param a_stat statistic mapping, defaults to identity
 #' @param position position mapping, defaults to identity
 #' @param ... other arguments
 #' @param na.rm ...
@@ -86,7 +86,7 @@ a_GeomTallRect <- a_ggproto("a_GeomTallRect", a_Geom,
 #'    source(system.file("examples/WorldBank.R", package = "animint"))
 #'  }
 geom_widerect <- function(mapping = NULL, data = NULL,
-                          stat = "identity", position = "identity",
+                          a_stat = "identity", position = "identity",
                           ...,
                           na.rm = FALSE,
                           show.legend = NA,
@@ -95,7 +95,7 @@ geom_widerect <- function(mapping = NULL, data = NULL,
     geom = a_GeomWideRect,
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -240,7 +240,7 @@ make_tallrect_or_widerect <- function(aes.prefix, geom_xrect, data, var.name, ev
 }
 
 #' Convenience function for an interactive bar that might otherwise be
-#' created using stat_summary(geom="bar").
+#' created using a_stat_summary(geom="bar").
 #' @param data data.frame to analyze for unique x.name values.
 #' @param x.name variable to be used for x, clickSelects.
 #' @param alpha transparency of selected bar, default 1.
@@ -253,7 +253,7 @@ make_bar <- function(data, x.name, alpha=1){
   stopifnot(length(x.name)==1)
   x <- data[,x.name]
   stopifnot(is.numeric(x))
-  stat_summary(aes_string(x=x.name, y=x.name), clickSelects=x.name,
+  a_stat_summary(aes_string(x=x.name, y=x.name), clickSelects=x.name,
                data=data, alpha=alpha, fun.y=length, geom="bar")
 }
 

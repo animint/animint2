@@ -4,7 +4,7 @@
 \alias{geom_point}
 \title{Points, as for a scatterplot}
 \usage{
-geom_point(mapping = NULL, data = NULL, stat = "identity",
+geom_point(mapping = NULL, data = NULL, a_stat = "identity",
   position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 }
@@ -28,7 +28,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{stat}{The statistical transformation to use on the data for this
+\item{a_stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
 \item{position}{Position adjustment, either as a string, or the result of
@@ -37,7 +37,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{na.rm}{If \code{FALSE} (the default), removes missing values with
 a warning.  If \code{TRUE} silently removes missing values.}
@@ -73,7 +73,7 @@ that can help.  You can add additional information with
 \code{\link{geom_density_2d}}.  If you have few unique x values,
 \code{\link{geom_boxplot}} may also be useful.  Alternatively, you can
 summarise the number of points at each location and display that in some
-way, using \code{\link{stat_sum}}. Another technique is to use transparent
+way, using \code{\link{a_stat_sum}}. Another technique is to use transparent
 points, e.g. \code{geom_point(alpha = 0.05)}.
 }
 \section{Aesthetics}{

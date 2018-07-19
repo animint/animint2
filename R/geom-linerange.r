@@ -10,7 +10,7 @@
 #'   middle bar in \code{geom_crossbar()} and the middle point in
 #'   \code{geom_pointrange()}.
 #' @seealso
-#'  \code{\link{stat_summary}} for examples of these guys in use,
+#'  \code{\link{a_stat_summary}} for examples of these guys in use,
 #'  \code{\link{geom_smooth}} for continuous analog
 #' @export
 #' @inheritParams layer
@@ -40,17 +40,17 @@
 #' # specify the dodge width
 #' p <- a_plot(df, aes(trt, resp, fill = group))
 #' p +
-#'  geom_bar(position = "dodge", stat = "identity") +
+#'  geom_bar(position = "dodge", a_stat = "identity") +
 #'  geom_errorbar(aes(ymin = lower, ymax = upper), position = "dodge", width = 0.25)
 #'
 #' # Because the bars and errorbars have different widths
 #' # we need to specify how wide the objects we are dodging are
 #' dodge <- position_dodge(width=0.9)
 #' p +
-#'   geom_bar(position = dodge, stat = "identity") +
+#'   geom_bar(position = dodge, a_stat = "identity") +
 #'   geom_errorbar(aes(ymin = lower, ymax = upper), position = dodge, width = 0.25)
 geom_linerange <- function(mapping = NULL, data = NULL,
-                           stat = "identity", position = "identity",
+                           a_stat = "identity", position = "identity",
                            ...,
                            na.rm = FALSE,
                            show.legend = NA,
@@ -58,7 +58,7 @@ geom_linerange <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomLinerange,
     position = position,
     show.legend = show.legend,

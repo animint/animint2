@@ -25,7 +25,7 @@ wb.all <-
        a_theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region),
                 showSelected="year", clickSelects="country",
-                data=WorldBank, stat="identity", position="identity")+
+                data=WorldBank, a_stat="identity", position="identity")+
        a_coord_flip(),
        duration=list(year=1000),
        first=list(year=1975, country="United States"),
@@ -66,7 +66,7 @@ bad <-
        a_theme_animint(height=2400)+
        geom_bar(aes(country, life.expectancy, fill=region),
                 showSelected="year", clickSelects="country",
-                data=WorldBank, stat="identity", position="identity")+
+                data=WorldBank, a_stat="identity", position="identity")+
        a_coord_flip(),
        duration=list(year=1000))
 animint2dir(bad, "WorldBank-bad")
@@ -98,7 +98,7 @@ good <-
        geom_bar(aes(country, life.expectancy, fill=region,
                     key=country),
                 showSelected="year", clickSelects="country",
-                data=WorldBank, stat="identity", position="identity")+
+                data=WorldBank, a_stat="identity", position="identity")+
        a_coord_flip(),
        duration=list(year=1000),
        first=list(year=1975, country="United States"),

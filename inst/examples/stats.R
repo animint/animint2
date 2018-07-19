@@ -15,9 +15,9 @@ viz <-
        counts=a_plot()+
        geom_point(aes(Species, individuals),
                   showSelected="id",
-### TODO: compute this stat in the renderer, to see the nummber of
+### TODO: compute this a_stat in the renderer, to see the nummber of
 ### currently selected points in each of the 3 classes.
-                  stat="summary",
+                  a_stat="summary",
                   fun.y="sum",
                   data=my.iris))
 

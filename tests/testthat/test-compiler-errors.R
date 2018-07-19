@@ -131,7 +131,7 @@ test_that("warning for position=stack and showSelected", {
       aes(letter, count, fill = stack, key=key),
       showSelected="a_facet",
       data = df,
-      stat = "identity",
+      a_stat = "identity",
       position="stack"
     )
   complicated <- list(
@@ -158,7 +158,7 @@ test_that("no warning for position=stack without showSelected", {
     geom_bar(
       aes(letter, count, fill = stack),
       data = df,
-      stat = "identity",
+      a_stat = "identity",
       position="stack"
     )
   no.show <- list(

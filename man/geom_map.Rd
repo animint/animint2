@@ -4,7 +4,7 @@
 \alias{geom_map}
 \title{Polygons from a reference map.}
 \usage{
-geom_map(mapping = NULL, data = NULL, stat = "identity", ..., map,
+geom_map(mapping = NULL, data = NULL, a_stat = "identity", ..., map,
   na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
@@ -27,13 +27,13 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{stat}{The statistical transformation to use on the data for this
+\item{a_stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{map}{Data frame that contains the map coordinates.  This will
 typically be created using \code{\link{a_fortify}} on a spatial object.

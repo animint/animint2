@@ -45,7 +45,7 @@
 #' a_plot(counts, aes(x, Freq)) +
 #'   geom_segment(aes(xend = x, yend = 0), size = 10, lineend = "butt")
 geom_segment <- function(mapping = NULL, data = NULL,
-                         stat = "identity", position = "identity",
+                         a_stat = "identity", position = "identity",
                          ...,
                          arrow = NULL,
                          lineend = "butt",
@@ -55,7 +55,7 @@ geom_segment <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomSegment,
     position = position,
     show.legend = show.legend,

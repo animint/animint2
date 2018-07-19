@@ -2,14 +2,14 @@
 % Please edit documentation in R/geom-density.r, R/stat-density.r
 \name{geom_density}
 \alias{geom_density}
-\alias{stat_density}
+\alias{a_stat_density}
 \title{Display a smooth density estimate.}
 \usage{
-geom_density(mapping = NULL, data = NULL, stat = "density",
+geom_density(mapping = NULL, data = NULL, a_stat = "density",
   position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
-stat_density(mapping = NULL, data = NULL, geom = "area",
+a_stat_density(mapping = NULL, data = NULL, geom = "area",
   position = "stack", ..., bw = "nrd0", adjust = 1, kernel = "gaussian",
   trim = FALSE, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
@@ -39,7 +39,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{na.rm}{If \code{FALSE} (the default), removes missing values with
 a warning.  If \code{TRUE} silently removes missing values.}
@@ -53,8 +53,8 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
 
-\item{geom, stat}{Use to override the default connection between
-\code{geom_density} and \code{stat_density}.}
+\item{geom, a_stat}{Use to override the default connection between
+\code{geom_density} and \code{a_stat_density}.}
 
 \item{bw}{the smoothing bandwidth to be used, see
 \code{\link{density}} for details}

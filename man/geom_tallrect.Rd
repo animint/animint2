@@ -4,7 +4,7 @@
 \alias{geom_tallrect}
 \title{ggplot2 geom with xmin and xmax aesthetics that covers the entire y range, useful for clickSelects background elements.}
 \usage{
-geom_tallrect(mapping = NULL, data = NULL, stat = "identity",
+geom_tallrect(mapping = NULL, data = NULL, a_stat = "identity",
   position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 }
@@ -13,7 +13,7 @@ geom_tallrect(mapping = NULL, data = NULL, stat = "identity",
 
 \item{data}{data set}
 
-\item{stat}{statistic mapping, defaults to identity}
+\item{a_stat}{statistic mapping, defaults to identity}
 
 \item{position}{position mapping, defaults to identity}
 

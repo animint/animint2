@@ -50,14 +50,14 @@
 #' # Inspired by the image-density plots of Ken Knoblauch
 #' cars <- a_plot(mtcars, aes(mpg, factor(cyl)))
 #' cars + geom_point()
-#' cars + stat_bin2d(aes(fill = ..count..), binwidth = c(3,1))
-#' cars + stat_bin2d(aes(fill = ..density..), binwidth = c(3,1))
+#' cars + a_stat_bin2d(aes(fill = ..count..), binwidth = c(3,1))
+#' cars + a_stat_bin2d(aes(fill = ..density..), binwidth = c(3,1))
 #'
-#' cars + stat_density(aes(fill = ..density..), geom = "raster", position = "identity")
-#' cars + stat_density(aes(fill = ..count..), geom = "raster", position = "identity")
+#' cars + a_stat_density(aes(fill = ..density..), geom = "raster", position = "identity")
+#' cars + a_stat_density(aes(fill = ..count..), geom = "raster", position = "identity")
 #' }
 geom_tile <- function(mapping = NULL, data = NULL,
-                      stat = "identity", position = "identity",
+                      a_stat = "identity", position = "identity",
                       ...,
                       na.rm = FALSE,
                       show.legend = NA,
@@ -65,7 +65,7 @@ geom_tile <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomTile,
     position = position,
     show.legend = show.legend,

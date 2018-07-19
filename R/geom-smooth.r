@@ -1,7 +1,7 @@
 #' Add a smoothed conditional mean.
 #'
 #' Aids the eye in seeing patterns in the presence of overplotting.
-#' \code{geom_smooth} and \code{stat_smooth} are effectively aliases: they
+#' \code{geom_smooth} and \code{a_stat_smooth} are effectively aliases: they
 #' both use the same arguments. Use \code{geom_smooth} unless you want to
 #' display the results with a non-standard geom.
 #'
@@ -17,8 +17,8 @@
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point
-#' @param geom,stat Use to override the default connection between
-#'   \code{geom_smooth} and \code{stat_smooth}.
+#' @param geom,a_stat Use to override the default connection between
+#'   \code{geom_smooth} and \code{a_stat_smooth}.
 #' @seealso See individual modelling functions for more details:
 #'   \code{\link{lm}} for linear smooths,
 #'   \code{\link{glm}} for generalised linear smooths,
@@ -78,7 +78,7 @@
 #' # so you can exercise more control and see whether or not it's a good model
 #' }
 geom_smooth <- function(mapping = NULL, data = NULL,
-                        stat = "smooth", position = "identity",
+                        a_stat = "smooth", position = "identity",
                         ...,
                         method = "auto",
                         formula = y ~ x,
@@ -91,7 +91,7 @@ geom_smooth <- function(mapping = NULL, data = NULL,
     na.rm = na.rm,
     ...
   )
-  if (identical(stat, "smooth")) {
+  if (identical(a_stat, "smooth")) {
     params$method <- method
     params$formula <- formula
     params$se <- se
@@ -100,7 +100,7 @@ geom_smooth <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomSmooth,
     position = position,
     show.legend = show.legend,

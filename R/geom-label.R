@@ -4,7 +4,7 @@
 #' @param label.r Radius of rounded corners. Defaults to 0.15 lines.
 #' @param label.size Size of label border, in mm.
 geom_label <- function(mapping = NULL, data = NULL,
-                       stat = "identity", position = "identity",
+                       a_stat = "identity", position = "identity",
                        ...,
                        parse = FALSE,
                        nudge_x = 0,
@@ -26,7 +26,7 @@ geom_label <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomLabel,
     position = position,
     show.legend = show.legend,

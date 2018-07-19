@@ -2,18 +2,18 @@
 % Please edit documentation in R/geom-defaults.r
 \name{update_geom_defaults}
 \alias{update_geom_defaults}
-\alias{update_stat_defaults}
+\alias{update_a_stat_defaults}
 \title{Modify geom/stat aesthetic defaults for future plots}
 \usage{
 update_geom_defaults(geom, new)
 
-update_stat_defaults(stat, new)
+update_a_stat_defaults(a_stat, new)
 }
 \arguments{
 \item{new}{Named list of aesthetics.}
 
-\item{stat, geom}{Name of geom/stat to modify (like \code{"point"} or
-\code{"bin"}), or a Geom/Stat object (like \code{a_GeomPoint} or
+\item{a_stat, geom}{Name of geom/a_stat to modify (like \code{"point"} or
+\code{"bin"}), or a a_Geom/a_Stat object (like \code{a_GeomPoint} or
 \code{a_StatBin}).}
 }
 \description{

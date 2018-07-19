@@ -1,9 +1,9 @@
-acontext("stat_summary")
+acontext("a_stat_summary")
 
-test_that("stat_summary does not infinitely recurse", {
+test_that("a_stat_summary does not infinitely recurse", {
   data(UStornadoes, package = "animint2")
   gg <- a_plot()+
-    stat_summary(aes(year, year),
+    a_stat_summary(aes(year, year),
                  data=UStornadoes,
                  clickSelects="year", fun.y=length, geom="bar")
   L <- list(bar=gg)

@@ -14,7 +14,7 @@
 #' @param margins See \code{a_facet_grid}: display marginal facets?
 #' @param geom Character vector specifying geom(s) to draw. Defaults to
 #'  "point" if x and y are specified, and "histogram" if only x is specified.
-#' @param stat,position DEPRECATED.
+#' @param a_stat,position DEPRECATED.
 #' @param xlim,ylim X and y axis limits
 #' @param log Which variables to log transform ("x", "y", or "xy")
 #' @param main,xlab,ylab Character vector (or expression) giving plot title,
@@ -61,9 +61,9 @@ qplot <- function(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
                   geom = "auto", xlim = c(NA, NA),
                   ylim = c(NA, NA), log = "", main = NULL,
                   xlab = deparse(substitute(x)), ylab = deparse(substitute(y)),
-                  asp = NA, stat = NULL, position = NULL) {
+                  asp = NA, a_stat = NULL, position = NULL) {
 
-  if (!missing(stat)) warning("`stat` is deprecated", call. = FALSE)
+  if (!missing(a_stat)) warning("`stat` is deprecated", call. = FALSE)
   if (!missing(position)) warning("`position` is deprecated", call. = FALSE)
   if (!is.character(geom)) stop("`geom` must be a character vector", call. = FALSE)
 

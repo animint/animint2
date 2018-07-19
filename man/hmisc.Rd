@@ -7,7 +7,7 @@
 \alias{mean_sdl}
 \alias{median_hilow}
 \title{Wrap up a selection of summary functions from Hmisc to make it easy to use
-with \code{\link{stat_summary}}.}
+with \code{\link{a_stat_summary}}.}
 \usage{
 mean_cl_boot(x, ...)
 

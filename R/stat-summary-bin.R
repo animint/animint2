@@ -1,7 +1,7 @@
-#' @rdname stat_summary
-#' @inheritParams stat_bin
+#' @rdname a_stat_summary
+#' @inheritParams a_stat_bin
 #' @export
-stat_summary_bin <- function(mapping = NULL, data = NULL,
+a_stat_summary_bin <- function(mapping = NULL, data = NULL,
                              geom = "pointrange", position = "identity",
                              ...,
                              fun.data = NULL,
@@ -15,7 +15,7 @@ stat_summary_bin <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatSummaryBin,
+    a_stat = a_StatSummaryBin,
     geom = geom,
     position = position,
     show.legend = show.legend,

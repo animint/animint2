@@ -10,14 +10,14 @@
 #' a_plot(mtcars, aes(wt, mpg))
 #' # Nothing to see here!
 geom_blank <- function(mapping = NULL, data = NULL,
-                       stat = "identity", position = "identity",
+                       a_stat = "identity", position = "identity",
                        ...,
                        show.legend = NA,
                        inherit.aes = TRUE) {
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomBlank,
     position = position,
     show.legend = show.legend,

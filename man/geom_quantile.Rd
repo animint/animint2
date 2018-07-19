@@ -2,14 +2,14 @@
 % Please edit documentation in R/geom-quantile.r, R/stat-quantile.r
 \name{geom_quantile}
 \alias{geom_quantile}
-\alias{stat_quantile}
+\alias{a_stat_quantile}
 \title{Add quantile lines from a quantile regression.}
 \usage{
-geom_quantile(mapping = NULL, data = NULL, stat = "quantile",
+geom_quantile(mapping = NULL, data = NULL, a_stat = "quantile",
   position = "identity", ..., lineend = "butt", linejoin = "round",
   linemitre = 1, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
-stat_quantile(mapping = NULL, data = NULL, geom = "quantile",
+a_stat_quantile(mapping = NULL, data = NULL, geom = "quantile",
   position = "identity", ..., quantiles = c(0.25, 0.5, 0.75),
   formula = NULL, method = "rq", method.args = list(), na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
@@ -40,7 +40,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{lineend}{Line end style (round, butt, square)}
 
@@ -60,8 +60,8 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
 
-\item{geom, stat}{Use to override the default connection between
-\code{geom_quantile} and \code{stat_quantile}.}
+\item{geom, a_stat}{Use to override the default connection between
+\code{geom_quantile} and \code{a_stat_quantile}.}
 
 \item{quantiles}{conditional quantiles of y to calculate and display}
 

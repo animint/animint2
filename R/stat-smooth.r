@@ -24,7 +24,7 @@
 #' }
 #' @export
 #' @rdname geom_smooth
-stat_smooth <- function(mapping = NULL, data = NULL,
+a_stat_smooth <- function(mapping = NULL, data = NULL,
                         geom = "smooth", position = "identity",
                         ...,
                         method = "auto",
@@ -41,7 +41,7 @@ stat_smooth <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatSmooth,
+    a_stat = a_StatSmooth,
     geom = geom,
     position = position,
     show.legend = show.legend,

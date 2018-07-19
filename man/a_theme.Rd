@@ -278,8 +278,8 @@ k + a_theme(panel.margin.y = unit(0, "lines"))
 meanprice <- tapply(diamonds$price, diamonds$cut, mean)
 cut <- factor(levels(diamonds$cut), levels = levels(diamonds$cut))
 df <- data.frame(meanprice, cut)
-g <- a_plot(df, aes(cut, meanprice)) + geom_bar(stat = "identity")
-g + geom_bar(stat = "identity") +
+g <- a_plot(df, aes(cut, meanprice)) + geom_bar(a_stat = "identity")
+g + geom_bar(a_stat = "identity") +
     a_theme(panel.background = a_element_blank(),
           panel.grid.major.x = a_element_blank(),
           panel.grid.minor.x = a_element_blank(),

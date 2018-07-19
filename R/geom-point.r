@@ -20,7 +20,7 @@
 #' \code{\link{geom_density_2d}}.  If you have few unique x values,
 #' \code{\link{geom_boxplot}} may also be useful.  Alternatively, you can
 #' summarise the number of points at each location and display that in some
-#' way, using \code{\link{stat_sum}}. Another technique is to use transparent
+#' way, using \code{\link{a_stat_sum}}. Another technique is to use transparent
 #' points, e.g. \code{geom_point(alpha = 0.05)}.
 #'
 #' @section Aesthetics:
@@ -35,7 +35,7 @@
 #' @param ... other arguments passed on to \code{\link{layer}}. These are
 #'   often aesthetics, used to set an aesthetic to a fixed value, like
 #'   \code{color = "red"} or \code{size = 3}. They may also be parameters
-#'   to the paired geom/stat.
+#'   to the paired geom/a_stat.
 #' @inheritParams layer
 #' @export
 #' @examples
@@ -91,7 +91,7 @@
 #' a_plot(mtcars2, aes(wt, mpg)) + geom_point(na.rm = TRUE)
 #' }
 geom_point <- function(mapping = NULL, data = NULL,
-                       stat = "identity", position = "identity",
+                       a_stat = "identity", position = "identity",
                        ...,
                        na.rm = FALSE,
                        show.legend = NA,
@@ -99,7 +99,7 @@ geom_point <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomPoint,
     position = position,
     show.legend = show.legend,

@@ -4,7 +4,7 @@
 #' of observations in each bin. Histograms use bars; frequency polygons use
 #' lines.
 #'
-#' By default, \code{stat_bin} uses 30 bins - this is not a good default,
+#' By default, \code{a_stat_bin} uses 30 bins - this is not a good default,
 #' but the idea is to get you experimenting with different binwidths. You
 #' may need to look at a few to uncover the full story behind your data.
 #'
@@ -15,8 +15,8 @@
 #' @export
 #' @inheritParams layer
 #' @inheritParams geom_point
-#' @param geom,stat Use to override the default connection between
-#'   \code{geom_histogram}/\code{geom_freqpoly} and \code{stat_bin}.
+#' @param geom,a_stat Use to override the default connection between
+#'   \code{geom_histogram}/\code{geom_freqpoly} and \code{a_stat_bin}.
 #' @examples
 #' a_plot(diamonds, aes(carat)) +
 #'   geom_histogram()
@@ -72,7 +72,7 @@
 #' }
 #' rm(movies)
 geom_histogram <- function(mapping = NULL, data = NULL,
-                           stat = "bin", position = "stack",
+                           a_stat = "bin", position = "stack",
                            ...,
                            binwidth = NULL,
                            bins = NULL,
@@ -83,7 +83,7 @@ geom_histogram <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomBar,
     position = position,
     show.legend = show.legend,

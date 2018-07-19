@@ -5,7 +5,7 @@
 #' @param drop if \code{TRUE} removes all cells with 0 counts.
 #' @export
 #' @rdname geom_bin2d
-stat_bin_2d <- function(mapping = NULL, data = NULL,
+a_stat_bin_2d <- function(mapping = NULL, data = NULL,
                         geom = "tile", position = "identity",
                         ...,
                         bins = 30,
@@ -17,7 +17,7 @@ stat_bin_2d <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatBin2d,
+    a_stat = a_StatBin2d,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -36,7 +36,7 @@ stat_bin_2d <- function(mapping = NULL, data = NULL,
 #' @export
 #' @rdname geom_bin2d
 #' @usage NULL
-stat_bin2d <- stat_bin_2d
+a_stat_bin2d <- a_stat_bin_2d
 
 #' @rdname animint2-ggproto
 #' @format NULL

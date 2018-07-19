@@ -2,14 +2,14 @@
 % Please edit documentation in R/geom-bar.r, R/stat-count.r
 \name{geom_bar}
 \alias{geom_bar}
-\alias{stat_count}
+\alias{a_stat_count}
 \title{Bars, rectangles with bases on x-axis}
 \usage{
-geom_bar(mapping = NULL, data = NULL, stat = "count",
+geom_bar(mapping = NULL, data = NULL, a_stat = "count",
   position = "stack", ..., width = NULL, binwidth = NULL, na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 
-stat_count(mapping = NULL, data = NULL, geom = "bar",
+a_stat_count(mapping = NULL, data = NULL, geom = "bar",
   position = "stack", ..., width = NULL, na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 }
@@ -39,7 +39,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{width}{Bar width. By default, set to 90\% of the resolution of the data.}
 
@@ -59,19 +59,19 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
 
-\item{geom, stat}{Override the default connection between \code{geom_bar} and
-\code{stat_count}.}
+\item{geom, a_stat}{Override the default connection between \code{geom_bar} and
+\code{a_stat_count}.}
 }
 \description{
 There are two types of bar charts, determined by what is mapped to bar
-height. By default, \code{geom_bar} uses \code{stat="count"} which makes the
+height. By default, \code{geom_bar} uses \code{a_stat="count"} which makes the
 height of the bar proportion to the number of cases in each group (or if the
 \code{weight} aethetic is supplied, the sum of the weights). If you want the
 heights of the bars to represent values in the data, use
-\code{stat="identity"} and map a variable to the \code{y} aesthetic.
+\code{a_stat="identity"} and map a variable to the \code{y} aesthetic.
 
-\code{stat_count} counts the number of cases at each x position. If you want
-to bin the data in ranges, you should use \code{\link{stat_bin}} instead.
+\code{a_stat_count} counts the number of cases at each x position. If you want
+to bin the data in ranges, you should use \code{\link{a_stat_bin}} instead.
 }
 \details{
 A bar chart maps the height of the bar to a variable, and so the base of the
@@ -109,10 +109,10 @@ g + geom_bar()
 # Total engine displacement of each class
 g + geom_bar(aes(weight = displ))
 
-# To show (e.g.) means, you need stat = "identity"
+# To show (e.g.) means, you need a_stat = "identity"
 df <- data.frame(trt = c("a", "b", "c"), outcome = c(2.3, 1.9, 3.2))
 a_plot(df, aes(trt, outcome)) +
-  geom_bar(stat = "identity")
+  geom_bar(a_stat = "identity")
 # But geom_point() display exactly the same information and doesn't
 # require the y-axis to touch zero.
 a_plot(df, aes(trt, outcome)) +
@@ -145,9 +145,9 @@ a_plot(mpg, aes(reorder_size(class))) + geom_bar()
 \code{\link{geom_histogram}} for continuous data,
   \code{\link{position_dodge}} for creating side-by-side barcharts.
 
-\code{\link{stat_bin}}, which bins data in ranges and counts the
-  cases in each range. It differs from \code{stat_count}, which counts the
+\code{\link{a_stat_bin}}, which bins data in ranges and counts the
+  cases in each range. It differs from \code{a_stat_count}, which counts the
   number of cases at each x position (without binning into ranges).
-  \code{\link{stat_bin}} requires continuous x data, whereas
-  \code{stat_count} can be used for both discrete and continuous x data.
+  \code{\link{a_stat_bin}} requires continuous x data, whereas
+  \code{a_stat_count} can be used for both discrete and continuous x data.
 }

@@ -7,8 +7,8 @@
 #' @export
 #' @examples
 #' p <- a_plot(mtcars, aes(wt, mpg))
-#' p + stat_identity()
-stat_identity <- function(mapping = NULL, data = NULL,
+#' p + a_stat_identity()
+a_stat_identity <- function(mapping = NULL, data = NULL,
                           geom = "point", position = "identity",
                           ...,
                           show.legend = NA,
@@ -16,7 +16,7 @@ stat_identity <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatIdentity,
+    a_stat = a_StatIdentity,
     geom = geom,
     position = position,
     show.legend = show.legend,

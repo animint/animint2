@@ -4,21 +4,21 @@
 \name{geom_freqpoly}
 \alias{geom_freqpoly}
 \alias{geom_histogram}
-\alias{stat_bin}
+\alias{a_stat_bin}
 \title{Histograms and frequency polygons.}
 \usage{
-geom_freqpoly(mapping = NULL, data = NULL, stat = "bin",
+geom_freqpoly(mapping = NULL, data = NULL, a_stat = "bin",
   position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
-geom_histogram(mapping = NULL, data = NULL, stat = "bin",
+geom_histogram(mapping = NULL, data = NULL, a_stat = "bin",
   position = "stack", ..., binwidth = NULL, bins = NULL, na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 
-stat_bin(mapping = NULL, data = NULL, geom = "bar", position = "stack",
-  ..., binwidth = NULL, bins = NULL, center = NULL, boundary = NULL,
-  closed = c("right", "left"), pad = FALSE, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+a_stat_bin(mapping = NULL, data = NULL, geom = "bar",
+  position = "stack", ..., binwidth = NULL, bins = NULL, center = NULL,
+  boundary = NULL, closed = c("right", "left"), pad = FALSE,
+  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -46,7 +46,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{na.rm}{If \code{FALSE} (the default), removes missing values with
 a warning.  If \code{TRUE} silently removes missing values.}
@@ -70,8 +70,8 @@ the default plot specification, e.g. \code{\link{borders}}.}
 
 \item{bins}{Number of bins. Overridden by \code{binwidth}. Defaults to 30}
 
-\item{geom, stat}{Use to override the default connection between
-\code{geom_histogram}/\code{geom_freqpoly} and \code{stat_bin}.}
+\item{geom, a_stat}{Use to override the default connection between
+\code{geom_histogram}/\code{geom_freqpoly} and \code{a_stat_bin}.}
 
 \item{center}{The center of one of the bins.  Note that if center is above or
 below the range of the data, things will be shifted by an appropriate
@@ -97,11 +97,11 @@ Display a 1d distribution by dividing into bins and counting the number
 of observations in each bin. Histograms use bars; frequency polygons use
 lines.
 
-\code{stat_bin} is suitable only for continuous x data. If your x data is
-  discrete, you probably want to use \code{\link{stat_count}}.
+\code{a_stat_bin} is suitable only for continuous x data. If your x data is
+  discrete, you probably want to use \code{\link{a_stat_count}}.
 }
 \details{
-By default, \code{stat_bin} uses 30 bins - this is not a good default,
+By default, \code{a_stat_bin} uses 30 bins - this is not a good default,
 but the idea is to get you experimenting with different binwidths. You
 may need to look at a few to uncover the full story behind your data.
 }
@@ -177,7 +177,7 @@ m + geom_histogram(binwidth = 0.5) + a_scale_y_sqrt()
 rm(movies)
 }
 \seealso{
-\code{\link{stat_count}}, which counts the number of cases at each x
+\code{\link{a_stat_count}}, which counts the number of cases at each x
   posotion, without binning. It is suitable for both discrete and continuous
-  x data, whereas \link{stat_bin} is suitable only for continuous x data.
+  x data, whereas \link{a_stat_bin} is suitable only for continuous x data.
 }

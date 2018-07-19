@@ -31,7 +31,7 @@
 #'   some odd properties).
 #' @param binaxis The axis to bin along, "x" (default) or "y"
 #' @param method "dotdensity" (default) for dot-density binning, or
-#'   "histodot" for fixed bin widths (like stat_bin)
+#'   "histodot" for fixed bin widths (like a_stat_bin)
 #' @param binwidth When \code{method} is "dotdensity", this specifies maximum bin
 #'   width. When \code{method} is "histodot", this specifies bin width.
 #'   Defaults to 1/30 of the range of the data
@@ -143,7 +143,7 @@ geom_dotplot <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatBindot,
+    a_stat = a_StatBindot,
     geom = a_GeomDotplot,
     position = position,
     show.legend = show.legend,

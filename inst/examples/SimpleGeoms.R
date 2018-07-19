@@ -126,7 +126,7 @@ library("MASS")
 data(geyser,package="MASS")
 g13 <- a_plot() +  
   geom_point(data=geyser, aes(x = duration, y = waiting)) + 
-  geom_contour(data=geyser, aes(x = duration, y = waiting), colour="blue", size=.5, stat="density2d") + 
+  geom_contour(data=geyser, aes(x = duration, y = waiting), colour="blue", size=.5, a_stat="density2d") + 
   xlim(0.5, 6) + a_scale_y_log10(limits=c(40,110)) +
   ggtitle("geom_contour 2d density")
 g13
@@ -135,7 +135,7 @@ g13
 g14 <- a_plot() +  
   geom_polygon(data=geyser,aes(x=duration, y=waiting, fill=..level.., 
                                group=..piece..), 
-               stat="density2d", alpha=.5) +
+               a_stat="density2d", alpha=.5) +
   geom_point(data=geyser, aes(x = duration, y = waiting)) + 
   a_scale_fill_continuous("Density Level", low="#56B1F7", high="#132B43") + 
   guides(colour = guide_legend(override.aes = list(alpha = 1)), 
@@ -150,7 +150,7 @@ g14
 data(diamonds)
 dsmall <- diamonds[sample(nrow(diamonds), 1000), ]
 g15 <- a_plot() + 
-  geom_tile(data=dsmall, aes(x=carat, y=price, fill=..density.., colour=..density..), stat="density2d", contour=FALSE, n=30) +
+  geom_tile(data=dsmall, aes(x=carat, y=price, fill=..density.., colour=..density..), a_stat="density2d", contour=FALSE, n=30) +
   a_scale_fill_gradient(limits=c(1e-5,8e-4), na.value="white") + 
   a_scale_colour_gradient(limits=c(1e-5,8e-4), na.value="white") +
   ggtitle("geom_density2d tile") + ylim(c(0, 19000))
@@ -159,7 +159,7 @@ g15
   
 g16 <- a_plot() + 
   geom_point(data=dsmall, aes(x=carat, y=price, alpha=..density..), 
-             stat="density2d", contour=FALSE, n=10, size=I(1)) +
+             a_stat="density2d", contour=FALSE, n=10, size=I(1)) +
   a_scale_alpha_continuous("Density") +
   ggtitle("geom_density2d points")
 g16
@@ -195,7 +195,7 @@ g18
 #' geom_area
 data(diamonds)
 g19 <- a_plot() + 
-  geom_area(data=diamonds, aes(x=clarity, y=..count.., group=cut, colour=cut, fill=cut), stat="density") +
+  geom_area(data=diamonds, aes(x=clarity, y=..count.., group=cut, colour=cut, fill=cut), a_stat="density") +
   ggtitle("geom_area")
 g19
 # gg2animint(list(g1=g1, g2=g2, g3=g3, g4=g4, g5=g5, g6=g6, g7=g7, g8=g8, 

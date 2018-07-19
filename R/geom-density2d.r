@@ -7,9 +7,9 @@
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "density_2d")}
 #'
 #' @seealso \code{\link{geom_contour}} for contour drawing geom,
-#'  \code{\link{stat_sum}} for another way of dealing with overplotting
-#' @param geom,stat Use to override the default connection between
-#'   \code{geom_density_2d} and \code{stat_density_2d}.
+#'  \code{\link{a_stat_sum}} for another way of dealing with overplotting
+#' @param geom,a_stat Use to override the default connection between
+#'   \code{geom_density_2d} and \code{a_stat_density_2d}.
 #' @inheritParams layer
 #' @inheritParams geom_point
 #' @inheritParams geom_path
@@ -21,7 +21,7 @@
 #'  ylim(40, 110)
 #' m + geom_density_2d()
 #' \donttest{
-#' m + stat_density_2d(aes(fill = ..level..), geom = "polygon")
+#' m + a_stat_density_2d(aes(fill = ..level..), geom = "polygon")
 #'
 #' set.seed(4393)
 #' dsmall <- diamonds[sample(nrow(diamonds), 1000), ]
@@ -31,12 +31,12 @@
 #' d + geom_density_2d(aes(colour = cut))
 #'
 #' # If we turn contouring off, we can use use geoms like tiles:
-#' d + stat_density_2d(geom = "raster", aes(fill = ..density..), contour = FALSE)
+#' d + a_stat_density_2d(geom = "raster", aes(fill = ..density..), contour = FALSE)
 #' # Or points:
-#' d + stat_density_2d(geom = "point", aes(size = ..density..), n = 20, contour = FALSE)
+#' d + a_stat_density_2d(geom = "point", aes(size = ..density..), n = 20, contour = FALSE)
 #' }
 geom_density_2d <- function(mapping = NULL, data = NULL,
-                            stat = "density2d", position = "identity",
+                            a_stat = "density2d", position = "identity",
                             ...,
                             lineend = "butt",
                             linejoin = "round",
@@ -47,7 +47,7 @@ geom_density_2d <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomDensity2d,
     position = position,
     show.legend = show.legend,

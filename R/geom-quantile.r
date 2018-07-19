@@ -11,8 +11,8 @@
 #' @inheritParams geom_path
 #' @param method.args List of additional arguments passed on to the modelling
 #'   function defined by \code{method}.
-#' @param geom,stat Use to override the default connection between
-#'   \code{geom_quantile} and \code{stat_quantile}.
+#' @param geom,a_stat Use to override the default connection between
+#'   \code{geom_quantile} and \code{a_stat_quantile}.
 #' @examples
 #' m <- a_plot(mpg, aes(displ, 1 / hwy)) + geom_point()
 #' m + geom_quantile()
@@ -29,7 +29,7 @@
 #' # Set aesthetics to fixed value
 #' m + geom_quantile(colour = "red", size = 2, alpha = 0.5)
 geom_quantile <- function(mapping = NULL, data = NULL,
-                          stat = "quantile", position = "identity",
+                          a_stat = "quantile", position = "identity",
                           ...,
                           lineend = "butt",
                           linejoin = "round",
@@ -41,7 +41,7 @@ geom_quantile <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomQuantile,
     position = position,
     show.legend = show.legend,

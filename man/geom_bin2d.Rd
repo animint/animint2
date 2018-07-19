@@ -2,15 +2,15 @@
 % Please edit documentation in R/geom-bin2d.r, R/stat-bin2d.r
 \name{geom_bin2d}
 \alias{geom_bin2d}
-\alias{stat_bin_2d}
-\alias{stat_bin2d}
+\alias{a_stat_bin_2d}
+\alias{a_stat_bin2d}
 \title{Add heatmap of 2d bin counts.}
 \usage{
-geom_bin2d(mapping = NULL, data = NULL, stat = "bin2d",
+geom_bin2d(mapping = NULL, data = NULL, a_stat = "bin2d",
   position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
-stat_bin_2d(mapping = NULL, data = NULL, geom = "tile",
+a_stat_bin_2d(mapping = NULL, data = NULL, geom = "tile",
   position = "identity", ..., bins = 30, binwidth = NULL, drop = TRUE,
   na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
@@ -40,7 +40,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{na.rm}{If \code{FALSE} (the default), removes missing values with
 a warning.  If \code{TRUE} silently removes missing values.}
@@ -54,8 +54,8 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
 
-\item{geom, stat}{Use to override the default connection between
-\code{geom_bin2d} and \code{stat_bin2d}.}
+\item{geom, a_stat}{Use to override the default connection between
+\code{geom_bin2d} and \code{a_stat_bin2d}.}
 
 \item{bins}{numeric vector giving number of bins in both vertical and
 horizontal directions. Set to 30 by default.}
@@ -70,7 +70,7 @@ Add heatmap of 2d bin counts.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "bin2d")}
+\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "bin2d")}
 }
 
 \examples{
@@ -86,5 +86,5 @@ d + geom_bin2d(bins = 30)
 d + geom_bin2d(binwidth = c(0.1, 0.1))
 }
 \seealso{
-\code{\link{stat_binhex}} for hexagonal binning
+\code{\link{a_stat_binhex}} for hexagonal binning
 }

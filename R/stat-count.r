@@ -1,20 +1,20 @@
-#' \code{stat_count} counts the number of cases at each x position. If you want
-#' to bin the data in ranges, you should use \code{\link{stat_bin}} instead.
+#' \code{a_stat_count} counts the number of cases at each x position. If you want
+#' to bin the data in ranges, you should use \code{\link{a_stat_bin}} instead.
 #'
 #' @section Computed variables:
 #' \describe{
 #'   \item{count}{number of points in bin}
 #'   \item{prop}{groupwise proportion}
 #' }
-#' @seealso \code{\link{stat_bin}}, which bins data in ranges and counts the
-#'   cases in each range. It differs from \code{stat_count}, which counts the
+#' @seealso \code{\link{a_stat_bin}}, which bins data in ranges and counts the
+#'   cases in each range. It differs from \code{a_stat_count}, which counts the
 #'   number of cases at each x position (without binning into ranges).
-#'   \code{\link{stat_bin}} requires continuous x data, whereas
-#'   \code{stat_count} can be used for both discrete and continuous x data.
+#'   \code{\link{a_stat_bin}} requires continuous x data, whereas
+#'   \code{a_stat_count} can be used for both discrete and continuous x data.
 #'
 #' @export
 #' @rdname geom_bar
-stat_count <- function(mapping = NULL, data = NULL,
+a_stat_count <- function(mapping = NULL, data = NULL,
                        geom = "bar", position = "stack",
                        ...,
                        width = NULL,
@@ -24,7 +24,7 @@ stat_count <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatCount,
+    a_stat = a_StatCount,
     geom = geom,
     position = position,
     show.legend = show.legend,

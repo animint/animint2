@@ -17,7 +17,7 @@
 #' p + geom_point() + geom_rug(sides="trbl") # All four sides
 #' p + geom_point() + geom_rug(position='jitter')
 geom_rug <- function(mapping = NULL, data = NULL,
-                     stat = "identity", position = "identity",
+                     a_stat = "identity", position = "identity",
                      ...,
                      sides = "bl",
                      na.rm = FALSE,
@@ -26,7 +26,7 @@ geom_rug <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomRug,
     position = position,
     show.legend = show.legend,

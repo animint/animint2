@@ -9,8 +9,8 @@
 #'   at the given quantiles of the density estimate.
 #' @param trim If \code{TRUE} (default), trim the tails of the violins
 #'   to the range of the data. If \code{FALSE}, don't trim the tails.
-#' @param geom,stat Use to override the default connection between
-#'   \code{geom_violin} and \code{stat_ydensity}.
+#' @param geom,a_stat Use to override the default connection between
+#'   \code{geom_violin} and \code{a_stat_ydensity}.
 #' @export
 #' @references Hintze, J. L., Nelson, R. D. (1998) Violin Plots: A Box
 #' Plot-Density Trace Synergism. The American Statistician 52, 181-184.
@@ -67,7 +67,7 @@
 #' }
 #' }
 geom_violin <- function(mapping = NULL, data = NULL,
-                        stat = "ydensity", position = "dodge",
+                        a_stat = "ydensity", position = "dodge",
                         ...,
                         draw_quantiles = NULL,
                         trim = TRUE,
@@ -78,7 +78,7 @@ geom_violin <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomViolin,
     position = position,
     show.legend = show.legend,

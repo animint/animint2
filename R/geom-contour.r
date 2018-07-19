@@ -35,7 +35,7 @@
 #'   geom_contour(colour = "white")
 #' }
 geom_contour <- function(mapping = NULL, data = NULL,
-                         stat = "contour", position = "identity",
+                         a_stat = "contour", position = "identity",
                          ...,
                          lineend = "butt",
                          linejoin = "round",
@@ -46,7 +46,7 @@ geom_contour <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomContour,
     position = position,
     show.legend = show.legend,

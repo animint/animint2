@@ -19,13 +19,13 @@
 #' @section Aesthetics:
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "boxplot")}
 #'
-#' @seealso \code{\link{stat_quantile}} to view quantiles conditioned on a
+#' @seealso \code{\link{a_stat_quantile}} to view quantiles conditioned on a
 #'   continuous variable, \code{\link{geom_jitter}} for another way to look
 #'   at conditional distributions.
 #' @inheritParams layer
 #' @inheritParams geom_point
-#' @param geom,stat Use to override the default connection between
-#'   \code{geom_boxplot} and \code{stat_boxplot}.
+#' @param geom,a_stat Use to override the default connection between
+#'   \code{geom_boxplot} and \code{a_stat_boxplot}.
 #' @param outlier.colour,outlier.color,outlier.shape,outlier.size,outlier.stroke
 #'   Default aesthetics for outliers. Set to \code{NULL} to inherit from the
 #'   aesthetics used for the box.
@@ -70,7 +70,7 @@
 #'
 #' \donttest{
 #' # It's possible to draw a boxplot with your own computations if you
-#' # use stat = "identity":
+#' # use a_stat = "identity":
 #' y <- rnorm(100)
 #' df <- data.frame(
 #'   x = 1,
@@ -83,11 +83,11 @@
 #' a_plot(df, aes(x)) +
 #'   geom_boxplot(
 #'    aes(ymin = y0, lower = y25, middle = y50, upper = y75, ymax = y100),
-#'    stat = "identity"
+#'    a_stat = "identity"
 #'  )
 #' }
 geom_boxplot <- function(mapping = NULL, data = NULL,
-                         stat = "boxplot", position = "dodge",
+                         a_stat = "boxplot", position = "dodge",
                          ...,
                          outlier.colour = NULL,
                          outlier.color = NULL,
@@ -103,7 +103,7 @@ geom_boxplot <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomBoxplot,
     position = position,
     show.legend = show.legend,

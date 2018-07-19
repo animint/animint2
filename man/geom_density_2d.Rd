@@ -3,15 +3,15 @@
 \name{geom_density_2d}
 \alias{geom_density_2d}
 \alias{geom_density2d}
-\alias{stat_density_2d}
-\alias{stat_density2d}
+\alias{a_stat_density_2d}
+\alias{a_stat_density2d}
 \title{Contours from a 2d density estimate.}
 \usage{
-geom_density_2d(mapping = NULL, data = NULL, stat = "density2d",
+geom_density_2d(mapping = NULL, data = NULL, a_stat = "density2d",
   position = "identity", ..., lineend = "butt", linejoin = "round",
   linemitre = 1, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
-stat_density_2d(mapping = NULL, data = NULL, geom = "density_2d",
+a_stat_density_2d(mapping = NULL, data = NULL, geom = "density_2d",
   position = "identity", ..., contour = TRUE, n = 100, h = NULL,
   na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
@@ -41,7 +41,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{lineend}{Line end style (round, butt, square)}
 
@@ -61,8 +61,8 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
 
-\item{geom, stat}{Use to override the default connection between
-\code{geom_density_2d} and \code{stat_density_2d}.}
+\item{geom, a_stat}{Use to override the default connection between
+\code{geom_density_2d} and \code{a_stat_density_2d}.}
 
 \item{contour}{If \code{TRUE}, contour the results of the 2d density
 estimation}
@@ -83,7 +83,7 @@ results with contours. This can be useful for dealing with overplotting.
 
 \section{Computed variables}{
 
-Same as \code{\link{stat_contour}}
+Same as \code{\link{a_stat_contour}}
 }
 
 \examples{
@@ -93,7 +93,7 @@ m <- a_plot(faithful, aes(x = eruptions, y = waiting)) +
  ylim(40, 110)
 m + geom_density_2d()
 \donttest{
-m + stat_density_2d(aes(fill = ..level..), geom = "polygon")
+m + a_stat_density_2d(aes(fill = ..level..), geom = "polygon")
 
 set.seed(4393)
 dsmall <- diamonds[sample(nrow(diamonds), 1000), ]
@@ -103,12 +103,12 @@ d <- a_plot(dsmall, aes(x, y))
 d + geom_density_2d(aes(colour = cut))
 
 # If we turn contouring off, we can use use geoms like tiles:
-d + stat_density_2d(geom = "raster", aes(fill = ..density..), contour = FALSE)
+d + a_stat_density_2d(geom = "raster", aes(fill = ..density..), contour = FALSE)
 # Or points:
-d + stat_density_2d(geom = "point", aes(size = ..density..), n = 20, contour = FALSE)
+d + a_stat_density_2d(geom = "point", aes(size = ..density..), n = 20, contour = FALSE)
 }
 }
 \seealso{
 \code{\link{geom_contour}} for contour drawing geom,
- \code{\link{stat_sum}} for another way of dealing with overplotting
+ \code{\link{a_stat_sum}} for another way of dealing with overplotting
 }

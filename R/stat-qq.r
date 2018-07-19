@@ -1,7 +1,7 @@
 #' Calculation for quantile-quantile plot.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "qq")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "qq")}
 #'
 #' @param distribution Distribution function to use, if x not specified
 #' @param dparams Additional parameters passed on to \code{distribution}
@@ -18,21 +18,21 @@
 #' \donttest{
 #' df <- data.frame(y = rt(200, df = 5))
 #' p <- a_plot(df, aes(sample = y))
-#' p + stat_qq()
-#' p + geom_point(stat = "qq")
+#' p + a_stat_qq()
+#' p + geom_point(a_stat = "qq")
 #'
 #' # Use fitdistr from MASS to estimate distribution params
 #' params <- as.list(MASS::fitdistr(df$y, "t")$estimate)
 #' a_plot(df, aes(sample = y)) +
-#'   stat_qq(distribution = qt, dparams = params["df"])
+#'   a_stat_qq(distribution = qt, dparams = params["df"])
 #'
 #' # Using to explore the distribution of a variable
 #' a_plot(mtcars) +
-#'   stat_qq(aes(sample = mpg))
+#'   a_stat_qq(aes(sample = mpg))
 #' a_plot(mtcars) +
-#'   stat_qq(aes(sample = mpg, colour = factor(cyl)))
+#'   a_stat_qq(aes(sample = mpg, colour = factor(cyl)))
 #' }
-stat_qq <- function(mapping = NULL, data = NULL,
+a_stat_qq <- function(mapping = NULL, data = NULL,
                     geom = "point", position = "identity",
                     ...,
                     distribution = stats::qnorm,
@@ -43,7 +43,7 @@ stat_qq <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatQq,
+    a_stat = a_StatQq,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -58,8 +58,8 @@ stat_qq <- function(mapping = NULL, data = NULL,
 }
 
 #' @export
-#' @rdname stat_qq
-geom_qq <- stat_qq
+#' @rdname a_stat_qq
+geom_qq <- a_stat_qq
 
 #' @rdname animint2-ggproto
 #' @format NULL

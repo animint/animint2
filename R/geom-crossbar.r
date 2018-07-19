@@ -1,7 +1,7 @@
 #' @export
 #' @rdname geom_linerange
 geom_crossbar <- function(mapping = NULL, data = NULL,
-                          stat = "identity", position = "identity",
+                          a_stat = "identity", position = "identity",
                           ...,
                           fatten = 2.5,
                           na.rm = FALSE,
@@ -10,7 +10,7 @@ geom_crossbar <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomCrossbar,
     position = position,
     show.legend = show.legend,

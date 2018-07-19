@@ -1,6 +1,6 @@
 #' @section a_Stats:
 #'
-#' All \code{stat_*} functions (like \code{stat_bin}) return a layer that
+#' All \code{a_stat_*} functions (like \code{a_stat_bin}) return a layer that
 #' contains a \code{a_Stat*} object (like \code{a_StatBin}). The \code{a_Stat*}
 #' object is responsible for rendering the data in the plot.
 #'
@@ -68,9 +68,9 @@ a_Stat <- a_ggproto("a_Stat",
 
   compute_layer = function(self, data, params, panels) {
     check_required_aesthetics(
-      self$stat$required_aes,
+      self$a_stat$required_aes,
       c(names(data), names(params)),
-      snake_class(self$stat)
+      snake_class(self$a_stat)
     )
 
     data <- remove_missing(data, params$na.rm,

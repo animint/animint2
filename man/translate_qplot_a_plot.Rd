@@ -50,8 +50,8 @@ syntax.
 # a_plot(data, aes(x, y)) + geom_point() + geom_smooth()
 
 # Unlike the rest of ggplot2, stats and geoms are independent
-# qplot(x, y, data = data, stat = "bin")
-# a_plot(data, aes(x, y)) + geom_point(stat = "bin")
+# qplot(x, y, data = data, a_stat = "bin")
+# a_plot(data, aes(x, y)) + geom_point(a_stat = "bin")
 #
 # Any layer parameters will be passed on to all layers. Most layers will ignore
 # parameters that they don't need

@@ -2,15 +2,15 @@
 % Please edit documentation in R/geom-hex.r, R/stat-binhex.r
 \name{geom_hex}
 \alias{geom_hex}
-\alias{stat_bin_hex}
-\alias{stat_binhex}
+\alias{a_stat_bin_hex}
+\alias{a_stat_binhex}
 \title{Hexagon binning.}
 \usage{
-geom_hex(mapping = NULL, data = NULL, stat = "binhex",
+geom_hex(mapping = NULL, data = NULL, a_stat = "binhex",
   position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
-stat_bin_hex(mapping = NULL, data = NULL, geom = "hex",
+a_stat_bin_hex(mapping = NULL, data = NULL, geom = "hex",
   position = "identity", ..., bins = 30, binwidth = NULL, na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 }
@@ -40,7 +40,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{na.rm}{If \code{FALSE} (the default), removes missing values with
 a warning.  If \code{TRUE} silently removes missing values.}
@@ -54,8 +54,8 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
 
-\item{geom, stat}{Override the default connection between \code{geom_hex} and
-\code{stat_binhex.}}
+\item{geom, a_stat}{Override the default connection between \code{geom_hex} and
+\code{a_stat_binhex.}}
 
 \item{bins}{numeric vector giving number of bins in both vertical and
 horizontal directions. Set to 30 by default.}
@@ -87,5 +87,5 @@ d + geom_hex(binwidth = c(.1, 500))
 }
 }
 \seealso{
-\code{\link{stat_bin2d}} for rectangular binning
+\code{\link{a_stat_bin2d}} for rectangular binning
 }

@@ -6,8 +6,8 @@
 #' @param h Bandwidth (vector of length two). If \code{NULL}, estimated
 #'   using \code{\link[MASS]{bandwidth.nrd}}.
 #' @section Computed variables:
-#' Same as \code{\link{stat_contour}}
-stat_density_2d <- function(mapping = NULL, data = NULL,
+#' Same as \code{\link{a_stat_contour}}
+a_stat_density_2d <- function(mapping = NULL, data = NULL,
                             geom = "density_2d", position = "identity",
                             ...,
                             contour = TRUE,
@@ -19,7 +19,7 @@ stat_density_2d <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatDensity2d,
+    a_stat = a_StatDensity2d,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -37,7 +37,7 @@ stat_density_2d <- function(mapping = NULL, data = NULL,
 #' @export
 #' @rdname geom_density_2d
 #' @usage NULL
-stat_density2d <- stat_density_2d
+a_stat_density2d <- a_stat_density_2d
 
 #' @rdname animint2-ggproto
 #' @format NULL

@@ -1,7 +1,7 @@
 #' Superimpose a function.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "function")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "function")}
 #'
 #' @param fun function to use
 #' @param n number of points to interpolate along
@@ -22,32 +22,32 @@
 #' )
 #' x <- df$x
 #' base <- a_plot(df, aes(x)) + geom_density()
-#' base + stat_function(fun = dnorm, colour = "red")
-#' base + stat_function(fun = dnorm, colour = "red", args = list(mean = 3))
+#' base + a_stat_function(fun = dnorm, colour = "red")
+#' base + a_stat_function(fun = dnorm, colour = "red", args = list(mean = 3))
 #'
 #' # Plot functions without data
 #' # Examples adapted from Kohske Takahashi
 #'
 #' # Specify range of x-axis
 #' a_plot(data.frame(x = c(0, 2)), aes(x)) +
-#'   stat_function(fun = exp, geom = "line")
+#'   a_stat_function(fun = exp, geom = "line")
 #'
 #' # Plot a normal curve
-#' a_plot(data.frame(x = c(-5, 5)), aes(x)) + stat_function(fun = dnorm)
+#' a_plot(data.frame(x = c(-5, 5)), aes(x)) + a_stat_function(fun = dnorm)
 #'
 #' # To specify a different mean or sd, use the args parameter to supply new values
 #' a_plot(data.frame(x = c(-5, 5)), aes(x)) +
-#'   stat_function(fun = dnorm, args = list(mean = 2, sd = .5))
+#'   a_stat_function(fun = dnorm, args = list(mean = 2, sd = .5))
 #'
 #' # Two functions on the same plot
 #' f <- a_plot(data.frame(x = c(0, 10)), aes(x))
-#' f + stat_function(fun = sin, colour = "red") +
-#'   stat_function(fun = cos, colour = "blue")
+#' f + a_stat_function(fun = sin, colour = "red") +
+#'   a_stat_function(fun = cos, colour = "blue")
 #'
 #' # Using a custom function
 #' test <- function(x) {x ^ 2 + x + 20}
-#' f + stat_function(fun = test)
-stat_function <- function(mapping = NULL, data = NULL,
+#' f + a_stat_function(fun = test)
+a_stat_function <- function(mapping = NULL, data = NULL,
                           geom = "path", position = "identity",
                           ...,
                           fun,
@@ -60,7 +60,7 @@ stat_function <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatFunction,
+    a_stat = a_StatFunction,
     geom = geom,
     position = position,
     show.legend = show.legend,

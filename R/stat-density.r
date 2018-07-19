@@ -19,7 +19,7 @@
 #' }
 #' @export
 #' @rdname geom_density
-stat_density <- function(mapping = NULL, data = NULL,
+a_stat_density <- function(mapping = NULL, data = NULL,
                          geom = "area", position = "stack",
                          ...,
                          bw = "nrd0",
@@ -33,7 +33,7 @@ stat_density <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatDensity,
+    a_stat = a_StatDensity,
     geom = geom,
     position = position,
     show.legend = show.legend,

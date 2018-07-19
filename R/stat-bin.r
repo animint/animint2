@@ -1,5 +1,5 @@
-#' \code{stat_bin} is suitable only for continuous x data. If your x data is
-#'   discrete, you probably want to use \code{\link{stat_count}}.
+#' \code{a_stat_bin} is suitable only for continuous x data. If your x data is
+#'   discrete, you probably want to use \code{\link{a_stat_count}}.
 #'
 #' @param binwidth The width of the bins. The default is to use \code{bins}
 #'   bins that cover the range of the data. You should always override
@@ -32,12 +32,12 @@
 #'   \item{ndensity}{density, scaled to maximum of 1}
 #' }
 #'
-#' @seealso \code{\link{stat_count}}, which counts the number of cases at each x
+#' @seealso \code{\link{a_stat_count}}, which counts the number of cases at each x
 #'   posotion, without binning. It is suitable for both discrete and continuous
-#'   x data, whereas \link{stat_bin} is suitable only for continuous x data.
+#'   x data, whereas \link{a_stat_bin} is suitable only for continuous x data.
 #' @export
 #' @rdname geom_histogram
-stat_bin <- function(mapping = NULL, data = NULL,
+a_stat_bin <- function(mapping = NULL, data = NULL,
                      geom = "bar", position = "stack",
                      ...,
                      binwidth = NULL,
@@ -53,7 +53,7 @@ stat_bin <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatBin,
+    a_stat = a_StatBin,
     geom = geom,
     position = position,
     show.legend = show.legend,

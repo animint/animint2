@@ -128,7 +128,7 @@ popPlots <-
        geom_bar(aes(x=subcontinent, y=population),
                 clickSelects="subcontinent",
                 showSelected="year",
-                data=worldPop, stat="identity", position="identity")+
+                data=worldPop, a_stat="identity", position="identity")+
        ## This make_text creates a geom_text that shows the current
        ## selected value of the year variable.
        make_text(worldPop, 1, 3e6, "year")+

@@ -17,14 +17,14 @@
 #' @examples
 #' \donttest{
 #' df <- data.frame(x = rnorm(1000))
-#' a_plot(df, aes(x)) + stat_ecdf(geom = "step")
+#' a_plot(df, aes(x)) + a_stat_ecdf(geom = "step")
 #'
 #' df <- data.frame(x = c(rnorm(100, 0, 3), rnorm(100, 0, 10)),
 #'                  g = gl(2, 100))
 #'
-#' a_plot(df, aes(x, colour = g)) + stat_ecdf()
+#' a_plot(df, aes(x, colour = g)) + a_stat_ecdf()
 #' }
-stat_ecdf <- function(mapping = NULL, data = NULL,
+a_stat_ecdf <- function(mapping = NULL, data = NULL,
                       geom = "step", position = "identity",
                       ...,
                       n = NULL,
@@ -35,7 +35,7 @@ stat_ecdf <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatEcdf,
+    a_stat = a_StatEcdf,
     geom = geom,
     position = position,
     show.legend = show.legend,

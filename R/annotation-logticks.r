@@ -83,7 +83,7 @@ annotation_logticks <- function(base = 10, sides = "bl", scaled = TRUE,
   layer(
     data = data.frame(x = NA),
     mapping = NULL,
-    stat = a_StatIdentity,
+    a_stat = a_StatIdentity,
     geom = a_GeomLogticks,
     position = a_PositionIdentity,
     show.legend = FALSE,

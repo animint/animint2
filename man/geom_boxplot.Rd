@@ -2,16 +2,16 @@
 % Please edit documentation in R/geom-boxplot.r, R/stat-boxplot.r
 \name{geom_boxplot}
 \alias{geom_boxplot}
-\alias{stat_boxplot}
+\alias{a_stat_boxplot}
 \title{Box and whiskers plot.}
 \usage{
-geom_boxplot(mapping = NULL, data = NULL, stat = "boxplot",
+geom_boxplot(mapping = NULL, data = NULL, a_stat = "boxplot",
   position = "dodge", ..., outlier.colour = NULL, outlier.color = NULL,
   outlier.shape = 19, outlier.size = 1.5, outlier.stroke = 0.5,
   notch = FALSE, notchwidth = 0.5, varwidth = FALSE, na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 
-stat_boxplot(mapping = NULL, data = NULL, geom = "boxplot",
+a_stat_boxplot(mapping = NULL, data = NULL, geom = "boxplot",
   position = "dodge", ..., coef = 1.5, na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 }
@@ -41,7 +41,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{outlier.colour, outlier.color, outlier.shape, outlier.size, outlier.stroke}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
   aesthetics used for the box.
@@ -74,8 +74,8 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
 
-\item{geom, stat}{Use to override the default connection between
-\code{geom_boxplot} and \code{stat_boxplot}.}
+\item{geom, a_stat}{Use to override the default connection between
+\code{geom_boxplot} and \code{a_stat_boxplot}.}
 
 \item{coef}{length of the whiskers as multiple of IQR.  Defaults to 1.5}
 }
@@ -141,7 +141,7 @@ a_plot(diamonds, aes(carat, price)) +
 
 \donttest{
 # It's possible to draw a boxplot with your own computations if you
-# use stat = "identity":
+# use a_stat = "identity":
 y <- rnorm(100)
 df <- data.frame(
   x = 1,
@@ -154,7 +154,7 @@ df <- data.frame(
 a_plot(df, aes(x)) +
   geom_boxplot(
    aes(ymin = y0, lower = y25, middle = y50, upper = y75, ymax = y100),
-   stat = "identity"
+   a_stat = "identity"
  )
 }
 }
@@ -163,7 +163,7 @@ McGill, R., Tukey, J. W. and Larsen, W. A. (1978) Variations of
     box plots. The American Statistician 32, 12-16.
 }
 \seealso{
-\code{\link{stat_quantile}} to view quantiles conditioned on a
+\code{\link{a_stat_quantile}} to view quantiles conditioned on a
   continuous variable, \code{\link{geom_jitter}} for another way to look
   at conditional distributions.
 }

@@ -1,7 +1,7 @@
 #' @export
 #' @rdname geom_linerange
 geom_errorbar <- function(mapping = NULL, data = NULL,
-                          stat = "identity", position = "identity",
+                          a_stat = "identity", position = "identity",
                           ...,
                           na.rm = FALSE,
                           show.legend = NA,
@@ -9,7 +9,7 @@ geom_errorbar <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomErrorbar,
     position = position,
     show.legend = show.legend,

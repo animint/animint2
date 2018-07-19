@@ -15,5 +15,5 @@ mean_se(x, mult = 1)
 Calculate mean and standard errors on either side.
 }
 \seealso{
-for use with \code{\link{stat_summary}}
+for use with \code{\link{a_stat_summary}}
 }

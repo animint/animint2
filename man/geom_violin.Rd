@@ -2,14 +2,14 @@
 % Please edit documentation in R/geom-violin.r, R/stat-ydensity.r
 \name{geom_violin}
 \alias{geom_violin}
-\alias{stat_ydensity}
+\alias{a_stat_ydensity}
 \title{Violin plot.}
 \usage{
-geom_violin(mapping = NULL, data = NULL, stat = "ydensity",
+geom_violin(mapping = NULL, data = NULL, a_stat = "ydensity",
   position = "dodge", ..., draw_quantiles = NULL, trim = TRUE,
   a_scale = "area", na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
-stat_ydensity(mapping = NULL, data = NULL, geom = "violin",
+a_stat_ydensity(mapping = NULL, data = NULL, geom = "violin",
   position = "dodge", ..., bw = "nrd0", adjust = 1, kernel = "gaussian",
   trim = TRUE, a_scale = "area", na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
@@ -40,7 +40,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{draw_quantiles}{If \code{not(NULL)} (default), draw horizontal lines
 at the given quantiles of the density estimate.}
@@ -64,8 +64,8 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
 
-\item{geom, stat}{Use to override the default connection between
-\code{geom_violin} and \code{stat_ydensity}.}
+\item{geom, a_stat}{Use to override the default connection between
+\code{geom_violin} and \code{a_stat_ydensity}.}
 
 \item{bw}{the smoothing bandwidth to be used, see
 \code{\link{density}} for details}
@@ -155,6 +155,6 @@ Hintze, J. L., Nelson, R. D. (1998) Violin Plots: A Box
 Plot-Density Trace Synergism. The American Statistician 52, 181-184.
 }
 \seealso{
-\code{\link{geom_violin}} for examples, and \code{\link{stat_density}}
+\code{\link{geom_violin}} for examples, and \code{\link{a_stat_density}}
   for examples with data along the x axis.
 }

@@ -19,7 +19,7 @@
 #'   geom_point() +
 #'   geom_spoke(aes(angle = angle, radius = speed))
 geom_spoke <- function(mapping = NULL, data = NULL,
-                       stat = "identity", position = "identity",
+                       a_stat = "identity", position = "identity",
                        ...,
                        na.rm = FALSE,
                        show.legend = NA,
@@ -28,7 +28,7 @@ geom_spoke <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     geom = a_GeomSpoke,
-    stat = stat,
+    a_stat = a_stat,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -42,8 +42,8 @@ geom_spoke <- function(mapping = NULL, data = NULL,
 #' @export
 #' @rdname geom_spoke
 #' @usage NULL
-stat_spoke <- function(...) {
-  message("stat_spoke is deprecated, please use geom_spoke")
+a_stat_spoke <- function(...) {
+  message("a_stat_spoke is deprecated, please use geom_spoke")
   geom_spoke(...)
 }
 

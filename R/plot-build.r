@@ -26,10 +26,10 @@ a_plot_build <- function(plot) {
 
   scales <- plot$scales
   # Apply function to layer and matching data
-  by_layer <- function(f) {
+  by_layer <- function(ff) {
     out <- vector("list", length(data))
     for (i in seq_along(data)) {
-      out[[i]] <- f(l = layers[[i]], d = data[[i]])
+      out[[i]] <- ff(l = layers[[i]], d = data[[i]])
     }
     out
   }

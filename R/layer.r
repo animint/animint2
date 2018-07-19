@@ -1,7 +1,7 @@
 #' Create a new layer
 #'
 #' A layer is a combination of data, stat and geom with a potential position
-#' adjustment. Usually layers are created using \code{geom_*} or \code{stat_*}
+#' adjustment. Usually layers are created using \code{geom_*} or \code{a_stat_*}
 #' calls but it can also be created directly using this function.
 #'
 #' @export
@@ -24,7 +24,7 @@
 #'    the plot data. The return value must be a \code{data.frame.}, and
 #'    will be used as the layer data.
 #' @param geom The geometric object to use display the data
-#' @param stat The statistical transformation to use on the data for this
+#' @param a_stat The statistical transformation to use on the data for this
 #'    layer, as a string.
 #' @param position Position adjustment, either as a string, or the result of
 #'  a call to a position adjustment function.
@@ -35,7 +35,7 @@
 #'   rather than combining with them. This is most useful for helper functions
 #'   that define both data and aesthetics and shouldn't inherit behaviour from
 #'   the default plot specification, e.g. \code{\link{borders}}.
-#' @param params Additional parameters to the \code{geom} and \code{stat}.
+#' @param params Additional parameters to the \code{geom} and \code{a_stat}.
 #' @param subset DEPRECATED. An older way of subsetting the dataset used in a
 #'   layer.
 #' @examples
@@ -43,23 +43,23 @@
 #' a_plot(mpg, aes(displ, hwy)) + geom_point()
 #' # shortcut for
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   layer(geom = "point", stat = "identity", position = "identity",
+#'   layer(geom = "point", a_stat = "identity", position = "identity",
 #'     params = list(na.rm = FALSE)
 #'   )
 #'
 #' # use a function as data to plot a subset of global data
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   layer(geom = "point", stat = "identity", position = "identity",
+#'   layer(geom = "point", a_stat = "identity", position = "identity",
 #'     data = head, params = list(na.rm = FALSE)
 #'   )
 #'
-layer <- function(geom = NULL, stat = NULL,
+layer <- function(geom = NULL, a_stat = NULL,
                   data = NULL, mapping = NULL,
                   position = NULL, params = list(),
                   inherit.aes = TRUE, subset = NULL, show.legend = NA) {
   if (is.null(geom))
     stop("Attempted to create layer with no geom.", call. = FALSE)
-  if (is.null(stat))
+  if (is.null(a_stat))
     stop("Attempted to create layer with no stat.", call. = FALSE)
   if (is.null(position))
     stop("Attempted to create layer with no position.", call. = FALSE)
@@ -83,8 +83,8 @@ layer <- function(geom = NULL, stat = NULL,
 
   if (is.character(geom))
     geom <- find_subclass("a_Geom", geom)
-  if (is.character(stat))
-    stat <- find_subclass("a_Stat", stat)
+  if (is.character(a_stat))
+    a_stat <- find_subclass("a_Stat", a_stat)
   if (is.character(position))
     position <- find_subclass("a_Position", position)
 
@@ -97,9 +97,9 @@ layer <- function(geom = NULL, stat = NULL,
   params <- rename_aes(params)
   aes_params  <- params[intersect(names(params), geom$aesthetics())]
   geom_params <- params[intersect(names(params), geom$parameters(TRUE))]
-  stat_params <- params[intersect(names(params), stat$parameters(TRUE))]
+  a_stat_params <- params[intersect(names(params), a_stat$parameters(TRUE))]
 
-  all <- c(geom$parameters(TRUE), stat$parameters(TRUE), geom$aesthetics())
+  all <- c(geom$parameters(TRUE), a_stat$parameters(TRUE), geom$aesthetics())
   extra <- setdiff(names(params), all)
 
   # Handle extra params
@@ -121,8 +121,8 @@ layer <- function(geom = NULL, stat = NULL,
   a_ggproto("a_LayerInstance", a_Layer,
     geom = geom,
     geom_params = geom_params,
-    stat = stat,
-    stat_params = stat_params,
+    a_stat = a_stat,
+    a_stat_params = a_stat_params,
     data = data,
     mapping = mapping,
     aes_params = aes_params,
@@ -137,8 +137,8 @@ layer <- function(geom = NULL, stat = NULL,
 a_Layer <- a_ggproto("a_Layer", NULL,
   geom = NULL,
   geom_params = NULL,
-  stat = NULL,
-  stat_params = NULL,
+  a_stat = NULL,
+  a_stat_params = NULL,
   data = NULL,
   aes_params = NULL,
   mapping = NULL,
@@ -151,7 +151,7 @@ a_Layer <- a_ggproto("a_Layer", NULL,
     }
     cat(snakeize(class(self$geom)[[1]]), ": ", clist(self$geom_params), "\n",
       sep = "")
-    cat(snakeize(class(self$stat)[[1]]), ": ", clist(self$stat_params), "\n",
+    cat(snakeize(class(self$a_stat)[[1]]), ": ", clist(self$a_stat_params), "\n",
       sep = "")
     cat(snakeize(class(self$position)[[1]]), "\n")
   },
@@ -227,9 +227,9 @@ a_Layer <- a_ggproto("a_Layer", NULL,
     if (empty(data))
       return(data.frame())
 
-    params <- self$stat$setup_params(data, self$stat_params)
-    data <- self$stat$setup_data(data, params)
-    self$stat$compute_layer(data, params, panel)
+    params <- self$a_stat$setup_params(data, self$a_stat_params)
+    data <- self$a_stat$setup_data(data, params)
+    self$a_stat$compute_layer(data, params, panel)
   },
 
   map_statistic = function(self, data, plot) {
@@ -240,25 +240,25 @@ a_Layer <- a_ggproto("a_Layer", NULL,
     if (self$inherit.aes) {
       aesthetics <- defaults(aesthetics, plot$mapping)
     }
-    aesthetics <- defaults(aesthetics, self$stat$default_aes)
+    aesthetics <- defaults(aesthetics, self$a_stat$default_aes)
     aesthetics <- compact(aesthetics)
 
     new <- strip_dots(aesthetics[is_calculated_aes(aesthetics)])
     if (length(new) == 0) return(data)
 
     # Add map stat output to aesthetics
-    stat_data <- plyr::quickdf(lapply(new, eval, data, baseenv()))
-    names(stat_data) <- names(new)
+    a_stat_data <- plyr::quickdf(lapply(new, eval, data, baseenv()))
+    names(a_stat_data) <- names(new)
 
     # Add any new scales, if needed
     scales_add_defaults(plot$scales, data, new, plot$plot_env)
     # Transform the values, if the scale say it's ok
-    # (see stat_spoke for one exception)
-    if (self$stat$retransform) {
-      stat_data <- scales_transform_df(plot$scales, stat_data)
+    # (see a_stat_spoke for one exception)
+    if (self$a_stat$retransform) {
+      a_stat_data <- scales_transform_df(plot$scales, a_stat_data)
     }
 
-    cunion(stat_data, data)
+    cunion(a_stat_data, data)
   },
 
   compute_geom_1 = function(self, data) {

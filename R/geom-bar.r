@@ -1,11 +1,11 @@
 #' Bars, rectangles with bases on x-axis
 #'
 #' There are two types of bar charts, determined by what is mapped to bar
-#' height. By default, \code{geom_bar} uses \code{stat="count"} which makes the
+#' height. By default, \code{geom_bar} uses \code{a_stat="count"} which makes the
 #' height of the bar proportion to the number of cases in each group (or if the
 #' \code{weight} aethetic is supplied, the sum of the weights). If you want the
 #' heights of the bars to represent values in the data, use
-#' \code{stat="identity"} and map a variable to the \code{y} aesthetic.
+#' \code{a_stat="identity"} and map a variable to the \code{y} aesthetic.
 #'
 #' A bar chart maps the height of the bar to a variable, and so the base of the
 #' bar must always be shown to produce a valid visual comparison. Naomi Robbins
@@ -32,8 +32,8 @@
 #' @param binwidth \code{geom_bar} no longer has a binwidth argument - if
 #'   you use it you'll get an warning telling to you use
 #'   \code{\link{geom_histogram}} instead.
-#' @param geom,stat Override the default connection between \code{geom_bar} and
-#'   \code{stat_count}.
+#' @param geom,a_stat Override the default connection between \code{geom_bar} and
+#'   \code{a_stat_count}.
 #' @examples
 #' # geom_bar is designed to make it easy to create bar charts that show
 #' # counts (or sums of weights)
@@ -43,10 +43,10 @@
 #' # Total engine displacement of each class
 #' g + geom_bar(aes(weight = displ))
 #'
-#' # To show (e.g.) means, you need stat = "identity"
+#' # To show (e.g.) means, you need a_stat = "identity"
 #' df <- data.frame(trt = c("a", "b", "c"), outcome = c(2.3, 1.9, 3.2))
 #' a_plot(df, aes(trt, outcome)) +
-#'   geom_bar(stat = "identity")
+#'   geom_bar(a_stat = "identity")
 #' # But geom_point() display exactly the same information and doesn't
 #' # require the y-axis to touch zero.
 #' a_plot(df, aes(trt, outcome)) +
@@ -75,7 +75,7 @@
 #' a_plot(mpg, aes(reorder_size(class))) + geom_bar()
 #' }
 geom_bar <- function(mapping = NULL, data = NULL,
-                     stat = "count", position = "stack",
+                     a_stat = "count", position = "stack",
                      ...,
                      width = NULL,
                      binwidth = NULL,
@@ -94,7 +94,7 @@ geom_bar <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomBar,
     position = position,
     show.legend = show.legend,

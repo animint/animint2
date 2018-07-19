@@ -5,11 +5,11 @@
 \alias{geom_curve}
 \title{Line segments and curves.}
 \usage{
-geom_segment(mapping = NULL, data = NULL, stat = "identity",
+geom_segment(mapping = NULL, data = NULL, a_stat = "identity",
   position = "identity", ..., arrow = NULL, lineend = "butt",
   na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
-geom_curve(mapping = NULL, data = NULL, stat = "identity",
+geom_curve(mapping = NULL, data = NULL, a_stat = "identity",
   position = "identity", ..., curvature = 0.5, angle = 90, ncp = 5,
   arrow = NULL, lineend = "butt", na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
@@ -34,7 +34,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{stat}{The statistical transformation to use on the data for this
+\item{a_stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
 \item{position}{Position adjustment, either as a string, or the result of
@@ -43,7 +43,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{arrow}{specification for arrow heads, as created by arrow()}
 

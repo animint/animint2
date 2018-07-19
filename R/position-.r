@@ -5,7 +5,7 @@
 #' object is responsible for adjusting the position of overlapping geoms.
 #'
 #' The way that the \code{position_*} functions work is slightly different from
-#' the \code{geom_*} and \code{stat_*} functions, because a \code{position_*}
+#' the \code{geom_*} and \code{a_stat_*} functions, because a \code{position_*}
 #' function actually "instantiates" the \code{a_Position*} object by creating a
 #' descendant, and returns that.
 #'

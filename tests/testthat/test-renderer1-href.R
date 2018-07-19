@@ -27,7 +27,7 @@ test_that("aes(href) becomes <a href>", {
          geom_bar(aes(university, colors,
                       id=university),
                   clickSelects="university",
-                  data=university.df, stat="identity"),
+                  data=university.df, a_stat="identity"),
          colors=a_plot()+
          geom_point(aes(x, university, color=color,
                         href=paste0("http://en.wikipedia.org/wiki/", color)),

@@ -111,7 +111,7 @@ add_a_plot <- function(p, object, objectname) {
 
     # Add any new labels
     mapping <- make_labels(object$mapping)
-    default <- make_labels(object$stat$default_aes)
+    default <- make_labels(object$a_stat$default_aes)
     new_labels <- defaults(mapping, default)
     p$labels <- defaults(p$labels, new_labels)
   } else {

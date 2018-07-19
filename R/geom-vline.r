@@ -19,7 +19,7 @@ geom_vline <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatIdentity,
+    a_stat = a_StatIdentity,
     geom = a_GeomVline,
     position = a_PositionIdentity,
     show.legend = show.legend,

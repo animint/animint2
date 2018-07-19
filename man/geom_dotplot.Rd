@@ -37,7 +37,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{binwidth}{When \code{method} is "dotdensity", this specifies maximum bin
 width. When \code{method} is "histodot", this specifies bin width.
@@ -46,7 +46,7 @@ Defaults to 1/30 of the range of the data}
 \item{binaxis}{The axis to bin along, "x" (default) or "y"}
 
 \item{method}{"dotdensity" (default) for dot-density binning, or
-"histodot" for fixed bin widths (like stat_bin)}
+"histodot" for fixed bin widths (like a_stat_bin)}
 
 \item{binpositions}{When \code{method} is "dotdensity", "bygroup" (default)
 determines positions of the bins for each group separately. "all" determines

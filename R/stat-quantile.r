@@ -10,7 +10,7 @@
 #' }
 #' @export
 #' @rdname geom_quantile
-stat_quantile <- function(mapping = NULL, data = NULL,
+a_stat_quantile <- function(mapping = NULL, data = NULL,
                           geom = "quantile", position = "identity",
                           ...,
                           quantiles = c(0.25, 0.5, 0.75),
@@ -23,7 +23,7 @@ stat_quantile <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatQuantile,
+    a_stat = a_StatQuantile,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -50,11 +50,11 @@ a_StatQuantile <- a_ggproto("a_StatQuantile", a_Stat,
   compute_group = function(data, scales, quantiles = c(0.25, 0.5, 0.75),
                            formula = NULL, xseq = NULL, method = "rq",
                            method.args = list(), lambda = 1, na.rm = FALSE) {
-    try_require("quantreg", "stat_quantile")
+    try_require("quantreg", "a_stat_quantile")
 
     if (is.null(formula)) {
       if (method == "rqss") {
-        try_require("MatrixModels", "stat_quantile")
+        try_require("MatrixModels", "a_stat_quantile")
         formula <- eval(substitute(y ~ qss(x, lambda = lambda)),
           list(lambda = lambda))
       } else {

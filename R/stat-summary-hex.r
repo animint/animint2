@@ -1,7 +1,7 @@
 #' @export
-#' @rdname stat_summary_2d
-#' @inheritParams stat_bin_hex
-stat_summary_hex <- function(mapping = NULL, data = NULL,
+#' @rdname a_stat_summary_2d
+#' @inheritParams a_stat_bin_hex
+a_stat_summary_hex <- function(mapping = NULL, data = NULL,
                              geom = "hex", position = "identity",
                              ...,
                              bins = 30,
@@ -15,7 +15,7 @@ stat_summary_hex <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatSummaryHex,
+    a_stat = a_StatSummaryHex,
     geom = geom,
     position = position,
     show.legend = show.legend,
@@ -43,7 +43,7 @@ a_StatSummaryHex <- a_ggproto("a_StatSummaryHex", a_Stat,
 
   compute_group = function(data, scales, binwidth = NULL, bins = 30, drop = TRUE,
                            fun = "mean", fun.args = list()) {
-    try_require("hexbin", "stat_summary_hex")
+    try_require("hexbin", "a_stat_summary_hex")
 
     binwidth <- binwidth %||% hex_binwidth(bins, scales)
     hexBinSummarise(data$x, data$y, data$z, binwidth,

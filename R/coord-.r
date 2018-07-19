@@ -5,7 +5,7 @@
 #' adjusting the position of overlapping geoms.
 #'
 #' The way that the \code{a_coord_*} functions work is slightly different from the
-#' \code{geom_*} and \code{stat_*} functions, because a \code{a_coord_*} function
+#' \code{geom_*} and \code{a_stat_*} functions, because a \code{a_coord_*} function
 #' actually "instantiates" the \code{a_Coord*} object by creating a descendant,
 #' and returns that.
 #'

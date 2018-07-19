@@ -4,7 +4,7 @@
 \alias{geom_blank}
 \title{Blank, draws nothing.}
 \usage{
-geom_blank(mapping = NULL, data = NULL, stat = "identity",
+geom_blank(mapping = NULL, data = NULL, a_stat = "identity",
   position = "identity", ..., show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
@@ -27,7 +27,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{stat}{The statistical transformation to use on the data for this
+\item{a_stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
 \item{position}{Position adjustment, either as a string, or the result of
@@ -36,7 +36,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.

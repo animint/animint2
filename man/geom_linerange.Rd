@@ -8,19 +8,19 @@
 \alias{geom_pointrange}
 \title{Vertical intervals: lines, crossbars & errorbars.}
 \usage{
-geom_crossbar(mapping = NULL, data = NULL, stat = "identity",
+geom_crossbar(mapping = NULL, data = NULL, a_stat = "identity",
   position = "identity", ..., fatten = 2.5, na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 
-geom_errorbar(mapping = NULL, data = NULL, stat = "identity",
+geom_errorbar(mapping = NULL, data = NULL, a_stat = "identity",
   position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
-geom_linerange(mapping = NULL, data = NULL, stat = "identity",
+geom_linerange(mapping = NULL, data = NULL, a_stat = "identity",
   position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
-geom_pointrange(mapping = NULL, data = NULL, stat = "identity",
+geom_pointrange(mapping = NULL, data = NULL, a_stat = "identity",
   position = "identity", ..., fatten = 4, na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 }
@@ -44,7 +44,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{stat}{The statistical transformation to use on the data for this
+\item{a_stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
 \item{position}{Position adjustment, either as a string, or the result of
@@ -53,7 +53,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{fatten}{A multiplicative factor used to increase the size of the
 middle bar in \code{geom_crossbar()} and the middle point in
@@ -105,17 +105,17 @@ p +
 # specify the dodge width
 p <- a_plot(df, aes(trt, resp, fill = group))
 p +
- geom_bar(position = "dodge", stat = "identity") +
+ geom_bar(position = "dodge", a_stat = "identity") +
  geom_errorbar(aes(ymin = lower, ymax = upper), position = "dodge", width = 0.25)
 
 # Because the bars and errorbars have different widths
 # we need to specify how wide the objects we are dodging are
 dodge <- position_dodge(width=0.9)
 p +
-  geom_bar(position = dodge, stat = "identity") +
+  geom_bar(position = dodge, a_stat = "identity") +
   geom_errorbar(aes(ymin = lower, ymax = upper), position = dodge, width = 0.25)
 }
 \seealso{
-\code{\link{stat_summary}} for examples of these guys in use,
+\code{\link{a_stat_summary}} for examples of these guys in use,
  \code{\link{geom_smooth}} for continuous analog
 }

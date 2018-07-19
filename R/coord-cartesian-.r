@@ -37,7 +37,7 @@
 #'
 #' # You can see the same thing with this 2d histogram
 #' d <- a_plot(diamonds, aes(carat, price)) +
-#'   stat_bin2d(bins = 25, colour = "white")
+#'   a_stat_bin2d(bins = 25, colour = "white")
 #' d
 #'
 #' # When zooming the scale, the we get 25 new bins that are the same

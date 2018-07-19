@@ -94,7 +94,7 @@ geom_abline <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatIdentity,
+    a_stat = a_StatIdentity,
     geom = a_GeomAbline,
     position = a_PositionIdentity,
     show.legend = show.legend,

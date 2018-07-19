@@ -4,14 +4,14 @@
 \alias{layer}
 \title{Create a new layer}
 \usage{
-layer(geom = NULL, stat = NULL, data = NULL, mapping = NULL,
+layer(geom = NULL, a_stat = NULL, data = NULL, mapping = NULL,
   position = NULL, params = list(), inherit.aes = TRUE, subset = NULL,
   show.legend = NA)
 }
 \arguments{
 \item{geom}{The geometric object to use display the data}
 
-\item{stat}{The statistical transformation to use on the data for this
+\item{a_stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
 \item{data}{The data to be displayed in this layer. There are three
@@ -36,7 +36,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
-\item{params}{Additional parameters to the \code{geom} and \code{stat}.}
+\item{params}{Additional parameters to the \code{geom} and \code{a_stat}.}
 
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
@@ -52,7 +52,7 @@ layer.}
 }
 \description{
 A layer is a combination of data, stat and geom with a potential position
-adjustment. Usually layers are created using \code{geom_*} or \code{stat_*}
+adjustment. Usually layers are created using \code{geom_*} or \code{a_stat_*}
 calls but it can also be created directly using this function.
 }
 \examples{
@@ -60,13 +60,13 @@ calls but it can also be created directly using this function.
 a_plot(mpg, aes(displ, hwy)) + geom_point()
 # shortcut for
 a_plot(mpg, aes(displ, hwy)) +
-  layer(geom = "point", stat = "identity", position = "identity",
+  layer(geom = "point", a_stat = "identity", position = "identity",
     params = list(na.rm = FALSE)
   )
 
 # use a function as data to plot a subset of global data
 a_plot(mpg, aes(displ, hwy)) +
-  layer(geom = "point", stat = "identity", position = "identity",
+  layer(geom = "point", a_stat = "identity", position = "identity",
     data = head, params = list(na.rm = FALSE)
   )
 

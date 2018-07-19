@@ -86,7 +86,7 @@
 #' should_stop(p + geom_line(aes(colour = x), linetype=2))
 #' }
 geom_path <- function(mapping = NULL, data = NULL,
-                      stat = "identity", position = "identity",
+                      a_stat = "identity", position = "identity",
                       ...,
                       lineend = "butt",
                       linejoin = "round",
@@ -98,7 +98,7 @@ geom_path <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomPath,
     position = position,
     show.legend = show.legend,
@@ -225,13 +225,13 @@ a_GeomPath <- a_ggproto("a_GeomPath", a_Geom,
 
 #' @export
 #' @rdname geom_path
-geom_line <- function(mapping = NULL, data = NULL, stat = "identity",
+geom_line <- function(mapping = NULL, data = NULL, a_stat = "identity",
                       position = "identity", na.rm = FALSE,
                       show.legend = NA, inherit.aes = TRUE, ...) {
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomLine,
     position = position,
     show.legend = show.legend,
@@ -258,13 +258,13 @@ a_GeomLine <- a_ggproto("a_GeomLine", a_GeomPath,
 #'   'hv' for horizontal then vertical
 #' @export
 #' @rdname geom_path
-geom_step <- function(mapping = NULL, data = NULL, stat = "identity",
+geom_step <- function(mapping = NULL, data = NULL, a_stat = "identity",
                       position = "identity", direction = "hv",
                       na.rm = FALSE, show.legend = NA, inherit.aes = TRUE, ...) {
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomStep,
     position = position,
     show.legend = show.legend,

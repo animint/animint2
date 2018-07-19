@@ -8,7 +8,7 @@ fg <- a_plot() +
   xlab("STATE SOME REALLY REALLY LONG TEXT THAT MAY OVERLAP TICKS")+
   a_theme_animint(width=600, height=400)
 sg <- a_plot() +
-  stat_summary(data=ss, aes(Year, Year), clickSelects=c("Year"),
+  a_stat_summary(data=ss, aes(Year, Year), clickSelects=c("Year"),
                fun.y=length, geom="bar")
 ## This getTicks function is only used in this file.
 getTicks <- function(html, p.name){

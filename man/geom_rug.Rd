@@ -4,7 +4,7 @@
 \alias{geom_rug}
 \title{Marginal rug plots.}
 \usage{
-geom_rug(mapping = NULL, data = NULL, stat = "identity",
+geom_rug(mapping = NULL, data = NULL, a_stat = "identity",
   position = "identity", ..., sides = "bl", na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 }
@@ -28,7 +28,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{stat}{The statistical transformation to use on the data for this
+\item{a_stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
 \item{position}{Position adjustment, either as a string, or the result of
@@ -37,7 +37,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+to the paired geom/a_stat.}
 
 \item{sides}{A string that controls which sides of the plot the rugs appear on.
 It can be set to a string containing any of \code{"trbl"}, for top, right,

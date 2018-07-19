@@ -31,7 +31,7 @@
 #' a_plot(mpg, aes(cty, hwy)) + geom_jitter()
 #' a_plot(mpg, aes(cty, hwy)) + geom_jitter(width = 0.5, height = 0.5)
 geom_jitter <- function(mapping = NULL, data = NULL,
-                        stat = "identity", position = "jitter",
+                        a_stat = "identity", position = "jitter",
                         ...,
                         width = NULL,
                         height = NULL,
@@ -49,7 +49,7 @@ geom_jitter <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomPoint,
     position = position,
     show.legend = show.legend,

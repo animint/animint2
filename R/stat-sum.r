@@ -7,7 +7,7 @@
 #' }
 #' @export
 #' @rdname geom_count
-stat_sum <- function(mapping = NULL, data = NULL,
+a_stat_sum <- function(mapping = NULL, data = NULL,
                      geom = "point", position = "identity",
                      ...,
                      na.rm = FALSE,
@@ -16,7 +16,7 @@ stat_sum <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatSum,
+    a_stat = a_StatSum,
     geom = geom,
     position = position,
     show.legend = show.legend,

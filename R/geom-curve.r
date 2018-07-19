@@ -2,7 +2,7 @@
 #' @export
 #' @rdname geom_segment
 geom_curve <- function(mapping = NULL, data = NULL,
-                       stat = "identity", position = "identity",
+                       a_stat = "identity", position = "identity",
                        ...,
                        curvature = 0.5,
                        angle = 90,
@@ -15,7 +15,7 @@ geom_curve <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomCurve,
     position = position,
     show.legend = show.legend,

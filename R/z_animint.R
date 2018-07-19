@@ -345,11 +345,11 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
   has.show <- any(is.show)
   ## Error if non-identity stat is used with showSelected, since
   ## typically the stats will delete the showSelected column from the
-  ## built data set. For example geom_bar + stat_bin doesn't make
+  ## built data set. For example geom_bar + a_stat_bin doesn't make
   ## sense with clickSelects/showSelected, since two
   ## clickSelects/showSelected values may show up in the same bin.
-  stat.type <- class(l$stat)[[1]]
-  checkForNonIdentityAndSS(stat.type, has.show, is.show, l,
+  a_stat.type <- class(l$a_stat)[[1]]
+  checkForNonIdentityAndSS(a_stat.type, has.show, is.show, l,
                            g$classed, names(g.data), names(g$aes))
   
   ## Warn if non-identity position is used with animint aes.

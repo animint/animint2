@@ -21,26 +21,26 @@
 #' @examples
 #' a_plot(faithful, aes(waiting, eruptions)) +
 #'   geom_point() +
-#'   stat_ellipse()
+#'   a_stat_ellipse()
 #'
 #' a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
 #'   geom_point() +
-#'   stat_ellipse()
+#'   a_stat_ellipse()
 #'
 #' a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
 #'   geom_point() +
-#'   stat_ellipse(type = "norm", linetype = 2) +
-#'   stat_ellipse(type = "t")
+#'   a_stat_ellipse(type = "norm", linetype = 2) +
+#'   a_stat_ellipse(type = "t")
 #'
 #' a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
 #'   geom_point() +
-#'   stat_ellipse(type = "norm", linetype = 2) +
-#'   stat_ellipse(type = "euclid", level = 3) +
+#'   a_stat_ellipse(type = "norm", linetype = 2) +
+#'   a_stat_ellipse(type = "euclid", level = 3) +
 #'   a_coord_fixed()
 #'
 #' a_plot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
-#'   stat_ellipse(geom = "polygon")
-stat_ellipse <- function(mapping = NULL, data = NULL,
+#'   a_stat_ellipse(geom = "polygon")
+a_stat_ellipse <- function(mapping = NULL, data = NULL,
                          geom = "path", position = "identity",
                          ...,
                          type = "t",
@@ -52,7 +52,7 @@ stat_ellipse <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatEllipse,
+    a_stat = a_StatEllipse,
     geom = geom,
     position = position,
     show.legend = show.legend,

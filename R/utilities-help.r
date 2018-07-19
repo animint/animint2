@@ -14,14 +14,15 @@ aesthetics <- function(x) {
 geom_aesthetics <- function(x) {
   aesthetics(find_subclass("a_Geom", x))
 }
-stat_aesthetics <- function(x) {
+a_stat_aesthetics <- function(x) {
   aesthetics(find_subclass("a_Stat", x))
 }
+
 
 rd_aesthetics <- function(type, name) {
   obj <- switch(type,
     geom = find_subclass("a_Geom", name),
-    stat = find_subclass("a_Stat", name)
+    a_stat = find_subclass("a_Stat", name)
   )
   aes <- aesthetics(obj)
 

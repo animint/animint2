@@ -1,6 +1,6 @@
 #' @inheritParams layer
 #' @inheritParams geom_point
-#' @inheritParams stat_density
+#' @inheritParams a_stat_density
 #' @param a_scale if "area" (default), all violins have the same area (before trimming
 #'   the tails). If "count", areas are scaled proportionally to the number of
 #'   observations. If "width", all violins have the same maximum width.
@@ -14,11 +14,11 @@
 #'   \item{n}{number of points}
 #'   \item{width}{width of violin bounding box}
 #' }
-#' @seealso \code{\link{geom_violin}} for examples, and \code{\link{stat_density}}
+#' @seealso \code{\link{geom_violin}} for examples, and \code{\link{a_stat_density}}
 #'   for examples with data along the x axis.
 #' @export
 #' @rdname geom_violin
-stat_ydensity <- function(mapping = NULL, data = NULL,
+a_stat_ydensity <- function(mapping = NULL, data = NULL,
                           geom = "violin", position = "dodge",
                           ...,
                           bw = "nrd0",
@@ -34,7 +34,7 @@ stat_ydensity <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatYdensity,
+    a_stat = a_StatYdensity,
     geom = geom,
     position = position,
     show.legend = show.legend,

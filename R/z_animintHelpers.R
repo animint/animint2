@@ -191,7 +191,7 @@ hjust2anchor <- function(hjust){
 #' @param l A single layer of the plot
 #' @return All parameters in the layer
 getLayerParams <- function(l){
-  params <- c(l$geom_params, l$stat_params, l$aes_params, l$extra_params)
+  params <- c(l$geom_params, l$a_stat_params, l$aes_params, l$extra_params)
   if("chunk_vars" %in% names(params) && is.null(params[["chunk_vars"]])){
     params[["chunk_vars"]] <- character()
   }
@@ -236,18 +236,18 @@ colsNotToCopy <- function(g, s.aes){
 }
 
 
-## Generate error for non-Identity Stat + showSelected
-checkForNonIdentityAndSS <- function(stat.type, has.show, is.show, l,
+## Generate error for non-Identity a_stat + showSelected
+checkForNonIdentityAndSS <- function(a_stat.type, has.show, is.show, l,
                                      g_classed, g_data_names,
                                      aes_names){
-  if(has.show && stat.type != "a_StatIdentity"){
+  if(has.show && a_stat.type != "a_StatIdentity"){
     show.names <- aes_names[is.show]
     data.has.show <- show.names %in% g_data_names
     signal <- if(all(data.has.show))warning else stop
     print(l)
     signal(
       "showSelected does not work with ",
-      stat.type,
+      a_stat.type,
       ", problem: ",
       g_classed)
   }

@@ -1,11 +1,11 @@
-#' @inheritParams stat_identity
+#' @inheritParams a_stat_identity
 #' @export
 #' @section Computed variables:
 #' \describe{
 #'  \item{level}{height of contour}
 #' }
 #' @rdname geom_contour
-stat_contour <- function(mapping = NULL, data = NULL,
+a_stat_contour <- function(mapping = NULL, data = NULL,
                          geom = "contour", position = "identity",
                          ...,
                          na.rm = FALSE,
@@ -14,7 +14,7 @@ stat_contour <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = a_StatContour,
+    a_stat = a_StatContour,
     geom = geom,
     position = position,
     show.legend = show.legend,

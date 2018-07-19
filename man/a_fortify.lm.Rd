@@ -52,7 +52,7 @@ a_plot(a_fortify(mod, mtcars), aes(mpg, .stdresid)) +
 
 plot(mod, which = 2)
 a_plot(mod) +
-  stat_qq(aes(sample = .stdresid)) +
+  a_stat_qq(aes(sample = .stdresid)) +
   geom_abline()
 
 plot(mod, which = 3)
@@ -62,7 +62,7 @@ a_plot(mod, aes(.fitted, sqrt(abs(.stdresid)))) +
 
 plot(mod, which = 4)
 a_plot(mod, aes(seq_along(.cooksd), .cooksd)) +
-  geom_bar(stat = "identity")
+  geom_bar(a_stat = "identity")
 
 plot(mod, which = 5)
 a_plot(mod, aes(.hat, .stdresid)) +

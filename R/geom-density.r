@@ -11,8 +11,8 @@
 #'   See \code{\link{geom_violin}} for a compact density display.
 #' @inheritParams layer
 #' @inheritParams geom_point
-#' @param geom,stat Use to override the default connection between
-#'   \code{geom_density} and \code{stat_density}.
+#' @param geom,a_stat Use to override the default connection between
+#'   \code{geom_density} and \code{a_stat_density}.
 #' @export
 #' @examples
 #' a_plot(diamonds, aes(carat)) +
@@ -47,7 +47,7 @@
 #'   geom_density(position = "fill")
 #' }
 geom_density <- function(mapping = NULL, data = NULL,
-                         stat = "density", position = "identity",
+                         a_stat = "density", position = "identity",
                          ...,
                          na.rm = FALSE,
                          show.legend = NA,
@@ -56,7 +56,7 @@ geom_density <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    stat = stat,
+    a_stat = a_stat,
     geom = a_GeomDensity,
     position = position,
     show.legend = show.legend,
