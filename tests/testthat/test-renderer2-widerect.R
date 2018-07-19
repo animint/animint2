@@ -98,7 +98,7 @@ wb.facets <-
        geom_bar(aes(country, life.expectancy, fill=region,
                     key=country, id=gsub(" ", "_", country)),
                 showSelected="year", clickSelects="country",
-                data=not.na, stat="identity", position="identity")+
+                data=not.na, a_stat="identity", position="identity")+
        a_coord_flip(),
 
        time=list(variable="year", ms=2000),
