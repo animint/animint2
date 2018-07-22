@@ -18,7 +18,7 @@
 a_plot_build <- function(plot) {
   plot <- a_plot_clone(plot)
   if (length(plot$layers) == 0) {
-    plot <- plot + geom_blank()
+    plot <- plot + a_geom_blank()
   }
 
   layers <- plot$layers
@@ -141,11 +141,11 @@ a_plot_gtable <- function(data) {
   data <- data$data
   a_theme <- plot_a_theme(plot)
 
-  geom_grobs <- Map(function(l, d) l$draw_geom(d, panel, plot$coordinates),
+  a_geom_grobs <- Map(function(l, d) l$draw_geom(d, panel, plot$coordinates),
     plot$layers, data)
 
   plot_table <- a_facet_render(plot$a_facet, panel, plot$coordinates,
-    a_theme, geom_grobs)
+    a_theme, a_geom_grobs)
 
   # Axis labels
   labels <- plot$coordinates$labels(list(

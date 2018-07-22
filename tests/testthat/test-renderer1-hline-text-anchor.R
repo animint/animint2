@@ -50,24 +50,24 @@ grad.desc.viz <- function(hjust) {
   objective2$hjust <- hjust
   
   contour.plot <- a_plot() + 
-    geom_contour(data = contour, aes(x = x, y = y, z = z, colour = ..level..), size = .5) + 
+    a_geom_contour(data = contour, aes(x = x, y = y, z = z, colour = ..level..), size = .5) + 
     a_scale_colour_continuous(name = "z value") + 
-    geom_path(data = objective, aes(x = x, y = y), 
+    a_geom_path(data = objective, aes(x = x, y = y), 
               showSelected = "iteration2", colour = "red", size = 1) + 
-    geom_point(data = objective, aes(x = x, y = y), showSelected = "iteration2", colour = "green", 
+    a_geom_point(data = objective, aes(x = x, y = y), showSelected = "iteration2", colour = "green", 
                size = 2) + 
-    geom_text(data = objective2, aes(x = x, y = y - 0.2, label = round(z, 2)), showSelected = "iteration2") + 
+    a_geom_text(data = objective2, aes(x = x, y = y - 0.2, label = round(z, 2)), showSelected = "iteration2") + 
     a_scale_x_continuous(expand = c(0, 0)) + 
     a_scale_y_continuous(expand = c(0, 0)) + 
     ggtitle("contour of function value") + 
     a_theme_animint(width = 600, height = 600)
   
   objective.plot <- a_plot() +
-    geom_line(data = objective2, aes(x = iteration, y = z), colour = "red") + 
-    geom_point(data = objective2, aes(x = iteration, y = z), colour = "red") + 
-    geom_tallrect(data = objective2, aes(xmin = iteration - 1 / 2, xmax = iteration + 1 / 2), 
+    a_geom_line(data = objective2, aes(x = iteration, y = z), colour = "red") + 
+    a_geom_point(data = objective2, aes(x = iteration, y = z), colour = "red") + 
+    a_geom_tallrect(data = objective2, aes(xmin = iteration - 1 / 2, xmax = iteration + 1 / 2), 
                   clickSelects = "iteration2", alpha = .3) + 
-    geom_text(data = objective2, aes(x = iteration, y = z + 0.3, 
+    a_geom_text(data = objective2, aes(x = iteration, y = z + 0.3, 
                                      label = iteration), showSelected = "iteration2", hjust = hjust) + 
     ggtitle("objective value vs. iteration") + 
     a_theme_animint(width = 600, height = 600)

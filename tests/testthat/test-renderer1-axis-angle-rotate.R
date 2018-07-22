@@ -4,12 +4,12 @@ ss <- data.frame(State=paste("some long text", c("CA", "NY")),
                  Prop.Inv=c(0, 1),
                  Year=c(1984, 2015))
 fg <- a_plot() +
-  geom_point(aes(x=State, y=Prop.Inv), showSelected=c("Year"), data=ss) +
+  a_geom_point(aes(x=State, y=Prop.Inv), showSelected=c("Year"), data=ss) +
   xlab("STATE SOME REALLY REALLY LONG TEXT THAT MAY OVERLAP TICKS")+
   a_theme_animint(width=600, height=400)
 sg <- a_plot() +
   a_stat_summary(data=ss, aes(Year, Year), clickSelects=c("Year"),
-               fun.y=length, geom="bar")
+               fun.y=length, a_geom="bar")
 ## This getTicks function is only used in this file.
 getTicks <- function(html, p.name){
   xp <- sprintf(

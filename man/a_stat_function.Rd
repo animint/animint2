@@ -4,7 +4,7 @@
 \alias{a_stat_function}
 \title{Superimpose a function.}
 \usage{
-a_stat_function(mapping = NULL, data = NULL, geom = "path",
+a_stat_function(mapping = NULL, data = NULL, a_geom = "path",
   position = "identity", ..., fun, xlim = NULL, n = 101, args = list(),
   na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
@@ -28,7 +28,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{geom}{The geometric object to use display the data}
+\item{a_geom}{The geometric object to use display the data}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -36,7 +36,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/a_stat.}
+to the paired a_geom/a_stat.}
 
 \item{fun}{function to use}
 
@@ -80,7 +80,7 @@ df <- data.frame(
   x = rnorm(100)
 )
 x <- df$x
-base <- a_plot(df, aes(x)) + geom_density()
+base <- a_plot(df, aes(x)) + a_geom_density()
 base + a_stat_function(fun = dnorm, colour = "red")
 base + a_stat_function(fun = dnorm, colour = "red", args = list(mean = 3))
 
@@ -89,7 +89,7 @@ base + a_stat_function(fun = dnorm, colour = "red", args = list(mean = 3))
 
 # Specify range of x-axis
 a_plot(data.frame(x = c(0, 2)), aes(x)) +
-  a_stat_function(fun = exp, geom = "line")
+  a_stat_function(fun = exp, a_geom = "line")
 
 # Plot a normal curve
 a_plot(data.frame(x = c(-5, 5)), aes(x)) + a_stat_function(fun = dnorm)

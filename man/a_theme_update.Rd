@@ -31,7 +31,7 @@ unspecified values will overwrite the current value in the a_theme with \code{NU
 }
 \examples{
 p <- a_plot(mtcars, aes(mpg, wt)) +
-  geom_point()
+  a_geom_point()
 p
 old <- a_theme_set(a_theme_bw())
 p
@@ -56,7 +56,7 @@ a_theme_get()
 
 
 a_plot(mtcars, aes(mpg, wt)) +
-  geom_point(aes(color = mpg)) +
+  a_geom_point(aes(color = mpg)) +
   a_theme(legend.position = c(0.95, 0.95),
         legend.justification = c(1, 1))
 last_plot() +

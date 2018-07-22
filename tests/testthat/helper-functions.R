@@ -177,8 +177,8 @@ expect_attrs <- function(html, element.name, attr.name, urls){
 expect_styles <- function(html, styles.expected){
   stopifnot(is.list(styles.expected))
   stopifnot(!is.null(names(styles.expected)))
-  geom <- getNodeSet(html, '//*[@class="geom"]')
-  style.strs <- as.character(sapply(geom, function(x) xmlAttrs(x)["style"]))
+  a_geom <- getNodeSet(html, '//*[@class="a_geom"]')
+  style.strs <- as.character(sapply(a_geom, function(x) xmlAttrs(x)["style"]))
   pattern <-
     paste0("(?<name>\\S+?)",
            ": *",

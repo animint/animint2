@@ -4,7 +4,7 @@
 \alias{a_stat_identity}
 \title{Identity statistic.}
 \usage{
-a_stat_identity(mapping = NULL, data = NULL, geom = "point",
+a_stat_identity(mapping = NULL, data = NULL, a_geom = "point",
   position = "identity", ..., show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
@@ -27,7 +27,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{geom}{The geometric object to use display the data}
+\item{a_geom}{The geometric object to use display the data}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -35,7 +35,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/a_stat.}
+to the paired a_geom/a_stat.}
 
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.

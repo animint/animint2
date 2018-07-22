@@ -14,7 +14,7 @@ NULL
 #' seal.sub <- subset(seals, long > -130 & lat < 45 & lat > 40)
 #' a_plot(seal.sub, aes(x = long, y = lat)) +
 #'   annotation_map(usamap, fill = "NA", colour = "grey50") +
-#'   geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat))
+#'   a_geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat))
 #'
 #' seal2 <- transform(seal.sub,
 #'   latr = cut(lat, 2),
@@ -22,7 +22,7 @@ NULL
 #'
 #' a_plot(seal2,  aes(x = long, y = lat)) +
 #'   annotation_map(usamap, fill = "NA", colour = "grey50") +
-#'   geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat)) +
+#'   a_geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat)) +
 #'   a_facet_grid(latr ~ longr, scales = "free", space = "free")
 #' }
 annotation_map <- function(map, ...) {
@@ -36,7 +36,7 @@ annotation_map <- function(map, ...) {
   layer(
     data = NULL,
     a_stat = a_StatIdentity,
-    geom = a_GeomAnnotationMap,
+    a_geom = a_GeomAnnotationMap,
     position = a_PositionIdentity,
     inherit.aes = FALSE,
     params = list(map = map, ...)

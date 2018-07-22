@@ -33,26 +33,26 @@
 #'
 #' # Default colour scale colours from light blue to dark blue
 #' a_plot(df, aes(x, y)) +
-#'   geom_point(aes(colour = z2))
+#'   a_geom_point(aes(colour = z2))
 #'
 #' # For diverging colour scales use gradient2
 #' a_plot(df, aes(x, y)) +
-#'   geom_point(aes(colour = z1)) +
+#'   a_geom_point(aes(colour = z1)) +
 #'   a_scale_colour_gradient2()
 #'
 #' # Use your own colour scale with gradientn
 #' a_plot(df, aes(x, y)) +
-#'   geom_point(aes(colour = z1)) +
+#'   a_geom_point(aes(colour = z1)) +
 #'   a_scale_colour_gradientn(colours = terrain.colors(10))
 #'
 #' # Equivalent fill scales do the same job for the fill aesthetic
 #' a_plot(faithfuld, aes(waiting, eruptions)) +
-#'   geom_raster(aes(fill = density)) +
+#'   a_geom_raster(aes(fill = density)) +
 #'   a_scale_fill_gradientn(colours = terrain.colors(10))
 #'
 #' # Adjust colour choices with low and high
 #' a_plot(df, aes(x, y)) +
-#'   geom_point(aes(colour = z2)) +
+#'   a_geom_point(aes(colour = z2)) +
 #'   a_scale_colour_gradient(low = "white", high = "black")
 #' # Avoid red-green colour contrasts because ~10% of men have difficulty
 #' # seeing them

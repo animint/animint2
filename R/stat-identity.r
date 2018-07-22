@@ -3,13 +3,13 @@
 #' The identity statistic leaves the data unchanged.
 #'
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @export
 #' @examples
 #' p <- a_plot(mtcars, aes(wt, mpg))
 #' p + a_stat_identity()
 a_stat_identity <- function(mapping = NULL, data = NULL,
-                          geom = "point", position = "identity",
+                          a_geom = "point", position = "identity",
                           ...,
                           show.legend = NA,
                           inherit.aes = TRUE) {
@@ -17,7 +17,7 @@ a_stat_identity <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatIdentity,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

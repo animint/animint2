@@ -24,7 +24,7 @@ addShowSelectedForLegend <- function(meta, legend, L){
       var.is.interactive <- any(is.interactive.aes & is.legend.var)
       if(!var.is.interactive){
         ## only add showSelected aesthetic if the variable is
-        ## used by the geom
+        ## used by the a_geom
         type.vec <- one.legend$legend_type
         if(any(type.vec %in% names(L$mapping))){
           type.str <- paste(type.vec, collapse="")
@@ -191,7 +191,7 @@ hjust2anchor <- function(hjust){
 #' @param l A single layer of the plot
 #' @return All parameters in the layer
 getLayerParams <- function(l){
-  params <- c(l$geom_params, l$a_stat_params, l$aes_params, l$extra_params)
+  params <- c(l$a_geom_params, l$a_stat_params, l$aes_params, l$extra_params)
   if("chunk_vars" %in% names(params) && is.null(params[["chunk_vars"]])){
     params[["chunk_vars"]] <- character()
   }
@@ -215,7 +215,7 @@ colsNotToCopy <- function(g, s.aes){
   group.not.specified <- ! "group" %in% names(g$aes)
   n.groups <- length(unique(NULL))
   need.group <- c("violin", "step", "hex")
-  group.meaningless <- g$geom %in% c(
+  group.meaningless <- g$a_geom %in% c(
     "abline", "blank",
     ##"crossbar", "pointrange", #documented as unsupported
     ## "rug", "dotplot", "quantile", "smooth", "boxplot",
@@ -226,7 +226,7 @@ colsNotToCopy <- function(g, s.aes){
     "jitter", "linerange",
     "point", 
     "rect", "segment")
-  dont.need.group <- ! g$geom %in% need.group
+  dont.need.group <- ! g$a_geom %in% need.group
   remove.group <- group.meaningless ||
     group.not.specified && 1 < n.groups && dont.need.group
   do.not.copy <- c(
@@ -286,8 +286,8 @@ is.linetype <- function(x){
 ## Remove PANEL column from data if it has a single unique value
 removeUniquePanelValue <- function(g.data, plot.has.panels){
   PANEL_vals <- unique(g.data[["PANEL"]])
-  geom.has.one.panel <- length(PANEL_vals) == 1
-  if(geom.has.one.panel && (!plot.has.panels)) {
+  a_geom.has.one.panel <- length(PANEL_vals) == 1
+  if(a_geom.has.one.panel && (!plot.has.panels)) {
     g.data <- g.data[names(g.data) != "PANEL"]
   }
   g.data
@@ -421,8 +421,8 @@ compute_domains <- function(built_data, axes, geom_name,
   
   names(built_data)[names_present] <- sapply(names(built_data)[names_present], return_names, rev(mapping))
   # Different geoms will use diff columns to calculate domains for
-  # showSelected subsets. Eg. geom_bar will use 'xmin', 'xmax', 'ymin',
-  # 'ymax' etc. while geom_point will use 'x', 'y'
+  # showSelected subsets. Eg. a_geom_bar will use 'xmin', 'xmax', 'ymin',
+  # 'ymax' etc. while a_geom_point will use 'x', 'y'
   domain_cols <- list(bar=c(paste0(axes, "min"), paste0(axes, "max")),
                       ribbon=if(axes=="x"){c(axes)}
                       else{c(paste0(axes, "min"), paste0(axes, "max"))},
@@ -437,7 +437,7 @@ compute_domains <- function(built_data, axes, geom_name,
                       segment=c(axes, paste0(axes, "end")))
   use_cols <- domain_cols[[geom_name]]
   if(is.null(use_cols)){
-    warning(paste0("axis updates have not yet been implemented for geom_",
+    warning(paste0("axis updates have not yet been implemented for a_geom_",
                    geom_name), call. = FALSE)
     return(NULL)
   }else if(!all(use_cols %in% names(built_data))){
@@ -598,10 +598,10 @@ issueSelectorWarnings <- function(geoms, selector.aes, duration){
 #' @return a unique name for the layer
 getLayerName <- function(L, geom_num, p.name){
   # carson's approach to getting layer types
-  ggtype <- function (x, y = "geom") {
+  ggtype <- function (x, y = "a_geom") {
     sub(y, "", tolower(class(x[[y]])[1]))
   }
-  layer_name <- sprintf("geom%d_%s_%s",
+  layer_name <- sprintf("a_geom%d_%s_%s",
                         geom_num, ggtype(L), p.name)
   layer_name
 }
@@ -693,7 +693,7 @@ getLegend <- function(mb){
   ## 2. In add_legend in the JS code I create a <table> for every
   ## legend, and then I bind the legend entries to <tr>, <td>, and
   ## <svg> elements.
-  cleanData <- function(data, key, geom, params) {
+  cleanData <- function(data, key, a_geom, params) {
     nd <- nrow(data)
     nk <- nrow(key)
     if (nd == 0) return(data.frame()); # if no rows, return an empty df.
@@ -706,13 +706,13 @@ getLegend <- function(mb){
     data <- data[, which(colSums(!is.na(data)) > 0)] # remove cols that are entirely na
     if("colour" %in% names(data)) data[["colour"]] <- toRGB(data[["colour"]]) # color hex values
     if("fill" %in% names(data)) data[["fill"]] <- toRGB(data[["fill"]]) # fill hex values
-    names(data) <- paste0(geom, names(data))# aesthetics by geom
-    names(data) <- gsub(paste0(geom, "."), "", names(data), fixed=TRUE) # label isn't geom-specific
+    names(data) <- paste0(a_geom, names(data))# aesthetics by a_geom
+    names(data) <- gsub(paste0(a_geom, "."), "", names(data), fixed=TRUE) # label isn't geom-specific
     data$label <- paste(data$label) # otherwise it is AsIs.
     data
   }
   dataframes <- mapply(function(i, j) cleanData(i$data, mb$key, j, i$params),
-                       mb$geoms, mb$geom.legend.list, SIMPLIFY = FALSE)
+                       mb$geoms, mb$a_geom.legend.list, SIMPLIFY = FALSE)
   dataframes <- dataframes[which(sapply(dataframes, nrow)>0)]
   # Check to make sure datframes is non-empty. If it is empty, return NULL.
   if(length(dataframes)>0) {
@@ -734,7 +734,7 @@ getLegend <- function(mb){
     NULL
   }else{
     list(guide = guidetype,
-         geoms = unlist(mb$geom.legend.list),
+         geoms = unlist(mb$a_geom.legend.list),
          title = mb$title,
          class = if(mb$is.discrete)mb$selector else mb$title,
          selector = mb$selector,
@@ -858,7 +858,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     }
     group.info.common <- do.call(rbind, group.info.list)
     common.unique <- unique(group.info.common)
-    ## For geom_polygon and geom_path we may have two rows that should
+    ## For a_geom_polygon and a_geom_path we may have two rows that should
     ## both be kept (the start and the end of each group may be the
     ## same if the shape is closed), so we define common.data as all
     ## of the rows (common.not.na) in that case, and just the unique

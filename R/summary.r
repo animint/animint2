@@ -7,7 +7,7 @@
 #' @export
 #' @examples
 #' p <- a_plot(mtcars, aes(mpg, wt)) +
-#'   geom_point()
+#'   a_geom_point()
 #' summary(p)
 summary.a_plot <- function(object, ...) {
   wrap <- function(x) paste(

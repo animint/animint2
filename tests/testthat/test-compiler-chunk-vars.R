@@ -2,7 +2,7 @@ acontext("chunk vars")
 
 test_that("produce as many chunk files as specified", {
   viz <- list(iris=a_plot()+
-                geom_point(aes(Petal.Width, Sepal.Length),
+                a_geom_point(aes(Petal.Width, Sepal.Length),
                            showSelected="Species",
                            data=iris, chunk_vars="Species",
                            validate_params = FALSE))
@@ -15,7 +15,7 @@ test_that("produce as many chunk files as specified", {
   expect_equal(length(tsv.files), 3)
   
   viz <- list(iris=a_plot()+
-                geom_point(aes(Petal.Width, Sepal.Length),
+                a_geom_point(aes(Petal.Width, Sepal.Length),
                            showSelected="Species",
                data=iris, chunk_vars=character(), validate_params = FALSE))
   tdir <- tempfile()
@@ -29,7 +29,7 @@ test_that("produce as many chunk files as specified", {
 
 test_that("produce informative errors for bad chunk_vars", {
   viz <- list(iris=a_plot()+
-                geom_point(aes(Petal.Width, Sepal.Length),
+                a_geom_point(aes(Petal.Width, Sepal.Length),
                            showSelected="Species",
                data=iris, chunk_vars="species", validate_params = FALSE))
   expect_error({
@@ -37,7 +37,7 @@ test_that("produce informative errors for bad chunk_vars", {
   }, "invalid chunk_vars species; possible showSelected variables: Species")
   
   viz <- list(iris=a_plot()+
-                geom_point(aes(Petal.Width, Sepal.Length),
+                a_geom_point(aes(Petal.Width, Sepal.Length),
                            showSelected="Species",
                data=iris, chunk_vars=NA, validate_params = FALSE))
   expect_error({
@@ -53,25 +53,25 @@ signal.colors <- c(estimate="#0adb0a",
                    latent="#0098ef")
 breakpointError <- 
   list(signal=a_plot()+
-         geom_point(aes(position, signal),
+         a_geom_point(aes(position, signal),
                     showSelected="bases.per.probe",
                     data=breakpoints$signals)+
-         geom_line(aes(position, signal), colour=signal.colors[["latent"]],
+         a_geom_line(aes(position, signal), colour=signal.colors[["latent"]],
                    data=breakpoints$imprecision)+
-         geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
+         a_geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
                       showSelected=c("segments", "bases.per.probe"),
                       colour=signal.colors[["estimate"]],
                       data=breakpoints$segments)+
-         geom_vline(aes(xintercept=base),
+         a_geom_vline(aes(xintercept=base),
                     showSelected=c("segments", "bases.per.probe"),
                     colour=signal.colors[["estimate"]],
                     linetype="dashed",
                     data=breakpoints$breaks),
        error=a_plot()+
-         geom_vline(aes(xintercept=segments),
+         a_geom_vline(aes(xintercept=segments),
                     clickSelects="segments",                    
                     data=only.segments, lwd=17, alpha=1/2)+
-         geom_line(aes(segments, error, group=bases.per.probe),
+         a_geom_line(aes(segments, error, group=bases.per.probe),
                    clickSelects="bases.per.probe",                   
                    data=only.error, lwd=4))
 
@@ -116,9 +116,9 @@ test_that("default chunks are at least 4KB", {
     animint2dir(breakpointError, tdir, open.browser=FALSE)
   })
   tsv.files <- Sys.glob(file.path(tdir, ".+chunk[0-9]+.tsv"))  # exclude common tsv
-  geom <- sub("_.*", "", basename(tsv.files))
-  files.by.geom <- split(tsv.files, geom)
-  for(files in files.by.geom){
+  a_geom <- sub("_.*", "", basename(tsv.files))
+  files.by.a_geom <- split(tsv.files, a_geom)
+  for(files in files.by.a_geom){
     if(length(files) > 1){
       info <- file.info(files)
       expect_true(all(4096 < info$size))

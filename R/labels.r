@@ -4,7 +4,7 @@
 #' @param labels named list of new labels
 #' @export
 #' @examples
-#' p <- a_plot(mtcars, aes(mpg, wt)) + geom_point()
+#' p <- a_plot(mtcars, aes(mpg, wt)) + a_geom_point()
 #' update_labels(p, list(x = "New x"))
 #' update_labels(p, list(x = expression(x / y ^ 2)))
 #' update_labels(p, list(x = "New x", y = "New Y"))
@@ -24,7 +24,7 @@ update_labels <- function(p, labels) {
 #' @param ... a list of new names in the form aesthetic = "new name"
 #' @export
 #' @examples
-#' p <- a_plot(mtcars, aes(mpg, wt)) + geom_point()
+#' p <- a_plot(mtcars, aes(mpg, wt)) + a_geom_point()
 #' p + labs(title = "New plot title")
 #' p + labs(x = "New x label")
 #' p + xlab("New x label")
@@ -46,7 +46,7 @@ update_labels <- function(p, labels) {
 #' p + ylim(2, 4) + ylab("New y label")
 #'
 #' # The labs function also modifies legend labels
-#' p <- a_plot(mtcars, aes(mpg, wt, colour = cyl)) + geom_point()
+#' p <- a_plot(mtcars, aes(mpg, wt, colour = cyl)) + a_geom_point()
 #' p + labs(colour = "Cylinders")
 #'
 #' # Can also pass in a list, if that is more convenient
@@ -83,7 +83,7 @@ make_labels <- function(mapping) {
   }
 
   default_label <- function(aesthetic, mapping) {
-    # e.g., geom_smooth(aes(colour = "loess"))
+    # e.g., a_geom_smooth(aes(colour = "loess"))
     if (is.character(mapping)) {
       aesthetic
     } else {

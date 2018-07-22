@@ -24,8 +24,8 @@ change the underlying data like setting limits on a scale will.
 # with coordinate systems.  They work in two rather different ways.
 
 p <- a_plot(mtcars, aes(disp, wt)) +
-  geom_point() +
-  geom_smooth()
+  a_geom_point() +
+  a_geom_smooth()
 p
 
 # Setting the limits on a scale converts all values outside the range to NA.

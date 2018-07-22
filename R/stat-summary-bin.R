@@ -2,7 +2,7 @@
 #' @inheritParams a_stat_bin
 #' @export
 a_stat_summary_bin <- function(mapping = NULL, data = NULL,
-                             geom = "pointrange", position = "identity",
+                             a_geom = "pointrange", position = "identity",
                              ...,
                              fun.data = NULL,
                              fun.y = NULL,
@@ -16,7 +16,7 @@ a_stat_summary_bin <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatSummaryBin,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

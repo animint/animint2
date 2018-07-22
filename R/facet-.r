@@ -32,13 +32,13 @@ a_facet_train_layout <- function(a_facet, data)
 a_facet_map_layout <- function(a_facet, data, layout)
   UseMethod("a_facet_map_layout")
 
-a_facet_render <- function(a_facet, panels_grob, a_coord, a_theme, geom_grobs)
+a_facet_render <- function(a_facet, panels_grob, a_coord, a_theme, a_geom_grobs)
   UseMethod("a_facet_render")
 
 a_facet_strips <- function(a_facet, panel, a_theme)
   UseMethod("a_facet_strips")
 
-a_facet_panels <- function(a_facet, panel, a_coord, a_theme, geom_grobs)
+a_facet_panels <- function(a_facet, panel, a_coord, a_theme, a_geom_grobs)
   UseMethod("a_facet_panels")
 
 a_facet_axes <- function(a_facet, panel, a_coord, a_theme)

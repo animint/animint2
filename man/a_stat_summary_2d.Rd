@@ -6,12 +6,12 @@
 \alias{a_stat_summary_hex}
 \title{Bin and summarise in 2d (rectangle & hexagons)}
 \usage{
-a_stat_summary_2d(mapping = NULL, data = NULL, geom = "tile",
+a_stat_summary_2d(mapping = NULL, data = NULL, a_geom = "tile",
   position = "identity", ..., bins = 30, binwidth = NULL, drop = TRUE,
   fun = "mean", fun.args = list(), na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
-a_stat_summary_hex(mapping = NULL, data = NULL, geom = "hex",
+a_stat_summary_hex(mapping = NULL, data = NULL, a_geom = "hex",
   position = "identity", ..., bins = 30, binwidth = NULL, drop = TRUE,
   fun = "mean", fun.args = list(), na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
@@ -36,7 +36,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{geom}{The geometric object to use display the data}
+\item{a_geom}{The geometric object to use display the data}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -44,7 +44,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/a_stat.}
+to the paired a_geom/a_stat.}
 
 \item{bins}{numeric vector giving number of bins in both vertical and
 horizontal directions. Set to 30 by default.}

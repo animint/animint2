@@ -45,7 +45,7 @@ ratio approximates the usual mercator projection. This is what
 graphic have to be projected which is not the case here. So
 \code{\link{a_coord_quickmap}} has the advantage of being much faster, in
 particular for complex plots such as those using with
-\code{\link{geom_tile}}, at the expense of correctness in the projection.
+\code{\link{a_geom_tile}}, at the expense of correctness in the projection.
 This coordinate system provides the full range of map projections available
 in the mapproj package.
 }
@@ -54,7 +54,7 @@ if (require("maps")) {
 nz <- map_data("nz")
 # Prepare a map of NZ
 nzmap <- a_plot(nz, aes(x = long, y = lat, group = group)) +
-  geom_polygon(fill = "white", colour = "black")
+  a_geom_polygon(fill = "white", colour = "black")
 
 # Plot it in cartesian coordinates
 nzmap
@@ -69,7 +69,7 @@ nzmap + a_coord_map("azequalarea", orientation = c(-36.92,174.6,0))
 
 states <- map_data("state")
 usamap <- a_plot(states, aes(long, lat, group = group)) +
-  geom_polygon(fill = "white", colour = "black")
+  a_geom_polygon(fill = "white", colour = "black")
 
 # Use cartesian coordinates
 usamap
@@ -88,10 +88,10 @@ usamap + a_coord_map("stereographic")
 usamap + a_coord_map("conic", lat0 = 30)
 usamap + a_coord_map("bonne", lat0 = 50)
 
-# World map, using geom_path instead of geom_polygon
+# World map, using a_geom_path instead of a_geom_polygon
 world <- map_data("world")
 worldmap <- a_plot(world, aes(x = long, y = lat, group = group)) +
-  geom_path() +
+  a_geom_path() +
   a_scale_y_continuous(breaks = (-2:2) * 30) +
   a_scale_x_continuous(breaks = (-4:4) * 45)
 

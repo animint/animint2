@@ -20,12 +20,12 @@ df <- data.frame(
 )
 
 a_plot(df, aes(x, y)) +
-  geom_point() +
-  geom_text(aes(label = y))
+  a_geom_point() +
+  a_geom_text(aes(label = y))
 
 a_plot(df, aes(x, y)) +
-  geom_point() +
-  geom_text(aes(label = y), position = position_nudge(y = -0.1))
+  a_geom_point() +
+  a_geom_text(aes(label = y), position = position_nudge(y = -0.1))
 }
 \seealso{
 Other position adjustments: \code{\link{position_dodge}},

@@ -11,14 +11,14 @@
 #' set. This means that layers created with this function will never
 #' affect the legend.
 #'
-#' @param geom name of geom to use for annotation
+#' @param a_geom name of a_geom to use for annotation
 #' @param x,y,xmin,ymin,xmax,ymax,xend,yend positioning aesthetics -
 #'   you must specify at least one of these.
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @export
 #' @examples
-#' p <- a_plot(mtcars, aes(x = wt, y = mpg)) + geom_point()
+#' p <- a_plot(mtcars, aes(x = wt, y = mpg)) + a_geom_point()
 #' p + annotate("text", x = 4, y = 25, label = "Some text")
 #' p + annotate("text", x = 2:5, y = 25, label = "Some text")
 #' p + annotate("rect", xmin = 3, xmax = 4.2, ymin = 12, ymax = 21,
@@ -29,7 +29,7 @@
 #'   colour = "red", size = 1.5)
 #'
 #' p + annotate("text", x = 2:3, y = 20:21, label = c("my label", "label 2"))
-annotate <- function(geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
+annotate <- function(a_geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
                      ymin = NULL, ymax = NULL, xend = NULL, yend = NULL, ...,
                      na.rm = FALSE) {
 
@@ -51,7 +51,7 @@ annotate <- function(geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
 
   data <- data.frame(position)
   layer(
-    geom = geom,
+    a_geom = a_geom,
     params = list(
       na.rm = na.rm,
       ...

@@ -36,7 +36,7 @@
 #' @examples
 #' ### Adding objects to a a_plot object
 #' p <- a_plot(mtcars, aes(wt, mpg, colour = disp)) +
-#'   geom_point()
+#'   a_geom_point()
 #'
 #' p
 #' p + a_coord_cartesian(ylim = c(0, 40))

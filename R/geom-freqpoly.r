@@ -1,6 +1,6 @@
 #' @export
-#' @rdname geom_histogram
-geom_freqpoly <- function(mapping = NULL, data = NULL,
+#' @rdname a_geom_histogram
+a_geom_freqpoly <- function(mapping = NULL, data = NULL,
                           a_stat = "bin", position = "identity",
                           ...,
                           na.rm = FALSE,
@@ -16,7 +16,7 @@ geom_freqpoly <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomPath,
+    a_geom = a_GeomPath,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

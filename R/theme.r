@@ -14,7 +14,7 @@
 #' @export
 #' @examples
 #' p <- a_plot(mtcars, aes(mpg, wt)) +
-#'   geom_point()
+#'   a_geom_point()
 #' p
 #' old <- a_theme_set(a_theme_bw())
 #' p
@@ -39,7 +39,7 @@
 #'
 #'
 #' a_plot(mtcars, aes(mpg, wt)) +
-#'   geom_point(aes(color = mpg)) +
+#'   a_geom_point(aes(color = mpg)) +
 #'   a_theme(legend.position = c(0.95, 0.95),
 #'         legend.justification = c(1, 1))
 #' last_plot() +
@@ -231,22 +231,22 @@ print.a_theme <- function(x, ...) utils::str(x)
 #' @examples
 #' \donttest{
 #' p <- a_plot(mtcars, aes(mpg, wt)) +
-#'   geom_point()
+#'   a_geom_point()
 #' p
 #' p + a_theme(panel.background = a_element_rect(colour = "pink"))
 #' p + a_theme_bw()
 #'
 #' # Scatter plot of gas mileage by vehicle weight
 #' p <- a_plot(mtcars, aes(wt, mpg)) +
-#'   geom_point()
+#'   a_geom_point()
 #' # Calculate slope and intercept of line of best fit
 #' coef(lm(mpg ~ wt, data = mtcars))
-#' p + geom_abline(intercept = 37, slope = -5)
+#' p + a_geom_abline(intercept = 37, slope = -5)
 #' # Calculate correlation coefficient
 #' with(mtcars, cor(wt, mpg, use = "everything", method = "pearson"))
 #' #annotate the plot
-#' p + geom_abline(intercept = 37, slope = -5) +
-#' geom_text(data = data.frame(), aes(4.5, 30, label = "Pearson-R = -.87"))
+#' p + a_geom_abline(intercept = 37, slope = -5) +
+#' a_geom_text(data = data.frame(), aes(4.5, 30, label = "Pearson-R = -.87"))
 #'
 #' # Change the axis labels
 #' # Original plot
@@ -269,7 +269,7 @@ print.a_theme <- function(x, ...) utils::str(x)
 #' # Changing plot look with a_themes
 #' DF <- data.frame(x = rnorm(400))
 #' m <- a_plot(DF, aes(x = x)) +
-#'   geom_histogram()
+#'   a_geom_histogram()
 #' # Default is a_theme_grey()
 #' m
 #' # Compare with
@@ -286,7 +286,7 @@ print.a_theme <- function(x, ...) utils::str(x)
 #'
 #' # Legend Attributes
 #' z <- a_plot(mtcars, aes(wt, mpg)) +
-#'   geom_point(aes(colour = factor(cyl)))
+#'   a_geom_point(aes(colour = factor(cyl)))
 #' z
 #' z + a_theme(legend.position = "none")
 #' z + a_theme(legend.position = "bottom")
@@ -326,7 +326,7 @@ print.a_theme <- function(x, ...) utils::str(x)
 #' set.seed(4940)
 #' dsmall <- diamonds[sample(nrow(diamonds), 1000), ]
 #' k <- a_plot(dsmall, aes(carat, ..density..)) +
-#'   geom_histogram(binwidth = 0.2) +
+#'   a_geom_histogram(binwidth = 0.2) +
 #'   a_facet_grid(. ~ cut)
 #' k + a_theme(strip.background = a_element_rect(colour = "purple", fill = "pink",
 #'                                           size = 3, linetype = "dashed"))
@@ -339,8 +339,8 @@ print.a_theme <- function(x, ...) utils::str(x)
 #' meanprice <- tapply(diamonds$price, diamonds$cut, mean)
 #' cut <- factor(levels(diamonds$cut), levels = levels(diamonds$cut))
 #' df <- data.frame(meanprice, cut)
-#' g <- a_plot(df, aes(cut, meanprice)) + geom_bar(a_stat = "identity")
-#' g + geom_bar(a_stat = "identity") +
+#' g <- a_plot(df, aes(cut, meanprice)) + a_geom_bar(a_stat = "identity")
+#' g + a_geom_bar(a_stat = "identity") +
 #'     a_theme(panel.background = a_element_blank(),
 #'           panel.grid.major.x = a_element_blank(),
 #'           panel.grid.minor.x = a_element_blank(),
@@ -484,7 +484,7 @@ add_a_theme <- function(t1, t2, t2name) {
 #' it adds elements from newa_theme to olda_theme.
 #' This makes it possible to do things like:
 #'   a_plot(data.frame(x = 1:3, y = 1:3)) +
-#'   geom_point() + a_theme(text = a_element_text(colour = 'red'))
+#'   a_geom_point() + a_theme(text = a_element_text(colour = 'red'))
 #' and have 'text' keep properties from the default a_theme. Otherwise
 #' you would have to set all the element properties, like family, size,
 #' etc.

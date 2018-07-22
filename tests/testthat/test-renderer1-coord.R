@@ -3,7 +3,7 @@ acontext("a_coord")
 test_that("a_coord_flip works", {
   data(worldPop, package="animint2")
   bars <- a_plot()+
-    geom_bar(aes(x=subcontinent, y=population), showSelected="year",
+    a_geom_bar(aes(x=subcontinent, y=population), showSelected="year",
              data=worldPop, a_stat="identity", position="identity")
   ## First test without flip.
   no.flip <- animint2dir(list(bars=bars), open.browser=FALSE)
@@ -18,8 +18,8 @@ test_that("a_coord_flip works", {
 })
 
 p <- a_plot(mtcars, aes(mpg, wt)) + 
-  geom_point(colour='grey50', size = 4) + 
-  geom_point(aes(colour = cyl))
+  a_geom_point(colour='grey50', size = 4) + 
+  a_geom_point(aes(colour = cyl))
 
 test_that("a_coord_fixed with shrinking y-axis", {
   ratio5 <- 5

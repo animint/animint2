@@ -11,10 +11,10 @@
 \title{Objects exported from other packages}
 \examples{
 a_plot(mpg, aes(displ, hwy)) +
-  geom_point(alpha = 0.5, colour = "blue")
+  a_geom_point(alpha = 0.5, colour = "blue")
 
 a_plot(mpg, aes(displ, hwy)) +
-  geom_point(colour = alpha("blue", 0.5))
+  a_geom_point(colour = alpha("blue", 0.5))
 }
 \keyword{internal}
 \description{

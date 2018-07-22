@@ -25,14 +25,14 @@ are a stacked bar chart in polar coordinates.
 
 #' # A pie chart = stacked bar chart + polar coordinates
 pie <- a_plot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
- geom_bar(width = 1)
+ a_geom_bar(width = 1)
 pie + a_coord_polar(theta = "y")
 
 \donttest{
 
 # A coxcomb plot = bar chart + polar coordinates
 cxc <- a_plot(mtcars, aes(x = factor(cyl))) +
-  geom_bar(width = 1, colour = "black")
+  a_geom_bar(width = 1, colour = "black")
 cxc + a_coord_polar()
 # A new type of plot?
 cxc + a_coord_polar(theta = "y")
@@ -46,7 +46,7 @@ df <- data.frame(
   value = c(20, 80)
 )
 a_plot(df, aes(x = "", y = value, fill = variable)) +
-  geom_bar(width = 1, a_stat = "identity") +
+  a_geom_bar(width = 1, a_stat = "identity") +
   a_scale_fill_manual(values = c("red", "yellow")) +
   a_coord_polar("y", start = pi / 3) +
   labs(title = "Pac man")
@@ -59,9 +59,9 @@ movies$budgetq <- cut_number(movies$budget, 4)
 doh <- a_plot(movies, aes(x = rrating, fill = budgetq))
 
 # Wind rose
-doh + geom_bar(width = 1) + a_coord_polar()
+doh + a_geom_bar(width = 1) + a_coord_polar()
 # Race track plot
-doh + geom_bar(width = 0.9, position = "fill") + a_coord_polar(theta = "y")
+doh + a_geom_bar(width = 0.9, position = "fill") + a_coord_polar(theta = "y")
 }
 }
 }

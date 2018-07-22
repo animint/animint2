@@ -4,7 +4,7 @@
 \alias{a_stat_ecdf}
 \title{Empirical Cumulative Density Function}
 \usage{
-a_stat_ecdf(mapping = NULL, data = NULL, geom = "step",
+a_stat_ecdf(mapping = NULL, data = NULL, a_geom = "step",
   position = "identity", ..., n = NULL, pad = TRUE, na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 }
@@ -28,7 +28,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{geom}{The geometric object to use display the data}
+\item{a_geom}{The geometric object to use display the data}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -36,7 +36,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/a_stat.}
+to the paired a_geom/a_stat.}
 
 \item{n}{if NULL, do not interpolate. If not NULL, this is the number
 of points to interpolate with.}
@@ -70,7 +70,7 @@ Empirical Cumulative Density Function
 \examples{
 \donttest{
 df <- data.frame(x = rnorm(1000))
-a_plot(df, aes(x)) + a_stat_ecdf(geom = "step")
+a_plot(df, aes(x)) + a_stat_ecdf(a_geom = "step")
 
 df <- data.frame(x = c(rnorm(100, 0, 3), rnorm(100, 0, 10)),
                  g = gl(2, 100))

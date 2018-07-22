@@ -1,7 +1,7 @@
 #' @inheritParams grid::curveGrob
 #' @export
-#' @rdname geom_segment
-geom_curve <- function(mapping = NULL, data = NULL,
+#' @rdname a_geom_segment
+a_geom_curve <- function(mapping = NULL, data = NULL,
                        a_stat = "identity", position = "identity",
                        ...,
                        curvature = 0.5,
@@ -16,7 +16,7 @@ geom_curve <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomCurve,
+    a_geom = a_GeomCurve,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -41,7 +41,7 @@ a_GeomCurve <- a_ggproto("a_GeomCurve", a_GeomSegment,
   draw_panel = function(data, panel_scales, a_coord, curvature = 0.5, angle = 90,
                         ncp = 5, arrow = NULL, lineend = "butt", na.rm = FALSE) {
     if (!a_coord$is_linear()) {
-      warning("geom_curve is not implemented for non-linear coordinates",
+      warning("a_geom_curve is not implemented for non-linear coordinates",
         call. = FALSE)
     }
     trans <- a_coord$transform(data, panel_scales)

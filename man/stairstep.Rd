@@ -3,7 +3,7 @@
 \name{stairstep}
 \alias{stairstep}
 \title{Calculate stairsteps
-Used by \code{\link{geom_step}}}
+Used by \code{\link{a_geom_step}}}
 \usage{
 stairstep(data, direction = "hv")
 }
@@ -14,5 +14,5 @@ stairstep(data, direction = "hv")
 }
 \description{
 Calculate stairsteps
-Used by \code{\link{geom_step}}
+Used by \code{\link{a_geom_step}}
 }

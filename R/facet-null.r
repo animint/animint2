@@ -5,7 +5,7 @@
 #' @examples
 #' # facet_null is the default facetting specification if you
 #' # don't override it with facet_grid or facet_wrap
-#' a_plot(mtcars, aes(mpg, wt)) + geom_point()
+#' a_plot(mtcars, aes(mpg, wt)) + a_geom_point()
 a_facet_null <- function(shrink = TRUE) {
   a_facet(shrink = shrink, subclass = "null")
 }
@@ -28,7 +28,7 @@ a_facet_map_layout.null <- function(a_facet, data, layout) {
 }
 
 #' @export
-a_facet_render.null <- function(a_facet, panel, a_coord, a_theme, geom_grobs) {
+a_facet_render.null <- function(a_facet, panel, a_coord, a_theme, a_geom_grobs) {
   range <- panel$ranges[[1]]
 
   # Figure out aspect ratio
@@ -44,12 +44,12 @@ a_facet_render.null <- function(a_facet, panel, a_coord, a_theme, geom_grobs) {
   bg <- a_coord$render_bg(range, a_theme)
 
   # Flatten layers - we know there's only one panel
-  geom_grobs <- lapply(geom_grobs, "[[", 1)
+  a_geom_grobs <- lapply(a_geom_grobs, "[[", 1)
 
   if (a_theme$panel.ontop) {
-    panel_grobs <- c(geom_grobs, list(bg), list(fg))
+    panel_grobs <- c(a_geom_grobs, list(bg), list(fg))
   } else {
-    panel_grobs <- c(list(bg), geom_grobs, list(fg))
+    panel_grobs <- c(list(bg), a_geom_grobs, list(fg))
   }
 
   panel_grob <- gTree(children = do.call("gList", panel_grobs))

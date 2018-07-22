@@ -3,7 +3,7 @@ NULL
 
 #' @section a_Geoms:
 #'
-#' All \code{geom_*} functions (like \code{geom_point}) return a layer that
+#' All \code{a_geom_*} functions (like \code{a_geom_point}) return a layer that
 #' contains a \code{a_Geom*} object (like \code{a_GeomPoint}). The \code{a_Geom*}
 #' object is responsible for rendering the data in the plot.
 #'

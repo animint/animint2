@@ -18,9 +18,9 @@ map_flu <- do.call(rbind, map.by.weekend)
 # visualize CDC FluView data
 # activity level heatmap
 level.heatmap <- a_plot() + 
-  geom_tile(aes(x = WEEKEND, y = STATENAME, fill = level),
+  a_geom_tile(aes(x = WEEKEND, y = STATENAME, fill = level),
             data = state_flu) + 
-  geom_tallrect(aes(xmin = WEEKEND - 3, xmax = WEEKEND + 3), 
+  a_geom_tallrect(aes(xmin = WEEKEND - 3, xmax = WEEKEND + 3), 
                 data = state_flu, alpha = .5,
                     clickSelects = "WEEKEND") + 
   a_scale_x_date(expand = c(0, 0)) + 
@@ -49,9 +49,9 @@ p <- a_plot() +
   a_theme_opts + 
   a_theme_animint(width = 750, height= 500)
 
-test_that("save separate chunks for geom_polygon", {
+test_that("save separate chunks for a_geom_polygon", {
   state.map <- p + 
-    geom_polygon(aes(x = long, y = lat, group = group, fill = level),
+    a_geom_polygon(aes(x = long, y = lat, group = group, fill = level),
                  data = map_flu, 
                    showSelected = "WEEKEND",                  
                  colour = "black", size = 1)
@@ -97,11 +97,11 @@ flu.points <- ldply(unique(state_flu$WEEKEND), function(we) {
   merge(USdots, df, by.x = "region", by.y = "state")
 })
 
-test_that("save separate chunks for geom_point without specifying group", {
+test_that("save separate chunks for a_geom_point without specifying group", {
   # the compiler will not break a geom into chunks if any of the resulting 
   # chunk tsv files is estimated to be less than 4KB.
   state.map <- p + 
-    geom_point(aes(x = mean.long, y = mean.lat, fill = level),
+    a_geom_point(aes(x = mean.long, y = mean.lat, fill = level),
                data = flu.points, 
                    showSelected = "WEEKEND",
                color = "black",
@@ -132,7 +132,7 @@ test_that("save separate chunks for geom_point without specifying group", {
   
   ## force to split into chunks
   state.map <- p + 
-    geom_point(aes(x = mean.long, y = mean.lat, fill = level),
+    a_geom_point(aes(x = mean.long, y = mean.lat, fill = level),
                data = flu.points, 
                    showSelected = "WEEKEND",                
                color = "black",
@@ -199,14 +199,14 @@ unique.year.vec <- unique(points.not.na$year)
 unique.country.vec <- unique(no.israel$country)
 
 scatter <- a_plot()+
-  geom_point(aes(life.expectancy, fertility.rate,
+  a_geom_point(aes(life.expectancy, fertility.rate,
                  colour=region, size=population,
                  tooltip=paste(country, "population", population),
                  key=country), # key aesthetic for animated transitions!
              clickSelects="country",
              showSelected="year",
              data=no.israel)+
-  geom_text(aes(life.expectancy, fertility.rate, label=country,
+  a_geom_text(aes(life.expectancy, fertility.rate, label=country,
                 key=country), # also use key here!
             data=no.israel,
             showSelected=c("country", "year"),
@@ -217,7 +217,7 @@ scatter <- a_plot()+
 
 ts <- a_plot()+
   make_tallrect(no.israel, "year")+
-  geom_line(aes(year, life.expectancy, group=country, colour=region),
+  a_geom_line(aes(year, life.expectancy, group=country, colour=region),
             data=no.israel, size=4, alpha=3/5,
                 clickSelects="country")
 
@@ -288,15 +288,15 @@ only.segments <- subset(only.error, samples==samples[1])
 signal.colors <- c(estimate="#0adb0a", latent="#0098ef")
 
 signal <- a_plot()+
-  geom_point(aes(position, signal),
+  a_geom_point(aes(position, signal),
              data=breakpoints$signals, showSelected="samples")+
-  geom_line(aes(position, signal), colour=signal.colors[["latent"]],
+  a_geom_line(aes(position, signal), colour=signal.colors[["latent"]],
             data=breakpoints$imprecision)+
-  geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
+  a_geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
                colour=signal.colors[["estimate"]],
                    showSelected=c("segments", "samples"),
                data=breakpoints$segments)+
-  geom_vline(aes(xintercept=base),
+  a_geom_vline(aes(xintercept=base),
              colour=signal.colors[["estimate"]],
                  showSelected=c("segments", "samples"),
              linetype="dashed",

@@ -32,8 +32,8 @@ aes(color = x)
 aes(colour = x)
 
 # aes is almost always used with a_plot() or a layer
-a_plot(mpg, aes(displ, hwy)) + geom_point()
-a_plot(mpg) + geom_point(aes(displ, hwy))
+a_plot(mpg, aes(displ, hwy)) + a_geom_point()
+a_plot(mpg) + a_geom_point(aes(displ, hwy))
 
 # Aesthetics supplied to a_plot() are used as defaults for every layer
 # you can override them, or supply different aesthetics for each layer

@@ -1,11 +1,11 @@
 #' Create a new layer
 #'
-#' A layer is a combination of data, stat and geom with a potential position
-#' adjustment. Usually layers are created using \code{geom_*} or \code{a_stat_*}
+#' A layer is a combination of data, stat and a_geom with a potential position
+#' adjustment. Usually layers are created using \code{a_geom_*} or \code{a_stat_*}
 #' calls but it can also be created directly using this function.
 #'
 #' @export
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @param mapping Set of aesthetic mappings created by \code{\link{aes}} or
 #'   \code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
 #'   default), it is combined with the default mapping at the top level of the
@@ -23,7 +23,7 @@
 #'    A \code{function} will be called with a single argument,
 #'    the plot data. The return value must be a \code{data.frame.}, and
 #'    will be used as the layer data.
-#' @param geom The geometric object to use display the data
+#' @param a_geom The geometric object to use display the data
 #' @param a_stat The statistical transformation to use on the data for this
 #'    layer, as a string.
 #' @param position Position adjustment, either as a string, or the result of
@@ -35,29 +35,29 @@
 #'   rather than combining with them. This is most useful for helper functions
 #'   that define both data and aesthetics and shouldn't inherit behaviour from
 #'   the default plot specification, e.g. \code{\link{borders}}.
-#' @param params Additional parameters to the \code{geom} and \code{a_stat}.
+#' @param params Additional parameters to the \code{a_geom} and \code{a_stat}.
 #' @param subset DEPRECATED. An older way of subsetting the dataset used in a
 #'   layer.
 #' @examples
 #' # geom calls are just a short cut for layer
-#' a_plot(mpg, aes(displ, hwy)) + geom_point()
+#' a_plot(mpg, aes(displ, hwy)) + a_geom_point()
 #' # shortcut for
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   layer(geom = "point", a_stat = "identity", position = "identity",
+#'   layer(a_geom = "point", a_stat = "identity", position = "identity",
 #'     params = list(na.rm = FALSE)
 #'   )
 #'
 #' # use a function as data to plot a subset of global data
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   layer(geom = "point", a_stat = "identity", position = "identity",
+#'   layer(a_geom = "point", a_stat = "identity", position = "identity",
 #'     data = head, params = list(na.rm = FALSE)
 #'   )
 #'
-layer <- function(geom = NULL, a_stat = NULL,
+layer <- function(a_geom = NULL, a_stat = NULL,
                   data = NULL, mapping = NULL,
                   position = NULL, params = list(),
                   inherit.aes = TRUE, subset = NULL, show.legend = NA) {
-  if (is.null(geom))
+  if (is.null(a_geom))
     stop("Attempted to create layer with no geom.", call. = FALSE)
   if (is.null(a_stat))
     stop("Attempted to create layer with no stat.", call. = FALSE)
@@ -81,8 +81,8 @@ layer <- function(geom = NULL, a_stat = NULL,
     stop("Mapping must be created by `aes()` or `aes_()`", call. = FALSE)
   }
 
-  if (is.character(geom))
-    geom <- find_subclass("a_Geom", geom)
+  if (is.character(a_geom))
+    a_geom <- find_subclass("a_Geom", a_geom)
   if (is.character(a_stat))
     a_stat <- find_subclass("a_Stat", a_stat)
   if (is.character(position))
@@ -95,11 +95,11 @@ layer <- function(geom = NULL, a_stat = NULL,
 
   # Split up params between aesthetics, geom, and stat
   params <- rename_aes(params)
-  aes_params  <- params[intersect(names(params), geom$aesthetics())]
-  geom_params <- params[intersect(names(params), geom$parameters(TRUE))]
+  aes_params  <- params[intersect(names(params), a_geom$aesthetics())]
+  a_geom_params <- params[intersect(names(params), a_geom$parameters(TRUE))]
   a_stat_params <- params[intersect(names(params), a_stat$parameters(TRUE))]
 
-  all <- c(geom$parameters(TRUE), a_stat$parameters(TRUE), geom$aesthetics())
+  all <- c(a_geom$parameters(TRUE), a_stat$parameters(TRUE), a_geom$aesthetics())
   extra <- setdiff(names(params), all)
 
   # Handle extra params
@@ -119,8 +119,8 @@ layer <- function(geom = NULL, a_stat = NULL,
   }
 
   a_ggproto("a_LayerInstance", a_Layer,
-    geom = geom,
-    geom_params = geom_params,
+    a_geom = a_geom,
+    a_geom_params = a_geom_params,
     a_stat = a_stat,
     a_stat_params = a_stat_params,
     data = data,
@@ -135,8 +135,8 @@ layer <- function(geom = NULL, a_stat = NULL,
 }
 
 a_Layer <- a_ggproto("a_Layer", NULL,
-  geom = NULL,
-  geom_params = NULL,
+  a_geom = NULL,
+  a_geom_params = NULL,
   a_stat = NULL,
   a_stat_params = NULL,
   data = NULL,
@@ -149,7 +149,7 @@ a_Layer <- a_ggproto("a_Layer", NULL,
     if (!is.null(self$mapping)) {
       cat("mapping:", clist(self$mapping), "\n")
     }
-    cat(snakeize(class(self$geom)[[1]]), ": ", clist(self$geom_params), "\n",
+    cat(snakeize(class(self$a_geom)[[1]]), ": ", clist(self$a_geom_params), "\n",
       sep = "")
     cat(snakeize(class(self$a_stat)[[1]]), ": ", clist(self$a_stat_params), "\n",
       sep = "")
@@ -184,7 +184,7 @@ a_Layer <- a_ggproto("a_Layer", NULL,
     aesthetics <- aesthetics[!set & !calculated]
 
     # Override grouping if set in layer
-    if (!is.null(self$geom_params$group)) {
+    if (!is.null(self$a_geom_params$group)) {
       aesthetics[["group"]] <- self$aes_params$group
     }
 
@@ -263,12 +263,12 @@ a_Layer <- a_ggproto("a_Layer", NULL,
 
   compute_geom_1 = function(self, data) {
     if (empty(data)) return(data.frame())
-    data <- self$geom$setup_data(data, c(self$geom_params, self$aes_params))
+    data <- self$a_geom$setup_data(data, c(self$a_geom_params, self$aes_params))
 
     check_required_aesthetics(
-      self$geom$required_aes,
+      self$a_geom$required_aes,
       c(names(data), names(self$aes_params)),
-      snake_class(self$geom)
+      snake_class(self$a_geom)
     )
 
     data
@@ -287,7 +287,7 @@ a_Layer <- a_ggproto("a_Layer", NULL,
     # Combine aesthetics, defaults, & params
     if (empty(data)) return(data)
 
-    self$geom$use_defaults(data, self$aes_params)
+    self$a_geom$use_defaults(data, self$aes_params)
   },
 
   draw_geom = function(self, data, panel, a_coord) {
@@ -296,8 +296,8 @@ a_Layer <- a_ggproto("a_Layer", NULL,
       return(rep(list(a_zeroGrob()), n))
     }
 
-    data <- self$geom$handle_na(data, self$geom_params)
-    self$geom$draw_layer(data, self$geom_params, panel, a_coord)
+    data <- self$a_geom$handle_na(data, self$a_geom_params)
+    self$a_geom$draw_layer(data, self$a_geom_params, panel, a_coord)
   }
 )
 

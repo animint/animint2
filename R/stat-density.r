@@ -18,9 +18,9 @@
 #'   \item{scaled}{density estimate, scaled to maximum of 1}
 #' }
 #' @export
-#' @rdname geom_density
+#' @rdname a_geom_density
 a_stat_density <- function(mapping = NULL, data = NULL,
-                         geom = "area", position = "stack",
+                         a_geom = "area", position = "stack",
                          ...,
                          bw = "nrd0",
                          adjust = 1,
@@ -34,7 +34,7 @@ a_stat_density <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatDensity,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

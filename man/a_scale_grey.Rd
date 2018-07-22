@@ -24,7 +24,7 @@ to control name, limits, breaks, labels and so forth.}
 Based on \code{\link{gray.colors}}
 }
 \examples{
-p <- a_plot(mtcars, aes(mpg, wt)) + geom_point(aes(colour = factor(cyl)))
+p <- a_plot(mtcars, aes(mpg, wt)) + a_geom_point(aes(colour = factor(cyl)))
 p + a_scale_colour_grey()
 p + a_scale_colour_grey(end = 0)
 
@@ -34,10 +34,10 @@ p + a_scale_colour_grey() + a_theme_bw()
 # Colour of missing values is controlled with na.value:
 miss <- factor(sample(c(NA, 1:5), nrow(mtcars), replace = TRUE))
 a_plot(mtcars, aes(mpg, wt)) +
-  geom_point(aes(colour = miss)) +
+  a_geom_point(aes(colour = miss)) +
   a_scale_colour_grey()
 a_plot(mtcars, aes(mpg, wt)) +
-  geom_point(aes(colour = miss)) +
+  a_geom_point(aes(colour = miss)) +
   a_scale_colour_grey(na.value = "green")
 }
 \seealso{

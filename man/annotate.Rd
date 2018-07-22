@@ -4,12 +4,12 @@
 \alias{annotate}
 \title{Create an annotation layer.}
 \usage{
-annotate(geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
+annotate(a_geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
   ymin = NULL, ymax = NULL, xend = NULL, yend = NULL, ...,
   na.rm = FALSE)
 }
 \arguments{
-\item{geom}{name of geom to use for annotation}
+\item{a_geom}{name of a_geom to use for annotation}
 
 \item{x, y, xmin, ymin, xmax, ymax, xend, yend}{positioning aesthetics -
 you must specify at least one of these.}
@@ -17,7 +17,7 @@ you must specify at least one of these.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/a_stat.}
+to the paired a_geom/a_stat.}
 
 \item{na.rm}{If \code{FALSE} (the default), removes missing values with
 a warning.  If \code{TRUE} silently removes missing values.}
@@ -36,7 +36,7 @@ set. This means that layers created with this function will never
 affect the legend.
 }
 \examples{
-p <- a_plot(mtcars, aes(x = wt, y = mpg)) + geom_point()
+p <- a_plot(mtcars, aes(x = wt, y = mpg)) + a_geom_point()
 p + annotate("text", x = 4, y = 25, label = "Some text")
 p + annotate("text", x = 2:5, y = 25, label = "Some text")
 p + annotate("rect", xmin = 3, xmax = 4.2, ymin = 12, ymax = 21,

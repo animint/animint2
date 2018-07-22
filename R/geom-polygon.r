@@ -1,16 +1,16 @@
 #' Polygon, a filled path.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "polygon")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "polygon")}
 #'
 #' @seealso
-#'  \code{\link{geom_path}} for an unfilled polygon,
-#'  \code{\link{geom_ribbon}} for a polygon anchored on the x-axis
+#'  \code{\link{a_geom_path}} for an unfilled polygon,
+#'  \code{\link{a_geom_ribbon}} for a polygon anchored on the x-axis
 #' @export
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @examples
-#' # When using geom_polygon, you will typically need two data frames:
+#' # When using a_geom_polygon, you will typically need two data frames:
 #' # one contains the coordinates of each polygon (positions),  and the
 #' # other the values associated with each polygon (values).  An id
 #' # variable links the two together
@@ -33,7 +33,7 @@
 #' # Currently we need to manually merge the two together
 #' datapoly <- merge(values, positions, by = c("id"))
 #'
-#' (p <- a_plot(datapoly, aes(x = x, y = y)) + geom_polygon(aes(fill = value, group = id)))
+#' (p <- a_plot(datapoly, aes(x = x, y = y)) + a_geom_polygon(aes(fill = value, group = id)))
 #'
 #' # Which seems like a lot of work, but then it's easy to add on
 #' # other features in this coordinate system, e.g.:
@@ -43,11 +43,11 @@
 #'   y = cumsum(runif(50,max = 0.1))
 #' )
 #'
-#' p + geom_line(data = stream, colour = "grey30", size = 5)
+#' p + a_geom_line(data = stream, colour = "grey30", size = 5)
 #'
 #' # And if the positions are in longitude and latitude, you can use
 #' # a_coord_map to produce different map projections.
-geom_polygon <- function(mapping = NULL, data = NULL,
+a_geom_polygon <- function(mapping = NULL, data = NULL,
                          a_stat = "identity", position = "identity",
                          ...,
                          na.rm = FALSE,
@@ -57,7 +57,7 @@ geom_polygon <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomPolygon,
+    a_geom = a_GeomPolygon,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

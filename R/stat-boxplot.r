@@ -1,4 +1,4 @@
-#' @rdname geom_boxplot
+#' @rdname a_geom_boxplot
 #' @param coef length of the whiskers as multiple of IQR.  Defaults to 1.5
 #' @inheritParams a_stat_identity
 #' @section Computed variables:
@@ -14,7 +14,7 @@
 #' }
 #' @export
 a_stat_boxplot <- function(mapping = NULL, data = NULL,
-                         geom = "boxplot", position = "dodge",
+                         a_geom = "boxplot", position = "dodge",
                          ...,
                          coef = 1.5,
                          na.rm = FALSE,
@@ -24,7 +24,7 @@ a_stat_boxplot <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatBoxplot,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

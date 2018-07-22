@@ -5,7 +5,7 @@ viz <-
   list(free=a_plot()+
        a_theme_bw()+
        a_theme(panel.margin=grid::unit(0, "cm"))+
-       geom_point(aes(year, y), data=fake)+
+       a_geom_point(aes(year, y), data=fake)+
        a_scale_x_continuous(breaks=seq(1900, 2010, by=10))+
          a_facet_grid(.~period, scales="free", space="free"))
 viz$fixed <- viz$free+a_facet_grid(.~period, scales="free")

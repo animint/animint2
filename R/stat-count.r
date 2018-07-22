@@ -13,9 +13,9 @@
 #'   \code{a_stat_count} can be used for both discrete and continuous x data.
 #'
 #' @export
-#' @rdname geom_bar
+#' @rdname a_geom_bar
 a_stat_count <- function(mapping = NULL, data = NULL,
-                       geom = "bar", position = "stack",
+                       a_geom = "bar", position = "stack",
                        ...,
                        width = NULL,
                        na.rm = FALSE,
@@ -25,7 +25,7 @@ a_stat_count <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatCount,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

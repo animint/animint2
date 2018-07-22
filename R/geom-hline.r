@@ -2,8 +2,8 @@
 NULL
 
 #' @export
-#' @rdname geom_abline
-geom_hline <- function(mapping = NULL, data = NULL,
+#' @rdname a_geom_abline
+a_geom_hline <- function(mapping = NULL, data = NULL,
                        ...,
                        yintercept,
                        na.rm = FALSE,
@@ -20,7 +20,7 @@ geom_hline <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatIdentity,
-    geom = a_GeomHline,
+    a_geom = a_GeomHline,
     position = a_PositionIdentity,
     show.legend = show.legend,
     inherit.aes = FALSE,

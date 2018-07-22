@@ -4,38 +4,38 @@
 #' results with contours. This can be useful for dealing with overplotting.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "density_2d")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "density_2d")}
 #'
-#' @seealso \code{\link{geom_contour}} for contour drawing geom,
+#' @seealso \code{\link{a_geom_contour}} for contour drawing a_geom,
 #'  \code{\link{a_stat_sum}} for another way of dealing with overplotting
-#' @param geom,a_stat Use to override the default connection between
-#'   \code{geom_density_2d} and \code{a_stat_density_2d}.
+#' @param a_geom,a_stat Use to override the default connection between
+#'   \code{a_geom_density_2d} and \code{a_stat_density_2d}.
 #' @inheritParams layer
-#' @inheritParams geom_point
-#' @inheritParams geom_path
+#' @inheritParams a_geom_point
+#' @inheritParams a_geom_path
 #' @export
 #' @examples
 #' m <- a_plot(faithful, aes(x = eruptions, y = waiting)) +
-#'  geom_point() +
+#'  a_geom_point() +
 #'  xlim(0.5, 6) +
 #'  ylim(40, 110)
-#' m + geom_density_2d()
+#' m + a_geom_density_2d()
 #' \donttest{
-#' m + a_stat_density_2d(aes(fill = ..level..), geom = "polygon")
+#' m + a_stat_density_2d(aes(fill = ..level..), a_geom = "polygon")
 #'
 #' set.seed(4393)
 #' dsmall <- diamonds[sample(nrow(diamonds), 1000), ]
 #' d <- a_plot(dsmall, aes(x, y))
 #' # If you map an aesthetic to a categorical variable, you will get a
 #' # set of contours for each value of that variable
-#' d + geom_density_2d(aes(colour = cut))
+#' d + a_geom_density_2d(aes(colour = cut))
 #'
 #' # If we turn contouring off, we can use use geoms like tiles:
-#' d + a_stat_density_2d(geom = "raster", aes(fill = ..density..), contour = FALSE)
+#' d + a_stat_density_2d(a_geom = "raster", aes(fill = ..density..), contour = FALSE)
 #' # Or points:
-#' d + a_stat_density_2d(geom = "point", aes(size = ..density..), n = 20, contour = FALSE)
+#' d + a_stat_density_2d(a_geom = "point", aes(size = ..density..), n = 20, contour = FALSE)
 #' }
-geom_density_2d <- function(mapping = NULL, data = NULL,
+a_geom_density_2d <- function(mapping = NULL, data = NULL,
                             a_stat = "density2d", position = "identity",
                             ...,
                             lineend = "butt",
@@ -48,7 +48,7 @@ geom_density_2d <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomDensity2d,
+    a_geom = a_GeomDensity2d,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -63,9 +63,9 @@ geom_density_2d <- function(mapping = NULL, data = NULL,
 }
 
 #' @export
-#' @rdname geom_density_2d
+#' @rdname a_geom_density_2d
 #' @usage NULL
-geom_density2d <- geom_density_2d
+a_geom_density2d <- a_geom_density_2d
 
 
 #' @rdname animint2-ggproto

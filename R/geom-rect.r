@@ -1,6 +1,6 @@
 #' @export
-#' @rdname geom_tile
-geom_rect <- function(mapping = NULL, data = NULL,
+#' @rdname a_geom_tile
+a_geom_rect <- function(mapping = NULL, data = NULL,
                       a_stat = "identity", position = "identity",
                       ...,
                       na.rm = FALSE,
@@ -10,7 +10,7 @@ geom_rect <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomRect,
+    a_geom = a_GeomRect,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

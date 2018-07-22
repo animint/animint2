@@ -9,33 +9,33 @@
 #' may need to look at a few to uncover the full story behind your data.
 #'
 #' @section Aesthetics:
-#' \code{geom_histogram} uses the same aesthetics as \code{geom_bar};
-#' \code{geom_freqpoly} uses the same aesthetics as \code{geom_line}.
+#' \code{a_geom_histogram} uses the same aesthetics as \code{a_geom_bar};
+#' \code{a_geom_freqpoly} uses the same aesthetics as \code{a_geom_line}.
 #'
 #' @export
 #' @inheritParams layer
-#' @inheritParams geom_point
-#' @param geom,a_stat Use to override the default connection between
-#'   \code{geom_histogram}/\code{geom_freqpoly} and \code{a_stat_bin}.
+#' @inheritParams a_geom_point
+#' @param a_geom,a_stat Use to override the default connection between
+#'   \code{a_geom_histogram}/\code{a_geom_freqpoly} and \code{a_stat_bin}.
 #' @examples
 #' a_plot(diamonds, aes(carat)) +
-#'   geom_histogram()
+#'   a_geom_histogram()
 #' a_plot(diamonds, aes(carat)) +
-#'   geom_histogram(binwidth = 0.01)
+#'   a_geom_histogram(binwidth = 0.01)
 #' a_plot(diamonds, aes(carat)) +
-#'   geom_histogram(bins = 200)
+#'   a_geom_histogram(bins = 200)
 #'
 #' # Rather than stacking histograms, it's easier to compare frequency
 #' # polygons
 #' a_plot(diamonds, aes(price, fill = cut)) +
-#'   geom_histogram(binwidth = 500)
+#'   a_geom_histogram(binwidth = 500)
 #' a_plot(diamonds, aes(price, colour = cut)) +
-#'   geom_freqpoly(binwidth = 500)
+#'   a_geom_freqpoly(binwidth = 500)
 #'
 #' # To make it easier to compare distributions with very different counts,
 #' # put density on the y axis instead of the default count
 #' a_plot(diamonds, aes(price, ..density.., colour = cut)) +
-#'   geom_freqpoly(binwidth = 500)
+#'   a_geom_freqpoly(binwidth = 500)
 #'
 #' if (require("ggplot2movies")) {
 #' # Often we don't want the height of the bar to represent the
@@ -43,16 +43,16 @@
 #' # For example, the following plot shows the number of movies
 #' # in each rating.
 #' m <- a_plot(movies, aes(rating))
-#' m + geom_histogram(binwidth = 0.1)
+#' m + a_geom_histogram(binwidth = 0.1)
 #'
 #' # If, however, we want to see the number of votes cast in each
 #' # category, we need to weight by the votes variable
-#' m + geom_histogram(aes(weight = votes), binwidth = 0.1) + ylab("votes")
+#' m + a_geom_histogram(aes(weight = votes), binwidth = 0.1) + ylab("votes")
 #'
 #' # For transformed scales, binwidth applies to the transformed data.
 #' # The bins have constant width on the transformed scale.
-#' m + geom_histogram() + a_scale_x_log10()
-#' m + geom_histogram(binwidth = 0.05) + a_scale_x_log10()
+#' m + a_geom_histogram() + a_scale_x_log10()
+#' m + a_geom_histogram(binwidth = 0.05) + a_scale_x_log10()
 #'
 #' # For transformed coordinate systems, the binwidth applies to the
 #' # raw data. The bins have constant width on the original scale.
@@ -61,17 +61,17 @@
 #' # bar is anchored at zero, and so whens transformed becomes negative
 #' # infinity. This is not a problem when transforming the scales, because
 #' # no observations have 0 ratings.
-#' m + geom_histogram(origin = 0) + a_coord_trans(x = "log10")
+#' m + a_geom_histogram(origin = 0) + a_coord_trans(x = "log10")
 #' # Use origin = 0, to make sure we don't take sqrt of negative values
-#' m + geom_histogram(origin = 0) + a_coord_trans(x = "sqrt")
+#' m + a_geom_histogram(origin = 0) + a_coord_trans(x = "sqrt")
 #'
 #' # You can also transform the y axis.  Remember that the base of the bars
 #' # has value 0, so log transformations are not appropriate
 #' m <- a_plot(movies, aes(x = rating))
-#' m + geom_histogram(binwidth = 0.5) + a_scale_y_sqrt()
+#' m + a_geom_histogram(binwidth = 0.5) + a_scale_y_sqrt()
 #' }
 #' rm(movies)
-geom_histogram <- function(mapping = NULL, data = NULL,
+a_geom_histogram <- function(mapping = NULL, data = NULL,
                            a_stat = "bin", position = "stack",
                            ...,
                            binwidth = NULL,
@@ -84,7 +84,7 @@ geom_histogram <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomBar,
+    a_geom = a_GeomBar,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

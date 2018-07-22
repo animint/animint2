@@ -1,11 +1,11 @@
 #' Horizontal error bars
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "errorbarh")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "errorbarh")}
 #'
-#' @seealso \code{\link{geom_errorbar}}: vertical error bars
+#' @seealso \code{\link{a_geom_errorbar}}: vertical error bars
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @export
 #' @examples
 #' df <- data.frame(
@@ -18,11 +18,11 @@
 #' # Define the top and bottom of the errorbars
 #'
 #' p <- a_plot(df, aes(resp, trt, colour = group))
-#' p + geom_point() +
-#'   geom_errorbarh(aes(xmax = resp + se, xmin = resp - se))
-#' p + geom_point() +
-#'   geom_errorbarh(aes(xmax = resp + se, xmin = resp - se, height = .2))
-geom_errorbarh <- function(mapping = NULL, data = NULL,
+#' p + a_geom_point() +
+#'   a_geom_errorbarh(aes(xmax = resp + se, xmin = resp - se))
+#' p + a_geom_point() +
+#'   a_geom_errorbarh(aes(xmax = resp + se, xmin = resp - se, height = .2))
+a_geom_errorbarh <- function(mapping = NULL, data = NULL,
                            a_stat = "identity", position = "identity",
                            ...,
                            na.rm = FALSE,
@@ -32,7 +32,7 @@ geom_errorbarh <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomErrorbarh,
+    a_geom = a_GeomErrorbarh,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

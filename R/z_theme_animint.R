@@ -10,7 +10,7 @@
 ##' @examples 
 ##' mtcars$cyl <- as.factor(mtcars$cyl)
 ##' p <- a_plot() +
-##'   geom_point(aes(x=wt, y=mpg, colour=cyl),
+##'   a_geom_point(aes(x=wt, y=mpg, colour=cyl),
 ##'              data=mtcars) +
 ##'   ## set width and height values and update both axes
 ##'   a_theme_animint(width=600, height=600, update_axes=c("x", "y"))

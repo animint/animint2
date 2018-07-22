@@ -1,14 +1,14 @@
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @section Computed variables:
 #' \describe{
 #'  \item{n}{number of observations at position}
 #'  \item{prop}{percent of points in that panel at that position}
 #' }
 #' @export
-#' @rdname geom_count
+#' @rdname a_geom_count
 a_stat_sum <- function(mapping = NULL, data = NULL,
-                     geom = "point", position = "identity",
+                     a_geom = "point", position = "identity",
                      ...,
                      na.rm = FALSE,
                      show.legend = NA,
@@ -17,7 +17,7 @@ a_stat_sum <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatSum,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

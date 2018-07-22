@@ -2,9 +2,9 @@ library(animint2)
 library(plyr) # to access round_any
 movies$decade <- round_any(movies$year, 10)
 m <- a_plot(movies, aes(x=rating, colour=decade, group=decade)) + 
-  geom_density(fill=NA) + a_scale_colour_continuous(guide="legend") 
+  a_geom_density(fill=NA) + a_scale_colour_continuous(guide="legend") 
 
-m <- a_plot(movies, aes(x=rating, colour=decade, group=decade)) + geom_density(fill=NA) #+ a_scale_colour_continuous(guide="none")
+m <- a_plot(movies, aes(x=rating, colour=decade, group=decade)) + a_geom_density(fill=NA) #+ a_scale_colour_continuous(guide="none")
 m 
 
 mb <- a_plot_build(m)
@@ -40,7 +40,7 @@ getLegend <- function(mb, i){
 legends <- lapply(aes.scales, getLegend, mb=mb)
 
 m <- a_plot(movies, aes(x=length, y=rating, size=votes, colour=factor(Comedy))) + a_scale_colour_manual(values=c("black", "green")) +
-  geom_jitter(alpha=.5) + a_scale_size_area() + xlim(c(20, 300))
+  a_geom_jitter(alpha=.5) + a_scale_size_area() + xlim(c(20, 300))
 m
 mb <- a_plot_build(m)
 aes.scales <- which(sapply(mb$plot$scales$scales,

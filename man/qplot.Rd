@@ -6,13 +6,13 @@
 \title{Quick plot}
 \usage{
 qplot(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
-  geom = "auto", xlim = c(NA, NA), ylim = c(NA, NA), log = "",
+  a_geom = "auto", xlim = c(NA, NA), ylim = c(NA, NA), log = "",
   main = NULL, xlab = deparse(substitute(x)),
   ylab = deparse(substitute(y)), asp = NA, a_stat = NULL,
   position = NULL)
 
 quickplot(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
-  geom = "auto", xlim = c(NA, NA), ylim = c(NA, NA), log = "",
+  a_geom = "auto", xlim = c(NA, NA), ylim = c(NA, NA), log = "",
   main = NULL, xlab = deparse(substitute(x)),
   ylab = deparse(substitute(y)), asp = NA, a_stat = NULL,
   position = NULL)
@@ -29,7 +29,7 @@ or two-sided}
 
 \item{margins}{See \code{a_facet_grid}: display marginal facets?}
 
-\item{geom}{Character vector specifying geom(s) to draw. Defaults to
+\item{a_geom}{Character vector specifying geom(s) to draw. Defaults to
 "point" if x and y are specified, and "histogram" if only x is specified.}
 
 \item{xlim, ylim}{X and y axis limits}
@@ -81,8 +81,8 @@ qplot(mpg, data = mtcars)
 qplot(y = mpg, data = mtcars)
 
 # Use different geoms
-qplot(mpg, wt, data = mtcars, geom = "path")
-qplot(factor(cyl), wt, data = mtcars, geom = c("boxplot", "jitter"))
-qplot(mpg, data = mtcars, geom = "dotplot")
+qplot(mpg, wt, data = mtcars, a_geom = "path")
+qplot(factor(cyl), wt, data = mtcars, a_geom = c("boxplot", "jitter"))
+qplot(mpg, data = mtcars, a_geom = "dotplot")
 }
 }

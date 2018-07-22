@@ -26,16 +26,16 @@ qplot(year, rating, data = movies, facets = Comedy ~ Action)
 # ggplot2 has qplot().
 
 stripplot(~ rating, data = movies, jitter.data = TRUE)
-qplot(rating, 1, data = movies, geom = "jitter")
+qplot(rating, 1, data = movies, a_geom = "jitter")
 
 histogram(~ rating, data = movies)
-qplot(rating, data = movies, geom = "histogram")
+qplot(rating, data = movies, a_geom = "histogram")
 
 bwplot(Comedy ~ rating ,data = movies)
-qplot(factor(Comedy), rating, data = movies, geom = "boxplot")
+qplot(factor(Comedy), rating, data = movies, a_geom = "boxplot")
 
 xyplot(wt ~ mpg, mtcars, type = c("p","smooth"))
-qplot(mpg, wt, data = mtcars, geom = c("point","smooth"))
+qplot(mpg, wt, data = mtcars, a_geom = c("point","smooth"))
 }
 
 # The capabilities for scale manipulations are similar in both ggplot2 and

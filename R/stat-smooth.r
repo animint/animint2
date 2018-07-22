@@ -23,9 +23,9 @@
 #'   \item{se}{standard error}
 #' }
 #' @export
-#' @rdname geom_smooth
+#' @rdname a_geom_smooth
 a_stat_smooth <- function(mapping = NULL, data = NULL,
-                        geom = "smooth", position = "identity",
+                        a_geom = "smooth", position = "identity",
                         ...,
                         method = "auto",
                         formula = y ~ x,
@@ -42,7 +42,7 @@ a_stat_smooth <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatSmooth,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

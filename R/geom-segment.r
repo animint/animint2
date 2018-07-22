@@ -1,50 +1,50 @@
 #' Line segments and curves.
 #'
-#' \code{geom_segment} draws a straight line between points (x1, y1) and
-#' (x2, y2). \code{geom_curve} draws a curved line.
+#' \code{a_geom_segment} draws a straight line between points (x1, y1) and
+#' (x2, y2). \code{a_geom_curve} draws a curved line.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "segment")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "segment")}
 #'
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @param arrow specification for arrow heads, as created by arrow()
 #' @param lineend Line end style (round, butt, square)
-#' @seealso \code{\link{geom_path}} and \code{\link{geom_line}} for multi-
+#' @seealso \code{\link{a_geom_path}} and \code{\link{a_geom_line}} for multi-
 #'   segment lines and paths.
-#' @seealso \code{\link{geom_spoke}} for a segment parameterised by a location
+#' @seealso \code{\link{a_geom_spoke}} for a segment parameterised by a location
 #'   (x, y), and an angle and radius.
 #' @export
 #' @examples
 #' b <- a_plot(mtcars, aes(wt, mpg)) +
-#'   geom_point()
+#'   a_geom_point()
 #'
 #' df <- data.frame(x1 = 2.62, x2 = 3.57, y1 = 21.0, y2 = 15.0)
 #' b +
-#'  geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "curve"), data = df) +
-#'  geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "segment"), data = df)
+#'  a_geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "curve"), data = df) +
+#'  a_geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "segment"), data = df)
 #'
-#' b + geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = -0.2)
-#' b + geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = 1)
-#' b + geom_curve(
+#' b + a_geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = -0.2)
+#' b + a_geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = 1)
+#' b + a_geom_curve(
 #'   aes(x = x1, y = y1, xend = x2, yend = y2),
 #'   data = df,
 #'   arrow = arrow(length = unit(0.03, "npc"))
 #' )
 #'
 #' a_plot(seals, aes(long, lat)) +
-#'   geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat),
+#'   a_geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat),
 #'     arrow = arrow(length = unit(0.1,"cm"))) +
 #'     borders("state")
 #'
-#' # You can also use geom_segment to recreate plot(type = "h") :
+#' # You can also use a_geom_segment to recreate plot(type = "h") :
 #' counts <- as.data.frame(table(x = rpois(100,5)))
 #' counts$x <- as.numeric(as.character(counts$x))
 #' with(counts, plot(x, Freq, type = "h", lwd = 10))
 #'
 #' a_plot(counts, aes(x, Freq)) +
-#'   geom_segment(aes(xend = x, yend = 0), size = 10, lineend = "butt")
-geom_segment <- function(mapping = NULL, data = NULL,
+#'   a_geom_segment(aes(xend = x, yend = 0), size = 10, lineend = "butt")
+a_geom_segment <- function(mapping = NULL, data = NULL,
                          a_stat = "identity", position = "identity",
                          ...,
                          arrow = NULL,
@@ -56,7 +56,7 @@ geom_segment <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomSegment,
+    a_geom = a_GeomSegment,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -83,7 +83,7 @@ a_GeomSegment <- a_ggproto("a_GeomSegment", a_Geom,
 
     data <- remove_missing(data, na.rm = na.rm,
       c("x", "y", "xend", "yend", "linetype", "size", "shape"),
-      name = "geom_segment")
+      name = "a_geom_segment")
     if (empty(data)) return(a_zeroGrob())
 
     if (a_coord$is_linear()) {

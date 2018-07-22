@@ -22,7 +22,7 @@
 #'   price = runif(30)
 #' )
 #' base <- a_plot(df, aes(date, price)) +
-#'   geom_line()
+#'   a_geom_line()
 #'
 #' # The date scale will attempt to pick sensible defaults for
 #' # major and minor tick marks. Override with date_breaks, date_labels

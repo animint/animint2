@@ -1,10 +1,10 @@
 #' A line segment parameterised by location, direction and distance.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "spoke")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "spoke")}
 #'
 #' @inheritParams layer
-#' @inheritParams geom_segment
+#' @inheritParams a_geom_segment
 #' @export
 #' @examples
 #' df <- expand.grid(x = 1:10, y=1:10)
@@ -12,13 +12,13 @@
 #' df$speed <- runif(100, 0, sqrt(0.1 * df$x))
 #'
 #' a_plot(df, aes(x, y)) +
-#'   geom_point() +
-#'   geom_spoke(aes(angle = angle), radius = 0.5)
+#'   a_geom_point() +
+#'   a_geom_spoke(aes(angle = angle), radius = 0.5)
 #'
 #' a_plot(df, aes(x, y)) +
-#'   geom_point() +
-#'   geom_spoke(aes(angle = angle, radius = speed))
-geom_spoke <- function(mapping = NULL, data = NULL,
+#'   a_geom_point() +
+#'   a_geom_spoke(aes(angle = angle, radius = speed))
+a_geom_spoke <- function(mapping = NULL, data = NULL,
                        a_stat = "identity", position = "identity",
                        ...,
                        na.rm = FALSE,
@@ -27,7 +27,7 @@ geom_spoke <- function(mapping = NULL, data = NULL,
   layer(
     data = data,
     mapping = mapping,
-    geom = a_GeomSpoke,
+    a_geom = a_GeomSpoke,
     a_stat = a_stat,
     position = position,
     show.legend = show.legend,
@@ -40,11 +40,11 @@ geom_spoke <- function(mapping = NULL, data = NULL,
 }
 
 #' @export
-#' @rdname geom_spoke
+#' @rdname a_geom_spoke
 #' @usage NULL
 a_stat_spoke <- function(...) {
-  message("a_stat_spoke is deprecated, please use geom_spoke")
-  geom_spoke(...)
+  message("a_stat_spoke is deprecated, please use a_geom_spoke")
+  a_geom_spoke(...)
 }
 
 #' @rdname animint2-ggproto

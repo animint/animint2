@@ -2,13 +2,13 @@
 NULL
 
 #' @export
-#' @rdname geom_tile
+#' @rdname a_geom_tile
 #' @param hjust,vjust horizontal and vertical justification of the grob.  Each
 #'   justification value should be a number between 0 and 1.  Defaults to 0.5
 #'   for both, centering each pixel over its data location.
 #' @param interpolate If \code{TRUE} interpolate linearly, if \code{FALSE}
 #'   (the default) don't interpolate.
-geom_raster <- function(mapping = NULL, data = NULL,
+a_geom_raster <- function(mapping = NULL, data = NULL,
                         a_stat = "identity", position = "identity",
                         ...,
                         hjust = 0.5,
@@ -25,7 +25,7 @@ geom_raster <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomRaster,
+    a_geom = a_GeomRaster,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -65,7 +65,7 @@ a_GeomRaster <- a_ggproto("a_GeomRaster", a_Geom,
   draw_panel = function(data, panel_scales, a_coord, interpolate = FALSE,
                         hjust = 0.5, vjust = 0.5) {
     if (!inherits(a_coord, "a_CoordCartesian")) {
-      stop("geom_raster only works with Cartesian coordinates", call. = FALSE)
+      stop("a_geom_raster only works with Cartesian coordinates", call. = FALSE)
     }
     data <- a_coord$transform(data, panel_scales)
 

@@ -1,22 +1,22 @@
 #' Modify geom/stat aesthetic defaults for future plots
 #'
-#' @param a_stat,geom Name of geom/a_stat to modify (like \code{"point"} or
+#' @param a_stat,a_geom Name of a_geom/a_stat to modify (like \code{"point"} or
 #'   \code{"bin"}), or a a_Geom/a_Stat object (like \code{a_GeomPoint} or
 #'   \code{a_StatBin}).
 #' @param new Named list of aesthetics.
 #' @export
 #' @examples
-#' update_geom_defaults("point", list(colour = "darkblue"))
-#' a_plot(mtcars, aes(mpg, wt)) + geom_point()
-#' update_geom_defaults("point", list(colour = "black"))
+#' update_a_geom_defaults("point", list(colour = "darkblue"))
+#' a_plot(mtcars, aes(mpg, wt)) + a_geom_point()
+#' update_a_geom_defaults("point", list(colour = "black"))
 #' @rdname update_defaults
-update_geom_defaults <- function(geom, new) {
-  if (is.character(geom)) {
-    g <- find_subclass("a_Geom", geom)
-  } else if (inherits(geom, "a_Geom")) {
-    g <- geom
+update_a_geom_defaults <- function(a_geom, new) {
+  if (is.character(a_geom)) {
+    g <- find_subclass("a_Geom", a_geom)
+  } else if (inherits(a_geom, "a_Geom")) {
+    g <- a_geom
   } else {
-    stop('`geom` must be a string (like "point") or a a_Geom object (like a_GeomPoint).',
+    stop('`a_geom` must be a string (like "point") or a a_Geom object (like a_GeomPoint).',
       call. = FALSE)
   }
 

@@ -18,16 +18,16 @@
 #' xlim("a", "b", "c")
 #'
 #' a_plot(mtcars, aes(mpg, wt)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   xlim(15, 20)
 #' # with automatic lower limit
 #' a_plot(mtcars, aes(mpg, wt)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   xlim(NA, 20)
 #'
 #' # Change both xlim and ylim
 #' a_plot(mtcars, aes(mpg, wt)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   lims(x = c(10, 20), y = c(3, 5))
 lims <- function(...) {
   args <- list(...)
@@ -108,25 +108,25 @@ limits.POSIXlt <- function(lims, var) {
 #'
 #. Sometimes you may want to ensure limits include a single value, for all
 #' panels or all plots.  This function is a thin wrapper around
-#' \code{\link{geom_blank}} that makes it easy to add such values.
+#' \code{\link{a_geom_blank}} that makes it easy to add such values.
 #'
 #' @param ... named list of aesthetics specifying the value (or values) that
 #'   should be included in each scale.
 #' @export
 #' @examples
-#' p <- a_plot(mtcars, aes(mpg, wt)) + geom_point()
+#' p <- a_plot(mtcars, aes(mpg, wt)) + a_geom_point()
 #' p + expand_limits(x = 0)
 #' p + expand_limits(y = c(1, 9))
 #' p + expand_limits(x = 0, y = 0)
 #'
 #' a_plot(mtcars, aes(mpg, wt)) +
-#'   geom_point(aes(colour = cyl)) +
+#'   a_geom_point(aes(colour = cyl)) +
 #'   expand_limits(colour = seq(2, 10, by = 2))
 #' a_plot(mtcars, aes(mpg, wt)) +
-#'   geom_point(aes(colour = factor(cyl))) +
+#'   a_geom_point(aes(colour = factor(cyl))) +
 #'   expand_limits(colour = factor(seq(2, 10, by = 2)))
 expand_limits <- function(...) {
   data <- data.frame(..., stringsAsFactors = FALSE)
 
-  geom_blank(aes_all(names(data)), data, inherit.aes = FALSE)
+  a_geom_blank(aes_all(names(data)), data, inherit.aes = FALSE)
 }

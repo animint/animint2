@@ -31,17 +31,17 @@ amod <- aov(breaks ~ wool + tension, data = warpbreaks)
 wht <- glht(amod, linfct = mcp(tension = "Tukey"))
 
 a_fortify(wht)
-a_plot(wht, aes(lhs, estimate)) + geom_point()
+a_plot(wht, aes(lhs, estimate)) + a_geom_point()
 
 CI <- confint(wht)
 a_fortify(CI)
 a_plot(CI, aes(lhs, estimate, ymin = lwr, ymax = upr)) +
-   geom_pointrange()
+   a_geom_pointrange()
 
 a_fortify(summary(wht))
 a_plot(mapping = aes(lhs, estimate)) +
-   geom_linerange(aes(ymin = lwr, ymax = upr), data = CI) +
-   geom_point(aes(size = p), data = summary(wht)) +
+   a_geom_linerange(aes(ymin = lwr, ymax = upr), data = CI) +
+   a_geom_point(aes(size = p), data = summary(wht)) +
    a_scale_size(trans = "reverse")
 
 cld <- cld(wht)

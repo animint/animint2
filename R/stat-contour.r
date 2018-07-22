@@ -4,9 +4,9 @@
 #' \describe{
 #'  \item{level}{height of contour}
 #' }
-#' @rdname geom_contour
+#' @rdname a_geom_contour
 a_stat_contour <- function(mapping = NULL, data = NULL,
-                         geom = "contour", position = "identity",
+                         a_geom = "contour", position = "identity",
                          ...,
                          na.rm = FALSE,
                          show.legend = NA,
@@ -15,7 +15,7 @@ a_stat_contour <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatContour,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -61,7 +61,7 @@ a_StatContour <- a_ggproto("a_StatContour", a_Stat,
 # breaks <- seq(95, 195, length.out = 10)
 # contours <- contourLines(v3d, breaks)
 # a_plot(contours, aes(x, y)) +
-#   geom_path() +
+#   a_geom_path() +
 #   facet_wrap(~piece)
 contour_lines <- function(data, breaks, complete = FALSE) {
   z <- tapply(data$z, data[c("x", "y")], identity)
@@ -108,6 +108,6 @@ poly_dir <- function(x, y) {
 #
 # contours <- ddply(contours, "piece", mutate, dir = animint2:::poly_dir(x, y))
 # a_plot(contours, aes(x, y)) +
-#   geom_path(aes(group = piece, colour = factor(dir)))
+#   a_geom_path(aes(group = piece, colour = factor(dir)))
 # last_plot() + facet_wrap(~ level)
 

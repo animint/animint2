@@ -14,7 +14,7 @@
 #'   to points with size 0.
 #' @examples
 #' p <- a_plot(mpg, aes(displ, hwy, size = hwy)) +
-#'    geom_point()
+#'    a_geom_point()
 #' p
 #' p + a_scale_size("Highway mpg")
 #' p + a_scale_size(range = c(0, 10))
@@ -24,7 +24,7 @@
 #'
 #' # This is most useful when size is a count
 #' a_plot(mpg, aes(class, cyl)) +
-#'   geom_count() +
+#'   a_geom_count() +
 #'   a_scale_size_area()
 #'
 #' # If you want to map size to radius (usually bad idea), use a_scale_radius

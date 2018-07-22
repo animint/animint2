@@ -8,7 +8,7 @@
 #' @param args list of additional arguments to pass to \code{fun}
 #' @param xlim Optionally, restrict the range of the function to this range.
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @section Computed variables:
 #' \describe{
 #'   \item{x}{x's along a grid}
@@ -21,7 +21,7 @@
 #'   x = rnorm(100)
 #' )
 #' x <- df$x
-#' base <- a_plot(df, aes(x)) + geom_density()
+#' base <- a_plot(df, aes(x)) + a_geom_density()
 #' base + a_stat_function(fun = dnorm, colour = "red")
 #' base + a_stat_function(fun = dnorm, colour = "red", args = list(mean = 3))
 #'
@@ -30,7 +30,7 @@
 #'
 #' # Specify range of x-axis
 #' a_plot(data.frame(x = c(0, 2)), aes(x)) +
-#'   a_stat_function(fun = exp, geom = "line")
+#'   a_stat_function(fun = exp, a_geom = "line")
 #'
 #' # Plot a normal curve
 #' a_plot(data.frame(x = c(-5, 5)), aes(x)) + a_stat_function(fun = dnorm)
@@ -48,7 +48,7 @@
 #' test <- function(x) {x ^ 2 + x + 20}
 #' f + a_stat_function(fun = test)
 a_stat_function <- function(mapping = NULL, data = NULL,
-                          geom = "path", position = "identity",
+                          a_geom = "path", position = "identity",
                           ...,
                           fun,
                           xlim = NULL,
@@ -61,7 +61,7 @@ a_stat_function <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatFunction,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

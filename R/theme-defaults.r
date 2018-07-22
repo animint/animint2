@@ -41,7 +41,7 @@
 #' }
 #'
 #' @examples
-#' p <- a_plot(mtcars) + geom_point(aes(x = wt, y = mpg,
+#' p <- a_plot(mtcars) + a_geom_point(aes(x = wt, y = mpg,
 #'      colour = factor(gear))) + a_facet_wrap(~am)
 #'
 #' p

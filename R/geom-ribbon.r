@@ -1,38 +1,38 @@
 #' Ribbons and area plots.
 #'
-#' For each continuous x value, \code{geom_interval} displays a y interval.
-#' \code{geom_area} is a special case of \code{geom_ribbon}, where the
+#' For each continuous x value, \code{a_geom_interval} displays a y interval.
+#' \code{a_geom_area} is a special case of \code{a_geom_ribbon}, where the
 #' minimum of the range is fixed to 0.
 #'
 #' An area plot is the continuous analog of a stacked bar chart (see
-#' \code{\link{geom_bar}}), and can be used to show how composition of the
+#' \code{\link{a_geom_bar}}), and can be used to show how composition of the
 #' whole varies over the range of x.  Choosing the order in which different
 #' components is stacked is very important, as it becomes increasing hard to
 #' see the individual pattern as you move up the stack.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "ribbon")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "ribbon")}
 #'
 #' @seealso
-#'   \code{\link{geom_bar}} for discrete intervals (bars),
-#'   \code{\link{geom_linerange}} for discrete intervals (lines),
-#'   \code{\link{geom_polygon}} for general polygons
+#'   \code{\link{a_geom_bar}} for discrete intervals (bars),
+#'   \code{\link{a_geom_linerange}} for discrete intervals (lines),
+#'   \code{\link{a_geom_polygon}} for general polygons
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @export
 #' @examples
 #' # Generate data
 #' huron <- data.frame(year = 1875:1972, level = as.vector(LakeHuron))
 #' h <- a_plot(huron, aes(year))
 #'
-#' h + geom_ribbon(aes(ymin=0, ymax=level))
-#' h + geom_area(aes(y = level))
+#' h + a_geom_ribbon(aes(ymin=0, ymax=level))
+#' h + a_geom_area(aes(y = level))
 #'
 #' # Add aesthetic mappings
 #' h +
-#'   geom_ribbon(aes(ymin = level - 1, ymax = level + 1), fill = "grey70") +
-#'   geom_line(aes(y = level))
-geom_ribbon <- function(mapping = NULL, data = NULL,
+#'   a_geom_ribbon(aes(ymin = level - 1, ymax = level + 1), fill = "grey70") +
+#'   a_geom_line(aes(y = level))
+a_geom_ribbon <- function(mapping = NULL, data = NULL,
                         a_stat = "identity", position = "identity",
                         ...,
                         na.rm = FALSE,
@@ -42,7 +42,7 @@ geom_ribbon <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomRibbon,
+    a_geom = a_GeomRibbon,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -107,16 +107,16 @@ a_GeomRibbon <- a_ggproto("a_GeomRibbon", a_Geom,
   }
 )
 
-#' @rdname geom_ribbon
+#' @rdname a_geom_ribbon
 #' @export
-geom_area <- function(mapping = NULL, data = NULL, a_stat = "identity",
+a_geom_area <- function(mapping = NULL, data = NULL, a_stat = "identity",
                       position = "stack", na.rm = FALSE, show.legend = NA,
                       inherit.aes = TRUE, ...) {
   layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomArea,
+    a_geom = a_GeomArea,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

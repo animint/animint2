@@ -5,8 +5,8 @@
 #' @export
 #' @keywords internal
 #' @examples
-#' benchplot(a_plot(mtcars, aes(mpg, wt)) + geom_point())
-#' benchplot(a_plot(mtcars, aes(mpg, wt)) + geom_point() + a_facet_grid(. ~ cyl))
+#' benchplot(a_plot(mtcars, aes(mpg, wt)) + a_geom_point())
+#' benchplot(a_plot(mtcars, aes(mpg, wt)) + a_geom_point() + a_facet_grid(. ~ cyl))
 benchplot <- function(x) {
 
   construct <- system.time(force(x))

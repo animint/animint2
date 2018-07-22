@@ -16,32 +16,32 @@
 #'   This ellipse probably won't appear circular unless \code{a_coord_fixed()} is applied.
 #' @param segments The number of segments to be used in drawing the ellipse.
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @export
 #' @examples
 #' a_plot(faithful, aes(waiting, eruptions)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   a_stat_ellipse()
 #'
 #' a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   a_stat_ellipse()
 #'
 #' a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   a_stat_ellipse(type = "norm", linetype = 2) +
 #'   a_stat_ellipse(type = "t")
 #'
 #' a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   a_stat_ellipse(type = "norm", linetype = 2) +
 #'   a_stat_ellipse(type = "euclid", level = 3) +
 #'   a_coord_fixed()
 #'
 #' a_plot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
-#'   a_stat_ellipse(geom = "polygon")
+#'   a_stat_ellipse(a_geom = "polygon")
 a_stat_ellipse <- function(mapping = NULL, data = NULL,
-                         geom = "path", position = "identity",
+                         a_geom = "path", position = "identity",
                          ...,
                          type = "t",
                          level = 0.95,
@@ -53,7 +53,7 @@ a_stat_ellipse <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatEllipse,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

@@ -1,6 +1,6 @@
 #' Textual annotations.
 #'
-#' \code{geom_text} adds text directly to the plot. \code{geom_label} draws
+#' \code{a_geom_text} adds text directly to the plot. \code{a_geom_label} draws
 #' a rectangle underneath the text, making it easier to read.
 #'
 #' Note the the "width" and "height" of a text element are 0, so stacking
@@ -11,11 +11,11 @@
 #' resize a plot, labels stay the same size, but the size of the axes changes.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "text")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "text")}
 #'
-#' @section \code{geom_label}:
-#' Currently \code{geom_label} does not support the \code{rot} parameter and
-#' is considerably slower than \code{geom_text}. The \code{fill} aesthetic
+#' @section \code{a_geom_label}:
+#' Currently \code{a_geom_label} does not support the \code{rot} parameter and
+#' is considerably slower than \code{a_geom_text}. The \code{fill} aesthetic
 #' controls the background colour of the label.
 #'
 #' @section Alignment:
@@ -27,7 +27,7 @@
 #' it away from the center
 #'
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @param parse If TRUE, the labels will be parsed into expressions and
 #'   displayed as described in ?plotmath
 #' @param nudge_x,nudge_y Horizontal and vertical adjustment to nudge labels by.
@@ -38,41 +38,41 @@
 #' @examples
 #' p <- a_plot(mtcars, aes(wt, mpg, label = rownames(mtcars)))
 #'
-#' p + geom_text()
+#' p + a_geom_text()
 #' # Avoid overlaps
-#' p + geom_text(check_overlap = TRUE)
+#' p + a_geom_text(check_overlap = TRUE)
 #' # Labels with background
-#' p + geom_label()
+#' p + a_geom_label()
 #' # Change size of the label
-#' p + geom_text(size = 10)
+#' p + a_geom_text(size = 10)
 #'
 #' # Set aesthetics to fixed value
-#' p + geom_point() + geom_text(hjust = 0, nudge_x = 0.05)
-#' p + geom_point() + geom_text(vjust = 0, nudge_y = 0.5)
-#' p + geom_point() + geom_text(angle = 45)
+#' p + a_geom_point() + a_geom_text(hjust = 0, nudge_x = 0.05)
+#' p + a_geom_point() + a_geom_text(vjust = 0, nudge_y = 0.5)
+#' p + a_geom_point() + a_geom_text(angle = 45)
 #' \dontrun{
 #' # Doesn't work on all systems
-#' p + geom_text(family = "Times New Roman")
+#' p + a_geom_text(family = "Times New Roman")
 #' }
 #'
 #' # Add aesthetic mappings
-#' p + geom_text(aes(colour = factor(cyl)))
-#' p + geom_text(aes(colour = factor(cyl))) +
+#' p + a_geom_text(aes(colour = factor(cyl)))
+#' p + a_geom_text(aes(colour = factor(cyl))) +
 #'   a_scale_colour_discrete(l = 40)
-#' p + geom_label(aes(fill = factor(cyl)), colour = "white", fontface = "bold")
+#' p + a_geom_label(aes(fill = factor(cyl)), colour = "white", fontface = "bold")
 #'
-#' p + geom_text(aes(size = wt))
+#' p + a_geom_text(aes(size = wt))
 #' # a_scale height of text, rather than sqrt(height)
-#' p + geom_text(aes(size = wt)) + a_scale_radius(range = c(3,6))
+#' p + a_geom_text(aes(size = wt)) + a_scale_radius(range = c(3,6))
 #'
 #' # You can display expressions by setting parse = TRUE.  The
 #' # details of the display are described in ?plotmath, but note that
-#' # geom_text uses strings, not expressions.
-#' p + geom_text(aes(label = paste(wt, "^(", cyl, ")", sep = "")),
+#' # a_geom_text uses strings, not expressions.
+#' p + a_geom_text(aes(label = paste(wt, "^(", cyl, ")", sep = "")),
 #'   parse = TRUE)
 #'
 #' # Add a text annotation
-#' p + geom_text() + annotate("text",
+#' p + a_geom_text() + annotate("text",
 #' label = "plot mpg vs. wt", x = 2, y = 15, size = 8, colour = "red")
 #'
 #' \donttest{
@@ -86,24 +86,24 @@
 #' # ggplot2 doesn't know you want to give the labels the same virtual width
 #' # as the bars:
 #' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
-#'   geom_bar(a_stat = "identity", position = "dodge") +
-#'   geom_text(position = "dodge")
+#'   a_geom_bar(a_stat = "identity", position = "dodge") +
+#'   a_geom_text(position = "dodge")
 #' # So tell it:
 #' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
-#'   geom_bar(a_stat = "identity", position = "dodge") +
-#'   geom_text(position = position_dodge(0.9))
+#'   a_geom_bar(a_stat = "identity", position = "dodge") +
+#'   a_geom_text(position = position_dodge(0.9))
 #' # Use you can't nudge and dodge text, so instead adjust the y postion
 #' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
-#'   geom_bar(a_stat = "identity", position = "dodge") +
-#'   geom_text(aes(y = y + 0.05), position = position_dodge(0.9), vjust = 0)
+#'   a_geom_bar(a_stat = "identity", position = "dodge") +
+#'   a_geom_text(aes(y = y + 0.05), position = position_dodge(0.9), vjust = 0)
 #'
 #' # To place text in the middle of each bar in a stacked barplot, you
 #' # need to do the computation yourself
 #' df <- transform(df, mid_y = ave(df$y, df$x, FUN = function(val) cumsum(val) - (0.5 * val)))
 #'
 #' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
-#'  geom_bar(a_stat = "identity") +
-#'  geom_text(aes(y = mid_y))
+#'  a_geom_bar(a_stat = "identity") +
+#'  a_geom_text(aes(y = mid_y))
 #'
 #' # Justification -------------------------------------------------------------
 #' df <- data.frame(
@@ -112,11 +112,11 @@
 #'   text = c("bottom-left", "bottom-right", "top-left", "top-right", "center")
 #' )
 #' a_plot(df, aes(x, y)) +
-#'   geom_text(aes(label = text))
+#'   a_geom_text(aes(label = text))
 #' a_plot(df, aes(x, y)) +
-#'   geom_text(aes(label = text), vjust = "inward", hjust = "inward")
+#'   a_geom_text(aes(label = text), vjust = "inward", hjust = "inward")
 #' }
-geom_text <- function(mapping = NULL, data = NULL,
+a_geom_text <- function(mapping = NULL, data = NULL,
                       a_stat = "identity", position = "identity",
                       ...,
                       parse = FALSE,
@@ -139,7 +139,7 @@ geom_text <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomText,
+    a_geom = a_GeomText,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

@@ -1,6 +1,6 @@
 #' @export
-#' @rdname geom_linerange
-geom_crossbar <- function(mapping = NULL, data = NULL,
+#' @rdname a_geom_linerange
+a_geom_crossbar <- function(mapping = NULL, data = NULL,
                           a_stat = "identity", position = "identity",
                           ...,
                           fatten = 2.5,
@@ -11,7 +11,7 @@ geom_crossbar <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomCrossbar,
+    a_geom = a_GeomCrossbar,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

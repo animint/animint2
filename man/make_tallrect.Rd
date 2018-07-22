@@ -2,7 +2,7 @@
 % Please edit documentation in R/z_geoms.R
 \name{make_tallrect}
 \alias{make_tallrect}
-\title{Make a clickSelects geom_tallrect that completely tiles the x
+\title{Make a clickSelects a_geom_tallrect that completely tiles the x
 range. This makes it easy to construct tallrects for the common
 case of selecting a particular x value.}
 \usage{
@@ -17,13 +17,13 @@ make_tallrect(data, x.name, even = FALSE, alpha = 1/2, ...)
 
 \item{alpha}{transparency of a selected tallrect, default 1/2.}
 
-\item{...}{passed to geom_tallrect.}
+\item{...}{passed to a_geom_tallrect.}
 }
 \value{
-a geom_tallrect layer.
+a a_geom_tallrect layer.
 }
 \description{
-Make a clickSelects geom_tallrect that completely tiles the x
+Make a clickSelects a_geom_tallrect that completely tiles the x
 range. This makes it easy to construct tallrects for the common
 case of selecting a particular x value.
 }

@@ -1,4 +1,4 @@
-#' ggplot2 geom with xmin and xmax aesthetics that covers the entire y range, useful for clickSelects background elements.
+#' ggplot2 a_geom with xmin and xmax aesthetics that covers the entire y range, useful for clickSelects background elements.
 #' @param mapping aesthetic mapping
 #' @param data data set
 #' @param a_stat statistic mapping, defaults to identity
@@ -10,14 +10,14 @@
 #' @return ggplot2 layer
 #' @export
 #' @example inst/examples/breakpoints.R
-geom_tallrect <- function(mapping = NULL, data = NULL,
+a_geom_tallrect <- function(mapping = NULL, data = NULL,
                           a_stat = "identity", position = "identity",
                           ...,
                           na.rm = FALSE,
                           show.legend = NA,
                           inherit.aes = TRUE) {
   layer(
-    geom = a_GeomTallRect,
+    a_geom = a_GeomTallRect,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
@@ -85,14 +85,14 @@ a_GeomTallRect <- a_ggproto("a_GeomTallRect", a_Geom,
 #'  \dontrun{ 
 #'    source(system.file("examples/WorldBank.R", package = "animint"))
 #'  }
-geom_widerect <- function(mapping = NULL, data = NULL,
+a_geom_widerect <- function(mapping = NULL, data = NULL,
                           a_stat = "identity", position = "identity",
                           ...,
                           na.rm = FALSE,
                           show.legend = NA,
                           inherit.aes = TRUE) {
   layer(
-    geom = a_GeomWideRect,
+    a_geom = a_GeomWideRect,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
@@ -144,60 +144,60 @@ a_GeomWideRect <- a_ggproto("a_GeomWideRect", a_Geom,
                                  draw_key = a_draw_key_rect
 )
 
-#' Make a clickSelects geom_tallrect that completely tiles the x
+#' Make a clickSelects a_geom_tallrect that completely tiles the x
 #' range. This makes it easy to construct tallrects for the common
 #' case of selecting a particular x value.
 #' @param data data.frame to analyze for unique x.name values.
 #' @param x.name variable to be used for x, clickSelects.
 #' @param even Logical parameter, should tallrects be of even width?
 #' @param alpha transparency of a selected tallrect, default 1/2.
-#' @param ... passed to geom_tallrect.
-#' @return a geom_tallrect layer.
+#' @param ... passed to a_geom_tallrect.
+#' @return a a_geom_tallrect layer.
 #' @author Toby Dylan Hocking
 #' @export
 make_tallrect <- function(data, x.name, even=FALSE, alpha=1/2, ...){
   make_tallrect_or_widerect(
-    "x", geom_tallrect, data, x.name, even, alpha, ...)
+    "x", a_geom_tallrect, data, x.name, even, alpha, ...)
 }
 
-#' Make a clickSelects geom_widerect that completely tiles the y
+#' Make a clickSelects a_geom_widerect that completely tiles the y
 #' range. This makes it easy to construct widerects for the common
 #' case of selecting a particular y value.
 #' @param data data.frame to analyze for unique y.name values.
 #' @param y.name variable to be used for y, clickSelects.
 #' @param even Logical parameter, should widerects be of even width?
 #' @param alpha transparency of a selected widerect, default 1/2.
-#' @param ... passed to geom_widerect.
-#' @return a geom_widerect layer.
+#' @param ... passed to a_geom_widerect.
+#' @return a a_geom_widerect layer.
 #' @author Toby Dylan Hocking
 #' @export
 make_widerect <- function(data, y.name, even=FALSE, alpha=0.5, ...){
   make_tallrect_or_widerect(
-    "y", geom_widerect, data, y.name, even, alpha, ...)
+    "y", a_geom_widerect, data, y.name, even, alpha, ...)
 }
 
-#' Make a clickSelects geom_widerect or geom_tallrect that completely
+#' Make a clickSelects a_geom_widerect or a_geom_tallrect that completely
 #' tiles the x or y range. This function is used internally by
 #' make_tallrect or make_widerect, which are more user-friendly.
 #' @param aes.prefix "x" or "y"
-#' @param geom_xrect geom_tallrect or geom_widerect
+#' @param a_geom_xrect a_geom_tallrect or a_geom_widerect
 #' @param data data.frame to analyze for unique var.name values.
 #' @param var.name variable to be used for clickSelects
 #' @param even Logical parameter, should xrects be of even width?
 #' @param alpha transparency of a selected xrect, default 1/2.
-#' @param ... passed to geom_xrect
-#' @param data.fun called on data passed to geom_xrect(aes(..),
+#' @param ... passed to a_geom_xrect
+#' @param data.fun called on data passed to a_geom_xrect(aes(..),
 #'   data.fun(df)) this is useful in facetted plots, for adding
-#'   columns to the data.frame, if you want that geom in only one
+#'   columns to the data.frame, if you want that a_geom in only one
 #'   panel.
-#' @return a geom_xrect layer
+#' @return a a_geom_xrect layer
 #' @author Toby Dylan Hocking
 #' @export
-make_tallrect_or_widerect <- function(aes.prefix, geom_xrect, data, var.name, even=FALSE, alpha=0.5, ..., data.fun=identity){
+make_tallrect_or_widerect <- function(aes.prefix, a_geom_xrect, data, var.name, even=FALSE, alpha=0.5, ..., data.fun=identity){
   stopifnot(is.character(aes.prefix))
   stopifnot(length(aes.prefix)==1)
   stopifnot(aes.prefix %in% c("x", "y"))
-  stopifnot(is.function(geom_xrect))
+  stopifnot(is.function(a_geom_xrect))
   data <- as.data.frame(data)
   stopifnot(is.character(var.name))
   stopifnot(length(var.name)==1)
@@ -217,11 +217,11 @@ make_tallrect_or_widerect <- function(aes.prefix, geom_xrect, data, var.name, ev
   df <- data.frame(vals,
                    min=breaks[-length(breaks)],
                    max=breaks[-1])
-  geom.df <- expand.grid(click.i=1:nrow(df), show.i=1:nrow(df))
-  geom.df$click.val <- df[geom.df$click.i, "vals"]
-  geom.df$show.val <- df[geom.df$show.i, "vals"]
-  geom.df$var <- var.name
-  geom.df$key <- with(geom.df, ifelse(
+  a_geom.df <- expand.grid(click.i=1:nrow(df), show.i=1:nrow(df))
+  a_geom.df$click.val <- df[a_geom.df$click.i, "vals"]
+  a_geom.df$show.val <- df[a_geom.df$show.i, "vals"]
+  a_geom.df$var <- var.name
+  a_geom.df$key <- with(a_geom.df, ifelse(
     click.val==show.val, 1,
     paste(click.val, show.val)))
   aes.string.args <- list()
@@ -230,21 +230,21 @@ make_tallrect_or_widerect <- function(aes.prefix, geom_xrect, data, var.name, ev
   aes.string.args[["key"]] <- "key"
   for(suffix in c("min", "max")){
     aes.str <- paste0(aes.prefix, suffix)
-    geom.df[[suffix]] <- df[geom.df$click.i, suffix]
+    a_geom.df[[suffix]] <- df[a_geom.df$click.i, suffix]
     aes.string.args[[aes.str]] <- suffix
   }
   a <- do.call(aes_string, aes.string.args)
-  geom_xrect(a, data.fun(geom.df),
+  a_geom_xrect(a, data.fun(a_geom.df),
              showSelected = ss_params, clickSelects = cs_params,
              alpha=alpha, ...)
 }
 
 #' Convenience function for an interactive bar that might otherwise be
-#' created using a_stat_summary(geom="bar").
+#' created using a_stat_summary(a_geom="bar").
 #' @param data data.frame to analyze for unique x.name values.
 #' @param x.name variable to be used for x, clickSelects.
 #' @param alpha transparency of selected bar, default 1.
-#' @return a geom_bar layer.
+#' @return a a_geom_bar layer.
 #' @author Toby Dylan Hocking
 #' @export
 make_bar <- function(data, x.name, alpha=1){
@@ -254,7 +254,7 @@ make_bar <- function(data, x.name, alpha=1){
   x <- data[,x.name]
   stopifnot(is.numeric(x))
   a_stat_summary(aes_string(x=x.name, y=x.name), clickSelects=x.name,
-               data=data, alpha=alpha, fun.y=length, geom="bar")
+               data=data, alpha=alpha, fun.y=length, a_geom="bar")
 }
 
 #' Convenvience function for a showSelected plot label.
@@ -263,7 +263,7 @@ make_bar <- function(data, x.name, alpha=1){
 #' @param y y coordinate of label position
 #' @param label.var variable matching showSelected, used to obtain label value
 #' @param format String format for label. Use \%d, \%f, etc. to insert relevant label.var value.
-#' @return a geom_text layer.
+#' @return a a_geom_text layer.
 #' @author Toby Dylan Hocking
 #' @export
 make_text <- function(data, x, y, label.var, format=NULL){
@@ -295,5 +295,5 @@ make_text <- function(data, x, y, label.var, format=NULL){
   stopifnot(is.function(format))
   data$label <- format(data$label)
   a <- aes_string(x="x",y="y",label="label")
-  geom_text(a, showSelected=label.var, data)
+  a_geom_text(a, showSelected=label.var, data)
 }

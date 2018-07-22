@@ -56,34 +56,34 @@ wraps a 1d sequence of panels into 2d, making best use of screen real estate.
 }
 \examples{
 a_plot(mpg, aes(displ, hwy)) +
-  geom_point() +
+  a_geom_point() +
   a_facet_wrap(~class)
 
 # Control the number of rows and columns with nrow and ncol
 a_plot(mpg, aes(displ, hwy)) +
-  geom_point() +
+  a_geom_point() +
   a_facet_wrap(~class, nrow = 4)
 
 \donttest{
 # You can facet by multiple variables
 a_plot(mpg, aes(displ, hwy)) +
-  geom_point() +
+  a_geom_point() +
   a_facet_wrap(~ cyl + drv)
 # Or use a character vector:
 a_plot(mpg, aes(displ, hwy)) +
-  geom_point() +
+  a_geom_point() +
   facet_wrap(c("cyl", "drv"))
 
 # Use the `labeller` option to control how labels are printed:
 a_plot(mpg, aes(displ, hwy)) +
-  geom_point() +
+  a_geom_point() +
   facet_wrap(c("cyl", "drv"), labeller = "label_both")
 
 # To change the order in which the panels appear, change the levels
 # of the underlying factor.
 mpg$class2 <- reorder(mpg$class, mpg$displ)
 a_plot(mpg, aes(displ, hwy)) +
-  geom_point() +
+  a_geom_point() +
   facet_wrap(~class2)
 
 # By default, the same scales are used for all panels. You can allow
@@ -91,21 +91,21 @@ a_plot(mpg, aes(displ, hwy)) +
 # Free scales make it easier to see patterns within each panel, but
 # harder to compare across panels.
 a_plot(mpg, aes(displ, hwy)) +
-  geom_point() +
+  a_geom_point() +
   facet_wrap(~class, scales = "free")
 
 # To repeat the same data in every panel, simply construct a data frame
 # that does not contain the facetting variable.
 a_plot(mpg, aes(displ, hwy)) +
-  geom_point(data = transform(mpg, class = NULL), colour = "grey85") +
-  geom_point() +
+  a_geom_point(data = transform(mpg, class = NULL), colour = "grey85") +
+  a_geom_point() +
   facet_wrap(~class)
 
 # Use `switch` to display the facet labels near an axis, acting as
 # a subtitle for this axis. This is typically used with free scales
 # and a a_theme without boxes around strip labels.
 a_plot(economics_long, aes(date, value)) +
-  geom_line() +
+  a_geom_line() +
   facet_wrap(~variable, scales = "free_y", nrow = 2, switch = "x") +
   a_theme(strip.background = a_element_blank())
 }

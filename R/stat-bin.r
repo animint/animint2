@@ -36,9 +36,9 @@
 #'   posotion, without binning. It is suitable for both discrete and continuous
 #'   x data, whereas \link{a_stat_bin} is suitable only for continuous x data.
 #' @export
-#' @rdname geom_histogram
+#' @rdname a_geom_histogram
 a_stat_bin <- function(mapping = NULL, data = NULL,
-                     geom = "bar", position = "stack",
+                     a_geom = "bar", position = "stack",
                      ...,
                      binwidth = NULL,
                      bins = NULL,
@@ -54,7 +54,7 @@ a_stat_bin <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatBin,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -103,7 +103,7 @@ a_StatBin <- a_ggproto("a_StatBin", a_Stat,
       params$right <- NULL
     }
     if (!is.null(params$width)) {
-      stop("`width` is deprecated. Do you want `geom_bar()`?", call. = FALSE)
+      stop("`width` is deprecated. Do you want `a_geom_bar()`?", call. = FALSE)
     }
     if (!is.null(params$boundary) && !is.null(params$center)) {
       stop("Only one of `boundary` and `center` may be specified.", call. = FALSE)

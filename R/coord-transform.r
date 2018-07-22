@@ -15,20 +15,20 @@
 #' @export
 #' @examples
 #' \donttest{
-#' # See ?geom_boxplot for other examples
+#' # See ?a_geom_boxplot for other examples
 #'
 #' # Three ways of doing transformation in ggplot:
 #' #  * by transforming the data
 #' a_plot(diamonds, aes(log10(carat), log10(price))) +
-#'   geom_point()
+#'   a_geom_point()
 #' #  * by transforming the scales
 #' a_plot(diamonds, aes(carat, price)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   a_scale_x_log10() +
 #'   a_scale_y_log10()
 #' #  * by transforming the coordinate system:
 #' a_plot(diamonds, aes(carat, price)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   a_coord_trans(x = "log10", y = "log10")
 #'
 #' # The difference between transforming the scales and
@@ -40,14 +40,14 @@
 #' d <- subset(diamonds, carat > 0.5)
 #'
 #' a_plot(d, aes(carat, price)) +
-#'   geom_point() +
-#'   geom_smooth(method = "lm") +
+#'   a_geom_point() +
+#'   a_geom_smooth(method = "lm") +
 #'   a_scale_x_log10() +
 #'   a_scale_y_log10()
 #'
 #' a_plot(d, aes(carat, price)) +
-#'   geom_point() +
-#'   geom_smooth(method = "lm") +
+#'   a_geom_point() +
+#'   a_geom_smooth(method = "lm") +
 #'   a_coord_trans(x = "log10", y = "log10")
 #'
 #' # Here I used a subset of diamonds so that the smoothed line didn't
@@ -57,20 +57,20 @@
 #' # With a combination of scale and coordinate transformation, it's
 #' # possible to do back-transformations:
 #' a_plot(diamonds, aes(carat, price)) +
-#'   geom_point() +
-#'   geom_smooth(method = "lm") +
+#'   a_geom_point() +
+#'   a_geom_smooth(method = "lm") +
 #'   a_scale_x_log10() +
 #'   a_scale_y_log10() +
 #'   a_coord_trans(x = scales::exp_trans(10), y = scales::exp_trans(10))
 #'
 #' # cf.
 #' a_plot(diamonds, aes(carat, price)) +
-#'   geom_point() +
-#'   geom_smooth(method = "lm")
+#'   a_geom_point() +
+#'   a_geom_smooth(method = "lm")
 #'
 #' # Also works with discrete scales
 #' df <- data.frame(a = abs(rnorm(26)),letters)
-#' plot <- a_plot(df,aes(a,letters)) + geom_point()
+#' plot <- a_plot(df,aes(a,letters)) + a_geom_point()
 #'
 #' plot + a_coord_trans(x = "log10")
 #' plot + a_coord_trans(x = "sqrt")

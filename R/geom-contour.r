@@ -1,40 +1,40 @@
 #' Display contours of a 3d surface in 2d.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "contour")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "contour")}
 #'
 #' @inheritParams layer
-#' @inheritParams geom_point
-#' @inheritParams geom_path
-#' @seealso \code{\link{geom_density_2d}}: 2d density contours
+#' @inheritParams a_geom_point
+#' @inheritParams a_geom_path
+#' @seealso \code{\link{a_geom_density_2d}}: 2d density contours
 #' @export
 #' @export
 #' @examples
 #' #' # Basic plot
 #' v <- a_plot(faithfuld, aes(waiting, eruptions, z = density))
-#' v + geom_contour()
+#' v + a_geom_contour()
 #'
 #' # Or compute from raw data
 #' a_plot(faithful, aes(waiting, eruptions)) +
-#'   geom_density_2d()
+#'   a_geom_density_2d()
 #'
 #' \donttest{
 #' # Setting bins creates evenly spaced contours in the range of the data
-#' v + geom_contour(bins = 2)
-#' v + geom_contour(bins = 10)
+#' v + a_geom_contour(bins = 2)
+#' v + a_geom_contour(bins = 10)
 #'
 #' # Setting binwidth does the same thing, parameterised by the distance
 #' # between contours
-#' v + geom_contour(binwidth = 0.01)
-#' v + geom_contour(binwidth = 0.001)
+#' v + a_geom_contour(binwidth = 0.01)
+#' v + a_geom_contour(binwidth = 0.001)
 #'
 #' # Other parameters
-#' v + geom_contour(aes(colour = ..level..))
-#' v + geom_contour(colour = "red")
-#' v + geom_raster(aes(fill = density)) +
-#'   geom_contour(colour = "white")
+#' v + a_geom_contour(aes(colour = ..level..))
+#' v + a_geom_contour(colour = "red")
+#' v + a_geom_raster(aes(fill = density)) +
+#'   a_geom_contour(colour = "white")
 #' }
-geom_contour <- function(mapping = NULL, data = NULL,
+a_geom_contour <- function(mapping = NULL, data = NULL,
                          a_stat = "contour", position = "identity",
                          ...,
                          lineend = "butt",
@@ -47,7 +47,7 @@ geom_contour <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomContour,
+    a_geom = a_GeomContour,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

@@ -7,7 +7,7 @@
 #' @param dparams Additional parameters passed on to \code{distribution}
 #'   function.
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @section Computed variables:
 #' \describe{
 #'   \item{sample}{sample quantiles}
@@ -19,7 +19,7 @@
 #' df <- data.frame(y = rt(200, df = 5))
 #' p <- a_plot(df, aes(sample = y))
 #' p + a_stat_qq()
-#' p + geom_point(a_stat = "qq")
+#' p + a_geom_point(a_stat = "qq")
 #'
 #' # Use fitdistr from MASS to estimate distribution params
 #' params <- as.list(MASS::fitdistr(df$y, "t")$estimate)
@@ -33,7 +33,7 @@
 #'   a_stat_qq(aes(sample = mpg, colour = factor(cyl)))
 #' }
 a_stat_qq <- function(mapping = NULL, data = NULL,
-                    geom = "point", position = "identity",
+                    a_geom = "point", position = "identity",
                     ...,
                     distribution = stats::qnorm,
                     dparams = list(),
@@ -44,7 +44,7 @@ a_stat_qq <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatQq,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -59,7 +59,7 @@ a_stat_qq <- function(mapping = NULL, data = NULL,
 
 #' @export
 #' @rdname a_stat_qq
-geom_qq <- a_stat_qq
+a_geom_qq <- a_stat_qq
 
 #' @rdname animint2-ggproto
 #' @format NULL

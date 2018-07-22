@@ -4,9 +4,9 @@
 #'   horizontal directions. Overrides \code{bins} if both set.
 #' @param drop if \code{TRUE} removes all cells with 0 counts.
 #' @export
-#' @rdname geom_bin2d
+#' @rdname a_geom_bin2d
 a_stat_bin_2d <- function(mapping = NULL, data = NULL,
-                        geom = "tile", position = "identity",
+                        a_geom = "tile", position = "identity",
                         ...,
                         bins = 30,
                         binwidth = NULL,
@@ -18,7 +18,7 @@ a_stat_bin_2d <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatBin2d,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -34,7 +34,7 @@ a_stat_bin_2d <- function(mapping = NULL, data = NULL,
 
 
 #' @export
-#' @rdname geom_bin2d
+#' @rdname a_geom_bin2d
 #' @usage NULL
 a_stat_bin2d <- a_stat_bin_2d
 

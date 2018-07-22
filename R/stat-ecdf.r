@@ -1,7 +1,7 @@
 #' Empirical Cumulative Density Function
 #'
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @param na.rm If \code{FALSE} (the default), removes missing values with
 #'    a warning.  If \code{TRUE} silently removes missing values.
 #' @param n if NULL, do not interpolate. If not NULL, this is the number
@@ -17,7 +17,7 @@
 #' @examples
 #' \donttest{
 #' df <- data.frame(x = rnorm(1000))
-#' a_plot(df, aes(x)) + a_stat_ecdf(geom = "step")
+#' a_plot(df, aes(x)) + a_stat_ecdf(a_geom = "step")
 #'
 #' df <- data.frame(x = c(rnorm(100, 0, 3), rnorm(100, 0, 10)),
 #'                  g = gl(2, 100))
@@ -25,7 +25,7 @@
 #' a_plot(df, aes(x, colour = g)) + a_stat_ecdf()
 #' }
 a_stat_ecdf <- function(mapping = NULL, data = NULL,
-                      geom = "step", position = "identity",
+                      a_geom = "step", position = "identity",
                       ...,
                       n = NULL,
                       pad = TRUE,
@@ -36,7 +36,7 @@ a_stat_ecdf <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatEcdf,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

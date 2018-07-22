@@ -1,12 +1,12 @@
-acontext("geom_abline")
+acontext("a_geom_abline")
 
 p <- qplot(wt, mpg, data = mtcars) + 
-  geom_abline(intercept = c(20, 5), slope = c(1,4)) + a_facet_wrap(~cyl)
+  a_geom_abline(intercept = c(20, 5), slope = c(1,4)) + a_facet_wrap(~cyl)
 info <- animint2HTML(list(p = p))
 
-#Since tsv file are renamed with geom2_a_abline_p_chunk1.tsv
+#Since tsv file are renamed with a_geom_abline_p_chunk1.tsv
 #making similar changes in very svg @class
-tsv.file <- file.path("animint-htmltest", "geom2_a_abline_p_chunk1.tsv")
+tsv.file <- file.path("animint-htmltest", "a_geom_abline_p_chunk1.tsv")
 tsv.data <- read.table(tsv.file, header=TRUE, comment.char = "")
 
 test_that("columns of abline tsv", {

@@ -17,17 +17,17 @@
 #'
 #' p <- a_plot(mtcars, aes(wt, mpg))
 #' # A basic scatter plot
-#' p + geom_point(size = 4)
+#' p + a_geom_point(size = 4)
 #' # The colour aesthetic
-#' p + geom_point(aes(colour = factor(cyl)), size = 4)
+#' p + a_geom_point(aes(colour = factor(cyl)), size = 4)
 #' # Or you can use shape to distinguish the data
-#' p + geom_point(aes(shape = factor(cyl)), size = 4)
+#' p + a_geom_point(aes(shape = factor(cyl)), size = 4)
 #'
 #' # Using fill
 #' a <- a_plot(mtcars, aes(factor(cyl)))
-#' a + geom_bar()
-#' a + geom_bar(aes(fill = factor(cyl)))
-#' a + geom_bar(aes(fill = factor(vs)))
+#' a + a_geom_bar()
+#' a + a_geom_bar(aes(fill = factor(cyl)))
+#' a + a_geom_bar(aes(fill = factor(vs)))
 #'
 #' # Using linetypes
 #' rescale01 <- function(x) (x - min(x)) / diff(range(x))
@@ -36,10 +36,10 @@
 #'   plyr::colwise(rescale01)(economics[, -(1:2)]))
 #' ecm <- reshape2::melt(ec_scaled, id.vars = "date")
 #' f <- a_plot(ecm, aes(date, value))
-#' f + geom_line(aes(linetype = variable))
+#' f + a_geom_line(aes(linetype = variable))
 #'
 #' # Using facets
-#' k <- a_plot(diamonds, aes(carat, ..density..)) + geom_histogram(binwidth = 0.2)
+#' k <- a_plot(diamonds, aes(carat, ..density..)) + a_geom_histogram(binwidth = 0.2)
 #' k + facet_grid(. ~ cut)
 #'
 #' # There are three common cases where the default is not enough, and we
@@ -51,18 +51,18 @@
 #' # Multiple groups with one aesthetic
 #' h <- a_plot(nlme::Oxboys, aes(age, height))
 #' # A single line tries to connect all the observations
-#' h + geom_line()
+#' h + a_geom_line()
 #' # The group aesthetic maps a different line for each subject
-#' h + geom_line(aes(group = Subject))
+#' h + a_geom_line(aes(group = Subject))
 #'
 #' # Different groups on different layers
-#' h <- h + geom_line(aes(group = Subject))
-#' # Using the group aesthetic with both geom_line() and geom_smooth()
+#' h <- h + a_geom_line(aes(group = Subject))
+#' # Using the group aesthetic with both a_geom_line() and a_geom_smooth()
 #' # groups the data the same way for both layers
-#' h + geom_smooth(aes(group = Subject), method = "lm", se = FALSE)
+#' h + a_geom_smooth(aes(group = Subject), method = "lm", se = FALSE)
 #' # Changing the group aesthetic for the smoother layer
 #' # fits a single line of best fit across all boys
-#' h + geom_smooth(aes(group = 1), size = 2, method = "lm", se = FALSE)
+#' h + a_geom_smooth(aes(group = 1), size = 2, method = "lm", se = FALSE)
 #'
 #' # Overriding the default grouping
 #' # The plot has a discrete scale but you want to draw lines that connect across
@@ -70,11 +70,11 @@
 #' # coordinate plots, among others. For example, we draw boxplots of height at
 #' # each measurement occasion
 #' boysbox <- a_plot(nlme::Oxboys, aes(Occasion, height))
-#' boysbox + geom_boxplot()
+#' boysbox + a_geom_boxplot()
 #' # There is no need to specify the group aesthetic here; the default grouping
 #' # works because occasion is a discrete variable. To overlay individual trajectories
 #' # we again need to override the default grouping for that layer with aes(group = Subject)
-#' boysbox <- boysbox + geom_boxplot()
-#' boysbox + geom_line(aes(group = Subject), colour = "blue")
+#' boysbox <- boysbox + a_geom_boxplot()
+#' boysbox + a_geom_line(aes(group = Subject), colour = "blue")
 #' }
 NULL

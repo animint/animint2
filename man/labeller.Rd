@@ -49,7 +49,7 @@ functions taking a character vector such as
 }
 \examples{
 \donttest{
-p1 <- a_plot(mtcars, aes(x = mpg, y = wt)) + geom_point()
+p1 <- a_plot(mtcars, aes(x = mpg, y = wt)) + a_geom_point()
 
 # You can assign different labellers to variables:
 p1 + facet_grid(vs + am ~ gear,
@@ -64,7 +64,7 @@ capitalize <- function(string) {
   substr(string, 1, 1) <- toupper(substr(string, 1, 1))
   string
 }
-p2 <- a_plot(msleep, aes(x = sleep_total, y = awake)) + geom_point()
+p2 <- a_plot(msleep, aes(x = sleep_total, y = awake)) + a_geom_point()
 p2 + facet_grid(vore ~ conservation, labeller = labeller(vore = capitalize))
 
 # Or use character vectors as lookup tables:

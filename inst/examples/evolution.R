@@ -6,14 +6,14 @@ generations <- data.frame(generation=unique(generation.loci$generation))
 loci <- data.frame(locus=unique(generation.loci$locus))
 two.selectors.not.animated <- 
   list(ts=a_plot()+
-         geom_vline(aes(xintercept=generation), clickSelects="generation",
+         a_geom_vline(aes(xintercept=generation), clickSelects="generation",
                     data=generations, alpha=1/2, lwd=4)+
-         geom_line(aes(generation, frequency, group=population),
+         a_geom_line(aes(generation, frequency, group=population),
                    showSelected="locus", data=generation.loci),
        loci=a_plot()+
-         geom_vline(aes(xintercept=locus), clickSelects="locus",
+         a_geom_vline(aes(xintercept=locus), clickSelects="locus",
                     data=loci, alpha=1/2, size=4)+
-         geom_point(aes(locus, frequency), showSelected="generation",
+         a_geom_point(aes(locus, frequency), showSelected="generation",
                     data=generation.loci),
        duration=list(generation=1000)
   )
@@ -26,14 +26,14 @@ ancestral$color <- "ancestral"
 two.selectors.color <- 
   list(ts=a_plot()+
        make_tallrect(generation.loci, "generation")+
-       geom_text(aes(generation,frequency,
+       a_geom_text(aes(generation,frequency,
                      label=sprintf("locus %d",locus)), showSelected="locus",
                  data=data.frame(loci,generation=50,frequency=1.05))+
        a_scale_colour_manual(values=colormap)+
-       geom_line(aes(generation, frequency, group=population,
+       a_geom_line(aes(generation, frequency, group=population,
                      colour=color), showSelected="locus",
                  data=generation.loci)+
-       geom_point(aes(generation, frequency), showSelected="locus",
+       a_geom_point(aes(generation, frequency), showSelected="locus",
                   data=ancestral),
        loci=a_plot()+
        make_tallrect(generation.loci, "locus")+
@@ -41,12 +41,12 @@ two.selectors.color <-
        ## points and legend to look right?
        a_scale_fill_manual(values=colormap)+
        a_scale_colour_manual(values=colormap)+
-       geom_point(aes(locus, frequency, colour=color, fill=color),
+       a_geom_point(aes(locus, frequency, colour=color, fill=color),
                   showSelected="generation",
                   data=generation.loci, pch=21)+
-       geom_point(aes(locus, frequency, colour=color, fill=color),
+       a_geom_point(aes(locus, frequency, colour=color, fill=color),
                   data=ancestral, pch=21)+
-       geom_text(aes(locus,frequency,
+       a_geom_text(aes(locus,frequency,
                      label=sprintf("generation %d",generation)),
                  showSelected="generation",
                  data=data.frame(generations,locus=35,frequency=1)),
@@ -72,35 +72,35 @@ generation.loci.last <- subset(generation.loci,generation==max(generation))
 generation.pop.last <- subset(generation.pop,generation==max(generation))
 one.selector.not.animated <- 
   list(ts=a_plot()+
-         geom_line(aes(generation, frequency, group=population),
+         a_geom_line(aes(generation, frequency, group=population),
                    showSelected="locus", data=generation.loci),
        predictions=a_plot()+
-         geom_point(aes(ancestral, estimated), clickSelects="locus",
+         a_geom_point(aes(ancestral, estimated), clickSelects="locus",
                     data=generation.pop.last, size=4, alpha=3/4),
        loci=a_plot()+
-         geom_vline(aes(xintercept=locus), clickSelects="locus",
+         a_geom_vline(aes(xintercept=locus), clickSelects="locus",
                     data=loci, alpha=1/2, lwd=4)+
-         geom_point(aes(locus, frequency), data=generation.loci.last)
+         a_geom_point(aes(locus, frequency), data=generation.loci.last)
   )
 animint2dir(one.selector.not.animated)
 
 ## Example: animated time series with 3 plots and 2 selectors.
 two.selectors.animated <- 
   list(ts=a_plot()+
-         geom_vline(aes(xintercept=generation),
+         a_geom_vline(aes(xintercept=generation),
                     clickSelects="generation",
                     data=generations, alpha=1/2, lwd=4)+
-         geom_line(aes(generation, frequency, group=population),
+         a_geom_line(aes(generation, frequency, group=population),
                    showSelected="locus", data=generation.loci),
        predictions=a_plot()+
-         geom_point(aes(ancestral, estimated),
+         a_geom_point(aes(ancestral, estimated),
                     showSelected="generation",
                     clickSelects="locus",
                     data=generation.pop, size=4, alpha=3/4),
        loci=a_plot()+
-         geom_vline(aes(xintercept=locus), clickSelects="locus",
+         a_geom_vline(aes(xintercept=locus), clickSelects="locus",
                     data=loci, alpha=1/2, lwd=4)+
-         geom_point(aes(locus, frequency),
+         a_geom_point(aes(locus, frequency),
                     showSelected="generation",
                     data=generation.loci),
        duration=list(generation=1000),

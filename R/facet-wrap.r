@@ -21,34 +21,34 @@
 #' @export
 #' @examples
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   a_facet_wrap(~class)
 #'
 #' # Control the number of rows and columns with nrow and ncol
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   a_facet_wrap(~class, nrow = 4)
 #'
 #' \donttest{
 #' # You can facet by multiple variables
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   a_facet_wrap(~ cyl + drv)
 #' # Or use a character vector:
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   facet_wrap(c("cyl", "drv"))
 #'
 #' # Use the `labeller` option to control how labels are printed:
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   facet_wrap(c("cyl", "drv"), labeller = "label_both")
 #'
 #' # To change the order in which the panels appear, change the levels
 #' # of the underlying factor.
 #' mpg$class2 <- reorder(mpg$class, mpg$displ)
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   facet_wrap(~class2)
 #'
 #' # By default, the same scales are used for all panels. You can allow
@@ -56,21 +56,21 @@
 #' # Free scales make it easier to see patterns within each panel, but
 #' # harder to compare across panels.
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   facet_wrap(~class, scales = "free")
 #'
 #' # To repeat the same data in every panel, simply construct a data frame
 #' # that does not contain the facetting variable.
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   geom_point(data = transform(mpg, class = NULL), colour = "grey85") +
-#'   geom_point() +
+#'   a_geom_point(data = transform(mpg, class = NULL), colour = "grey85") +
+#'   a_geom_point() +
 #'   facet_wrap(~class)
 #'
 #' # Use `switch` to display the facet labels near an axis, acting as
 #' # a subtitle for this axis. This is typically used with free scales
 #' # and a a_theme without boxes around strip labels.
 #' a_plot(economics_long, aes(date, value)) +
-#'   geom_line() +
+#'   a_geom_line() +
 #'   facet_wrap(~variable, scales = "free_y", nrow = 2, switch = "x") +
 #'   a_theme(strip.background = a_element_blank())
 #' }
@@ -138,7 +138,7 @@ a_facet_map_layout.wrap <- function(a_facet, data, layout) {
 #  * combine panels, strips and axes, then wrap into 2d
 #  * finally: add title, labels and legend
 #' @export
-a_facet_render.wrap <- function(a_facet, panel, a_coord, a_theme, geom_grobs) {
+a_facet_render.wrap <- function(a_facet, panel, a_coord, a_theme, a_geom_grobs) {
 
   # If a_coord is (non-cartesian or flip) and (x is free or y is free)
   # then print a warning
@@ -178,7 +178,7 @@ a_facet_render.wrap <- function(a_facet, panel, a_coord, a_theme, geom_grobs) {
     a_facet$switch <- NULL
   }
 
-  panels <- a_facet_panels(a_facet, panel, a_coord, a_theme, geom_grobs)
+  panels <- a_facet_panels(a_facet, panel, a_coord, a_theme, a_geom_grobs)
   axes <- a_facet_axes(a_facet, panel, a_coord, a_theme)
   strips <- a_facet_strips(a_facet, panel, a_theme)
 
@@ -318,18 +318,18 @@ a_facet_render.wrap <- function(a_facet, panel, a_coord, a_theme, geom_grobs) {
 }
 
 #' @export
-a_facet_panels.wrap <- function(a_facet, panel, a_coord, a_theme, geom_grobs) {
+a_facet_panels.wrap <- function(a_facet, panel, a_coord, a_theme, a_geom_grobs) {
   panels <- panel$layout$PANEL
   lapply(panels, function(i) {
     fg <- a_coord$render_fg(panel$ranges[[i]], a_theme)
     bg <- a_coord$render_bg(panel$ranges[[i]], a_theme)
 
-    geom_grobs <- lapply(geom_grobs, "[[", i)
+    a_geom_grobs <- lapply(a_geom_grobs, "[[", i)
 
     if (a_theme$panel.ontop) {
-      panel_grobs <- c(geom_grobs, list(bg), list(fg))
+      panel_grobs <- c(a_geom_grobs, list(bg), list(fg))
     } else {
-      panel_grobs <- c(list(bg), geom_grobs, list(fg))
+      panel_grobs <- c(list(bg), a_geom_grobs, list(fg))
     }
 
     ggname(paste("panel", i, sep = "-"),

@@ -3,15 +3,15 @@
 #' @param method Quantile regression method to use.  Currently only supports
 #'    \code{\link[quantreg]{rq}}.
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @section Computed variables:
 #' \describe{
 #'   \item{quantile}{quantile of distribution}
 #' }
 #' @export
-#' @rdname geom_quantile
+#' @rdname a_geom_quantile
 a_stat_quantile <- function(mapping = NULL, data = NULL,
-                          geom = "quantile", position = "identity",
+                          a_geom = "quantile", position = "identity",
                           ...,
                           quantiles = c(0.25, 0.5, 0.75),
                           formula = NULL,
@@ -24,7 +24,7 @@ a_stat_quantile <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatQuantile,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

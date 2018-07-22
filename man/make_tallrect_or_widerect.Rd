@@ -2,17 +2,17 @@
 % Please edit documentation in R/z_geoms.R
 \name{make_tallrect_or_widerect}
 \alias{make_tallrect_or_widerect}
-\title{Make a clickSelects geom_widerect or geom_tallrect that completely
+\title{Make a clickSelects a_geom_widerect or a_geom_tallrect that completely
 tiles the x or y range. This function is used internally by
 make_tallrect or make_widerect, which are more user-friendly.}
 \usage{
-make_tallrect_or_widerect(aes.prefix, geom_xrect, data, var.name,
+make_tallrect_or_widerect(aes.prefix, a_geom_xrect, data, var.name,
   even = FALSE, alpha = 0.5, ..., data.fun = identity)
 }
 \arguments{
 \item{aes.prefix}{"x" or "y"}
 
-\item{geom_xrect}{geom_tallrect or geom_widerect}
+\item{a_geom_xrect}{a_geom_tallrect or a_geom_widerect}
 
 \item{data}{data.frame to analyze for unique var.name values.}
 
@@ -22,18 +22,18 @@ make_tallrect_or_widerect(aes.prefix, geom_xrect, data, var.name,
 
 \item{alpha}{transparency of a selected xrect, default 1/2.}
 
-\item{...}{passed to geom_xrect}
+\item{...}{passed to a_geom_xrect}
 
-\item{data.fun}{called on data passed to geom_xrect(aes(..),
+\item{data.fun}{called on data passed to a_geom_xrect(aes(..),
 data.fun(df)) this is useful in facetted plots, for adding
-columns to the data.frame, if you want that geom in only one
+columns to the data.frame, if you want that a_geom in only one
 panel.}
 }
 \value{
-a geom_xrect layer
+a a_geom_xrect layer
 }
 \description{
-Make a clickSelects geom_widerect or geom_tallrect that completely
+Make a clickSelects a_geom_widerect or a_geom_tallrect that completely
 tiles the x or y range. This function is used internally by
 make_tallrect or make_widerect, which are more user-friendly.
 }

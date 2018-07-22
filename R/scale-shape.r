@@ -9,7 +9,7 @@
 #' @examples
 #' dsmall <- diamonds[sample(nrow(diamonds), 100), ]
 #'
-#' (d <- a_plot(dsmall, aes(carat, price)) + geom_point(aes(shape = cut)))
+#' (d <- a_plot(dsmall, aes(carat, price)) + a_geom_point(aes(shape = cut)))
 #' d + a_scale_shape(solid = TRUE) # the default
 #' d + a_scale_shape(solid = FALSE)
 #' d + a_scale_shape(name = "Cut of diamond")
@@ -20,7 +20,7 @@
 #' levels(dsmall$cut) <- c("Fair", "Good", "Very Good", "Premium", "Ideal")
 #'
 #' # Need to recreate plot to pick up new data
-#' a_plot(dsmall, aes(price, carat)) + geom_point(aes(shape = cut))
+#' a_plot(dsmall, aes(price, carat)) + a_geom_point(aes(shape = cut))
 #'
 #' # Or for short:
 #' d %+% dsmall

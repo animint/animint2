@@ -5,11 +5,11 @@
 #'
 #' @export
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @examples
 #' a_plot(mtcars, aes(wt, mpg))
 #' # Nothing to see here!
-geom_blank <- function(mapping = NULL, data = NULL,
+a_geom_blank <- function(mapping = NULL, data = NULL,
                        a_stat = "identity", position = "identity",
                        ...,
                        show.legend = NA,
@@ -18,7 +18,7 @@ geom_blank <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomBlank,
+    a_geom = a_GeomBlank,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

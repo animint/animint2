@@ -1,30 +1,30 @@
 #' Draw rectangles.
 #'
-#' \code{geom_rect} and \code{geom_tile} do the same thing, but are
-#' parameterised differently. \code{geom_rect} uses the locations of the four
+#' \code{a_geom_rect} and \code{a_geom_tile} do the same thing, but are
+#' parameterised differently. \code{a_geom_rect} uses the locations of the four
 #' corners (\code{xmin}, \code{xmax}, \code{ymin} and \code{ymax}).
-#' \code{geom_tile} uses the center of the tile and its size (\code{x},
-#' \code{y}, \code{width}, \code{height}). \code{geom_raster} is a high
+#' \code{a_geom_tile} uses the center of the tile and its size (\code{x},
+#' \code{y}, \code{width}, \code{height}). \code{a_geom_raster} is a high
 #' performance special case for when all the tiles are the same size.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "tile")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "tile")}
 #'
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @export
 #' @examples
 #' # The most common use for rectangles is to draw a surface. You always want
-#' # to use geom_raster here because it's so much faster, and produces
+#' # to use a_geom_raster here because it's so much faster, and produces
 #' # smaller output when saving to PDF
 #' a_plot(faithfuld, aes(waiting, eruptions)) +
-#'  geom_raster(aes(fill = density))
+#'  a_geom_raster(aes(fill = density))
 #'
 #' # Interpolation smooths the surface & is most helpful when rendering images.
 #' a_plot(faithfuld, aes(waiting, eruptions)) +
-#'  geom_raster(aes(fill = density), interpolate = TRUE)
+#'  a_geom_raster(aes(fill = density), interpolate = TRUE)
 #'
-#' # If you want to draw arbitrary rectangles, use geom_tile() or geom_rect()
+#' # If you want to draw arbitrary rectangles, use a_geom_tile() or a_geom_rect()
 #' df <- data.frame(
 #'   x = rep(c(2, 5, 7, 9, 12), 2),
 #'   y = rep(c(1, 2), each = 5),
@@ -32,31 +32,31 @@
 #'   w = rep(diff(c(0, 4, 6, 8, 10, 14)), 2)
 #' )
 #' a_plot(df, aes(x, y)) +
-#'   geom_tile(aes(fill = z))
+#'   a_geom_tile(aes(fill = z))
 #' a_plot(df, aes(x, y)) +
-#'   geom_tile(aes(fill = z, width = w), colour = "grey50")
+#'   a_geom_tile(aes(fill = z, width = w), colour = "grey50")
 #' a_plot(df, aes(xmin = x - w / 2, xmax = x + w / 2, ymin = y, ymax = y + 1)) +
-#'   geom_rect(aes(fill = z, width = w), colour = "grey50")
+#'   a_geom_rect(aes(fill = z, width = w), colour = "grey50")
 #'
 #' \donttest{
 #' # Justification controls where the cells are anchored
 #' df <- expand.grid(x = 0:5, y = 0:5)
 #' df$z <- runif(nrow(df))
-#' # default is compatible with geom_tile()
-#' a_plot(df, aes(x, y, fill = z)) + geom_raster()
+#' # default is compatible with a_geom_tile()
+#' a_plot(df, aes(x, y, fill = z)) + a_geom_raster()
 #' # zero padding
-#' a_plot(df, aes(x, y, fill = z)) + geom_raster(hjust = 0, vjust = 0)
+#' a_plot(df, aes(x, y, fill = z)) + a_geom_raster(hjust = 0, vjust = 0)
 #'
 #' # Inspired by the image-density plots of Ken Knoblauch
 #' cars <- a_plot(mtcars, aes(mpg, factor(cyl)))
-#' cars + geom_point()
+#' cars + a_geom_point()
 #' cars + a_stat_bin2d(aes(fill = ..count..), binwidth = c(3,1))
 #' cars + a_stat_bin2d(aes(fill = ..density..), binwidth = c(3,1))
 #'
-#' cars + a_stat_density(aes(fill = ..density..), geom = "raster", position = "identity")
-#' cars + a_stat_density(aes(fill = ..count..), geom = "raster", position = "identity")
+#' cars + a_stat_density(aes(fill = ..density..), a_geom = "raster", position = "identity")
+#' cars + a_stat_density(aes(fill = ..count..), a_geom = "raster", position = "identity")
 #' }
-geom_tile <- function(mapping = NULL, data = NULL,
+a_geom_tile <- function(mapping = NULL, data = NULL,
                       a_stat = "identity", position = "identity",
                       ...,
                       na.rm = FALSE,
@@ -66,7 +66,7 @@ geom_tile <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomTile,
+    a_geom = a_GeomTile,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

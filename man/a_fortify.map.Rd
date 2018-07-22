@@ -22,12 +22,12 @@ if (require("maps")) {
 ca <- map("county", "ca", plot = FALSE, fill = TRUE)
 head(a_fortify(ca))
 a_plot(ca, aes(long, lat)) +
-  geom_polygon(aes(group = group))
+  a_geom_polygon(aes(group = group))
 
 tx <- map("county", "texas", plot = FALSE, fill = TRUE)
 head(a_fortify(tx))
 a_plot(tx, aes(long, lat)) +
-  geom_polygon(aes(group = group), colour = "white")
+  a_geom_polygon(aes(group = group), colour = "white")
 }
 }
 \seealso{

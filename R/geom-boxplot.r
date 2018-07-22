@@ -17,15 +17,15 @@
 #' See McGill et al. (1978) for more details.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "boxplot")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "boxplot")}
 #'
 #' @seealso \code{\link{a_stat_quantile}} to view quantiles conditioned on a
-#'   continuous variable, \code{\link{geom_jitter}} for another way to look
+#'   continuous variable, \code{\link{a_geom_jitter}} for another way to look
 #'   at conditional distributions.
 #' @inheritParams layer
-#' @inheritParams geom_point
-#' @param geom,a_stat Use to override the default connection between
-#'   \code{geom_boxplot} and \code{a_stat_boxplot}.
+#' @inheritParams a_geom_point
+#' @param a_geom,a_stat Use to override the default connection between
+#'   \code{a_geom_boxplot} and \code{a_stat_boxplot}.
 #' @param outlier.colour,outlier.color,outlier.shape,outlier.size,outlier.stroke
 #'   Default aesthetics for outliers. Set to \code{NULL} to inherit from the
 #'   aesthetics used for the box.
@@ -47,26 +47,26 @@
 #'     box plots. The American Statistician 32, 12-16.
 #' @examples
 #' p <- a_plot(mpg, aes(class, hwy))
-#' p + geom_boxplot()
-#' p + geom_boxplot() + geom_jitter(width = 0.2)
-#' p + geom_boxplot() + a_coord_flip()
+#' p + a_geom_boxplot()
+#' p + a_geom_boxplot() + a_geom_jitter(width = 0.2)
+#' p + a_geom_boxplot() + a_coord_flip()
 #'
-#' p + geom_boxplot(notch = TRUE)
-#' p + geom_boxplot(varwidth = TRUE)
-#' p + geom_boxplot(fill = "white", colour = "#3366FF")
+#' p + a_geom_boxplot(notch = TRUE)
+#' p + a_geom_boxplot(varwidth = TRUE)
+#' p + a_geom_boxplot(fill = "white", colour = "#3366FF")
 #' # By default, outlier points match the colour of the box. Use
 #' # outlier.colour to override
-#' p + geom_boxplot(outlier.colour = "red", outlier.shape = 1)
+#' p + a_geom_boxplot(outlier.colour = "red", outlier.shape = 1)
 #'
 #' # Boxplots are automatically dodged when any aesthetic is a factor
-#' p + geom_boxplot(aes(colour = drv))
+#' p + a_geom_boxplot(aes(colour = drv))
 #'
 #' # You can also use boxplots with continuous x, as long as you supply
 #' # a grouping variable. cut_width is particularly useful
 #' a_plot(diamonds, aes(carat, price)) +
-#'   geom_boxplot()
+#'   a_geom_boxplot()
 #' a_plot(diamonds, aes(carat, price)) +
-#'   geom_boxplot(aes(group = cut_width(carat, 0.25)))
+#'   a_geom_boxplot(aes(group = cut_width(carat, 0.25)))
 #'
 #' \donttest{
 #' # It's possible to draw a boxplot with your own computations if you
@@ -81,12 +81,12 @@
 #'   y100 = max(y)
 #' )
 #' a_plot(df, aes(x)) +
-#'   geom_boxplot(
+#'   a_geom_boxplot(
 #'    aes(ymin = y0, lower = y25, middle = y50, upper = y75, ymax = y100),
 #'    a_stat = "identity"
 #'  )
 #' }
-geom_boxplot <- function(mapping = NULL, data = NULL,
+a_geom_boxplot <- function(mapping = NULL, data = NULL,
                          a_stat = "boxplot", position = "dodge",
                          ...,
                          outlier.colour = NULL,
@@ -104,7 +104,7 @@ geom_boxplot <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomBoxplot,
+    a_geom = a_GeomBoxplot,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

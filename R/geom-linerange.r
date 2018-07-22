@@ -4,17 +4,17 @@
 #' \code{ymin} and \code{ymax}.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "linerange")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "linerange")}
 #'
 #' @param fatten A multiplicative factor used to increase the size of the
-#'   middle bar in \code{geom_crossbar()} and the middle point in
-#'   \code{geom_pointrange()}.
+#'   middle bar in \code{a_geom_crossbar()} and the middle point in
+#'   \code{a_geom_pointrange()}.
 #' @seealso
 #'  \code{\link{a_stat_summary}} for examples of these guys in use,
-#'  \code{\link{geom_smooth}} for continuous analog
+#'  \code{\link{a_geom_smooth}} for continuous analog
 #' @export
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @examples
 #' #' # Create a simple example dataset
 #' df <- data.frame(
@@ -26,30 +26,30 @@
 #' )
 #'
 #' p <- a_plot(df, aes(trt, resp, colour = group))
-#' p + geom_linerange(aes(ymin = lower, ymax = upper))
-#' p + geom_pointrange(aes(ymin = lower, ymax = upper))
-#' p + geom_crossbar(aes(ymin = lower, ymax = upper), width = 0.2)
-#' p + geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2)
+#' p + a_geom_linerange(aes(ymin = lower, ymax = upper))
+#' p + a_geom_pointrange(aes(ymin = lower, ymax = upper))
+#' p + a_geom_crossbar(aes(ymin = lower, ymax = upper), width = 0.2)
+#' p + a_geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2)
 #'
 #' # Draw lines connecting group means
 #' p +
-#'   geom_line(aes(group = group)) +
-#'   geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2)
+#'   a_geom_line(aes(group = group)) +
+#'   a_geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2)
 #'
 #' # If you want to dodge bars and errorbars, you need to manually
 #' # specify the dodge width
 #' p <- a_plot(df, aes(trt, resp, fill = group))
 #' p +
-#'  geom_bar(position = "dodge", a_stat = "identity") +
-#'  geom_errorbar(aes(ymin = lower, ymax = upper), position = "dodge", width = 0.25)
+#'  a_geom_bar(position = "dodge", a_stat = "identity") +
+#'  a_geom_errorbar(aes(ymin = lower, ymax = upper), position = "dodge", width = 0.25)
 #'
 #' # Because the bars and errorbars have different widths
 #' # we need to specify how wide the objects we are dodging are
 #' dodge <- position_dodge(width=0.9)
 #' p +
-#'   geom_bar(position = dodge, a_stat = "identity") +
-#'   geom_errorbar(aes(ymin = lower, ymax = upper), position = dodge, width = 0.25)
-geom_linerange <- function(mapping = NULL, data = NULL,
+#'   a_geom_bar(position = dodge, a_stat = "identity") +
+#'   a_geom_errorbar(aes(ymin = lower, ymax = upper), position = dodge, width = 0.25)
+a_geom_linerange <- function(mapping = NULL, data = NULL,
                            a_stat = "identity", position = "identity",
                            ...,
                            na.rm = FALSE,
@@ -59,7 +59,7 @@ geom_linerange <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomLinerange,
+    a_geom = a_GeomLinerange,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

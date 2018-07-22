@@ -4,7 +4,7 @@
 \alias{a_stat_ellipse}
 \title{Plot data ellipses.}
 \usage{
-a_stat_ellipse(mapping = NULL, data = NULL, geom = "path",
+a_stat_ellipse(mapping = NULL, data = NULL, a_geom = "path",
   position = "identity", ..., type = "t", level = 0.95, segments = 51,
   na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
@@ -28,7 +28,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{geom}{The geometric object to use display the data}
+\item{a_geom}{The geometric object to use display the data}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -36,7 +36,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/a_stat.}
+to the paired a_geom/a_stat.}
 
 \item{type}{The type of ellipse.
 The default \code{"t"} assumes a multivariate t-distribution, and
@@ -68,26 +68,26 @@ The method for calculating the ellipses has been modified from
 }
 \examples{
 a_plot(faithful, aes(waiting, eruptions)) +
-  geom_point() +
+  a_geom_point() +
   a_stat_ellipse()
 
 a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
-  geom_point() +
+  a_geom_point() +
   a_stat_ellipse()
 
 a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
-  geom_point() +
+  a_geom_point() +
   a_stat_ellipse(type = "norm", linetype = 2) +
   a_stat_ellipse(type = "t")
 
 a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
-  geom_point() +
+  a_geom_point() +
   a_stat_ellipse(type = "norm", linetype = 2) +
   a_stat_ellipse(type = "euclid", level = 3) +
   a_coord_fixed()
 
 a_plot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
-  a_stat_ellipse(geom = "polygon")
+  a_stat_ellipse(a_geom = "polygon")
 }
 \references{
 John Fox and Sanford Weisberg (2011). An {R} Companion to

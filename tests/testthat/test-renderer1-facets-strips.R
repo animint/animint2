@@ -1,8 +1,8 @@
 acontext("facet-strips")
 
 p <- a_plot(mtcars, aes(mpg, wt)) + 
-  geom_point(colour='grey50', size = 4) + 
-  geom_point(aes(colour = cyl)) 
+  a_geom_point(colour='grey50', size = 4) + 
+  a_geom_point(aes(colour = cyl)) 
 
 gridViz <-
   list(gridPlot=p +

@@ -1,22 +1,22 @@
 #' Marginal rug plots.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "rug")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "rug")}
 #'
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @param sides A string that controls which sides of the plot the rugs appear on.
 #'   It can be set to a string containing any of \code{"trbl"}, for top, right,
 #'   bottom, and left.
 #' @export
 #' @examples
 #' p <- a_plot(mtcars, aes(wt, mpg))
-#' p + geom_point()
-#' p + geom_point() + geom_rug()
-#' p + geom_point() + geom_rug(sides="b")    # Rug on bottom only
-#' p + geom_point() + geom_rug(sides="trbl") # All four sides
-#' p + geom_point() + geom_rug(position='jitter')
-geom_rug <- function(mapping = NULL, data = NULL,
+#' p + a_geom_point()
+#' p + a_geom_point() + a_geom_rug()
+#' p + a_geom_point() + a_geom_rug(sides="b")    # Rug on bottom only
+#' p + a_geom_point() + a_geom_rug(sides="trbl") # All four sides
+#' p + a_geom_point() + a_geom_rug(position='jitter')
+a_geom_rug <- function(mapping = NULL, data = NULL,
                      a_stat = "identity", position = "identity",
                      ...,
                      sides = "bl",
@@ -27,7 +27,7 @@ geom_rug <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomRug,
+    a_geom = a_GeomRug,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

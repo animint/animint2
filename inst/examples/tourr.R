@@ -19,7 +19,7 @@ datz <- Map(function(x, y) cbind(x, step = y), dats, stepz)
 dat <- do.call("rbind", datz)
 
 p <- a_plot() + 
-  geom_point(data = dat, 
+  a_geom_point(data = dat, 
              aes(x = x, y = y, colour = species),
              showSelected = "step")
 plist <- list(

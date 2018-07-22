@@ -4,17 +4,17 @@ acontext("hline")
 n.rows <- 100
 df <- data.frame(x=rnorm(n.rows), y=rnorm(n.rows))
 sc <- a_plot()+
-  geom_point(aes(x, y), data=df)
+  a_geom_point(aes(x, y), data=df)
 two <- data.frame(x=c(0, 1))
 
 viz <-
   list(one=sc+
-         geom_hline(yintercept=0)+
-         geom_vline(xintercept=0),
+         a_geom_hline(yintercept=0)+
+         a_geom_vline(xintercept=0),
 
        two=sc+
-         geom_hline(aes(yintercept=x), data=two)+
-         geom_vline(aes(xintercept=x), data=two))
+         a_geom_hline(aes(yintercept=x), data=two)+
+         a_geom_vline(aes(xintercept=x), data=two))
 
 info <- animint2HTML(viz)
 

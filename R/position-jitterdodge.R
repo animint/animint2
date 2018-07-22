@@ -1,7 +1,7 @@
 #' Adjust position by simultaneously dodging and jittering
 #'
 #' This is primarily used for aligning points generated through
-#' \code{geom_point()} with dodged boxplots (e.g., a \code{geom_boxplot()} with
+#' \code{a_geom_point()} with dodged boxplots (e.g., a \code{a_geom_boxplot()} with
 #' a fill aesthetic supplied).
 #'
 #' @family position adjustments
@@ -14,8 +14,8 @@
 #' @examples
 #' dsub <- diamonds[ sample(nrow(diamonds), 1000), ]
 #' a_plot(dsub, aes(x = cut, y = carat, fill = clarity)) +
-#'   geom_boxplot(outlier.size = 0) +
-#'   geom_point(pch = 21, position = position_jitterdodge())
+#'   a_geom_boxplot(outlier.size = 0) +
+#'   a_geom_point(pch = 21, position = position_jitterdodge())
 position_jitterdodge <- function(jitter.width = NULL, jitter.height = 0,
                                  dodge.width = 0.75) {
 

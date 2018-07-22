@@ -3,7 +3,7 @@
 \name{make_bar}
 \alias{make_bar}
 \title{Convenience function for an interactive bar that might otherwise be
-created using a_stat_summary(geom="bar").}
+created using a_stat_summary(a_geom="bar").}
 \usage{
 make_bar(data, x.name, alpha = 1)
 }
@@ -15,11 +15,11 @@ make_bar(data, x.name, alpha = 1)
 \item{alpha}{transparency of selected bar, default 1.}
 }
 \value{
-a geom_bar layer.
+a a_geom_bar layer.
 }
 \description{
 Convenience function for an interactive bar that might otherwise be
-created using a_stat_summary(geom="bar").
+created using a_stat_summary(a_geom="bar").
 }
 \author{
 Toby Dylan Hocking

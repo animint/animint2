@@ -45,7 +45,7 @@
 #'   will be shown, regardless of whether or not they appear in the data.
 #' @export
 #' @examples
-#' p <- a_plot(mpg, aes(displ, cty)) + geom_point()
+#' p <- a_plot(mpg, aes(displ, cty)) + a_geom_point()
 #'
 #' p + a_facet_grid(. ~ cyl)
 #' p + a_facet_grid(drv ~ .)
@@ -60,14 +60,14 @@
 #' df <- data.frame(displ = mean(mpg$displ), cty = mean(mpg$cty))
 #' p +
 #'   a_facet_grid(. ~ cyl) +
-#'   geom_point(data = df, colour = "red", size = 2)
+#'   a_geom_point(data = df, colour = "red", size = 2)
 #'
 #' # Free scales -------------------------------------------------------
 #' # You can also choose whether the scales should be constant
 #' # across all panels (the default), or whether they should be allowed
 #' # to vary
 #' mt <- a_plot(mtcars, aes(mpg, wt, colour = factor(cyl))) +
-#'   geom_point()
+#'   a_geom_point()
 #'
 #' mt + a_facet_grid(. ~ cyl, scales = "free")
 #'
@@ -75,12 +75,12 @@
 #' # and values in the data will be the same across all panels. This
 #' # is particularly useful for categorical axes
 #' a_plot(mpg, aes(drv, model)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   a_facet_grid(manufacturer ~ ., scales = "free", space = "free") +
 #'   a_theme(strip.text.y = a_element_text(angle = 0))
 #'
 #' # Facet labels ------------------------------------------------------
-#' p <- a_plot(mtcars, aes(wt, mpg)) + geom_point()
+#' p <- a_plot(mtcars, aes(wt, mpg)) + a_geom_point()
 #' p
 #'
 #' # label_both() displays both variable name and value
@@ -89,7 +89,7 @@
 #' # label_parsed() parses text into mathematical expressions, see ?plotmath
 #' mtcars$cyl2 <- factor(mtcars$cyl, labels = c("alpha", "beta", "sqrt(x, y)"))
 #' a_plot(mtcars, aes(wt, mpg)) +
-#'   geom_point() +
+#'   a_geom_point() +
 #'   a_facet_grid(. ~ cyl2, labeller = label_parsed)
 #'
 #' # label_bquote() makes it easy to construct math expressions
@@ -100,7 +100,7 @@
 #'   am = factor(am, levels = 0:1, c("Automatic", "Manual")),
 #'   gear = factor(gear, levels = 3:5, labels = c("Three", "Four", "Five"))
 #' )
-#' p <- a_plot(data, aes(mpg, disp)) + geom_point()
+#' p <- a_plot(data, aes(mpg, disp)) + a_geom_point()
 #' p + a_facet_grid(am ~ gear, switch = "both")
 #' # It looks better without boxes around the strips
 #' p + a_facet_grid(am ~ gear, switch = "both") +
@@ -110,7 +110,7 @@
 #' \donttest{
 #' # Margins can be specified by logically (all yes or all no) or by specific
 #' # variables as (character) variable names
-#' mg <- a_plot(mtcars, aes(x = mpg, y = wt)) + geom_point()
+#' mg <- a_plot(mtcars, aes(x = mpg, y = wt)) + a_geom_point()
 #' mg + a_facet_grid(vs + am ~ gear)
 #' mg + a_facet_grid(vs + am ~ gear, margins = TRUE)
 #' mg + a_facet_grid(vs + am ~ gear, margins = "am")
@@ -188,10 +188,10 @@ a_facet_map_layout.grid <- function(a_facet, data, layout) {
 }
 
 #' @export
-a_facet_render.grid <- function(a_facet, panel, a_coord, a_theme, geom_grobs) {
+a_facet_render.grid <- function(a_facet, panel, a_coord, a_theme, a_geom_grobs) {
   axes <- a_facet_axes(a_facet, panel, a_coord, a_theme)
   strips <- a_facet_strips(a_facet, panel, a_theme)
-  panels <- a_facet_panels(a_facet, panel, a_coord, a_theme, geom_grobs)
+  panels <- a_facet_panels(a_facet, panel, a_coord, a_theme, a_geom_grobs)
 
   # adjust the size of axes to the size of panel
   axes$l$heights <- panels$heights
@@ -342,7 +342,7 @@ a_facet_axes.grid <- function(a_facet, panel, a_coord, a_theme) {
 }
 
 #' @export
-a_facet_panels.grid <- function(a_facet, panel, a_coord, a_theme, geom_grobs) {
+a_facet_panels.grid <- function(a_facet, panel, a_coord, a_theme, a_geom_grobs) {
 
   # If user hasn't set aspect ratio, and we have fixed scales, then
   # ask the coordinate system if it wants to specify one
@@ -366,12 +366,12 @@ a_facet_panels.grid <- function(a_facet, panel, a_coord, a_theme, geom_grobs) {
     fg <- a_coord$render_fg(panel$ranges[[i]], a_theme)
     bg <- a_coord$render_bg(panel$ranges[[i]], a_theme)
 
-    geom_grobs <- lapply(geom_grobs, `[[`, i)
+    a_geom_grobs <- lapply(a_geom_grobs, `[[`, i)
 
     if (a_theme$panel.ontop) {
-      panel_grobs <- c(geom_grobs, list(bg), list(fg))
+      panel_grobs <- c(a_geom_grobs, list(bg), list(fg))
     } else {
-      panel_grobs <- c(list(bg), geom_grobs, list(fg))
+      panel_grobs <- c(list(bg), a_geom_grobs, list(fg))
     }
 
     gTree(children = do.call("gList", panel_grobs))

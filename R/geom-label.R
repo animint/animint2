@@ -1,9 +1,9 @@
 #' @export
-#' @rdname geom_text
+#' @rdname a_geom_text
 #' @param label.padding Amount of padding around label. Defaults to 0.25 lines.
 #' @param label.r Radius of rounded corners. Defaults to 0.15 lines.
 #' @param label.size Size of label border, in mm.
-geom_label <- function(mapping = NULL, data = NULL,
+a_geom_label <- function(mapping = NULL, data = NULL,
                        a_stat = "identity", position = "identity",
                        ...,
                        parse = FALSE,
@@ -27,7 +27,7 @@ geom_label <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomLabel,
+    a_geom = a_GeomLabel,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

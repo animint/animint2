@@ -11,23 +11,23 @@
 #'   data so it's not possible to see the distinction between the categories.
 #' @export
 #' @examples
-#' a_plot(mtcars, aes(am, vs)) + geom_point()
+#' a_plot(mtcars, aes(am, vs)) + a_geom_point()
 #'
 #' # Default amount of jittering will generally be too much for
 #' # small datasets:
-#' a_plot(mtcars, aes(am, vs)) + geom_jitter()
+#' a_plot(mtcars, aes(am, vs)) + a_geom_jitter()
 #'
 #' # Two ways to override
 #' a_plot(mtcars, aes(am, vs)) +
-#'   geom_jitter(width = 0.1, height = 0.1)
+#'   a_geom_jitter(width = 0.1, height = 0.1)
 #' a_plot(mtcars, aes(am, vs)) +
-#'   geom_jitter(position = position_jitter(width = 0.1, height = 0.1))
+#'   a_geom_jitter(position = position_jitter(width = 0.1, height = 0.1))
 #'
 #' # The default works better for large datasets, where it will
 #' # take up as much space as a boxplot or a bar
 #' a_plot(mpg, aes(class, hwy)) +
-#'   geom_jitter() +
-#'   geom_boxplot()
+#'   a_geom_jitter() +
+#'   a_geom_boxplot()
 position_jitter <- function(width = NULL, height = NULL) {
   a_ggproto(NULL, a_PositionJitter,
     width = width,

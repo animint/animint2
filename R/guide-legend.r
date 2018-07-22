@@ -64,8 +64,8 @@
 #' \donttest{
 #' df <- reshape2::melt(outer(1:4, 1:4), varnames = c("X1", "X2"))
 #'
-#' p1 <- a_plot(df, aes(X1, X2)) + geom_tile(aes(fill = value))
-#' p2 <- p1 + geom_point(aes(size = value))
+#' p1 <- a_plot(df, aes(X1, X2)) + a_geom_tile(aes(fill = value))
+#' p2 <- p1 + a_geom_point(aes(size = value))
 #'
 #' # Basic form
 #' p1 + a_scale_fill_continuous(guide = "legend")
@@ -115,7 +115,7 @@
 #'
 #' # very low alpha value make it difficult to see legend key
 #' p3 <- a_plot(diamonds, aes(carat, price)) +
-#'   geom_point(aes(colour = color), alpha = 1/100)
+#'   a_geom_point(aes(colour = color), alpha = 1/100)
 #' p3
 #'
 #' # override.aes overwrites the alpha
@@ -124,7 +124,7 @@
 #' # multiple row/col legends
 #' df <- data.frame(x = 1:20, y = 1:20, color = letters[1:20])
 #' p <- a_plot(df, aes(x, y)) +
-#'   geom_point(aes(colour = color))
+#'   a_geom_point(aes(colour = color))
 #' p + guides(col = guide_legend(nrow = 8))
 #' p + guides(col = guide_legend(ncol = 8))
 #' p + guides(col = guide_legend(nrow = 8, byrow = TRUE))
@@ -253,16 +253,16 @@ guide_geom.legend <- function(guide, layers, default_mapping) {
   # arrange common data for vertical and horizontal guide
   guide$geoms <- plyr::llply(layers, function(layer) {
     all <- names(c(layer$mapping, if (layer$inherit.aes) default_mapping, layer$a_stat$default_aes))
-    geom <- c(layer$geom$required_aes, names(layer$geom$default_aes))
-    matched <- intersect(intersect(all, geom), names(guide$key))
-    matched <- setdiff(matched, names(layer$geom_params))
+    a_geom <- c(layer$a_geom$required_aes, names(layer$a_geom$default_aes))
+    matched <- intersect(intersect(all, a_geom), names(guide$key))
+    matched <- setdiff(matched, names(layer$a_geom_params))
     matched <- setdiff(matched, names(layer$aes_params))
 
     if (length(matched) > 0) {
       # This layer contributes to the legend
       if (is.na(layer$show.legend) || layer$show.legend) {
         # Default is to include it
-        data <- layer$geom$use_defaults(guide$key[matched], layer$aes_params)
+        data <- layer$a_geom$use_defaults(guide$key[matched], layer$aes_params)
       } else {
         return(NULL)
       }
@@ -272,21 +272,21 @@ guide_geom.legend <- function(guide, layers, default_mapping) {
         # Default is to exclude it
         return(NULL)
       } else {
-        data <- layer$geom$use_defaults(NULL, layer$aes_params)[rep(1, nrow(guide$key)), ]
+        data <- layer$a_geom$use_defaults(NULL, layer$aes_params)[rep(1, nrow(guide$key)), ]
       }
     }
 
-    # override.aes in guide_legend manually changes the geom
+    # override.aes in guide_legend manually changes the a_geom
     data <- utils::modifyList(data, guide$override.aes)
 
     list(
-      draw_key = layer$geom$draw_key,
+      draw_key = layer$a_geom$draw_key,
       data = data,
-      params = c(layer$geom_params, layer$a_stat_params)
+      params = c(layer$a_geom_params, layer$a_stat_params)
     )
   })
 
-  # remove null geom
+  # remove null a_geom
   guide$geoms <- compact(guide$geoms)
 
   # Finally, remove this guide if no layer is drawn

@@ -5,12 +5,12 @@
 #'
 #' @export
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @examples
-#' a_plot(mtcars, aes(vs, am)) + geom_point(alpha = 0.1)
-#' a_plot(mtcars, aes(vs, am)) + geom_point(alpha = 0.1, a_stat="unique")
+#' a_plot(mtcars, aes(vs, am)) + a_geom_point(alpha = 0.1)
+#' a_plot(mtcars, aes(vs, am)) + a_geom_point(alpha = 0.1, a_stat="unique")
 a_stat_unique <- function(mapping = NULL, data = NULL,
-                        geom = "point", position = "identity",
+                        a_geom = "point", position = "identity",
                         ...,
                         na.rm = FALSE,
                         show.legend = NA,
@@ -19,7 +19,7 @@ a_stat_unique <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatUnique,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

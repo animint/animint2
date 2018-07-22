@@ -225,7 +225,7 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
   # Now that layer_name have become geom_a_position like we need to spilit with [3] index
   # ToDO: write a if statement with warning message if correct geom name
   # and layer names are not passed
-  g <- list(geom=strsplit(layer_name, "_")[[1]][3])
+  g <- list(a_geom=strsplit(layer_name, "_")[[1]][3])
   g$classed <- layer_name
   
   ranges <- built$panel$ranges
@@ -243,8 +243,8 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
   ## order in which these variables will be accessed in the recursive
   ## JavaScript array structure.
 
-  ## subset_order IS in fact useful with geom_segment! For example, in
-  ## the first plot in the breakpointError example, the geom_segment has
+  ## subset_order IS in fact useful with a_geom_segment! For example, in
+  ## the first plot in the breakpointError example, the a_geom_segment has
   ## the following exported data in plot.json
 
   ## "subset_order": [
@@ -345,7 +345,7 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
   has.show <- any(is.show)
   ## Error if non-identity stat is used with showSelected, since
   ## typically the stats will delete the showSelected column from the
-  ## built data set. For example geom_bar + a_stat_bin doesn't make
+  ## built data set. For example a_geom_bar + a_stat_bin doesn't make
   ## sense with clickSelects/showSelected, since two
   ## clickSelects/showSelected values may show up in the same bin.
   a_stat.type <- class(l$a_stat)[[1]]
@@ -365,7 +365,7 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
   ## Pre-process some complex geoms so that they are treated as
   ## special cases of basic geoms. In ggplot2, this processing is done
   ## in the draw method of the geoms.
-  if(g$geom=="abline"){
+  if(g$a_geom=="abline"){
     ## loop through each set of slopes/intercepts
     
     ## TODO: vectorize this code!
@@ -391,8 +391,8 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
     ## Remove it since it is meaningless.
     g$aes <- g$aes[names(g$aes)!="group"]
     g.data <- g.data[! names(g.data) %in% c("slope", "intercept")]
-    g$geom <- "segment"
-  } else if(g$geom=="point"){
+    g$a_geom <- "segment"
+  } else if(g$a_geom=="point"){
     # Fill set to match ggplot2 default of filled in circle.
     # Check for fill in both data and params
     fill.in.data <- ("fill" %in% names(g.data) && any(!is.na(g.data[["fill"]])))
@@ -401,7 +401,7 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
     if(!fill.specified & "colour" %in% names(g.data)){
       g.data[["fill"]] <- g.data[["colour"]]
     }
-  } else if(g$geom=="text"){
+  } else if(g$a_geom=="text"){
     ## convert hjust to anchor.
     hjustRemove <- function(df.or.list){
       df.or.list$anchor <- hjust2anchor(df.or.list$hjust)
@@ -425,28 +425,28 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
     } else if ("vjust" %in% names(g$aes)) {
       vjustWarning(g.data$vjust)
     } 
-  } else if(g$geom=="ribbon"){
+  } else if(g$a_geom=="ribbon"){
     # Color set to match ggplot2 default of fill with no outside border.
     if("fill"%in%names(g.data) & !"colour"%in%names(g.data)){
       g.data[["colour"]] <- g.data[["fill"]]
     }
-  } else if(g$geom=="density" | g$geom=="area"){
-    g$geom <- "ribbon"
-  } else if(g$geom=="tile" | g$geom=="raster" | g$geom=="histogram" ){
+  } else if(g$a_geom=="density" | g$a_geom=="area"){
+    g$a_geom <- "ribbon"
+  } else if(g$a_geom=="tile" | g$a_geom=="raster" | g$a_geom=="histogram" ){
     # Color set to match ggplot2 default of tile with no outside border.
     if(!"colour"%in%names(g.data) & "fill"%in%names(g.data)){
       g.data[["colour"]] <- g.data[["fill"]]
       # Make outer border of 0 size if size isn't already specified.
       if(!"size"%in%names(g.data)) g.data[["size"]] <- 0
     }
-    g$geom <- "rect"
-  } else if(g$geom=="bar"){
+    g$a_geom <- "rect"
+  } else if(g$a_geom=="bar"){
     is.xy <- names(g.data) %in% c("x", "y")
     g.data <- g.data[!is.xy]
-    g$geom <- "rect"
-  } else if(g$geom=="bin2d"){
-    stop("bin2d is not supported in animint. Try using geom_tile() and binning the data yourself.")
-  } else if(g$geom=="boxplot"){
+    g$a_geom <- "rect"
+  } else if(g$a_geom=="bin2d"){
+    stop("bin2d is not supported in animint. Try using a_geom_tile() and binning the data yourself.")
+  } else if(g$a_geom=="boxplot"){
     stop("boxplots are not supported. Workaround: rects, lines, and points")
     ## TODO: boxplot support. But it is hard since boxplots are drawn
     ## using multiple geoms and it is not straightforward to deal with
@@ -457,7 +457,7 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
     # outliers are specified as a list... change so that they are specified
     # as a single string which can then be parsed in JavaScript.
     # there has got to be a better way to do this!!
-  } else if(g$geom=="violin"){
+  } else if(g$a_geom=="violin"){
     g.data$xminv <- with(g.data, x - violinwidth * (x - xmin))
     g.data$xmaxv <- with(g.data, x + violinwidth * (xmax - x))
     newdata <- plyr::ddply(g.data, "group", function(df){
@@ -466,20 +466,20 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
                 })
     newdata <- plyr::ddply(newdata, "group", function(df) rbind(df, df[1,]))
     g.data <- newdata
-    g$geom <- "polygon"
-  } else if(g$geom=="step"){
+    g$a_geom <- "polygon"
+  } else if(g$a_geom=="step"){
     datanames <- names(g.data)
     g.data <- plyr::ddply(g.data, "group", function(df) stairstep(df))
-    g$geom <- "path"
-  } else if(g$geom=="contour" | g$geom=="density2d"){
+    g$a_geom <- "path"
+  } else if(g$a_geom=="contour" | g$a_geom=="density2d"){
     g$aes[["group"]] <- "piece"
-    g$geom <- "path"
-  } else if(g$geom=="freqpoly"){
-    g$geom <- "line"
-  } else if(g$geom=="quantile"){
-    g$geom <- "path"
-  } else if(g$geom=="hex"){
-    g$geom <- "polygon"
+    g$a_geom <- "path"
+  } else if(g$a_geom=="freqpoly"){
+    g$a_geom <- "line"
+  } else if(g$a_geom=="quantile"){
+    g$a_geom <- "path"
+  } else if(g$a_geom=="hex"){
+    g$a_geom <- "polygon"
     ## TODO: for interactivity we will run into the same problems as
     ## we did with histograms. Again, if we put several
     ## clickSelects/showSelected values in the same hexbin, then
@@ -513,7 +513,7 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
   }
 
   ## Some geoms need their data sorted before saving to tsv.
-  if(g$geom %in% c("ribbon", "line")){
+  if(g$a_geom %in% c("ribbon", "line")){
     g.data <- g.data[order(g.data$x), ]
   }
 
@@ -527,13 +527,13 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
     }
   }
 
-  has.no.fill <- g$geom %in% c("path", "line")
+  has.no.fill <- g$a_geom %in% c("path", "line")
   zero.size <- any(g.data$size == 0, na.rm=TRUE)
   if(zero.size && has.no.fill){
-    warning(sprintf("geom_%s with size=0 will be invisible",g$geom))
+    warning(sprintf("a_geom_%s with size=0 will be invisible",g$a_geom))
   }
   ## TODO: a_coord_transform maybe won't work for
-  ## geom_dotplot|rect|segment and polar/log transformations, which
+  ## a_geom_dotplot|rect|segment and polar/log transformations, which
   ## could result in something nonlinear. For the time being it is
   ## best to just ignore this, but you can look at the source of
   ## e.g. geom-rect.r in ggplot2 to see how they deal with this by
@@ -744,7 +744,7 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
     
   ## group should be the last thing in nest_order, if it is present.
   data.object.geoms <- c("line", "path", "ribbon", "polygon")
-  if("group" %in% names(g$aes) && g$geom %in% data.object.geoms){
+  if("group" %in% names(g$aes) && g$a_geom %in% data.object.geoms){
     g$nest_order <- c(g$nest_order, "group")
   }
 
@@ -837,12 +837,12 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
 #' \item rug
 #' \item dotplot
 #' \item quantile - should *theoretically* work but in practice does not work
-#' \item smooth - can be created using geom_line and geom_ribbon
-#' \item boxplot - can be created using geom_rect and geom_segment
-#' \item crossbar - can be created using geom_rect and geom_segment
-#' \item pointrange - can be created using geom_linerange and geom_point
-#' \item bin2d - bin using ddply() and then use geom_tile()
-#' \item map - can be created using geom_polygon or geom_path
+#' \item smooth - can be created using a_geom_line and a_geom_ribbon
+#' \item boxplot - can be created using a_geom_rect and a_geom_segment
+#' \item crossbar - can be created using a_geom_rect and a_geom_segment
+#' \item pointrange - can be created using a_geom_linerange and a_geom_point
+#' \item bin2d - bin using ddply() and then use a_geom_tile()
+#' \item map - can be created using a_geom_polygon or a_geom_path
 #'}
 #' Supported scales:
 #' \itemize{
@@ -971,7 +971,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       ## Data now contains columns with fill, alpha, colour etc.
       ## Remove from data if they have a single unique value and
       ## are NOT used in mapping to reduce tsv file size
-      redundant.cols <- names(L$geom$default_aes)
+      redundant.cols <- names(L$a_geom$default_aes)
       for(col.name in names(df)){
         if(col.name %in% redundant.cols){
           all.vals <- unique(df[[col.name]])
@@ -1362,37 +1362,37 @@ getLegendList <- function(plistextra){
     }
     
     ## do not draw geoms which are constant:
-    geom.list <- gdefs[[leg]]$geoms
-    geom.data.list <- lapply(geom.list, "[[", "data")
-    geom.data.rows <- sapply(geom.data.list, nrow)
-    geom.unique.list <- lapply(geom.data.list, unique)
-    geom.unique.rows <- sapply(geom.unique.list, nrow)
-    is.ignored <- 1 < geom.data.rows & geom.unique.rows == 1
-    gdefs[[leg]]$geoms <- geom.list[!is.ignored]
+    a_geom.list <- gdefs[[leg]]$geoms
+    a_geom.data.list <- lapply(a_geom.list, "[[", "data")
+    a_geom.data.rows <- sapply(a_geom.data.list, nrow)
+    a_geom.unique.list <- lapply(a_geom.data.list, unique)
+    a_geom.unique.rows <- sapply(a_geom.unique.list, nrow)
+    is.ignored <- 1 < a_geom.data.rows & a_geom.unique.rows == 1
+    gdefs[[leg]]$geoms <- a_geom.list[!is.ignored]
     
-    ## Pass a geom.legend.list to be used by the
+    ## Pass a a_geom.legend.list to be used by the
     ## GetLegend function
-    geom.legend.list <- list()
-    for(geom.i in seq_along(gdefs[[leg]]$geoms)){
-      data.geom.i <- gdefs[[leg]]$geoms[[geom.i]]$data
-      params.geom.i <- gdefs[[leg]]$geoms[[geom.i]]$params
-      size.geom.i <- gdefs[[leg]]$geoms[[geom.i]]$size
+    a_geom.legend.list <- list()
+    for(a_geom.i in seq_along(gdefs[[leg]]$geoms)){
+      data.a_geom.i <- gdefs[[leg]]$geoms[[a_geom.i]]$data
+      params.a_geom.i <- gdefs[[leg]]$geoms[[a_geom.i]]$params
+      size.a_geom.i <- gdefs[[leg]]$geoms[[a_geom.i]]$size
       
       suppressWarnings(draw.key.used <- 
-                         gdefs[[leg]]$geoms[[geom.i]]$draw_key(
-                           data.geom.i, params.geom.i, size.geom.i)
+                         gdefs[[leg]]$geoms[[a_geom.i]]$draw_key(
+                           data.a_geom.i, params.a_geom.i, size.a_geom.i)
       )
-      geom.legend <- class(draw.key.used)[[1]]
-      geom.legend.list <- c(geom.legend.list, geom.legend)
+      a_geom.legend <- class(draw.key.used)[[1]]
+      a_geom.legend.list <- c(a_geom.legend.list, a_geom.legend)
     }
     
     ## Process names to be used by the CleanData function
     convert.names.list <- list(points="point", segments="path", rect="polygon")
-    names.to.change <- geom.legend.list %in% names(convert.names.list)
-    geom.legend.list[names.to.change] <- 
-      convert.names.list[unlist(geom.legend.list[names.to.change])]
+    names.to.change <- a_geom.legend.list %in% names(convert.names.list)
+    a_geom.legend.list[names.to.change] <- 
+      convert.names.list[unlist(a_geom.legend.list[names.to.change])]
     
-    gdefs[[leg]]$geom.legend.list <- geom.legend.list
+    gdefs[[leg]]$a_geom.legend.list <- a_geom.legend.list
   }
   
   ## Add a flag to specify whether or not breaks was manually

@@ -8,8 +8,8 @@
 #' @section Aesthetics:
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "summary")}
 #'
-#' @seealso \code{\link{geom_errorbar}}, \code{\link{geom_pointrange}},
-#'  \code{\link{geom_linerange}}, \code{\link{geom_crossbar}} for geoms to
+#' @seealso \code{\link{a_geom_errorbar}}, \code{\link{a_geom_pointrange}},
+#'  \code{\link{a_geom_linerange}}, \code{\link{a_geom_crossbar}} for geoms to
 #'  display summarised data
 #' @inheritParams a_stat_identity
 #' @section Summary functions:
@@ -42,37 +42,37 @@
 #' @param fun.args Optional additional arguments passed on to the functions.
 #' @export
 #' @examples
-#' d <- a_plot(mtcars, aes(cyl, mpg)) + geom_point()
+#' d <- a_plot(mtcars, aes(cyl, mpg)) + a_geom_point()
 #'
 #' # You can supply individual functions to summarise the value at
 #' # each x:
-#' d + a_stat_summary(fun.y = "median", colour = "red", size = 2, geom = "point")
-#' d + a_stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
-#' d + aes(colour = factor(vs)) + a_stat_summary(fun.y = mean, geom="line")
+#' d + a_stat_summary(fun.y = "median", colour = "red", size = 2, a_geom = "point")
+#' d + a_stat_summary(fun.y = "mean", colour = "red", size = 2, a_geom = "point")
+#' d + aes(colour = factor(vs)) + a_stat_summary(fun.y = mean, a_geom="line")
 #'
 #' d + a_stat_summary(fun.y = mean, fun.ymin = min, fun.ymax = max,
 #'   colour = "red")
 #'
 #' d <- a_plot(diamonds, aes(cut))
-#' d + geom_bar()
-#' d + a_stat_summary_bin(aes(y = price), fun.y = "mean", geom = "bar")
+#' d + a_geom_bar()
+#' d + a_stat_summary_bin(aes(y = price), fun.y = "mean", a_geom = "bar")
 #'
 #' \donttest{
 #' # Don't use ylim to zoom into a summary plot - this throws the
 #' # data away
 #' p <- a_plot(mtcars, aes(cyl, mpg)) +
-#'   a_stat_summary(fun.y = "mean", geom = "point")
+#'   a_stat_summary(fun.y = "mean", a_geom = "point")
 #' p
 #' p + ylim(15, 30)
 #' # Instead use a_coord_cartesian
 #' p + a_coord_cartesian(ylim = c(15, 30))
 #'
 #' # A set of useful summary functions is provided from the Hmisc package:
-#' a_stat_sum_df <- function(fun, geom="crossbar", ...) {
-#'   a_stat_summary(fun.data = fun, colour = "red", geom = geom, width = 0.2, ...)
+#' a_stat_sum_df <- function(fun, a_geom="crossbar", ...) {
+#'   a_stat_summary(fun.data = fun, colour = "red", a_geom = a_geom, width = 0.2, ...)
 #' }
-#' d <- a_plot(mtcars, aes(cyl, mpg)) + geom_point()
-#' # The crossbar geom needs grouping to be specified when used with
+#' d <- a_plot(mtcars, aes(cyl, mpg)) + a_geom_point()
+#' # The crossbar a_geom needs grouping to be specified when used with
 #' # a continuous x axis.
 #' d + a_stat_sum_df("mean_cl_boot", mapping = aes(group = cyl))
 #' d + a_stat_sum_df("mean_sdl", mapping = aes(group = cyl))
@@ -83,8 +83,8 @@
 #' if (require("ggplot2movies")) {
 #' set.seed(596)
 #' mov <- movies[sample(nrow(movies), 1000), ]
-#'  m2 <- a_plot(mov, aes(x = factor(round(rating)), y = votes)) + geom_point()
-#'  m2 <- m2 + a_stat_summary(fun.data = "mean_cl_boot", geom = "crossbar",
+#'  m2 <- a_plot(mov, aes(x = factor(round(rating)), y = votes)) + a_geom_point()
+#'  m2 <- m2 + a_stat_summary(fun.data = "mean_cl_boot", a_geom = "crossbar",
 #'                          colour = "red", width = 0.3) + xlab("rating")
 #' m2
 #' # Notice how the overplotting skews off visual perception of the mean
@@ -97,13 +97,13 @@
 #' m2 + a_scale_y_log10()
 #' # Transforming the coordinate system occurs after the
 #' # statistic has been computed. This means we're calculating the summary on the raw data
-#' # and stretching the geoms onto the log scale.  Compare the widths of the
+#' # and stretching the a_geoms onto the log scale.  Compare the widths of the
 #' # standard errors.
 #' m2 + a_coord_trans(y="log10")
 #' }
 #' }
 a_stat_summary <- function(mapping = NULL, data = NULL,
-                         geom = "pointrange", position = "identity",
+                         a_geom = "pointrange", position = "identity",
                          ...,
                          fun.data = NULL,
                          fun.y = NULL,
@@ -117,7 +117,7 @@ a_stat_summary <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_StatSummary,
-    geom = geom,
+    a_geom = a_geom,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

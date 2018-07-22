@@ -1,7 +1,7 @@
 #' Bars, rectangles with bases on x-axis
 #'
 #' There are two types of bar charts, determined by what is mapped to bar
-#' height. By default, \code{geom_bar} uses \code{a_stat="count"} which makes the
+#' height. By default, \code{a_geom_bar} uses \code{a_stat="count"} which makes the
 #' height of the bar proportion to the number of cases in each group (or if the
 #' \code{weight} aethetic is supplied, the sum of the weights). If you want the
 #' heights of the bars to represent values in the data, use
@@ -21,60 +21,60 @@
 #' the bars and then stretching or squashing to the same height.
 #'
 #' @section Aesthetics:
-#'   \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "bar")}
+#'   \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "bar")}
 #'
-#' @seealso \code{\link{geom_histogram}} for continuous data,
+#' @seealso \code{\link{a_geom_histogram}} for continuous data,
 #'   \code{\link{position_dodge}} for creating side-by-side barcharts.
 #' @export
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @param width Bar width. By default, set to 90\% of the resolution of the data.
-#' @param binwidth \code{geom_bar} no longer has a binwidth argument - if
+#' @param binwidth \code{a_geom_bar} no longer has a binwidth argument - if
 #'   you use it you'll get an warning telling to you use
-#'   \code{\link{geom_histogram}} instead.
-#' @param geom,a_stat Override the default connection between \code{geom_bar} and
+#'   \code{\link{a_geom_histogram}} instead.
+#' @param a_geom,a_stat Override the default connection between \code{a_geom_bar} and
 #'   \code{a_stat_count}.
 #' @examples
-#' # geom_bar is designed to make it easy to create bar charts that show
+#' # a_geom_bar is designed to make it easy to create bar charts that show
 #' # counts (or sums of weights)
 #' g <- a_plot(mpg, aes(class))
 #' # Number of cars in each class:
-#' g + geom_bar()
+#' g + a_geom_bar()
 #' # Total engine displacement of each class
-#' g + geom_bar(aes(weight = displ))
+#' g + a_geom_bar(aes(weight = displ))
 #'
 #' # To show (e.g.) means, you need a_stat = "identity"
 #' df <- data.frame(trt = c("a", "b", "c"), outcome = c(2.3, 1.9, 3.2))
 #' a_plot(df, aes(trt, outcome)) +
-#'   geom_bar(a_stat = "identity")
-#' # But geom_point() display exactly the same information and doesn't
+#'   a_geom_bar(a_stat = "identity")
+#' # But a_geom_point() display exactly the same information and doesn't
 #' # require the y-axis to touch zero.
 #' a_plot(df, aes(trt, outcome)) +
-#'   geom_point()
+#'   a_geom_point()
 #'
-#' # You can also use geom_bar() with continuous data, in which case
+#' # You can also use a_geom_bar() with continuous data, in which case
 #' # it will show counts at unique locations
 #' df <- data.frame(x = rep(c(2.9, 3.1, 4.5), c(5, 10, 4)))
-#' a_plot(df, aes(x)) + geom_bar()
+#' a_plot(df, aes(x)) + a_geom_bar()
 #' # cf. a histogram of the same data
-#' a_plot(df, aes(x)) + geom_histogram(binwidth = 0.5)
+#' a_plot(df, aes(x)) + a_geom_histogram(binwidth = 0.5)
 #'
 #' \donttest{
 #' # Bar charts are automatically stacked when multiple bars are placed
 #' # at the same location
-#' g + geom_bar(aes(fill = drv))
+#' g + a_geom_bar(aes(fill = drv))
 #'
 #' # You can instead dodge, or fill them
-#' g + geom_bar(aes(fill = drv), position = "dodge")
-#' g + geom_bar(aes(fill = drv), position = "fill")
+#' g + a_geom_bar(aes(fill = drv), position = "dodge")
+#' g + a_geom_bar(aes(fill = drv), position = "fill")
 #'
 #' # To change plot order of bars, change levels in underlying factor
 #' reorder_size <- function(x) {
 #'   factor(x, levels = names(sort(table(x))))
 #' }
-#' a_plot(mpg, aes(reorder_size(class))) + geom_bar()
+#' a_plot(mpg, aes(reorder_size(class))) + a_geom_bar()
 #' }
-geom_bar <- function(mapping = NULL, data = NULL,
+a_geom_bar <- function(mapping = NULL, data = NULL,
                      a_stat = "count", position = "stack",
                      ...,
                      width = NULL,
@@ -84,9 +84,9 @@ geom_bar <- function(mapping = NULL, data = NULL,
                      inherit.aes = TRUE) {
 
   if (!is.null(binwidth)) {
-    warning("`geom_bar()` no longer has a `binwidth` parameter. ",
-      "Please use `geom_histogram()` instead.", call. = "FALSE")
-    return(geom_histogram(mapping = mapping, data = data,
+    warning("`a_geom_bar()` no longer has a `binwidth` parameter. ",
+      "Please use `a_geom_histogram()` instead.", call. = "FALSE")
+    return(a_geom_histogram(mapping = mapping, data = data,
       position = position, width = width, binwidth = binwidth, ...,
       na.rm = na.rm, show.legend = show.legend, inherit.aes = inherit.aes))
   }
@@ -95,7 +95,7 @@ geom_bar <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomBar,
+    a_geom = a_GeomBar,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

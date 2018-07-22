@@ -19,10 +19,10 @@ model.colors <- c(compare="#00bfc4", #bluish
 ord <- c("latent","compare","rank")
 dots <-
   list(data=a_plot()+
-       geom_segment(aes(Xt.1, Xt.2, xend=Xtp.1, yend=Xtp.2, colour=factor(yt)),
+       a_geom_segment(aes(Xt.1, Xt.2, xend=Xtp.1, yend=Xtp.2, colour=factor(yt)),
                     showSelected="set.id",
                     data=compare$train)+
-       geom_point(aes(Xtp.1, Xtp.2, colour=factor(yt)),
+       a_geom_point(aes(Xtp.1, Xtp.2, colour=factor(yt)),
                   showSelected="set.id",
                   data=subset(compare$train, yt==1))+
        a_scale_colour_manual("label",values=c("1"="red","-1"="black"))+
@@ -30,10 +30,10 @@ dots <-
        ggtitle("training data"),
        error=a_plot()+
        make_text(compare$err, 200, 35, "norm")+
-       geom_point(aes(as.integer(as.character(N)), percent, colour=model),
+       a_geom_point(aes(as.integer(as.character(N)), percent, colour=model),
                   showSelected=c("norm", "set.id"),
                   data=compare$bayes)+
-       geom_point(aes(N, percent, colour=fit.name),
+       a_geom_point(aes(N, percent, colour=fit.name),
                   showSelected="norm",
                   clickSelects="set.id",
                  lwd=3,alpha=3/4,data=compare$err)+
@@ -43,13 +43,13 @@ dots <-
        xlab(x.lab)+
        ggtitle("test error, select data set"),
        diff=a_plot()+
-       geom_ribbon(aes(N, ymin=mean-sd, ymax=mean+sd, group=norm),
+       a_geom_ribbon(aes(N, ymin=mean-sd, ymax=mean+sd, group=norm),
                    clickSelects="norm", alpha=1/2,
                    data=diff.df)+
-       geom_line(aes(N, mean, group=norm), clickSelects="norm", 
+       a_geom_line(aes(N, mean, group=norm), clickSelects="norm", 
                    data=diff.df)+
-       geom_hline(yintercept=0, color="red")+
-       geom_text(aes(x,y,label=label),color="red",
+       a_geom_hline(yintercept=0, color="red")+
+       a_geom_text(aes(x,y,label=label),color="red",
                  data=data.frame(x=150,y=1,label="no difference"))+
        ggtitle("test error difference, select norm")+
        xlab(x.lab)+
@@ -57,7 +57,7 @@ dots <-
 for(model in c("compare", "rank")){
   sub.df <- subset(compare$rank, what %in% c(model, "latent"))
   L <- list(a_plot()+
-    geom_contour(aes(x1, x2, z=rank, group=interaction(what, norm, seed, N),
+    a_geom_contour(aes(x1, x2, z=rank, group=interaction(what, norm, seed, N),
                      colour=what), showSelected="set.id", data=sub.df)+
     a_scale_colour_manual("model",values=model.colors)+
             xl+yl+

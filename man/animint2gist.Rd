@@ -24,10 +24,10 @@ Before using this function set your appropriate 'github.username' and 'github.pa
 library(animint)
 iris$id <- 1:nrow(iris)
 viz <- list(petal=a_plot()+
-         geom_point(aes(Petal.Width, Petal.Length, fill=Species,
+         a_geom_point(aes(Petal.Width, Petal.Length, fill=Species,
                         clickSelects=id), data=iris),
        sepal=a_plot()+
-         geom_point(aes(Sepal.Width, Sepal.Length, fill=Species,
+         a_geom_point(aes(Sepal.Width, Sepal.Length, fill=Species,
                         clickSelects=id), data=iris))
 animint2gist(viz, description = "My animint plot")
 }

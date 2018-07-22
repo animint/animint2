@@ -118,8 +118,8 @@ see \code{\link{guides}}.
 \examples{
 df <- reshape2::melt(outer(1:4, 1:4), varnames = c("X1", "X2"))
 
-p1 <- a_plot(df, aes(X1, X2)) + geom_tile(aes(fill = value))
-p2 <- p1 + geom_point(aes(size = value))
+p1 <- a_plot(df, aes(X1, X2)) + a_geom_tile(aes(fill = value))
+p2 <- p1 + a_geom_point(aes(size = value))
 
 # Basic form
 p1 + a_scale_fill_continuous(guide = "colorbar")

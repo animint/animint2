@@ -2,7 +2,7 @@
 % Please edit documentation in R/z_geoms.R
 \name{make_widerect}
 \alias{make_widerect}
-\title{Make a clickSelects geom_widerect that completely tiles the y
+\title{Make a clickSelects a_geom_widerect that completely tiles the y
 range. This makes it easy to construct widerects for the common
 case of selecting a particular y value.}
 \usage{
@@ -17,13 +17,13 @@ make_widerect(data, y.name, even = FALSE, alpha = 0.5, ...)
 
 \item{alpha}{transparency of a selected widerect, default 1/2.}
 
-\item{...}{passed to geom_widerect.}
+\item{...}{passed to a_geom_widerect.}
 }
 \value{
-a geom_widerect layer.
+a a_geom_widerect layer.
 }
 \description{
-Make a clickSelects geom_widerect that completely tiles the y
+Make a clickSelects a_geom_widerect that completely tiles the y
 range. This makes it easy to construct widerects for the common
 case of selecting a particular y value.
 }

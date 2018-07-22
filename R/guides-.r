@@ -13,7 +13,7 @@
 #'
 #' dat <- data.frame(x = 1:5, y = 1:5, p = 1:5, q = factor(1:5),
 #'  r = factor(1:5))
-#' p <- a_plot(dat, aes(x, y, colour = p, size = q, shape = r)) + geom_point()
+#' p <- a_plot(dat, aes(x, y, colour = p, size = q, shape = r)) + a_geom_point()
 #'
 #' # without guide specification
 #' p
@@ -49,7 +49,7 @@
 #'
 #' # Set order for multiple guides
 #' a_plot(mpg, aes(displ, cty)) +
-#'   geom_point(aes(size = hwy, colour = cyl, shape = drv)) +
+#'   a_geom_point(aes(size = hwy, colour = cyl, shape = drv)) +
 #'   guides(
 #'    colour = guide_colourbar(order = 1),
 #'    shape = guide_legend(order = 2),

@@ -5,12 +5,12 @@
 \alias{a_stat_summary}
 \title{Summarise y values at unique/binned x x.}
 \usage{
-a_stat_summary_bin(mapping = NULL, data = NULL, geom = "pointrange",
+a_stat_summary_bin(mapping = NULL, data = NULL, a_geom = "pointrange",
   position = "identity", ..., fun.data = NULL, fun.y = NULL,
   fun.ymax = NULL, fun.ymin = NULL, fun.args = list(), na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 
-a_stat_summary(mapping = NULL, data = NULL, geom = "pointrange",
+a_stat_summary(mapping = NULL, data = NULL, a_geom = "pointrange",
   position = "identity", ..., fun.data = NULL, fun.y = NULL,
   fun.ymax = NULL, fun.ymin = NULL, fun.args = list(), na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
@@ -35,8 +35,8 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{geom}{Use to override the default connection between
-\code{geom_histogram}/\code{geom_freqpoly} and \code{a_stat_bin}.}
+\item{a_geom}{Use to override the default connection between
+\code{a_geom_histogram}/\code{a_geom_freqpoly} and \code{a_stat_bin}.}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -44,7 +44,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/a_stat.}
+to the paired a_geom/a_stat.}
 
 \item{fun.data}{A function that is given the complete data and should
 return a data frame with variables \code{ymin}, \code{y}, and \code{ymax}.}
@@ -103,37 +103,37 @@ If no aggregation functions are suppled, will default to
 }
 
 \examples{
-d <- a_plot(mtcars, aes(cyl, mpg)) + geom_point()
+d <- a_plot(mtcars, aes(cyl, mpg)) + a_geom_point()
 
 # You can supply individual functions to summarise the value at
 # each x:
-d + a_stat_summary(fun.y = "median", colour = "red", size = 2, geom = "point")
-d + a_stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
-d + aes(colour = factor(vs)) + a_stat_summary(fun.y = mean, geom="line")
+d + a_stat_summary(fun.y = "median", colour = "red", size = 2, a_geom = "point")
+d + a_stat_summary(fun.y = "mean", colour = "red", size = 2, a_geom = "point")
+d + aes(colour = factor(vs)) + a_stat_summary(fun.y = mean, a_geom="line")
 
 d + a_stat_summary(fun.y = mean, fun.ymin = min, fun.ymax = max,
   colour = "red")
 
 d <- a_plot(diamonds, aes(cut))
-d + geom_bar()
-d + a_stat_summary_bin(aes(y = price), fun.y = "mean", geom = "bar")
+d + a_geom_bar()
+d + a_stat_summary_bin(aes(y = price), fun.y = "mean", a_geom = "bar")
 
 \donttest{
 # Don't use ylim to zoom into a summary plot - this throws the
 # data away
 p <- a_plot(mtcars, aes(cyl, mpg)) +
-  a_stat_summary(fun.y = "mean", geom = "point")
+  a_stat_summary(fun.y = "mean", a_geom = "point")
 p
 p + ylim(15, 30)
 # Instead use a_coord_cartesian
 p + a_coord_cartesian(ylim = c(15, 30))
 
 # A set of useful summary functions is provided from the Hmisc package:
-a_stat_sum_df <- function(fun, geom="crossbar", ...) {
-  a_stat_summary(fun.data = fun, colour = "red", geom = geom, width = 0.2, ...)
+a_stat_sum_df <- function(fun, a_geom="crossbar", ...) {
+  a_stat_summary(fun.data = fun, colour = "red", a_geom = a_geom, width = 0.2, ...)
 }
-d <- a_plot(mtcars, aes(cyl, mpg)) + geom_point()
-# The crossbar geom needs grouping to be specified when used with
+d <- a_plot(mtcars, aes(cyl, mpg)) + a_geom_point()
+# The crossbar a_geom needs grouping to be specified when used with
 # a continuous x axis.
 d + a_stat_sum_df("mean_cl_boot", mapping = aes(group = cyl))
 d + a_stat_sum_df("mean_sdl", mapping = aes(group = cyl))
@@ -144,8 +144,8 @@ d + a_stat_sum_df("median_hilow", mapping = aes(group = cyl))
 if (require("ggplot2movies")) {
 set.seed(596)
 mov <- movies[sample(nrow(movies), 1000), ]
- m2 <- a_plot(mov, aes(x = factor(round(rating)), y = votes)) + geom_point()
- m2 <- m2 + a_stat_summary(fun.data = "mean_cl_boot", geom = "crossbar",
+ m2 <- a_plot(mov, aes(x = factor(round(rating)), y = votes)) + a_geom_point()
+ m2 <- m2 + a_stat_summary(fun.data = "mean_cl_boot", a_geom = "crossbar",
                          colour = "red", width = 0.3) + xlab("rating")
 m2
 # Notice how the overplotting skews off visual perception of the mean
@@ -158,14 +158,14 @@ m2
 m2 + a_scale_y_log10()
 # Transforming the coordinate system occurs after the
 # statistic has been computed. This means we're calculating the summary on the raw data
-# and stretching the geoms onto the log scale.  Compare the widths of the
+# and stretching the a_geoms onto the log scale.  Compare the widths of the
 # standard errors.
 m2 + a_coord_trans(y="log10")
 }
 }
 }
 \seealso{
-\code{\link{geom_errorbar}}, \code{\link{geom_pointrange}},
- \code{\link{geom_linerange}}, \code{\link{geom_crossbar}} for geoms to
+\code{\link{a_geom_errorbar}}, \code{\link{a_geom_pointrange}},
+ \code{\link{a_geom_linerange}}, \code{\link{a_geom_crossbar}} for geoms to
  display summarised data
 }

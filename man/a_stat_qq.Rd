@@ -2,14 +2,14 @@
 % Please edit documentation in R/stat-qq.r
 \name{a_stat_qq}
 \alias{a_stat_qq}
-\alias{geom_qq}
+\alias{a_geom_qq}
 \title{Calculation for quantile-quantile plot.}
 \usage{
-a_stat_qq(mapping = NULL, data = NULL, geom = "point",
+a_stat_qq(mapping = NULL, data = NULL, a_geom = "point",
   position = "identity", ..., distribution = stats::qnorm,
   dparams = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
-geom_qq(mapping = NULL, data = NULL, geom = "point",
+a_geom_qq(mapping = NULL, data = NULL, a_geom = "point",
   position = "identity", ..., distribution = stats::qnorm,
   dparams = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
@@ -33,7 +33,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{geom}{The geometric object to use display the data}
+\item{a_geom}{The geometric object to use display the data}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -41,7 +41,7 @@ a call to a position adjustment function.}
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/a_stat.}
+to the paired a_geom/a_stat.}
 
 \item{distribution}{Distribution function to use, if x not specified}
 
@@ -81,7 +81,7 @@ Calculation for quantile-quantile plot.
 df <- data.frame(y = rt(200, df = 5))
 p <- a_plot(df, aes(sample = y))
 p + a_stat_qq()
-p + geom_point(a_stat = "qq")
+p + a_geom_point(a_stat = "qq")
 
 # Use fitdistr from MASS to estimate distribution params
 params <- as.list(MASS::fitdistr(df$y, "t")$estimate)

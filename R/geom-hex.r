@@ -1,30 +1,30 @@
 #' Hexagon binning.
 #'
 #' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "hex")}
+#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "hex")}
 #'
 #' @seealso \code{\link{a_stat_bin2d}} for rectangular binning
-#' @param geom,a_stat Override the default connection between \code{geom_hex} and
+#' @param a_geom,a_stat Override the default connection between \code{a_geom_hex} and
 #'   \code{a_stat_binhex.}
 #' @export
 #' @inheritParams layer
-#' @inheritParams geom_point
+#' @inheritParams a_geom_point
 #' @export
 #' @examples
 #' d <- a_plot(diamonds, aes(carat, price))
-#' d + geom_hex()
+#' d + a_geom_hex()
 #'
 #' \donttest{
 #' # You can control the size of the bins by specifying the number of
 #' # bins in each direction:
-#' d + geom_hex(bins = 10)
-#' d + geom_hex(bins = 30)
+#' d + a_geom_hex(bins = 10)
+#' d + a_geom_hex(bins = 30)
 #'
 #' # Or by specifying the width of the bins
-#' d + geom_hex(binwidth = c(1, 1000))
-#' d + geom_hex(binwidth = c(.1, 500))
+#' d + a_geom_hex(binwidth = c(1, 1000))
+#' d + a_geom_hex(binwidth = c(.1, 500))
 #' }
-geom_hex <- function(mapping = NULL, data = NULL,
+a_geom_hex <- function(mapping = NULL, data = NULL,
                      a_stat = "binhex", position = "identity",
                      ...,
                      na.rm = FALSE,
@@ -34,7 +34,7 @@ geom_hex <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    geom = a_GeomHex,
+    a_geom = a_GeomHex,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -53,7 +53,7 @@ geom_hex <- function(mapping = NULL, data = NULL,
 a_GeomHex <- a_ggproto("a_GeomHex", a_Geom,
   draw_group = function(data, panel_scales, a_coord) {
     if (!inherits(a_coord, "a_CoordCartesian")) {
-      stop("geom_hex() only works with Cartesian coordinates", call. = FALSE)
+      stop("a_geom_hex() only works with Cartesian coordinates", call. = FALSE)
     }
 
     a_coord <- a_coord$transform(data, panel_scales)

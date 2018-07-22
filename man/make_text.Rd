@@ -18,7 +18,7 @@ make_text(data, x, y, label.var, format = NULL)
 \item{format}{String format for label. Use \%d, \%f, etc. to insert relevant label.var value.}
 }
 \value{
-a geom_text layer.
+a a_geom_text layer.
 }
 \description{
 Convenvience function for a showSelected plot label.

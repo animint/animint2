@@ -12,7 +12,7 @@
 #'   \code{\link{a_facet_grid}} depending on whether the formula is one-
 #'   or two-sided
 #' @param margins See \code{a_facet_grid}: display marginal facets?
-#' @param geom Character vector specifying geom(s) to draw. Defaults to
+#' @param a_geom Character vector specifying geom(s) to draw. Defaults to
 #'  "point" if x and y are specified, and "histogram" if only x is specified.
 #' @param a_stat,position DEPRECATED.
 #' @param xlim,ylim X and y axis limits
@@ -53,19 +53,19 @@
 #' qplot(y = mpg, data = mtcars)
 #'
 #' # Use different geoms
-#' qplot(mpg, wt, data = mtcars, geom = "path")
-#' qplot(factor(cyl), wt, data = mtcars, geom = c("boxplot", "jitter"))
-#' qplot(mpg, data = mtcars, geom = "dotplot")
+#' qplot(mpg, wt, data = mtcars, a_geom = "path")
+#' qplot(factor(cyl), wt, data = mtcars, a_geom = c("boxplot", "jitter"))
+#' qplot(mpg, data = mtcars, a_geom = "dotplot")
 #' }
 qplot <- function(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
-                  geom = "auto", xlim = c(NA, NA),
+                  a_geom = "auto", xlim = c(NA, NA),
                   ylim = c(NA, NA), log = "", main = NULL,
                   xlab = deparse(substitute(x)), ylab = deparse(substitute(y)),
                   asp = NA, a_stat = NULL, position = NULL) {
 
   if (!missing(a_stat)) warning("`stat` is deprecated", call. = FALSE)
   if (!missing(position)) warning("`position` is deprecated", call. = FALSE)
-  if (!is.character(geom)) stop("`geom` must be a character vector", call. = FALSE)
+  if (!is.character(a_geom)) stop("`geom` must be a character vector", call. = FALSE)
 
   argnames <- names(as.list(match.call(expand.dots = FALSE)[-1]))
   arguments <- as.list(match.call()[-1])
@@ -90,22 +90,22 @@ qplot <- function(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
   }
 
   # Work out plot data, and modify aesthetics, if necessary
-  if ("auto" %in% geom) {
+  if ("auto" %in% a_geom) {
     if ("sample" %in% aes_names) {
-      geom[geom == "auto"] <- "qq"
+      a_geom[a_geom == "auto"] <- "qq"
     } else if (missing(y)) {
       x <- eval(aesthetics$x, data, env)
       if (is.discrete(x)) {
-        geom[geom == "auto"] <- "bar"
+        a_geom[a_geom == "auto"] <- "bar"
       } else {
-        geom[geom == "auto"] <- "histogram"
+        a_geom[a_geom == "auto"] <- "histogram"
       }
       if (missing(ylab)) ylab <- "count"
     } else {
       if (missing(x)) {
         aesthetics$x <- bquote(seq_along(.(y)), aesthetics)
       }
-      geom[geom == "auto"] <- "point"
+      a_geom[a_geom == "auto"] <- "point"
     }
   }
 
@@ -122,14 +122,14 @@ qplot <- function(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
   if (!is.null(main)) p <- p + ggtitle(main)
 
   # Add geoms/statistics
-  for (g in geom) {
+  for (g in a_geom) {
     # Arguments are unevaluated because some are aesthetics. Need to evaluate
     # params - can't do in correct env because that's lost (no lazyeval)
     # so do the best we can by evaluating in parent frame.
     params <- arguments[setdiff(names(arguments), c(aes_names, argnames))]
     params <- lapply(params, eval, parent.frame())
 
-    p <- p + do.call(paste0("geom_", g), params)
+    p <- p + do.call(paste0("a_geom_", g), params)
   }
 
   logv <- function(var) var %in% strsplit(log, "")[[1]]
