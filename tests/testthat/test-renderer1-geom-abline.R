@@ -6,7 +6,7 @@ info <- animint2HTML(list(p = p))
 
 #Since tsv file are renamed with a_geom_abline_p_chunk1.tsv
 #making similar changes in very svg @class
-tsv.file <- file.path("animint-htmltest", "a_geom_abline_p_chunk1.tsv")
+tsv.file <- file.path("animint-htmltest", "a_geom2_abline_p_chunk1.tsv")
 tsv.data <- read.table(tsv.file, header=TRUE, comment.char = "")
 
 test_that("columns of abline tsv", {
