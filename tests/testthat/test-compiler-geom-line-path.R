@@ -128,8 +128,8 @@ all.increasing <- function(num.vec){
   all(0 < diff(num.vec))
 }
 expected.list <-
-  list(geom3_a_line_error=TRUE,
-       geom4_a_path_error=FALSE)
+  list(a_geom3_line_error=TRUE,
+       a_geom4_path_error=FALSE)
 result.list <- list()
 for(g.class in names(expected.list)){
   expected <- expected.list[[g.class]]

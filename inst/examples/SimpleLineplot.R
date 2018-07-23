@@ -12,7 +12,7 @@ data$y <- rnorm(length(data$x), data$x, .5) + rep(rnorm(5, 0, 2), each=10)
 
 #' Simple line plot
 p1 <- a_plot() + a_geom_line(data=data, aes(x=x, y=y, group=group)) + 
-  ggtitle("geom_line")
+  ggtitle("a_geom_line")
 p1
 # gg2animint(list(p1=p1))
 

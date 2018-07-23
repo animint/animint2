@@ -64,10 +64,10 @@ test_that("save separate chunks for a_geom_polygon", {
   animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
   
   common.chunk <-
-    list.files(path = out.dir, pattern = "geom.+a_polygon.+chunk_common.tsv", 
+    list.files(path = out.dir, pattern = "a_geom.+polygon.+chunk_common.tsv", 
                full.names = TRUE)
   varied.chunks <-
-    list.files(path = out.dir, pattern = "geom.+a_polygon.+chunk[0-9]+.tsv", 
+    list.files(path = out.dir, pattern = "a_geom.+polygon.+chunk[0-9]+.tsv", 
                full.names = TRUE)
   ## number of chunks
   expect_equal(length(common.chunk), 1L)
@@ -115,10 +115,10 @@ test_that("save separate chunks for a_geom_point without specifying group", {
   animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
   
   common.chunk <-
-    list.files(path = out.dir, pattern = "geom.+a_point.+chunk_common.tsv", 
+    list.files(path = out.dir, pattern = "a_geom.+point.+chunk_common.tsv", 
                full.names = TRUE)
   varied.chunks <-
-    list.files(path = out.dir, pattern = "geom.+a_point.+chunk[0-9]+.tsv", 
+    list.files(path = out.dir, pattern = "a_geom.+point.+chunk[0-9]+.tsv", 
         full.names = TRUE)
   ## number of chunks
   expect_equal(length(common.chunk), 0L)
@@ -146,10 +146,10 @@ test_that("save separate chunks for a_geom_point without specifying group", {
   animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
   
   common.chunk <-
-    list.files(path = out.dir, pattern = "geom.+a_point.+chunk_common.tsv", 
+    list.files(path = out.dir, pattern = "a_geom.+point.+chunk_common.tsv", 
                full.names = TRUE)
   varied.chunks <-
-    list.files(path = out.dir, pattern = "geom.+a_point.+chunk[0-9]+.tsv", 
+    list.files(path = out.dir, pattern = "a_geom.+point.+chunk[0-9]+.tsv", 
                full.names = TRUE)
   # number of chunks
   expect_equal(length(common.chunk), 1L)
@@ -235,10 +235,10 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   
   ## multiple vars selected
   common.chunk <-
-    list.files(path = out.dir, pattern = "geom2_a_text.+chunk_common.tsv", 
+    list.files(path = out.dir, pattern = "a_geom2_text.+chunk_common.tsv", 
                full.names = TRUE)
   varied.chunks <-
-    list.files(path = out.dir, pattern = "geom2_a_text.+chunk[0-9]+.tsv", 
+    list.files(path = out.dir, pattern = "a_geom2_text.+chunk[0-9]+.tsv", 
                full.names = TRUE)
   ## number of chunks
   expect_equal(length(common.chunk), 0L)
@@ -250,10 +250,10 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   
   ## single var selected
   common.chunk <-
-    list.files(path = out.dir, pattern = "geom.+a_point.+chunk_common.tsv", 
+    list.files(path = out.dir, pattern = "a_geom.+point.+chunk_common.tsv", 
                full.names = TRUE)
   varied.chunks <-
-    list.files(path = out.dir, pattern = "geom.+a_point.+chunk[0-9]+.tsv", 
+    list.files(path = out.dir, pattern = "a_geom.+point.+chunk[0-9]+.tsv", 
                full.names = TRUE)
   ## number of chunks
   expect_equal(length(common.chunk), 1L)
@@ -264,12 +264,12 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   common.must.have <- c("colour", "clickSelects", "key", "showSelectedlegendcolour", "fill", "group")
   expect_true(all(common.must.have %in% names(common.data)))
   ## choose first varied.chunk to test
-  chunk.info <- info$geoms$geom1_a_point_scatter$chunks
+  chunk.info <- info$geoms$a_geom1_point_scatter$chunks
   year.str <- names(chunk.info)[[1]]
   year.num <- as.numeric(year.str)
   expected.data <- subset(points.not.na, year == year.num)
   chunk.num <- chunk.info[[year.str]]
-  tsv.name <- sprintf("geom1_a_point_scatter_chunk%d.tsv", chunk.num)
+  tsv.name <- sprintf("a_geom1_point_scatter_chunk%d.tsv", chunk.num)
   tsv.path <- file.path(out.dir, tsv.name)
   varied.data <- read.csv(tsv.path, sep = "\t", comment.char = "")
   expect_equal(nrow(varied.data), nrow(expected.data))
@@ -311,10 +311,10 @@ test_that("save separate chunks for non-spatial geoms with nest_order not being 
   animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
   
   common.chunk <-
-    list.files(path = out.dir, pattern = "geom.+a_segment.+chunk_common.tsv", 
+    list.files(path = out.dir, pattern = "a_geom.+segment.+chunk_common.tsv", 
                full.names = TRUE)
   varied.chunks <-
-    list.files(path = out.dir, pattern = "geom.+a_segment.+chunk[0-9]+.tsv", 
+    list.files(path = out.dir, pattern = "a_geom.+segment.+chunk[0-9]+.tsv", 
                full.names = TRUE)
   # number of chunks
   expect_equal(length(common.chunk), 1L)

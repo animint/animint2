@@ -141,7 +141,7 @@ test_that("warning for position=stack and showSelected", {
   )
   expect_warning({
     animint2dir(complicated, open.browser=FALSE)
-  }, "showSelected only works with position=identity, problem: geom1_a_bar_plot")
+  }, "showSelected only works with position=identity, problem: a_geom1_bar_plot")
 })
 
 test_that("no warning for position=stack without showSelected", {

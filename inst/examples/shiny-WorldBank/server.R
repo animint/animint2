@@ -38,16 +38,16 @@ shinyServer(function(input, output) {
     data_i$color <- input$color
     
     gg <-
-      ggplot()+
-        theme_bw()+
-        theme(panel.margin=grid::unit(0, "lines"))+
+      a_plot()+
+        a_theme_bw()+
+        a_theme(panel.margin=grid::unit(0, "lines"))+
         xlab("")+
         ylab("")+
-        geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2),
+        a_geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2),
                       clickSelects="year",
                       data=TS(years), alpha=1/2)+
-        theme_animint(width=1000, height=800)+
-        geom_line(aes_string(
+        a_theme_animint(width=1000, height=800)+
+        a_geom_line(aes_string(
             x="year",
             y=input$y,
             group="country",
@@ -55,7 +55,7 @@ shinyServer(function(input, output) {
             key="country"),
           clickSelects="country",
           data=TS(not.na.y), size=4, alpha=3/5)+
-        geom_point(aes_string(
+        a_geom_point(aes_string(
             x="year",
             y=input$y,
             color=input$color,
@@ -64,7 +64,7 @@ shinyServer(function(input, output) {
           showSelected="country",
           clickSelects="country",
           data=TS(not.na.y))+
-        geom_text(aes_string(
+        a_geom_text(aes_string(
             x="year",
             y=input$y,
             key="country",
@@ -73,10 +73,10 @@ shinyServer(function(input, output) {
           showSelected="country",
           clickSelects="country",
           data=TS(min.years), hjust=1)+
-        geom_widerect(aes(ymin=year-1/2, ymax=year+1/2),
+        a_geom_widerect(aes(ymin=year-1/2, ymax=year+1/2),
                       clickSelects="year",
                       data=TS2(years), alpha=1/2)+
-        geom_path(aes_string(
+        a_geom_path(aes_string(
             x=input$x,
             y="year",
             group="country",
@@ -84,7 +84,7 @@ shinyServer(function(input, output) {
             key="country"),
           clickSelects="country",
           data=TS2(not.na.x), size=4, alpha=3/5)+
-        geom_point(aes_string(
+        a_geom_point(aes_string(
             x=input$x,
             y="year",
             color=input$color,
@@ -93,7 +93,7 @@ shinyServer(function(input, output) {
           showSelected="country",
           clickSelects="country",
           data=TS2(not.na.x))+
-        geom_point(aes_string(
+        a_geom_point(aes_string(
             x=input$x,
             y=input$y,
             id="country",
@@ -103,7 +103,7 @@ shinyServer(function(input, output) {
           showSelected="year",
           clickSelects="country",
           data=SCATTER(not.na))+
-        geom_text(aes_string(
+        a_geom_text(aes_string(
             x=input$x,
             y=input$y,
             label="country",
@@ -111,15 +111,15 @@ shinyServer(function(input, output) {
           showSelected=c("country","year", "color"),
           clickSelects="country", 
           data=data_i)+
-        facet_grid(side ~ top, scales="free")+
-        geom_text(aes(x, y,
+        a_facet_grid(side ~ top, scales="free")+
+        a_geom_text(aes(x, y,
           label=paste0("year = ", year)),
           showSelected="year",
           data=SCATTER(years))
       if(is.discrete(not.na[[input$size]])){
-        gg <- gg+scale_size_discrete()
+        gg <- gg+a_scale_size_discrete()
       }else{
-        gg <- gg+scale_size_animint()
+        gg <- gg+a_scale_size_animint()
       }
     list(ts=gg,
          time=list(variable="year",ms=2000),
@@ -130,7 +130,7 @@ shinyServer(function(input, output) {
   })
   
   output$animint <- renderAnimint({
-    # unlike plotOutput, height/width is controlled with theme_animint()
+    # unlike plotOutput, height/width is controlled with a_theme_animint()
     getViz()
   })
   

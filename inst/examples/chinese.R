@@ -47,6 +47,6 @@ scatter = a_plot()+
 )
 
 animint2dir( viz , "chinese")
-system("cat chinese/geom4_text_scatter_chunk1.tsv")
+system("cat chinese/a_geom4_text_scatter_chunk1.tsv")
 
 animint2gist(viz)

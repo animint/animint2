@@ -182,14 +182,14 @@ var animint = function (to_select, json_file) {
     // geom. This is a hack and should be removed when we implement
     // the selected.color, selected.size, etc aesthetics.
     if(g_info.aes.hasOwnProperty("fill") &&
-       g_info.geom == "rect" &&
+       g_info.a_geom == "rect" &&
        g_info.aes.hasOwnProperty("clickSelects")){
       g_info.select_style = "stroke";
     }else{
       g_info.select_style = "opacity";
     }
     // Determine if data will be an object or an array.
-    if(g_info.geom in data_object_geoms){
+    if(g_info.a_geom in data_object_geoms){
       g_info.data_is_object = true;
     }else{
       g_info.data_is_object = false;
@@ -1048,7 +1048,7 @@ var animint = function (to_select, json_file) {
     };
     var layer_g_element = svg.select("g." + g_info.classed);
     var panel_g_element = layer_g_element.select("g.PANEL" + PANEL);
-    var elements = panel_g_element.selectAll(".geom");
+    var elements = panel_g_element.selectAll(".a_geom");
     // TODO: standardize this code across aes/styles.
     var base_opacity = 1;
     if (g_info.params.alpha) {
@@ -1065,7 +1065,7 @@ var animint = function (to_select, json_file) {
       return a;
     };
     var size = 2;
-    if(g_info.geom == "text"){
+    if(g_info.a_geom == "text"){
       size = 12;
     }
     if (g_info.params.hasOwnProperty("size")) {
@@ -1234,7 +1234,7 @@ var animint = function (to_select, json_file) {
       // line, path, and polygon use d3.svg.line(),
       // ribbon uses d3.svg.area()
       // we have to define lineThing accordingly.
-      if (g_info.geom == "ribbon") {
+      if (g_info.a_geom == "ribbon") {
         var lineThing = d3.svg.area()
           .x(toXY("x", "x"))
           .y(toXY("y", "ymax"))
@@ -1263,7 +1263,7 @@ var animint = function (to_select, json_file) {
 	    return one_row.href;
 	  })
           .attr("target", "_blank")
-          .attr("class", "geom")
+          .attr("class", "a_geom")
 	;
       };
       eActions = function (e) {
@@ -1271,7 +1271,7 @@ var animint = function (to_select, json_file) {
           var one_group = keyed_data[d.value];
           // filter NaN since they make the whole line disappear!
 	  var no_na = one_group.filter(function(d){
-            if(g_info.geom == "ribbon"){
+            if(g_info.a_geom == "ribbon"){
               return !isNaN(d.x) && !isNaN(d.ymin) && !isNaN(d.ymax);
             }else{
               return !isNaN(d.x) && !isNaN(d.y);
@@ -1280,7 +1280,7 @@ var animint = function (to_select, json_file) {
           return lineThing(no_na);
         })
           .style("fill", function (group_info) {
-            if (g_info.geom == "line" || g_info.geom == "path") {
+            if (g_info.a_geom == "line" || g_info.a_geom == "path") {
               return "none";
             }
             var one_group = keyed_data[group_info.value];
@@ -1318,10 +1318,10 @@ var animint = function (to_select, json_file) {
       linkActions = function(a_elements){
 	a_elements.attr("xlink:href", function(d){ return d.href; })
           .attr("target", "_blank")
-          .attr("class", "geom");
+          .attr("class", "a_geom");
       };
     }
-    if (g_info.geom == "segment") {
+    if (g_info.a_geom == "segment") {
       elements = elements.data(data, key_fun);
       eActions = function (e) {
         e.attr("x1", function (d) {
@@ -1342,7 +1342,7 @@ var animint = function (to_select, json_file) {
       };
       eAppend = "line";
     }
-    if (g_info.geom == "linerange") {
+    if (g_info.a_geom == "linerange") {
       elements = elements.data(data, key_fun);
       eActions = function (e) {
         e.attr("x1", function (d) {
@@ -1363,7 +1363,7 @@ var animint = function (to_select, json_file) {
       };
       eAppend = "line";
     }
-    if (g_info.geom == "vline") {
+    if (g_info.a_geom == "vline") {
       elements = elements.data(data, key_fun);
       eActions = function (e) {
         e.attr("x1", toXY("x", "xintercept"))
@@ -1376,7 +1376,7 @@ var animint = function (to_select, json_file) {
       };
       eAppend = "line";
     }
-    if (g_info.geom == "hline") {
+    if (g_info.a_geom == "hline") {
       // pretty much a copy of geom_vline with obvious modifications
       elements = elements.data(data, key_fun);
       eActions = function (e) {
@@ -1390,7 +1390,7 @@ var animint = function (to_select, json_file) {
       };
       eAppend = "line";
     }
-    if (g_info.geom == "text") {
+    if (g_info.a_geom == "text") {
       elements = elements.data(data, key_fun);
       // TODO: how to support vjust? firefox doensn't support
       // baseline-shift... use paths?
@@ -1407,7 +1407,7 @@ var animint = function (to_select, json_file) {
       };
       eAppend = "text";
     }
-    if (g_info.geom == "point") {
+    if (g_info.a_geom == "point") {
       elements = elements.data(data, key_fun);
       eActions = function (e) {
         e.attr("cx", toXY("x", "x"))
@@ -1419,7 +1419,7 @@ var animint = function (to_select, json_file) {
       };
       eAppend = "circle";
     }
-    if (g_info.geom == "tallrect") {
+    if (g_info.a_geom == "tallrect") {
       elements = elements.data(data, key_fun);
       eActions = function (e) {
         e.attr("x", toXY("x", "xmin"))
@@ -1435,7 +1435,7 @@ var animint = function (to_select, json_file) {
       };
       eAppend = "rect";
     }
-    if (g_info.geom == "widerect") {
+    if (g_info.a_geom == "widerect") {
       elements = elements.data(data, key_fun);
       eActions = function (e) {
         e.attr("y", toXY("y", "ymax"))
@@ -1451,7 +1451,7 @@ var animint = function (to_select, json_file) {
       };
       eAppend = "rect";
     }
-    if (g_info.geom == "rect") {
+    if (g_info.a_geom == "rect") {
       elements = elements.data(data, key_fun);
       eActions = function (e) {
         e.attr("x", toXY("x", "xmin"))
@@ -1471,7 +1471,7 @@ var animint = function (to_select, json_file) {
       };
       eAppend = "rect";
     }
-    if (g_info.geom == "boxplot") {
+    if (g_info.a_geom == "boxplot") {
 
       // TODO: currently boxplots are unsupported (we intentionally
       // stop with an error in the R code). The reason why is that
@@ -1559,7 +1559,7 @@ var animint = function (to_select, json_file) {
         .append("svg:"+eAppend);
     }else{
       enter = enter.append(eAppend)
-	      .attr("class", "geom");
+	      .attr("class", "a_geom");
     }
     var has_clickSelects = g_info.aes.hasOwnProperty("clickSelects");
     var has_clickSelects_variable =
@@ -2190,7 +2190,7 @@ var animint = function (to_select, json_file) {
       .style("display", "none");
     Widgets["loading"] = loading;
     var tr = loading.append("tr");
-    tr.append("th").text("geom");
+    tr.append("th").text("a_geom");
     tr.append("th").attr("class", "chunk").text("selected chunk");
     tr.append("th").attr("class", "downloaded").text("downloaded");
     tr.append("th").attr("class", "total").text("total");

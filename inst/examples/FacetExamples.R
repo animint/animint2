@@ -9,7 +9,7 @@ boxplotdata <- ddply(boxplotdata, .(group), transform, ymax=max(y), ymin=min(y),
 
 f1 <- a_plot() + a_geom_density(data=boxplotdata, aes(x=y, group=group, fill=group), alpha=.5) +
   a_scale_fill_discrete("Distribution") + xlab("x") + 
-  ggtitle("geom_density") + a_facet_wrap(~group)
+  ggtitle("a_geom_density") + a_facet_wrap(~group)
 f1
 
 temp <- a_plot_build(f1)

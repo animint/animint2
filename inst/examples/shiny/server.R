@@ -8,7 +8,7 @@ shinyServer(function(input, output) {
              x = input$x, y = input$y,
              size=input$size,
              color = input$col)) + 
-      geom_point(data = mtcars)
+      a_geom_point(data = mtcars)
   })
   
   output$a_plot <- renderPlot({
@@ -17,8 +17,8 @@ shinyServer(function(input, output) {
   
   # renderAnimint() expects a list of a_plots and animint options
   output$animint <- renderAnimint({
-    # unlike plotOutput, height/width is controlled with theme_animint()
-    p <- getPlot() + theme_animint(height = 300, width = 300)
+    # unlike plotOutput, height/width is controlled with a_theme_animint()
+    p <- getPlot() + a_theme_animint(height = 300, width = 300)
     list(plot = p)
   })
   
