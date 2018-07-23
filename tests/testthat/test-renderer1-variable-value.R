@@ -49,26 +49,26 @@ viz <-
   list(errorLines=a_plot()+
          a_scale_color_manual(values=c(one="red", two="black"))+
          a_scale_size_manual(values=c(one=1, two=2))+
-         geom_line(aes(bases.per.problem, errors,
+         a_geom_line(aes(bases.per.problem, errors,
                        color=chunks, size=chunks),
                    data=one.error)+
-         geom_line(aes(bases.per.problem, errors,
+         a_geom_line(aes(bases.per.problem, errors,
                        color=chunks, size=chunks),
                    data=two.error),
 
     problems=a_plot()+
          ggtitle("select problem")+
-         geom_segment(aes(problemStart, problem.i,
+         a_geom_segment(aes(problemStart, problem.i,
                           xend=problemEnd, yend=problem.i),
                       clickSelects="problem.name",
                       showSelected="bases.per.problem",
                       size=5,
                       data=data.frame(problems, sample.id="problems"))+
-         geom_text(aes(200, 5,
+         a_geom_text(aes(200, 5,
                        label=paste("problem size", bases.per.problem)),
                    showSelected="bases.per.problem",
                    data=data.frame(sizes, sample.id="problems"))+
-         geom_segment(aes(peakStart, problem.i,
+         a_geom_segment(aes(peakStart, problem.i,
                           xend=peakEnd, yend=problem.i),
                       showSelected=showSelected.vec,
                       clickSelects="problem.name",
@@ -76,7 +76,7 @@ viz <-
                       size=10,
                       color="deepskyblue")+
          ## TODO: yend=y=0 as params not aes?
-         geom_segment(aes(peakStart, 0,
+         a_geom_segment(aes(peakStart, 0,
                           xend=peakEnd, yend=0),
                       showSelected=showSelected.vec,
                       clickSelects="problem.name",
@@ -91,21 +91,21 @@ viz <-
        
        sizes=a_plot()+
          ggtitle("select problem size")+
-         geom_point(aes(bases.per.problem, problems),
+         a_geom_point(aes(bases.per.problem, problems),
                     clickSelects="bases.per.problem",
                     size=10,
                     data=sizes),
 
        peaks=a_plot()+
          ggtitle("select number of peaks")+
-         geom_point(aes(peaks, peaks,
+         a_geom_point(aes(peaks, peaks,
                         color=error.type,
                         id=peaks),
                     showSelected=c("problem.name", "bases.per.problem"),
                     clickSelects = clickSelects.vec,
                     size=10,
                     data=peaks)+
-         geom_text(aes(1, 3, label=problem.name),
+         a_geom_text(aes(1, 3, label=problem.name),
                    showSelected=c("problem.name", "bases.per.problem"),
                    data=problems))
 
@@ -163,34 +163,34 @@ test_that(".variable and .value makes compiler create selectors", {
 
 test_that(".variable and .value renders correctly at first", {
   node.list <-
-    getNodeSet(info$html, '//g[@class="geom6_a_segment_problems"]//line')
+    getNodeSet(info$html, '//g[@class="a_geom6_segment_problems"]//line')
   expect_equal(length(node.list), 2)
 })
 
 test_that("clicking reduces the number of peaks", {
   no.peaks.html <- clickHTML(id=0)
   node.list <-
-    getNodeSet(no.peaks.html, '//g[@class="geom6_a_segment_problems"]//line')
+    getNodeSet(no.peaks.html, '//g[@class="a_geom6_segment_problems"]//line')
   expect_equal(length(node.list), 1)
 })
 
 test_that("clicking increases the number of peaks", {
   more.peaks.html <- clickHTML(id=2)
   node.list <-
-    getNodeSet(more.peaks.html, '//g[@class="geom6_a_segment_problems"]//line')
+    getNodeSet(more.peaks.html, '//g[@class="a_geom6_segment_problems"]//line')
   expect_equal(length(node.list), 3)
 })
 
 viz.for <-
   list(problems=a_plot()+
          ggtitle("select problem")+
-         geom_segment(aes(problemStart, problem.i,
+         a_geom_segment(aes(problemStart, problem.i,
                           xend=problemEnd, yend=problem.i),
                       clickSelects="problem.name",
                       showSelected="bases.per.problem",
                       size=5,
                       data=data.frame(problems, sample.id="problems"))+
-         geom_text(aes(200, 5,
+         a_geom_text(aes(200, 5,
                        label=paste("problem size", bases.per.problem)),
                    showSelected="bases.per.problem",
                    data=data.frame(sizes, sample.id="problems"))+
@@ -202,14 +202,14 @@ viz.for <-
        
        sizes=a_plot()+
          ggtitle("select problem size")+
-         geom_point(aes(bases.per.problem, problems),
+         a_geom_point(aes(bases.per.problem, problems),
                     clickSelects="bases.per.problem",
                     size=10,
                     data=sizes),
 
        peaks=a_plot()+
          ggtitle("select number of peaks")+
-         geom_text(aes(1, 3, label=problem.name),
+         a_geom_text(aes(1, 3, label=problem.name),
                    showSelected="problem.name",
                    data=problems))
 
@@ -231,7 +231,7 @@ for(problem.name in names(p.list)){
   p$bases.per.problem <- pp$bases.per.problem[1]
   
   viz.for$problems <- viz.for$problems+
-    geom_segment(aes_string("peakStart", "problem.i",
+    a_geom_segment(aes_string("peakStart", "problem.i",
                             id="problem.nodots",
                             xend="peakEnd", yend="problem.i"),
                  showSelected=c(s.name, "bases.per.problem"),
@@ -239,7 +239,7 @@ for(problem.name in names(p.list)){
                  data=data.frame(pp, sample.id="problems"),
                  size=10,
                  color="deepskyblue")+
-    geom_segment(aes_string("peakStart", "0",
+    a_geom_segment(aes_string("peakStart", "0",
                             xend="peakEnd", yend="0"),
                  showSelected=c(s.name, "bases.per.problem"),
                  clickSelects="problem.name",
@@ -247,7 +247,7 @@ for(problem.name in names(p.list)){
                  size=10,
                  color="deepskyblue")
   viz.for$peaks <- viz.for$peaks+
-         geom_point(aes_string("peaks", "peaks"),
+         a_geom_point(aes_string("peaks", "peaks"),
                     showSelected=c("problem.name", "bases.per.problem"),
                     clickSelects=s.name,
                     size=10,

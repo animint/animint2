@@ -6,14 +6,14 @@ data(WorldBank, package = "animint2")
 ## http://bost.ocks.org/mike/constancy/
 no.time <-
   list(scatter=a_plot()+
-       geom_point(aes(life.expectancy, fertility.rate,
+       a_geom_point(aes(life.expectancy, fertility.rate,
                       colour=region, size=population,
                       tooltip=paste(country, "population", population),
                       key=country), # key aesthetic for animated transitions!
                   showSelected="year",
                   clickSelects="country",
                   data=WorldBank)+
-       geom_text(aes(life.expectancy, fertility.rate, label=country,
+       a_geom_text(aes(life.expectancy, fertility.rate, label=country,
                      key=country), # also use key here!
                  showSelected=c("country", "year"),
                  data=WorldBank)+
@@ -22,13 +22,13 @@ no.time <-
        
        ts=a_plot()+
        make_tallrect(WorldBank, "year")+
-       geom_line(aes(year, life.expectancy, group=country, colour=region),
+       a_geom_line(aes(year, life.expectancy, group=country, colour=region),
                  clickSelects="country",
                  data=WorldBank, size=4, alpha=3/5),
 
        bar=a_plot()+
        a_theme_animint(height=2400)+
-       geom_bar(aes(country, life.expectancy, fill=region,
+       a_geom_bar(aes(country, life.expectancy, fill=region,
                     key=country),
                 showSelected="year", clickSelects="country",
                 data=WorldBank, a_stat="identity", position="identity")+
@@ -42,13 +42,13 @@ no.time <-
 
 bar.attributes <- function(html){
   node.set <-
-    getNodeSet(info$html, '//g[@class="geom6_a_bar_bar"]//rect')
+    getNodeSet(info$html, '//g[@class="a_geom6_bar_bar"]//rect')
   sapply(node.set, xmlAttrs)
 }
 
 info <- animint2HTML(no.time)
 
-chunk1.tsv <- file.path("animint-htmltest", "geom6_a_bar_bar_chunk1.tsv")
+chunk1.tsv <- file.path("animint-htmltest", "a_geom6_bar_bar_chunk1.tsv")
 chunk1 <- read.table(chunk1.tsv, sep="\t", header=TRUE,
                      comment.char="", quote="")
 
@@ -61,7 +61,7 @@ test_that("chunk1 does not contain NA", {
   expect_true(all(not.missing))
 })
 
-common.tsv <- file.path("animint-htmltest", "geom6_a_bar_bar_chunk_common.tsv")
+common.tsv <- file.path("animint-htmltest", "a_geom6_bar_bar_chunk_common.tsv")
 common <- read.table(common.tsv, sep="\t", header=TRUE,
                      comment.char="", quote="")
 

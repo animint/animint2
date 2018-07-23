@@ -27,9 +27,9 @@ test_that("knit_print.animint renders five x axis titles", {
 })
 
 test_that("segments and breakpoints are rendered", {
-  seg.list <- getNodeSet(html, "//g[@class='geom3_a_segment_signal']//line")
+  seg.list <- getNodeSet(html, "//g[@class='a_geom3_segment_signal']//line")
   expect_equal(length(seg.list), 6)
-  break.list <- getNodeSet(html, "//g[@class='geom4_a_vline_signal']//line")
+  break.list <- getNodeSet(html, "//g[@class='a_geom4_vline_signal']//line")
   expect_equal(length(break.list), 5)
 })
 
@@ -71,7 +71,7 @@ get_circles <- function(html=getHTML()) {
   plot.names <- c("plot1top", "plot1bottom")
   count.vec <- c()
   for(i in seq_along(plot.names)){
-    xpath <- sprintf("//div[@id='%s']//circle[@class='geom']", plot.names[[i]])
+    xpath <- sprintf("//div[@id='%s']//circle[@class='a_geom']", plot.names[[i]])
     circle.list <- getNodeSet(html, xpath)
     count.vec[[i]] <- length(circle.list)
   }

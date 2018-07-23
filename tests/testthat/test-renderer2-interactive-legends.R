@@ -8,13 +8,13 @@ get_circles <- function(id) {
 iris$id <- 1:nrow(iris)
 p1 <- a_plot() +
   guides(color="none")+
-  geom_point(aes(Sepal.Length, Sepal.Width, colour = Species, 
+  a_geom_point(aes(Sepal.Length, Sepal.Width, colour = Species, 
                  size = Petal.Width, id = id), 
             clickSelects = "Species", data = iris) + 
   a_facet_wrap(~Species, nrow = 2) + 
   ggtitle("Sepal Data")
 p2 <- a_plot() + 
-  geom_point(data=iris, aes(Petal.Length, Petal.Width, colour = Species, 
+  a_geom_point(data=iris, aes(Petal.Length, Petal.Width, colour = Species, 
                        size = Sepal.Width),
              showSelected = "Species") + 
   ggtitle("Petal Data")
@@ -84,14 +84,14 @@ mtcars$vs.fac2 <- factor(mtcars$vs)
 seg <- data.frame(x=15, y=100, xend=30, yend=100, vs=1)
 viz <- list(
   numeric=a_plot()+
-    geom_point(aes(mpg, hp, color = vs, fill=vs),
+    a_geom_point(aes(mpg, hp, color = vs, fill=vs),
                data=mtcars)+
-    geom_segment(aes(x, y, xend=xend, yend=yend, color=vs),
+    a_geom_segment(aes(x, y, xend=xend, yend=yend, color=vs),
                  data=seg),
   factor=a_plot()+
-    geom_point(aes(mpg, hp, color = vs.fac, fill=vs.fac),
+    a_geom_point(aes(mpg, hp, color = vs.fac, fill=vs.fac),
                data=mtcars)+
-    geom_segment(aes(x, y, xend=xend, yend=yend),
+    a_geom_segment(aes(x, y, xend=xend, yend=yend),
                  data=seg)
   )
 
@@ -119,20 +119,20 @@ test_that("Two plots with both color and fill", {
   expect_equal(length(right.circles), 2)
   ## Lines should be rendered in both plots:
   left.lines <-
-    getNodeSet(info$html, '//g[@class="geom2_a_segment_numeric"]//line')
+    getNodeSet(info$html, '//g[@class="a_geom2_segment_numeric"]//line')
   expect_equal(length(left.lines), 1)
   right.lines <-
-    getNodeSet(info$html, '//g[@class="geom4_a_segment_factor"]//line')
+    getNodeSet(info$html, '//g[@class="a_geom4_segment_factor"]//line')
   expect_equal(length(right.lines), 1)
 })
 
 viz <- list(
   vs=a_plot()+
-    geom_point(aes(mpg, hp, fill=factor(vs)),
+    a_geom_point(aes(mpg, hp, fill=factor(vs)),
                color="black",
                data=mtcars),
   am=a_plot()+
-    geom_point(aes(mpg, hp, fill=factor(am)),
+    a_geom_point(aes(mpg, hp, fill=factor(am)),
                color="black",
                data=mtcars)
   )
@@ -148,9 +148,9 @@ vs1 <- subset(mtcars, vs == 1)
 viz <- list(
   p=a_plot()+
     a_scale_color_discrete("vs")+
-    geom_point(aes(mpg, hp, color = "vs0"),
+    a_geom_point(aes(mpg, hp, color = "vs0"),
                data=vs0)+
-    geom_point(aes(mpg, hp, color = "vs1"),
+    a_geom_point(aes(mpg, hp, color = "vs1"),
                data=vs1))
 
 test_that('aes(color="constant") is an error"', {
@@ -161,9 +161,9 @@ test_that('aes(color="constant") is an error"', {
 
 viz <- list(
   p=a_plot()+
-    geom_point(aes(mpg, hp, color = vs.num),
+    a_geom_point(aes(mpg, hp, color = vs.num),
                data=vs0)+
-    geom_point(aes(mpg, hp, color = vs),
+    a_geom_point(aes(mpg, hp, color = vs),
                data=vs1))
 test_that('aes(color=vs) aes(color=vs.num) is OK"', {
   info <- animint2HTML(viz)
@@ -176,10 +176,10 @@ test_that('aes(color=vs) aes(color=vs.num) is OK"', {
 
 viz <- list(
   p=a_plot()+
-    geom_point(aes(mpg, hp, color = vs.num, fill=vs.fac),
+    a_geom_point(aes(mpg, hp, color = vs.num, fill=vs.fac),
                shape=21,
                data=vs0)+
-    geom_point(aes(mpg, hp, color = vs, fill=vs.fac),
+    a_geom_point(aes(mpg, hp, color = vs, fill=vs.fac),
                shape=21,
                data=vs1))
 test_that('aes(color=vs, fill=vs.fac) aes(color=vs.num, fill=vs.fac) is OK"', {
@@ -204,9 +204,9 @@ test_that('aes(color=vs, fill=vs.fac) aes(color=vs.num, fill=vs.fac) is OK"', {
 viz <- list(
   p=a_plot()+
     a_scale_color_discrete("vs")+
-    geom_point(aes(mpg, hp, color = vs.fac),
+    a_geom_point(aes(mpg, hp, color = vs.fac),
                data=vs0)+
-    geom_point(aes(mpg, hp, color = vs.fac),
+    a_geom_point(aes(mpg, hp, color = vs.fac),
                data=vs1))
 test_that('aes(color=vs.fac) is OK"', {
   info <- animint2HTML(viz)
@@ -220,9 +220,9 @@ test_that('aes(color=vs.fac) is OK"', {
 viz <- list(
   p=a_plot()+
     a_scale_color_discrete("vs")+
-    geom_point(aes(mpg, hp, color = vs.fac),
+    a_geom_point(aes(mpg, hp, color = vs.fac),
                data=vs0)+
-    geom_point(aes(mpg, hp, color = vs.fac2),
+    a_geom_point(aes(mpg, hp, color = vs.fac2),
                data=vs1))
 test_that('aes(color=something), aes(color=something.else) is an error"', {
   expect_error({

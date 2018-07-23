@@ -40,7 +40,7 @@ test_that("WorldBank renders in a shiny app", {
 })
 
 getYear <- function(){
-  node.set <- getNodeSet(getHTML(), '//g[@class="geom10_a_text_ts"]//text')
+  node.set <- getNodeSet(getHTML(), '//g[@class="a_geom10_text_ts"]//text')
   expect_equal(length(node.set), 1)
   value <- xmlValue(node.set[[1]])
   sub("year = ", "", value)
@@ -78,7 +78,7 @@ test_that("animint fits in div", {
 })
 
 getCountries <- function(){
-  country.labels <- getNodeSet(getHTML(), '//g[@class="geom9_a_text_ts"]//text')
+  country.labels <- getNodeSet(getHTML(), '//g[@class="a_geom9_text_ts"]//text')
   sort(sapply(country.labels, xmlValue))
 }
 

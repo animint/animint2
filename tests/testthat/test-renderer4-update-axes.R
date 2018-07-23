@@ -3,7 +3,7 @@ acontext("update_axes")
 # Plots with axis updates
 mtcars$cyl <- as.factor(mtcars$cyl)
 
-no_updates <- a_plot()+geom_point(aes(mpg, disp, 
+no_updates <- a_plot()+a_geom_point(aes(mpg, disp, 
                                       colour=cyl), 
                                   data = mtcars)
 
@@ -35,7 +35,7 @@ expect_no_warning(info <- animint2HTML(viz))
 # and does not produce an error
 d <- mtcars
 d$disp <- as.factor(d$disp)
-non_numeric_updates <- a_plot()+geom_point(aes(mpg, disp, colour=cyl),
+non_numeric_updates <- a_plot()+a_geom_point(aes(mpg, disp, colour=cyl),
                                            data = d) +
   a_theme_animint(update_axes = c("x", "y"))
 viz_fac <- list(nonNum = non_numeric_updates)
@@ -250,24 +250,24 @@ test_that("minor grids are updated",{
 
 ## Get ranges of geoms
 no_updates_ranges1 <- get_pixel_ranges(info$html_updated1,
-                                       "geom1_a_point_neither")
+                                       "a_geom1_point_neither")
 no_updates_ranges2 <- get_pixel_ranges(info$html_updated2,
-                                       "geom1_a_point_neither")
+                                       "a_geom1_point_neither")
 
 x_updates_ranges1 <- get_pixel_ranges(info$html_updated1,
-                                       "geom2_a_point_x")
+                                       "a_geom2_point_x")
 x_updates_ranges2 <- get_pixel_ranges(info$html_updated2,
-                                       "geom2_a_point_x")
+                                       "a_geom2_point_x")
 
 y_updates_ranges1 <- get_pixel_ranges(info$html_updated1,
-                                       "geom3_a_point_y")
+                                       "a_geom3_point_y")
 y_updates_ranges2 <- get_pixel_ranges(info$html_updated2,
-                                       "geom3_a_point_y")
+                                       "a_geom3_point_y")
 
 xy_updates_ranges1 <- get_pixel_ranges(info$html_updated1,
-                                       "geom4_a_point_both")
+                                       "a_geom4_point_both")
 xy_updates_ranges2 <- get_pixel_ranges(info$html_updated2,
-                                       "geom4_a_point_both")
+                                       "a_geom4_point_both")
 
 test_that("geoms get zoomed-in upon changing selection", {
   # no_updates
@@ -304,8 +304,8 @@ ribbondata <- rbind(cbind(ribbondata, group="low"),
 ribbondata[12:22,2:3] <- ribbondata[12:22,2:3]+runif(11, 1, 10)
 ribbondata[23:33,2:3] <- ribbondata[12:22,2:3]+runif(11, 1, 10)
 ribbon <- a_plot() + 
-  geom_ribbon(data=ribbondata, aes(x=x, ymin=ymin, ymax=ymax, group=group, fill=group), alpha=.5) + 
-  ggtitle("geom_ribbon") +
+  a_geom_ribbon(data=ribbondata, aes(x=x, ymin=ymin, ymax=ymax, group=group, fill=group), alpha=.5) + 
+  ggtitle("a_geom_ribbon") +
   a_theme_animint(update_axes = c("y"))
 viz <- list(ribbon=ribbon, selector.types=list(group="single"))
 expect_no_warning(info <- animint2HTML(viz))
@@ -323,7 +323,7 @@ minor_grid_attr2 <- get_grid_lines(info$html_updated, names(viz)[[1]], "minor")
 major_grid_attr1 <- get_grid_lines(info$html, names(viz)[[1]], "major")
 major_grid_attr2 <- get_grid_lines(info$html_updated, names(viz)[[1]], "major")
 
-test_that("geom_ribbon has grid updates", {
+test_that("a_geom_ribbon has grid updates", {
   # y axis updates -> hor grids updated
   expect_identical(minor_grid_attr1$vert, minor_grid_attr2$vert)
   expect_identical(major_grid_attr1$vert, major_grid_attr2$vert)
@@ -339,18 +339,18 @@ nodes2 <- getNodeSet(info$html_updated, path.i)
 original_tick_diff <- sapply(nodes1, getTickDiff, axis="y")
 updated_tick_diff <- sapply(nodes2, getTickDiff, axis="y")
 
-test_that("geom_ribbon has axis tick updates", {
+test_that("a_geom_ribbon has axis tick updates", {
   expect_true(unequal(updated_tick_diff, original_tick_diff, tolerance=0.01))
 })
 
-## ------------------------- geom_rect ----------------------------- ##
+## ------------------------- a_geom_rect ----------------------------- ##
 data_f <- data.frame(xmin=c(1, 3, 9, 19),
                      xmax=c(4, 25, 16, 32),
                      ymin=c(3, 4, 8, 14),
                      ymax=c(6, 12, 18, 28),
                      z=as.factor(c(1:4)))
 
-rect <- a_plot() + geom_rect(aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax,
+rect <- a_plot() + a_geom_rect(aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax,
                               colour=z,fill=z),
                           data = data_f) +
   a_theme_animint(update_axes=c("x", "y"))
@@ -371,7 +371,7 @@ minor_grid_attr2 <- get_grid_lines(info$html_updated, names(viz)[[1]], "minor")
 major_grid_attr1 <- get_grid_lines(info$html, names(viz)[[1]], "major")
 major_grid_attr2 <- get_grid_lines(info$html_updated, names(viz)[[1]], "major")
 
-test_that("geom_rect has grid updates",{
+test_that("a_geom_rect has grid updates",{
   # xy axis updates -> both vert/hor grids updated
   expect_true(unequal(minor_grid_attr1$vert, minor_grid_attr2$vert,
                       tolerance=0.01))
@@ -395,14 +395,14 @@ original_tick_diff_y <- sapply(nodes1_y, getTickDiff, axis="y")
 updated_tick_diff_x <- sapply(nodes2_x, getTickDiff, axis="x")
 updated_tick_diff_y <- sapply(nodes2_y, getTickDiff, axis="y")
 
-test_that("geom_rect has axis tick updates", {
+test_that("a_geom_rect has axis tick updates", {
   expect_true(unequal(updated_tick_diff_x, original_tick_diff_x,
                       tolerance=0.01))
   expect_true(unequal(updated_tick_diff_y, original_tick_diff_y,
                       tolerance=0.01))
 })
 
-## ----------------------- geom_segment ----------------------------- ##
+## ----------------------- a_geom_segment ----------------------------- ##
 data_f <- data.frame(x1=c(runif(10, 0, 10),runif(10, 10, 20),runif(10, 20, 30),
                           runif(10, 30, 40)),
                      x2=runif(40, 0, 10),
@@ -412,7 +412,7 @@ data_f <- data.frame(x1=c(runif(10, 0, 10),runif(10, 10, 20),runif(10, 20, 30),
                      ss = as.factor(rep(1:4,each=10)))
 
 segment <- a_plot() +
-  geom_segment(aes(x=x1, y=y1, xend=x2, yend=y2, colour=ss),
+  a_geom_segment(aes(x=x1, y=y1, xend=x2, yend=y2, colour=ss),
                data=data_f) + 
   a_theme_animint(update_axes=c("x", "y"))
 viz <- list(segment=segment, selector.types=list(ss="single"))
@@ -431,7 +431,7 @@ minor_grid_attr2 <- get_grid_lines(info$html_updated, names(viz)[[1]], "minor")
 major_grid_attr1 <- get_grid_lines(info$html, names(viz)[[1]], "major")
 major_grid_attr2 <- get_grid_lines(info$html_updated, names(viz)[[1]], "major")
 
-test_that("geom_segment has grid updates",{
+test_that("a_geom_segment has grid updates",{
   # xy axis updates -> both vert/hor grids updated
   expect_true(unequal(minor_grid_attr1$vert, minor_grid_attr2$vert,
                       tolerance=0.01))
@@ -455,15 +455,15 @@ original_tick_diff_y <- sapply(nodes1_y, getTickDiff, axis="y")
 updated_tick_diff_x <- sapply(nodes2_x, getTickDiff, axis="x")
 updated_tick_diff_y <- sapply(nodes2_y, getTickDiff, axis="y")
 
-test_that("geom_segment has axis tick updates", {
+test_that("a_geom_segment has axis tick updates", {
   expect_true(unequal(updated_tick_diff_x, original_tick_diff_x,
                       tolerance=0.01))
   expect_true(unequal(updated_tick_diff_y, original_tick_diff_y,
                       tolerance=0.01))
 })
 
-##  ------------------------- geom_text ------------------------- ##
-text <- a_plot() + geom_text(aes(mpg, disp, colour=cyl, label=hp), 
+##  ------------------------- a_geom_text ------------------------- ##
+text <- a_plot() + a_geom_text(aes(mpg, disp, colour=cyl, label=hp), 
                              data = mtcars) +
   a_theme_animint(update_axes=c("x", "y"))
 viz <- list(text=text, selector.types=list(cyl="single"))
@@ -482,7 +482,7 @@ minor_grid_attr2 <- get_grid_lines(info$html_updated, names(viz)[[1]], "minor")
 major_grid_attr1 <- get_grid_lines(info$html, names(viz)[[1]], "major")
 major_grid_attr2 <- get_grid_lines(info$html_updated, names(viz)[[1]], "major")
 
-test_that("geom_text has grid updates",{
+test_that("a_geom_text has grid updates",{
   # xy axis updates -> both vert/hor grids updated
   expect_true(unequal(minor_grid_attr1$vert, minor_grid_attr2$vert,
                       tolerance=0.01))
@@ -506,7 +506,7 @@ original_tick_diff_y <- sapply(nodes1_y, getTickDiff, axis="y")
 updated_tick_diff_x <- sapply(nodes2_x, getTickDiff, axis="x")
 updated_tick_diff_y <- sapply(nodes2_y, getTickDiff, axis="y")
 
-test_that("geom_text has axis tick updates", {
+test_that("a_geom_text has axis tick updates", {
   expect_true(unequal(updated_tick_diff_x, original_tick_diff_x,
                       tolerance=0.01))
   expect_true(unequal(updated_tick_diff_y, original_tick_diff_y,

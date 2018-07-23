@@ -19,8 +19,8 @@ viz <-
 info <- animint2HTML(viz)
 
 line.class.vec <-
-  c("geom2_a_hline_one"=1, "geom3_a_vline_one"=1,
-    "geom5_a_hline_two"=2, "geom6_a_vline_two"=2)
+  c("a_geom2_hline_one"=1, "a_geom3_vline_one"=1,
+    "a_geom5_hline_two"=2, "a_geom6_vline_two"=2)
 
 test_that("hlines and vlines appear", {
   for(line.class in names(line.class.vec)){

@@ -9,7 +9,7 @@ test_that("Interactivity does not mess up tooltip titles",{
     substring(as.character(WorldBank1975$region), 1, 3))
   
   ex_plot <- a_plot() +
-    geom_point(aes(fertility.rate, life.expectancy, color = region,
+    a_geom_point(aes(fertility.rate, life.expectancy, color = region,
                    tooltip = country, href = "https://github.com"),
                data = WorldBank1975)
   
@@ -42,7 +42,7 @@ test_that("Interactivity does not mess up tooltip titles",{
   displayed_countries <- unique(WorldBank1975$country[displayed_regions])
   
   title_nodes1 <-
-    getNodeSet(info$html, '//g[@class="geom1_a_point_ex"]//a//title')
+    getNodeSet(info$html, '//g[@class="a_geom1_point_ex"]//a//title')
   rendered_titles1 <- sapply(title_nodes1, xmlValue)
   expect_identical(sort(rendered_titles1), sort(displayed_countries))
   
@@ -56,7 +56,7 @@ test_that("Interactivity does not mess up tooltip titles",{
   info$html <- getHTML()
   
   title_nodes2 <-
-    getNodeSet(info$html, '//g[@class="geom1_a_point_ex"]//a//title')
+    getNodeSet(info$html, '//g[@class="a_geom1_point_ex"]//a//title')
   expect_equal(length(title_nodes2), 0)
   
   # Show previous points again and compare titles
@@ -66,7 +66,7 @@ test_that("Interactivity does not mess up tooltip titles",{
   info$html <- getHTML()
   
   title_nodes3 <-
-    getNodeSet(info$html, '//g[@class="geom1_a_point_ex"]//a//title')
+    getNodeSet(info$html, '//g[@class="a_geom1_point_ex"]//a//title')
   rendered_titles3 <- sapply(title_nodes3, xmlValue)
   expect_identical(sort(rendered_titles3), sort(displayed_countries))
 })

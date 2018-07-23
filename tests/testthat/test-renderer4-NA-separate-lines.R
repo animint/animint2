@@ -6,16 +6,16 @@ data(txhousing)
 
 ## san.marcos <- subset(txhousing, city=="San Marcos")
 ## a_plot()+
-##   geom_line(aes(x = date, y = median),
+##   a_geom_line(aes(x = date, y = median),
 ##             data=san.marcos)
 
 viz <- list(
   ggdata=a_plot(txhousing)+
-    geom_line(aes(x = date, y = median, group = city), 
+    a_geom_line(aes(x = date, y = median, group = city), 
               clickSelects="city",
               alpha = 0.6),
   selected=a_plot()+
-    geom_line(aes(x = date, y = median, group = city),
+    a_geom_line(aes(x = date, y = median, group = city),
               showSelected="city",
               data=txhousing),
   first=list(city="San Marcos")
@@ -23,13 +23,13 @@ viz <- list(
 info <- animint2HTML(viz)
 
 test_that("no NA in tsv files", {
-  geom1.tsv <- file.path("animint-htmltest", "geom1_a_line_ggdata_chunk1.tsv")
-  geom1.data <- read.table(geom1.tsv, sep="\t", header=TRUE)
-  expect_equal(sum(is.na(geom1.data)), 0)
+  a_geom1.tsv <- file.path("animint-htmltest", "a_geom1_line_ggdata_chunk1.tsv")
+  a_geom1.data <- read.table(a_geom1.tsv, sep="\t", header=TRUE)
+  expect_equal(sum(is.na(a_geom1.data)), 0)
 })
 
 test_that("three <path> rendered for highlighted San Marcos", {
-  xpath <- '//g[@class="geom1_a_line_ggdata"]//path'
+  xpath <- '//g[@class="a_geom1_line_ggdata"]//path'
   path.list <- getNodeSet(info$html, xpath)
   opacity.str <- getStyleValue(info$html, xpath, "opacity")
   opacity.num <- as.numeric(opacity.str)
@@ -38,6 +38,6 @@ test_that("three <path> rendered for highlighted San Marcos", {
 })
 
 test_that("three <path> rendered for selected San Marcos", {
-  path.list <- getNodeSet(info$html, '//g[@class="geom2_a_line_selected"]//path')
+  path.list <- getNodeSet(info$html, '//g[@class="a_geom2_line_selected"]//path')
   expect_equal(length(path.list), 3)
 })

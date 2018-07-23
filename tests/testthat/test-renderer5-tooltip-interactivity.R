@@ -3,7 +3,7 @@ acontext("tooltip-interactivity")
 data("CO2")
 
 plot_viz <- a_plot() + 
-  geom_point(aes(conc, uptake, color=Treatment, tooltip=Plant),
+  a_geom_point(aes(conc, uptake, color=Treatment, tooltip=Plant),
              data = CO2)
 viz <- list(p=plot_viz)
 info <- animint2HTML(viz)
@@ -27,7 +27,7 @@ info$html_updated3 <- getHTML()
 test_that("Interactivity does not mess up tooltip titles", {
   # Initially all titles are rendered
   title_nodes1 <-
-    getNodeSet(info$html, '//g[@class="geom1_a_point_p"]//circle//title')
+    getNodeSet(info$html, '//g[@class="a_geom1_point_p"]//circle//title')
   rendered_titles1 <- sapply(title_nodes1, xmlValue)
   
   expect_equal(length(rendered_titles1), length(CO2$Plant))
@@ -35,7 +35,7 @@ test_that("Interactivity does not mess up tooltip titles", {
                    sort(sapply(unique(CO2$Plant), as.character)))
   
   title_nodes2 <-
-    getNodeSet(info$html_updated1, '//g[@class="geom1_a_point_p"]//circle//title')
+    getNodeSet(info$html_updated1, '//g[@class="a_geom1_point_p"]//circle//title')
   rendered_titles2 <- sapply(title_nodes2, xmlValue)
   rendered_titles2_unique <- unique(rendered_titles2)
   actual_titles2 <- c("Qc1", "Qc2", "Qc3", "Mc1", "Mc2", "Mc3")
@@ -44,12 +44,12 @@ test_that("Interactivity does not mess up tooltip titles", {
   expect_identical(sort(rendered_titles2_unique), sort(actual_titles2))
   
   title_nodes3 <-
-    getNodeSet(info$html_updated2, '//g[@class="geom1_a_point_p"]//circle//title')
+    getNodeSet(info$html_updated2, '//g[@class="a_geom1_point_p"]//circle//title')
   
   expect_equal(length(title_nodes3), 0)
   
   title_nodes4 <-
-    getNodeSet(info$html_updated3, '//g[@class="geom1_a_point_p"]//circle//title')
+    getNodeSet(info$html_updated3, '//g[@class="a_geom1_point_p"]//circle//title')
   rendered_titles4 <- sapply(title_nodes4, xmlValue)
   rendered_titles4_unique <- unique(rendered_titles4)
   actual_titles4 <- c("Qn1", "Qn2", "Qn3", "Mn1", "Mn2", "Mn3")

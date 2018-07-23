@@ -20,13 +20,13 @@ viz <- list(
     a_theme_animint(width=1500, height=100)+
     a_theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
           axis.ticks.x=a_element_blank(), axis.title.x=a_element_blank())+
-    ## geom_text(aes(relative.middle, type.fac, label=samples.up,
+    ## a_geom_text(aes(relative.middle, type.fac, label=samples.up,
     ##               clickSelects=peak.name,
     ##               showSelected2=chrom,
     ##               showSelected=dotID),
     ##           size=11,
     ##           data=PredictedPeaks$chromCounts)+
-    geom_text(aes(relative.middle, type.fac, label=samples.up,
+    a_geom_text(aes(relative.middle, type.fac, label=samples.up,
                   href=paste0(
                     "http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=",
                     chrom, ":", zoomStart, "-", zoomEnd)),
@@ -39,28 +39,28 @@ viz <- list(
     a_theme_animint(width=1500, height=330)+
     a_scale_y_discrete("chromosome", drop=FALSE)+ 
     a_scale_x_continuous("position on chromosome (mega bases)")+
-    geom_text(aes(0, chrom, label=paste0(peaks, "_")),
+    a_geom_text(aes(0, chrom, label=paste0(peaks, "_")),
               clickSelects="chrom",
               showSelected="dotID",
               hjust=1,
               size=11,
               data=PredictedPeaks$countsByChrom)+
-    geom_segment(aes(chromStart/1e6, chrom,
+    a_geom_segment(aes(chromStart/1e6, chrom,
                      xend=chromEnd/1e6, yend=chrom),
                  clickSelects="chrom",
                  size=9,
                  data=PredictedPeaks$chrom.ranges)+
-    geom_point(aes(chromEnd/1e6, chrom,
+    a_geom_point(aes(chromEnd/1e6, chrom,
                    id=chrom),
                clickSelects="chrom",
                size=5,
                data=PredictedPeaks$chrom.ranges)+
-    geom_text(aes(max(PredictedPeaks$chrom.ranges$chromEnd)/2e6, chrom,
+    a_geom_text(aes(max(PredictedPeaks$chrom.ranges$chromEnd)/2e6, chrom,
                   label=totals),
               showSelected="dotID",
               data=PredictedPeaks$scatter.text),
   scatter=a_plot()+
-    geom_hline(aes(yintercept=N),
+    a_geom_hline(aes(yintercept=N),
                color="grey",
                data=PredictedPeaks$counts.Input)+
     a_scale_x_continuous("number of samples with a peak")+
@@ -69,10 +69,10 @@ viz <- list(
     a_scale_fill_gradient(low="grey", high="red")+
     a_theme_animint(width=1500)+
     a_theme(panel.margin=grid::unit(0, "cm"))+
-    geom_vline(aes(xintercept=N),
+    a_geom_vline(aes(xintercept=N),
                color="grey",
                data=PredictedPeaks$counts.not.Input)+
-    geom_rect(aes(xmin=up-size, xmax=up+size,
+    a_geom_rect(aes(xmin=up-size, xmax=up+size,
                   ymin=Input-size, ymax=Input+size,
                   tooltip=totals,
                   fill=log10(count)),
@@ -103,9 +103,9 @@ info <- animint2HTML(viz)
 ## e <- remDr$findElement("id", "chrY")
 ## remDr$mouseMoveToLocation(webElement=e)
 
-## getStyleValue(getHTML(), '//g[@class="geom4_a_point_chroms"]//circle', "opacity")
+## getStyleValue(getHTML(), '//g[@class="a_geom4_point_chroms"]//circle', "opacity")
 
-## getNodeSet(getHTML(), '//g[@class="geom4_a_point_chroms"]//circle')
+## getNodeSet(getHTML(), '//g[@class="a_geom4_point_chroms"]//circle')
 
 test_that("without selectize option, only render chrom widget", {
   widget.vec <- getSelectorWidgets(info$html)
@@ -113,7 +113,7 @@ test_that("without selectize option, only render chrom widget", {
 })
 
 getSorted <- function(){
-  text.list <- getNodeSet(getHTML(), '//g[@class="geom1_a_text_oneChrom"]//text')
+  text.list <- getNodeSet(getHTML(), '//g[@class="a_geom1_text_oneChrom"]//text')
   value.vec <- sapply(text.list, xmlValue)
   sort(as.numeric(value.vec))
 }
@@ -156,7 +156,7 @@ viz <- list(
     a_theme_animint(width=1500, height=100)+
     a_theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
           axis.ticks.x=a_element_blank(), axis.title.x=a_element_blank())+
-    geom_text(aes(relative.middle, type.fac, label=samples.up),
+    a_geom_text(aes(relative.middle, type.fac, label=samples.up),
               showSelected=c("dotID", "chrom"),
               clickSelects="peak.name",
               size=11,
@@ -167,36 +167,36 @@ viz <- list(
     a_theme_animint(width=1500, height=330)+
     a_scale_y_discrete("chromosome", drop=FALSE)+ 
     a_scale_x_continuous("position on chromosome (mega bases)")+
-    geom_text(aes(0, chrom, label=paste0(peaks, "_")),
+    a_geom_text(aes(0, chrom, label=paste0(peaks, "_")),
               clickSelects="chrom",
               showSelected="dotID",
               hjust=1,
               size=11,
               data=PredictedPeaks$countsByChrom)+
-    geom_segment(aes(chromStart/1e6, chrom,
+    a_geom_segment(aes(chromStart/1e6, chrom,
                      xend=chromEnd/1e6, yend=chrom),
                  clickSelects="chrom",
                  size=9,
                  data=PredictedPeaks$chrom.ranges)+
-    geom_point(aes(chromEnd/1e6, chrom),
+    a_geom_point(aes(chromEnd/1e6, chrom),
                id="chrom",
                clickSelects="chrom",
                size=5,
                data=PredictedPeaks$chrom.ranges)+
-    geom_text(aes(max(PredictedPeaks$chrom.ranges$chromEnd)/2e6, chrom,
+    a_geom_text(aes(max(PredictedPeaks$chrom.ranges$chromEnd)/2e6, chrom,
                   label=totals),
               showSelected="dotID",
              data=PredictedPeaks$scatter.text),
   scatter=a_plot()+
-    geom_vline(aes(xintercept=N, color=thresh.type),
+    a_geom_vline(aes(xintercept=N, color=thresh.type),
                data=PredictedPeaks$counts.not.Input)+
     a_scale_color_manual("threshold", values=c(
                                       "max samples"="grey",
                                       specific="grey30"))+
-    geom_hline(aes(yintercept=max.input.samples+0.5, color=thresh.type),
+    a_geom_hline(aes(yintercept=max.input.samples+0.5, color=thresh.type),
                show.legend=TRUE,
                data=thresh.df)+
-    geom_hline(aes(yintercept=N, color=thresh.type),
+    a_geom_hline(aes(yintercept=N, color=thresh.type),
                show.legend=TRUE,
                data=PredictedPeaks$counts.Input)+
     a_scale_x_continuous("number of samples with a peak")+
@@ -205,7 +205,7 @@ viz <- list(
     a_scale_fill_gradient(low="grey", high="red")+
     a_theme_animint(width=1500)+
     a_theme(panel.margin=grid::unit(0, "cm"))+
-    geom_rect(aes(xmin=up-size, xmax=up+size,
+    a_geom_rect(aes(xmin=up-size, xmax=up+size,
                   ymin=Input-size, ymax=Input+size,
                   tooltip=totals,
                   fill=log10(count)),
@@ -213,7 +213,7 @@ viz <- list(
               showSelected="chrom",
               color="transparent",
               data=PredictedPeaks$bg.rect)+
-   geom_point(aes(up, Input),
+   a_geom_point(aes(up, Input),
               showSelected="peak.name",
               data=hover.dots),
   selectize=list(dotID=TRUE, chrom=FALSE),
@@ -248,7 +248,7 @@ test_that("lines in color legend", {
 })
 
 specific_hlines <- function(html=getHTML()){
-  getNodeSet(html, '//g[@class="geom7_a_hline_scatter"]//line')
+  getNodeSet(html, '//g[@class="a_geom7_hline_scatter"]//line')
 }
 
 specific.id <- "plot_scatter_thresh_type_variable_specific"

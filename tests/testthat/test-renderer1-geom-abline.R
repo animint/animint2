@@ -15,7 +15,7 @@ test_that("columns of abline tsv", {
   expect_identical(computed.names, expected.names)
 })
 
-ablines <- getNodeSet(info$html, '//svg//g[@class="geom2_a_abline_p"]//line')
+ablines <- getNodeSet(info$html, '//svg//g[@class="a_geom2_abline_p"]//line')
 attr_ablines <- sapply(ablines, xmlAttrs)
 start_ends <- attr_ablines[c("x1", "x2", "y1", "y2"), ]
 

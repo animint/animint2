@@ -21,7 +21,7 @@ second.small <-
            mapply(paste, "sample", val, SIMPLIFY = FALSE)
          })+
          guides(size="none")+
-         geom_segment(aes(chromStart+0.5, mean,
+         a_geom_segment(aes(chromStart+0.5, mean,
                           xend=chromEnd+0.5, yend=mean,
                           color=model, size=model),
                       showSelected=c("seed", "sample.size"),
@@ -45,7 +45,7 @@ getStroke <- function(element.list){
 
 test_that("15 segments of both colors", {
   line.list <-
-    getNodeSet(info$html, '//g[@class="geom1_a_segment_signals"]//line')
+    getNodeSet(info$html, '//g[@class="a_geom1_segment_signals"]//line')
   computed.vec <- getStroke(line.list)
   color.counts <- as.numeric(table(computed.vec))
   expect_equal(color.counts, c(15, 15))
@@ -54,12 +54,12 @@ test_that("15 segments of both colors", {
 viz <-
   list(increase=a_plot()+
          make_tallrect(PeakConsistency$increase, "increase")+
-         geom_line(aes(increase, mean.diff), data=PeakConsistency$increase),
+         a_geom_line(aes(increase, mean.diff), data=PeakConsistency$increase),
        errors=a_plot()+
          ylab("distance from true peaks to estimated peaks")+
          a_scale_color_manual(values=color.code)+
          make_tallrect(PeakConsistency$error, "sample.size")+
-         geom_line(aes(sample.size, errors,
+         a_geom_line(aes(sample.size, errors,
                        group=interaction(model, seed),
                        color=model),
                    showSelected="increase",
@@ -74,22 +74,22 @@ viz <-
          a_facet_grid(sample.id ~ ., labeller=function(val){
            mapply(paste, "sample", val, SIMPLIFY = FALSE)
          })+
-         geom_point(aes(chromEnd, count),
+         a_geom_point(aes(chromEnd, count),
                     showSelected=c("seed", "increase"),
                     color="grey50",
                     data=PeakConsistency$signal)+
-         geom_vline(aes(xintercept=chromStart+0.5, color=model),
+         a_geom_vline(aes(xintercept=chromStart+0.5, color=model),
                     showSelected=c("increase", "seed"),
                     show.legend=TRUE,
                     linetype="dashed",
                     data=PeakConsistency$truth)+
          guides(size="none")+
-         geom_segment(aes(chromStart+0.5, mean,
+         a_geom_segment(aes(chromStart+0.5, mean,
                           xend=chromEnd+0.5, yend=mean,
                           color=model, size=model),
                       showSelected=c("seed", "sample.size", "increase"),
                       data=PeakConsistency$model)+
-         geom_vline(aes(xintercept=chromStart+0.5,
+         a_geom_vline(aes(xintercept=chromStart+0.5,
                         color=model, size=model),
                     showSelected=c("seed", "sample.size", "increase"),
                     show.legend=TRUE,
@@ -106,7 +106,7 @@ info <- animint2HTML(viz)
 
 test_that("4 paths of both colors in second plot", {
   path.list <- 
-    getNodeSet(info$html, '//g[@class="geom4_a_line_errors"]//path')
+    getNodeSet(info$html, '//g[@class="a_geom4_line_errors"]//path')
   computed.vec <- getStroke(path.list)
   color.counts <- as.numeric(table(computed.vec))
   expect_equal(color.counts, c(4, 4))
@@ -114,7 +114,7 @@ test_that("4 paths of both colors in second plot", {
 
 test_that("15 segments of both colors in last plot", {
   line.list <-
-    getNodeSet(info$html, '//g[@class="geom7_a_segment_signals"]//line')
+    getNodeSet(info$html, '//g[@class="a_geom7_segment_signals"]//line')
   computed.vec <- getStroke(line.list)
   color.counts <- as.numeric(table(computed.vec))
   expect_equal(color.counts, c(15, 15))
@@ -122,25 +122,25 @@ test_that("15 segments of both colors in last plot", {
 
 ## test_that("showSelectedlegendcolour is truth", {
 ##   tsv.path <-
-##     file.path("animint-htmltest", "geom6_vline_signals_chunk_common.tsv")
+##     file.path("animint-htmltest", "a_geom6_vline_signals_chunk_common.tsv")
 ##   common.df <- read.table(tsv.path, comment.char="", header=TRUE)
 ##   computed.vec <- paste(common.df$showSelectedlegendcolour)
 ##   expected.vec <- rep("truth", length(computed.vec))
 ##   expect_identical(computed.vec, expected.vec)
 ##   tsv.path <-
-##     file.path("animint-htmltest", "geom6_vline_signals_chunk1.tsv")
+##     file.path("animint-htmltest", "a_geom6_vline_signals_chunk1.tsv")
 ##   varied.df <- read.table(tsv.path, comment.char="", header=TRUE)
 ## })
 
 test_that("20 truth <line> in last plot", {
   line.list <-
-    getNodeSet(info$html, '//g[@class="geom6_a_vline_signals"]//line')
+    getNodeSet(info$html, '//g[@class="a_geom6_vline_signals"]//line')
   expect_equal(length(line.list), 20)
 })
 
 test_that("20 prediction <line> in last plot", {
   line.list <-
-    getNodeSet(info$html, '//g[@class="geom8_a_vline_signals"]//line')
+    getNodeSet(info$html, '//g[@class="a_geom8_vline_signals"]//line')
   expect_equal(length(line.list), 20)
 })
 

@@ -8,32 +8,32 @@ signal.colors <- c(estimate="#0adb0a",
                    latent="#0098ef")
 breakpointError <- list(
   signal=a_plot()+
-    geom_point(aes(position, signal),
+    a_geom_point(aes(position, signal),
                showSelected="samples",
                data=breakpoints$signals)+
-    geom_line(aes(position, signal), colour=signal.colors[["latent"]],
+    a_geom_line(aes(position, signal), colour=signal.colors[["latent"]],
               data=breakpoints$imprecision)+
-    geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
+    a_geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
                  showSelected=c("segments", "samples"),
                  colour=signal.colors[["estimate"]],
                  data=breakpoints$segments)+
-    geom_vline(aes(xintercept=base),
+    a_geom_vline(aes(xintercept=base),
                showSelected=c("segments", "samples"),
                colour=signal.colors[["estimate"]],
                linetype="dashed",
                data=breakpoints$breaks),
   points=a_plot()+
-    geom_point(aes(samples, error,
+    a_geom_point(aes(samples, error,
                    id=paste0("samples", samples)),
                showSelected="segments",
                clickSelects="samples",
                data=only.error, stat="identity"),
   error=a_plot()+
-    geom_vline(aes(xintercept=segments, 
+    a_geom_vline(aes(xintercept=segments, 
                    id=paste0("segments", segments)),
                clickSelects="segments",
                data=only.segments, lwd=17, alpha=1/2)+
-    geom_line(aes(segments, error, group=samples),
+    a_geom_line(aes(segments, error, group=samples),
               clickSelects="samples",
               data=only.error, lwd=4),
   first=list(samples=150, segments=4),
@@ -60,12 +60,12 @@ get.dasharray <- function(node.set){
 }
 
 dashed.xpaths <-
-  c('//g[@class="geom4_a_vline_signal"]//g[@class="PANEL1"]//line')
+  c('//g[@class="a_geom4_vline_signal"]//g[@class="PANEL1"]//line')
 solid.xpaths <- 
-  c('//g[@class="geom2_a_line_signal"]//g[@class="PANEL1"]//path',
-    '//g[@class="geom3_a_segment_signal"]//g[@class="PANEL1"]//line',
-    '//g[@class="geom6_a_vline_error"]//g[@class="PANEL1"]//line',
-    '//g[@class="geom7_a_line_error"]//g[@class="PANEL1"]//path')
+  c('//g[@class="a_geom2_line_signal"]//g[@class="PANEL1"]//path',
+    '//g[@class="a_geom3_segment_signal"]//g[@class="PANEL1"]//line',
+    '//g[@class="a_geom6_vline_error"]//g[@class="PANEL1"]//line',
+    '//g[@class="a_geom7_line_error"]//g[@class="PANEL1"]//path')
 
 test_that("stroke-dasharray: 8,8 for dashed", {
   for(xpath in dashed.xpaths){
@@ -90,34 +90,34 @@ test_that("default is single selection", {
 })
 
 test_that("aes(id) geoms have ids", {
-  nodes <- getNodeSet(info$html, '//*[@id][@class="geom"]')
+  nodes <- getNodeSet(info$html, '//*[@id][@class="a_geom"]')
   expect_equal(length(nodes), 24)
 })
 
 test_that("4 <circle> elements in second plot", {
-  nodes <- getNodeSet(info$html, '//g[@class="geom5_a_point_points"]//circle')
+  nodes <- getNodeSet(info$html, '//g[@class="a_geom5_point_points"]//circle')
   expect_equal(length(nodes), 4)
 })
 
 test_that("default is 150 <circle> elements", {
-  nodes <- getNodeSet(info$html, '//g[@class="geom1_a_point_signal"]//circle')
+  nodes <- getNodeSet(info$html, '//g[@class="a_geom1_point_signal"]//circle')
   expect_equal(length(nodes), 150)
 })
 
 test_that("default is 4 <line> segments", {
-  nodes <- getNodeSet(info$html, '//g[@class="geom3_a_segment_signal"]//line')
+  nodes <- getNodeSet(info$html, '//g[@class="a_geom3_segment_signal"]//line')
   expect_equal(length(nodes), 4)
 })
 
 test_that("clickSelects 300 makes 300 <circle> elements", {
   html <- clickHTML(id=paste0("samples", 300))
-  nodes <- getNodeSet(html, '//g[@class="geom1_a_point_signal"]//circle')
+  nodes <- getNodeSet(html, '//g[@class="a_geom1_point_signal"]//circle')
   expect_equal(length(nodes), 300)
 })
 
 test_that("clickSelects 1 changes to 1 <line> element", {
   html <- clickHTML(id=paste0("segments", 1))
-  nodes <- getNodeSet(html, '//g[@class="geom3_a_segment_signal"]//line')
+  nodes <- getNodeSet(html, '//g[@class="a_geom3_segment_signal"]//line')
   expect_equal(length(nodes), 1)
 })
 
@@ -135,39 +135,39 @@ test_that("selector.types are converted to JSON", {
 })
 
 test_that("default is 150 and 4 <circle> elements", {
-  nodes <- getNodeSet(info$html, '//g[@class="geom1_a_point_signal"]//circle')
+  nodes <- getNodeSet(info$html, '//g[@class="a_geom1_point_signal"]//circle')
   expect_equal(length(nodes), 150)
-  nodes <- getNodeSet(info$html, '//g[@class="geom5_a_point_points"]//circle')
+  nodes <- getNodeSet(info$html, '//g[@class="a_geom5_point_points"]//circle')
   expect_equal(length(nodes), 4)
 })
 
 test_that("clickSelects 300 makes 300 <circle> elements", {
   html <- clickHTML(id=paste0("samples", 300))
-  nodes <- getNodeSet(html, '//g[@class="geom1_a_point_signal"]//circle')
+  nodes <- getNodeSet(html, '//g[@class="a_geom1_point_signal"]//circle')
   expect_equal(length(nodes), 300)
 })
 
 test_that("clickSelects 1 adds 1 <line> and 4 <circle>", {
   html <- clickHTML(id=paste0("segments", 1))
-  nodes <- getNodeSet(html, '//g[@class="geom3_a_segment_signal"]//line')
+  nodes <- getNodeSet(html, '//g[@class="a_geom3_segment_signal"]//line')
   expect_equal(length(nodes), 5)
-  nodes <- getNodeSet(html, '//g[@class="geom5_a_point_points"]//circle')
+  nodes <- getNodeSet(html, '//g[@class="a_geom5_point_points"]//circle')
   expect_equal(length(nodes), 8)
 })
 
 test_that("clickSelects 4 removes 4 <line> elements and 4 <circle>", {
   html <- clickHTML(id=paste0("segments", 4))
-  nodes <- getNodeSet(html, '//g[@class="geom3_a_segment_signal"]//line')
+  nodes <- getNodeSet(html, '//g[@class="a_geom3_segment_signal"]//line')
   expect_equal(length(nodes), 1)
-  nodes <- getNodeSet(html, '//g[@class="geom5_a_point_points"]//circle')
+  nodes <- getNodeSet(html, '//g[@class="a_geom5_point_points"]//circle')
   expect_equal(length(nodes), 4)
 })
 
 test_that("clickSelects 1 removes all <line> elements and all <circle>", {
   html <- clickHTML(id=paste0("segments", 1))
-  nodes <- getNodeSet(html, '//g[@class="geom3_a_segment_signal"]//line')
+  nodes <- getNodeSet(html, '//g[@class="a_geom3_segment_signal"]//line')
   expect_equal(length(nodes), 0)
-  nodes <- getNodeSet(html, '//g[@class="geom5_a_point_points"]//circle')
+  nodes <- getNodeSet(html, '//g[@class="a_geom5_point_points"]//circle')
   expect_equal(length(nodes), 0)
 })
 
@@ -185,24 +185,24 @@ seg.color <- "#55B1F7"
 tornado.lines <-
   list(map=a_plot()+
        make_text(UStornadoCounts, -100, 50, "year", "Tornadoes in %d")+
-       geom_polygon(aes(x=long, y=lat, group=group,
+       a_geom_polygon(aes(x=long, y=lat, group=group,
                         id=state),
                     clickSelects="state",
                     data=USpolygons, fill="black", colour="grey") +
-       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
+       a_geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
                     showSelected="year",
                     colour=seg.color, data=UStornadoes)+
        a_scale_fill_manual(values=c(end=seg.color))+
        a_theme_animint(width=750, height=500)+
-       geom_point(aes(endLong, endLat, fill=place),
+       a_geom_point(aes(endLong, endLat, fill=place),
                   colour=seg.color, showSelected="year",
                   data=data.frame(UStornadoes,place="end")),
        ts=a_plot()+
-       geom_text(aes(year, count, label=state),
+       a_geom_text(aes(year, count, label=state),
                  hjust=0, showSelected="state",
                  data=subset(UStornadoCounts, year==max(year)))+
        make_tallrect(UStornadoCounts, "year")+
-       geom_line(aes(year, count,
+       a_geom_line(aes(year, count,
                      group=state),
                  showSelected="state",
                 data=UStornadoCounts),
@@ -217,28 +217,28 @@ test_that("1950 <circle> and <line> elements", {
     info <- animint2HTML(tornado.lines)
   })
   t1950 <- subset(UStornadoes, year==1950)
-  nodes <- getNodeSet(info$html, '//g[@class="geom3_a_segment_map"]//line')
+  nodes <- getNodeSet(info$html, '//g[@class="a_geom3_segment_map"]//line')
   expect_equal(length(nodes), nrow(t1950))
-  nodes <- getNodeSet(info$html, '//g[@class="geom4_a_point_map"]//circle')
+  nodes <- getNodeSet(info$html, '//g[@class="a_geom4_point_map"]//circle')
   expect_equal(length(nodes), nrow(t1950))
-  nodes <- getNodeSet(info$html, '//g[@class="geom7_a_line_ts"]//path')
+  nodes <- getNodeSet(info$html, '//g[@class="a_geom7_line_ts"]//path')
   expect_equal(length(nodes), 2)
-  nodes <- getNodeSet(info$html, '//g[@class="geom5_a_text_ts"]//text')
+  nodes <- getNodeSet(info$html, '//g[@class="a_geom5_text_ts"]//text')
   expect_equal(length(nodes), 2)
 })
 
 test_that("clickSelects CO adds 1 <path> and 1 <text>", {
   html <- clickHTML(id="CO")
-  nodes <- getNodeSet(html, '//g[@class="geom7_a_line_ts"]//path')
+  nodes <- getNodeSet(html, '//g[@class="a_geom7_line_ts"]//path')
   expect_equal(length(nodes), 3)
-  nodes <- getNodeSet(html, '//g[@class="geom5_a_text_ts"]//text')
+  nodes <- getNodeSet(html, '//g[@class="a_geom5_text_ts"]//text')
   expect_equal(length(nodes), 3)
 })
 
 test_that("clickSelects CA removes 1 <path> and 1 <text>", {
   html <- clickHTML(id="CA")
-  nodes <- getNodeSet(html, '//g[@class="geom7_a_line_ts"]//path')
+  nodes <- getNodeSet(html, '//g[@class="a_geom7_line_ts"]//path')
   expect_equal(length(nodes), 2)
-  nodes <- getNodeSet(html, '//g[@class="geom5_a_text_ts"]//text')
+  nodes <- getNodeSet(html, '//g[@class="a_geom5_text_ts"]//text')
   expect_equal(length(nodes), 2)
 })

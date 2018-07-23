@@ -4,7 +4,7 @@ df <- data.frame(z=rnorm(100))
 
 viz <-
   list(step=a_plot()+
-         geom_step(aes(seq_along(z), z),
+         a_geom_step(aes(seq_along(z), z),
                    data=df,
                    size=3,
                    color="grey50"))
@@ -35,7 +35,7 @@ test_that("color is converted to RGB colour", {
   expected.colour <- as.character(toRGB("grey50"))
   expect_identical(g$params$colour, expected.colour)
   
-  node.list <- getNodeSet(info$html, '//g[@class="geom1_a_step_step"]//path')
+  node.list <- getNodeSet(info$html, '//g[@class="a_geom1_step_step"]//path')
   expect_equal(length(node.list), 1)
   node <- node.list[[1]]
   attr.vec <- xmlAttrs(node)

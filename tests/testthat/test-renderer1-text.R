@@ -12,20 +12,20 @@ subset(wb2010, population==min(population))
 wb <- subset(wb2010, !is.na(population) &
     !is.na(fertility.rate) & !is.na(life.expectancy))
 viz <- list(scatter=a_plot()+
-  geom_text(aes(y=fertility.rate, x=life.expectancy,
+  a_geom_text(aes(y=fertility.rate, x=life.expectancy,
                 label=country, size=population, colour=population),
             data=wb)+
   a_scale_size_continuous(range=c(10,20)))
 
 test_that("text size range translates to <text font-size>", {
   info <- animint2HTML(viz)
-  expect_attrs(info$html, 'text[@class="geom"]', "font-size", c("10", "20"))
+  expect_attrs(info$html, 'text[@class="a_geom"]', "font-size", c("10", "20"))
 })
               
 test_that("text may contain commas and parentheses", {
   info <- animint2HTML(viz)
-  geom <- getNodeSet(info$html, '//text[@class="geom"]')
-  txt <- sapply(geom, xmlValue)
+  a_geom <- getNodeSet(info$html, '//text[@class="a_geom"]')
+  txt <- sapply(a_geom, xmlValue)
   expect_that(any(grepl("\\.", txt)), is_true())
   expect_that(any(grepl("\\(", txt)), is_true())
   expect_that(any(grepl(",", txt)), is_true())

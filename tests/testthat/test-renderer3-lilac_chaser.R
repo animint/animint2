@@ -20,14 +20,14 @@ vi_lilac_chaser <- function(np = 10,
     # Plot to display the points and the '+' mark in the middle
     p1 <- a_plot(data = df) +
         # Display the points
-        geom_point(data = df,
+        a_geom_point(data = df,
                    aes(x = sinv, y = cosv),
                    showSelected = "ptn",
                    col = col,
                    size = p.size) +
         # Display the '+' mark
-        geom_segment(aes(x=-0.1, y=0, xend=0.1, yend=0), size=c.size) +
-        geom_segment(aes(x=0, y=-0.1, xend=0, yend=0.1), size=c.size) +
+        a_geom_segment(aes(x=-0.1, y=0, xend=0.1, yend=0), size=c.size) +
+        a_geom_segment(aes(x=0, y=-0.1, xend=0, yend=0.1), size=c.size) +
         xlim(c(-1.33, 1.33)) +
         ylim(c(-1.33, 1.33)) +
         # Hide the axes, titles and others..
@@ -79,8 +79,8 @@ test_that("x and y have no labels", {
 })
 
 test_that("Different points are rendered", {
-    x1_nodes <- getNodeSet(info$html, "//circle[@class='geom']/@cx")
-    y1_nodes <- getNodeSet(info$html, "//circle[@class='geom']/@cy")
+    x1_nodes <- getNodeSet(info$html, "//circle[@class='a_geom']/@cx")
+    y1_nodes <- getNodeSet(info$html, "//circle[@class='a_geom']/@cy")
     x1_pts <- sapply(x1_nodes, xmlNode)
     y1_pts <- sapply(y1_nodes, xmlNode)
 
@@ -88,8 +88,8 @@ test_that("Different points are rendered", {
 
     info$html <- getHTML()
 
-    x2_nodes <- getNodeSet(info$html, "//circle[@class='geom']/@cx")
-    y2_nodes <- getNodeSet(info$html, "//circle[@class='geom']/@cy")
+    x2_nodes <- getNodeSet(info$html, "//circle[@class='a_geom']/@cx")
+    y2_nodes <- getNodeSet(info$html, "//circle[@class='a_geom']/@cy")
     x2_pts <- sapply(x2_nodes, xmlNode)
     y2_pts <- sapply(y2_nodes, xmlNode)
     expect_false(identical(x1_pts, x2_pts))

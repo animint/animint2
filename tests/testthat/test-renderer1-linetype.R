@@ -5,8 +5,8 @@ error.types <-
 
 gg <- 
   a_plot(error.types)+
-    geom_point(aes(x, x))+
-    geom_tallrect(aes(xmin=x, xmax=x+0.5, linetype=status),
+    a_geom_point(aes(x, x))+
+    a_geom_tallrect(aes(xmin=x, xmax=x+0.5, linetype=status),
                   fill="grey",
                   color="black")
 

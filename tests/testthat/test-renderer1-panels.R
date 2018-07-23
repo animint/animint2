@@ -1,7 +1,7 @@
 acontext("Panel background")
 
 p1 <- a_plot() +
-  geom_point(aes(Sepal.Length, Sepal.Width,
+  a_geom_point(aes(Sepal.Length, Sepal.Width,
                  colour = Species, size = Species), data = iris) +
   a_theme_grey() + 
   a_theme(panel.background = a_element_rect(fill = "lightblue"),
@@ -12,7 +12,7 @@ p1 <- a_plot() +
         panel.margin = grid::unit(0.1, "cm")) +
   a_facet_wrap(~Species, nrow = 2)
 p2 <- a_plot() +
-  geom_point(aes(Petal.Length, Petal.Width,
+  a_geom_point(aes(Petal.Length, Petal.Width,
                  colour = Species, size = Species), data = iris) +
   ggtitle("Petal Data") +
   a_theme_bw()
@@ -182,11 +182,11 @@ data(tips, package = "reshape2")
 tips$sex_smoker <- with(tips, interaction(sex, smoker))
 ss.viz <- list(
   p1 = a_plot() + a_theme(legend.position = "none") +
-    geom_point(data = tips, position = "jitter", 
+    a_geom_point(data = tips, position = "jitter", 
                aes(x = sex, y = smoker, colour = sex_smoker),
                clickSelects = "sex_smoker"), 
   p2 = a_plot() +
-    geom_point(data = tips,
+    a_geom_point(data = tips,
                aes(x = total_bill, y = tip, colour = sex_smoker),
                showSelected = "sex_smoker")
   )
@@ -225,13 +225,13 @@ test_that("no minor grid lines is handed correctly", {
   data(geyser, package = "MASS")
   info <- animint2HTML(list(
     g = a_plot() +  
-      geom_point(data = geyser, 
+      a_geom_point(data = geyser, 
                  aes(x = duration, y = waiting)) + 
-      geom_contour(data = geyser, 
+      a_geom_contour(data = geyser, 
                    aes(x = duration, y = waiting), 
                    colour = "blue", size = .5, stat = "density2d") + 
       xlim(0.5, 6) + a_scale_y_log10(limits = c(40,110)) +
-      ggtitle("geom_contour 2d density")
+      ggtitle("a_geom_contour 2d density")
   ))
   # extract grids
   grid_major_hor <- getNodeSet(info$html, '//svg//g[@class="grid_major"]//g[@class="hor"]//line')

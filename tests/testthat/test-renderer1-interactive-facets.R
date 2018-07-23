@@ -12,51 +12,51 @@ mmir.facets <-
        a_theme_animint(height=300, width=800)+       
        a_scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
-       geom_tallrect(aes(xmin=first.base/1e6, xmax=last.base/1e6,
+       a_geom_tallrect(aes(xmin=first.base/1e6, xmax=last.base/1e6,
                          fill=annotation),
                      showSelected="signal",
                      data=intreg$annotations)+
        a_scale_fill_manual(values=breakpoint.colors,guide="none")+
-       geom_text(aes((first.base+last.base)/2e6, logratio+1/8,
+       a_geom_text(aes((first.base+last.base)/2e6, logratio+1/8,
                      label=annotation),
                  showSelected="signal",
                  data=intreg$annotations)+
-       geom_blank(aes(first.base/1e6, logratio+2/8),
+       a_geom_blank(aes(first.base/1e6, logratio+2/8),
                   data=intreg$annotations)+
-       geom_point(aes(base/1e6, logratio),
+       a_geom_point(aes(base/1e6, logratio),
                   showSelected="signal",
                   data=intreg$signals)+
-       geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean),
+       a_geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean),
                     showSelected=c("signal", "segments"),
                     data=intreg$segments,
                     colour=signal.colors[["estimate"]])+
-       geom_vline(aes(xintercept=base/1e6),
+       a_geom_vline(aes(xintercept=base/1e6),
                   showSelected=c("signal", "segments"),
                   colour=signal.colors[["estimate"]],
                   linetype="dashed",
                   data=intreg$breaks),
        penalty=a_plot()+
-       geom_tallrect(aes(xmin=min.L, xmax=max.L),
+       a_geom_tallrect(aes(xmin=min.L, xmax=max.L),
                      showSelected="signal",
                      clickSelects="segments",
                      data=data.frame(intreg$selection, what="segments"),
                      alpha=1/2)+
        ylab("")+
        a_theme_animint(height=500, width=800)+
-       geom_segment(aes(min.L, feature, xend=max.L, yend=feature),
+       a_geom_segment(aes(min.L, feature, xend=max.L, yend=feature),
                     clickSelects="signal",
                     size=5,
                     data=data.frame(intreg$intervals, what="regression"))+
-       geom_segment(aes(min.L, min.feature, xend=max.L, yend=max.feature,
+       a_geom_segment(aes(min.L, min.feature, xend=max.L, yend=max.feature,
                         linetype=line),
                     colour="red",
                     size=3,
                     data=data.frame(intreg$model, what="regression"))+
        a_scale_linetype_manual(values=model.linetypes)+
-       geom_segment(aes(min.L, cost, xend=max.L, yend=cost),
+       a_geom_segment(aes(min.L, cost, xend=max.L, yend=cost),
                     showSelected="signal",
                     data=data.frame(intreg$selection, what="error"))+
-       geom_segment(aes(min.L, segments, xend=max.L, yend=segments),
+       a_geom_segment(aes(min.L, segments, xend=max.L, yend=segments),
                     showSelected="signal",
                     data=data.frame(intreg$selection, what="segments"))+
        xlab("penalty value $L=f(x)$")+ # TODO: mathjax.
@@ -80,7 +80,7 @@ test_that("y axes align in facet_grid(variable~.)", {
 test_that("red lines are only drawn in panel 2", {
   panelPath <- function(panel.i){
     paste0("//svg[@id='plot_penalty']",
-           "//g[@class='geom9_a_segment_penalty']",
+           "//g[@class='a_geom9_segment_penalty']",
            "//g[@class='PANEL", panel.i, "']",
            "//line")
   }

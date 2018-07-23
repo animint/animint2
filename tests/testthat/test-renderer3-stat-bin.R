@@ -19,7 +19,7 @@ test_that("error for stat=bin and showSelected", {
   gg <- a_plot() +
     a_theme_bw()+
     a_theme(panel.margin=grid::unit(0, "lines"))+
-    geom_bar(
+    a_geom_bar(
       aes(count, group=stack, fill=stack),
       showSelected="a_facet",
       binwidth=1,
@@ -33,14 +33,14 @@ test_that("error for stat=bin and showSelected", {
   )
   expect_error({
     animint2HTML(complicated)
-  }, "showSelected does not work with a_StatBin, problem: geom1_a_bar_plot")
+  }, "showSelected does not work with a_StatBin, problem: a_geom1_bar_plot")
 })
 
 test_that("no warning for stat=bin without showSelected", {
   gg <- a_plot() +
     a_theme_bw()+
     a_theme(panel.margin=grid::unit(0, "lines"))+
-    geom_bar(
+    a_geom_bar(
       aes(count, group=stack, fill=stack),
       binwidth=1,
       data = df,

@@ -3,11 +3,11 @@ acontext("url fragment identifier")
 iris$observation <- 1:nrow(iris)
 viz <- list(
   petal=a_plot()+
-    geom_point(aes(Petal.Width, Petal.Length, fill=Species,
+    a_geom_point(aes(Petal.Width, Petal.Length, fill=Species,
                    id=paste0("petal", observation)),
                clickSelects="observation", data=iris),
   sepal=a_plot()+
-    geom_point(aes(Sepal.Width, Sepal.Length, fill=Species,
+    a_geom_point(aes(Sepal.Width, Sepal.Length, fill=Species,
                    id=paste0("sepal", observation)),
                clickSelects="observation", data=iris),
   first=list(observation=5))
@@ -22,7 +22,7 @@ test_that("all species are selected for url with no selection", {
 })
 
 test_that("one observation selected for url with no selection", {
-  circle.xpath <- "//circle[@class='geom']"
+  circle.xpath <- "//circle[@class='a_geom']"
   node.list <- getNodeSet(info$html, circle.xpath)
   opacity.str <- getStyleValue(info$html, circle.xpath, "opacity")
   names(opacity.str) <- sapply(node.list, xmlAttrs)["id",]

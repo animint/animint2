@@ -70,14 +70,14 @@ viz <- list(
     a_scale_x_continuous("")+
     a_scale_color_manual(values=method.colors, guide="none")+
     a_scale_fill_manual("threshold", values=thresh.colors, guide="none")+
-    geom_point(aes(metric.value, filterVar.fac, color=method,
+    a_geom_point(aes(metric.value, filterVar.fac, color=method,
                    fill=thresh.type),
                clickSelects="test.fold",
                showSelected=c("method", "thresh.type"),
                size=5,
                pch=21,
                data=add.filterVar.rev(VariantModels$auc))+
-    geom_point(aes(
+    a_geom_point(aes(
       error.or.Inf,
       filterVar.fac,
       key=filterVar,
@@ -106,21 +106,21 @@ viz <- list(
         lapply(label_df, paste)
       }
     })+
-    geom_path(aes(FPR, TPR,
+    a_geom_path(aes(FPR, TPR,
                   ##showSelected=method, #not needed!
                   group=method, tooltip=method, color=method),
               clickSelects="test.fold",
               size=5,
               data=VariantModels$roc)+
     a_scale_fill_manual("threshold", values=thresh.colors)+
-    geom_point(aes(FPR, TPR, color=method,
+    a_geom_point(aes(FPR, TPR, color=method,
                    ##showSelected=method, #not needed!
                    fill=thresh.type),
                clickSelects="test.fold",
                pch=21,
                size=4,
                data=subset(VariantModels$auc, metric.name=="auc"))+
-    geom_point(aes(
+    a_geom_point(aes(
       FPR, TPR,
       key=method,
       ##showSelected=method, #not needed!
@@ -132,11 +132,11 @@ viz <- list(
                pch=21,
                data=data_roc),
   error=a_plot()+
-    geom_hline(aes(yintercept=min.errors),
+    a_geom_hline(aes(yintercept=min.errors),
                showSelected=c("test.fold", "thresh.type"),
                data=minima.df,
                color="grey50")+
-    geom_vline(aes(xintercept=threshold),
+    a_geom_vline(aes(xintercept=threshold),
                showSelected=c("test.fold", "thresh.type", "method"),
                data=add.filterVar.fac(auc.min.error),
                color="grey50")+
@@ -150,12 +150,12 @@ viz <- list(
       label_value(label_df)
     }, scales="free", space="fixed")+
     a_scale_color_manual(values=fp.fn.colors)+
-    geom_line(aes(threshold, error.value,
+    a_geom_line(aes(threshold, error.value,
                   group=error.type, color=error.type),
               showSelected=c("test.fold", "thresh.type", "method"),
               data=add.filterVar.fac(VariantModels$error))+
     a_scale_fill_manual(values=method.colors, guide="none")+
-    geom_tallrect(aes(
+    a_geom_tallrect(aes(
       xmin=xmin, xmax=xmax,
       fill=method),
       showSelected=c("test.fold", "thresh.type", "method"),
@@ -185,29 +185,29 @@ viz$error+
   }, scales="free", space="fixed")
 
 test_that("no duplicated rows in common data", {
-  common.tsv <- file.path("animint-htmltest", "geom8_a_line_error_chunk_common.tsv")
+  common.tsv <- file.path("animint-htmltest", "a_geom8_line_error_chunk_common.tsv")
   common.df <- read.table(common.tsv, comment.char="", header=TRUE)
   common.unique <- unique(common.df)
   expect_identical(common.unique, common.df)
 })
 
 test_that("error lines rendered in all panels", {
-  panel.list <- getNodeSet(info$html, '//g[@class="geom8_a_line_error"]//g')
+  panel.list <- getNodeSet(info$html, '//g[@class="a_geom8_line_error"]//g')
   computed.counts <- sapply(panel.list, function(x)length(xmlChildren(x)))
   expected.counts <- rep(3, 20)
   expect_equal(computed.counts, expected.counts)
 })
 
 xpath.vec <- 
-  c('//g[@class="geom1_a_point_auc"]//circle',
-    '//g[@class="geom2_a_point_auc"]//circle',
-    '//g[@class="geom3_a_path_roc"]//path',
-    '//g[@class="geom4_a_point_roc"]//circle',
-    '//g[@class="geom5_a_point_roc"]//circle',
-    '//g[@class="geom6_a_hline_error"]//line',
-    '//g[@class="geom7_a_vline_error"]//line',
-    '//g[@class="geom8_a_line_error"]//path',
-    '//g[@class="geom9_a_tallrect_error"]//rect')
+  c('//g[@class="a_geom1_point_auc"]//circle',
+    '//g[@class="a_geom2_point_auc"]//circle',
+    '//g[@class="a_geom3_path_roc"]//path',
+    '//g[@class="a_geom4_point_roc"]//circle',
+    '//g[@class="a_geom5_point_roc"]//circle',
+    '//g[@class="a_geom6_hline_error"]//line',
+    '//g[@class="a_geom7_vline_error"]//line',
+    '//g[@class="a_geom8_line_error"]//path',
+    '//g[@class="a_geom9_tallrect_error"]//rect')
 
 countGeoms <- function(html=getHTML()){
   count.vec <- c()
@@ -220,7 +220,7 @@ countGeoms <- function(html=getHTML()){
 
 thresh.fold2 <- subset(VariantModels$thresholds, test.fold==2)
 
-test_that("initial geom counts", {
+test_that("initial a_geom counts", {
   expected.counts <- c(120, 20, 60, 60, 20, 20, 20, 60, nrow(thresh.fold2))
   computed.counts <- countGeoms()
   expect_equal(expected.counts, as.numeric(computed.counts))

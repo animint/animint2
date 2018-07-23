@@ -8,7 +8,7 @@ df <- data.frame(x=c(0, 0),
 
 test_that("segment size translates to stroke-width", {
   viz <- list(segs=a_plot()+
-              geom_segment(aes(x, y, xend=xend, yend=yend),
+              a_geom_segment(aes(x, y, xend=xend, yend=yend),
                            data=df, size=1))
   info <- animint2HTML(viz)
   ## Need the ^$ so that we do not match e.g. 210.
@@ -17,7 +17,7 @@ test_that("segment size translates to stroke-width", {
               
 test_that("segment size range translates to stroke-width", {
   viz <- list(segs=a_plot()+
-              geom_segment(aes(x, y, xend=xend, yend=yend, size=size),
+              a_geom_segment(aes(x, y, xend=xend, yend=yend, size=size),
                            data=df)+
               a_scale_size_identity())
   info <- animint2HTML(viz)
