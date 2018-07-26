@@ -2,7 +2,7 @@
 #' @rdname a_stat_summary_2d
 #' @inheritParams a_stat_bin_hex
 a_stat_summary_hex <- function(mapping = NULL, data = NULL,
-                             a_geom = "hex", position = "identity",
+                             a_geom = "hex", a_position = "identity",
                              ...,
                              bins = 30,
                              binwidth = NULL,
@@ -17,7 +17,7 @@ a_stat_summary_hex <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatSummaryHex,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

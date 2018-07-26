@@ -2,7 +2,7 @@
 #' @param mapping aesthetic mapping
 #' @param data data set
 #' @param a_stat statistic mapping, defaults to identity
-#' @param position position mapping, defaults to identity
+#' @param a_position position mapping, defaults to identity
 #' @param ... other arguments
 #' @param na.rm ...
 #' @param show.legend ...
@@ -11,7 +11,7 @@
 #' @export
 #' @example inst/examples/breakpoints.R
 a_geom_tallrect <- function(mapping = NULL, data = NULL,
-                          a_stat = "identity", position = "identity",
+                          a_stat = "identity", a_position = "identity",
                           ...,
                           na.rm = FALSE,
                           show.legend = NA,
@@ -21,7 +21,7 @@ a_geom_tallrect <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(
@@ -74,7 +74,7 @@ a_GeomTallRect <- a_ggproto("a_GeomTallRect", a_Geom,
 #' @param mapping aesthetic mapping
 #' @param data data set
 #' @param a_stat statistic mapping, defaults to identity
-#' @param position position mapping, defaults to identity
+#' @param a_position position mapping, defaults to identity
 #' @param ... other arguments
 #' @param na.rm ...
 #' @param show.legend ...
@@ -86,7 +86,7 @@ a_GeomTallRect <- a_ggproto("a_GeomTallRect", a_Geom,
 #'    source(system.file("examples/WorldBank.R", package = "animint"))
 #'  }
 a_geom_widerect <- function(mapping = NULL, data = NULL,
-                          a_stat = "identity", position = "identity",
+                          a_stat = "identity", a_position = "identity",
                           ...,
                           na.rm = FALSE,
                           show.legend = NA,
@@ -96,7 +96,7 @@ a_geom_widerect <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     a_stat = a_stat,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

@@ -5,7 +5,7 @@
 \title{Create a new layer}
 \usage{
 layer(a_geom = NULL, a_stat = NULL, data = NULL, mapping = NULL,
-  position = NULL, params = list(), inherit.aes = TRUE, subset = NULL,
+  a_position = NULL, params = list(), inherit.aes = TRUE, subset = NULL,
   show.legend = NA)
 }
 \arguments{
@@ -33,7 +33,7 @@ layer, as a string.}
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{params}{Additional parameters to the \code{a_geom} and \code{a_stat}.}
@@ -60,13 +60,13 @@ calls but it can also be created directly using this function.
 a_plot(mpg, aes(displ, hwy)) + a_geom_point()
 # shortcut for
 a_plot(mpg, aes(displ, hwy)) +
-  layer(a_geom = "point", a_stat = "identity", position = "identity",
+  layer(a_geom = "point", a_stat = "identity", a_position = "identity",
     params = list(na.rm = FALSE)
   )
 
 # use a function as data to plot a subset of global data
 a_plot(mpg, aes(displ, hwy)) +
-  layer(a_geom = "point", a_stat = "identity", position = "identity",
+  layer(a_geom = "point", a_stat = "identity", a_position = "identity",
     data = head, params = list(na.rm = FALSE)
   )
 

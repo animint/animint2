@@ -5,8 +5,8 @@
 \title{Superimpose a function.}
 \usage{
 a_stat_function(mapping = NULL, data = NULL, a_geom = "path",
-  position = "identity", ..., fun, xlim = NULL, n = 101, args = list(),
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  a_position = "identity", ..., fun, xlim = NULL, n = 101,
+  args = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -30,7 +30,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
 
 \item{a_geom}{The geometric object to use display the data}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are

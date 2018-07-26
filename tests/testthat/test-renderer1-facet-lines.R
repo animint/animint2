@@ -39,7 +39,7 @@ wb.facets <-
          a_geom_bar(aes(country, life.expectancy, fill=region,
                       key=country),
                   showSelected="year", clickSelects="country",
-                  data=not.na, a_stat="identity", position="identity")+
+                  data=not.na, a_stat="identity", a_position="identity")+
          a_coord_flip(),
        duration=list(year=1000),
        first=list(year=1975, country=c("United States", "Vietnam")),

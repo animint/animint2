@@ -40,17 +40,17 @@
 #' # specify the dodge width
 #' p <- a_plot(df, aes(trt, resp, fill = group))
 #' p +
-#'  a_geom_bar(position = "dodge", a_stat = "identity") +
-#'  a_geom_errorbar(aes(ymin = lower, ymax = upper), position = "dodge", width = 0.25)
+#'  a_geom_bar(a_position = "dodge", a_stat = "identity") +
+#'  a_geom_errorbar(aes(ymin = lower, ymax = upper), a_position = "dodge", width = 0.25)
 #'
 #' # Because the bars and errorbars have different widths
 #' # we need to specify how wide the objects we are dodging are
-#' dodge <- position_dodge(width=0.9)
+#' dodge <- a_position_dodge(width=0.9)
 #' p +
-#'   a_geom_bar(position = dodge, a_stat = "identity") +
-#'   a_geom_errorbar(aes(ymin = lower, ymax = upper), position = dodge, width = 0.25)
+#'   a_geom_bar(a_position = dodge, a_stat = "identity") +
+#'   a_geom_errorbar(aes(ymin = lower, ymax = upper), a_position = dodge, width = 0.25)
 a_geom_linerange <- function(mapping = NULL, data = NULL,
-                           a_stat = "identity", position = "identity",
+                           a_stat = "identity", a_position = "identity",
                            ...,
                            na.rm = FALSE,
                            show.legend = NA,
@@ -60,7 +60,7 @@ a_geom_linerange <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomLinerange,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

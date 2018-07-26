@@ -27,7 +27,7 @@
 #'   just touch. Use smaller values for closer, overlapping dots.
 #' @param dotsize The diameter of the dots relative to \code{binwidth}, default 1.
 #' @param stackgroups should dots be stacked across groups? This has the effect
-#'   that \code{position = "stack"} should have, but can't (because this geom has
+#'   that \code{a_position = "stack"} should have, but can't (because this geom has
 #'   some odd properties).
 #' @param binaxis The axis to bin along, "x" (default) or "y"
 #' @param method "dotdensity" (default) for dot-density binning, or
@@ -96,7 +96,7 @@
 #'   a_geom_dotplot(binaxis = "y", stackdir = "centerwhole")
 #'
 #' a_plot(mtcars, aes(x = factor(vs), fill = factor(cyl), y = mpg)) +
-#'   a_geom_dotplot(binaxis = "y", stackdir = "center", position = "dodge")
+#'   a_geom_dotplot(binaxis = "y", stackdir = "center", a_position = "dodge")
 #'
 #' # binpositions="all" ensures that the bins are aligned between groups
 #' a_plot(mtcars, aes(x = factor(am), y = mpg)) +
@@ -113,7 +113,7 @@
 #'   a_geom_dotplot(binaxis = "y", stackgroups = TRUE, binwidth = 1, method = "histodot")
 #' }
 a_geom_dotplot <- function(mapping = NULL, data = NULL,
-                         position = "identity",
+                         a_position = "identity",
                          ...,
                          binwidth = NULL,
                          binaxis = "x",
@@ -130,12 +130,12 @@ a_geom_dotplot <- function(mapping = NULL, data = NULL,
                          na.rm = FALSE,
                          show.legend = NA,
                          inherit.aes = TRUE) {
-  # If identical(position, "stack") or position is position_stack(), tell them
+  # If identical(a_position, "stack") or a_position is a_position_stack(), tell them
   # to use stackgroups=TRUE instead. Need to use identical() instead of ==,
-  # because == will fail if object is position_stack() or position_dodge()
-  if (!is.null(position) &&
-      (identical(position, "stack") || (inherits(position, "a_PositionStack"))))
-    message("position=\"stack\" doesn't work properly with a_geom_dotplot. Use stackgroups=TRUE instead.")
+  # because == will fail if object is a_position_stack() or a_position_dodge()
+  if (!is.null(a_position) &&
+      (identical(a_position, "stack") || (inherits(a_position, "a_PositionStack"))))
+    message("a_position=\"stack\" doesn't work properly with a_geom_dotplot. Use stackgroups=TRUE instead.")
 
   if (stackgroups && method == "dotdensity" && binpositions == "bygroup")
     message('a_geom_dotplot called with stackgroups=TRUE and method="dotdensity". You probably want to set binpositions="all"')
@@ -145,7 +145,7 @@ a_geom_dotplot <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatBindot,
     a_geom = a_GeomDotplot,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     # Need to make sure that the binaxis goes to both the stat and the geom

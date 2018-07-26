@@ -35,7 +35,7 @@
 #'   a_geom_contour(colour = "white")
 #' }
 a_geom_contour <- function(mapping = NULL, data = NULL,
-                         a_stat = "contour", position = "identity",
+                         a_stat = "contour", a_position = "identity",
                          ...,
                          lineend = "butt",
                          linejoin = "round",
@@ -48,7 +48,7 @@ a_geom_contour <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomContour,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

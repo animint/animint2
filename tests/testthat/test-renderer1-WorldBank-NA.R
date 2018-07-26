@@ -31,7 +31,7 @@ no.time <-
        a_geom_bar(aes(country, life.expectancy, fill=region,
                     key=country),
                 showSelected="year", clickSelects="country",
-                data=WorldBank, a_stat="identity", position="identity")+
+                data=WorldBank, a_stat="identity", a_position="identity")+
        a_coord_flip(),
        
        duration=list(year=1000),

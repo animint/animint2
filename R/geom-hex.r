@@ -25,7 +25,7 @@
 #' d + a_geom_hex(binwidth = c(.1, 500))
 #' }
 a_geom_hex <- function(mapping = NULL, data = NULL,
-                     a_stat = "binhex", position = "identity",
+                     a_stat = "binhex", a_position = "identity",
                      ...,
                      na.rm = FALSE,
                      show.legend = NA,
@@ -35,7 +35,7 @@ a_geom_hex <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomHex,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

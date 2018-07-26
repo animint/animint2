@@ -2,7 +2,7 @@
 #'
 #' @family position adjustments
 #' @export
-position_identity <- function() {
+a_position_identity <- function() {
   a_PositionIdentity
 }
 

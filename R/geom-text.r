@@ -86,16 +86,16 @@
 #' # ggplot2 doesn't know you want to give the labels the same virtual width
 #' # as the bars:
 #' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
-#'   a_geom_bar(a_stat = "identity", position = "dodge") +
-#'   a_geom_text(position = "dodge")
+#'   a_geom_bar(a_stat = "identity", a_position = "dodge") +
+#'   a_geom_text(a_position = "dodge")
 #' # So tell it:
 #' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
-#'   a_geom_bar(a_stat = "identity", position = "dodge") +
-#'   a_geom_text(position = position_dodge(0.9))
+#'   a_geom_bar(a_stat = "identity", a_position = "dodge") +
+#'   a_geom_text(a_position = a_position_dodge(0.9))
 #' # Use you can't nudge and dodge text, so instead adjust the y postion
 #' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
-#'   a_geom_bar(a_stat = "identity", position = "dodge") +
-#'   a_geom_text(aes(y = y + 0.05), position = position_dodge(0.9), vjust = 0)
+#'   a_geom_bar(a_stat = "identity", a_position = "dodge") +
+#'   a_geom_text(aes(y = y + 0.05), a_position = a_position_dodge(0.9), vjust = 0)
 #'
 #' # To place text in the middle of each bar in a stacked barplot, you
 #' # need to do the computation yourself
@@ -117,7 +117,7 @@
 #'   a_geom_text(aes(label = text), vjust = "inward", hjust = "inward")
 #' }
 a_geom_text <- function(mapping = NULL, data = NULL,
-                      a_stat = "identity", position = "identity",
+                      a_stat = "identity", a_position = "identity",
                       ...,
                       parse = FALSE,
                       nudge_x = 0,
@@ -128,11 +128,11 @@ a_geom_text <- function(mapping = NULL, data = NULL,
                       inherit.aes = TRUE)
 {
   if (!missing(nudge_x) || !missing(nudge_y)) {
-    if (!missing(position)) {
-      stop("Specify either `position` or `nudge_x`/`nudge_y`", call. = FALSE)
+    if (!missing(a_position)) {
+      stop("Specify either `a_position` or `nudge_x`/`nudge_y`", call. = FALSE)
     }
 
-    position <- position_nudge(nudge_x, nudge_y)
+    a_position <- a_position_nudge(nudge_x, nudge_y)
   }
 
   layer(
@@ -140,7 +140,7 @@ a_geom_text <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomText,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

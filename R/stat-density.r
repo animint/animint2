@@ -20,7 +20,7 @@
 #' @export
 #' @rdname a_geom_density
 a_stat_density <- function(mapping = NULL, data = NULL,
-                         a_geom = "area", position = "stack",
+                         a_geom = "area", a_position = "stack",
                          ...,
                          bw = "nrd0",
                          adjust = 1,
@@ -35,7 +35,7 @@ a_stat_density <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatDensity,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

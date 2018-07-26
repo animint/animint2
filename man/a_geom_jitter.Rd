@@ -5,8 +5,8 @@
 \title{Points, jittered to reduce overplotting.}
 \usage{
 a_geom_jitter(mapping = NULL, data = NULL, a_stat = "identity",
-  position = "jitter", ..., width = NULL, height = NULL, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  a_position = "jitter", ..., width = NULL, height = NULL,
+  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -31,7 +31,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
 \item{a_stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
@@ -70,7 +70,7 @@ that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
 }
 \description{
-The jitter geom is a convenient default for a_geom_point with position =
+The jitter geom is a convenient default for a_geom_point with a_position =
 'jitter'. It's a useful way of handling overplotting caused by discreteness
 in smaller datasets.
 }

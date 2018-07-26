@@ -36,7 +36,7 @@
 #' d + a_stat_density_2d(a_geom = "point", aes(size = ..density..), n = 20, contour = FALSE)
 #' }
 a_geom_density_2d <- function(mapping = NULL, data = NULL,
-                            a_stat = "density2d", position = "identity",
+                            a_stat = "density2d", a_position = "identity",
                             ...,
                             lineend = "butt",
                             linejoin = "round",
@@ -49,7 +49,7 @@ a_geom_density_2d <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomDensity2d,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

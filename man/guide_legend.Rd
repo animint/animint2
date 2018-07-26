@@ -4,9 +4,9 @@
 \alias{guide_legend}
 \title{Legend guide.}
 \usage{
-guide_legend(title = waiver(), title.position = NULL,
+guide_legend(title = waiver(), title.a_position = NULL,
   title.a_theme = NULL, title.hjust = NULL, title.vjust = NULL,
-  label = TRUE, label.position = NULL, label.a_theme = NULL,
+  label = TRUE, label.a_position = NULL, label.a_theme = NULL,
   label.hjust = NULL, label.vjust = NULL, keywidth = NULL,
   keyheight = NULL, direction = NULL, default.unit = "line",
   override.aes = list(), nrow = NULL, ncol = NULL, byrow = FALSE,
@@ -18,7 +18,7 @@ If \code{NULL}, the title is not shown. By default
 (\code{\link{waiver}}), the name of the scale object or the name
 specified in \code{\link{labs}} is used for the title.}
 
-\item{title.position}{A character string indicating the position of a
+\item{title.a_position}{A character string indicating the a_position of a
  title. One of "top" (default for a vertical guide), "bottom", "left"
 (default for a horizontal guide), or "right."}
 
@@ -35,7 +35,7 @@ text.}
 \item{label}{logical. If \code{TRUE} then the labels are drawn. If
 \code{FALSE} then the labels are invisible.}
 
-\item{label.position}{A character string indicating the position of a
+\item{label.a_position}{A character string indicating the a_position of a
 label. One of "top", "bottom" (default for horizontal guide), "left", or
 "right" (default for vertical guide).}
 
@@ -117,7 +117,7 @@ p1 + a_scale_fill_continuous(guide = guide_legend(title = NULL)) # no title
 p1 + guides(fill = guide_legend(keywidth = 3, keyheight = 1))
 
 # title position
-p1 + guides(fill = guide_legend(title = "LEFT", title.position = "left"))
+p1 + guides(fill = guide_legend(title = "LEFT", title.a_position = "left"))
 
 # title text styles via a_element_text
 p1 + guides(fill =
@@ -132,15 +132,15 @@ p1 + guides(fill =
 )
 
 # label position
-p1 + guides(fill = guide_legend(label.position = "left", label.hjust = 1))
+p1 + guides(fill = guide_legend(label.a_position = "left", label.hjust = 1))
 
 # label styles
 p1 + a_scale_fill_continuous(breaks = c(5, 10, 15),
   labels = paste("long", c(5, 10, 15)),
   guide = guide_legend(
     direction = "horizontal",
-    title.position = "top",
-    label.position = "bottom",
+    title.a_position = "top",
+    label.a_position = "bottom",
     label.hjust = 0.5,
     label.vjust = 1,
     label.a_theme = a_element_text(angle = 90)

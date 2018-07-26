@@ -37,7 +37,7 @@ parsePlot <- function(meta, plot, plot.name){
   plot.info$panel_margin_lines <- pt.to.lines(a_theme.pars$panel.margin)
   
   ## No legend if a_theme(legend.postion="none").
-  plot.info$legend <- if(a_theme.pars$legend.position != "none"){
+  plot.info$legend <- if(a_theme.pars$legend.a_position != "none"){
     getLegendList(built)
   }
   
@@ -353,10 +353,10 @@ saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
                            g$classed, names(g.data), names(g$aes))
   
   ## Warn if non-identity position is used with animint aes.
-  position.type <- class(l$position)[[1]]
-  if(has.show && position.type != "a_PositionIdentity"){
+  a_position.type <- class(l$a_position)[[1]]
+  if(has.show && a_position.type != "a_PositionIdentity"){
     print(l)
-    warning("showSelected only works with position=identity, problem: ",
+    warning("showSelected only works with a_position=identity, problem: ",
             g$classed)
   }
 
@@ -1282,7 +1282,7 @@ getLegendList <- function(plistextra){
   layers <- plot$layers
   default_mapping <- plot$mapping
   a_theme <- plot_a_theme(plot)
-  position <- a_theme$legend.position
+  a_position <- a_theme$legend.a_position
   # by default, guide boxes are vertically aligned
   if(is.null(a_theme$legend.box)) a_theme$legend.box <- "vertical" else a_theme$legend.box
 
@@ -1292,21 +1292,21 @@ getLegendList <- function(plistextra){
   # by default, direction of each guide depends on the position of the guide.
   if(is.null(a_theme$legend.direction)){
     a_theme$legend.direction <- 
-      if (length(position) == 1 && position %in% c("top", "bottom", "left", "right"))
-        switch(position[1], top =, bottom = "horizontal", left =, right = "vertical")
+      if (length(a_position) == 1 && a_position %in% c("top", "bottom", "left", "right"))
+        switch(a_position[1], top =, bottom = "horizontal", left =, right = "vertical")
     else
       "vertical"
   }
   # justification of legend boxes
   a_theme$legend.box.just <-
     if(is.null(a_theme$legend.box.just)) {
-      if (length(position) == 1 && position %in% c("top", "bottom", "left", "right"))
-        switch(position, bottom =, top = c("center", "top"), left =, right = c("left", "top"))
+      if (length(a_position) == 1 && a_position %in% c("top", "bottom", "left", "right"))
+        switch(a_position, bottom =, top = c("center", "top"), left =, right = c("left", "top"))
       else
         c("center", "center")
     }
 
-  position <- a_theme$legend.position
+  a_position <- a_theme$legend.a_position
   # locate guide argument in a_scale_*, and use that for a default.
   # Note, however, that guides(colour = ...) has precendence! See https://gist.github.com/cpsievert/ece28830a6c992b29ab6
   guides.args <- list()

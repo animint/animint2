@@ -6,11 +6,11 @@
 \title{Add a smoothed conditional mean.}
 \usage{
 a_geom_smooth(mapping = NULL, data = NULL, a_stat = "smooth",
-  position = "identity", ..., method = "auto", formula = y ~ x,
+  a_position = "identity", ..., method = "auto", formula = y ~ x,
   se = TRUE, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
 a_stat_smooth(mapping = NULL, data = NULL, a_geom = "smooth",
-  position = "identity", ..., method = "auto", formula = y ~ x,
+  a_position = "identity", ..., method = "auto", formula = y ~ x,
   se = TRUE, n = 80, span = 0.75, fullrange = FALSE, level = 0.95,
   method.args = list(), na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
@@ -35,7 +35,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are

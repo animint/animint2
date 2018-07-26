@@ -5,17 +5,17 @@
 \alias{guide_colorbar}
 \title{Continuous colour bar guide.}
 \usage{
-guide_colourbar(title = waiver(), title.position = NULL,
+guide_colourbar(title = waiver(), title.a_position = NULL,
   title.a_theme = NULL, title.hjust = NULL, title.vjust = NULL,
-  label = TRUE, label.position = NULL, label.a_theme = NULL,
+  label = TRUE, label.a_position = NULL, label.a_theme = NULL,
   label.hjust = NULL, label.vjust = NULL, barwidth = NULL,
   barheight = NULL, nbin = 20, raster = TRUE, ticks = TRUE,
   draw.ulim = TRUE, draw.llim = TRUE, direction = NULL,
   default.unit = "line", reverse = FALSE, order = 0, ...)
 
-guide_colorbar(title = waiver(), title.position = NULL,
+guide_colorbar(title = waiver(), title.a_position = NULL,
   title.a_theme = NULL, title.hjust = NULL, title.vjust = NULL,
-  label = TRUE, label.position = NULL, label.a_theme = NULL,
+  label = TRUE, label.a_position = NULL, label.a_theme = NULL,
   label.hjust = NULL, label.vjust = NULL, barwidth = NULL,
   barheight = NULL, nbin = 20, raster = TRUE, ticks = TRUE,
   draw.ulim = TRUE, draw.llim = TRUE, direction = NULL,
@@ -27,7 +27,7 @@ If \code{NULL}, the title is not shown. By default
 (\code{\link{waiver}}), the name of the scale object or the name
 specified in \code{\link{labs}} is used for the title.}
 
-\item{title.position}{A character string indicating the position of a
+\item{title.a_position}{A character string indicating the a_position of a
  title. One of "top" (default for a vertical guide), "bottom", "left"
 (default for a horizontal guide), or "right."}
 
@@ -44,7 +44,7 @@ text.}
 \item{label}{logical. If \code{TRUE} then the labels are drawn. If
 \code{FALSE} then the labels are invisible.}
 
-\item{label.position}{A character string indicating the position of a
+\item{label.a_position}{A character string indicating the a_position of a
 label. One of "top", "bottom" (default for horizontal guide), "left", or
 "right" (default for vertical guide).}
 
@@ -138,7 +138,7 @@ p1 + guides(fill = guide_colorbar(label = FALSE))
 p1 + guides(fill = guide_colorbar(ticks = FALSE))
 
 # label position
-p1 + guides(fill = guide_colorbar(label.position = "left"))
+p1 + guides(fill = guide_colorbar(label.a_position = "left"))
 
 # label a_theme
 p1 + guides(fill = guide_colorbar(label.a_theme = a_element_text(colour = "blue", angle = 0)))

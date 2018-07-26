@@ -10,7 +10,7 @@
 #' a_plot(mtcars, aes(vs, am)) + a_geom_point(alpha = 0.1)
 #' a_plot(mtcars, aes(vs, am)) + a_geom_point(alpha = 0.1, a_stat="unique")
 a_stat_unique <- function(mapping = NULL, data = NULL,
-                        a_geom = "point", position = "identity",
+                        a_geom = "point", a_position = "identity",
                         ...,
                         na.rm = FALSE,
                         show.legend = NA,
@@ -20,7 +20,7 @@ a_stat_unique <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatUnique,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

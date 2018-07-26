@@ -6,14 +6,14 @@
 \title{Box and whiskers plot.}
 \usage{
 a_geom_boxplot(mapping = NULL, data = NULL, a_stat = "boxplot",
-  position = "dodge", ..., outlier.colour = NULL, outlier.color = NULL,
+  a_position = "dodge", ..., outlier.colour = NULL, outlier.color = NULL,
   outlier.shape = 19, outlier.size = 1.5, outlier.stroke = 0.5,
   notch = FALSE, notchwidth = 0.5, varwidth = FALSE, na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 
 a_stat_boxplot(mapping = NULL, data = NULL, a_geom = "boxplot",
-  position = "dodge", ..., coef = 1.5, na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  a_position = "dodge", ..., coef = 1.5, na.rm = FALSE,
+  show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -35,7 +35,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are

@@ -46,7 +46,7 @@ tornado.points.anim <-
        make_text(UStornadoes, 1980, 200, "state")+
        a_geom_bar(aes(year, count),
                 clickSelects="year", showSelected="state",
-                data=UStornadoCounts, a_stat="identity", position="identity")+
+                data=UStornadoCounts, a_stat="identity", a_position="identity")+
        a_geom_text(aes(year, count + 5, label=count),
                  showSelected=c("year", "state"),
                 data=UStornadoCounts, size=20))
@@ -73,7 +73,7 @@ tornado.points.anim <-
        ggtitle("There should be state = XXX below")+
        a_geom_bar(aes(year, count),
                 clickSelects="year", showSelected="state",
-                data=UStornadoCounts, a_stat="identity", position="identity")+
+                data=UStornadoCounts, a_stat="identity", a_position="identity")+
        make_text(UStornadoes, 1980, 200, "state")+
        a_geom_text(aes(year, count + 5, label=count),
                  showSelected=c("year", "state"),
@@ -102,6 +102,6 @@ tornado.points.anim <-
        make_text(UStornadoes, 1980, 200, "state")+
        a_geom_bar(aes(year, count),
                 clickSelects="year", showSelected="state",
-                data=UStornadoCounts, a_stat="identity", position="identity"))
+                data=UStornadoCounts, a_stat="identity", a_position="identity"))
 animint2dir(tornado.points.anim, "tornado-points-anim")
 

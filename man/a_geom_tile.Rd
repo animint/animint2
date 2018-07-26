@@ -7,16 +7,16 @@
 \title{Draw rectangles.}
 \usage{
 a_geom_raster(mapping = NULL, data = NULL, a_stat = "identity",
-  position = "identity", ..., hjust = 0.5, vjust = 0.5,
+  a_position = "identity", ..., hjust = 0.5, vjust = 0.5,
   interpolate = FALSE, na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
 a_geom_rect(mapping = NULL, data = NULL, a_stat = "identity",
-  position = "identity", ..., na.rm = FALSE, show.legend = NA,
+  a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
 a_geom_tile(mapping = NULL, data = NULL, a_stat = "identity",
-  position = "identity", ..., na.rm = FALSE, show.legend = NA,
+  a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 }
 \arguments{
@@ -42,7 +42,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
 \item{a_stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
@@ -122,7 +122,7 @@ cars + a_geom_point()
 cars + a_stat_bin2d(aes(fill = ..count..), binwidth = c(3,1))
 cars + a_stat_bin2d(aes(fill = ..density..), binwidth = c(3,1))
 
-cars + a_stat_density(aes(fill = ..density..), a_geom = "raster", position = "identity")
-cars + a_stat_density(aes(fill = ..count..), a_geom = "raster", position = "identity")
+cars + a_stat_density(aes(fill = ..density..), a_geom = "raster", a_position = "identity")
+cars + a_stat_density(aes(fill = ..count..), a_geom = "raster", a_position = "identity")
 }
 }

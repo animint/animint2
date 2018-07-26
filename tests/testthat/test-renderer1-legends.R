@@ -58,9 +58,9 @@ test_that('hiding the color legend works with guides(color="none")',{
   expect_identical(generated.names, "population")
 })
 
-test_that('hiding all legends works with a_theme(legend.position="none")',{
+test_that('hiding all legends works with a_theme(legend.a_position="none")',{
   viz$scatter <- viz$scatter+
-    a_theme(legend.position="none")
+    a_theme(legend.a_position="none")
   info <- animint2dir(viz, open.browser=FALSE)
   generated.names <- names(info$plots$scatter$legend)
   expect_identical(generated.names, NULL)

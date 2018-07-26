@@ -6,11 +6,11 @@
 \title{Count the number of observations at each location.}
 \usage{
 a_geom_count(mapping = NULL, data = NULL, a_stat = "sum",
-  position = "identity", ..., na.rm = FALSE, show.legend = NA,
+  a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
 a_stat_sum(mapping = NULL, data = NULL, a_geom = "point",
-  position = "identity", ..., na.rm = FALSE, show.legend = NA,
+  a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 }
 \arguments{
@@ -33,7 +33,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
@@ -69,8 +69,8 @@ useful when you have discrete data.
 \section{Computed variables}{
 
 \describe{
- \item{n}{number of observations at position}
- \item{prop}{percent of points in that panel at that position}
+ \item{n}{number of observations at a_position}
+ \item{prop}{percent of points in that panel at that a_position}
 }
 }
 

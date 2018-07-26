@@ -87,7 +87,7 @@
 #'  )
 #' }
 a_geom_boxplot <- function(mapping = NULL, data = NULL,
-                         a_stat = "boxplot", position = "dodge",
+                         a_stat = "boxplot", a_position = "dodge",
                          ...,
                          outlier.colour = NULL,
                          outlier.color = NULL,
@@ -105,7 +105,7 @@ a_geom_boxplot <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomBoxplot,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

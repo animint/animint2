@@ -102,7 +102,7 @@ a_theme_grey <- function(base_size = 11, base_family = "") {
     legend.text.align =  NULL,
     legend.title =       a_element_text(hjust = 0),
     legend.title.align = NULL,
-    legend.position =    "right",
+    legend.a_position =    "right",
     legend.direction =   NULL,
     legend.justification = "center",
     legend.box =         NULL,

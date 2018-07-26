@@ -6,7 +6,7 @@
 #' @export
 #' @rdname a_geom_bin2d
 a_stat_bin_2d <- function(mapping = NULL, data = NULL,
-                        a_geom = "tile", position = "identity",
+                        a_geom = "tile", a_position = "identity",
                         ...,
                         bins = 30,
                         binwidth = NULL,
@@ -19,7 +19,7 @@ a_stat_bin_2d <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatBin2d,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

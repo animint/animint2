@@ -11,7 +11,7 @@
 #' @export
 #' @rdname a_geom_quantile
 a_stat_quantile <- function(mapping = NULL, data = NULL,
-                          a_geom = "quantile", position = "identity",
+                          a_geom = "quantile", a_position = "identity",
                           ...,
                           quantiles = c(0.25, 0.5, 0.75),
                           formula = NULL,
@@ -25,7 +25,7 @@ a_stat_quantile <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatQuantile,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

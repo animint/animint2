@@ -63,7 +63,7 @@
 #' p1 + guides(fill = guide_colorbar(ticks = FALSE))
 #'
 #' # label position
-#' p1 + guides(fill = guide_colorbar(label.position = "left"))
+#' p1 + guides(fill = guide_colorbar(label.a_position = "left"))
 #'
 #' # label a_theme
 #' p1 + guides(fill = guide_colorbar(label.a_theme = a_element_text(colour = "blue", angle = 0)))
@@ -91,14 +91,14 @@ guide_colourbar <- function(
 
   # title
   title = waiver(),
-  title.position = NULL,
+  title.a_position = NULL,
   title.a_theme = NULL,
   title.hjust = NULL,
   title.vjust = NULL,
 
   # label
   label = TRUE,
-  label.position = NULL,
+  label.a_position = NULL,
   label.a_theme = NULL,
   label.hjust = NULL,
   label.vjust = NULL,
@@ -128,14 +128,14 @@ guide_colourbar <- function(
   structure(list(
     # title
     title = title,
-    title.position = title.position,
+    title.a_position = title.a_position,
     title.a_theme = title.a_theme,
     title.hjust = title.hjust,
     title.vjust = title.vjust,
 
     # label
     label = label,
-    label.position = label.position,
+    label.a_position = label.a_position,
     label.a_theme = label.a_theme,
     label.hjust = label.hjust,
     label.vjust = label.vjust,
@@ -221,15 +221,15 @@ guide_gengrob.colorbar <- function(guide, a_theme) {
   # settings of location and size
   switch(guide$direction,
     "horizontal" = {
-      label.position <- guide$label.position %||% "bottom"
-      if (!label.position %in% c("top", "bottom")) stop("label position \"", label.position, "\" is invalid")
+      label.a_position <- guide$label.a_position %||% "bottom"
+      if (!label.a_position %in% c("top", "bottom")) stop("label a_position \"", label.a_position, "\" is invalid")
 
       barwidth <- convertWidth(guide$barwidth %||% (a_theme$legend.key.width * 5), "mm")
       barheight <- convertHeight(guide$barheight %||% a_theme$legend.key.height, "mm")
     },
     "vertical" = {
-      label.position <- guide$label.position %||% "right"
-      if (!label.position %in% c("left", "right")) stop("label position \"", label.position, "\" is invalid")
+      label.a_position <- guide$label.a_position %||% "right"
+      if (!label.a_position %in% c("left", "right")) stop("label a_position \"", label.a_position, "\" is invalid")
 
       barwidth <- convertWidth(guide$barwidth %||% a_theme$legend.key.width, "mm")
       barheight <- convertHeight(guide$barheight %||% (a_theme$legend.key.height * 5), "mm")
@@ -343,7 +343,7 @@ guide_gengrob.colorbar <- function(guide, a_theme) {
   # layout of bar and label
   switch(guide$direction,
     "horizontal" = {
-      switch(label.position,
+      switch(label.a_position,
         "top" = {
           bl_widths <- barwidth.c
           bl_heights <- c(label_height.c, vgap, barheight.c)
@@ -358,7 +358,7 @@ guide_gengrob.colorbar <- function(guide, a_theme) {
         })
     },
     "vertical" = {
-      switch(label.position,
+      switch(label.a_position,
         "left" = {
           bl_widths <- c(label_width.c, vgap, barwidth.c)
           bl_heights <- barheight.c
@@ -374,7 +374,7 @@ guide_gengrob.colorbar <- function(guide, a_theme) {
     })
 
   # layout of title and bar+label
-  switch(guide$title.position,
+  switch(guide$title.a_position,
     "top" = {
       widths <- c(bl_widths, max(0, title_width.c - sum(bl_widths)))
       heights <- c(title_height.c, vgap, bl_heights)

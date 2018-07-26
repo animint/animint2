@@ -6,13 +6,13 @@
 \title{Violin plot.}
 \usage{
 a_geom_violin(mapping = NULL, data = NULL, a_stat = "ydensity",
-  position = "dodge", ..., draw_quantiles = NULL, trim = TRUE,
+  a_position = "dodge", ..., draw_quantiles = NULL, trim = TRUE,
   a_scale = "area", na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
 a_stat_ydensity(mapping = NULL, data = NULL, a_geom = "violin",
-  position = "dodge", ..., bw = "nrd0", adjust = 1, kernel = "gaussian",
-  trim = TRUE, a_scale = "area", na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  a_position = "dodge", ..., bw = "nrd0", adjust = 1,
+  kernel = "gaussian", trim = TRUE, a_scale = "area", na.rm = FALSE,
+  show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -34,7 +34,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are

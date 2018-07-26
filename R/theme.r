@@ -40,7 +40,7 @@
 #'
 #' a_plot(mtcars, aes(mpg, wt)) +
 #'   a_geom_point(aes(color = mpg)) +
-#'   a_theme(legend.position = c(0.95, 0.95),
+#'   a_theme(legend.a_position = c(0.95, 0.95),
 #'         legend.justification = c(1, 1))
 #' last_plot() +
 #'  a_theme(legend.background = a_element_rect(fill = "white", colour = "white", size = 3))
@@ -141,7 +141,7 @@ print.a_theme <- function(x, ...) utils::str(x)
 #'                    (\code{a_element_text}; inherits from \code{title}) \cr
 #'   legend.title.align \tab alignment of legend title
 #'                    (number from 0 (left) to 1 (right)) \cr
-#'   legend.position  \tab the position of legends
+#'   legend.a_position  \tab the a_position of legends
 #'                    ("none", "left", "right", "bottom", "top", or two-element
 #'                      numeric vector) \cr
 #'   legend.direction \tab layout of items in legends
@@ -288,10 +288,10 @@ print.a_theme <- function(x, ...) utils::str(x)
 #' z <- a_plot(mtcars, aes(wt, mpg)) +
 #'   a_geom_point(aes(colour = factor(cyl)))
 #' z
-#' z + a_theme(legend.position = "none")
-#' z + a_theme(legend.position = "bottom")
+#' z + a_theme(legend.a_position = "none")
+#' z + a_theme(legend.a_position = "bottom")
 #' # Or use relative coordinates between 0 and 1
-#' z + a_theme(legend.position = c(.5, .5))
+#' z + a_theme(legend.a_position = c(.5, .5))
 #' # Add a border to the whole legend
 #' z + a_theme(legend.background = a_element_rect(colour = "black"))
 #' # Legend margin controls extra space around outside of legend:

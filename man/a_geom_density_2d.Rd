@@ -8,11 +8,11 @@
 \title{Contours from a 2d density estimate.}
 \usage{
 a_geom_density_2d(mapping = NULL, data = NULL, a_stat = "density2d",
-  position = "identity", ..., lineend = "butt", linejoin = "round",
+  a_position = "identity", ..., lineend = "butt", linejoin = "round",
   linemitre = 1, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
 a_stat_density_2d(mapping = NULL, data = NULL, a_geom = "density_2d",
-  position = "identity", ..., contour = TRUE, n = 100, h = NULL,
+  a_position = "identity", ..., contour = TRUE, n = 100, h = NULL,
   na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
@@ -35,7 +35,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are

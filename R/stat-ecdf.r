@@ -25,7 +25,7 @@
 #' a_plot(df, aes(x, colour = g)) + a_stat_ecdf()
 #' }
 a_stat_ecdf <- function(mapping = NULL, data = NULL,
-                      a_geom = "step", position = "identity",
+                      a_geom = "step", a_position = "identity",
                       ...,
                       n = NULL,
                       pad = TRUE,
@@ -37,7 +37,7 @@ a_stat_ecdf <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatEcdf,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

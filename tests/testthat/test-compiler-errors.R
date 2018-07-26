@@ -115,7 +115,7 @@ test_that("no warning when key specified", {
   })
 })
 
-test_that("warning for position=stack and showSelected", {
+test_that("warning for a_position=stack and showSelected", {
   set.seed(1)
   df <- data.frame(
     letter = c(replicate(4, LETTERS[1:5])),
@@ -132,7 +132,7 @@ test_that("warning for position=stack and showSelected", {
       showSelected="a_facet",
       data = df,
       a_stat = "identity",
-      position="stack"
+      a_position="stack"
     )
   complicated <- list(
     plot = gg,
@@ -141,10 +141,10 @@ test_that("warning for position=stack and showSelected", {
   )
   expect_warning({
     animint2dir(complicated, open.browser=FALSE)
-  }, "showSelected only works with position=identity, problem: a_geom1_bar_plot")
+  }, "showSelected only works with a_position=identity, problem: a_geom1_bar_plot")
 })
 
-test_that("no warning for position=stack without showSelected", {
+test_that("no warning for a_position=stack without showSelected", {
   set.seed(1)
   df <- data.frame(
     letter = c(replicate(4, LETTERS[1:5])),
@@ -159,7 +159,7 @@ test_that("no warning for position=stack without showSelected", {
       aes(letter, count, fill = stack),
       data = df,
       a_stat = "identity",
-      position="stack"
+      a_position="stack"
     )
   no.show <- list(
     plot = gg

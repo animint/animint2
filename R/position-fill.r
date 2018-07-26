@@ -1,6 +1,6 @@
 #' @export
-#' @rdname position_stack
-position_fill <- function() {
+#' @rdname a_position_stack
+a_position_fill <- function() {
   a_PositionFill
 }
 
@@ -19,6 +19,6 @@ a_PositionFill <- a_ggproto("a_PositionFill", a_Position,
   },
 
   compute_panel = function(data, params, scales) {
-    collide(data, NULL, "position_fill", pos_fill)
+    collide(data, NULL, "a_position_fill", pos_fill)
   }
 )

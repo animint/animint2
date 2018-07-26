@@ -15,7 +15,7 @@
 #' @export
 #' @rdname a_geom_bar
 a_stat_count <- function(mapping = NULL, data = NULL,
-                       a_geom = "bar", position = "stack",
+                       a_geom = "bar", a_position = "stack",
                        ...,
                        width = NULL,
                        na.rm = FALSE,
@@ -26,7 +26,7 @@ a_stat_count <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatCount,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

@@ -91,7 +91,7 @@
 #' a_plot(mtcars2, aes(wt, mpg)) + a_geom_point(na.rm = TRUE)
 #' }
 a_geom_point <- function(mapping = NULL, data = NULL,
-                       a_stat = "identity", position = "identity",
+                       a_stat = "identity", a_position = "identity",
                        ...,
                        na.rm = FALSE,
                        show.legend = NA,
@@ -101,7 +101,7 @@ a_geom_point <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomPoint,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

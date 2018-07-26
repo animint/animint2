@@ -6,13 +6,13 @@
 \title{Textual annotations.}
 \usage{
 a_geom_label(mapping = NULL, data = NULL, a_stat = "identity",
-  position = "identity", ..., parse = FALSE, nudge_x = 0, nudge_y = 0,
+  a_position = "identity", ..., parse = FALSE, nudge_x = 0, nudge_y = 0,
   label.padding = unit(0.25, "lines"), label.r = unit(0.15, "lines"),
   label.size = 0.25, na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
 a_geom_text(mapping = NULL, data = NULL, a_stat = "identity",
-  position = "identity", ..., parse = FALSE, nudge_x = 0, nudge_y = 0,
+  a_position = "identity", ..., parse = FALSE, nudge_x = 0, nudge_y = 0,
   check_overlap = FALSE, na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 }
@@ -39,7 +39,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
 \item{a_stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
@@ -159,16 +159,16 @@ df <- data.frame(
 # ggplot2 doesn't know you want to give the labels the same virtual width
 # as the bars:
 a_plot(data = df, aes(x, y, fill = grp, label = y)) +
-  a_geom_bar(a_stat = "identity", position = "dodge") +
-  a_geom_text(position = "dodge")
+  a_geom_bar(a_stat = "identity", a_position = "dodge") +
+  a_geom_text(a_position = "dodge")
 # So tell it:
 a_plot(data = df, aes(x, y, fill = grp, label = y)) +
-  a_geom_bar(a_stat = "identity", position = "dodge") +
-  a_geom_text(position = position_dodge(0.9))
+  a_geom_bar(a_stat = "identity", a_position = "dodge") +
+  a_geom_text(a_position = a_position_dodge(0.9))
 # Use you can't nudge and dodge text, so instead adjust the y postion
 a_plot(data = df, aes(x, y, fill = grp, label = y)) +
-  a_geom_bar(a_stat = "identity", position = "dodge") +
-  a_geom_text(aes(y = y + 0.05), position = position_dodge(0.9), vjust = 0)
+  a_geom_bar(a_stat = "identity", a_position = "dodge") +
+  a_geom_text(aes(y = y + 0.05), a_position = a_position_dodge(0.9), vjust = 0)
 
 # To place text in the middle of each bar in a stacked barplot, you
 # need to do the computation yourself

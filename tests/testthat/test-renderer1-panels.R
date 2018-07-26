@@ -181,8 +181,8 @@ test_that("grid lines are drawn correctly", {
 data(tips, package = "reshape2")
 tips$sex_smoker <- with(tips, interaction(sex, smoker))
 ss.viz <- list(
-  p1 = a_plot() + a_theme(legend.position = "none") +
-    a_geom_point(data = tips, position = "jitter", 
+  p1 = a_plot() + a_theme(legend.a_position = "none") +
+    a_geom_point(data = tips, a_position = "jitter", 
                aes(x = sex, y = smoker, colour = sex_smoker),
                clickSelects = "sex_smoker"), 
   p2 = a_plot() +

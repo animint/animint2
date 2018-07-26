@@ -1,6 +1,6 @@
 #' Points, jittered to reduce overplotting.
 #'
-#' The jitter geom is a convenient default for a_geom_point with position =
+#' The jitter geom is a convenient default for a_geom_point with a_position =
 #' 'jitter'. It's a useful way of handling overplotting caused by discreteness
 #' in smaller datasets.
 #'
@@ -9,7 +9,7 @@
 #'
 #' @inheritParams layer
 #' @inheritParams a_geom_point
-#' @inheritParams position_jitter
+#' @inheritParams a_position_jitter
 #' @seealso
 #'  \code{\link{a_geom_point}} for regular, unjittered points,
 #'  \code{\link{a_geom_boxplot}} for another way of looking at the conditional
@@ -31,7 +31,7 @@
 #' a_plot(mpg, aes(cty, hwy)) + a_geom_jitter()
 #' a_plot(mpg, aes(cty, hwy)) + a_geom_jitter(width = 0.5, height = 0.5)
 a_geom_jitter <- function(mapping = NULL, data = NULL,
-                        a_stat = "identity", position = "jitter",
+                        a_stat = "identity", a_position = "jitter",
                         ...,
                         width = NULL,
                         height = NULL,
@@ -39,11 +39,11 @@ a_geom_jitter <- function(mapping = NULL, data = NULL,
                         show.legend = NA,
                         inherit.aes = TRUE) {
   if (!missing(width) || !missing(height)) {
-    if (!missing(position)) {
-      stop("Specify either `position` or `width`/`height`", call. = FALSE)
+    if (!missing(a_position)) {
+      stop("Specify either `a_position` or `width`/`height`", call. = FALSE)
     }
 
-    position <- position_jitter(width = width, height = height)
+    a_position <- a_position_jitter(width = width, height = height)
   }
 
   layer(
@@ -51,7 +51,7 @@ a_geom_jitter <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomPoint,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

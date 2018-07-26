@@ -14,7 +14,7 @@
 #' }
 #' @export
 a_stat_boxplot <- function(mapping = NULL, data = NULL,
-                         a_geom = "boxplot", position = "dodge",
+                         a_geom = "boxplot", a_position = "dodge",
                          ...,
                          coef = 1.5,
                          na.rm = FALSE,
@@ -25,7 +25,7 @@ a_stat_boxplot <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatBoxplot,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

@@ -9,13 +9,13 @@ qplot(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
   a_geom = "auto", xlim = c(NA, NA), ylim = c(NA, NA), log = "",
   main = NULL, xlab = deparse(substitute(x)),
   ylab = deparse(substitute(y)), asp = NA, a_stat = NULL,
-  position = NULL)
+  a_position = NULL)
 
 quickplot(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
   a_geom = "auto", xlim = c(NA, NA), ylim = c(NA, NA), log = "",
   main = NULL, xlab = deparse(substitute(x)),
   ylab = deparse(substitute(y)), asp = NA, a_stat = NULL,
-  position = NULL)
+  a_position = NULL)
 }
 \arguments{
 \item{x, y, ...}{Aesthetics passed into each layer}
@@ -41,7 +41,7 @@ x axis label, and y axis label respectively.}
 
 \item{asp}{The y/x aspect ratio}
 
-\item{a_stat, position}{DEPRECATED.}
+\item{a_stat, a_position}{DEPRECATED.}
 }
 \description{
 \code{qplot} is the basic plotting function in the ggplot2 package,

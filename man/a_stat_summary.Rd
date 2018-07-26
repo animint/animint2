@@ -6,12 +6,12 @@
 \title{Summarise y values at unique/binned x x.}
 \usage{
 a_stat_summary_bin(mapping = NULL, data = NULL, a_geom = "pointrange",
-  position = "identity", ..., fun.data = NULL, fun.y = NULL,
+  a_position = "identity", ..., fun.data = NULL, fun.y = NULL,
   fun.ymax = NULL, fun.ymin = NULL, fun.args = list(), na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 
 a_stat_summary(mapping = NULL, data = NULL, a_geom = "pointrange",
-  position = "identity", ..., fun.data = NULL, fun.y = NULL,
+  a_position = "identity", ..., fun.data = NULL, fun.y = NULL,
   fun.ymax = NULL, fun.ymin = NULL, fun.args = list(), na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 }
@@ -38,7 +38,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
 \item{a_geom}{Use to override the default connection between
 \code{a_geom_histogram}/\code{a_geom_freqpoly} and \code{a_stat_bin}.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are

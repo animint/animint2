@@ -4,7 +4,7 @@
 \alias{a_geom_dotplot}
 \title{Dot plot}
 \usage{
-a_geom_dotplot(mapping = NULL, data = NULL, position = "identity", ...,
+a_geom_dotplot(mapping = NULL, data = NULL, a_position = "identity", ...,
   binwidth = NULL, binaxis = "x", method = "dotdensity",
   binpositions = "bygroup", stackdir = "up", stackratio = 1,
   dotsize = 1, stackgroups = FALSE, origin = NULL, right = TRUE,
@@ -31,7 +31,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
@@ -62,7 +62,7 @@ just touch. Use smaller values for closer, overlapping dots.}
 \item{dotsize}{The diameter of the dots relative to \code{binwidth}, default 1.}
 
 \item{stackgroups}{should dots be stacked across groups? This has the effect
-that \code{position = "stack"} should have, but can't (because this geom has
+that \code{a_position = "stack"} should have, but can't (because this geom has
 some odd properties).}
 
 \item{origin}{When \code{method} is "histodot", origin of first bin}
@@ -161,7 +161,7 @@ a_plot(mtcars, aes(x = factor(cyl), y = mpg)) +
   a_geom_dotplot(binaxis = "y", stackdir = "centerwhole")
 
 a_plot(mtcars, aes(x = factor(vs), fill = factor(cyl), y = mpg)) +
-  a_geom_dotplot(binaxis = "y", stackdir = "center", position = "dodge")
+  a_geom_dotplot(binaxis = "y", stackdir = "center", a_position = "dodge")
 
 # binpositions="all" ensures that the bins are aligned between groups
 a_plot(mtcars, aes(x = factor(am), y = mpg)) +

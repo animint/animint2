@@ -4,7 +4,7 @@
 #' @param label.r Radius of rounded corners. Defaults to 0.15 lines.
 #' @param label.size Size of label border, in mm.
 a_geom_label <- function(mapping = NULL, data = NULL,
-                       a_stat = "identity", position = "identity",
+                       a_stat = "identity", a_position = "identity",
                        ...,
                        parse = FALSE,
                        nudge_x = 0,
@@ -16,11 +16,11 @@ a_geom_label <- function(mapping = NULL, data = NULL,
                        show.legend = NA,
                        inherit.aes = TRUE) {
   if (!missing(nudge_x) || !missing(nudge_y)) {
-    if (!missing(position)) {
-      stop("Specify either `position` or `nudge_x`/`nudge_y`", call. = FALSE)
+    if (!missing(a_position)) {
+      stop("Specify either `a_position` or `nudge_x`/`nudge_y`", call. = FALSE)
     }
 
-    position <- position_nudge(nudge_x, nudge_y)
+    a_position <- a_position_nudge(nudge_x, nudge_y)
   }
 
   layer(
@@ -28,7 +28,7 @@ a_geom_label <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomLabel,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

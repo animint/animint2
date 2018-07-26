@@ -57,7 +57,7 @@ a_theme_get()
 
 a_plot(mtcars, aes(mpg, wt)) +
   a_geom_point(aes(color = mpg)) +
-  a_theme(legend.position = c(0.95, 0.95),
+  a_theme(legend.a_position = c(0.95, 0.95),
         legend.justification = c(1, 1))
 last_plot() +
  a_theme(legend.background = a_element_rect(fill = "white", colour = "white", size = 3))

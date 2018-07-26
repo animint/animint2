@@ -33,7 +33,7 @@
 #'   a_stat_qq(aes(sample = mpg, colour = factor(cyl)))
 #' }
 a_stat_qq <- function(mapping = NULL, data = NULL,
-                    a_geom = "point", position = "identity",
+                    a_geom = "point", a_position = "identity",
                     ...,
                     distribution = stats::qnorm,
                     dparams = list(),
@@ -45,7 +45,7 @@ a_stat_qq <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatQq,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

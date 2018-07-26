@@ -8,7 +8,7 @@
 #' @section Computed variables:
 #' Same as \code{\link{a_stat_contour}}
 a_stat_density_2d <- function(mapping = NULL, data = NULL,
-                            a_geom = "density_2d", position = "identity",
+                            a_geom = "density_2d", a_position = "identity",
                             ...,
                             contour = TRUE,
                             n = 100,
@@ -21,7 +21,7 @@ a_stat_density_2d <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatDensity2d,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

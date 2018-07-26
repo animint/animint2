@@ -255,12 +255,12 @@ implement one or more of the following:
 \section{a_Positions}{
 
 
-All \code{position_*} functions (like \code{position_dodge}) return a
+All \code{a_position_*} functions (like \code{a_position_dodge}) return a
 \code{a_Position*} object (like \code{a_PositionDodge}). The \code{a_Position*}
 object is responsible for adjusting the position of overlapping geoms.
 
-The way that the \code{position_*} functions work is slightly different from
-the \code{a_geom_*} and \code{a_stat_*} functions, because a \code{position_*}
+The way that the \code{a_position_*} functions work is slightly different from
+the \code{a_geom_*} and \code{a_stat_*} functions, because a \code{a_position_*}
 function actually "instantiates" the \code{a_Position*} object by creating a
 descendant, and returns that.
 

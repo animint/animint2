@@ -6,11 +6,11 @@
 \title{Display contours of a 3d surface in 2d.}
 \usage{
 a_geom_contour(mapping = NULL, data = NULL, a_stat = "contour",
-  position = "identity", ..., lineend = "butt", linejoin = "round",
+  a_position = "identity", ..., lineend = "butt", linejoin = "round",
   linemitre = 1, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
 a_stat_contour(mapping = NULL, data = NULL, a_geom = "contour",
-  position = "identity", ..., na.rm = FALSE, show.legend = NA,
+  a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 }
 \arguments{
@@ -36,7 +36,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
 \item{a_stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are

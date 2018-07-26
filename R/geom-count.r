@@ -42,7 +42,7 @@
 #' d + a_geom_count(aes(size = ..prop.., group = clarity)) +
 #'   a_scale_size_area(max_size = 10)
 a_geom_count <- function(mapping = NULL, data = NULL,
-                       a_stat = "sum", position = "identity",
+                       a_stat = "sum", a_position = "identity",
                        ...,
                        na.rm = FALSE,
                        show.legend = NA,
@@ -52,7 +52,7 @@ a_geom_count <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomPoint,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

@@ -7,12 +7,12 @@
 \title{Bin and summarise in 2d (rectangle & hexagons)}
 \usage{
 a_stat_summary_2d(mapping = NULL, data = NULL, a_geom = "tile",
-  position = "identity", ..., bins = 30, binwidth = NULL, drop = TRUE,
+  a_position = "identity", ..., bins = 30, binwidth = NULL, drop = TRUE,
   fun = "mean", fun.args = list(), na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
 a_stat_summary_hex(mapping = NULL, data = NULL, a_geom = "hex",
-  position = "identity", ..., bins = 30, binwidth = NULL, drop = TRUE,
+  a_position = "identity", ..., bins = 30, binwidth = NULL, drop = TRUE,
   fun = "mean", fun.args = list(), na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 }
@@ -38,7 +38,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
 
 \item{a_geom}{The geometric object to use display the data}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are

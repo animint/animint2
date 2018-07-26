@@ -25,7 +25,7 @@
 #' @export
 #' @rdname a_geom_smooth
 a_stat_smooth <- function(mapping = NULL, data = NULL,
-                        a_geom = "smooth", position = "identity",
+                        a_geom = "smooth", a_position = "identity",
                         ...,
                         method = "auto",
                         formula = y ~ x,
@@ -43,7 +43,7 @@ a_stat_smooth <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatSmooth,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

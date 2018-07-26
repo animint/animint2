@@ -25,7 +25,7 @@ test_that("error for stat=bin and showSelected", {
       binwidth=1,
       data = df,
       stat = "bin",
-      position="identity"
+      a_position="identity"
     )
   gg+a_facet_grid(a_facet~.)
   complicated <- list(
@@ -45,7 +45,7 @@ test_that("no warning for stat=bin without showSelected", {
       binwidth=1,
       data = df,
       stat = "bin",
-      position="identity"
+      a_position="identity"
     )+
     a_facet_grid(a_facet~.)
   complicated <- list(plot = gg)

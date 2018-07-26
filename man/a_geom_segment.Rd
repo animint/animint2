@@ -6,11 +6,11 @@
 \title{Line segments and curves.}
 \usage{
 a_geom_segment(mapping = NULL, data = NULL, a_stat = "identity",
-  position = "identity", ..., arrow = NULL, lineend = "butt",
+  a_position = "identity", ..., arrow = NULL, lineend = "butt",
   na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
 a_geom_curve(mapping = NULL, data = NULL, a_stat = "identity",
-  position = "identity", ..., curvature = 0.5, angle = 90, ncp = 5,
+  a_position = "identity", ..., curvature = 0.5, angle = 90, ncp = 5,
   arrow = NULL, lineend = "butt", na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 }
@@ -37,7 +37,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
 \item{a_stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are

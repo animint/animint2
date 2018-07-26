@@ -103,7 +103,7 @@
 #' }
 #' }
 a_stat_summary <- function(mapping = NULL, data = NULL,
-                         a_geom = "pointrange", position = "identity",
+                         a_geom = "pointrange", a_position = "identity",
                          ...,
                          fun.data = NULL,
                          fun.y = NULL,
@@ -118,7 +118,7 @@ a_stat_summary <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatSummary,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

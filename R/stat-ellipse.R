@@ -41,7 +41,7 @@
 #' a_plot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
 #'   a_stat_ellipse(a_geom = "polygon")
 a_stat_ellipse <- function(mapping = NULL, data = NULL,
-                         a_geom = "path", position = "identity",
+                         a_geom = "path", a_position = "identity",
                          ...,
                          type = "t",
                          level = 0.95,
@@ -54,7 +54,7 @@ a_stat_ellipse <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatEllipse,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

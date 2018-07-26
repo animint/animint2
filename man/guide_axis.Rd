@@ -4,14 +4,14 @@
 \alias{guide_axis}
 \title{Grob for axes}
 \usage{
-guide_axis(at, labels, position = "right", a_theme)
+guide_axis(at, labels, a_position = "right", a_theme)
 }
 \arguments{
 \item{at}{...}
 
 \item{labels}{at ticks}
 
-\item{position}{of ticks}
+\item{a_position}{of ticks}
 
 \item{a_theme}{...}
 }

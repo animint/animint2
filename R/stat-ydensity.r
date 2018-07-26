@@ -19,7 +19,7 @@
 #' @export
 #' @rdname a_geom_violin
 a_stat_ydensity <- function(mapping = NULL, data = NULL,
-                          a_geom = "violin", position = "dodge",
+                          a_geom = "violin", a_position = "dodge",
                           ...,
                           bw = "nrd0",
                           adjust = 1,
@@ -36,7 +36,7 @@ a_stat_ydensity <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatYdensity,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

@@ -21,7 +21,7 @@ a_geom_hline <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatIdentity,
     a_geom = a_GeomHline,
-    position = a_PositionIdentity,
+    a_position = a_PositionIdentity,
     show.legend = show.legend,
     inherit.aes = FALSE,
     params = list(

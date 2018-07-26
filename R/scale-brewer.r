@@ -46,7 +46,7 @@
 #' # a_scale_fill_brewer works just the same as
 #' # a_scale_colour_brewer but for fill colours
 #' p <- a_plot(diamonds, aes(x = price, fill = cut)) +
-#'   a_geom_histogram(position = "dodge", binwidth = 1000)
+#'   a_geom_histogram(a_position = "dodge", binwidth = 1000)
 #' p + a_scale_fill_brewer()
 #' # the order of colour can be reversed
 #' p + a_scale_fill_brewer(direction = -1)

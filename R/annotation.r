@@ -33,11 +33,11 @@ annotate <- function(a_geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
                      ymin = NULL, ymax = NULL, xend = NULL, yend = NULL, ...,
                      na.rm = FALSE) {
 
-  position <- compact(list(
+  a_position <- compact(list(
     x = x, xmin = xmin, xmax = xmax, xend = xend,
     y = y, ymin = ymin, ymax = ymax, yend = yend
   ))
-  aesthetics <- c(position, list(...))
+  aesthetics <- c(a_position, list(...))
 
   # Check that all aesthetic have compatible lengths
   lengths <- vapply(aesthetics, length, integer(1))
@@ -49,7 +49,7 @@ annotate <- function(a_geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
     stop("Unequal parameter lengths: ", details, call. = FALSE)
   }
 
-  data <- data.frame(position)
+  data <- data.frame(a_position)
   layer(
     a_geom = a_geom,
     params = list(
@@ -57,7 +57,7 @@ annotate <- function(a_geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
       ...
     ),
     a_stat = a_StatIdentity,
-    position = a_PositionIdentity,
+    a_position = a_PositionIdentity,
     data = data,
     mapping = aes_all(names(data)),
     inherit.aes = FALSE,

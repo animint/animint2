@@ -1,6 +1,6 @@
 #' Stack overlapping objects on top of one another.
 #'
-#' \code{position_fill} additionally standardises each stack to have unit
+#' \code{a_position_fill} additionally standardises each stack to have unit
 #' height.
 #'
 #' @family position adjustments
@@ -12,7 +12,7 @@
 #' a_plot(mtcars, aes(factor(cyl), fill = factor(vs))) + a_geom_bar()
 #' # Fill makes it easier to compare proportions
 #' a_plot(mtcars, aes(factor(cyl), fill = factor(vs))) +
-#'   a_geom_bar(position = "fill")
+#'   a_geom_bar(a_position = "fill")
 #'
 #' # To change stacking order, use factor() to change order of levels
 #' mtcars$vs <- factor(mtcars$vs, levels = c(1,0))
@@ -20,10 +20,10 @@
 #'
 #' a_plot(diamonds, aes(price, fill = cut)) +
 #'   a_geom_histogram(binwidth = 500)
-#' # When used with a histogram, position_fill creates a conditional density
+#' # When used with a histogram, a_position_fill creates a conditional density
 #' # estimate
 #' a_plot(diamonds, aes(price, fill = cut)) +
-#'   a_geom_histogram(binwidth = 500, position = "fill")
+#'   a_geom_histogram(binwidth = 500, a_position = "fill")
 #'
 #' # Stacking is also useful for time series
 #' data.set <- data.frame(
@@ -37,11 +37,11 @@
 #' # If you want to stack lines, you need to say so:
 #' a_plot(data.set, aes(Time, Value)) + a_geom_line(aes(colour = Type))
 #' a_plot(data.set, aes(Time, Value)) +
-#'   a_geom_line(position = "stack", aes(colour = Type))
+#'   a_geom_line(a_position = "stack", aes(colour = Type))
 #'
 #' # But realise that this makes it *much* harder to compare individual
 #' # trends
-position_stack <- function() {
+a_position_stack <- function() {
   a_PositionStack
 }
 
@@ -54,11 +54,11 @@ a_PositionStack <- a_ggproto("a_PositionStack", a_Position,
 
   setup_data = function(self, data, params) {
     data = remove_missing(data, FALSE,
-      c("x", "y", "ymin", "ymax", "xmin", "xmax"), name = "position_stack")
+      c("x", "y", "ymin", "ymax", "xmin", "xmax"), name = "a_position_stack")
 
     if (is.null(data$ymax) && is.null(data$y)) {
-      message("Missing y and ymax in position = 'stack'. ",
-        "Maybe you want position = 'identity'?")
+      message("Missing y and ymax in a_position = 'stack'. ",
+        "Maybe you want a_position = 'identity'?")
       return(data)
     }
 
@@ -69,6 +69,6 @@ a_PositionStack <- a_ggproto("a_PositionStack", a_Position,
   },
 
   compute_panel = function(data, params, scales) {
-    collide(data, NULL, "position_stack", pos_stack)
+    collide(data, NULL, "a_position_stack", pos_stack)
   }
 )

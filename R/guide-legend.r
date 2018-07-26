@@ -13,7 +13,7 @@
 #'   If \code{NULL}, the title is not shown. By default
 #'   (\code{\link{waiver}}), the name of the scale object or the name
 #'   specified in \code{\link{labs}} is used for the title.
-#' @param title.position A character string indicating the position of a
+#' @param title.a_position A character string indicating the a_position of a
 #'   title. One of "top" (default for a vertical guide), "bottom", "left"
 #'  (default for a horizontal guide), or "right."
 #' @param title.a_theme A a_theme object for rendering the title text. Usually the
@@ -25,7 +25,7 @@
 #'   text.
 #' @param label logical. If \code{TRUE} then the labels are drawn. If
 #'   \code{FALSE} then the labels are invisible.
-#' @param label.position A character string indicating the position of a
+#' @param label.a_position A character string indicating the a_position of a
 #'   label. One of "top", "bottom" (default for horizontal guide), "left", or
 #'   "right" (default for vertical guide).
 #' @param label.a_theme A a_theme object for rendering the label text. Usually the
@@ -81,7 +81,7 @@
 #' p1 + guides(fill = guide_legend(keywidth = 3, keyheight = 1))
 #'
 #' # title position
-#' p1 + guides(fill = guide_legend(title = "LEFT", title.position = "left"))
+#' p1 + guides(fill = guide_legend(title = "LEFT", title.a_position = "left"))
 #'
 #' # title text styles via a_element_text
 #' p1 + guides(fill =
@@ -96,15 +96,15 @@
 #' )
 #'
 #' # label position
-#' p1 + guides(fill = guide_legend(label.position = "left", label.hjust = 1))
+#' p1 + guides(fill = guide_legend(label.a_position = "left", label.hjust = 1))
 #'
 #' # label styles
 #' p1 + a_scale_fill_continuous(breaks = c(5, 10, 15),
 #'   labels = paste("long", c(5, 10, 15)),
 #'   guide = guide_legend(
 #'     direction = "horizontal",
-#'     title.position = "top",
-#'     label.position = "bottom",
+#'     title.a_position = "top",
+#'     label.a_position = "bottom",
 #'     label.hjust = 0.5,
 #'     label.vjust = 1,
 #'     label.a_theme = a_element_text(angle = 90)
@@ -137,14 +137,14 @@ guide_legend <- function(
 
   # title
   title = waiver(),
-  title.position = NULL,
+  title.a_position = NULL,
   title.a_theme = NULL,
   title.hjust = NULL,
   title.vjust = NULL,
 
   # label
   label = TRUE,
-  label.position = NULL,
+  label.a_position = NULL,
   label.a_theme = NULL,
   label.hjust = NULL,
   label.vjust = NULL,
@@ -172,14 +172,14 @@ guide_legend <- function(
     list(
       # title
       title = title,
-      title.position = title.position,
+      title.a_position = title.a_position,
       title.a_theme = title.a_theme,
       title.hjust = title.hjust,
       title.vjust = title.vjust,
 
       # label
       label = label,
-      label.position = label.position,
+      label.a_position = label.a_position,
       label.a_theme = label.a_theme,
       label.hjust = label.hjust,
       label.vjust = label.vjust,
@@ -298,9 +298,9 @@ guide_geom.legend <- function(guide, layers, default_mapping) {
 guide_gengrob.legend <- function(guide, a_theme) {
 
   # default setting
-  label.position <- guide$label.position %||% "right"
-  if (!label.position %in% c("top", "bottom", "left", "right"))
-    stop("label position \"", label.position, "\" is invalid")
+  label.a_position <- guide$label.a_position %||% "right"
+  if (!label.a_position %in% c("top", "bottom", "left", "right"))
+    stop("label a_position \"", label.a_position, "\" is invalid")
 
   nbreak <- nrow(guide$key)
 
@@ -401,7 +401,7 @@ guide_gengrob.legend <- function(guide, a_theme) {
 
   # layout of key-label depends on the direction of the guide
   if (guide$byrow == TRUE) {
-    switch(label.position,
+    switch(label.a_position,
       "top" = {
         kl_widths <- pmax(label_widths, key_widths)
         kl_heights <- utils::head(interleave(label_heights, vgap/2, key_heights, vgap/2), -1)
@@ -423,7 +423,7 @@ guide_gengrob.legend <- function(guide, a_theme) {
         vps <- transform(vps, key.row = R * 2 - 1, key.col = C * 4 - 3, label.row = R * 2 - 1, label.col = C * 4 - 1)
         })
   } else {
-    switch(label.position,
+    switch(label.a_position,
       "top" = {
         kl_widths <- utils::head(interleave(pmax(label_widths, key_widths), hgap/2), -1)
         kl_heights <- utils::head(interleave(label_heights, vgap/2, key_heights, vgap/2), -1)
@@ -447,7 +447,7 @@ guide_gengrob.legend <- function(guide, a_theme) {
   }
 
   # layout the title over key-label
-  switch(guide$title.position,
+  switch(guide$title.a_position,
     "top" = {
       widths <- c(kl_widths, max(0, title_width - sum(kl_widths)))
       heights <- c(title_height, vgap, kl_heights)

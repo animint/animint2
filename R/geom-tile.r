@@ -53,11 +53,11 @@
 #' cars + a_stat_bin2d(aes(fill = ..count..), binwidth = c(3,1))
 #' cars + a_stat_bin2d(aes(fill = ..density..), binwidth = c(3,1))
 #'
-#' cars + a_stat_density(aes(fill = ..density..), a_geom = "raster", position = "identity")
-#' cars + a_stat_density(aes(fill = ..count..), a_geom = "raster", position = "identity")
+#' cars + a_stat_density(aes(fill = ..density..), a_geom = "raster", a_position = "identity")
+#' cars + a_stat_density(aes(fill = ..count..), a_geom = "raster", a_position = "identity")
 #' }
 a_geom_tile <- function(mapping = NULL, data = NULL,
-                      a_stat = "identity", position = "identity",
+                      a_stat = "identity", a_position = "identity",
                       ...,
                       na.rm = FALSE,
                       show.legend = NA,
@@ -67,7 +67,7 @@ a_geom_tile <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomTile,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

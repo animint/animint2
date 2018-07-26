@@ -78,7 +78,7 @@
 #' # so you can exercise more control and see whether or not it's a good model
 #' }
 a_geom_smooth <- function(mapping = NULL, data = NULL,
-                        a_stat = "smooth", position = "identity",
+                        a_stat = "smooth", a_position = "identity",
                         ...,
                         method = "auto",
                         formula = y ~ x,
@@ -102,7 +102,7 @@ a_geom_smooth <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomSmooth,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = params

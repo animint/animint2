@@ -15,16 +15,16 @@
 #' bar chart.
 #'
 #' By default, multiple x's occurring in the same place will be stacked atop one
-#' another by \code{\link{position_stack}}. If you want them to be dodged
-#' side-to-side, see \code{\link{position_dodge}}. Finally,
-#' \code{\link{position_fill}} shows relative proportions at each x by stacking
+#' another by \code{\link{a_position_stack}}. If you want them to be dodged
+#' side-to-side, see \code{\link{a_position_dodge}}. Finally,
+#' \code{\link{a_position_fill}} shows relative proportions at each x by stacking
 #' the bars and then stretching or squashing to the same height.
 #'
 #' @section Aesthetics:
 #'   \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "bar")}
 #'
 #' @seealso \code{\link{a_geom_histogram}} for continuous data,
-#'   \code{\link{position_dodge}} for creating side-by-side barcharts.
+#'   \code{\link{a_position_dodge}} for creating side-by-side barcharts.
 #' @export
 #' @inheritParams layer
 #' @inheritParams a_geom_point
@@ -65,8 +65,8 @@
 #' g + a_geom_bar(aes(fill = drv))
 #'
 #' # You can instead dodge, or fill them
-#' g + a_geom_bar(aes(fill = drv), position = "dodge")
-#' g + a_geom_bar(aes(fill = drv), position = "fill")
+#' g + a_geom_bar(aes(fill = drv), a_position = "dodge")
+#' g + a_geom_bar(aes(fill = drv), a_position = "fill")
 #'
 #' # To change plot order of bars, change levels in underlying factor
 #' reorder_size <- function(x) {
@@ -75,7 +75,7 @@
 #' a_plot(mpg, aes(reorder_size(class))) + a_geom_bar()
 #' }
 a_geom_bar <- function(mapping = NULL, data = NULL,
-                     a_stat = "count", position = "stack",
+                     a_stat = "count", a_position = "stack",
                      ...,
                      width = NULL,
                      binwidth = NULL,
@@ -87,7 +87,7 @@ a_geom_bar <- function(mapping = NULL, data = NULL,
     warning("`a_geom_bar()` no longer has a `binwidth` parameter. ",
       "Please use `a_geom_histogram()` instead.", call. = "FALSE")
     return(a_geom_histogram(mapping = mapping, data = data,
-      position = position, width = width, binwidth = binwidth, ...,
+      a_position = a_position, width = width, binwidth = binwidth, ...,
       na.rm = na.rm, show.legend = show.legend, inherit.aes = inherit.aes))
   }
 
@@ -96,7 +96,7 @@ a_geom_bar <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomBar,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

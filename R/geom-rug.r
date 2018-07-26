@@ -15,9 +15,9 @@
 #' p + a_geom_point() + a_geom_rug()
 #' p + a_geom_point() + a_geom_rug(sides="b")    # Rug on bottom only
 #' p + a_geom_point() + a_geom_rug(sides="trbl") # All four sides
-#' p + a_geom_point() + a_geom_rug(position='jitter')
+#' p + a_geom_point() + a_geom_rug(a_position='jitter')
 a_geom_rug <- function(mapping = NULL, data = NULL,
-                     a_stat = "identity", position = "identity",
+                     a_stat = "identity", a_position = "identity",
                      ...,
                      sides = "bl",
                      na.rm = FALSE,
@@ -28,7 +28,7 @@ a_geom_rug <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomRug,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

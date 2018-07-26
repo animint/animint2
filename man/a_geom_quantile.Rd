@@ -6,11 +6,11 @@
 \title{Add quantile lines from a quantile regression.}
 \usage{
 a_geom_quantile(mapping = NULL, data = NULL, a_stat = "quantile",
-  position = "identity", ..., lineend = "butt", linejoin = "round",
+  a_position = "identity", ..., lineend = "butt", linejoin = "round",
   linemitre = 1, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
 a_stat_quantile(mapping = NULL, data = NULL, a_geom = "quantile",
-  position = "identity", ..., quantiles = c(0.25, 0.5, 0.75),
+  a_position = "identity", ..., quantiles = c(0.25, 0.5, 0.75),
   formula = NULL, method = "rq", method.args = list(), na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 }
@@ -34,7 +34,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are

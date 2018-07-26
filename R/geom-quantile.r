@@ -29,7 +29,7 @@
 #' # Set aesthetics to fixed value
 #' m + a_geom_quantile(colour = "red", size = 2, alpha = 0.5)
 a_geom_quantile <- function(mapping = NULL, data = NULL,
-                          a_stat = "quantile", position = "identity",
+                          a_stat = "quantile", a_position = "identity",
                           ...,
                           lineend = "butt",
                           linejoin = "round",
@@ -43,7 +43,7 @@ a_geom_quantile <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomQuantile,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

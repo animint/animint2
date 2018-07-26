@@ -8,17 +8,17 @@
 \title{Histograms and frequency polygons.}
 \usage{
 a_geom_freqpoly(mapping = NULL, data = NULL, a_stat = "bin",
-  position = "identity", ..., na.rm = FALSE, show.legend = NA,
+  a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
 a_geom_histogram(mapping = NULL, data = NULL, a_stat = "bin",
-  position = "stack", ..., binwidth = NULL, bins = NULL, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  a_position = "stack", ..., binwidth = NULL, bins = NULL,
+  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
 a_stat_bin(mapping = NULL, data = NULL, a_geom = "bar",
-  position = "stack", ..., binwidth = NULL, bins = NULL, center = NULL,
-  boundary = NULL, closed = c("right", "left"), pad = FALSE,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  a_position = "stack", ..., binwidth = NULL, bins = NULL,
+  center = NULL, boundary = NULL, closed = c("right", "left"),
+  pad = FALSE, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -40,7 +40,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are

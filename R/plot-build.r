@@ -180,19 +180,19 @@ a_plot_gtable <- function(data) {
     l = 1, b = panel_dim$b, t = panel_dim$t, clip = "off")
 
   # Legends
-  position <- a_theme$legend.position
-  if (length(position) == 2) {
-    position <- "manual"
+  a_position <- a_theme$legend.a_position
+  if (length(a_position) == 2) {
+    a_position <- "manual"
   }
 
-  legend_box <- if (position != "none") {
-    build_guides(plot$scales, plot$layers, plot$mapping, position, a_theme, plot$guides, plot$labels)
+  legend_box <- if (a_position != "none") {
+    build_guides(plot$scales, plot$layers, plot$mapping, a_position, a_theme, plot$guides, plot$labels)
   } else {
     a_zeroGrob()
   }
 
   if (is.zero(legend_box)) {
-    position <- "none"
+    a_position <- "none"
   } else {
     # these are a bad hack, since it modifies the contents of viewpoint directly...
     legend_width  <- gtable_width(legend_box)  + a_theme$legend.margin
@@ -204,11 +204,11 @@ a_plot_gtable <- function(data) {
     xjust <- just[1]
     yjust <- just[2]
 
-    if (position == "manual") {
-      xpos <- a_theme$legend.position[1]
-      ypos <- a_theme$legend.position[2]
+    if (a_position == "manual") {
+      xpos <- a_theme$legend.a_position[1]
+      ypos <- a_theme$legend.a_position[2]
 
-      # x and y are specified via a_theme$legend.position (i.e., coords)
+      # x and y are specified via a_theme$legend.a_position (i.e., coords)
       legend_box <- editGrob(legend_box,
         vp = viewport(x = xpos, y = ypos, just = c(xjust, yjust),
           height = legend_height, width = legend_width))
@@ -223,23 +223,23 @@ a_plot_gtable <- function(data) {
   # for align-to-device, use this:
   # panel_dim <-  summarise(plot_table$layout, t = min(t), r = max(r), b = max(b), l = min(l))
 
-  if (position == "left") {
+  if (a_position == "left") {
     plot_table <- gtable_add_cols(plot_table, legend_width, pos = 0)
     plot_table <- gtable_add_grob(plot_table, legend_box, clip = "off",
       t = panel_dim$t, b = panel_dim$b, l = 1, r = 1, name = "guide-box")
-  } else if (position == "right") {
+  } else if (a_position == "right") {
     plot_table <- gtable_add_cols(plot_table, legend_width, pos = -1)
     plot_table <- gtable_add_grob(plot_table, legend_box, clip = "off",
       t = panel_dim$t, b = panel_dim$b, l = -1, r = -1, name = "guide-box")
-  } else if (position == "bottom") {
+  } else if (a_position == "bottom") {
     plot_table <- gtable_add_rows(plot_table, legend_height, pos = -1)
     plot_table <- gtable_add_grob(plot_table, legend_box, clip = "off",
       t = -1, b = -1, l = panel_dim$l, r = panel_dim$r, name = "guide-box")
-  } else if (position == "top") {
+  } else if (a_position == "top") {
     plot_table <- gtable_add_rows(plot_table, legend_height, pos = 0)
     plot_table <- gtable_add_grob(plot_table, legend_box, clip = "off",
       t = 1, b = 1, l = panel_dim$l, r = panel_dim$r, name = "guide-box")
-  } else if (position == "manual") {
+  } else if (a_position == "manual") {
     # should guide box expand whole region or region without margin?
     plot_table <- gtable_add_grob(plot_table, legend_box,
       t = panel_dim$t, b = panel_dim$b, l = panel_dim$l, r = panel_dim$r,

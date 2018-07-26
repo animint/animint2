@@ -5,7 +5,7 @@
 \title{Blank, draws nothing.}
 \usage{
 a_geom_blank(mapping = NULL, data = NULL, a_stat = "identity",
-  position = "identity", ..., show.legend = NA, inherit.aes = TRUE)
+  a_position = "identity", ..., show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -30,7 +30,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
 \item{a_stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are

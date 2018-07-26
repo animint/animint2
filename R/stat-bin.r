@@ -38,7 +38,7 @@
 #' @export
 #' @rdname a_geom_histogram
 a_stat_bin <- function(mapping = NULL, data = NULL,
-                     a_geom = "bar", position = "stack",
+                     a_geom = "bar", a_position = "stack",
                      ...,
                      binwidth = NULL,
                      bins = NULL,
@@ -55,7 +55,7 @@ a_stat_bin <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatBin,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

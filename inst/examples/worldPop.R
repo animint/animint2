@@ -12,7 +12,7 @@ popPlots <-
   list(bars=a_plot()+
          a_geom_bar(aes(x=subcontinent, y=population),
                   showSelected="year",
-                  data=worldPop, a_stat="identity", position="identity")+
+                  data=worldPop, a_stat="identity", a_position="identity")+
          a_geom_text(aes(x=subcontinent, y=population,
                        label=title),
                    showSelected="year",
@@ -55,7 +55,7 @@ popPlots2 <-
   list(bars=a_plot()+
          a_geom_bar(aes(x=subcontinent, y=population),
                   showSelected="year", clickSelects="subcontinent",
-                  data=worldPop, a_stat="identity", position="identity")+
+                  data=worldPop, a_stat="identity", a_position="identity")+
          a_geom_text(aes(x=subcontinent, y=population,
                        label=title),
                    showSelected="year",
@@ -84,7 +84,7 @@ popPlots3 <-
   list(bars=a_plot()+
          a_geom_bar(aes(x=subcontinent, y=population),
                   showSelected="year", clickSelects="subcontinent",
-                  data=worldPop, a_stat="identity", position="identity")+
+                  data=worldPop, a_stat="identity", a_position="identity")+
          a_geom_text(aes(x=subcontinent, y=population,
                        label=title),
                    showSelected="year",

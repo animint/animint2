@@ -6,7 +6,7 @@
 #' }
 #' @rdname a_geom_contour
 a_stat_contour <- function(mapping = NULL, data = NULL,
-                         a_geom = "contour", position = "identity",
+                         a_geom = "contour", a_position = "identity",
                          ...,
                          na.rm = FALSE,
                          show.legend = NA,
@@ -16,7 +16,7 @@ a_stat_contour <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatContour,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

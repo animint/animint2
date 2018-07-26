@@ -9,14 +9,14 @@
 #'   resolution of the data.
 #' @param jitter.height degree of jitter in y direction. Defaults to 0.
 #' @param dodge.width the amount to dodge in the x direction. Defaults to 0.75,
-#'   the default \code{position_dodge()} width.
+#'   the default \code{a_position_dodge()} width.
 #' @export
 #' @examples
 #' dsub <- diamonds[ sample(nrow(diamonds), 1000), ]
 #' a_plot(dsub, aes(x = cut, y = carat, fill = clarity)) +
 #'   a_geom_boxplot(outlier.size = 0) +
-#'   a_geom_point(pch = 21, position = position_jitterdodge())
-position_jitterdodge <- function(jitter.width = NULL, jitter.height = 0,
+#'   a_geom_point(pch = 21, a_position = a_position_jitterdodge())
+a_position_jitterdodge <- function(jitter.width = NULL, jitter.height = 0,
                                  dodge.width = 0.75) {
 
   a_ggproto(NULL, a_PositionJitterdodge,
@@ -42,7 +42,7 @@ a_PositionJitterdodge <- a_ggproto("a_PositionJitterdodge", a_Position,
     # Adjust the x transformation based on the number of 'dodge' variables
     dodgecols <- intersect(c("fill", "colour", "linetype", "shape", "size", "alpha"), colnames(data))
     if (length(dodgecols) == 0) {
-      stop("`position_jitterdodge()` requires at least one aesthetic to dodge by", call. = FALSE)
+      stop("`a_position_jitterdodge()` requires at least one aesthetic to dodge by", call. = FALSE)
     }
     ndodge    <- lapply(data[dodgecols], levels)  # returns NULL for numeric, i.e. non-dodge layers
     ndodge    <- length(unique(unlist(ndodge)))
@@ -54,7 +54,7 @@ a_PositionJitterdodge <- a_ggproto("a_PositionJitterdodge", a_Position,
   },
   
   compute_panel = function(data, params, scales) {
-    data <- collide(data, params$dodge.width, "position_jitterdodge", pos_dodge,
+    data <- collide(data, params$dodge.width, "a_position_jitterdodge", pos_dodge,
       check.width = FALSE)
 
     # then jitter

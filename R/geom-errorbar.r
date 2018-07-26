@@ -1,7 +1,7 @@
 #' @export
 #' @rdname a_geom_linerange
 a_geom_errorbar <- function(mapping = NULL, data = NULL,
-                          a_stat = "identity", position = "identity",
+                          a_stat = "identity", a_position = "identity",
                           ...,
                           na.rm = FALSE,
                           show.legend = NA,
@@ -11,7 +11,7 @@ a_geom_errorbar <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomErrorbar,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

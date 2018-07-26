@@ -72,7 +72,7 @@
 #' }
 #' rm(movies)
 a_geom_histogram <- function(mapping = NULL, data = NULL,
-                           a_stat = "bin", position = "stack",
+                           a_stat = "bin", a_position = "stack",
                            ...,
                            binwidth = NULL,
                            bins = NULL,
@@ -85,7 +85,7 @@ a_geom_histogram <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomBar,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

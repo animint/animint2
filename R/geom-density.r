@@ -37,17 +37,17 @@
 #'
 #' # Loses marginal densities
 #' a_plot(diamonds, aes(carat, fill = cut)) +
-#'   a_geom_density(position = "stack")
+#'   a_geom_density(a_position = "stack")
 #' # Preserves marginal densities
 #' a_plot(diamonds, aes(carat, ..count.., fill = cut)) +
-#'   a_geom_density(position = "stack")
+#'   a_geom_density(a_position = "stack")
 #'
-#' # You can use position="fill" to produce a conditional density estimate
+#' # You can use a_position="fill" to produce a conditional density estimate
 #' a_plot(diamonds, aes(carat, ..count.., fill = cut)) +
-#'   a_geom_density(position = "fill")
+#'   a_geom_density(a_position = "fill")
 #' }
 a_geom_density <- function(mapping = NULL, data = NULL,
-                         a_stat = "density", position = "identity",
+                         a_stat = "density", a_position = "identity",
                          ...,
                          na.rm = FALSE,
                          show.legend = NA,
@@ -58,7 +58,7 @@ a_geom_density <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomDensity,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

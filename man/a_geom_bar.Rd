@@ -6,11 +6,11 @@
 \title{Bars, rectangles with bases on x-axis}
 \usage{
 a_geom_bar(mapping = NULL, data = NULL, a_stat = "count",
-  position = "stack", ..., width = NULL, binwidth = NULL, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  a_position = "stack", ..., width = NULL, binwidth = NULL,
+  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
 a_stat_count(mapping = NULL, data = NULL, a_geom = "bar",
-  position = "stack", ..., width = NULL, na.rm = FALSE,
+  a_position = "stack", ..., width = NULL, na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
@@ -33,7 +33,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
@@ -82,9 +82,9 @@ topic}. This is why it doesn't make sense to use a log-scaled y axis with a
 bar chart.
 
 By default, multiple x's occurring in the same place will be stacked atop one
-another by \code{\link{position_stack}}. If you want them to be dodged
-side-to-side, see \code{\link{position_dodge}}. Finally,
-\code{\link{position_fill}} shows relative proportions at each x by stacking
+another by \code{\link{a_position_stack}}. If you want them to be dodged
+side-to-side, see \code{\link{a_position_dodge}}. Finally,
+\code{\link{a_position_fill}} shows relative proportions at each x by stacking
 the bars and then stretching or squashing to the same height.
 }
 \section{Aesthetics}{
@@ -131,8 +131,8 @@ a_plot(df, aes(x)) + a_geom_histogram(binwidth = 0.5)
 g + a_geom_bar(aes(fill = drv))
 
 # You can instead dodge, or fill them
-g + a_geom_bar(aes(fill = drv), position = "dodge")
-g + a_geom_bar(aes(fill = drv), position = "fill")
+g + a_geom_bar(aes(fill = drv), a_position = "dodge")
+g + a_geom_bar(aes(fill = drv), a_position = "fill")
 
 # To change plot order of bars, change levels in underlying factor
 reorder_size <- function(x) {
@@ -143,7 +143,7 @@ a_plot(mpg, aes(reorder_size(class))) + a_geom_bar()
 }
 \seealso{
 \code{\link{a_geom_histogram}} for continuous data,
-  \code{\link{position_dodge}} for creating side-by-side barcharts.
+  \code{\link{a_position_dodge}} for creating side-by-side barcharts.
 
 \code{\link{a_stat_bin}}, which bins data in ranges and counts the
   cases in each range. It differs from \code{a_stat_count}, which counts the

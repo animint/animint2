@@ -79,7 +79,7 @@ tornado.ts.bar <-
        make_text(UStornadoes, 1980, 200, "state")+
        a_geom_bar(aes(year, count),
                 clickSelects="year", showSelected="state",
-                data=UStornadoCounts, a_stat="identity", position="identity"))
+                data=UStornadoCounts, a_stat="identity", a_position="identity"))
 animint2dir(tornado.ts.bar, "tornado-ts-bar")
 ## also show points.
 seg.color <- "#55B1F7"
@@ -106,7 +106,7 @@ tornado.points <-
        make_text(UStornadoes, 1980, 200, "state")+
        a_geom_bar(aes(year, count),
                 clickSelects="year", showSelected="state",
-                data=UStornadoCounts, a_stat="identity", position="identity"))
+                data=UStornadoCounts, a_stat="identity", a_position="identity"))
 animint2dir(tornado.points, "tornado-points")
 
 ## It would be nice to be able to specify the width/height using
@@ -131,7 +131,7 @@ tornado.points <-
        make_text(UStornadoes, 1980, 200, "state")+
        a_geom_bar(aes(year, count),
                 clickSelects="year", showSelected="state",
-                data=UStornadoCounts, a_stat="identity", position="identity"))
+                data=UStornadoCounts, a_stat="identity", a_position="identity"))
 animint2dir(tornado.points, "tornado-points")
 
 tornado.points.anim <-
@@ -158,7 +158,7 @@ tornado.points.anim <-
        ylab("Number of tornadoes")+
        a_geom_bar(aes(year, count),
                 clickSelects="year", showSelected="state",
-                data=UStornadoCounts, a_stat="identity", position="identity")+
+                data=UStornadoCounts, a_stat="identity", a_position="identity")+
        make_text(UStornadoes, 1980, 200, "state")+
        a_geom_text(aes(year, count + 5, label=count),
                  showSelected=c("state", "year"),

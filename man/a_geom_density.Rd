@@ -6,12 +6,13 @@
 \title{Display a smooth density estimate.}
 \usage{
 a_geom_density(mapping = NULL, data = NULL, a_stat = "density",
-  position = "identity", ..., na.rm = FALSE, show.legend = NA,
+  a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
 a_stat_density(mapping = NULL, data = NULL, a_geom = "area",
-  position = "stack", ..., bw = "nrd0", adjust = 1, kernel = "gaussian",
-  trim = FALSE, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  a_position = "stack", ..., bw = "nrd0", adjust = 1,
+  kernel = "gaussian", trim = FALSE, na.rm = FALSE, show.legend = NA,
+  inherit.aes = TRUE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -33,7 +34,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{position}{Position adjustment, either as a string, or the result of
+\item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
@@ -114,14 +115,14 @@ a_plot(diamonds, aes(depth, fill = cut, colour = cut)) +
 
 # Loses marginal densities
 a_plot(diamonds, aes(carat, fill = cut)) +
-  a_geom_density(position = "stack")
+  a_geom_density(a_position = "stack")
 # Preserves marginal densities
 a_plot(diamonds, aes(carat, ..count.., fill = cut)) +
-  a_geom_density(position = "stack")
+  a_geom_density(a_position = "stack")
 
-# You can use position="fill" to produce a conditional density estimate
+# You can use a_position="fill" to produce a conditional density estimate
 a_plot(diamonds, aes(carat, ..count.., fill = cut)) +
-  a_geom_density(position = "fill")
+  a_geom_density(a_position = "fill")
 }
 }
 \seealso{

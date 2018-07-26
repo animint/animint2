@@ -9,7 +9,7 @@
 #' p <- a_plot(mtcars, aes(wt, mpg))
 #' p + a_stat_identity()
 a_stat_identity <- function(mapping = NULL, data = NULL,
-                          a_geom = "point", position = "identity",
+                          a_geom = "point", a_position = "identity",
                           ...,
                           show.legend = NA,
                           inherit.aes = TRUE) {
@@ -18,7 +18,7 @@ a_stat_identity <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatIdentity,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

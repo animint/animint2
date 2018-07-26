@@ -5,7 +5,7 @@
 \title{ggplot2 geom with ymin and ymax aesthetics that covers the entire x range, useful for clickSelects background elements.}
 \usage{
 a_geom_widerect(mapping = NULL, data = NULL, a_stat = "identity",
-  position = "identity", ..., na.rm = FALSE, show.legend = NA,
+  a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 }
 \arguments{
@@ -15,7 +15,7 @@ a_geom_widerect(mapping = NULL, data = NULL, a_stat = "identity",
 
 \item{a_stat}{statistic mapping, defaults to identity}
 
-\item{position}{position mapping, defaults to identity}
+\item{a_position}{position mapping, defaults to identity}
 
 \item{...}{other arguments}
 

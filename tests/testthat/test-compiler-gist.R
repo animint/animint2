@@ -108,7 +108,7 @@ viz.too.many <-
          a_geom_bar(aes(col.name, value),
                   chunk_vars=c("row"), showSelected="row",
                   a_stat="identity",
-                  position="identity",
+                  a_position="identity",
                   data=too.tall,
                   validate_params = FALSE))
     

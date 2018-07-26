@@ -48,7 +48,7 @@
 #' test <- function(x) {x ^ 2 + x + 20}
 #' f + a_stat_function(fun = test)
 a_stat_function <- function(mapping = NULL, data = NULL,
-                          a_geom = "path", position = "identity",
+                          a_geom = "path", a_position = "identity",
                           ...,
                           fun,
                           xlim = NULL,
@@ -62,7 +62,7 @@ a_stat_function <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatFunction,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

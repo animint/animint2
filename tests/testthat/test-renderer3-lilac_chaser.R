@@ -36,7 +36,7 @@ vi_lilac_chaser <- function(np = 10,
               axis.text.x=a_element_blank(), axis.text.y=a_element_blank(),
               axis.ticks=a_element_blank(),
               axis.title.x=a_element_blank(), axis.title.y=a_element_blank(),
-              legend.position="none",
+              legend.a_position="none",
               panel.background=a_element_blank(),panel.border=a_element_blank(),
               panel.grid.major=a_element_blank(),panel.grid.minor=a_element_blank(),
               plot.background=a_element_blank())

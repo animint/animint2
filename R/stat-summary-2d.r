@@ -39,7 +39,7 @@
 #' d + a_stat_summary_hex()
 #' }
 a_stat_summary_2d <- function(mapping = NULL, data = NULL,
-                            a_geom = "tile", position = "identity",
+                            a_geom = "tile", a_position = "identity",
                             ...,
                             bins = 30,
                             binwidth = NULL,
@@ -54,7 +54,7 @@ a_stat_summary_2d <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_StatSummary2d,
     a_geom = a_geom,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

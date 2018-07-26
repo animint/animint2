@@ -9,7 +9,7 @@ NULL
 #' @param interpolate If \code{TRUE} interpolate linearly, if \code{FALSE}
 #'   (the default) don't interpolate.
 a_geom_raster <- function(mapping = NULL, data = NULL,
-                        a_stat = "identity", position = "identity",
+                        a_stat = "identity", a_position = "identity",
                         ...,
                         hjust = 0.5,
                         vjust = 0.5,
@@ -26,7 +26,7 @@ a_geom_raster <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomRaster,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

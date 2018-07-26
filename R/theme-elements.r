@@ -253,7 +253,7 @@ el_def <- function(class = NULL, inherit = NULL, description = NULL) {
   legend.text.align   = el_def("character"),
   legend.title        = el_def("a_element_text", "title"),
   legend.title.align  = el_def("character"),
-  legend.position     = el_def("character"),  # Need to also accept numbers
+  legend.a_position     = el_def("character"),  # Need to also accept numbers
   legend.direction    = el_def("character"),
   legend.justification = el_def("character"),
   legend.box          = el_def("character"),

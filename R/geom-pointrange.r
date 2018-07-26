@@ -1,7 +1,7 @@
 #' @export
 #' @rdname a_geom_linerange
 a_geom_pointrange <- function(mapping = NULL, data = NULL,
-                            a_stat = "identity", position = "identity",
+                            a_stat = "identity", a_position = "identity",
                             ...,
                             fatten = 4,
                             na.rm = FALSE,
@@ -12,7 +12,7 @@ a_geom_pointrange <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomPointrange,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

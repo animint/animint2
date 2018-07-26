@@ -67,7 +67,7 @@
 #' }
 #' }
 a_geom_violin <- function(mapping = NULL, data = NULL,
-                        a_stat = "ydensity", position = "dodge",
+                        a_stat = "ydensity", a_position = "dodge",
                         ...,
                         draw_quantiles = NULL,
                         trim = TRUE,
@@ -80,7 +80,7 @@ a_geom_violin <- function(mapping = NULL, data = NULL,
     mapping = mapping,
     a_stat = a_stat,
     a_geom = a_GeomViolin,
-    position = position,
+    a_position = a_position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(

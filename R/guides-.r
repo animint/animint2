@@ -41,11 +41,11 @@
 #' g <- guide_legend("title")
 #' p + guides(colour = g, size = g, shape = g)
 #'
-#' p + a_theme(legend.position = "bottom")
+#' p + a_theme(legend.a_position = "bottom")
 #'
-#' # position of guides
+#' # a_position of guides
 #'
-#' p + a_theme(legend.position = "bottom", legend.box = "horizontal")
+#' p + a_theme(legend.a_position = "bottom", legend.box = "horizontal")
 #'
 #' # Set order for multiple guides
 #' a_plot(mpg, aes(displ, cty)) +
@@ -92,7 +92,7 @@ update_guides <- function(p, guides) {
 # 5. guides_build()
 #      arrange all ggrobs
 
-build_guides <- function(scales, layers, default_mapping, position, a_theme, guides, labels) {
+build_guides <- function(scales, layers, default_mapping, a_position, a_theme, guides, labels) {
 
   # set a_themes w.r.t. guides
   # should these a_theme$legend.XXX be renamed to a_theme$guide.XXX ?
@@ -104,19 +104,19 @@ build_guides <- function(scales, layers, default_mapping, position, a_theme, gui
   a_theme$legend.key.width <- a_theme$legend.key.width %||% a_theme$legend.key.size
   a_theme$legend.key.height <- a_theme$legend.key.height %||% a_theme$legend.key.size
 
-  # by default, direction of each guide depends on the position of the guide.
+  # by default, direction of each guide depends on the a_position of the guide.
   a_theme$legend.direction <-
     a_theme$legend.direction %||%
-    if (length(position) == 1 && position %in% c("top", "bottom", "left", "right"))
-      switch(position[1], top = , bottom = "horizontal", left = , right = "vertical")
+    if (length(a_position) == 1 && a_position %in% c("top", "bottom", "left", "right"))
+      switch(a_position[1], top = , bottom = "horizontal", left = , right = "vertical")
     else
       "vertical"
 
   # justification of legend boxes
   a_theme$legend.box.just <-
     a_theme$legend.box.just %||%
-    if (length(position) == 1 && position %in% c("top", "bottom", "left", "right"))
-      switch(position, bottom = , top = c("center", "top"), left = , right = c("left", "top"))
+    if (length(a_position) == 1 && a_position %in% c("top", "bottom", "left", "right"))
+      switch(a_position, bottom = , top = c("center", "top"), left = , right = c("left", "top"))
     else
       c("center", "center")
 
@@ -230,9 +230,9 @@ guides_gengrob <- function(gdefs, a_theme) {
   # common drawing process for all guides
   gdefs <- lapply(gdefs,
     function(g) {
-      g$title.position <- g$title.position %||% switch(g$direction, vertical = "top", horizontal = "left")
-      if (!g$title.position %in% c("top", "bottom", "left", "right"))
-        stop("title position \"", g$title.position, "\" is invalid")
+      g$title.a_position <- g$title.a_position %||% switch(g$direction, vertical = "top", horizontal = "left")
+      if (!g$title.a_position %in% c("top", "bottom", "left", "right"))
+        stop("title a_position \"", g$title.a_position, "\" is invalid")
       g
     })
 

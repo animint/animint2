@@ -26,7 +26,7 @@
 #' @param a_geom The geometric object to use display the data
 #' @param a_stat The statistical transformation to use on the data for this
 #'    layer, as a string.
-#' @param position Position adjustment, either as a string, or the result of
+#' @param a_position Position adjustment, either as a string, or the result of
 #'  a call to a position adjustment function.
 #' @param show.legend logical. Should this layer be included in the legends?
 #'   \code{NA}, the default, includes if any aesthetics are mapped.
@@ -43,25 +43,25 @@
 #' a_plot(mpg, aes(displ, hwy)) + a_geom_point()
 #' # shortcut for
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   layer(a_geom = "point", a_stat = "identity", position = "identity",
+#'   layer(a_geom = "point", a_stat = "identity", a_position = "identity",
 #'     params = list(na.rm = FALSE)
 #'   )
 #'
 #' # use a function as data to plot a subset of global data
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   layer(a_geom = "point", a_stat = "identity", position = "identity",
+#'   layer(a_geom = "point", a_stat = "identity", a_position = "identity",
 #'     data = head, params = list(na.rm = FALSE)
 #'   )
 #'
 layer <- function(a_geom = NULL, a_stat = NULL,
                   data = NULL, mapping = NULL,
-                  position = NULL, params = list(),
+                  a_position = NULL, params = list(),
                   inherit.aes = TRUE, subset = NULL, show.legend = NA) {
   if (is.null(a_geom))
     stop("Attempted to create layer with no geom.", call. = FALSE)
   if (is.null(a_stat))
     stop("Attempted to create layer with no stat.", call. = FALSE)
-  if (is.null(position))
+  if (is.null(a_position))
     stop("Attempted to create layer with no position.", call. = FALSE)
 
   # Handle show_guide/show.legend
@@ -85,8 +85,8 @@ layer <- function(a_geom = NULL, a_stat = NULL,
     a_geom <- find_subclass("a_Geom", a_geom)
   if (is.character(a_stat))
     a_stat <- find_subclass("a_Stat", a_stat)
-  if (is.character(position))
-    position <- find_subclass("a_Position", position)
+  if (is.character(a_position))
+    a_position <- find_subclass("a_Position", a_position)
 
   # Special case for na.rm parameter needed by all layers
   if (is.null(params$na.rm)) {
@@ -127,7 +127,7 @@ layer <- function(a_geom = NULL, a_stat = NULL,
     mapping = mapping,
     aes_params = aes_params,
     subset = subset,
-    position = position,
+    a_position = a_position,
     inherit.aes = inherit.aes,
     show.legend = show.legend,
     extra_params = extra_params
@@ -142,7 +142,7 @@ a_Layer <- a_ggproto("a_Layer", NULL,
   data = NULL,
   aes_params = NULL,
   mapping = NULL,
-  position = NULL,
+  a_position = NULL,
   inherit.aes = FALSE,
   extra_params = NULL,
   print = function(self) {
@@ -153,7 +153,7 @@ a_Layer <- a_ggproto("a_Layer", NULL,
       sep = "")
     cat(snakeize(class(self$a_stat)[[1]]), ": ", clist(self$a_stat_params), "\n",
       sep = "")
-    cat(snakeize(class(self$position)[[1]]), "\n")
+    cat(snakeize(class(self$a_position)[[1]]), "\n")
   },
 
   layer_data = function(self, plot_data) {
@@ -277,10 +277,10 @@ a_Layer <- a_ggproto("a_Layer", NULL,
   compute_position = function(self, data, panel) {
     if (empty(data)) return(data.frame())
 
-    params <- self$position$setup_params(data)
-    data <- self$position$setup_data(data, params)
+    params <- self$a_position$setup_params(data)
+    data <- self$a_position$setup_data(data, params)
 
-    self$position$compute_layer(data, params, panel)
+    self$a_position$compute_layer(data, params, panel)
   },
 
   compute_geom_2 = function(self, data) {
