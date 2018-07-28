@@ -20,7 +20,7 @@ second.small <-
          a_facet_grid(sample.id ~ ., labeller=function(val){
            mapply(paste, "sample", val, SIMPLIFY = FALSE)
          })+
-         guides(size="none")+
+         a_guides(size="none")+
          a_geom_segment(aes(chromStart+0.5, mean,
                           xend=chromEnd+0.5, yend=mean,
                           color=model, size=model),
@@ -83,7 +83,7 @@ viz <-
                     show.legend=TRUE,
                     linetype="dashed",
                     data=PeakConsistency$truth)+
-         guides(size="none")+
+         a_guides(size="none")+
          a_geom_segment(aes(chromStart+0.5, mean,
                           xend=chromEnd+0.5, yend=mean,
                           color=model, size=model),

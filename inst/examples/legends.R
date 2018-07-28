@@ -2,9 +2,9 @@ library(animint2)
 library(plyr) # to access round_any
 movies$decade <- round_any(movies$year, 10)
 m <- a_plot(movies, aes(x=rating, colour=decade, group=decade)) + 
-  a_geom_density(fill=NA) + a_scale_colour_continuous(guide="legend") 
+  a_geom_density(fill=NA) + a_scale_colour_continuous(a_guide="legend") 
 
-m <- a_plot(movies, aes(x=rating, colour=decade, group=decade)) + a_geom_density(fill=NA) #+ a_scale_colour_continuous(guide="none")
+m <- a_plot(movies, aes(x=rating, colour=decade, group=decade)) + a_geom_density(fill=NA) #+ a_scale_colour_continuous(a_guide="none")
 m 
 
 mb <- a_plot_build(m)
@@ -18,7 +18,7 @@ getLegendList <- function(mb){
 
 getLegend <- function(mb, i){
   sc <- mb$plot$scales$scales[[i]]
-  guidetype <- sc$guide
+  a_guidetype <- sc$a_guide
   sc.aes <- sc$aesthetics
   bk <- scale_breaks(sc)
   val <- scale_map(sc, bk)
@@ -28,10 +28,10 @@ getLegend <- function(mb, i){
   }
   df <- data.frame(breaks = bk, value = val, label = labels)
   df <- df[which(rowSums(is.na(df))==0),] # return only those entries that have breaks, values, and labels.
-  if(guidetype=="none"){
+  if(a_guidetype=="none"){
     NULL
   } else{
-    list(guide = guidetype, 
+    list(a_guide = a_guidetype, 
          aesthetic = sc.aes, 
          title = as.character(as.expression(mb$plot$mapping[[sc.aes]])), 
          legend = df)
@@ -55,16 +55,16 @@ legends <- lapply(aes.scales, getLegend, mb=mb)
 data <- a_plot_build(p)
 
 
-gdefs <- guides_train(scales = scales,
+gdefs <- a_guides_train(scales = scales,
                       theme = theme,
-                      guides = guides,
+                      a_guides = a_guides,
                       labels = labels)
 if (length(gdefs) == 0) return(a_zeroGrob())
-gdefs <- guides_merge(gdefs)
+gdefs <- a_guides_merge(gdefs)
 gdefs
 
 getLegend <- function(mb){
-  guidetype <- mb$name
+  a_guidetype <- mb$name
   sc.aes <- names(mb$key)[which(substr(names(mb$key), 1, 1)!=".")]
   val <- mb$key[[sc.aes]]
   labels <- mb$key[[".label"]]
@@ -76,10 +76,10 @@ getLegend <- function(mb){
     key[["fill"]] <- toRGB(key$fill)
   }
   entries <- key
-  if(guidetype=="none"){
+  if(a_guidetype=="none"){
     NULL
   } else{
-    list(guide = guidetype, 
+    list(a_guide = a_guidetype, 
          aesthetic = sc.aes, 
          title = mb$title, 
          entries = lapply(1:nrow(entries), function(i) as.list(entries[i,])))

@@ -45,7 +45,7 @@ viz.no.time <- list(
     a_geom_hline(aes(yintercept=residual),
                data=hline.df,
                color="grey")+
-    guides(linetype="none")+
+    a_guides(linetype="none")+
     a_geom_point(aes(response, residual, 
                    key=observation.i),
                showSelected="arclength",

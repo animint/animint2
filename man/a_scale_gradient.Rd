@@ -20,24 +20,24 @@
 \title{Smooth gradient between two colours}
 \usage{
 a_scale_colour_gradient(..., low = "#132B43", high = "#56B1F7",
-  space = "Lab", na.value = "grey50", guide = "colourbar")
+  space = "Lab", na.value = "grey50", a_guide = "colourbar")
 
 a_scale_fill_gradient(..., low = "#132B43", high = "#56B1F7",
-  space = "Lab", na.value = "grey50", guide = "colourbar")
+  space = "Lab", na.value = "grey50", a_guide = "colourbar")
 
 a_scale_colour_gradient2(..., low = muted("red"), mid = "white",
   high = muted("blue"), midpoint = 0, space = "Lab",
-  na.value = "grey50", guide = "colourbar")
+  na.value = "grey50", a_guide = "colourbar")
 
 a_scale_fill_gradient2(..., low = muted("red"), mid = "white",
   high = muted("blue"), midpoint = 0, space = "Lab",
-  na.value = "grey50", guide = "colourbar")
+  na.value = "grey50", a_guide = "colourbar")
 
 a_scale_colour_gradientn(..., colours, values = NULL, space = "Lab",
-  na.value = "grey50", guide = "colourbar", colors)
+  na.value = "grey50", a_guide = "colourbar", colors)
 
 a_scale_fill_gradientn(..., colours, values = NULL, space = "Lab",
-  na.value = "grey50", guide = "colourbar", colors)
+  na.value = "grey50", a_guide = "colourbar", colors)
 }
 \arguments{
 \item{...}{Other arguments passed on to \code{\link{discrete_a_scale}}
@@ -50,7 +50,7 @@ other values are deprecated.}
 
 \item{na.value}{Colour to use for missing values}
 
-\item{guide}{Type of legend. Use \code{"colourbar"} for continuous
+\item{a_guide}{Type of legend. Use \code{"colourbar"} for continuous
 colour bar, or \code{"legend"} for discrete colour legend.}
 
 \item{mid}{colour for mid point}

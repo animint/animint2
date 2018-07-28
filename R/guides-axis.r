@@ -4,7 +4,7 @@
 #' @param labels at ticks
 #' @param a_theme ...
 # @param a_position of axis (top, bottom, left or right)
-guide_axis <- function(at, labels, a_position = "right", a_theme) {
+a_guide_axis <- function(at, labels, a_position = "right", a_theme) {
   if (length(at) == 0)
     return(a_zeroGrob())
 

@@ -41,7 +41,7 @@
 #' p
 #' p + a_coord_cartesian(ylim = c(0, 40))
 #' p + a_scale_colour_continuous(breaks = c(100, 300))
-#' p + guides(colour = "colourbar")
+#' p + a_guides(colour = "colourbar")
 #'
 #' # Use a different data frame
 #' m <- mtcars[1:10, ]
@@ -88,8 +88,8 @@ add_a_plot <- function(p, object, objectname) {
     p$scales$add(object)
   } else if (inherits(object, "labels")) {
     p <- update_labels(p, object)
-  } else if (inherits(object, "guides")) {
-    p <- update_guides(p, object)
+  } else if (inherits(object, "a_guides")) {
+    p <- update_a_guides(p, object)
   } else if (inherits(object, "uneval")) {
       p$mapping <- defaults(object, p$mapping)
 

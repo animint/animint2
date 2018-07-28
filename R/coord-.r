@@ -46,15 +46,15 @@ a_Coord <- a_ggproto("a_Coord",
     y.major <- if (length(scale_details$y.major) > 0) unit(scale_details$y.major, "native")
     y.minor <- if (length(scale_details$y.minor) > 0) unit(scale_details$y.minor, "native")
 
-    guide_grid(a_theme, x.minor, x.major, y.minor, y.major)
+    a_guide_grid(a_theme, x.minor, x.major, y.minor, y.major)
   },
 
   render_axis_h = function(scale_details, a_theme) {
-    guide_axis(scale_details$x.major, scale_details$x.labels, "bottom", a_theme)
+    a_guide_axis(scale_details$x.major, scale_details$x.labels, "bottom", a_theme)
   },
 
   render_axis_v = function(scale_details, a_theme) {
-    guide_axis(scale_details$y.major, scale_details$y.labels, "left", a_theme)
+    a_guide_axis(scale_details$y.major, scale_details$y.labels, "left", a_theme)
   },
 
   range = function(scale_details) {

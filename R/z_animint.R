@@ -1309,26 +1309,26 @@ getLegendList <- function(plistextra){
   a_position <- a_theme$legend.a_position
   # locate guide argument in a_scale_*, and use that for a default.
   # Note, however, that guides(colour = ...) has precendence! See https://gist.github.com/cpsievert/ece28830a6c992b29ab6
-  guides.args <- list()
+  a_guides.args <- list()
   for(aes.name in c("colour", "fill")){
     aes.loc <- which(scales$find(aes.name))
-    guide.type <- if (length(aes.loc) == 1){
-      scales$scales[[aes.loc]][["guide"]]
+    a_guide.type <- if (length(aes.loc) == 1){
+      scales$scales[[aes.loc]][["a_guide"]]
     }else{
       "legend"
     }
-    if(guide.type=="colourbar")guide.type <- "legend"
-    guides.args[[aes.name]] <- guide.type
+    if(a_guide.type=="colourbar")a_guide.type <- "legend"
+    a_guides.args[[aes.name]] <- a_guide.type
   }
-  guides.result <- do.call(guides, guides.args)
-  guides.list <- plyr::defaults(plot$guides, guides.result)
-  gdefs <- guides_train(scales = scales,
+  a_guides.result <- do.call(a_guides, a_guides.args)
+  a_guides.list <- plyr::defaults(plot$a_guides, a_guides.result)
+  gdefs <- a_guides_train(scales = scales,
                            a_theme = a_theme,
-                           guides = guides.list,
+                           a_guides = a_guides.list,
                            labels = plot$labels)
   if (length(gdefs) != 0) {
-    gdefs <- guides_merge(gdefs)
-    gdefs <- guides_geom(gdefs, layers, default_mapping)
+    gdefs <- a_guides_merge(gdefs)
+    gdefs <- a_guides_geom(gdefs, layers, default_mapping)
   } else (a_zeroGrob())
   names(gdefs) <- sapply(gdefs, function(i) i$title)
   

@@ -15,11 +15,11 @@ a_scale_fill_brewer(..., type = "seq", palette = 1, direction = 1)
 
 a_scale_colour_distiller(..., type = "seq", palette = 1, direction = -1,
   values = NULL, space = "Lab", na.value = "grey50",
-  guide = "colourbar")
+  a_guide = "colourbar")
 
 a_scale_fill_distiller(..., type = "seq", palette = 1, direction = -1,
   values = NULL, space = "Lab", na.value = "grey50",
-  guide = "colourbar")
+  a_guide = "colourbar")
 }
 \arguments{
 \item{...}{Other arguments passed on to \code{\link{discrete_a_scale}}
@@ -44,7 +44,7 @@ other values are deprecated.}
 
 \item{na.value}{Colour to use for missing values}
 
-\item{guide}{Type of legend. Use \code{"colourbar"} for continuous
+\item{a_guide}{Type of legend. Use \code{"colourbar"} for continuous
 colour bar, or \code{"legend"} for discrete colour legend.}
 }
 \description{

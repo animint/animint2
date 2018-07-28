@@ -5,13 +5,13 @@
 #' For more information, see the inspiration for this function:
 #' \href{http://www.mathworks.com/help/techdoc/ref/colorbar.html}{Matlab's colorbar function}.
 #'
-#' Guides can be specified in each \code{a_scale_*} or in \code{\link{guides}}.
-#' \code{guide="legend"} in \code{a_scale_*} is syntactic sugar for
-#' \code{guide=guide_legend()} (e.g. \code{a_scale_color_manual(guide = "legend")}).
-#' As for how to specify the guide for each scale in more detail,
-#' see \code{\link{guides}}.
+#' Guides can be specified in each \code{a_scale_*} or in \code{\link{a_guides}}.
+#' \code{a_guide="legend"} in \code{a_scale_*} is syntactic sugar for
+#' \code{a_guide=a_guide_legend()} (e.g. \code{a_scale_color_manual(a_guide = "legend")}).
+#' As for how to specify the a_guide for each scale in more detail,
+#' see \code{\link{a_guides}}.
 #'
-#' @inheritParams guide_legend
+#' @inheritParams a_guide_legend
 #' @param barwidth A numeric or a \code{\link[grid]{unit}} object specifying
 #'   the width of the colorbar. Default value is \code{legend.key.width} or
 #'   \code{legend.key.size} in \code{\link{a_theme}} or a_theme.
@@ -39,7 +39,7 @@
 #' @param ... ignored.
 #' @return A guide object
 #' @export
-#' @family guides
+#' @family a_guides
 #' @examples
 #' df <- reshape2::melt(outer(1:4, 1:4), varnames = c("X1", "X2"))
 #'
@@ -47,47 +47,47 @@
 #' p2 <- p1 + a_geom_point(aes(size = value))
 #'
 #' # Basic form
-#' p1 + a_scale_fill_continuous(guide = "colorbar")
-#' p1 + a_scale_fill_continuous(guide = guide_colorbar())
-#' p1 + guides(fill = guide_colorbar())
+#' p1 + a_scale_fill_continuous(a_guide = "colorbar")
+#' p1 + a_scale_fill_continuous(a_guide = a_guide_colorbar())
+#' p1 + a_guides(fill = a_guide_colorbar())
 #'
 #' # Control styles
 #'
 #' # bar size
-#' p1 + guides(fill = guide_colorbar(barwidth = 0.5, barheight = 10))
+#' p1 + a_guides(fill = a_guide_colorbar(barwidth = 0.5, barheight = 10))
 #'
 #' # no label
-#' p1 + guides(fill = guide_colorbar(label = FALSE))
+#' p1 + a_guides(fill = a_guide_colorbar(label = FALSE))
 #'
 #' # no tick marks
-#' p1 + guides(fill = guide_colorbar(ticks = FALSE))
+#' p1 + a_guides(fill = a_guide_colorbar(ticks = FALSE))
 #'
 #' # label position
-#' p1 + guides(fill = guide_colorbar(label.a_position = "left"))
+#' p1 + a_guides(fill = a_guide_colorbar(label.a_position = "left"))
 #'
 #' # label a_theme
-#' p1 + guides(fill = guide_colorbar(label.a_theme = a_element_text(colour = "blue", angle = 0)))
+#' p1 + a_guides(fill = a_guide_colorbar(label.a_theme = a_element_text(colour = "blue", angle = 0)))
 #'
 #' # small number of bins
-#' p1 + guides(fill = guide_colorbar(nbin = 3))
+#' p1 + a_guides(fill = a_guide_colorbar(nbin = 3))
 #'
 #' # large number of bins
-#' p1 + guides(fill = guide_colorbar(nbin = 100))
+#' p1 + a_guides(fill = a_guide_colorbar(nbin = 100))
 #'
 #' # make top- and bottom-most ticks invisible
 #' p1 + a_scale_fill_continuous(limits = c(0,20), breaks = c(0, 5, 10, 15, 20),
-#'  guide = guide_colorbar(nbin=100, draw.ulim = FALSE, draw.llim = FALSE))
+#'  a_guide = a_guide_colorbar(nbin=100, draw.ulim = FALSE, draw.llim = FALSE))
 #'
 #' # guides can be controlled independently
 #' p2 +
-#'   a_scale_fill_continuous(guide = "colorbar") +
-#'   a_scale_size(guide = "legend")
-#' p2 + guides(fill = "colorbar", size = "legend")
+#'   a_scale_fill_continuous(a_guide = "colorbar") +
+#'   a_scale_size(a_guide = "legend")
+#' p2 + a_guides(fill = "colorbar", size = "legend")
 #'
 #' p2 +
-#'   a_scale_fill_continuous(guide = guide_colorbar(direction = "horizontal")) +
-#'   a_scale_size(guide = guide_legend(direction = "vertical"))
-guide_colourbar <- function(
+#'   a_scale_fill_continuous(a_guide = a_guide_colorbar(direction = "horizontal")) +
+#'   a_scale_size(a_guide = a_guide_legend(direction = "vertical"))
+a_guide_colourbar <- function(
 
   # title
   title = waiver(),
@@ -159,12 +159,12 @@ guide_colourbar <- function(
 
     # parameter
     available_aes = c("colour", "color", "fill"), ..., name = "colorbar"),
-    class = c("guide", "colorbar")
+    class = c("a_guide", "colorbar")
   )
 }
 
 #' @export
-guide_train.colorbar <- function(guide, a_scale) {
+a_guide_train.colorbar <- function(a_guide, a_scale) {
 
   # do nothing if a_scale are inappropriate
   if (length(intersect(a_scale$aesthetics, c("color", "colour", "fill"))) == 0) {
@@ -186,97 +186,97 @@ guide_train.colorbar <- function(guide, a_scale) {
   ticks$.value <- breaks
   ticks$.label <- a_scale$get_labels(breaks)
 
-  guide$key <- ticks
+  a_guide$key <- ticks
 
   # bar specification (number of divs etc)
   .limits <- a_scale$get_limits()
-  .bar <- discard(pretty(.limits, n = guide$nbin), a_scale$get_limits())
+  .bar <- discard(pretty(.limits, n = a_guide$nbin), a_scale$get_limits())
   if (length(.bar) == 0) {
     .bar = unique(.limits)
   }
-  guide$bar <- data.frame(colour = a_scale$map(.bar), value = .bar, stringsAsFactors = FALSE)
-  if (guide$reverse) {
-    guide$key <- guide$key[nrow(guide$key):1, ]
-    guide$bar <- guide$bar[nrow(guide$bar):1, ]
+  a_guide$bar <- data.frame(colour = a_scale$map(.bar), value = .bar, stringsAsFactors = FALSE)
+  if (a_guide$reverse) {
+    a_guide$key <- a_guide$key[nrow(a_guide$key):1, ]
+    a_guide$bar <- a_guide$bar[nrow(a_guide$bar):1, ]
   }
-  guide$hash <- with(guide, digest::digest(list(title, key$.label, bar, name)))
-  guide
+  a_guide$hash <- with(a_guide, digest::digest(list(title, key$.label, bar, name)))
+  a_guide
 }
 
-# simply discards the new guide
+# simply discards the new a_guide
 #' @export
-guide_merge.colorbar <- function(guide, new_guide) {
-  guide
+a_guide_merge.colorbar <- function(a_guide, new_guide) {
+  a_guide
 }
 
 # this guide is not geom-based.
 #' @export
-guide_geom.colorbar <- function(guide, ...) {
-  guide
+a_guide_geom.colorbar <- function(a_guide, ...) {
+  a_guide
 }
 
 #' @export
-guide_gengrob.colorbar <- function(guide, a_theme) {
+a_guide_gengrob.colorbar <- function(a_guide, a_theme) {
 
   # settings of location and size
-  switch(guide$direction,
+  switch(a_guide$direction,
     "horizontal" = {
-      label.a_position <- guide$label.a_position %||% "bottom"
+      label.a_position <- a_guide$label.a_position %||% "bottom"
       if (!label.a_position %in% c("top", "bottom")) stop("label a_position \"", label.a_position, "\" is invalid")
 
-      barwidth <- convertWidth(guide$barwidth %||% (a_theme$legend.key.width * 5), "mm")
-      barheight <- convertHeight(guide$barheight %||% a_theme$legend.key.height, "mm")
+      barwidth <- convertWidth(a_guide$barwidth %||% (a_theme$legend.key.width * 5), "mm")
+      barheight <- convertHeight(a_guide$barheight %||% a_theme$legend.key.height, "mm")
     },
     "vertical" = {
-      label.a_position <- guide$label.a_position %||% "right"
+      label.a_position <- a_guide$label.a_position %||% "right"
       if (!label.a_position %in% c("left", "right")) stop("label a_position \"", label.a_position, "\" is invalid")
 
-      barwidth <- convertWidth(guide$barwidth %||% a_theme$legend.key.width, "mm")
-      barheight <- convertHeight(guide$barheight %||% (a_theme$legend.key.height * 5), "mm")
+      barwidth <- convertWidth(a_guide$barwidth %||% a_theme$legend.key.width, "mm")
+      barheight <- convertHeight(a_guide$barheight %||% (a_theme$legend.key.height * 5), "mm")
     })
 
   barwidth.c <- c(barwidth)
   barheight.c <- c(barheight)
-  barlength.c <- switch(guide$direction, "horizontal" = barwidth.c, "vertical" = barheight.c)
-  nbreak <- nrow(guide$key)
+  barlength.c <- switch(a_guide$direction, "horizontal" = barwidth.c, "vertical" = barheight.c)
+  nbreak <- nrow(a_guide$key)
 
   # gap between keys etc
   hgap <- c(convertWidth(unit(0.3, "lines"), "mm"))
   vgap <- hgap
 
   grob.bar <-
-    if (guide$raster) {
-      image <- switch(guide$direction, horizontal = t(guide$bar$colour), vertical = rev(guide$bar$colour))
+    if (a_guide$raster) {
+      image <- switch(a_guide$direction, horizontal = t(a_guide$bar$colour), vertical = rev(a_guide$bar$colour))
       rasterGrob(image = image, width = barwidth.c, height = barheight.c, default.units = "mm", gp = gpar(col = NA), interpolate = TRUE)
     } else {
-      switch(guide$direction,
+      switch(a_guide$direction,
              horizontal = {
-               bw <- barwidth.c / nrow(guide$bar)
-               bx <- (seq(nrow(guide$bar)) - 1) * bw
+               bw <- barwidth.c / nrow(a_guide$bar)
+               bx <- (seq(nrow(a_guide$bar)) - 1) * bw
                rectGrob(x = bx, y = 0, vjust = 0, hjust = 0, width = bw, height = barheight.c, default.units = "mm",
-                        gp = gpar(col = NA, fill = guide$bar$colour))
+                        gp = gpar(col = NA, fill = a_guide$bar$colour))
              },
              vertical = {
-               bh <- barheight.c / nrow(guide$bar)
-               by <- (seq(nrow(guide$bar)) - 1) * bh
+               bh <- barheight.c / nrow(a_guide$bar)
+               by <- (seq(nrow(a_guide$bar)) - 1) * bh
                rectGrob(x = 0, y = by, vjust = 0, hjust = 0, width = barwidth.c, height = bh, default.units = "mm",
-                        gp = gpar(col = NA, fill = guide$bar$colour))
+                        gp = gpar(col = NA, fill = a_guide$bar$colour))
              })
   }
 
   # tick and label position
-  tic_pos.c <- rescale(guide$key$.value, c(0.5, guide$nbin - 0.5), guide$bar$value[c(1, nrow(guide$bar))]) * barlength.c / guide$nbin
+  tic_pos.c <- rescale(a_guide$key$.value, c(0.5, a_guide$nbin - 0.5), a_guide$bar$value[c(1, nrow(a_guide$bar))]) * barlength.c / a_guide$nbin
   label_pos <- unit(tic_pos.c, "mm")
-  if (!guide$draw.ulim) tic_pos.c <- tic_pos.c[-1]
-  if (!guide$draw.llim) tic_pos.c <- tic_pos.c[-length(tic_pos.c)]
+  if (!a_guide$draw.ulim) tic_pos.c <- tic_pos.c[-1]
+  if (!a_guide$draw.llim) tic_pos.c <- tic_pos.c[-length(tic_pos.c)]
 
   # title
-  grob.title <- ggname("guide.title",
+  grob.title <- ggname("a_guide.title",
     a_element_grob(
-      guide$title.a_theme %||% calc_element("legend.title", a_theme),
-      label = guide$title,
-      hjust = guide$title.hjust %||% a_theme$legend.title.align %||% 0,
-      vjust = guide$title.vjust %||% 0.5
+      a_guide$title.a_theme %||% calc_element("legend.title", a_theme),
+      label = a_guide$title,
+      hjust = a_guide$title.hjust %||% a_theme$legend.title.align %||% 0,
+      vjust = a_guide$title.vjust %||% 0.5
     )
   )
 
@@ -287,17 +287,17 @@ guide_gengrob.colorbar <- function(guide, a_theme) {
   title_height.c <- c(title_height)
 
   # label
-  label.a_theme <- guide$label.a_theme %||% calc_element("legend.text", a_theme)
+  label.a_theme <- a_guide$label.a_theme %||% calc_element("legend.text", a_theme)
   grob.label <- {
-    if (!guide$label)
+    if (!a_guide$label)
       a_zeroGrob()
     else {
-      hjust <- x <- guide$label.hjust %||% a_theme$legend.text.align %||%
-        if (any(is.expression(guide$key$.label))) 1 else switch(guide$direction, horizontal = 0.5, vertical = 0)
-      vjust <- y <- guide$label.vjust %||% 0.5
-      switch(guide$direction, horizontal = {x <- label_pos; y <- vjust}, "vertical" = {x <- hjust; y <- label_pos})
+      hjust <- x <- a_guide$label.hjust %||% a_theme$legend.text.align %||%
+        if (any(is.expression(a_guide$key$.label))) 1 else switch(a_guide$direction, horizontal = 0.5, vertical = 0)
+      vjust <- y <- a_guide$label.vjust %||% 0.5
+      switch(a_guide$direction, horizontal = {x <- label_pos; y <- vjust}, "vertical" = {x <- hjust; y <- label_pos})
 
-      label <- guide$key$.label
+      label <- a_guide$key$.label
 
       # If any of the labels are quoted language objects, convert them
       # to expressions. Labels from formatter functions can return these
@@ -310,7 +310,7 @@ guide_gengrob.colorbar <- function(guide, a_theme) {
       }
       g <- a_element_grob(a_element = label.a_theme, label = label,
         x = x, y = y, hjust = hjust, vjust = vjust)
-      ggname("guide.label", g)
+      ggname("a_guide.label", g)
     }
   }
 
@@ -321,9 +321,9 @@ guide_gengrob.colorbar <- function(guide, a_theme) {
 
   # ticks
   grob.ticks <-
-    if (!guide$ticks) a_zeroGrob()
+    if (!a_guide$ticks) a_zeroGrob()
     else {
-      switch(guide$direction,
+      switch(a_guide$direction,
         "horizontal" = {
           x0 = rep(tic_pos.c, 2)
           y0 = c(rep(0, nbreak), rep(barheight.c * (4/5), nbreak))
@@ -341,7 +341,7 @@ guide_gengrob.colorbar <- function(guide, a_theme) {
     }
 
   # layout of bar and label
-  switch(guide$direction,
+  switch(a_guide$direction,
     "horizontal" = {
       switch(label.a_position,
         "top" = {
@@ -374,7 +374,7 @@ guide_gengrob.colorbar <- function(guide, a_theme) {
     })
 
   # layout of title and bar+label
-  switch(guide$title.a_position,
+  switch(a_guide$title.a_position,
     "top" = {
       widths <- c(bl_widths, max(0, title_width.c - sum(bl_widths)))
       heights <- c(title_height.c, vgap, bl_heights)
@@ -436,5 +436,5 @@ guide_gengrob.colorbar <- function(guide, a_theme) {
 }
 
 #' @export
-#' @rdname guide_colourbar
-guide_colorbar <- guide_colourbar
+#' @rdname a_guide_colourbar
+a_guide_colorbar <- a_guide_colourbar

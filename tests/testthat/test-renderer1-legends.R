@@ -42,17 +42,17 @@ test_that('hiding both legends works with a_geom_point(show.legend=FALSE)', {
   expect_identical(length(generated.names), 0L)
 })
 
-test_that('hiding the color legend works with a_scale_color(guide="none")',{
+test_that('hiding the color legend works with a_scale_color(a_guide="none")',{
   viz$scatter <- viz$scatter+
-    a_scale_color_discrete(guide="none")
+    a_scale_color_discrete(a_guide="none")
   info <- animint2dir(viz, open.browser=FALSE)
   generated.names <- names(info$plots$scatter$legend)
   expect_identical(generated.names, "population")
 })
 
-test_that('hiding the color legend works with guides(color="none")',{
+test_that('hiding the color legend works with a_guides(color="none")',{
   viz$scatter <- viz$scatter+
-    guides(color="none")
+    a_guides(color="none")
   info <- animint2dir(viz, open.browser=FALSE)
   generated.names <- names(info$plots$scatter$legend)
   expect_identical(generated.names, "population")

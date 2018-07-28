@@ -680,10 +680,10 @@ merge_recurse <- function(dfs){
 
 
 #' Function to get legend information for each scale
-#' @param mb single entry from guides_merge() list of legend data
-#' @return list of legend information, NULL if guide=FALSE.
+#' @param mb single entry from a_guides_merge() list of legend data
+#' @return list of legend information, NULL if a_guide=FALSE.
 getLegend <- function(mb){
-  guidetype <- mb$name
+  a_guidetype <- mb$name
   
   ## The main idea of legends:
   
@@ -697,8 +697,8 @@ getLegend <- function(mb){
     nd <- nrow(data)
     nk <- nrow(key)
     if (nd == 0) return(data.frame()); # if no rows, return an empty df.
-    if ("guide" %in% names(params)) {
-      if (params[["guide"]] == "none") return(data.frame()); # if no guide, return an empty df
+    if ("a_guide" %in% names(params)) {
+      if (params[["a_guide"]] == "none") return(data.frame()); # if no a_guide, return an empty df
     }
     if (nd != nk) warning("key and data have different number of rows")
     if (!".label" %in% names(key)) return(data.frame()); # if there are no labels, return an empty df.
@@ -730,10 +730,10 @@ getLegend <- function(mb){
     nrow(data):1
   }
   data <- lapply(entry.order, function(i) as.list(data[i,]))
-  if(guidetype=="none"){
+  if(a_guidetype=="none"){
     NULL
   }else{
-    list(guide = guidetype,
+    list(a_guide = a_guidetype,
          geoms = unlist(mb$a_geom.legend.list),
          title = mb$title,
          class = if(mb$is.discrete)mb$selector else mb$title,

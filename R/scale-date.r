@@ -130,7 +130,7 @@ a_scale_datetime <- function(aesthetics, trans,
 
   sc <- continuous_a_scale(aesthetics, name, identity,
                          breaks = breaks, minor_breaks = minor_breaks, labels = labels,
-                         guide = "none", trans = trans, ...)
+                         a_guide = "none", trans = trans, ...)
 
   # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.

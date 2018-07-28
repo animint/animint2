@@ -1,5 +1,5 @@
 # Produce a grob to be used as for panel backgrounds
-guide_grid <- function(a_theme, x.minor, x.major, y.minor, y.major) {
+a_guide_grid <- function(a_theme, x.minor, x.major, y.minor, y.major) {
 
   x.minor <- setdiff(x.minor, x.major)
   y.minor <- setdiff(y.minor, y.major)

@@ -7,7 +7,7 @@ likPlot <- a_plot()+
   a_geom_line(aes(complexity, log(log.likelihood+.002), group=set, colour=set),
             data=change$lik, size=5)+
   xlab("model complexity -log(lambda)")+
-  guides(colour="none")+
+  a_guides(colour="none")+
   a_geom_text(aes(x, y, label=set, colour=set), data=train.test)+
   ggtitle("Train and test likelihood")
 print(likPlot)

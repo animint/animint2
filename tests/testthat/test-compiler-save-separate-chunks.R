@@ -45,7 +45,7 @@ p <- a_plot() +
   make_text(map_flu, -100, 50, "WEEKEND",
             "CDC FluView in Lower 48 States ending %s") + 
   a_scale_fill_gradient2(low = "white", high = "red", breaks = 0:10,
-                       guide = "none") + 
+                       a_guide = "none") + 
   a_theme_opts + 
   a_theme_animint(width = 750, height= 500)
 

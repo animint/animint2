@@ -5,7 +5,7 @@ WorldBank$region <-
 wb.paper <-
   list(ts=a_plot()+
        make_tallrect(WorldBank, "year")+
-       guides(color="none")+
+       a_guides(color="none")+
        a_geom_line(aes(year, life.expectancy, group=country, colour=region),
                  showSelected="region",
                  clickSelects="country",

@@ -186,7 +186,7 @@ a_plot_gtable <- function(data) {
   }
 
   legend_box <- if (a_position != "none") {
-    build_guides(plot$scales, plot$layers, plot$mapping, a_position, a_theme, plot$guides, plot$labels)
+    build_guides(plot$scales, plot$layers, plot$mapping, a_position, a_theme, plot$a_guides, plot$labels)
   } else {
     a_zeroGrob()
   }
@@ -226,24 +226,24 @@ a_plot_gtable <- function(data) {
   if (a_position == "left") {
     plot_table <- gtable_add_cols(plot_table, legend_width, pos = 0)
     plot_table <- gtable_add_grob(plot_table, legend_box, clip = "off",
-      t = panel_dim$t, b = panel_dim$b, l = 1, r = 1, name = "guide-box")
+      t = panel_dim$t, b = panel_dim$b, l = 1, r = 1, name = "a_guide-box")
   } else if (a_position == "right") {
     plot_table <- gtable_add_cols(plot_table, legend_width, pos = -1)
     plot_table <- gtable_add_grob(plot_table, legend_box, clip = "off",
-      t = panel_dim$t, b = panel_dim$b, l = -1, r = -1, name = "guide-box")
+      t = panel_dim$t, b = panel_dim$b, l = -1, r = -1, name = "a_guide-box")
   } else if (a_position == "bottom") {
     plot_table <- gtable_add_rows(plot_table, legend_height, pos = -1)
     plot_table <- gtable_add_grob(plot_table, legend_box, clip = "off",
-      t = -1, b = -1, l = panel_dim$l, r = panel_dim$r, name = "guide-box")
+      t = -1, b = -1, l = panel_dim$l, r = panel_dim$r, name = "a_guide-box")
   } else if (a_position == "top") {
     plot_table <- gtable_add_rows(plot_table, legend_height, pos = 0)
     plot_table <- gtable_add_grob(plot_table, legend_box, clip = "off",
-      t = 1, b = 1, l = panel_dim$l, r = panel_dim$r, name = "guide-box")
+      t = 1, b = 1, l = panel_dim$l, r = panel_dim$r, name = "a_guide-box")
   } else if (a_position == "manual") {
-    # should guide box expand whole region or region without margin?
+    # should a_guide box expand whole region or region without margin?
     plot_table <- gtable_add_grob(plot_table, legend_box,
       t = panel_dim$t, b = panel_dim$b, l = panel_dim$l, r = panel_dim$r,
-      clip = "off", name = "guide-box")
+      clip = "off", name = "a_guide-box")
   }
 
   # Title

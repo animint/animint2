@@ -7,10 +7,10 @@
 getLegend(mb)
 }
 \arguments{
-\item{mb}{single entry from guides_merge() list of legend data}
+\item{mb}{single entry from a_guides_merge() list of legend data}
 }
 \value{
-list of legend information, NULL if guide=FALSE.
+list of legend information, NULL if a_guide=FALSE.
 }
 \description{
 Function to get legend information for each scale

@@ -11,23 +11,23 @@
 \alias{a_scale_color_identity}
 \title{Use values without scaling.}
 \usage{
-a_scale_colour_identity(..., guide = "none")
+a_scale_colour_identity(..., a_guide = "none")
 
-a_scale_fill_identity(..., guide = "none")
+a_scale_fill_identity(..., a_guide = "none")
 
-a_scale_shape_identity(..., guide = "none")
+a_scale_shape_identity(..., a_guide = "none")
 
-a_scale_linetype_identity(..., guide = "none")
+a_scale_linetype_identity(..., a_guide = "none")
 
-a_scale_alpha_identity(..., guide = "none")
+a_scale_alpha_identity(..., a_guide = "none")
 
-a_scale_size_identity(..., guide = "none")
+a_scale_size_identity(..., a_guide = "none")
 }
 \arguments{
 \item{...}{Other arguments passed on to \code{\link{discrete_a_scale}} or
 \code{\link{continuous_a_scale}}}
 
-\item{guide}{Guide to use for this scale - defaults to \code{"none"}.}
+\item{a_guide}{Guide to use for this scale - defaults to \code{"none"}.}
 }
 \description{
 Use values without scaling.
@@ -48,15 +48,15 @@ a_plot(df, aes(x, y)) +
   a_geom_tile(aes(fill = colour)) +
   a_scale_fill_identity()
 
-# To get a legend guide, specify guide = "legend"
+# To get a legend guide, specify a_guide = "legend"
 a_plot(df, aes(x, y)) +
   a_geom_tile(aes(fill = colour)) +
-  a_scale_fill_identity(guide = "legend")
+  a_scale_fill_identity(a_guide = "legend")
 # But you'll typically also need to supply breaks and labels:
 a_plot(df, aes(x, y)) +
   a_geom_tile(aes(fill = colour)) +
   a_scale_fill_identity("trt", labels = letters[1:4], breaks = df$colour,
-  guide = "legend")
+  a_guide = "legend")
 
 # cyl scaled to appropriate size
 a_plot(mtcars, aes(mpg, wt)) + a_geom_point(aes(size = cyl))

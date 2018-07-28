@@ -215,7 +215,7 @@ errorPlot <- a_plot()+
                data=Bayes.segment)+
   a_scale_color_manual(values=set.colors, breaks=names(set.colors))+
   a_scale_fill_manual(values=set.colors)+
-  guides(fill="none", linetype="none")+
+  a_guides(fill="none", linetype="none")+
   a_scale_linetype_manual(values=classifier.linetypes)+
   ylab("Misclassification Errors")+
   a_scale_x_continuous(

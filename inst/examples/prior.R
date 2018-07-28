@@ -38,7 +38,7 @@ priorBands <-
                      colour=method, linetype=classifier),
                  showSelected=c("prior", "set"),
                  data=prior$accuracy)+
-       guides(colour="none",linetype="none",fill="none")+
+       a_guides(colour="none",linetype="none",fill="none")+
        xlab("number of points sampled")+
        ylab("percent classification accuracy"),
        prior=a_plot()+
@@ -69,7 +69,7 @@ priorBands <-
                      colour=method, linetype=classifier),
                  showSelected=c("prior", "set"),
                  data=prior$accuracy)+
-       guides(colour="none",linetype="none",fill="none")+
+       a_guides(colour="none",linetype="none",fill="none")+
        xlab("number of points sampled")+
        ylab(sqLab),
        priorsqErr=a_plot()+

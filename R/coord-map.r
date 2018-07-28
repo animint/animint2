@@ -223,7 +223,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
     ))
     pos <- self$transform(x_intercept, scale_details)
 
-    guide_axis(pos$x, scale_details$x.labels, "bottom", a_theme)
+    a_guide_axis(pos$x, scale_details$x.labels, "bottom", a_theme)
   },
 
   render_axis_v = function(self, scale_details, a_theme) {
@@ -235,7 +235,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
     ))
     pos <- self$transform(x_intercept, scale_details)
 
-    guide_axis(pos$y, scale_details$y.labels, "left", a_theme)
+    a_guide_axis(pos$y, scale_details$y.labels, "left", a_theme)
   }
 )
 

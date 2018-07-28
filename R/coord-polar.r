@@ -149,11 +149,11 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
 
   render_axis_v = function(self, scale_details, a_theme) {
     x <- r_rescale(self, scale_details$r.major, scale_details) + 0.5
-    guide_axis(x, scale_details$r.labels, "left", a_theme)
+    a_guide_axis(x, scale_details$r.labels, "left", a_theme)
   },
 
   render_axis_h = function(scale_details, a_theme) {
-    guide_axis(NA, "", "bottom", a_theme)
+    a_guide_axis(NA, "", "bottom", a_theme)
   },
 
   render_bg = function(self, scale_details, a_theme) {

@@ -60,7 +60,7 @@ p <- a_plot(mtcars, aes(wt, mpg, colour = disp)) +
 p
 p + a_coord_cartesian(ylim = c(0, 40))
 p + a_scale_colour_continuous(breaks = c(100, 300))
-p + guides(colour = "colourbar")
+p + a_guides(colour = "colourbar")
 
 # Use a different data frame
 m <- mtcars[1:10, ]

@@ -68,8 +68,8 @@ viz <- list(
     a_facet_grid(.~metric.name, scales="free", space="fixed")+
     a_scale_y_discrete("method . weights")+
     a_scale_x_continuous("")+
-    a_scale_color_manual(values=method.colors, guide="none")+
-    a_scale_fill_manual("threshold", values=thresh.colors, guide="none")+
+    a_scale_color_manual(values=method.colors, a_guide="none")+
+    a_scale_fill_manual("threshold", values=thresh.colors, a_guide="none")+
     a_geom_point(aes(metric.value, filterVar.fac, color=method,
                    fill=thresh.type),
                clickSelects="test.fold",
@@ -154,7 +154,7 @@ viz <- list(
                   group=error.type, color=error.type),
               showSelected=c("test.fold", "thresh.type", "method"),
               data=add.filterVar.fac(VariantModels$error))+
-    a_scale_fill_manual(values=method.colors, guide="none")+
+    a_scale_fill_manual(values=method.colors, a_guide="none")+
     a_geom_tallrect(aes(
       xmin=xmin, xmax=xmax,
       fill=method),

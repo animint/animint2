@@ -6,7 +6,7 @@
 \usage{
 discrete_a_scale(aesthetics, scale_name, palette, name = waiver(),
   breaks = waiver(), labels = waiver(), limits = NULL,
-  expand = waiver(), na.value = NA, drop = TRUE, guide = "legend")
+  expand = waiver(), na.value = NA, drop = TRUE, a_guide = "legend")
 }
 \arguments{
 \item{aesthetics}{the names of the aesthetics that this scale works with}
@@ -53,8 +53,8 @@ for discrete scales and (0.05,0) for continuous scales.}
 The default, \code{TRUE}, uses the levels that appear in the data;
 \code{FALSE} uses all the levels in the factor.}
 
-\item{guide}{the name of, or actual function, used to create the
-guide. See \code{\link{guides}} for more info.}
+\item{a_guide}{the name of, or actual function, used to create the
+a_guide. See \code{\link{a_guides}} for more info.}
 }
 \description{
 Discrete scale constructor.

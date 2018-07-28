@@ -13,7 +13,7 @@
 #' @inheritParams scales::seq_gradient_pal
 #' @inheritParams a_scale_colour_hue
 #' @param low,high Colours for low and high ends of the gradient.
-#' @param guide Type of legend. Use \code{"colourbar"} for continuous
+#' @param a_guide Type of legend. Use \code{"colourbar"} for continuous
 #'   colour bar, or \code{"legend"} for discrete colour legend.
 #' @seealso \code{\link[scales]{seq_gradient_pal}} for details on underlying
 #'   palette
@@ -56,16 +56,16 @@
 #'   a_scale_colour_gradient(low = "white", high = "black")
 #' # Avoid red-green colour contrasts because ~10% of men have difficulty
 #' # seeing them
-a_scale_colour_gradient <- function(..., low = "#132B43", high = "#56B1F7", space = "Lab", na.value = "grey50", guide = "colourbar") {
+a_scale_colour_gradient <- function(..., low = "#132B43", high = "#56B1F7", space = "Lab", na.value = "grey50", a_guide = "colourbar") {
   continuous_a_scale("colour", "gradient", seq_gradient_pal(low, high, space),
-    na.value = na.value, guide = guide, ...)
+    na.value = na.value, a_guide = a_guide, ...)
 }
 
 #' @rdname a_scale_gradient
 #' @export
-a_scale_fill_gradient <- function(..., low = "#132B43", high = "#56B1F7", space = "Lab", na.value = "grey50", guide = "colourbar") {
+a_scale_fill_gradient <- function(..., low = "#132B43", high = "#56B1F7", space = "Lab", na.value = "grey50", a_guide = "colourbar") {
   continuous_a_scale("fill", "gradient", seq_gradient_pal(low, high, space),
-    na.value = na.value, guide = guide, ...)
+    na.value = na.value, a_guide = a_guide, ...)
 }
 
 #' @inheritParams scales::div_gradient_pal
@@ -73,17 +73,17 @@ a_scale_fill_gradient <- function(..., low = "#132B43", high = "#56B1F7", space 
 #'   Defaults to 0.
 #' @rdname a_scale_gradient
 #' @export
-a_scale_colour_gradient2 <- function(..., low = muted("red"), mid = "white", high = muted("blue"), midpoint = 0, space = "Lab", na.value = "grey50", guide = "colourbar") {
+a_scale_colour_gradient2 <- function(..., low = muted("red"), mid = "white", high = muted("blue"), midpoint = 0, space = "Lab", na.value = "grey50", a_guide = "colourbar") {
   continuous_a_scale("colour", "gradient2",
-    div_gradient_pal(low, mid, high, space), na.value = na.value, guide = guide, ...,
+    div_gradient_pal(low, mid, high, space), na.value = na.value, a_guide = a_guide, ...,
     rescaler = mid_rescaler(mid = midpoint))
 }
 
 #' @rdname a_scale_gradient
 #' @export
-a_scale_fill_gradient2 <- function(..., low = muted("red"), mid = "white", high = muted("blue"), midpoint = 0, space = "Lab", na.value = "grey50", guide = "colourbar") {
+a_scale_fill_gradient2 <- function(..., low = muted("red"), mid = "white", high = muted("blue"), midpoint = 0, space = "Lab", na.value = "grey50", a_guide = "colourbar") {
   continuous_a_scale("fill", "gradient2",
-    div_gradient_pal(low, mid, high, space), na.value = na.value, guide = guide, ...,
+    div_gradient_pal(low, mid, high, space), na.value = na.value, a_guide = a_guide, ...,
     rescaler = mid_rescaler(mid = midpoint))
 }
 
@@ -97,17 +97,17 @@ mid_rescaler <- function(mid) {
 #' @param colours,colors Vector of colours to use for n-colour gradient.
 #' @rdname a_scale_gradient
 #' @export
-a_scale_colour_gradientn <- function(..., colours, values = NULL, space = "Lab", na.value = "grey50", guide = "colourbar", colors) {
+a_scale_colour_gradientn <- function(..., colours, values = NULL, space = "Lab", na.value = "grey50", a_guide = "colourbar", colors) {
   colours <- if (missing(colours)) colors else colours
 
   continuous_a_scale("colour", "gradientn",
-    gradient_n_pal(colours, values, space), na.value = na.value, guide = guide, ...)
+    gradient_n_pal(colours, values, space), na.value = na.value, a_guide = a_guide, ...)
 }
 #' @rdname a_scale_gradient
 #' @export
-a_scale_fill_gradientn <- function(..., colours, values = NULL, space = "Lab", na.value = "grey50", guide = "colourbar", colors) {
+a_scale_fill_gradientn <- function(..., colours, values = NULL, space = "Lab", na.value = "grey50", a_guide = "colourbar", colors) {
   colours <- if (missing(colours)) colors else colours
 
   continuous_a_scale("fill", "gradientn",
-    gradient_n_pal(colours, values, space), na.value = na.value, guide = guide, ...)
+    gradient_n_pal(colours, values, space), na.value = na.value, a_guide = a_guide, ...)
 }

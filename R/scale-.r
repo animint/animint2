@@ -29,7 +29,7 @@ a_Scale <- a_ggproto("a_Scale", NULL,
                  name = waiver(),
                  breaks = waiver(),
                  labels = waiver(),
-                 guide = "legend",
+                 a_guide = "legend",
 
 
                  is_discrete = function() {
@@ -229,7 +229,7 @@ a_ScaleContinuous <- a_ggproto("a_ScaleContinuous", a_Scale,
                              #
                              # @kohske
                              # TODO: replace NA with something else for flag.
-                             #       guides cannot discriminate oob from missing value.
+                             #       a_guides cannot discriminate oob from missing value.
                              breaks <- censor(self$trans$transform(breaks), self$trans$transform(limits),
                                               only.finite = FALSE)
                              if (length(breaks) == 0) {
@@ -515,19 +515,19 @@ a_ScaleDiscrete <- a_ggproto("a_ScaleDiscrete", a_Scale,
 #'   placed some distance away from the axes. The defaults are
 #'   \code{c(0.05, 0)} for continuous variables, and \code{c(0, 0.6)} for
 #'   discrete variables.
-#' @param guide Name of guide object, or object itself.
+#' @param a_guide Name of a_guide object, or object itself.
 #' @export
 continuous_a_scale <- function(aesthetics, scale_name, palette, name = waiver(),
                              breaks = waiver(), minor_breaks = waiver(),
                              labels = waiver(), limits = NULL,
                              rescaler = rescale, oob = censor,
                              expand = waiver(), na.value = NA_real_,
-                             trans = "identity", guide = "legend") {
+                             trans = "identity", a_guide = "legend") {
 
   check_breaks_labels(breaks, labels)
 
-  if (is.null(breaks) && !is_position_aes(aesthetics) && guide != "none") {
-    guide <- "none"
+  if (is.null(breaks) && !is_position_aes(aesthetics) && a_guide != "none") {
+    a_guide <- "none"
   }
 
   trans <- as.trans(trans)
@@ -555,7 +555,7 @@ continuous_a_scale <- function(aesthetics, scale_name, palette, name = waiver(),
           minor_breaks = minor_breaks,
 
           labels = labels,
-          guide = guide
+          a_guide = a_guide
   )
 }
 
@@ -597,17 +597,17 @@ continuous_a_scale <- function(aesthetics, scale_name, palette, name = waiver(),
 #'   is a small gap between the data and the axes. The defaults are (0,0.6)
 #'   for discrete scales and (0.05,0) for continuous scales.
 #' @param na.value how should missing values be displayed?
-#' @param guide the name of, or actual function, used to create the
-#'   guide. See \code{\link{guides}} for more info.
+#' @param a_guide the name of, or actual function, used to create the
+#'   a_guide. See \code{\link{a_guides}} for more info.
 #' @export
 discrete_a_scale <- function(aesthetics, scale_name, palette, name = waiver(), breaks = waiver(),
                            labels = waiver(), limits = NULL, expand = waiver(), na.value = NA, drop = TRUE,
-                           guide = "legend") {
+                           a_guide = "legend") {
 
   check_breaks_labels(breaks, labels)
 
-  if (is.null(breaks) && !is_position_aes(aesthetics) && guide != "none") {
-    guide <- "none"
+  if (is.null(breaks) && !is_position_aes(aesthetics) && a_guide != "none") {
+    a_guide <- "none"
   }
 
   a_ggproto(NULL, a_ScaleDiscrete,
@@ -626,6 +626,6 @@ discrete_a_scale <- function(aesthetics, scale_name, palette, name = waiver(), b
           breaks = breaks,
           labels = labels,
           drop = drop,
-          guide = guide
+          a_guide = a_guide
   )
 }

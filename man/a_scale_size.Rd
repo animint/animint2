@@ -12,10 +12,12 @@
 \title{Scale size (area or radius).}
 \usage{
 a_scale_radius(name = waiver(), breaks = waiver(), labels = waiver(),
-  limits = NULL, range = c(1, 6), trans = "identity", guide = "legend")
+  limits = NULL, range = c(1, 6), trans = "identity",
+  a_guide = "legend")
 
 a_scale_size(name = waiver(), breaks = waiver(), labels = waiver(),
-  limits = NULL, range = c(1, 6), trans = "identity", guide = "legend")
+  limits = NULL, range = c(1, 6), trans = "identity",
+  a_guide = "legend")
 
 a_scale_size_area(..., max_size = 6)
 }
@@ -59,7 +61,7 @@ maximum size of the plotting symbol after transformation.}
   \code{\link[scales]{boxcox_trans}}. You can create your own
   transformation with \code{\link[scales]{trans_new}}.}
 
-\item{guide}{Name of guide object, or object itself.}
+\item{a_guide}{Name of a_guide object, or object itself.}
 
 \item{...}{Other arguments passed on to \code{\link{continuous_a_scale}}
 to control name, limits, breaks, labels and so forth.}

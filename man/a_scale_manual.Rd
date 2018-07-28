@@ -25,7 +25,7 @@ a_scale_alpha_manual(..., values)
 }
 \arguments{
 \item{...}{common discrete scale parameters: \code{name}, \code{breaks},
-\code{labels}, \code{na.value}, \code{limits} and \code{guide}.  See
+\code{labels}, \code{na.value}, \code{limits} and \code{a_guide}.  See
 \code{\link{discrete_a_scale}} for more details}
 
 \item{values}{a set of aesthetic values to map data values to.  If this

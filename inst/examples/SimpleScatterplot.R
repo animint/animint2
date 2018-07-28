@@ -36,8 +36,8 @@ s2
 #' Specify colors manually using hex values
 s3 <- a_plot() + 
   a_geom_point(data=scatterdata, aes(x=xnew, y=y, colour=class, fill=class)) + 
-  scale_colour_manual(values=c("#FF0000", "#0000FF")) + 
-  scale_fill_manual(values=c("#FF0000", "#0000FF")) +
+  a_scale_colour_manual(values=c("#FF0000", "#0000FF")) + 
+  a_scale_fill_manual(values=c("#FF0000", "#0000FF")) +
   ggtitle("Manual color/fill scales")
 s3
 # gg2animint(list(s1=s1, s2=s2, s3=s3))
@@ -77,8 +77,8 @@ s7 <- a_plot() +
   a_geom_point(data=scatterdata2.summary, aes(x=xmean, y=ymean, colour=quad, fill=quad),
              showSelected = "quad", size=5) +
   a_geom_point(data=scatterdata2, aes(x=x, y=y), alpha=.15) + 
-  scale_colour_discrete(guide="legend") + scale_fill_discrete(guide="legend") +
-  scale_alpha_discrete(guide="none") +
+  a_scale_colour_discrete(a_guide="legend") + a_scale_fill_discrete(a_guide="legend") +
+  a_scale_alpha_discrete(a_guide="none") +
   ggtitle("Selects & Means")
 s7
 # gg2animint(list(s1=s1, s2=s2, s3=s3, s4=s4, s5=s5, s6=s6, s7=s7))
@@ -88,8 +88,8 @@ s8 <- a_plot() +
   a_geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad),alpha=.2)+
   a_geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad), 
              clickSelects="quad", showSelected="quad", alpha=.6) +
-  guides(colour = guide_legend(override.aes = list(alpha = 1)), 
-         fill = guide_legend(override.aes = list(alpha = 1))) +
+  a_guides(colour = a_guide_legend(override.aes = list(alpha = 1)), 
+         fill = a_guide_legend(override.aes = list(alpha = 1))) +
   ggtitle("Constant alpha")
 s8
 # gg2animint(list(s1=s1, s2=s2, s3=s3, s4=s4, s5=s5, s6=s6, s7=s7, s8=s8))
@@ -100,22 +100,22 @@ s9 <- a_plot() +
   a_geom_point(data=scatterdata2,
              aes(x=x, y=y, colour=quad, fill=quad, alpha=str),
              clickSelects="quad", showSelected="quad") +
-  guides(colour = guide_legend(override.aes = list(alpha = 1)), 
-         fill = guide_legend(override.aes = list(alpha = 1))) +
-  scale_alpha(range=c(.6, 1), guide="none") +
+  a_guides(colour = a_guide_legend(override.aes = list(alpha = 1)), 
+         fill = a_guide_legend(override.aes = list(alpha = 1))) +
+  a_scale_alpha(range=c(.6, 1), a_guide="none") +
   ggtitle("Continuous alpha")
 s9
 # gg2animint(list(s1=s1, s2=s2, s3=s3, s4=s4, s5=s5, s6=s6, s7=s7, s8=s8, s9=s9))
 
-#' Categorical alpha and scale_alpha_discrete()
+#' Categorical alpha and a_scale_alpha_discrete()
 #' Note, to get unselected points to show up, need to have two copies of a_geom_point: One for anything that isn't selected, one for only the selected points.
 s10 <- a_plot() + 
   a_geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, alpha=quad))+
   a_geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, alpha=quad),
              clickSelects="quad", showSelected="quad") +
-  guides(colour = guide_legend(override.aes = list(alpha = 1)), 
-         fill = guide_legend(override.aes = list(alpha = 1))) +
-  scale_alpha_discrete(guide="none")+
+  a_guides(colour = a_guide_legend(override.aes = list(alpha = 1)), 
+         fill = a_guide_legend(override.aes = list(alpha = 1))) +
+  a_scale_alpha_discrete(a_guide="none")+
   ggtitle("Discrete alpha")
 s10
 
@@ -123,7 +123,7 @@ s10
 
 
 #' Point Size Scaling
-#' Scale defaults to radius, but area is more easily interpreted by the brain (Tufte).
+#' a_scale defaults to radius, but area is more easily interpreted by the brain (Tufte).
 s11 <- a_plot() + 
   a_geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, size=str), alpha=.5) +
   a_geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, size=str),
@@ -135,7 +135,7 @@ s11
 
 s12 <- a_plot() + 
   a_geom_point(data=scatterdata2, aes(x=x, y=y, colour=quad, fill=quad, size=str), alpha=.5) + 
-  scale_size_area() +
+  a_scale_size_area() +
   ggtitle("Scale Area")
 s12
 

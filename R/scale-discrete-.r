@@ -7,7 +7,7 @@
 #' at integer positions).  This is what allows jittering to work.
 #'
 #' @param ... common discrete scale parameters: \code{name}, \code{breaks},
-#'  \code{labels}, \code{na.value}, \code{limits} and \code{guide}.  See
+#'  \code{labels}, \code{na.value}, \code{limits} and \code{a_guide}.  See
 #'  \code{\link{discrete_a_scale}} for more details
 #' @param expand a numeric vector of length two giving multiplicative and
 #'   additive expansion constants. These constants ensure that the data is
@@ -48,7 +48,7 @@
 #' }
 a_scale_x_discrete <- function(..., expand = waiver()) {
   sc <- discrete_a_scale(c("x", "xmin", "xmax", "xend"), "position_d", identity, ...,
-                       expand = expand, guide = "none")
+                       expand = expand, a_guide = "none")
 
   # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.
@@ -62,7 +62,7 @@ a_scale_x_discrete <- function(..., expand = waiver()) {
 #' @export
 a_scale_y_discrete <- function(..., expand = waiver()) {
   sc <- discrete_a_scale(c("y", "ymin", "ymax", "yend"), "position_d", identity, ...,
-                       expand = expand, guide = "none")
+                       expand = expand, a_guide = "none")
 
   # TODO: Fix this hack. We're reassigning the parent a_ggproto object, but this
   # object should in the first place be created with the correct parent.

@@ -38,7 +38,7 @@ p4
 #' Manually specify linetypes using <length, space, length, space...> notation
 data$lt <- rep(c("2423", "2415", "331323", "F2F4", "solid"), each=10)
 p5 <- a_plot() + a_geom_line(data=data, aes(x=x, y=y, colour=group, group=group, linetype=lt)) + 
-  a_scale_linetype_identity("group", guide="legend", labels = c("1", "2", "3", "4", "5")) + 
+  a_scale_linetype_identity("group", a_guide="legend", labels = c("1", "2", "3", "4", "5")) + 
   a_scale_colour_discrete("group") + 
   ggtitle("Manual Linetypes: dash-space length")
 p5

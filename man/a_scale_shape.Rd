@@ -10,7 +10,7 @@ a_scale_shape(..., solid = TRUE)
 }
 \arguments{
 \item{...}{common discrete scale parameters: \code{name}, \code{breaks},
-\code{labels}, \code{na.value}, \code{limits} and \code{guide}.  See
+\code{labels}, \code{na.value}, \code{limits} and \code{a_guide}.  See
 \code{\link{discrete_a_scale}} for more details}
 
 \item{solid}{Are the shapes solid, \code{TRUE}, or hollow \code{FALSE}?}

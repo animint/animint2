@@ -116,8 +116,8 @@ contourdata2 <- floor(contourdata/3)*3
 g12 <- a_plot() + 
   a_geom_tile(data=contourdata2, aes(x=x, y=y, fill=z, colour=z)) + 
   a_geom_contour(data=contourdata, aes(x=x, y=y, z=z), colour="black", size=.5) +
-  a_scale_fill_continuous("height", low="#56B1F7", high="#132B43", guide="legend") +
-  a_scale_colour_continuous("height", low="#56B1F7", high="#132B43", guide="legend") +
+  a_scale_fill_continuous("height", low="#56B1F7", high="#132B43", a_guide="legend") +
+  a_scale_colour_continuous("height", low="#56B1F7", high="#132B43", a_guide="legend") +
   ggtitle("a_geom_tile + a_geom_contour") 
 g12
 # gg2animint(list(g1=g1, g2=g2, g3=g3, g4=g4, g5=g5, g6=g6, g7=g7, g8=g8, g9=g9, g10=g10, g11=g11, g12=g12)) 
@@ -138,8 +138,8 @@ g14 <- a_plot() +
                a_stat="density2d", alpha=.5) +
   a_geom_point(data=geyser, aes(x = duration, y = waiting)) + 
   a_scale_fill_continuous("Density Level", low="#56B1F7", high="#132B43") + 
-  guides(colour = guide_legend(override.aes = list(alpha = 1)), 
-         fill = guide_legend(override.aes = list(alpha = 1))) + 
+  a_guides(colour = a_guide_legend(override.aes = list(alpha = 1)), 
+         fill = a_guide_legend(override.aes = list(alpha = 1))) + 
   a_scale_y_continuous(limits=c(40,110), trans="log10") +
   a_scale_x_continuous(limits=c(.5, 6)) +
   ggtitle("a_geom_density2d polygon")

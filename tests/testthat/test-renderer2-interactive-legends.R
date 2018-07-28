@@ -7,7 +7,7 @@ get_circles <- function(id) {
 
 iris$id <- 1:nrow(iris)
 p1 <- a_plot() +
-  guides(color="none")+
+  a_guides(color="none")+
   a_geom_point(aes(Sepal.Length, Sepal.Width, colour = Species, 
                  size = Petal.Width, id = id), 
             clickSelects = "Species", data = iris) + 

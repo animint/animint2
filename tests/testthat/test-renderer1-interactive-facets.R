@@ -16,7 +16,7 @@ mmir.facets <-
                          fill=annotation),
                      showSelected="signal",
                      data=intreg$annotations)+
-       a_scale_fill_manual(values=breakpoint.colors,guide="none")+
+       a_scale_fill_manual(values=breakpoint.colors,a_guide="none")+
        a_geom_text(aes((first.base+last.base)/2e6, logratio+1/8,
                      label=annotation),
                  showSelected="signal",

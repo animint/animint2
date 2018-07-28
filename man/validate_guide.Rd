@@ -4,10 +4,10 @@
 \alias{validate_guide}
 \title{validate_guide function}
 \usage{
-validate_guide(guide)
+validate_guide(a_guide)
 }
 \arguments{
-\item{guide}{...}
+\item{a_guide}{...}
 }
 \description{
 validate_guide function

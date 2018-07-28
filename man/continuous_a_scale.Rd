@@ -7,7 +7,7 @@
 continuous_a_scale(aesthetics, scale_name, palette, name = waiver(),
   breaks = waiver(), minor_breaks = waiver(), labels = waiver(),
   limits = NULL, rescaler = rescale, oob = censor, expand = waiver(),
-  na.value = NA_real_, trans = "identity", guide = "legend")
+  na.value = NA_real_, trans = "identity", a_guide = "legend")
 }
 \arguments{
 \item{aesthetics}{the names of the aesthetics that this scale works with}
@@ -77,7 +77,7 @@ discrete variables.}
   \code{\link[scales]{boxcox_trans}}. You can create your own
   transformation with \code{\link[scales]{trans_new}}.}
 
-\item{guide}{Name of guide object, or object itself.}
+\item{a_guide}{Name of a_guide object, or object itself.}
 }
 \description{
 Continuous scale constructor.
