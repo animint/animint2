@@ -19,17 +19,17 @@
 #' @export
 #' @examples
 #' p <- a_plot(mtcars, aes(x = wt, y = mpg)) + a_geom_point()
-#' p + annotate("text", x = 4, y = 25, label = "Some text")
-#' p + annotate("text", x = 2:5, y = 25, label = "Some text")
-#' p + annotate("rect", xmin = 3, xmax = 4.2, ymin = 12, ymax = 21,
+#' p + a_annotate("text", x = 4, y = 25, label = "Some text")
+#' p + a_annotate("text", x = 2:5, y = 25, label = "Some text")
+#' p + a_annotate("rect", xmin = 3, xmax = 4.2, ymin = 12, ymax = 21,
 #'   alpha = .2)
-#' p + annotate("segment", x = 2.5, xend = 4, y = 15, yend = 25,
+#' p + a_annotate("segment", x = 2.5, xend = 4, y = 15, yend = 25,
 #'   colour = "blue")
-#' p + annotate("pointrange", x = 3.5, y = 20, ymin = 12, ymax = 28,
+#' p + a_annotate("pointrange", x = 3.5, y = 20, ymin = 12, ymax = 28,
 #'   colour = "red", size = 1.5)
 #'
-#' p + annotate("text", x = 2:3, y = 20:21, label = c("my label", "label 2"))
-annotate <- function(a_geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
+#' p + a_annotate("text", x = 2:3, y = 20:21, label = c("my label", "label 2"))
+a_annotate <- function(a_geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
                      ymin = NULL, ymax = NULL, xend = NULL, yend = NULL, ...,
                      na.rm = FALSE) {
 

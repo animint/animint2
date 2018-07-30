@@ -16,7 +16,7 @@ NULL
 #' @param ymin,ymax y location (in data coordinates) giving vertical
 #'   location of raster
 #' @export
-#' @note \code{annotation_custom} expects the grob to fill the entire viewport
+#' @note \code{a_annotation_custom} expects the grob to fill the entire viewport
 #' defined by xmin, xmax, ymin, ymax. Grobs with a different (absolute) size
 #' will be center-justified in that region.
 #' Inf values can be used to fill the full plot panel (see examples).
@@ -27,8 +27,8 @@ NULL
 #'   a_geom_blank() +
 #'   a_theme_bw()
 #'
-#' # Full panel annotation
-#' base + annotation_custom(
+#' # Full panel a_annotation
+#' base + a_annotation_custom(
 #'   grob = grid::roundrectGrob(),
 #'   xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf
 #' )
@@ -38,8 +38,8 @@ NULL
 #' g <- ggplotGrob(a_plot(df2, aes(x, y)) +
 #'   a_geom_point() +
 #'   a_theme(plot.background = a_element_rect(colour = "black")))
-#' base + annotation_custom(grob = g, xmin = 1, xmax = 10, ymin = 8, ymax = 10)
-annotation_custom <- function(grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) {
+#' base + a_annotation_custom(grob = g, xmin = 1, xmax = 10, ymin = 8, ymax = 10)
+a_annotation_custom <- function(grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) {
   layer(
     data = NULL,
     a_stat = a_StatIdentity,
@@ -69,7 +69,7 @@ a_GeomCustomAnn <- a_ggproto("a_GeomCustomAnn", a_Geom,
   draw_panel = function(data, panel_scales, a_coord, grob, xmin, xmax,
                         ymin, ymax) {
     if (!inherits(a_coord, "a_CoordCartesian")) {
-      stop("annotation_custom only works with Cartesian coordinates",
+      stop("a_annotation_custom only works with Cartesian coordinates",
         call. = FALSE)
     }
     corners <- data.frame(x = c(xmin, xmax), y = c(ymin, ymax))
@@ -81,13 +81,13 @@ a_GeomCustomAnn <- a_ggproto("a_GeomCustomAnn", a_Geom,
     vp <- viewport(x = mean(x_rng), y = mean(y_rng),
                    width = diff(x_rng), height = diff(y_rng),
                    just = c("center","center"))
-    editGrob(grob, vp = vp, name = paste(grob$name, annotation_id()))
+    editGrob(grob, vp = vp, name = paste(grob$name, a_annotation_id()))
   },
 
   default_aes = aes_(xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)
 )
 
-annotation_id <- local({
+a_annotation_id <- local({
   i <- 1
   function() {
     i <<- i + 1

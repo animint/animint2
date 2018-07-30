@@ -24,21 +24,21 @@ NULL
 #' rainbow <- matrix(hcl(seq(0, 360, length.out = 50 * 50), 80, 70), nrow = 50)
 #' a_plot(mtcars, aes(mpg, wt)) +
 #'   a_geom_point() +
-#'   annotation_raster(rainbow, 15, 20, 3, 4)
+#'   a_annotation_raster(rainbow, 15, 20, 3, 4)
 #' # To fill up whole plot
 #' a_plot(mtcars, aes(mpg, wt)) +
-#'   annotation_raster(rainbow, -Inf, Inf, -Inf, Inf) +
+#'   a_annotation_raster(rainbow, -Inf, Inf, -Inf, Inf) +
 #'   a_geom_point()
 #'
 #' rainbow2 <- matrix(hcl(seq(0, 360, length.out = 10), 80, 70), nrow = 1)
 #' a_plot(mtcars, aes(mpg, wt)) +
-#'   annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf) +
+#'   a_annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf) +
 #'   a_geom_point()
 #' rainbow2 <- matrix(hcl(seq(0, 360, length.out = 10), 80, 70), nrow = 1)
 #' a_plot(mtcars, aes(mpg, wt)) +
-#'   annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf, interpolate = TRUE) +
+#'   a_annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf, interpolate = TRUE) +
 #'   a_geom_point()
-annotation_raster <- function(raster, xmin, xmax, ymin, ymax,
+a_annotation_raster <- function(raster, xmin, xmax, ymin, ymax,
                               interpolate = FALSE) {
   raster <- grDevices::as.raster(raster)
 
@@ -74,7 +74,7 @@ a_GeomRasterAnn <- a_ggproto("a_GeomRasterAnn", a_Geom,
   draw_panel = function(data, panel_scales, a_coord, raster, xmin, xmax,
                         ymin, ymax, interpolate = FALSE) {
     if (!inherits(a_coord, "a_CoordCartesian")) {
-      stop("annotation_raster only works with Cartesian coordinates",
+      stop("a_annotation_raster only works with Cartesian coordinates",
         call. = FALSE)
     }
     corners <- data.frame(x = c(xmin, xmax), y = c(ymin, ymax))

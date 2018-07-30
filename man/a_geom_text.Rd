@@ -145,7 +145,7 @@ p + a_geom_text(aes(label = paste(wt, "^(", cyl, ")", sep = "")),
   parse = TRUE)
 
 # Add a text annotation
-p + a_geom_text() + annotate("text",
+p + a_geom_text() + a_annotate("text",
 label = "plot mpg vs. wt", x = 2, y = 15, size = 8, colour = "red")
 
 \donttest{

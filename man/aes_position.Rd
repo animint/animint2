@@ -26,9 +26,9 @@ se <- a_plot(cuts, aes(x = cut, y = fit, ymin = fit - se.fit,
 ymax = fit + se.fit, colour = cut))
 se + a_geom_pointrange()
 
-# Using annotate
+# Using a_annotate
 p <- a_plot(mtcars, aes(wt, mpg)) + a_geom_point()
-p + annotate("rect", xmin = 2, xmax = 3.5, ymin = 2, ymax = 25,
+p + a_annotate("rect", xmin = 2, xmax = 3.5, ymin = 2, ymax = 25,
   fill = "dark grey", alpha = .5)
 
 # a_geom_segment examples
