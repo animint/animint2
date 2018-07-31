@@ -9,7 +9,7 @@
 #' @seealso See \code{\link{a_geom_histogram}}, \code{\link{a_geom_freqpoly}} for
 #'   other methods of displaying continuous distribution.
 #'   See \code{\link{a_geom_violin}} for a compact density display.
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param a_geom,a_stat Use to override the default connection between
 #'   \code{a_geom_density} and \code{a_stat_density}.
@@ -53,7 +53,7 @@ a_geom_density <- function(mapping = NULL, data = NULL,
                          show.legend = NA,
                          inherit.aes = TRUE) {
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

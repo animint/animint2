@@ -7,7 +7,7 @@
 #' @param n number of points to interpolate along
 #' @param args list of additional arguments to pass to \code{fun}
 #' @param xlim Optionally, restrict the range of the function to this range.
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @section Computed variables:
 #' \describe{
@@ -57,7 +57,7 @@ a_stat_function <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE,
                           show.legend = NA,
                           inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_StatFunction,

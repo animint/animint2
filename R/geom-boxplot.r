@@ -22,7 +22,7 @@
 #' @seealso \code{\link{a_stat_quantile}} to view quantiles conditioned on a
 #'   continuous variable, \code{\link{a_geom_jitter}} for another way to look
 #'   at conditional distributions.
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param a_geom,a_stat Use to override the default connection between
 #'   \code{a_geom_boxplot} and \code{a_stat_boxplot}.
@@ -100,7 +100,7 @@ a_geom_boxplot <- function(mapping = NULL, data = NULL,
                          na.rm = FALSE,
                          show.legend = NA,
                          inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

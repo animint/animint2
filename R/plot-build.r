@@ -5,7 +5,7 @@
 #' a list of data frames (one for each layer), and a panel object, which
 #' contain all information about axis limits, breaks etc.
 #'
-#' \code{layer_data}, \code{layer_grob}, and \code{layer_scales} are helper
+#' \code{a_layer_data}, \code{a_layer_grob}, and \code{a_layer_scales} are helper
 #' functions that returns the data, grob, or scales associated with a given
 #' layer. These are useful for tests.
 #'
@@ -22,7 +22,7 @@ a_plot_build <- function(plot) {
   }
 
   layers <- plot$layers
-  layer_data <- lapply(layers, function(y) y$layer_data(plot$data))
+  a_layer_data <- lapply(layers, function(y) y$a_layer_data(plot$data))
 
   scales <- plot$scales
   # Apply function to layer and matching data
@@ -38,8 +38,8 @@ a_plot_build <- function(plot) {
   # variables, and add on a PANEL variable to data
 
   panel <- new_panel()
-  panel <- a_train_layout(panel, plot$a_facet, layer_data, plot$data)
-  data <- map_layout(panel, plot$a_facet, layer_data)
+  panel <- a_train_layout(panel, plot$a_facet, a_layer_data, plot$data)
+  data <- map_layout(panel, plot$a_facet, a_layer_data)
 
   # Compute aesthetics to produce data with generalised variable names
   data <- by_layer(function(l, d) l$compute_aesthetics(d, plot))
@@ -93,13 +93,13 @@ a_plot_build <- function(plot) {
 
 #' @export
 #' @rdname a_plot_build
-layer_data <- function(plot, i = 1L) {
+a_layer_data <- function(plot, i = 1L) {
   a_plot_build(plot)$data[[i]]
 }
 
 #' @export
 #' @rdname a_plot_build
-layer_scales <- function(plot, i = 1L, j = 1L) {
+a_layer_scales <- function(plot, i = 1L, j = 1L) {
   b <- a_plot_build(plot)
 
   layout <- b$panel$layout
@@ -113,7 +113,7 @@ layer_scales <- function(plot, i = 1L, j = 1L) {
 
 #' @export
 #' @rdname a_plot_build
-layer_grob <- function(plot, i = 1L) {
+a_layer_grob <- function(plot, i = 1L) {
   b <- a_plot_build(plot)
 
   b$plot$layers[[i]]$draw_geom(b$data[[i]], b$panel, b$plot$coordinates)

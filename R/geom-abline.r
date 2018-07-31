@@ -8,7 +8,7 @@ NULL
 #' for annotating plots.
 #'
 #' These geoms act slightly different to other geoms. You can supply the
-#' parameters in two ways: either as arguments to the layer function,
+#' parameters in two ways: either as arguments to the a_layer function,
 #' or via aesthetics. If you use arguments, e.g.
 #' \code{a_geom_abline(intercept = 0, slope = 1)}, then behind the scenes
 #' the geom makes a new data frame containing just the data you've supplied.
@@ -32,7 +32,7 @@ NULL
 #'
 #' @seealso See \code{\link{a_geom_segment}} for a more general approach to
 #'   adding straight line segments to a plot.
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param xintercept,yintercept,slope,intercept Parameters that control the
 #'   position of the line. If these are set, \code{data}, \code{mapping} and
@@ -91,7 +91,7 @@ a_geom_abline <- function(mapping = NULL, data = NULL,
     show.legend <- FALSE
   }
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_StatIdentity,

@@ -15,7 +15,7 @@
 #' @section Aesthetics:
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "smooth")}
 #'
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param a_geom,a_stat Use to override the default connection between
 #'   \code{a_geom_smooth} and \code{a_stat_smooth}.
@@ -97,7 +97,7 @@ a_geom_smooth <- function(mapping = NULL, data = NULL,
     params$se <- se
   }
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

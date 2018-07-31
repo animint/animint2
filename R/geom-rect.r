@@ -6,7 +6,7 @@ a_geom_rect <- function(mapping = NULL, data = NULL,
                       na.rm = FALSE,
                       show.legend = NA,
                       inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

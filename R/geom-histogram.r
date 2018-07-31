@@ -13,7 +13,7 @@
 #' \code{a_geom_freqpoly} uses the same aesthetics as \code{a_geom_line}.
 #'
 #' @export
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param a_geom,a_stat Use to override the default connection between
 #'   \code{a_geom_histogram}/\code{a_geom_freqpoly} and \code{a_stat_bin}.
@@ -80,7 +80,7 @@ a_geom_histogram <- function(mapping = NULL, data = NULL,
                            show.legend = NA,
                            inherit.aes = TRUE) {
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

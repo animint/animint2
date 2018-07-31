@@ -21,7 +21,7 @@ a_geom_raster <- function(mapping = NULL, data = NULL,
   stopifnot(is.numeric(hjust), length(hjust) == 1)
   stopifnot(is.numeric(vjust), length(vjust) == 1)
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

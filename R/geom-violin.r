@@ -3,7 +3,7 @@
 #' @section Aesthetics:
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "violin")}
 #'
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param draw_quantiles If \code{not(NULL)} (default), draw horizontal lines
 #'   at the given quantiles of the density estimate.
@@ -75,7 +75,7 @@ a_geom_violin <- function(mapping = NULL, data = NULL,
                         na.rm = FALSE,
                         show.legend = NA,
                         inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

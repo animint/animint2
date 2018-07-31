@@ -16,7 +16,7 @@ a_geom_tallrect <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE,
                           show.legend = NA,
                           inherit.aes = TRUE) {
-  layer(
+  a_layer(
     a_geom = a_GeomTallRect,
     data = data,
     mapping = mapping,
@@ -91,7 +91,7 @@ a_geom_widerect <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE,
                           show.legend = NA,
                           inherit.aes = TRUE) {
-  layer(
+  a_layer(
     a_geom = a_GeomWideRect,
     data = data,
     mapping = mapping,

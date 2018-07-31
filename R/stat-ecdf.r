@@ -1,6 +1,6 @@
 #' Empirical Cumulative Density Function
 #'
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param na.rm If \code{FALSE} (the default), removes missing values with
 #'    a warning.  If \code{TRUE} silently removes missing values.
@@ -32,7 +32,7 @@ a_stat_ecdf <- function(mapping = NULL, data = NULL,
                       na.rm = FALSE,
                       show.legend = NA,
                       inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_StatEcdf,

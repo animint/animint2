@@ -26,7 +26,7 @@
 #' @seealso \code{\link{a_geom_histogram}} for continuous data,
 #'   \code{\link{a_position_dodge}} for creating side-by-side barcharts.
 #' @export
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param width Bar width. By default, set to 90\% of the resolution of the data.
 #' @param binwidth \code{a_geom_bar} no longer has a binwidth argument - if
@@ -91,7 +91,7 @@ a_geom_bar <- function(mapping = NULL, data = NULL,
       na.rm = na.rm, show.legend = show.legend, inherit.aes = inherit.aes))
   }
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

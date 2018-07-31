@@ -8,7 +8,7 @@
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "point")}
 #' @param a_geom,a_stat Use to override the default connection between
 #'   \code{a_geom_count} and \code{a_stat_sum}.
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @export
 #' @examples
@@ -47,7 +47,7 @@ a_geom_count <- function(mapping = NULL, data = NULL,
                        na.rm = FALSE,
                        show.legend = NA,
                        inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

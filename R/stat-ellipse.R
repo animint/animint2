@@ -15,7 +15,7 @@
 #'   representing the euclidean distance from the center.
 #'   This ellipse probably won't appear circular unless \code{a_coord_fixed()} is applied.
 #' @param segments The number of segments to be used in drawing the ellipse.
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @export
 #' @examples
@@ -49,7 +49,7 @@ a_stat_ellipse <- function(mapping = NULL, data = NULL,
                          na.rm = FALSE,
                          show.legend = NA,
                          inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_StatEllipse,

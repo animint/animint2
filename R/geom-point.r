@@ -29,14 +29,14 @@
 #' @seealso \code{\link{a_scale_size}} to see scale area of points, instead of
 #'   radius, \code{\link{a_geom_jitter}} to jitter points to reduce (mild)
 #'   overplotting
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @param na.rm If \code{FALSE} (the default), removes missing values with
 #'    a warning.  If \code{TRUE} silently removes missing values.
-#' @param ... other arguments passed on to \code{\link{layer}}. These are
+#' @param ... other arguments passed on to \code{\link{a_layer}}. These are
 #'   often aesthetics, used to set an aesthetic to a fixed value, like
 #'   \code{color = "red"} or \code{size = 3}. They may also be parameters
 #'   to the paired a_geom/a_stat.
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @export
 #' @examples
 #' p <- a_plot(mtcars, aes(wt, mpg))
@@ -96,7 +96,7 @@ a_geom_point <- function(mapping = NULL, data = NULL,
                        na.rm = FALSE,
                        show.legend = NA,
                        inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

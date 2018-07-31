@@ -4,7 +4,7 @@
 \alias{saveLayer}
 \title{Save a layer to disk, save and return meta-data.}
 \usage{
-saveLayer(l, d, meta, layer_name, a_plot, built, AnimationInfo)
+saveLayer(l, d, meta, a_layer_name, a_plot, built, AnimationInfo)
 }
 \arguments{
 \item{l}{one layer of the ggplot object.}
@@ -13,7 +13,7 @@ saveLayer(l, d, meta, layer_name, a_plot, built, AnimationInfo)
 
 \item{meta}{environment of meta-data.}
 
-\item{layer_name}{.....}
+\item{a_layer_name}{.....}
 
 \item{a_plot}{....}
 

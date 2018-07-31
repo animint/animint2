@@ -2,7 +2,7 @@
 #' @param formula formula relating y variables to x variables
 #' @param method Quantile regression method to use.  Currently only supports
 #'    \code{\link[quantreg]{rq}}.
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @section Computed variables:
 #' \describe{
@@ -20,7 +20,7 @@ a_stat_quantile <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE,
                           show.legend = NA,
                           inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_StatQuantile,

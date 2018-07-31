@@ -29,7 +29,7 @@ object.
   \item \code{data.frame}: replace current data.frame
      (must use \code{\%+\%})
   \item \code{uneval}: replace current aesthetics
-  \item \code{layer}: add new layer
+  \item \code{a_layer}: add new layer
   \item \code{a_theme}: update plot a_theme
   \item \code{a_scale}: replace current scale
   \item \code{a_coord}: override current coordinate system

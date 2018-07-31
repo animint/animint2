@@ -4,7 +4,7 @@
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "errorbarh")}
 #'
 #' @seealso \code{\link{a_geom_errorbar}}: vertical error bars
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @export
 #' @examples
@@ -28,7 +28,7 @@ a_geom_errorbarh <- function(mapping = NULL, data = NULL,
                            na.rm = FALSE,
                            show.legend = NA,
                            inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

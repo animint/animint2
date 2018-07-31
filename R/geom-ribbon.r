@@ -17,7 +17,7 @@
 #'   \code{\link{a_geom_bar}} for discrete intervals (bars),
 #'   \code{\link{a_geom_linerange}} for discrete intervals (lines),
 #'   \code{\link{a_geom_polygon}} for general polygons
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @export
 #' @examples
@@ -38,7 +38,7 @@ a_geom_ribbon <- function(mapping = NULL, data = NULL,
                         na.rm = FALSE,
                         show.legend = NA,
                         inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,
@@ -112,7 +112,7 @@ a_GeomRibbon <- a_ggproto("a_GeomRibbon", a_Geom,
 a_geom_area <- function(mapping = NULL, data = NULL, a_stat = "identity",
                       a_position = "stack", na.rm = FALSE, show.legend = NA,
                       inherit.aes = TRUE, ...) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

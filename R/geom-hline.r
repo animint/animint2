@@ -16,7 +16,7 @@ a_geom_hline <- function(mapping = NULL, data = NULL,
     show.legend <- FALSE
   }
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_StatIdentity,

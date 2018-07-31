@@ -251,28 +251,28 @@ a_guide_merge.legend <- function(a_guide, new_guide) {
 #' @export
 a_guide_geom.legend <- function(a_guide, layers, default_mapping) {
   # arrange common data for vertical and horizontal guide
-  a_guide$geoms <- plyr::llply(layers, function(layer) {
-    all <- names(c(layer$mapping, if (layer$inherit.aes) default_mapping, layer$a_stat$default_aes))
-    a_geom <- c(layer$a_geom$required_aes, names(layer$a_geom$default_aes))
+  a_guide$geoms <- plyr::llply(layers, function(a_layer) {
+    all <- names(c(a_layer$mapping, if (a_layer$inherit.aes) default_mapping, a_layer$a_stat$default_aes))
+    a_geom <- c(a_layer$a_geom$required_aes, names(a_layer$a_geom$default_aes))
     matched <- intersect(intersect(all, a_geom), names(a_guide$key))
-    matched <- setdiff(matched, names(layer$a_geom_params))
-    matched <- setdiff(matched, names(layer$aes_params))
+    matched <- setdiff(matched, names(a_layer$a_geom_params))
+    matched <- setdiff(matched, names(a_layer$aes_params))
 
     if (length(matched) > 0) {
-      # This layer contributes to the legend
-      if (is.na(layer$show.legend) || layer$show.legend) {
+      # This a_layer contributes to the legend
+      if (is.na(a_layer$show.legend) || a_layer$show.legend) {
         # Default is to include it
-        data <- layer$a_geom$use_defaults(a_guide$key[matched], layer$aes_params)
+        data <- a_layer$a_geom$use_defaults(a_guide$key[matched], a_layer$aes_params)
       } else {
         return(NULL)
       }
     } else {
-      # This layer does not contribute to the legend
-      if (is.na(layer$show.legend) || !layer$show.legend) {
+      # This a_layer does not contribute to the legend
+      if (is.na(a_layer$show.legend) || !a_layer$show.legend) {
         # Default is to exclude it
         return(NULL)
       } else {
-        data <- layer$a_geom$use_defaults(NULL, layer$aes_params)[rep(1, nrow(a_guide$key)), ]
+        data <- a_layer$a_geom$use_defaults(NULL, a_layer$aes_params)[rep(1, nrow(a_guide$key)), ]
       }
     }
 
@@ -280,9 +280,9 @@ a_guide_geom.legend <- function(a_guide, layers, default_mapping) {
     data <- utils::modifyList(data, a_guide$override.aes)
 
     list(
-      draw_key = layer$a_geom$draw_key,
+      draw_key = a_layer$a_geom$draw_key,
       data = data,
-      params = c(layer$a_geom_params, layer$a_stat_params)
+      params = c(a_layer$a_geom_params, a_layer$a_stat_params)
     )
   })
 

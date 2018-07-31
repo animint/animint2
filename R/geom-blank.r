@@ -4,7 +4,7 @@
 #' scales between different plots.
 #'
 #' @export
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @examples
 #' a_plot(mtcars, aes(wt, mpg))
@@ -14,7 +14,7 @@ a_geom_blank <- function(mapping = NULL, data = NULL,
                        ...,
                        show.legend = NA,
                        inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

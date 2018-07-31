@@ -40,7 +40,7 @@ NULL
 #'   a_theme(plot.background = a_element_rect(colour = "black")))
 #' base + a_annotation_custom(grob = g, xmin = 1, xmax = 10, ymin = 8, ymax = 10)
 a_annotation_custom <- function(grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) {
-  layer(
+  a_layer(
     data = NULL,
     a_stat = a_StatIdentity,
     a_position = a_PositionIdentity,

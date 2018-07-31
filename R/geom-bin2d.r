@@ -4,7 +4,7 @@
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "bin2d")}
 #'
 #' @export
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param a_geom,a_stat Use to override the default connection between
 #'   \code{a_geom_bin2d} and \code{a_stat_bin2d}.
@@ -27,7 +27,7 @@ a_geom_bin2d <- function(mapping = NULL, data = NULL,
                        show.legend = NA,
                        inherit.aes = TRUE) {
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

@@ -3,7 +3,7 @@
 #' @section Aesthetics:
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "rug")}
 #'
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param sides A string that controls which sides of the plot the rugs appear on.
 #'   It can be set to a string containing any of \code{"trbl"}, for top, right,
@@ -23,7 +23,7 @@ a_geom_rug <- function(mapping = NULL, data = NULL,
                      na.rm = FALSE,
                      show.legend = NA,
                      inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

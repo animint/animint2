@@ -42,7 +42,7 @@ a_annotation_raster <- function(raster, xmin, xmax, ymin, ymax,
                               interpolate = FALSE) {
   raster <- grDevices::as.raster(raster)
 
-  layer(
+  a_layer(
     data = NULL,
     mapping = NULL,
     a_stat = a_StatIdentity,

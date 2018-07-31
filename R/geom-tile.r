@@ -10,7 +10,7 @@
 #' @section Aesthetics:
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "tile")}
 #'
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @export
 #' @examples
@@ -62,7 +62,7 @@ a_geom_tile <- function(mapping = NULL, data = NULL,
                       na.rm = FALSE,
                       show.legend = NA,
                       inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

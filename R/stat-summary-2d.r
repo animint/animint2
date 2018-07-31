@@ -19,7 +19,7 @@
 #' }
 #' @seealso \code{\link{a_stat_summary_hex}} for hexagonal summarization.
 #'   \code{\link{a_stat_bin2d}} for the binning options.
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @inheritParams a_stat_bin_2d
 #' @param drop drop if the output of \code{fun} is \code{NA}.
@@ -49,7 +49,7 @@ a_stat_summary_2d <- function(mapping = NULL, data = NULL,
                             na.rm = FALSE,
                             show.legend = NA,
                             inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_StatSummary2d,

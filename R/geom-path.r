@@ -8,7 +8,7 @@
 #' @section Aesthetics:
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "path")}
 #'
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param lineend Line end style (round, butt, square)
 #' @param linejoin Line join style (round, mitre, bevel)
@@ -95,7 +95,7 @@ a_geom_path <- function(mapping = NULL, data = NULL,
                       na.rm = FALSE,
                       show.legend = NA,
                       inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,
@@ -228,7 +228,7 @@ a_GeomPath <- a_ggproto("a_GeomPath", a_Geom,
 a_geom_line <- function(mapping = NULL, data = NULL, a_stat = "identity",
                       a_position = "identity", na.rm = FALSE,
                       show.legend = NA, inherit.aes = TRUE, ...) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,
@@ -261,7 +261,7 @@ a_GeomLine <- a_ggproto("a_GeomLine", a_GeomPath,
 a_geom_step <- function(mapping = NULL, data = NULL, a_stat = "identity",
                       a_position = "identity", direction = "hv",
                       na.rm = FALSE, show.legend = NA, inherit.aes = TRUE, ...) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

@@ -35,7 +35,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{...}{other arguments passed on to \code{\link{layer}}. These are
+\item{...}{other arguments passed on to \code{\link{a_layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
 to the paired a_geom/a_stat.}
@@ -58,7 +58,7 @@ for annotating plots.
 }
 \details{
 These geoms act slightly different to other geoms. You can supply the
-parameters in two ways: either as arguments to the layer function,
+parameters in two ways: either as arguments to the a_layer function,
 or via aesthetics. If you use arguments, e.g.
 \code{a_geom_abline(intercept = 0, slope = 1)}, then behind the scenes
 the geom makes a new data frame containing just the data you've supplied.

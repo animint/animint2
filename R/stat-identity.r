@@ -2,7 +2,7 @@
 #'
 #' The identity statistic leaves the data unchanged.
 #'
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @export
 #' @examples
@@ -13,7 +13,7 @@ a_stat_identity <- function(mapping = NULL, data = NULL,
                           ...,
                           show.legend = NA,
                           inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_StatIdentity,

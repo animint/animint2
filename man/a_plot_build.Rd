@@ -2,18 +2,18 @@
 % Please edit documentation in R/plot-build.r
 \name{a_plot_build}
 \alias{a_plot_build}
-\alias{layer_data}
-\alias{layer_scales}
-\alias{layer_grob}
+\alias{a_layer_data}
+\alias{a_layer_scales}
+\alias{a_layer_grob}
 \title{Build a_plot for rendering.}
 \usage{
 a_plot_build(plot)
 
-layer_data(plot, i = 1L)
+a_layer_data(plot, i = 1L)
 
-layer_scales(plot, i = 1L, j = 1L)
+a_layer_scales(plot, i = 1L, j = 1L)
 
-layer_grob(plot, i = 1L)
+a_layer_grob(plot, i = 1L)
 }
 \arguments{
 \item{plot}{a_plot object}
@@ -25,7 +25,7 @@ a list of data frames (one for each layer), and a panel object, which
 contain all information about axis limits, breaks etc.
 }
 \details{
-\code{layer_data}, \code{layer_grob}, and \code{layer_scales} are helper
+\code{a_layer_data}, \code{a_layer_grob}, and \code{a_layer_scales} are helper
 functions that returns the data, grob, or scales associated with a given
 layer. These are useful for tests.
 }

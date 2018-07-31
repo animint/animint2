@@ -14,7 +14,7 @@
 #' @param a_geom name of a_geom to use for annotation
 #' @param x,y,xmin,ymin,xmax,ymax,xend,yend positioning aesthetics -
 #'   you must specify at least one of these.
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @export
 #' @examples
@@ -50,7 +50,7 @@ a_annotate <- function(a_geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
   }
 
   data <- data.frame(a_position)
-  layer(
+  a_layer(
     a_geom = a_geom,
     params = list(
       na.rm = na.rm,

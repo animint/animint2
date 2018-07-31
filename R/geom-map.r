@@ -13,7 +13,7 @@ NULL
 #'   typically be created using \code{\link{a_fortify}} on a spatial object.
 #'   It must contain columns \code{x} or \code{long}, \code{y} or
 #'   \code{lat}, and \code{region} or \code{id}.
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @examples
 #' # When using a_geom_polygon, you will typically need two data frames:
@@ -74,7 +74,7 @@ a_geom_map <- function(mapping = NULL, data = NULL,
   if (!is.null(map$region)) map$id <- map$region
   stopifnot(all(c("x", "y", "id") %in% names(map)))
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

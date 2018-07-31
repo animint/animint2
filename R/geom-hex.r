@@ -7,7 +7,7 @@
 #' @param a_geom,a_stat Override the default connection between \code{a_geom_hex} and
 #'   \code{a_stat_binhex.}
 #' @export
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @export
 #' @examples
@@ -30,7 +30,7 @@ a_geom_hex <- function(mapping = NULL, data = NULL,
                      na.rm = FALSE,
                      show.legend = NA,
                      inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

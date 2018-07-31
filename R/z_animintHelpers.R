@@ -11,9 +11,9 @@ addShowSelectedForLegend <- function(meta, legend, L){
     ## the name of the selection variable used in this legend.
     s.name <- one.legend$selector
     is.variable.name <- is.character(s.name) && length(s.name) == 1
-    layer.has.variable <- s.name %in% names(L$data)
+    a_layer.has.variable <- s.name %in% names(L$data)
     
-    if(is.variable.name && layer.has.variable) {
+    if(is.variable.name && a_layer.has.variable) {
       ## grabbing the variable from the data
       var <- L$data[, s.name]
       is.interactive.aes <-
@@ -601,9 +601,9 @@ getLayerName <- function(L, geom_num, p.name){
   ggtype <- function (x, y = "a_geom") {
     sub(y, "", tolower(class(x[[y]])[1]))
   }
-  layer_name <- sprintf("a_geom%d_%s_%s",
+  a_layer_name <- sprintf("a_geom%d_%s_%s",
                         geom_num, ggtype(L), p.name)
-  layer_name
+  a_layer_name
 }
 
 

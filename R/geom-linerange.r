@@ -13,7 +13,7 @@
 #'  \code{\link{a_stat_summary}} for examples of these guys in use,
 #'  \code{\link{a_geom_smooth}} for continuous analog
 #' @export
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @examples
 #' #' # Create a simple example dataset
@@ -55,7 +55,7 @@ a_geom_linerange <- function(mapping = NULL, data = NULL,
                            na.rm = FALSE,
                            show.legend = NA,
                            inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

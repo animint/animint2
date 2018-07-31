@@ -26,14 +26,14 @@
 #' Inward always aligns text towards the center, and outward aligns
 #' it away from the center
 #'
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param parse If TRUE, the labels will be parsed into expressions and
 #'   displayed as described in ?plotmath
 #' @param nudge_x,nudge_y Horizontal and vertical adjustment to nudge labels by.
 #'   Useful for offsetting text from points, particularly on discrete scales.
 #' @param check_overlap If \code{TRUE}, text that overlaps previous text in the
-#'   same layer will not be plotted. A quick and dirty way
+#'   same a_layer will not be plotted. A quick and dirty way
 #' @export
 #' @examples
 #' p <- a_plot(mtcars, aes(wt, mpg, label = rownames(mtcars)))
@@ -135,7 +135,7 @@ a_geom_text <- function(mapping = NULL, data = NULL,
     a_position <- a_position_nudge(nudge_x, nudge_y)
   }
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

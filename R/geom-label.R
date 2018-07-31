@@ -23,7 +23,7 @@ a_geom_label <- function(mapping = NULL, data = NULL,
     a_position <- a_position_nudge(nudge_x, nudge_y)
   }
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

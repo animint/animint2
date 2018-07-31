@@ -7,7 +7,7 @@
 #' @section Aesthetics:
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "point")}
 #'
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @inheritParams a_position_jitter
 #' @seealso
@@ -46,7 +46,7 @@ a_geom_jitter <- function(mapping = NULL, data = NULL,
     a_position <- a_position_jitter(width = width, height = height)
   }
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

@@ -33,7 +33,7 @@ a_annotation_map <- function(map, ...) {
   if (!is.null(map$region)) map$id <- map$region
   stopifnot(all(c("x", "y", "id") %in% names(map)))
 
-  layer(
+  a_layer(
     data = NULL,
     a_stat = a_StatIdentity,
     a_geom = a_GeomAnnotationMap,

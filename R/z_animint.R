@@ -7,16 +7,16 @@
 #' @import plyr
 parsePlot <- function(meta, plot, plot.name){
   ## adding data and mapping to each layer from base plot, if necessary
-  for(layer.i in seq_along(plot$layers)) {
+  for(a_layer.i in seq_along(plot$layers)) {
     
     ## if data is not specified, get it from plot
-    if(length(plot$layers[[layer.i]]$data) == 0){
-      plot$layers[[layer.i]]$data <- plot$data
+    if(length(plot$layers[[a_layer.i]]$data) == 0){
+      plot$layers[[a_layer.i]]$data <- plot$data
     }
     
     ## if mapping is not specified, get it from plot
-    if(is.null(plot$layers[[layer.i]]$mapping)){
-      plot$layers[[layer.i]]$mapping <- plot$mapping
+    if(is.null(plot$layers[[a_layer.i]]$mapping)){
+      plot$layers[[a_layer.i]]$mapping <- plot$mapping
     }
   }
   
@@ -42,10 +42,10 @@ parsePlot <- function(meta, plot, plot.name){
   }
   
   ## scan for legends in each layer.
-  for(layer.i in seq_along(plot$layers)){
-    ##cat(sprintf("%4d / %4d layers\n", layer.i, length(plot$layers)))
-    ## This is the layer from the original ggplot object.
-    L <- plot$layers[[layer.i]]
+  for(a_layer.i in seq_along(plot$layers)){
+    ##cat(sprintf("%4d / %4d layers\n", a_layer.i, length(plot$layers)))
+    ## This is the a_layer from the original ggplot object.
+    L <- plot$layers[[a_layer.i]]
     
     ## Use original mapping saved before calling parsePlot
     ## This is to handle cases where the plots may share the same layer
@@ -213,20 +213,20 @@ storeLayer <- function(meta, g, g.data.varied){
 #' @param d one layer of calculated data from a_plot_build(p).
 #' @param meta environment of meta-data.
 #' @param geom_num the number of geom in the plot. Each geom gets an increasing
-#' @param layer_name .....
+#' @param a_layer_name .....
 #' @param a_plot ....
 #' @param built ....
 #' @param AniminationInfo
 #'  ID number starting from 1
 #' @return list representing a layer, with corresponding aesthetics, ranges, and groups.
 #' @export
-saveLayer <- function(l, d, meta, layer_name, a_plot, built, AnimationInfo){
+saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
   # Set geom name and layer name
-  # Now that layer_name have become geom_a_position like we need to spilit with [3] index
+  # Now that a_layer_name have become geom_a_position like we need to spilit with [3] index
   # ToDO: write a if statement with warning message if correct geom name
-  # and layer names are not passed
-  g <- list(a_geom=strsplit(layer_name, "_")[[1]][3])
-  g$classed <- layer_name
+  # and a_layer names are not passed
+  g <- list(a_geom=strsplit(a_layer_name, "_")[[1]][3])
+  g$classed <- a_layer_name
   
   ranges <- built$panel$ranges
   
@@ -912,20 +912,20 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       ## This is required because we edit the original plot list created for the
       ## animint2dir function. See the discussion here:
       ## https://github.com/tdhock/animint2/pull/5#issuecomment-323072502
-      for(layer_i in seq_along(p$layers)){
+      for(a_layer_i in seq_along(p$layers)){
         ## Viz has not been used before
-        if(is.null(p$layers[[layer_i]]$orig_mapping)){
-          p$layers[[layer_i]]$orig_mapping <- 
-            if(is.null(p$layers[[layer_i]]$mapping)){
+        if(is.null(p$layers[[a_layer_i]]$orig_mapping)){
+          p$layers[[a_layer_i]]$orig_mapping <- 
+            if(is.null(p$layers[[a_layer_i]]$mapping)){
               ## Get mapping from plot if not defined in layer
               p$mapping
             }else{
-              p$layers[[layer_i]]$mapping
+              p$layers[[a_layer_i]]$mapping
             }
         }else{
           ## This is not the first time this layer is being processed, so we replace
           ## the mapping with the original mapping here
-          p$layers[[layer_i]]$mapping <- p$layers[[layer_i]]$orig_mapping
+          p$layers[[a_layer_i]]$mapping <- p$layers[[a_layer_i]]$orig_mapping
         }
       }
       
@@ -959,13 +959,13 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   g.list <- list()
   for(p.name in names(a_plot.list)){
     a_plot.info <- a_plot.list[[p.name]]
-    for(layer.i in seq_along(a_plot.info$a_plot$layers)){
-      L <- a_plot.info$a_plot$layers[[layer.i]]
-      df <- a_plot.info$built$data[[layer.i]]
+    for(a_layer.i in seq_along(a_plot.info$a_plot$layers)){
+      L <- a_plot.info$a_plot$layers[[a_layer.i]]
+      df <- a_plot.info$built$data[[a_layer.i]]
       
       ## cat(sprintf(
-      ##   "saving layer %4d / %4d of a_plot %s\n",
-      ##   layer.i, length(a_plot.info$built$data),
+      ##   "saving a_layer %4d / %4d of a_plot %s\n",
+      ##   a_layer.i, length(a_plot.info$built$data),
       ##   p.name))
       
       ## Data now contains columns with fill, alpha, colour etc.
@@ -985,8 +985,8 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
         }
       }
       geom_num <- geom_num + 1
-      layer_name <- getLayerName(L, geom_num, p.name)
-      gl <- saveLayer(L, df, meta, layer_name,
+      a_layer_name <- getLayerName(L, geom_num, p.name)
+      gl <- saveLayer(L, df, meta, a_layer_name,
                       a_plot.info$a_plot, a_plot.info$built, AnimationInfo)
       
       ## Save Animation Info separately
@@ -995,7 +995,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       ## Save to a list before saving to tsv
       ## Helps during axis updates and Inf values
       g.list[[p.name]][[gl$g$classed]] <- gl
-    }#layer.i
+    }#a_layer.i
   }
   
   ## Selector levels and update were stored in saveLayer, so now
@@ -1262,9 +1262,9 @@ servr::httd("', normalizePath( out.dir,winslash="/" ), '")')
   ## See this comment:
   ## https://github.com/tdhock/animint2/pull/5#issuecomment-323074518
   for(plot_i in a_plot.list){
-    for(layer_i in seq_along(plot_i$a_plot$layers)){
-      plot_i$a_plot$layers[[layer_i]]$mapping <-
-        plot_i$a_plot$layers[[layer_i]]$orig_mapping
+    for(a_layer_i in seq_along(plot_i$a_plot$layers)){
+      plot_i$a_plot$layers[[a_layer_i]]$mapping <-
+        plot_i$a_plot$layers[[a_layer_i]]$orig_mapping
     } 
   }
   invisible(meta)
@@ -1343,9 +1343,9 @@ getLegendList <- function(plistextra){
     gdefs[[leg]]$is.discrete <- is.discrete
     ## get the name of the legend/selection variable.
     var.list <- list()
-    for(layer.i in seq_along(plot$layers)) {
-      L <- plot$layers[[layer.i]]
-      var.list[[layer.i]] <- L$mapping[legend_type]
+    for(a_layer.i in seq_along(plot$layers)) {
+      L <- plot$layers[[a_layer.i]]
+      var.list[[a_layer.i]] <- L$mapping[legend_type]
     }
     unique.var.list <- unique(unlist(var.list))
     if(is.discrete){

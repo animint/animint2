@@ -22,7 +22,7 @@
 #' @param linetype Linetype of tick marks (\code{solid}, \code{dashed}, etc.)
 #' @param alpha The transparency of the tick marks.
 #' @param color An alias for \code{colour}.
-#' @param ... Other parameters passed on to the layer
+#' @param ... Other parameters passed on to the a_layer
 #'
 #' @export
 #' @seealso \code{\link{a_scale_y_continuous}}, \code{\link{a_scale_y_log10}} for log scale
@@ -80,7 +80,7 @@ a_annotation_logticks <- function(base = 10, sides = "bl", scaled = TRUE,
   if (!is.null(color))
     colour <- color
 
-  layer(
+  a_layer(
     data = data.frame(x = NA),
     mapping = NULL,
     a_stat = a_StatIdentity,

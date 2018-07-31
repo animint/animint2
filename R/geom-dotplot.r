@@ -19,7 +19,7 @@
 #' @section Aesthetics:
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "dotplot")}
 #'
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param stackdir which direction to stack the dots. "up" (default),
 #'   "down", "center", "centerwhole" (centered, but with dots aligned)
@@ -140,7 +140,7 @@ a_geom_dotplot <- function(mapping = NULL, data = NULL,
   if (stackgroups && method == "dotdensity" && binpositions == "bygroup")
     message('a_geom_dotplot called with stackgroups=TRUE and method="dotdensity". You probably want to set binpositions="all"')
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_StatBindot,

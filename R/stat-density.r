@@ -30,7 +30,7 @@ a_stat_density <- function(mapping = NULL, data = NULL,
                          show.legend = NA,
                          inherit.aes = TRUE) {
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_StatDensity,

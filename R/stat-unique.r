@@ -4,7 +4,7 @@
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_stat", "unique")}
 #'
 #' @export
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @examples
 #' a_plot(mtcars, aes(vs, am)) + a_geom_point(alpha = 0.1)
@@ -15,7 +15,7 @@ a_stat_unique <- function(mapping = NULL, data = NULL,
                         na.rm = FALSE,
                         show.legend = NA,
                         inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_StatUnique,

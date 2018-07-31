@@ -43,17 +43,17 @@
 #' a_plot(mpg, aes(displ, hwy)) + a_geom_point()
 #' # shortcut for
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   layer(a_geom = "point", a_stat = "identity", a_position = "identity",
+#'   a_layer(a_geom = "point", a_stat = "identity", a_position = "identity",
 #'     params = list(na.rm = FALSE)
 #'   )
 #'
 #' # use a function as data to plot a subset of global data
 #' a_plot(mpg, aes(displ, hwy)) +
-#'   layer(a_geom = "point", a_stat = "identity", a_position = "identity",
+#'   a_layer(a_geom = "point", a_stat = "identity", a_position = "identity",
 #'     data = head, params = list(na.rm = FALSE)
 #'   )
 #'
-layer <- function(a_geom = NULL, a_stat = NULL,
+a_layer <- function(a_geom = NULL, a_stat = NULL,
                   data = NULL, mapping = NULL,
                   a_position = NULL, params = list(),
                   inherit.aes = TRUE, subset = NULL, show.legend = NA) {
@@ -156,7 +156,7 @@ a_Layer <- a_ggproto("a_Layer", NULL,
     cat(snakeize(class(self$a_position)[[1]]), "\n")
   },
 
-  layer_data = function(self, plot_data) {
+  a_layer_data = function(self, plot_data) {
     if (is.waive(self$data)) {
       plot_data
     } else if (is.function(self$data)) {
@@ -301,7 +301,7 @@ a_Layer <- a_ggproto("a_Layer", NULL,
   }
 )
 
-is.layer <- function(x) inherits(x, "a_Layer")
+is.a_layer <- function(x) inherits(x, "a_Layer")
 
 
 find_subclass <- function(super, class) {

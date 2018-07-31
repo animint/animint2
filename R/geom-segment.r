@@ -6,7 +6,7 @@
 #' @section Aesthetics:
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "segment")}
 #'
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @param arrow specification for arrow heads, as created by arrow()
 #' @param lineend Line end style (round, butt, square)
@@ -52,7 +52,7 @@ a_geom_segment <- function(mapping = NULL, data = NULL,
                          na.rm = FALSE,
                          show.legend = NA,
                          inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

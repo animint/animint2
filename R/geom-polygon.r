@@ -7,7 +7,7 @@
 #'  \code{\link{a_geom_path}} for an unfilled polygon,
 #'  \code{\link{a_geom_ribbon}} for a polygon anchored on the x-axis
 #' @export
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @examples
 #' # When using a_geom_polygon, you will typically need two data frames:
@@ -53,7 +53,7 @@ a_geom_polygon <- function(mapping = NULL, data = NULL,
                          na.rm = FALSE,
                          show.legend = NA,
                          inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

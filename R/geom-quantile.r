@@ -6,7 +6,7 @@
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("a_geom", "quantile")}
 #'
 #' @export
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @inheritParams a_geom_path
 #' @param method.args List of additional arguments passed on to the modelling
@@ -38,7 +38,7 @@ a_geom_quantile <- function(mapping = NULL, data = NULL,
                           show.legend = NA,
                           inherit.aes = TRUE) {
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

@@ -42,7 +42,7 @@ layer, as a string.}
 \item{a_position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
-\item{...}{other arguments passed on to \code{\link{layer}}. These are
+\item{...}{other arguments passed on to \code{\link{a_layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
 to the paired a_geom/a_stat.}
@@ -72,7 +72,7 @@ that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
 
 \item{check_overlap}{If \code{TRUE}, text that overlaps previous text in the
-same layer will not be plotted. A quick and dirty way}
+same a_layer will not be plotted. A quick and dirty way}
 }
 \description{
 \code{a_geom_text} adds text directly to the plot. \code{a_geom_label} draws

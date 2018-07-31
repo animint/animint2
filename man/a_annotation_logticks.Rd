@@ -40,7 +40,7 @@ long tick marks. In base 10, these are the "1" (or "10") ticks.}
 
 \item{color}{An alias for \code{colour}.}
 
-\item{...}{Other parameters passed on to the layer}
+\item{...}{Other parameters passed on to the a_layer}
 }
 \description{
 This annotation adds log tick marks with diminishing spacing.

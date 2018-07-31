@@ -6,7 +6,7 @@
 #' @param distribution Distribution function to use, if x not specified
 #' @param dparams Additional parameters passed on to \code{distribution}
 #'   function.
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @section Computed variables:
 #' \describe{
@@ -40,7 +40,7 @@ a_stat_qq <- function(mapping = NULL, data = NULL,
                     na.rm = FALSE,
                     show.legend = NA,
                     inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_StatQq,

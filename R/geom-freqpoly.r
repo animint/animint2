@@ -12,7 +12,7 @@ a_geom_freqpoly <- function(mapping = NULL, data = NULL,
     params$pad <- TRUE
   }
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

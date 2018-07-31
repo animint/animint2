@@ -10,7 +10,7 @@
 #'  \code{\link{a_stat_sum}} for another way of dealing with overplotting
 #' @param a_geom,a_stat Use to override the default connection between
 #'   \code{a_geom_density_2d} and \code{a_stat_density_2d}.
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @inheritParams a_geom_path
 #' @export
@@ -44,7 +44,7 @@ a_geom_density_2d <- function(mapping = NULL, data = NULL,
                             na.rm = FALSE,
                             show.legend = NA,
                             inherit.aes = TRUE) {
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_stat,

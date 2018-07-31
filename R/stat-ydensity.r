@@ -1,4 +1,4 @@
-#' @inheritParams layer
+#' @inheritParams a_layer
 #' @inheritParams a_geom_point
 #' @inheritParams a_stat_density
 #' @param a_scale if "area" (default), all violins have the same area (before trimming
@@ -31,7 +31,7 @@ a_stat_ydensity <- function(mapping = NULL, data = NULL,
                           inherit.aes = TRUE) {
   a_scale <- match.arg(a_scale, c("area", "count", "width"))
 
-  layer(
+  a_layer(
     data = data,
     mapping = mapping,
     a_stat = a_StatYdensity,
