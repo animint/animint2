@@ -5,7 +5,7 @@
 \title{Continuous scale constructor.}
 \usage{
 continuous_a_scale(aesthetics, scale_name, palette, name = waiver(),
-  breaks = waiver(), minor_breaks = waiver(), labels = waiver(),
+  breaks = waiver(), minor_breaks = waiver(), a_labels = waiver(),
   limits = NULL, rescaler = rescale, oob = censor, expand = waiver(),
   na.value = NA_real_, trans = "identity", a_guide = "legend")
 }
@@ -39,7 +39,7 @@ mapping used for that aesthetic.}
   \item A function that given the limits returns a vector of minor breaks.
 }}
 
-\item{labels}{One of: \itemize{
+\item{a_labels}{One of: \itemize{
   \item \code{NULL} for no labels
   \item \code{waiver()} for the default labels computed by the
     transformation object

@@ -35,9 +35,9 @@
 #' m + a_scale_x_continuous(breaks = c(1,3,7,9))
 #'
 #' #  * manually label the ticks
-#' m + a_scale_x_continuous(breaks = c(2,5,8), labels = c("two", "five", "eight"))
-#' m + a_scale_x_continuous(breaks = c(2,5,8), labels = c("horrible", "ok", "awesome"))
-#' m + a_scale_x_continuous(breaks = c(2,5,8), labels = expression(Alpha, Beta, Omega))
+#' m + a_scale_x_continuous(breaks = c(2,5,8), a_labels = c("two", "five", "eight"))
+#' m + a_scale_x_continuous(breaks = c(2,5,8), a_labels = c("horrible", "ok", "awesome"))
+#' m + a_scale_x_continuous(breaks = c(2,5,8), a_labels = expression(Alpha, Beta, Omega))
 #'
 #' # There are a few built in transformation that you can use:
 #' m + a_scale_y_log10()
@@ -53,9 +53,9 @@
 #'   y = seq(0, 1, length.out = 10)
 #' )
 #' p <- a_plot(df, aes(x, y)) + a_geom_point()
-#' p + a_scale_y_continuous(labels = scales::percent)
-#' p + a_scale_y_continuous(labels = scales::dollar)
-#' p + a_scale_x_continuous(labels = scales::comma)
+#' p + a_scale_y_continuous(a_labels = scales::percent)
+#' p + a_scale_y_continuous(a_labels = scales::dollar)
+#' p + a_scale_x_continuous(a_labels = scales::comma)
 #'
 #' # Other shortcut functions
 #' a_plot(movies, aes(rating, votes)) +
@@ -78,13 +78,13 @@ NULL
 #' @rdname a_scale_continuous
 #' @export
 a_scale_x_continuous <- function(name = waiver(), breaks = waiver(),
-                               minor_breaks = waiver(), labels = waiver(),
+                               minor_breaks = waiver(), a_labels = waiver(),
                                limits = NULL, expand = waiver(), oob = censor,
                                na.value = NA_real_, trans = "identity") {
   sc <- continuous_a_scale(
     c("x", "xmin", "xmax", "xend", "xintercept", "xmin_final", "xmax_final", "xlower", "xmiddle", "xupper"),
     "position_c", identity, name = name, breaks = breaks,
-    minor_breaks = minor_breaks, labels = labels, limits = limits,
+    minor_breaks = minor_breaks, a_labels = a_labels, limits = limits,
     expand = expand, oob = oob, na.value = na.value, trans = trans,
     a_guide = "none"
   )
@@ -100,13 +100,13 @@ a_scale_x_continuous <- function(name = waiver(), breaks = waiver(),
 #' @rdname a_scale_continuous
 #' @export
 a_scale_y_continuous <- function(name = waiver(), breaks = waiver(),
-                               minor_breaks = waiver(), labels = waiver(),
+                               minor_breaks = waiver(), a_labels = waiver(),
                                limits = NULL, expand = waiver(), oob = censor,
                                na.value = NA_real_, trans = "identity") {
   sc <- continuous_a_scale(
     c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final", "ymax_final", "lower", "middle", "upper"),
     "position_c", identity, name = name, breaks = breaks,
-    minor_breaks = minor_breaks, labels = labels, limits = limits,
+    minor_breaks = minor_breaks, a_labels = a_labels, limits = limits,
     expand = expand, oob = oob, na.value = na.value, trans = trans,
     a_guide = "none"
   )

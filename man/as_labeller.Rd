@@ -4,7 +4,7 @@
 \alias{as_labeller}
 \title{Coerce to labeller function}
 \usage{
-as_labeller(x, default = label_value, multi_line = TRUE)
+as_labeller(x, default = a_label_value, multi_line = TRUE)
 }
 \arguments{
 \item{x}{Object to coerce to a labeller function. If a named

@@ -66,7 +66,7 @@ viz <-
          a_scale_color_manual(values=fp.fn.colors)+
          a_geom_text(aes(filterVar.thresh, metric.value+offset,
                        color=metric.name,
-                       label=paste(metric.value, metric.name, " ")),
+                       a_label=paste(metric.value, metric.name, " ")),
                    showSelected="filterVar.thresh",
                    hjust=1,
                    data=malaria$error.curves),
@@ -76,12 +76,12 @@ viz <-
          ggtitle("Sanger sequenced amplicons")+
          a_theme_animint(width=600)+
          a_geom_text(aes(chrom.fac, position/1e3,
-                       label=sprintf("MQ threshold = %.1f",
+                       a_label=sprintf("MQ threshold = %.1f",
                          filterVar.thresh)),
                    showSelected="filterVar.thresh",
                    data=malaria$filterVar.labels)+
          a_geom_text(aes(chrom.fac, position/1e3,
-                       label=paste(fp, "fp_")),
+                       a_label=paste(fp, "fp_")),
                    showSelected=c("filterVar.thresh", "highly.divergent.regions",
                                   "annotation"),
                    clickSelects="LOCUS_ID",
@@ -89,7 +89,7 @@ viz <-
                    color=fp.fn.colors[["fp"]],
                    data=subset(malaria$error.amplicons, fp != 0))+
          a_geom_text(aes(chrom.fac, position/1e3,
-                       label=paste0("_" , fn, " fn")),
+                       a_label=paste0("_" , fn, " fn")),
                    clickSelects="LOCUS_ID",
                    showSelected=c("filterVar.thresh", "highly.divergent.regions",
                                 "annotation"),
@@ -121,12 +121,12 @@ viz <-
                             limits=c(-0.05, 1.05),
                             breaks=c())+
          a_geom_text(aes(firstVariant.norm, LOCUS_ID,
-                       label=paste0(firstVariant, "_")),
+                       a_label=paste0(firstVariant, "_")),
                    showSelected=c("highly.divergent.regions", "annotation"),
                    hjust=1,
                    data=malaria$amplicons)+
          a_geom_text(aes(lastVariant.norm, LOCUS_ID,
-                       label=paste0("_", lastVariant, " --- ",
+                       a_label=paste0("_", lastVariant, " --- ",
                                     lastVariant-firstVariant, " bases")),
                    showSelected=c("highly.divergent.regions", "annotation"),
                    hjust=0,

@@ -7,7 +7,7 @@ sqLab <- "squared error of the prior estimate"
 priorBands <-
   list(set=a_plot()+
        a_geom_abline()+
-       a_geom_text(aes(positive, negative, label=set), data=prior$data)+
+       a_geom_text(aes(positive, negative, a_label=set), data=prior$data)+
        a_geom_point(aes(positive, negative, size=dimension),
                   clickSelects="set",
                   data=prior$data)+

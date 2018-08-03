@@ -14,7 +14,7 @@ viz <-
                   clickSelects="country",
                   showSelected="year",
                   data=WorldBank)+
-       a_geom_text(aes(life.expectancy, fertility.rate, label=country,
+       a_geom_text(aes(life.expectancy, fertility.rate, a_label=country,
                      key=country), #also use key here!
                  showSelected=c("country", "year"),
                  data=WorldBank)+
@@ -28,7 +28,7 @@ viz <-
                      ymin=2, ymax=2.5),
                  showSelected="year",
                  data=years, color="orange")+
-       a_geom_text(aes(55, 9, label=paste("year =", year)),
+       a_geom_text(aes(55, 9, a_label=paste("year =", year)),
                  showSelected="year",
                  data=years),
 

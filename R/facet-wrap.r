@@ -42,7 +42,7 @@
 #' # Use the `labeller` option to control how labels are printed:
 #' a_plot(mpg, aes(displ, hwy)) +
 #'   a_geom_point() +
-#'   facet_wrap(c("cyl", "drv"), labeller = "label_both")
+#'   facet_wrap(c("cyl", "drv"), labeller = "a_label_both")
 #'
 #' # To change the order in which the panels appear, change the levels
 #' # of the underlying factor.
@@ -75,7 +75,7 @@
 #'   a_theme(strip.background = a_element_blank())
 #' }
 a_facet_wrap <- function(facets, nrow = NULL, ncol = NULL, scales = "fixed",
-                       shrink = TRUE, labeller = "label_value", as.table = TRUE,
+                       shrink = TRUE, labeller = "a_label_value", as.table = TRUE,
                        switch = NULL, drop = TRUE, dir = "h") {
   scales <- match.arg(scales, c("fixed", "free_x", "free_y", "free"))
   dir <- match.arg(dir, c("h", "v"))
@@ -339,19 +339,19 @@ a_facet_panels.wrap <- function(a_facet, panel, a_coord, a_theme, a_geom_grobs) 
 
 #' @export
 a_facet_strips.wrap <- function(a_facet, panel, a_theme) {
-  labels_df <- panel$layout[names(a_facet$facets)]
+  a_labels_df <- panel$layout[names(a_facet$facets)]
 
-  # Adding labels metadata, useful for labellers
-  attr(labels_df, "a_facet") <- "wrap"
+  # Adding a_labels metadata, useful for labellers
+  attr(a_labels_df, "a_facet") <- "wrap"
   if (is.null(a_facet$switch) || a_facet$switch == "x") {
     dir <- "b"
-    attr(labels_df, "type") <- "rows"
+    attr(a_labels_df, "type") <- "rows"
   } else {
     dir <- "l"
-    attr(labels_df, "type") <- "cols"
+    attr(a_labels_df, "type") <- "cols"
   }
 
-  strips_table <- a_build_strip(panel, labels_df, a_facet$labeller,
+  strips_table <- a_build_strip(panel, a_labels_df, a_facet$labeller,
     a_theme, dir, switch = a_facet$switch)
 
   # While grid a_facetting works with a whole gtable, wrap processes the

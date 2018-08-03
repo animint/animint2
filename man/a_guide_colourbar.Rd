@@ -7,16 +7,16 @@
 \usage{
 a_guide_colourbar(title = waiver(), title.a_position = NULL,
   title.a_theme = NULL, title.hjust = NULL, title.vjust = NULL,
-  label = TRUE, label.a_position = NULL, label.a_theme = NULL,
-  label.hjust = NULL, label.vjust = NULL, barwidth = NULL,
+  a_label = TRUE, a_label.a_position = NULL, a_label.a_theme = NULL,
+  a_label.hjust = NULL, a_label.vjust = NULL, barwidth = NULL,
   barheight = NULL, nbin = 20, raster = TRUE, ticks = TRUE,
   draw.ulim = TRUE, draw.llim = TRUE, direction = NULL,
   default.unit = "line", reverse = FALSE, order = 0, ...)
 
 a_guide_colorbar(title = waiver(), title.a_position = NULL,
   title.a_theme = NULL, title.hjust = NULL, title.vjust = NULL,
-  label = TRUE, label.a_position = NULL, label.a_theme = NULL,
-  label.hjust = NULL, label.vjust = NULL, barwidth = NULL,
+  a_label = TRUE, a_label.a_position = NULL, a_label.a_theme = NULL,
+  a_label.hjust = NULL, a_label.vjust = NULL, barwidth = NULL,
   barheight = NULL, nbin = 20, raster = TRUE, ticks = TRUE,
   draw.ulim = TRUE, draw.llim = TRUE, direction = NULL,
   default.unit = "line", reverse = FALSE, order = 0, ...)
@@ -41,21 +41,21 @@ title text.}
 \item{title.vjust}{A number specifying vertical justification of the title
 text.}
 
-\item{label}{logical. If \code{TRUE} then the labels are drawn. If
+\item{a_label}{logical. If \code{TRUE} then the labels are drawn. If
 \code{FALSE} then the labels are invisible.}
 
-\item{label.a_position}{A character string indicating the a_position of a
-label. One of "top", "bottom" (default for horizontal guide), "left", or
+\item{a_label.a_position}{A character string indicating the a_position of a
+a_label. One of "top", "bottom" (default for horizontal guide), "left", or
 "right" (default for vertical guide).}
 
-\item{label.a_theme}{A a_theme object for rendering the label text. Usually the
+\item{a_label.a_theme}{A a_theme object for rendering the a_label text. Usually the
 object of \code{\link{a_element_text}} is expected. By default, the a_theme is
 specified by \code{legend.text} in \code{\link{a_theme}} or a_theme.}
 
-\item{label.hjust}{A numeric specifying horizontal justification of the
-label text.}
+\item{a_label.hjust}{A numeric specifying horizontal justification of the
+a_label text.}
 
-\item{label.vjust}{A numeric specifying vertical justification of the label
+\item{a_label.vjust}{A numeric specifying vertical justification of the a_label
 text.}
 
 \item{barwidth}{A numeric or a \code{\link[grid]{unit}} object specifying
@@ -131,17 +131,17 @@ p1 + a_guides(fill = a_guide_colorbar())
 # bar size
 p1 + a_guides(fill = a_guide_colorbar(barwidth = 0.5, barheight = 10))
 
-# no label
-p1 + a_guides(fill = a_guide_colorbar(label = FALSE))
+# no a_label
+p1 + a_guides(fill = a_guide_colorbar(a_label = FALSE))
 
 # no tick marks
 p1 + a_guides(fill = a_guide_colorbar(ticks = FALSE))
 
-# label position
-p1 + a_guides(fill = a_guide_colorbar(label.a_position = "left"))
+# a_label position
+p1 + a_guides(fill = a_guide_colorbar(a_label.a_position = "left"))
 
-# label a_theme
-p1 + a_guides(fill = a_guide_colorbar(label.a_theme = a_element_text(colour = "blue", angle = 0)))
+# a_label a_theme
+p1 + a_guides(fill = a_guide_colorbar(a_label.a_theme = a_element_text(colour = "blue", angle = 0)))
 
 # small number of bins
 p1 + a_guides(fill = a_guide_colorbar(nbin = 3))

@@ -65,7 +65,7 @@ viz <-
                       size=5,
                       data=data.frame(problems, sample.id="problems"))+
          a_geom_text(aes(200, 5,
-                       label=paste("problem size", bases.per.problem)),
+                       a_label=paste("problem size", bases.per.problem)),
                    showSelected="bases.per.problem",
                    data=data.frame(sizes, sample.id="problems"))+
          a_geom_segment(aes(peakStart, problem.i,
@@ -105,7 +105,7 @@ viz <-
                     clickSelects = clickSelects.vec,
                     size=10,
                     data=peaks)+
-         a_geom_text(aes(1, 3, label=problem.name),
+         a_geom_text(aes(1, 3, a_label=problem.name),
                    showSelected=c("problem.name", "bases.per.problem"),
                    data=problems))
 
@@ -191,7 +191,7 @@ viz.for <-
                       size=5,
                       data=data.frame(problems, sample.id="problems"))+
          a_geom_text(aes(200, 5,
-                       label=paste("problem size", bases.per.problem)),
+                       a_label=paste("problem size", bases.per.problem)),
                    showSelected="bases.per.problem",
                    data=data.frame(sizes, sample.id="problems"))+
          a_theme_bw()+
@@ -209,7 +209,7 @@ viz.for <-
 
        peaks=a_plot()+
          ggtitle("select number of peaks")+
-         a_geom_text(aes(1, 3, label=problem.name),
+         a_geom_text(aes(1, 3, a_label=problem.name),
                    showSelected="problem.name",
                    data=problems))
 

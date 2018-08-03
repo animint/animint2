@@ -27,7 +27,7 @@
 #'   column gets displayed as one separate line in the strip
 #'   label. This function should inherit from the "labeller" S3 class
 #'   for compatibility with \code{\link{labeller}()}. See
-#'   \code{\link{label_value}} for more details and pointers to other
+#'   \code{\link{a_label_value}} for more details and pointers to other
 #'   options.
 #' @param as.table If \code{TRUE}, the default, the facets are laid out like
 #'   a table with highest values at the bottom-right. If \code{FALSE}, the
@@ -83,17 +83,17 @@
 #' p <- a_plot(mtcars, aes(wt, mpg)) + a_geom_point()
 #' p
 #'
-#' # label_both() displays both variable name and value
-#' p + a_facet_grid(vs ~ cyl, labeller = label_both)
+#' # a_label_both() displays both variable name and value
+#' p + a_facet_grid(vs ~ cyl, labeller = a_label_both)
 #'
-#' # label_parsed() parses text into mathematical expressions, see ?plotmath
+#' # a_label_parsed() parses text into mathematical expressions, see ?plotmath
 #' mtcars$cyl2 <- factor(mtcars$cyl, labels = c("alpha", "beta", "sqrt(x, y)"))
 #' a_plot(mtcars, aes(wt, mpg)) +
 #'   a_geom_point() +
-#'   a_facet_grid(. ~ cyl2, labeller = label_parsed)
+#'   a_facet_grid(. ~ cyl2, labeller = a_label_parsed)
 #'
-#' # label_bquote() makes it easy to construct math expressions
-#' p + a_facet_grid(. ~ vs, labeller = label_bquote(cols = alpha ^ .(vs)))
+#' # a_label_bquote() makes it easy to construct math expressions
+#' p + a_facet_grid(. ~ vs, labeller = a_label_bquote(cols = alpha ^ .(vs)))
 #'
 #' # The facet strips can be displayed near the axes with switch
 #' data <- transform(mtcars,
@@ -122,7 +122,7 @@
 #' mg + a_facet_grid(vs + am ~ gear, margins = c("gear", "am"))
 #' }
 #' @importFrom plyr as.quoted
-a_facet_grid <- function(facets, margins = FALSE, scales = "fixed", space = "fixed", shrink = TRUE, labeller = "label_value", as.table = TRUE, switch = NULL, drop = TRUE) {
+a_facet_grid <- function(facets, margins = FALSE, scales = "fixed", space = "fixed", shrink = TRUE, labeller = "a_label_value", as.table = TRUE, switch = NULL, drop = TRUE) {
   scales <- match.arg(scales, c("fixed", "free_x", "free_y", "free"))
   free <- list(
     x = any(scales %in% c("free_x", "free")),

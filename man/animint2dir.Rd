@@ -83,7 +83,7 @@ Supported scales:
 \item alpha,
 \item fill/colour (brewer, gradient, identity, manual)
 \item linetype
-\item x and y axis scales, manual break specification, label formatting
+\item x and y axis scales, manual break specification, a_label formatting
 \item x and y axis a_theme elements: axis.line, axis.ticks, axis.text, axis.title can be set to a_element_blank(); other a_theme modifications not supported at this time, but would be possible with custom css files.
 \item area
 \item size
@@ -113,7 +113,7 @@ gapminder <-
                   showSelected="year",
                   clickSelects="country",
                   data=WorldBank)+
-       a_geom_text(aes(fertility.rate, life.expectancy, label=country),
+       a_geom_text(aes(fertility.rate, life.expectancy, a_label=country),
                  showSelected=c("country", "year"),
                  data=WorldBank)+
        make_text(WorldBank, 5, 80, "year")+

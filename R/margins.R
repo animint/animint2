@@ -29,11 +29,11 @@ margin_width <- function(grob, margins) {
   grobWidth(grob) + margins[2] + margins[4]
 }
 
-titleGrob <- function(label, x, y, hjust, vjust, angle = 0, gp = gpar(),
+titleGrob <- function(a_label, x, y, hjust, vjust, angle = 0, gp = gpar(),
                       margin = NULL, expand_x = FALSE, expand_y = FALSE,
                       debug = FALSE) {
 
-  if (is.null(label))
+  if (is.null(a_label))
     return(a_zeroGrob())
 
   if (is.null(margin)) {
@@ -59,7 +59,7 @@ titleGrob <- function(label, x, y, hjust, vjust, angle = 0, gp = gpar(),
   x <- x %||% unit(rep(xp, n), "npc")
   y <- y %||% unit(rep(yp, n), "npc")
 
-  text_grob <- textGrob(label, x, y, hjust = hjust, vjust = vjust,
+  text_grob <- textGrob(a_label, x, y, hjust = hjust, vjust = vjust,
     rot = angle, gp = gp)
 
   if (expand_x && expand_y) {
@@ -114,16 +114,16 @@ heightDetails.titleGrob <- function(x) {
   sum(x$heights)
 }
 
-# Works like titleGrob, but designed to place one label per viewport.
+# Works like titleGrob, but designed to place one a_label per viewport.
 # This means it doesn't have the lengths of labels available, so must use
 # alternative layout strategy
-stripGrob <- function(label, hjust, vjust, angle = 0, gp = gpar(),
+stripGrob <- function(a_label, hjust, vjust, angle = 0, gp = gpar(),
                       margin = NULL, debug = FALSE) {
   if (is.null(margin)) {
     margin <- margin()
   }
 
-  text_grob <- textGrob(label, rot = angle, gp = gp)
+  text_grob <- textGrob(a_label, rot = angle, gp = gp)
 
   widths <- unit.c(margin[4], unit(1, "grobwidth", text_grob), margin[2])
   heights <- unit.c(margin[1], unit(1, "grobheight", text_grob), margin[3])

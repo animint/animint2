@@ -106,9 +106,9 @@ parsePlot <- function(meta, plot, plot.name){
   ## of this. Do this BEFORE checking if it is blank or not, so that
   ## individual axes can be hidden appropriately, e.g. #1.
   if("a_CoordFlip"%in%attr(plot$coordinates, "class")){
-    temp <- plot$labels$x
-    plot$labels$x <- plot$labels$y
-    plot$labels$y <- temp
+    temp <- plot$a_labels$x
+    plot$a_labels$x <- plot$a_labels$y
+    plot$a_labels$y <- temp
   }
   is.blank <- function(el.name){
     x <- calc_element(el.name, plot$a_theme)
@@ -136,7 +136,7 @@ parsePlot <- function(meta, plot, plot.name){
         plot$scales$scales[[a_scale.i]]$name
       }
       if(is.null(unlist(lab.or.null))){
-        plot$labels[[xy]]
+        plot$a_labels[[xy]]
       }else{
         lab.or.null
       }
@@ -169,7 +169,7 @@ parsePlot <- function(meta, plot, plot.name){
       plot.info[[axis]][[s("%slab")]] <- if(is.blank(s("axis.text.%s"))){
         NULL
       } else {
-        as.list(range[[s("%s.labels")]])
+        as.list(range[[s("%s.a_labels")]])
       }
       plot.info[[axis]][[s("%srange")]] <- range[[s("%s.range")]]
       plot.info[[axis]][[s("%sline")]] <- !is.blank(s("axis.line.%s"))
@@ -181,7 +181,7 @@ parsePlot <- function(meta, plot, plot.name){
 
   # grab plot title if present
   plot.info$title <- getPlotTitle(a_theme.pars$plot.tiltle,
-                                  plot$labels$title)
+                                  plot$a_labels$title)
 
   ## Set plot width and height from animint.* options if they are
   ## present.
@@ -849,7 +849,7 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
 #' \item alpha,
 #' \item fill/colour (brewer, gradient, identity, manual)
 #' \item linetype
-#' \item x and y axis scales, manual break specification, label formatting
+#' \item x and y axis scales, manual break specification, a_label formatting
 #' \item x and y axis a_theme elements: axis.line, axis.ticks, axis.text, axis.title can be set to a_element_blank(); other a_theme modifications not supported at this time, but would be possible with custom css files.
 #' \item area
 #' \item size
@@ -1325,7 +1325,7 @@ getLegendList <- function(plistextra){
   gdefs <- a_guides_train(scales = scales,
                            a_theme = a_theme,
                            a_guides = a_guides.list,
-                           labels = plot$labels)
+                           a_labels = plot$a_labels)
   if (length(gdefs) != 0) {
     gdefs <- a_guides_merge(gdefs)
     gdefs <- a_guides_geom(gdefs, layers, default_mapping)
@@ -1335,7 +1335,7 @@ getLegendList <- function(plistextra){
   ## adding the variable used to each LegendList
   for(leg in seq_along(gdefs)) {
     legend_type <- names(gdefs[[leg]]$key)
-    legend_type <- legend_type[legend_type != ".label"]
+    legend_type <- legend_type[legend_type != ".a_label"]
     gdefs[[leg]]$legend_type <- legend_type
     a_scale.list <- scales$scales[which(scales$find(legend_type))]
     discrete.vec <- sapply(a_scale.list, inherits, "a_ScaleDiscrete")

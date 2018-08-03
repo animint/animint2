@@ -8,14 +8,14 @@ likPlot <- a_plot()+
             data=change$lik, size=5)+
   xlab("model complexity -log(lambda)")+
   a_guides(colour="none")+
-  a_geom_text(aes(x, y, label=set, colour=set), data=train.test)+
+  a_geom_text(aes(x, y, a_label=set, colour=set), data=train.test)+
   ggtitle("Train and test likelihood")
 print(likPlot)
 
 ## Just the variables which have really changed.
 changed <- subset(change$truth, changed)
 varPlot <- a_plot()+
-  a_geom_text(aes(x,y,label=variable), data=change$pos)+
+  a_geom_text(aes(x,y,a_label=variable), data=change$pos)+
   a_geom_segment(aes(v1.x, v1.y, xend=v2.x, yend=v2.y,
                    size=change, colour=change),
                showSelected="complexity", clickSelects="variables",

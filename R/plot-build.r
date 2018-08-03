@@ -148,12 +148,12 @@ a_plot_gtable <- function(data) {
     a_theme, a_geom_grobs)
 
   # Axis labels
-  labels <- plot$coordinates$labels(list(
-    x = xlabel(panel, plot$labels),
-    y = ylabel(panel, plot$labels)
+  a_labels <- plot$coordinates$a_labels(list(
+    x = xlabel(panel, plot$a_labels),
+    y = ylabel(panel, plot$a_labels)
   ))
-  xlabel <- a_element_render(a_theme, "axis.title.x", labels$x, expand_y = TRUE)
-  ylabel <- a_element_render(a_theme, "axis.title.y", labels$y, expand_x = TRUE)
+  xlabel <- a_element_render(a_theme, "axis.title.x", a_labels$x, expand_y = TRUE)
+  ylabel <- a_element_render(a_theme, "axis.title.y", a_labels$y, expand_x = TRUE)
 
   # helper function return the position of panels in plot_table
   find_panel <- function(table) {
@@ -186,7 +186,7 @@ a_plot_gtable <- function(data) {
   }
 
   legend_box <- if (a_position != "none") {
-    build_guides(plot$scales, plot$layers, plot$mapping, a_position, a_theme, plot$a_guides, plot$labels)
+    build_guides(plot$scales, plot$layers, plot$mapping, a_position, a_theme, plot$a_guides, plot$a_labels)
   } else {
     a_zeroGrob()
   }
@@ -247,15 +247,15 @@ a_plot_gtable <- function(data) {
   }
 
   # Title
-  title <- a_element_render(a_theme, "plot.title", plot$labels$title, expand_y = TRUE)
+  title <- a_element_render(a_theme, "plot.title", plot$a_labels$title, expand_y = TRUE)
   title_height <- grobHeight(title)
 
   # Subtitle
-  subtitle <- a_element_render(a_theme, "plot.subtitle", plot$labels$subtitle, expand_y = TRUE)
+  subtitle <- a_element_render(a_theme, "plot.subtitle", plot$a_labels$subtitle, expand_y = TRUE)
   subtitle_height <- grobHeight(subtitle)
 
   # whole plot annotation
-  caption <- a_element_render(a_theme, "plot.caption", plot$labels$caption, expand_y = TRUE)
+  caption <- a_element_render(a_theme, "plot.caption", plot$a_labels$caption, expand_y = TRUE)
   caption_height <- grobHeight(caption)
 
   pans <- plot_table$layout[grepl("^panel", plot_table$layout$name), ,

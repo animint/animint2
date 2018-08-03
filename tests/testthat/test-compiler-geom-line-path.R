@@ -11,7 +11,7 @@ breakpoint.colors <- c("1breakpoint"="#ff7d7d", "0breakpoints"='#f6f4bf')
 models.by.signal <- with(intreg, split(segments, segments$signal))
 signals.by.signal <- with(intreg, split(signals, signals$signal))
 model.selection.list <- list()
-sig.labels.list <- list()
+sig.a_labels.list <- list()
 sig.seg.names.list <- list()
 sig.names.list <- list()
 for(signal.name in names(models.by.signal)){
@@ -42,7 +42,7 @@ for(signal.name in names(models.by.signal)){
                  data=sum(model$data))
     model.selection.list[[paste(signal.name, segments.str)]] <- model.stats
     if(segments.str == "1"){
-      sig.labels.list[[signal.name]] <- model.stats
+      sig.a_labels.list[[signal.name]] <- model.stats
     }
     sig.seg.by.segments[[segments.str]] <-
       data.frame(signal=signal.name,
@@ -59,7 +59,7 @@ model.selection <-
   model.selection.sorted[sample(1:nrow(model.selection.sorted)),]
 sig.seg.names <- do.call(rbind, sig.seg.names.list)
 sig.names <- do.call(rbind, sig.names.list)
-sig.labels <- do.call(rbind, sig.labels.list)
+sig.a_labels <- do.call(rbind, sig.a_labels.list)
 
 ## Plot segments rather than penalty.
 mmir.selection <- 
@@ -71,9 +71,9 @@ mmir.selection <-
        a_theme_animint(width=600)+
        a_theme(panel.margin=grid::unit(0, "lines"))+
        a_facet_grid(. ~ a_geom)+
-       a_geom_text(aes(0, error, label=signal),
+       a_geom_text(aes(0, error, a_label=signal),
                  clickSelects="signal",
-                 data=sig.labels, hjust=1)+
+                 data=sig.a_labels, hjust=1)+
        a_scale_x_continuous("segments", breaks=c(1, 5, 10, 20),
                           limits=c(-2, 20))+
        xlab("squared error")+
@@ -109,11 +109,11 @@ mmir.selection <-
                     showSelected=c("signal", "segments"),
                   linetype="dashed",
                   data=intreg$breaks)+
-       a_geom_text(aes(base/1e6, max.logratio, label=paste("signal", signal)),
+       a_geom_text(aes(base/1e6, max.logratio, a_label=paste("signal", signal)),
                  data=sig.names,
                  showSelected="signal")+
        a_geom_text(aes(base/1e6, min.logratio,
-                     label=sprintf("%d segment%s", segments,
+                     a_label=sprintf("%d segment%s", segments,
                        ifelse(segments==1, "", "s"))),
                  data=sig.seg.names,
                  showSelected=c("signal", "segments"),

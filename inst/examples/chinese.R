@@ -35,7 +35,7 @@ scatter = a_plot()+
               clickSelects = "name",
               showSelected = "time",
               data = data ) +
-  a_geom_text( aes(time, count, label = name),
+  a_geom_text( aes(time, count, a_label = name),
              showSelected = c("name", "time"),
              data=data ) +
   ##make_text( data, 80, 90, "time" ) +

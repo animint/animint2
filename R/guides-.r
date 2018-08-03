@@ -92,7 +92,7 @@ update_a_guides <- function(p, a_guides) {
 # 5. a_guides_build()
 #      arrange all ggrobs
 
-build_guides <- function(scales, layers, default_mapping, a_position, a_theme, a_guides, labels) {
+build_guides <- function(scales, layers, default_mapping, a_position, a_theme, a_guides, a_labels) {
 
   # set a_themes w.r.t. guides
   # should these a_theme$legend.XXX be renamed to a_theme$guide.XXX ?
@@ -121,7 +121,7 @@ build_guides <- function(scales, layers, default_mapping, a_position, a_theme, a
       c("center", "center")
 
   # scales -> data for guides
-  gdefs <- a_guides_train(scales = scales, a_theme = a_theme, a_guides = a_guides, labels = labels)
+  gdefs <- a_guides_train(scales = scales, a_theme = a_theme, a_guides = a_guides, a_labels = a_labels)
   if (length(gdefs) == 0) return(a_zeroGrob())
 
   # merge overlay guides
@@ -158,9 +158,9 @@ validate_guide <- function(a_guide) {
 #' @param scales ...
 #' @param a_theme ...
 #' @param a_guides ...
-#' @param labels ....
+#' @param a_labels ....
 #' @export
-a_guides_train <- function(scales, a_theme, a_guides, labels) {
+a_guides_train <- function(scales, a_theme, a_guides, a_labels) {
 
   gdefs <- list()
   for (a_scale in scales$scales) {
@@ -185,7 +185,7 @@ a_guides_train <- function(scales, a_theme, a_guides, labels) {
     if (a_guide$available_aes != "any" && !a_scale$aesthetics %in% a_guide$available_aes)
       stop("Guide '", a_guide$name, "' cannot be used for '", a_scale$aesthetics, "'.")
 
-    a_guide$title <- a_guide$title %|W|% a_scale$name %|W|% labels[[output]]
+    a_guide$title <- a_guide$title %|W|% a_scale$name %|W|% a_labels[[output]]
 
     # direction of this grob
     a_guide$direction <- a_guide$direction %||% a_theme$legend.direction

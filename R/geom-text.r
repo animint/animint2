@@ -36,7 +36,7 @@
 #'   same a_layer will not be plotted. A quick and dirty way
 #' @export
 #' @examples
-#' p <- a_plot(mtcars, aes(wt, mpg, label = rownames(mtcars)))
+#' p <- a_plot(mtcars, aes(wt, mpg, a_label = rownames(mtcars)))
 #'
 #' p + a_geom_text()
 #' # Avoid overlaps
@@ -68,12 +68,12 @@
 #' # You can display expressions by setting parse = TRUE.  The
 #' # details of the display are described in ?plotmath, but note that
 #' # a_geom_text uses strings, not expressions.
-#' p + a_geom_text(aes(label = paste(wt, "^(", cyl, ")", sep = "")),
+#' p + a_geom_text(aes(a_label = paste(wt, "^(", cyl, ")", sep = "")),
 #'   parse = TRUE)
 #'
 #' # Add a text annotation
 #' p + a_geom_text() + a_annotate("text",
-#' label = "plot mpg vs. wt", x = 2, y = 15, size = 8, colour = "red")
+#' a_label = "plot mpg vs. wt", x = 2, y = 15, size = 8, colour = "red")
 #'
 #' \donttest{
 #' # Aligning labels and bars --------------------------------------------------
@@ -85,15 +85,15 @@
 #'
 #' # ggplot2 doesn't know you want to give the labels the same virtual width
 #' # as the bars:
-#' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
+#' a_plot(data = df, aes(x, y, fill = grp, a_label = y)) +
 #'   a_geom_bar(a_stat = "identity", a_position = "dodge") +
 #'   a_geom_text(a_position = "dodge")
 #' # So tell it:
-#' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
+#' a_plot(data = df, aes(x, y, fill = grp, a_label = y)) +
 #'   a_geom_bar(a_stat = "identity", a_position = "dodge") +
 #'   a_geom_text(a_position = a_position_dodge(0.9))
 #' # Use you can't nudge and dodge text, so instead adjust the y postion
-#' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
+#' a_plot(data = df, aes(x, y, fill = grp, a_label = y)) +
 #'   a_geom_bar(a_stat = "identity", a_position = "dodge") +
 #'   a_geom_text(aes(y = y + 0.05), a_position = a_position_dodge(0.9), vjust = 0)
 #'
@@ -101,7 +101,7 @@
 #' # need to do the computation yourself
 #' df <- transform(df, mid_y = ave(df$y, df$x, FUN = function(val) cumsum(val) - (0.5 * val)))
 #'
-#' a_plot(data = df, aes(x, y, fill = grp, label = y)) +
+#' a_plot(data = df, aes(x, y, fill = grp, a_label = y)) +
 #'  a_geom_bar(a_stat = "identity") +
 #'  a_geom_text(aes(y = mid_y))
 #'
@@ -112,9 +112,9 @@
 #'   text = c("bottom-left", "bottom-right", "top-left", "top-right", "center")
 #' )
 #' a_plot(df, aes(x, y)) +
-#'   a_geom_text(aes(label = text))
+#'   a_geom_text(aes(a_label = text))
 #' a_plot(df, aes(x, y)) +
-#'   a_geom_text(aes(label = text), vjust = "inward", hjust = "inward")
+#'   a_geom_text(aes(a_label = text), vjust = "inward", hjust = "inward")
 #' }
 a_geom_text <- function(mapping = NULL, data = NULL,
                       a_stat = "identity", a_position = "identity",
@@ -158,7 +158,7 @@ a_geom_text <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomText <- a_ggproto("a_GeomText", a_Geom,
-  required_aes = c("x", "y", "label"),
+  required_aes = c("x", "y", "a_label"),
 
   default_aes = aes(
     colour = "black", size = 3.88, angle = 0, hjust = 0.5,
@@ -167,7 +167,7 @@ a_GeomText <- a_ggproto("a_GeomText", a_Geom,
 
   draw_panel = function(data, panel_scales, a_coord, parse = FALSE,
                         na.rm = FALSE, check_overlap = FALSE) {
-    lab <- data$label
+    lab <- data$a_label
     if (parse) {
       lab <- parse(text = as.character(lab))
     }

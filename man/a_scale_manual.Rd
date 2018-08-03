@@ -25,7 +25,7 @@ a_scale_alpha_manual(..., values)
 }
 \arguments{
 \item{...}{common discrete scale parameters: \code{name}, \code{breaks},
-\code{labels}, \code{na.value}, \code{limits} and \code{a_guide}.  See
+\code{a_labels}, \code{na.value}, \code{limits} and \code{a_guide}.  See
 \code{\link{discrete_a_scale}} for more details}
 
 \item{values}{a set of aesthetic values to map data values to.  If this
@@ -55,7 +55,7 @@ p + a_scale_colour_manual(values = cols)
 p + a_scale_colour_manual(values = cols, breaks = c("4", "6", "8"))
 p + a_scale_colour_manual(values = cols, breaks = c("8", "6", "4"))
 p + a_scale_colour_manual(values = cols, breaks = c("4", "6", "8"),
-labels = c("four", "six", "eight"))
+a_labels = c("four", "six", "eight"))
 
 # And limits to control the possible values of the scale
 p + a_scale_colour_manual(values = cols, limits = c("4", "8"))

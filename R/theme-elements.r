@@ -63,7 +63,7 @@ a_element_line <- function(colour = NULL, size = NULL, linetype = NULL,
 #'   details. When creating a theme, the margins should be placed on the
 #'   side of the text facing towards the center of the plot.
 #' @param debug If \code{TRUE}, aids visual debugging by drawing a solid
-#'   rectangle behind the complete text area, and a point where each label
+#'   rectangle behind the complete text area, and a point where each a_label
 #'   is anchored.
 #' @export
 a_element_text <- function(family = NULL, face = NULL, colour = NULL,
@@ -154,12 +154,12 @@ a_element_grob.a_element_rect <- function(a_element, x = 0.5, y = 0.5,
 
 
 #' @export
-a_element_grob.a_element_text <- function(a_element, label = "", x = NULL, y = NULL,
+a_element_grob.a_element_text <- function(a_element, a_label = "", x = NULL, y = NULL,
   family = NULL, face = NULL, colour = NULL, size = NULL,
   hjust = NULL, vjust = NULL, angle = NULL, lineheight = NULL,
   margin = NULL, expand_x = FALSE, expand_y = FALSE, ...) {
 
-  if (is.null(label))
+  if (is.null(a_label))
     return(a_zeroGrob())
 
   vj <- vjust %||% a_element$vjust
@@ -179,7 +179,7 @@ a_element_grob.a_element_text <- function(a_element, label = "", x = NULL, y = N
     fontfamily = a_element$family, fontface = a_element$face,
     lineheight = a_element$lineheight)
 
-  titleGrob(label, x, y, hjust = hj, vjust = vj, angle = angle,
+  titleGrob(a_label, x, y, hjust = hj, vjust = vj, angle = angle,
     gp = utils::modifyList(a_element_gp, gp), margin = margin,
     expand_x = expand_x, expand_y = expand_y, debug = a_element$debug)
 }

@@ -13,7 +13,7 @@ test_that("first options are copied to selectors", {
                           colour=region, size=population),
                       clickSelects="country",
                         showSelected="year", data=WorldBank)+
-         a_geom_text(aes(fertility.rate, life.expectancy, label=country),
+         a_geom_text(aes(fertility.rate, life.expectancy, a_label=country),
                    data=WorldBank,
                        showSelected=c("country", "year"))+
          make_text(WorldBank, 5, 80, "year")+

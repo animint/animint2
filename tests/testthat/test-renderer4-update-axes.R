@@ -463,7 +463,7 @@ test_that("a_geom_segment has axis tick updates", {
 })
 
 ##  ------------------------- a_geom_text ------------------------- ##
-text <- a_plot() + a_geom_text(aes(mpg, disp, colour=cyl, label=hp), 
+text <- a_plot() + a_geom_text(aes(mpg, disp, colour=cyl, a_label=hp), 
                              data = mtcars) +
   a_theme_animint(update_axes=c("x", "y"))
 viz <- list(text=text, selector.types=list(cyl="single"))

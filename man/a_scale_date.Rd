@@ -9,20 +9,20 @@
 \title{Position scale, date & date times}
 \usage{
 a_scale_x_date(name = waiver(), breaks = waiver(), date_breaks = waiver(),
-  labels = waiver(), date_labels = waiver(), minor_breaks = waiver(),
+  a_labels = waiver(), date_labels = waiver(), minor_breaks = waiver(),
   date_minor_breaks = waiver(), limits = NULL, expand = waiver())
 
 a_scale_y_date(name = waiver(), breaks = waiver(), date_breaks = waiver(),
-  labels = waiver(), date_labels = waiver(), minor_breaks = waiver(),
+  a_labels = waiver(), date_labels = waiver(), minor_breaks = waiver(),
   date_minor_breaks = waiver(), limits = NULL, expand = waiver())
 
 a_scale_x_datetime(name = waiver(), breaks = waiver(),
-  date_breaks = waiver(), labels = waiver(), date_labels = waiver(),
+  date_breaks = waiver(), a_labels = waiver(), date_labels = waiver(),
   minor_breaks = waiver(), date_minor_breaks = waiver(), limits = NULL,
   expand = waiver())
 
 a_scale_y_datetime(name = waiver(), breaks = waiver(),
-  date_breaks = waiver(), labels = waiver(), date_labels = waiver(),
+  date_breaks = waiver(), a_labels = waiver(), date_labels = waiver(),
   minor_breaks = waiver(), date_minor_breaks = waiver(), limits = NULL,
   expand = waiver())
 }
@@ -44,7 +44,7 @@ mapping used for that aesthetic.}
 weeks", or "10 years". If both \code{breaks} and \code{date_breaks} are
 specified, \code{date_breaks} wins.}
 
-\item{labels}{One of: \itemize{
+\item{a_labels}{One of: \itemize{
   \item \code{NULL} for no labels
   \item \code{waiver()} for the default labels computed by the
     transformation object
@@ -54,7 +54,7 @@ specified, \code{date_breaks} wins.}
 }}
 
 \item{date_labels}{A string giving the formatting specification for the
-labels. Codes are defined in \code{\link{strftime}}. If both \code{labels}
+labels. Codes are defined in \code{\link{strftime}}. If both \code{a_labels}
 and \code{date_labels} are specified, \code{date_labels} wins.}
 
 \item{minor_breaks}{One of: \itemize{

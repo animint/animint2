@@ -5,7 +5,7 @@
 \title{Lay out panels in a grid.}
 \usage{
 a_facet_grid(facets, margins = FALSE, scales = "fixed", space = "fixed",
-  shrink = TRUE, labeller = "label_value", as.table = TRUE,
+  shrink = TRUE, labeller = "a_label_value", as.table = TRUE,
   switch = NULL, drop = TRUE)
 }
 \arguments{
@@ -44,7 +44,7 @@ one with formulae of the type \code{~cyl + am}. Each output
 column gets displayed as one separate line in the strip
 label. This function should inherit from the "labeller" S3 class
 for compatibility with \code{\link{labeller}()}. See
-\code{\link{label_value}} for more details and pointers to other
+\code{\link{a_label_value}} for more details and pointers to other
 options.}
 
 \item{as.table}{If \code{TRUE}, the default, the facets are laid out like
@@ -103,17 +103,17 @@ a_plot(mpg, aes(drv, model)) +
 p <- a_plot(mtcars, aes(wt, mpg)) + a_geom_point()
 p
 
-# label_both() displays both variable name and value
-p + a_facet_grid(vs ~ cyl, labeller = label_both)
+# a_label_both() displays both variable name and value
+p + a_facet_grid(vs ~ cyl, labeller = a_label_both)
 
-# label_parsed() parses text into mathematical expressions, see ?plotmath
+# a_label_parsed() parses text into mathematical expressions, see ?plotmath
 mtcars$cyl2 <- factor(mtcars$cyl, labels = c("alpha", "beta", "sqrt(x, y)"))
 a_plot(mtcars, aes(wt, mpg)) +
   a_geom_point() +
-  a_facet_grid(. ~ cyl2, labeller = label_parsed)
+  a_facet_grid(. ~ cyl2, labeller = a_label_parsed)
 
-# label_bquote() makes it easy to construct math expressions
-p + a_facet_grid(. ~ vs, labeller = label_bquote(cols = alpha ^ .(vs)))
+# a_label_bquote() makes it easy to construct math expressions
+p + a_facet_grid(. ~ vs, labeller = a_label_bquote(cols = alpha ^ .(vs)))
 
 # The facet strips can be displayed near the axes with switch
 data <- transform(mtcars,

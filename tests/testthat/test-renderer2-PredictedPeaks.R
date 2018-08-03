@@ -20,13 +20,13 @@ viz <- list(
     a_theme_animint(width=1500, height=100)+
     a_theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
           axis.ticks.x=a_element_blank(), axis.title.x=a_element_blank())+
-    ## a_geom_text(aes(relative.middle, type.fac, label=samples.up,
+    ## a_geom_text(aes(relative.middle, type.fac, a_label=samples.up,
     ##               clickSelects=peak.name,
     ##               showSelected2=chrom,
     ##               showSelected=dotID),
     ##           size=11,
     ##           data=PredictedPeaks$chromCounts)+
-    a_geom_text(aes(relative.middle, type.fac, label=samples.up,
+    a_geom_text(aes(relative.middle, type.fac, a_label=samples.up,
                   href=paste0(
                     "http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=",
                     chrom, ":", zoomStart, "-", zoomEnd)),
@@ -39,7 +39,7 @@ viz <- list(
     a_theme_animint(width=1500, height=330)+
     a_scale_y_discrete("chromosome", drop=FALSE)+ 
     a_scale_x_continuous("position on chromosome (mega bases)")+
-    a_geom_text(aes(0, chrom, label=paste0(peaks, "_")),
+    a_geom_text(aes(0, chrom, a_label=paste0(peaks, "_")),
               clickSelects="chrom",
               showSelected="dotID",
               hjust=1,
@@ -56,7 +56,7 @@ viz <- list(
                size=5,
                data=PredictedPeaks$chrom.ranges)+
     a_geom_text(aes(max(PredictedPeaks$chrom.ranges$chromEnd)/2e6, chrom,
-                  label=totals),
+                  a_label=totals),
               showSelected="dotID",
               data=PredictedPeaks$scatter.text),
   scatter=a_plot()+
@@ -156,7 +156,7 @@ viz <- list(
     a_theme_animint(width=1500, height=100)+
     a_theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
           axis.ticks.x=a_element_blank(), axis.title.x=a_element_blank())+
-    a_geom_text(aes(relative.middle, type.fac, label=samples.up),
+    a_geom_text(aes(relative.middle, type.fac, a_label=samples.up),
               showSelected=c("dotID", "chrom"),
               clickSelects="peak.name",
               size=11,
@@ -167,7 +167,7 @@ viz <- list(
     a_theme_animint(width=1500, height=330)+
     a_scale_y_discrete("chromosome", drop=FALSE)+ 
     a_scale_x_continuous("position on chromosome (mega bases)")+
-    a_geom_text(aes(0, chrom, label=paste0(peaks, "_")),
+    a_geom_text(aes(0, chrom, a_label=paste0(peaks, "_")),
               clickSelects="chrom",
               showSelected="dotID",
               hjust=1,
@@ -184,7 +184,7 @@ viz <- list(
                size=5,
                data=PredictedPeaks$chrom.ranges)+
     a_geom_text(aes(max(PredictedPeaks$chrom.ranges$chromEnd)/2e6, chrom,
-                  label=totals),
+                  a_label=totals),
               showSelected="dotID",
              data=PredictedPeaks$scatter.text),
   scatter=a_plot()+

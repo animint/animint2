@@ -6,11 +6,11 @@ no.panels <- a_plot(mtcars, aes(mpg, wt)) +
 
 viz <-
   list(freeBoth = no.panels +
-         a_facet_grid(.~am, space = "free", scales = "free", labeller=label_both),
+         a_facet_grid(.~am, space = "free", scales = "free", labeller=a_label_both),
        freeScale = no.panels +
-         a_facet_grid(.~am, scales="free", labeller=label_both),
+         a_facet_grid(.~am, scales="free", labeller=a_label_both),
        fixed = no.panels +
-         a_facet_grid(.~am, labeller=label_both))
+         a_facet_grid(.~am, labeller=a_label_both))
 
 info <- animint2HTML(viz)
 
@@ -105,11 +105,11 @@ no.panels <- a_plot(mtcars, aes(wt, mpg)) +
 viz <-
   list(freeBoth = no.panels +
          a_facet_grid(am ~ ., space = "free", scales = "free",
-                    labeller=label_both),
+                    labeller=a_label_both),
        freeScale = no.panels +
-         a_facet_grid(am ~ ., scales="free", labeller=label_both),
+         a_facet_grid(am ~ ., scales="free", labeller=a_label_both),
        fixed = no.panels +
-         a_facet_grid(am ~ ., labeller=label_both))
+         a_facet_grid(am ~ ., labeller=a_label_both))
 
 info <- animint2HTML(viz)
 

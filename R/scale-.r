@@ -28,7 +28,7 @@ a_Scale <- a_ggproto("a_Scale", NULL,
 
                  name = waiver(),
                  breaks = waiver(),
-                 labels = waiver(),
+                 a_labels = waiver(),
                  a_guide = "legend",
 
 
@@ -154,14 +154,14 @@ a_Scale <- a_ggproto("a_Scale", NULL,
                  }
 )
 
-check_breaks_labels <- function(breaks, labels) {
+check_breaks_labels <- function(breaks, a_labels) {
   if (is.null(breaks)) return(TRUE)
-  if (is.null(labels)) return(TRUE)
+  if (is.null(a_labels)) return(TRUE)
 
-  bad_labels <- is.atomic(breaks) && is.atomic(labels) &&
-    length(breaks) != length(labels)
+  bad_labels <- is.atomic(breaks) && is.atomic(a_labels) &&
+    length(breaks) != length(a_labels)
   if (bad_labels) {
-    stop("`breaks` and `labels` must have the same length", call. = FALSE)
+    stop("`breaks` and `a_labels` must have the same length", call. = FALSE)
   }
 
   TRUE
@@ -278,21 +278,21 @@ a_ScaleContinuous <- a_ggproto("a_ScaleContinuous", a_Scale,
 
                              breaks <- self$trans$inverse(breaks)
 
-                             if (is.null(self$labels)) {
+                             if (is.null(self$a_labels)) {
                                return(NULL)
-                             } else if (identical(self$labels, NA)) {
+                             } else if (identical(self$a_labels, NA)) {
                                stop("Invalid labels specification. Use NULL, not NA", call. = FALSE)
-                             } else if (is.waive(self$labels)) {
-                               labels <- self$trans$format(breaks)
-                             } else if (is.function(self$labels)) {
-                               labels <- self$labels(breaks)
+                             } else if (is.waive(self$a_labels)) {
+                               a_labels <- self$trans$format(breaks)
+                             } else if (is.function(self$a_labels)) {
+                               a_labels <- self$a_labels(breaks)
                              } else {
-                               labels <- self$labels
+                               a_labels <- self$a_labels
                              }
-                             if (length(labels) != length(breaks)) {
+                             if (length(a_labels) != length(breaks)) {
                                stop("Breaks and labels are different lengths")
                              }
-                             labels
+                             a_labels
                            },
 
                            clone = function(self) {
@@ -308,11 +308,11 @@ a_ScaleContinuous <- a_ggproto("a_ScaleContinuous", a_Scale,
                              # major breaks
                              major <- self$get_breaks(range)
 
-                             # labels
-                             labels <- self$get_labels(major)
+                             # a_labels
+                             a_labels <- self$get_labels(major)
 
                              # drop oob breaks/labels by testing major == NA
-                             if (!is.null(labels)) labels <- labels[!is.na(major)]
+                             if (!is.null(a_labels)) a_labels <- a_labels[!is.na(major)]
                              if (!is.null(major)) major <- major[!is.na(major)]
 
                              # minor breaks
@@ -323,7 +323,7 @@ a_ScaleContinuous <- a_ggproto("a_ScaleContinuous", a_Scale,
                              major_n <- rescale(major, from = range)
                              minor_n <- rescale(minor, from = range)
 
-                             list(range = range, labels = labels,
+                             list(range = range, a_labels = a_labels,
                                   major = major_n, minor = minor_n,
                                   major_source = major, minor_source = minor)
                            },
@@ -402,31 +402,31 @@ a_ScaleDiscrete <- a_ggproto("a_ScaleDiscrete", a_Scale,
 
                            if (is.null(breaks)) return(NULL)
 
-                           if (is.null(self$labels)) {
+                           if (is.null(self$a_labels)) {
                              return(NULL)
-                           } else if (identical(self$labels, NA)) {
+                           } else if (identical(self$a_labels, NA)) {
                              stop("Invalid labels specification. Use NULL, not NA", call. = FALSE)
-                           }else if (is.waive(self$labels)) {
+                           }else if (is.waive(self$a_labels)) {
                              format(self$get_breaks(), justify = "none", trim = TRUE)
-                           } else if (is.function(self$labels)) {
-                             self$labels(breaks)
+                           } else if (is.function(self$a_labels)) {
+                             self$a_labels(breaks)
                            } else {
-                             if (!is.null(names(self$labels))) {
+                             if (!is.null(names(self$a_labels))) {
                                # If labels have names, use them to match with breaks
-                               labels <- breaks
+                               a_labels <- breaks
 
-                               map <- match(names(self$labels), labels, nomatch = 0)
-                               labels[map] <- self$labels[map != 0]
-                               labels
+                               map <- match(names(self$a_labels), a_labels, nomatch = 0)
+                               a_labels[map] <- self$a_labels[map != 0]
+                               a_labels
                              } else {
-                               labels <- self$labels
+                               a_labels <- self$a_labels
 
                                # Need to ensure that if breaks were dropped, corresponding labels are too
                                pos <- attr(breaks, "pos")
                                if (!is.null(pos)) {
-                                 labels <- labels[pos]
+                                 a_labels <- a_labels[pos]
                                }
-                               labels
+                               a_labels
                              }
                            }
                          },
@@ -443,10 +443,10 @@ a_ScaleDiscrete <- a_ggproto("a_ScaleDiscrete", a_Scale,
 
                            major <- self$get_breaks(limits)
                            if (is.null(major)) {
-                             labels <- major_n <- NULL
+                             a_labels <- major_n <- NULL
                            } else {
 
-                             labels <- self$get_labels(major)
+                             a_labels <- self$get_labels(major)
 
                              major <- self$map(major)
                              major <- major[!is.na(major)]
@@ -455,7 +455,7 @@ a_ScaleDiscrete <- a_ggproto("a_ScaleDiscrete", a_Scale,
                              major_n <- rescale(major, from = range)
                            }
 
-                           list(range = range, labels = labels,
+                           list(range = range, a_labels = a_labels,
                                 major = major_n, minor = NULL,
                                 major_source = major, minor_source = NULL)
                          }
@@ -484,7 +484,7 @@ a_ScaleDiscrete <- a_ggproto("a_ScaleDiscrete", a_Scale,
 #'   \item A numeric vector of positions
 #'   \item A function that given the limits returns a vector of minor breaks.
 #' }
-#' @param labels One of: \itemize{
+#' @param a_labels One of: \itemize{
 #'   \item \code{NULL} for no labels
 #'   \item \code{waiver()} for the default labels computed by the
 #'     transformation object
@@ -519,12 +519,12 @@ a_ScaleDiscrete <- a_ggproto("a_ScaleDiscrete", a_Scale,
 #' @export
 continuous_a_scale <- function(aesthetics, scale_name, palette, name = waiver(),
                              breaks = waiver(), minor_breaks = waiver(),
-                             labels = waiver(), limits = NULL,
+                             a_labels = waiver(), limits = NULL,
                              rescaler = rescale, oob = censor,
                              expand = waiver(), na.value = NA_real_,
                              trans = "identity", a_guide = "legend") {
 
-  check_breaks_labels(breaks, labels)
+  check_breaks_labels(breaks, a_labels)
 
   if (is.null(breaks) && !is_position_aes(aesthetics) && a_guide != "none") {
     a_guide <- "none"
@@ -554,7 +554,7 @@ continuous_a_scale <- function(aesthetics, scale_name, palette, name = waiver(),
           breaks = breaks,
           minor_breaks = minor_breaks,
 
-          labels = labels,
+          a_labels = a_labels,
           a_guide = a_guide
   )
 }
@@ -588,7 +588,7 @@ continuous_a_scale <- function(aesthetics, scale_name, palette, name = waiver(),
 #' @param limits A character vector specifying the data range for the scale.
 #   The limits control what levels are displayed in the plot, their order,
 #'  and the default order of their display in guides.
-#' @param labels \code{NULL} for no labels, \code{waiver()} for default
+#' @param a_labels \code{NULL} for no labels, \code{waiver()} for default
 #'   labels (labels the same as breaks), a character vector the same length
 #'   as breaks, or a named character vector whose names are used to match
 #'   replacement the labels for matching breaks.
@@ -601,10 +601,10 @@ continuous_a_scale <- function(aesthetics, scale_name, palette, name = waiver(),
 #'   a_guide. See \code{\link{a_guides}} for more info.
 #' @export
 discrete_a_scale <- function(aesthetics, scale_name, palette, name = waiver(), breaks = waiver(),
-                           labels = waiver(), limits = NULL, expand = waiver(), na.value = NA, drop = TRUE,
+                           a_labels = waiver(), limits = NULL, expand = waiver(), na.value = NA, drop = TRUE,
                            a_guide = "legend") {
 
-  check_breaks_labels(breaks, labels)
+  check_breaks_labels(breaks, a_labels)
 
   if (is.null(breaks) && !is_position_aes(aesthetics) && a_guide != "none") {
     a_guide <- "none"
@@ -624,7 +624,7 @@ discrete_a_scale <- function(aesthetics, scale_name, palette, name = waiver(), b
 
           name = name,
           breaks = breaks,
-          labels = labels,
+          a_labels = a_labels,
           drop = drop,
           a_guide = a_guide
   )

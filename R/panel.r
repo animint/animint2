@@ -180,10 +180,10 @@ train_ranges <- function(panel, a_coord) {
   panel
 }
 
-xlabel <- function(panel, labels) {
-  panel$x_scales[[1]]$name %|W|% labels$x
+xlabel <- function(panel, a_labels) {
+  panel$x_scales[[1]]$name %|W|% a_labels$x
 }
 
-ylabel <- function(panel, labels) {
-  panel$y_scales[[1]]$name %|W|% labels$y
+ylabel <- function(panel, a_labels) {
+  panel$y_scales[[1]]$name %|W|% a_labels$y
 }

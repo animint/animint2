@@ -15,7 +15,7 @@
 #'
 #' \itemize{
 #'   \item \code{aspect}: Returns the desired aspect ratio for the plot.
-#'   \item \code{labels}: Returns a list containing labels for x and y.
+#'   \item \code{a_labels}: Returns a list containing labels for x and y.
 #'   \item \code{render_fg}: Renders foreground elements.
 #'   \item \code{render_bg}: Renders background elements.
 #'   \item \code{render_axis_h}: Renders the horizontal axis.
@@ -36,7 +36,7 @@ a_Coord <- a_ggproto("a_Coord",
 
   aspect = function(ranges) NULL,
 
-  labels = function(scale_details) scale_details,
+  a_labels = function(scale_details) scale_details,
 
   render_fg = function(scale_details, a_theme) a_element_render(a_theme, "panel.border"),
 
@@ -50,11 +50,11 @@ a_Coord <- a_ggproto("a_Coord",
   },
 
   render_axis_h = function(scale_details, a_theme) {
-    a_guide_axis(scale_details$x.major, scale_details$x.labels, "bottom", a_theme)
+    a_guide_axis(scale_details$x.major, scale_details$x.a_labels, "bottom", a_theme)
   },
 
   render_axis_v = function(scale_details, a_theme) {
-    a_guide_axis(scale_details$y.major, scale_details$y.labels, "left", a_theme)
+    a_guide_axis(scale_details$y.major, scale_details$y.a_labels, "left", a_theme)
   },
 
   range = function(scale_details) {

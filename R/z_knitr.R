@@ -13,10 +13,10 @@ knit_print.animint <- function(x, options, ...) {
   ## print(output.dir)
   old.wd <- setwd(output.dir)
   on.exit(setwd(old.wd))
-  # the current knitr chunk 'label' defines a directory to place the animints 
+  # the current knitr chunk 'a_label' defines a directory to place the animints 
   # hopefully this regular expression is safe enough to workaround bad chunk names
   # http://stackoverflow.com/questions/8959243/r-remove-non-alphanumeric-symbols-from-a-string
-  dir <- gsub("[^[:alnum:]]", "", options$label)
+  dir <- gsub("[^[:alnum:]]", "", options$a_label)
   animint2dir(x, out.dir = dir, json.file = 'plot.json', open.browser = FALSE)
   res <- new_animint(list(id = dir), json.file = file.path(dir, 'plot.json'))
   # if this is the first plot, place scripts just before the plot
@@ -48,7 +48,7 @@ new_animint <- function(attrs, json.file) {
     prefix <- '".'
     nm <- attrs[[idx]]
   }  else warning('Unknown attribute')
-  # using chunk labels is problematic for JS variable names is problematic since '-', '.', etc are illegal
+  # using chunk a_labels is problematic for JS variable names is problematic since '-', '.', etc are illegal
   escaped <- gsub("[-.]", "_", nm)
   selectr <- paste0(prefix, escaped)
   paste0('<p></p>\n<div ', attrz,

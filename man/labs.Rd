@@ -5,27 +5,27 @@
 \alias{xlab}
 \alias{ylab}
 \alias{ggtitle}
-\title{Change axis labels, legend titles, plot title/subtitle and below-plot
+\title{Change axis a_labels, legend titles, plot title/subtitle and below-plot
 caption.}
 \usage{
 labs(...)
 
-xlab(label)
+xlab(a_label)
 
-ylab(label)
+ylab(a_label)
 
-ggtitle(label, subtitle = NULL)
+ggtitle(a_label, subtitle = NULL)
 }
 \arguments{
 \item{...}{a list of new names in the form aesthetic = "new name"}
 
-\item{label}{The text for the axis, plot title or caption below the plot.}
+\item{a_label}{The text for the axis, plot title or caption below the plot.}
 
 \item{subtitle}{the text for the subtitle for the plot which will be
 displayed below the title. Leave \code{NULL} for no subtitle.}
 }
 \description{
-Change axis labels, legend titles, plot title/subtitle and below-plot
+Change axis a_labels, legend titles, plot title/subtitle and below-plot
 caption.
 }
 \examples{

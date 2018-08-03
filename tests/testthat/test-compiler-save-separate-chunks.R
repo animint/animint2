@@ -206,7 +206,7 @@ scatter <- a_plot()+
              clickSelects="country",
              showSelected="year",
              data=no.israel)+
-  a_geom_text(aes(life.expectancy, fertility.rate, label=country,
+  a_geom_text(aes(life.expectancy, fertility.rate, a_label=country,
                 key=country), # also use key here!
             data=no.israel,
             showSelected=c("country", "year"),
@@ -246,7 +246,7 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   ## choose first varied.chunk to test
   varied.data <- read.csv(varied.chunks[1], sep = "\t", comment.char = "")
   expect_equal(nrow(varied.data), 1)
-  expect_true(all(c("x", "y", "label", "key") %in% names(varied.data)))
+  expect_true(all(c("x", "y", "a_label", "key") %in% names(varied.data)))
   
   ## single var selected
   common.chunk <-

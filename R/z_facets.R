@@ -32,29 +32,29 @@ getStrips.grid <- function(a_facet, panel, ...) {
 
 #' @format NULL
 #' @export
-build_strip <- function(panel, label_df, labeller, side = "right", ...) {
+build_strip <- function(panel, a_label_df, labeller, side = "right", ...) {
   side <- match.arg(side, c("top", "left", "bottom", "right"))
   labeller <- match.fun(labeller)
   # No labelling data, so return empty string?
-  if (plyr::empty(label_df)) {
+  if (plyr::empty(a_label_df)) {
     return("")
   }
   # Create matrix of labels
-  labels <- matrix(list(), nrow = nrow(label_df), ncol = ncol(label_df))
-  labels <- lapply(labeller(label_df), cbind)
-  labels <- do.call("cbind", labels)
+  a_labels <- matrix(list(), nrow = nrow(a_label_df), ncol = ncol(a_label_df))
+  a_labels <- lapply(labeller(a_label_df), cbind)
+  a_labels <- do.call("cbind", a_labels)
   
   # unlike ggplot2, we collapse "layers" of strips into 1 layer
-  apply(labels, 1, paste, collapse = "; ")
+  apply(a_labels, 1, paste, collapse = "; ")
 }
 
 #' @export
 getStrips.wrap <- function(a_facet, panel, ...) {
-  labels_df <- panel$layout[names(a_facet$facets)]
-  labels_df[] <- plyr::llply(labels_df, format, justify = "none")
-  # facet_wrap labels always go on top
+  a_labels_df <- panel$layout[names(a_facet$facets)]
+  a_labels_df[] <- plyr::llply(a_labels_df, format, justify = "none")
+  # facet_wrap a_labels always go on top
   # we return a list so p_info.strips is always an object (on the JS side)
-  strips <- list(top = apply(labels_df, 1, paste, collapse = ", "), right = list(""))
+  strips <- list(top = apply(a_labels_df, 1, paste, collapse = ", "), right = list(""))
   # strips <- strips[!identical(strips$top, rep("", nrow(panel$layout)))]
   strips$n <- list(top = max(panel$layout$ROW), right = 0)
   strips

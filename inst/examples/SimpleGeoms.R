@@ -50,7 +50,7 @@ g4
 #' path: should show a two-dimensional random walk, where x and y are position, z is time.
 pathdata <- data.frame(x=rnorm(30, 0, .5), y=rnorm(30, 0, .5), z=1:30)
 g5 <- a_plot() + a_geom_path(data=pathdata, aes(x=x, y=y), alpha=.5) +
-  a_geom_text(data=pathdata, aes(x=x, y=y, label=z)) + 
+  a_geom_text(data=pathdata, aes(x=x, y=y, a_label=z)) + 
   ggtitle("a_geom_path")
 g5
 # gg2animint(list(g1=g1, g2=g2, g3=g3, g4=g4, g5=g5))
@@ -63,7 +63,7 @@ polydata <- rbind(
 g6 <- a_plot() + 
   a_geom_polygon(data=polydata, aes(x=x, y=y, group=group, fill=fill, colour=fill), alpha=.5)+
   a_scale_colour_identity() + a_scale_fill_identity()+
-  a_geom_text(data=polydata, aes(x=xc, y=yc, label=group)) +
+  a_geom_text(data=polydata, aes(x=xc, y=yc, a_label=group)) +
   ggtitle("a_geom_polygon")
 g6
 # gg2animint(list(g1=g1, g2=g2, g3=g3, g4=g4, g5=g5, g6=g6))
@@ -178,7 +178,7 @@ g17 <- a_plot() +
   a_geom_polygon(data=assault.map, aes(x=long, y=lat, group=group, fill=value, colour=value)) +
   expand_limits(x = states_map$long, y = states_map$lat) + 
   ggtitle("a_geom_polygon map") + ylim(c(12, 63)) + 
-  a_geom_text(data=data.frame(x=-95.84, y=55, label="Arrests for Assault"), hjust=.5, aes(x=x, y=y, label=label))
+  a_geom_text(data=data.frame(x=-95.84, y=55, a_label="Arrests for Assault"), hjust=.5, aes(x=x, y=y, a_label=a_label))
 g17  
 # gg2animint(list(g1=g1, g2=g2, g3=g3, g4=g4, g5=g5, g6=g6, g7=g7, g8=g8, 
 #                 g9=g9, g10=g10, g11=g11, g12=g12, g13=g13, g14=g14, g15=g15, 

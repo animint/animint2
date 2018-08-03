@@ -1,17 +1,17 @@
 #' @export
 #' @rdname a_geom_text
-#' @param label.padding Amount of padding around label. Defaults to 0.25 lines.
-#' @param label.r Radius of rounded corners. Defaults to 0.15 lines.
-#' @param label.size Size of label border, in mm.
+#' @param a_label.padding Amount of padding around a_label. Defaults to 0.25 lines.
+#' @param a_label.r Radius of rounded corners. Defaults to 0.15 lines.
+#' @param a_label.size Size of a_label border, in mm.
 a_geom_label <- function(mapping = NULL, data = NULL,
                        a_stat = "identity", a_position = "identity",
                        ...,
                        parse = FALSE,
                        nudge_x = 0,
                        nudge_y = 0,
-                       label.padding = unit(0.25, "lines"),
-                       label.r = unit(0.15, "lines"),
-                       label.size = 0.25,
+                       a_label.padding = unit(0.25, "lines"),
+                       a_label.r = unit(0.15, "lines"),
+                       a_label.size = 0.25,
                        na.rm = FALSE,
                        show.legend = NA,
                        inherit.aes = TRUE) {
@@ -33,9 +33,9 @@ a_geom_label <- function(mapping = NULL, data = NULL,
     inherit.aes = inherit.aes,
     params = list(
       parse = parse,
-      label.padding = label.padding,
-      label.r = label.r,
-      label.size = label.size,
+      a_label.padding = a_label.padding,
+      a_label.r = a_label.r,
+      a_label.size = a_label.size,
       na.rm = na.rm,
       ...
     )
@@ -48,7 +48,7 @@ a_geom_label <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomLabel <- a_ggproto("a_GeomLabel", a_Geom,
-  required_aes = c("x", "y", "label"),
+  required_aes = c("x", "y", "a_label"),
 
   default_aes = aes(
     colour = "black", fill = "white", size = 3.88, angle = 0,
@@ -58,10 +58,10 @@ a_GeomLabel <- a_ggproto("a_GeomLabel", a_Geom,
 
   draw_panel = function(self, data, panel_scales, a_coord, parse = FALSE,
                         na.rm = FALSE,
-                        label.padding = unit(0.25, "lines"),
-                        label.r = unit(0.15, "lines"),
-                        label.size = 0.25) {
-    lab <- data$label
+                        a_label.padding = unit(0.25, "lines"),
+                        a_label.r = unit(0.15, "lines"),
+                        a_label.size = 0.25) {
+    lab <- data$a_label
     if (parse) {
       lab <- parse(text = as.character(lab))
     }
@@ -76,12 +76,12 @@ a_GeomLabel <- a_ggproto("a_GeomLabel", a_Geom,
 
     grobs <- lapply(1:nrow(data), function(i) {
       row <- data[i, , drop = FALSE]
-      labelGrob(lab[i],
+      a_labelGrob(lab[i],
         x = unit(row$x, "native"),
         y = unit(row$y, "native"),
         just = c(row$hjust, row$vjust),
-        padding = label.padding,
-        r = label.r,
+        padding = a_label.padding,
+        r = a_label.r,
         text.gp = gpar(
           col = row$colour,
           fontsize = row$size * .pt,
@@ -92,7 +92,7 @@ a_GeomLabel <- a_ggproto("a_GeomLabel", a_Geom,
         rect.gp = gpar(
           col = row$colour,
           fill = alpha(row$fill, row$alpha),
-          lwd = label.size * .pt
+          lwd = a_label.size * .pt
         )
       )
     })
@@ -104,29 +104,29 @@ a_GeomLabel <- a_ggproto("a_GeomLabel", a_Geom,
   draw_key = a_draw_key_label
 )
 
-labelGrob <- function(label, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
+a_labelGrob <- function(a_label, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
                       just = "center", padding = unit(0.25, "lines"), r = unit(0.1, "snpc"),
                       default.units = "npc", name = NULL,
                       text.gp = gpar(), rect.gp = gpar(fill = "white"), vp = NULL) {
 
-  stopifnot(length(label) == 1)
+  stopifnot(length(a_label) == 1)
 
   if (!is.unit(x))
     x <- unit(x, default.units)
   if (!is.unit(y))
     y <- unit(y, default.units)
 
-  gTree(label = label, x = x, y = y, just = just, padding = padding, r = r,
-    name = name, text.gp = text.gp, rect.gp = rect.gp, vp = vp, cl = "labelgrob")
+  gTree(a_label = a_label, x = x, y = y, just = just, padding = padding, r = r,
+    name = name, text.gp = text.gp, rect.gp = rect.gp, vp = vp, cl = "a_labelgrob")
 }
 
 #' @export
-makeContent.labelgrob <- function(x) {
+makeContent.a_labelgrob <- function(x) {
   hj <- resolveHJust(x$just, NULL)
   vj <- resolveVJust(x$just, NULL)
 
   t <- textGrob(
-    x$label,
+    x$a_label,
     x$x + 2 * (0.5 - hj) * x$padding,
     x$y + 2 * (0.5 - vj) * x$padding,
     just = c(hj, vj),

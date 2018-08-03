@@ -166,7 +166,7 @@ train_trans <- function(scale_details, limits, trans, name) {
   out$minor_source <- transform_value(trans, out$minor_source, out$range)
 
   out <- list(
-    range = out$range, labels = out$labels,
+    range = out$range, a_labels = out$a_labels,
     major = out$major_source, minor = out$minor_source
   )
   names(out) <- paste(name, names(out), sep = ".")

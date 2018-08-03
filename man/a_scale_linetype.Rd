@@ -14,7 +14,7 @@ a_scale_linetype_discrete(..., na.value = "blank")
 }
 \arguments{
 \item{...}{common discrete scale parameters: \code{name}, \code{breaks},
-\code{labels}, \code{na.value}, \code{limits} and \code{a_guide}.  See
+\code{a_labels}, \code{na.value}, \code{limits} and \code{a_guide}.  See
 \code{\link{discrete_a_scale}} for more details}
 
 \item{na.value}{The linetype to use for \code{NA} values.}

@@ -198,7 +198,7 @@ tornado.lines <-
                   colour=seg.color, showSelected="year",
                   data=data.frame(UStornadoes,place="end")),
        ts=a_plot()+
-       a_geom_text(aes(year, count, label=state),
+       a_geom_text(aes(year, count, a_label=state),
                  hjust=0, showSelected="state",
                  data=subset(UStornadoCounts, year==max(year)))+
        make_tallrect(UStornadoCounts, "year")+

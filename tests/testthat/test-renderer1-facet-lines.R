@@ -23,14 +23,14 @@ wb.facets <-
                         key=country), # key aesthetic for animated transitions!
                     showSelected=c("year", "region"), clickSelects=c("country"),
                     data=SCATTER(not.na))+
-         a_geom_text(aes(fertility.rate, life.expectancy, label=country,
+         a_geom_text(aes(fertility.rate, life.expectancy, a_label=country,
                        key=country), #also use key here!
                    showSelected=c("country", "year"),
                    clickSelects="country",
                    data=SCATTER(not.na))+
          a_scale_size_animint(breaks=10^(5:9))+
          a_facet_grid(.~a_facet, scales="free")+
-         a_geom_text(aes(5, 85, label=paste0("year = ", year)),
+         a_geom_text(aes(5, 85, a_label=paste0("year = ", year)),
                    showSelected="year",
                    data=SCATTER(years)),
        time=list(variable="year",ms=3000),

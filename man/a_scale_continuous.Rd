@@ -13,12 +13,12 @@
 \title{Continuous position scales (x & y).}
 \usage{
 a_scale_x_continuous(name = waiver(), breaks = waiver(),
-  minor_breaks = waiver(), labels = waiver(), limits = NULL,
+  minor_breaks = waiver(), a_labels = waiver(), limits = NULL,
   expand = waiver(), oob = censor, na.value = NA_real_,
   trans = "identity")
 
 a_scale_y_continuous(name = waiver(), breaks = waiver(),
-  minor_breaks = waiver(), labels = waiver(), limits = NULL,
+  minor_breaks = waiver(), a_labels = waiver(), limits = NULL,
   expand = waiver(), oob = censor, na.value = NA_real_,
   trans = "identity")
 
@@ -56,7 +56,7 @@ mapping used for that aesthetic.}
   \item A function that given the limits returns a vector of minor breaks.
 }}
 
-\item{labels}{One of: \itemize{
+\item{a_labels}{One of: \itemize{
   \item \code{NULL} for no labels
   \item \code{waiver()} for the default labels computed by the
     transformation object
@@ -125,9 +125,9 @@ m + a_scale_x_continuous(breaks = 1:10)
 m + a_scale_x_continuous(breaks = c(1,3,7,9))
 
 #  * manually label the ticks
-m + a_scale_x_continuous(breaks = c(2,5,8), labels = c("two", "five", "eight"))
-m + a_scale_x_continuous(breaks = c(2,5,8), labels = c("horrible", "ok", "awesome"))
-m + a_scale_x_continuous(breaks = c(2,5,8), labels = expression(Alpha, Beta, Omega))
+m + a_scale_x_continuous(breaks = c(2,5,8), a_labels = c("two", "five", "eight"))
+m + a_scale_x_continuous(breaks = c(2,5,8), a_labels = c("horrible", "ok", "awesome"))
+m + a_scale_x_continuous(breaks = c(2,5,8), a_labels = expression(Alpha, Beta, Omega))
 
 # There are a few built in transformation that you can use:
 m + a_scale_y_log10()
@@ -143,9 +143,9 @@ df <- data.frame(
   y = seq(0, 1, length.out = 10)
 )
 p <- a_plot(df, aes(x, y)) + a_geom_point()
-p + a_scale_y_continuous(labels = scales::percent)
-p + a_scale_y_continuous(labels = scales::dollar)
-p + a_scale_x_continuous(labels = scales::comma)
+p + a_scale_y_continuous(a_labels = scales::percent)
+p + a_scale_y_continuous(a_labels = scales::dollar)
+p + a_scale_x_continuous(a_labels = scales::comma)
 
 # Other shortcut functions
 a_plot(movies, aes(rating, votes)) +

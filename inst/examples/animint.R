@@ -17,7 +17,7 @@ gapminder <-
                   showSelected="year",
                   clickSelects="country",
                   data=WorldBank)+
-       a_geom_text(aes(fertility.rate, life.expectancy, label=country),
+       a_geom_text(aes(fertility.rate, life.expectancy, a_label=country),
                  showSelected=c("country", "year"),
                  data=WorldBank)+
        make_text(WorldBank, 5, 80, "year")+

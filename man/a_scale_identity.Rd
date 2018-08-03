@@ -52,10 +52,10 @@ a_plot(df, aes(x, y)) +
 a_plot(df, aes(x, y)) +
   a_geom_tile(aes(fill = colour)) +
   a_scale_fill_identity(a_guide = "legend")
-# But you'll typically also need to supply breaks and labels:
+# But you'll typically also need to supply breaks and a_labels:
 a_plot(df, aes(x, y)) +
   a_geom_tile(aes(fill = colour)) +
-  a_scale_fill_identity("trt", labels = letters[1:4], breaks = df$colour,
+  a_scale_fill_identity("trt", a_labels = letters[1:4], breaks = df$colour,
   a_guide = "legend")
 
 # cyl scaled to appropriate size

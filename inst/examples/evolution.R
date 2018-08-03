@@ -27,7 +27,7 @@ two.selectors.color <-
   list(ts=a_plot()+
        make_tallrect(generation.loci, "generation")+
        a_geom_text(aes(generation,frequency,
-                     label=sprintf("locus %d",locus)), showSelected="locus",
+                     a_label=sprintf("locus %d",locus)), showSelected="locus",
                  data=data.frame(loci,generation=50,frequency=1.05))+
        a_scale_colour_manual(values=colormap)+
        a_geom_line(aes(generation, frequency, group=population,
@@ -47,7 +47,7 @@ two.selectors.color <-
        a_geom_point(aes(locus, frequency, colour=color, fill=color),
                   data=ancestral, pch=21)+
        a_geom_text(aes(locus,frequency,
-                     label=sprintf("generation %d",generation)),
+                     a_label=sprintf("generation %d",generation)),
                  showSelected="generation",
                  data=data.frame(generations,locus=35,frequency=1)),
        duration=list(generation=1000))

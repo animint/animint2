@@ -39,7 +39,7 @@ viz.data.fun <- list(
              clickSelects="country",
              showSelected="year",
              data=SCATTER(not.na))+
-    a_geom_text(aes(fertility.rate, life.expectancy, label=country,
+    a_geom_text(aes(fertility.rate, life.expectancy, a_label=country,
                   key=country), #also use key here!
               showSelected=c("country", "year"),
               clickSelects="country",

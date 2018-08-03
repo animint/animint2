@@ -11,7 +11,7 @@ a_scale_y_discrete(..., expand = waiver())
 }
 \arguments{
 \item{...}{common discrete scale parameters: \code{name}, \code{breaks},
-\code{labels}, \code{na.value}, \code{limits} and \code{a_guide}.  See
+\code{a_labels}, \code{na.value}, \code{limits} and \code{a_guide}.  See
 \code{\link{discrete_a_scale}} for more details}
 
 \item{expand}{a numeric vector of length two giving multiplicative and
@@ -36,7 +36,7 @@ a_plot(diamonds, aes(cut)) + a_geom_bar()
       a_geom_jitter())
 
 d + a_scale_x_discrete("Cut")
-d + a_scale_x_discrete("Cut", labels = c("Fair" = "F","Good" = "G",
+d + a_scale_x_discrete("Cut", a_labels = c("Fair" = "F","Good" = "G",
   "Very Good" = "VG","Perfect" = "P","Ideal" = "I"))
 
 # Use limits to adjust the which levels (and in what order)
@@ -55,6 +55,6 @@ a_plot(mpg, aes(reorder(manufacturer, displ), cty)) + a_geom_point()
 # Use abbreviate as a formatter to reduce long names
 a_plot(mpg, aes(reorder(manufacturer, displ), cty)) +
   a_geom_point() +
-  a_scale_x_discrete(labels = abbreviate)
+  a_scale_x_discrete(a_labels = abbreviate)
 }
 }

@@ -5,7 +5,7 @@
 \title{Wrap a 1d ribbon of panels into 2d.}
 \usage{
 a_facet_wrap(facets, nrow = NULL, ncol = NULL, scales = "fixed",
-  shrink = TRUE, labeller = "label_value", as.table = TRUE,
+  shrink = TRUE, labeller = "a_label_value", as.table = TRUE,
   switch = NULL, drop = TRUE, dir = "h")
 }
 \arguments{
@@ -29,7 +29,7 @@ one with formulae of the type \code{~cyl + am}. Each output
 column gets displayed as one separate line in the strip
 label. This function should inherit from the "labeller" S3 class
 for compatibility with \code{\link{labeller}()}. See
-\code{\link{label_value}} for more details and pointers to other
+\code{\link{a_label_value}} for more details and pointers to other
 options.}
 
 \item{as.table}{If \code{TRUE}, the default, the facets are laid out like
@@ -77,7 +77,7 @@ a_plot(mpg, aes(displ, hwy)) +
 # Use the `labeller` option to control how labels are printed:
 a_plot(mpg, aes(displ, hwy)) +
   a_geom_point() +
-  facet_wrap(c("cyl", "drv"), labeller = "label_both")
+  facet_wrap(c("cyl", "drv"), labeller = "a_label_both")
 
 # To change the order in which the panels appear, change the levels
 # of the underlying factor.

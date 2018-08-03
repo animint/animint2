@@ -14,11 +14,11 @@
 #'
 #' a_plot(df, aes(x, y)) +
 #'   a_geom_point() +
-#'   a_geom_text(aes(label = y))
+#'   a_geom_text(aes(a_label = y))
 #'
 #' a_plot(df, aes(x, y)) +
 #'   a_geom_point() +
-#'   a_geom_text(aes(label = y), a_position = a_position_nudge(y = -0.1))
+#'   a_geom_text(aes(a_label = y), a_position = a_position_nudge(y = -0.1))
 a_position_nudge <- function(x = 0, y = 0) {
   a_ggproto(NULL, a_PositionNudge,
     x = x,

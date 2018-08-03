@@ -6,14 +6,14 @@ NO_GROUP <- -1L
 #
 # If the \code{group} variable is not present, then a new group
 # variable is generated from the interaction of all discrete (factor or
-# character) vectors, excluding \code{label}. The special value \code{NO_GROUP}
+# character) vectors, excluding \code{a_label}. The special value \code{NO_GROUP}
 # is used for all observations if no discrete variables exist.
 add_group <- function(data) {
   if (empty(data)) return(data)
 
   if (is.null(data$group)) {
     disc <- vapply(data, is.discrete, logical(1))
-    disc[names(disc) %in% c("label", "PANEL")] <- FALSE
+    disc[names(disc) %in% c("a_label", "PANEL")] <- FALSE
 
     if (any(disc)) {
       data$group <- plyr::id(data[disc], drop = TRUE)

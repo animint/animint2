@@ -2,25 +2,25 @@
 % Please edit documentation in R/facet-labels.r
 \name{labellers}
 \alias{labellers}
-\alias{label_value}
-\alias{label_both}
-\alias{label_context}
-\alias{label_parsed}
-\alias{label_wrap_gen}
+\alias{a_label_value}
+\alias{a_label_both}
+\alias{a_label_context}
+\alias{a_label_parsed}
+\alias{a_label_wrap_gen}
 \title{Labeller functions}
 \usage{
-label_value(labels, multi_line = TRUE)
+a_label_value(a_labels, multi_line = TRUE)
 
-label_both(labels, multi_line = TRUE, sep = ": ")
+a_label_both(a_labels, multi_line = TRUE, sep = ": ")
 
-label_context(labels, multi_line = TRUE, sep = ": ")
+a_label_context(a_labels, multi_line = TRUE, sep = ": ")
 
-label_parsed(labels, multi_line = TRUE)
+a_label_parsed(a_labels, multi_line = TRUE)
 
-label_wrap_gen(width = 25, multi_line = TRUE)
+a_label_wrap_gen(width = 25, multi_line = TRUE)
 }
 \arguments{
-\item{labels}{Data frame of labels. Usually contains only one
+\item{a_labels}{Data frame of labels. Usually contains only one
 element, but facetting over multiple factors entails multiple
 label variables.}
 
@@ -39,16 +39,16 @@ such as \code{~first + second}) should be displayed on a single
 line separated with commas, or each on their own line.
 }
 \details{
-\code{label_value()} only displays the value of a factor while
-\code{label_both()} displays both the variable name and the factor
-value. \code{label_context()} is context-dependent and uses
-\code{label_value()} for single factor facetting and
-\code{label_both()} when multiple factors are
-involved. \code{label_wrap_gen()} uses \code{\link[base]{strwrap}()}
+\code{a_label_value()} only displays the value of a factor while
+\code{a_label_both()} displays both the variable name and the factor
+value. \code{a_label_context()} is context-dependent and uses
+\code{a_label_value()} for single factor facetting and
+\code{a_label_both()} when multiple factors are
+involved. \code{a_label_wrap_gen()} uses \code{\link[base]{strwrap}()}
 for line wrapping.
 
-\code{label_parsed()} interprets the labels as plotmath
-expressions. \code{\link{label_bquote}()} offers a more flexible
+\code{a_label_parsed()} interprets the labels as plotmath
+expressions. \code{\link{a_label_bquote}()} offers a more flexible
 way of constructing plotmath expressions. See examples and
 \code{\link{bquote}()} for details on the syntax of the
 argument.
@@ -96,23 +96,23 @@ p <- a_plot(mtcars, aes(wt, mpg)) + a_geom_point()
 
 # Displaying only the values
 p + a_facet_grid(. ~ cyl)
-p + a_facet_grid(. ~ cyl, labeller = label_value)
+p + a_facet_grid(. ~ cyl, labeller = a_label_value)
 
 \donttest{
 # Displaying both the values and the variables
-p + facet_grid(. ~ cyl, labeller = label_both)
+p + facet_grid(. ~ cyl, labeller = a_label_both)
 
 # Displaying only the values or both the values and variables
 # depending on whether multiple factors are facetted over
-p + facet_grid(am ~ vs+cyl, labeller = label_context)
+p + facet_grid(am ~ vs+cyl, labeller = a_label_context)
 
 # Interpreting the labels as plotmath expressions
 p + a_facet_grid(. ~ cyl2)
-p + a_facet_grid(. ~ cyl2, labeller = label_parsed)
-p + a_facet_wrap(~vs + cyl2, labeller = label_parsed)
+p + a_facet_grid(. ~ cyl2, labeller = a_label_parsed)
+p + a_facet_wrap(~vs + cyl2, labeller = a_label_parsed)
 }
 }
 \seealso{
 \code{\link{labeller}()}, \code{\link{as_labeller}()},
-  \code{\link{label_bquote}()}
+  \code{\link{a_label_bquote}()}
 }

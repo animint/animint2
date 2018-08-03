@@ -149,12 +149,12 @@ p_tiles <- a_plot() +
   a_geom_tile(aes(xmid, ymid, fill = log(attacks)), 
             showSelected = "date", clickSelects = "id", 
             data = p_df3, colour = I("red")) + 
-  a_geom_text(aes(xmid, ymid, label = id),
+  a_geom_text(aes(xmid, ymid, a_label = id),
             showSelected = "id", 
             data = p_df3) + 
   make_text(p_df, 0, 90, "date", "Pirate Attacks from 1995 to %d") + 
   a_scale_fill_gradient(low = "#fee5d9", high = "#a50f15", name = "Attacks", 
-                      labels = c(1, 10, 50, 400), 
+                      a_labels = c(1, 10, 50, 400), 
                       breaks = log(c(1, 10, 50, 400))) + 
   a_theme(panel.background = a_element_rect(fill = "lightblue"), 
         axis.line=a_element_blank(), axis.text=a_element_blank(), 
@@ -168,10 +168,10 @@ p_time2 <- a_plot() +
   a_geom_line(aes(date, log(attacks), group = id), 
             clickSelects = "id", showSelected = "id", 
             data = p_df3) + 
-  a_geom_text(aes(text_loc_x, text_loc_y, label = id), 
+  a_geom_text(aes(text_loc_x, text_loc_y, a_label = id), 
             clickSelects = "id", showSelected = "id", 
             colour = "red", data = p_df4) + 
-  a_scale_y_continuous(labels = c(1, 7, 55, 400), name = "Total Attacks") + 
+  a_scale_y_continuous(a_labels = c(1, 7, 55, 400), name = "Total Attacks") + 
   a_scale_x_continuous(breaks = c(1995, 2000, 2005, 2010), name = "Date", limits = c(1995, 2013)) + 
   a_theme_animint(height = 350, width = 550) + 
   ggtitle("Attacks in Individual Tiles")

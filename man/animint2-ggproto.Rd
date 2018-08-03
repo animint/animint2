@@ -191,7 +191,7 @@ object, you typically will want to implement one or more of the following:
 
 \itemize{
   \item \code{aspect}: Returns the desired aspect ratio for the plot.
-  \item \code{labels}: Returns a list containing labels for x and y.
+  \item \code{a_labels}: Returns a list containing labels for x and y.
   \item \code{render_fg}: Renders foreground elements.
   \item \code{render_bg}: Renders background elements.
   \item \code{render_axis_h}: Renders the horizontal axis.

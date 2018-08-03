@@ -667,12 +667,12 @@ setPlotSizes <- function(meta, AllPlotsInfo){
 #' @param dfs list of data frames
 #' @return data frame
 merge_recurse <- function(dfs){
-  label.vec <- unique(unlist(lapply(dfs, function(df)paste(df$label))))
-  result <- data.frame(row.names=label.vec)
+  a_label.vec <- unique(unlist(lapply(dfs, function(df)paste(df$a_label))))
+  result <- data.frame(row.names=a_label.vec)
   for(df in dfs){
-    df.label <- paste(df$label)
+    df.a_label <- paste(df$a_label)
     for(col.name in names(df)){
-      result[df.label, col.name] <- df[[col.name]]
+      result[df.a_label, col.name] <- df[[col.name]]
     }
   }
   result
@@ -701,14 +701,14 @@ getLegend <- function(mb){
       if (params[["a_guide"]] == "none") return(data.frame()); # if no a_guide, return an empty df
     }
     if (nd != nk) warning("key and data have different number of rows")
-    if (!".label" %in% names(key)) return(data.frame()); # if there are no labels, return an empty df.
-    data$`.label` <- key$`.label`
+    if (!".a_label" %in% names(key)) return(data.frame()); # if there are no a_labels, return an empty df.
+    data$`.a_label` <- key$`.a_label`
     data <- data[, which(colSums(!is.na(data)) > 0)] # remove cols that are entirely na
     if("colour" %in% names(data)) data[["colour"]] <- toRGB(data[["colour"]]) # color hex values
     if("fill" %in% names(data)) data[["fill"]] <- toRGB(data[["fill"]]) # fill hex values
     names(data) <- paste0(a_geom, names(data))# aesthetics by a_geom
-    names(data) <- gsub(paste0(a_geom, "."), "", names(data), fixed=TRUE) # label isn't geom-specific
-    data$label <- paste(data$label) # otherwise it is AsIs.
+    names(data) <- gsub(paste0(a_geom, "."), "", names(data), fixed=TRUE) # a_label isn't geom-specific
+    data$a_label <- paste(data$a_label) # otherwise it is AsIs.
     data
   }
   dataframes <- mapply(function(i, j) cleanData(i$data, mb$key, j, i$params),
@@ -718,13 +718,13 @@ getLegend <- function(mb){
   if(length(dataframes)>0) {
     data <- merge_recurse(dataframes)
   } else return(NULL)
-  label.num <- suppressWarnings({
-    as.numeric(data$label)
+  a_label.num <- suppressWarnings({
+    as.numeric(data$a_label)
   })
   ## mb$breaks could be a vector of values to use, NULL, or an empty
   ## list with class "waiver"
   breaks.specified <- length(mb$breaks)
-  entry.order <- if(breaks.specified || anyNA(label.num)){
+  entry.order <- if(breaks.specified || anyNA(a_label.num)){
     1:nrow(data)
   }else{
     nrow(data):1

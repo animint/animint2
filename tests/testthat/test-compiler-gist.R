@@ -41,7 +41,7 @@ viz.chunk.none <-
                     data=TS(not.na),
                     showSelected="country",
                     clickSelects="country")+
-         a_geom_text(aes(year, life.expectancy, colour=region, label=country),
+         a_geom_text(aes(year, life.expectancy, colour=region, a_label=country),
                    data=TS(min.years),
                    showSelected="country",
                    clickSelects="country",
@@ -65,7 +65,7 @@ viz.chunk.none <-
                     validate_params = FALSE)+
          a_geom_text(aes(fertility.rate, life.expectancy,
                        key=country,
-                       label=country), 
+                       a_label=country), 
                    chunk_vars=c(),
                    showSelected=c("country", "year", "region"),
                    clickSelects="country",
@@ -73,7 +73,7 @@ viz.chunk.none <-
                    validate_params = FALSE)+
          a_scale_size_animint(breaks=10^(5:9))+
          a_facet_grid(side ~ top, scales="free")+
-         a_geom_text(aes(5, 85, label=paste0("year = ", year)),
+         a_geom_text(aes(5, 85, a_label=paste0("year = ", year)),
                        showSelected="year",
                    data=SCATTER(years)),
        time=list(variable="year",ms=3000),

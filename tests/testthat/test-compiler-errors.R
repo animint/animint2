@@ -65,7 +65,7 @@ viz.no.duration <- list(
                showSelected="year",
                clickSelects="country",
                data=WorldBank)+
-    a_geom_text(aes(x=life.expectancy, y=fertility.rate, label=country),
+    a_geom_text(aes(x=life.expectancy, y=fertility.rate, a_label=country),
               data=WorldBank,
               showSelected=c("year", "country", "region"),
               clickSelects="country"),
@@ -97,7 +97,7 @@ viz.key.duration <- list(
                showSelected="year",
                clickSelects="country",
                data=WorldBank)+
-    a_geom_text(aes(x=life.expectancy, y=fertility.rate, label=country,
+    a_geom_text(aes(x=life.expectancy, y=fertility.rate, a_label=country,
                   key=country),
                   showSelected=c("year", "country", "region"),
                   clickSelects="country",              

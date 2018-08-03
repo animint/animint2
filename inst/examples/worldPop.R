@@ -14,7 +14,7 @@ popPlots <-
                   showSelected="year",
                   data=worldPop, a_stat="identity", a_position="identity")+
          a_geom_text(aes(x=subcontinent, y=population,
-                       label=title),
+                       a_label=title),
                    showSelected="year",
                    data=years) +
          a_coord_flip(),
@@ -57,7 +57,7 @@ popPlots2 <-
                   showSelected="year", clickSelects="subcontinent",
                   data=worldPop, a_stat="identity", a_position="identity")+
          a_geom_text(aes(x=subcontinent, y=population,
-                       label=title),
+                       a_label=title),
                    showSelected="year",
                    data=years) +
          a_coord_flip(),
@@ -86,7 +86,7 @@ popPlots3 <-
                   showSelected="year", clickSelects="subcontinent",
                   data=worldPop, a_stat="identity", a_position="identity")+
          a_geom_text(aes(x=subcontinent, y=population,
-                       label=title),
+                       a_label=title),
                    showSelected="year",
                    data=years) +
          a_coord_flip(),
@@ -103,8 +103,8 @@ popPlots3 <-
          a_geom_rect(aes(xmin=0, xmax=0.4, ymin=cumPop.lower, ymax=cumPop, fill=factor(subcontinent)), 
                    showSelected="year", clickSelects="subcontinent",
                    data=popCumSum, colour="#000000")+
-         a_scale_y_continuous(limits=c(0,1), breaks=c(0, 1), labels=NULL) + 
-         a_scale_x_continuous(labels=NULL) + 
+         a_scale_y_continuous(limits=c(0,1), breaks=c(0, 1), a_labels=NULL) + 
+         a_scale_x_continuous(a_labels=NULL) + 
          a_scale_fill_discrete("Subcontinent") +
          xlab("") + ylab(""),
       width=list(bars = 400, lines = 400, stack = 200), height=list(400)

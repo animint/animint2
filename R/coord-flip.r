@@ -52,8 +52,8 @@ a_CoordFlip <- a_ggproto("a_CoordFlip", a_CoordCartesian,
     flip_labels(trained)
   },
 
-  labels = function(scale_details) {
-    flip_labels(a_CoordCartesian$labels(scale_details))
+  a_labels = function(scale_details) {
+    flip_labels(a_CoordCartesian$a_labels(scale_details))
   }
 )
 

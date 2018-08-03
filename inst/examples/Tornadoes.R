@@ -160,7 +160,7 @@ tornado.points.anim <-
                 clickSelects="year", showSelected="state",
                 data=UStornadoCounts, a_stat="identity", a_position="identity")+
        make_text(UStornadoes, 1980, 200, "state")+
-       a_geom_text(aes(year, count + 5, label=count),
+       a_geom_text(aes(year, count + 5, a_label=count),
                  showSelected=c("state", "year"),
                  data=UStornadoCounts, size=20))
 animint2dir(tornado.points.anim, "tornado-points-anim")

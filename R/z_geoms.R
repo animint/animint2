@@ -261,12 +261,12 @@ make_bar <- function(data, x.name, alpha=1){
 #' @param data data.frame of relevant data
 #' @param x x coordinate of label position
 #' @param y y coordinate of label position
-#' @param label.var variable matching showSelected, used to obtain label value
+#' @param a_label.var variable matching showSelected, used to obtain label value
 #' @param format String format for label. Use \%d, \%f, etc. to insert relevant label.var value.
 #' @return a a_geom_text layer.
 #' @author Toby Dylan Hocking
 #' @export
-make_text <- function(data, x, y, label.var, format=NULL){
+make_text <- function(data, x, y, a_label.var, format=NULL){
   data <- as.data.frame(data)
   stopifnot(length(x)==1)
   stopifnot(length(y)==1)
@@ -278,13 +278,13 @@ make_text <- function(data, x, y, label.var, format=NULL){
   ## if(is.character(y) && y %in% names(data)){
   ##   y <- max(data[,y])
   ## }
-  data <- unique(data[,label.var,drop=FALSE])
-  data$label <- data[,label.var]
+  data <- unique(data[,a_label.var,drop=FALSE])
+  data$a_label <- data[,a_label.var]
   data$x <- x
   data$y <- y
   if(is.null(format)){
-    data$label <- as.character(data$label)
-    format <- paste(label.var,"= %s")
+    data$a_label <- as.character(data$a_label)
+    format <- paste(a_label.var,"= %s")
   }
   if(is.character(format)){
     fstring <- format
@@ -293,7 +293,7 @@ make_text <- function(data, x, y, label.var, format=NULL){
     }
   }
   stopifnot(is.function(format))
-  data$label <- format(data$label)
-  a <- aes_string(x="x",y="y",label="label")
-  a_geom_text(a, showSelected=label.var, data)
+  data$a_label <- format(data$a_label)
+  a <- aes_string(x="x",y="y",a_label="a_label")
+  a_geom_text(a, showSelected=a_label.var, data)
 }

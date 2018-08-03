@@ -56,7 +56,7 @@ grad.desc.viz <- function(hjust) {
               showSelected = "iteration2", colour = "red", size = 1) + 
     a_geom_point(data = objective, aes(x = x, y = y), showSelected = "iteration2", colour = "green", 
                size = 2) + 
-    a_geom_text(data = objective2, aes(x = x, y = y - 0.2, label = round(z, 2)), showSelected = "iteration2") + 
+    a_geom_text(data = objective2, aes(x = x, y = y - 0.2, a_label = round(z, 2)), showSelected = "iteration2") + 
     a_scale_x_continuous(expand = c(0, 0)) + 
     a_scale_y_continuous(expand = c(0, 0)) + 
     ggtitle("contour of function value") + 
@@ -68,7 +68,7 @@ grad.desc.viz <- function(hjust) {
     a_geom_tallrect(data = objective2, aes(xmin = iteration - 1 / 2, xmax = iteration + 1 / 2), 
                   clickSelects = "iteration2", alpha = .3) + 
     a_geom_text(data = objective2, aes(x = iteration, y = z + 0.3, 
-                                     label = iteration), showSelected = "iteration2", hjust = hjust) + 
+                                     a_label = iteration), showSelected = "iteration2", hjust = hjust) + 
     ggtitle("objective value vs. iteration") + 
     a_theme_animint(width = 600, height = 600)
   
@@ -137,11 +137,11 @@ hjust.df <- data.frame(
   hjust=c(0,0.5,1),
   anchor=c("start", "middle", "end"),
   stringsAsFactors=FALSE)
-hjust.df$label <- paste0("hjust=",hjust.df$hjust)
-rownames(hjust.df) <- hjust.df$label
+hjust.df$a_label <- paste0("hjust=",hjust.df$hjust)
+rownames(hjust.df) <- hjust.df$a_label
 viz <- list(
   text=a_plot()+
-    a_geom_text(aes(hjust, hjust, label=label, hjust=hjust),
+    a_geom_text(aes(hjust, hjust, a_label=a_label, hjust=hjust),
               data=hjust.df)
   )
 
@@ -150,18 +150,18 @@ test_that("aes(hjust) works fine for 0, 0.5, 1", {
   xpath <- '//g[@class="a_geom1_text_text"]//text'
   text.list <- getNodeSet(info$html, xpath)
   computed.anchor <- getStyleValue(info$html, xpath, "text-anchor")
-  label.vec <- sapply(text.list, xmlValue)
-  expected.anchor <- hjust.df[label.vec, "anchor"]
+  a_label.vec <- sapply(text.list, xmlValue)
+  expected.anchor <- hjust.df[a_label.vec, "anchor"]
   expect_identical(computed.anchor, expected.anchor)
 })
 
 hjust.df <- data.frame(hjust=c(0,0.5,1,1.5),
                        anchor=c("start", "middle", "end", "unknown"))
-hjust.df$label <- paste0("hjust=",hjust.df$hjust)
-rownames(hjust.df) <- hjust.df$label
+hjust.df$a_label <- paste0("hjust=",hjust.df$hjust)
+rownames(hjust.df) <- hjust.df$a_label
 viz <- list(
   text=a_plot()+
-    a_geom_text(aes(hjust, hjust, label=label, hjust=hjust),
+    a_geom_text(aes(hjust, hjust, a_label=a_label, hjust=hjust),
               data=hjust.df)
   )
 
@@ -172,11 +172,11 @@ test_that("error if aes(hjust) not in 0, 0.5, 1", {
 })
 
 vjust.df <- data.frame(vjust=c(0,0.5,1))
-vjust.df$label <- paste0("vjust=",vjust.df$vjust)
-rownames(vjust.df) <- vjust.df$label
+vjust.df$a_label <- paste0("vjust=",vjust.df$vjust)
+rownames(vjust.df) <- vjust.df$a_label
 viz <- list(
   text=a_plot()+
-    a_geom_text(aes(vjust, vjust, label=label, vjust=vjust),
+    a_geom_text(aes(vjust, vjust, a_label=a_label, vjust=vjust),
               data=vjust.df)
   )
 
@@ -188,7 +188,7 @@ test_that("aes(vjust!=0) raises warning", {
 
 viz <- list(
   text=a_plot()+
-    a_geom_text(aes(vjust, vjust, label=0, vjust=0),
+    a_geom_text(aes(vjust, vjust, a_label=0, vjust=0),
               data=vjust.df)
   )
 
@@ -200,7 +200,7 @@ test_that("aes(vjust=0) does not raise warning", {
 
 viz <- list(
   text=a_plot()+
-    a_geom_text(aes(vjust, vjust, label="no vjust"),
+    a_geom_text(aes(vjust, vjust, a_label="no vjust"),
               data=vjust.df)
   )
 
@@ -213,19 +213,19 @@ test_that("unspecified vjust does not raise warning", {
 
 viz.1 <- list(
   text=a_plot()+
-    a_geom_text(aes(vjust, vjust, label=1),
+    a_geom_text(aes(vjust, vjust, a_label=1),
               vjust=1,
               data=vjust.df)
   )
 viz.0.5 <- list(
   text=a_plot()+
-    a_geom_text(aes(vjust, vjust, label=0),
+    a_geom_text(aes(vjust, vjust, a_label=0),
               vjust=0.5,
               data=vjust.df)
   )
 viz.0.7 <- list(
   text=a_plot()+
-    a_geom_text(aes(vjust, vjust, label=0.7),
+    a_geom_text(aes(vjust, vjust, a_label=0.7),
               vjust=0.7,
               data=vjust.df)
   )
@@ -244,7 +244,7 @@ test_that("a_geom_text(vjust!=0) raises warning", {
 
 viz <- list(
   text=a_plot()+
-    a_geom_text(aes(vjust, vjust, label=0),
+    a_geom_text(aes(vjust, vjust, a_label=0),
               vjust=0,
               data=vjust.df)
   )

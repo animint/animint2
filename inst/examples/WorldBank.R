@@ -9,7 +9,7 @@ wb.all <-
                   clickSelects="country",
                   showSelected="year",
                   data=WorldBank)+
-       a_geom_text(aes(life.expectancy, fertility.rate, label=country,
+       a_geom_text(aes(life.expectancy, fertility.rate, a_label=country,
                      key=country), #also use key here!
                  showSelected=c("country", "year"),
                  data=WorldBank)+
@@ -51,7 +51,7 @@ bad <-
                   clickSelects="country",
                   showSelected="year",
                   data=not.na)+
-       a_geom_text(aes(life.expectancy, fertility.rate, label=country),
+       a_geom_text(aes(life.expectancy, fertility.rate, a_label=country),
                  showSelected=c("country", "year"),
                  data=not.na)+
        a_scale_size_animint(breaks=10^(5:9))+
@@ -81,7 +81,7 @@ good <-
                   clickSelects="country",
                   showSelected="year",
                   data=not.na)+
-       a_geom_text(aes(life.expectancy, fertility.rate, label=country,
+       a_geom_text(aes(life.expectancy, fertility.rate, a_label=country,
                      key=country), #also use key here!
                  showSelected=c("country", "year"),
                  data=not.na)+
@@ -122,7 +122,7 @@ wb.mult <-
                   showSelected="country", clickSelects="country",
                   data=not.na)+
        a_scale_x_continuous(limits=c(1960, 2030), breaks=seq(1960, 2010, by=10))+
-       a_geom_text(aes(year, life.expectancy, colour=region, label=country),
+       a_geom_text(aes(year, life.expectancy, colour=region, a_label=country),
                  showSelected="country",
                  clickSelects="country",
                  data=max.years, hjust=0),
@@ -132,7 +132,7 @@ wb.mult <-
                   clickSelects="country",
                   showSelected="year",
                   data=not.na)+
-       a_geom_text(aes(fertility.rate, life.expectancy, label=country,
+       a_geom_text(aes(fertility.rate, life.expectancy, a_label=country,
                      key=country), #also use key here!
                  showSelected=c("country", "year"),
                  clickSelects="country",
@@ -169,7 +169,7 @@ wb.paper.single <-
                   clickSelects="country",
                   showSelected="year",
                   data=short.regions)+
-       a_geom_text(aes(fertility.rate, life.expectancy, label=country,
+       a_geom_text(aes(fertility.rate, life.expectancy, a_label=country,
                      key=country), #also use key here!
                  showSelected=c("country", "year", "region"),
                  clickSelects="country",
@@ -199,7 +199,7 @@ wb.paper <-
                   clickSelects="country",
                   showSelected="year",
                   data=short.regions)+
-       a_geom_text(aes(fertility.rate, life.expectancy, label=country,
+       a_geom_text(aes(fertility.rate, life.expectancy, a_label=country,
                      key=country), #also use key here!
                  showSelected=c("country", "year", "region"),
                  clickSelects="country",
@@ -240,7 +240,7 @@ wb.facets <-
        a_geom_point(aes(year, life.expectancy, color=region, size=population),
                   showSelected="country", clickSelects="country",
                   data=TS(not.na))+
-       a_geom_text(aes(year, life.expectancy, colour=region, label=country),
+       a_geom_text(aes(year, life.expectancy, colour=region, a_label=country),
                  showSelected="country",
                  clickSelects="country",
                   data=TS(min.years), hjust=1)+
@@ -260,14 +260,14 @@ wb.facets <-
                   clickSelects="country",
                   showSelected="year",
                   data=SCATTER(not.na))+
-       a_geom_text(aes(fertility.rate, life.expectancy, label=country,
+       a_geom_text(aes(fertility.rate, life.expectancy, a_label=country,
                      key=country), #also use key here!
                  showSelected=c("country", "year", "region"),
                  clickSelects="country",
                  data=SCATTER(not.na))+
        a_scale_size_animint(breaks=10^(5:9))+
        a_facet_grid(side ~ top, scales="free")+
-       a_geom_text(aes(5, 85, label=paste0("year = ", year)),
+       a_geom_text(aes(5, 85, a_label=paste0("year = ", year)),
                  showSelected="year",
                  data=SCATTER(years)),
        

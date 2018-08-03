@@ -104,7 +104,7 @@ a_plot.data.frame <- function(data, mapping = aes(), ...,
     plot_env = environment
   ), class = c("aaa", "a_plot"))
 
-  p$labels <- make_labels(mapping)
+  p$a_labels <- make_labels(mapping)
 
   set_last_plot(p)
   p

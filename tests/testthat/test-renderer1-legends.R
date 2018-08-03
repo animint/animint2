@@ -13,7 +13,7 @@ viz <-
                   clickSelects="country",
                   showSelected=c("year"),
                   data=WorldBank)+
-       a_geom_text(aes(fertility.rate, life.expectancy, label=country),
+       a_geom_text(aes(fertility.rate, life.expectancy, a_label=country),
                  showSelected=c("country", "year"),
                  data=WorldBank)+
        make_text(WorldBank, 5, 80, "year")+
@@ -22,9 +22,9 @@ viz <-
 test_that('breaks are respected', {
   info <- animint2dir(viz, open.browser=FALSE)
   entries <- info$plots$scatter$legend$population$entries
-  label.chr <- sapply(entries, "[[", "label")
-  label.num <- as.numeric(label.chr)
-  expect_equal(sort(label.num), sort(breaks))
+  a_label.chr <- sapply(entries, "[[", "a_label")
+  a_label.num <- as.numeric(a_label.chr)
+  expect_equal(sort(a_label.num), sort(breaks))
 })
 
 test_that('hiding both legends works with a_geom_point(show.legend=FALSE)', {
@@ -33,7 +33,7 @@ test_that('hiding both legends works with a_geom_point(show.legend=FALSE)', {
                clickSelects="country",
                showSelected=c("year"),
                data=WorldBank, show.legend=FALSE)+
-    a_geom_text(aes(fertility.rate, life.expectancy, label=country),
+    a_geom_text(aes(fertility.rate, life.expectancy, a_label=country),
               showSelected=c("country", "year"),
               data=WorldBank)+
     make_text(WorldBank, 5, 80, "year")
@@ -88,7 +88,7 @@ test_that("renderer shows legend entries in correct order", {
            a_scale_fill_continuous(breaks=3:1),
          default=gg)
   info <- animint2HTML(viz)
-  ##sapply(info$plots, function(p)sapply(p$legend$x$entries, "[[", "label"))
+  ##sapply(info$plots, function(p)sapply(p$legend$x$entries, "[[", "a_label"))
   
   ## NOTE: it is important to test the renderer here (not the
   ## compiler) since maybe the order specified in the plot.json file

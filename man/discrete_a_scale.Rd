@@ -5,7 +5,7 @@
 \title{Discrete scale constructor.}
 \usage{
 discrete_a_scale(aesthetics, scale_name, palette, name = waiver(),
-  breaks = waiver(), labels = waiver(), limits = NULL,
+  breaks = waiver(), a_labels = waiver(), limits = NULL,
   expand = waiver(), na.value = NA, drop = TRUE, a_guide = "legend")
 }
 \arguments{
@@ -34,7 +34,7 @@ types of input:
 This parameter does not affect in any way how the data is scaled - it
 only affects the appearance of the legend.}
 
-\item{labels}{\code{NULL} for no labels, \code{waiver()} for default
+\item{a_labels}{\code{NULL} for no labels, \code{waiver()} for default
 labels (labels the same as breaks), a character vector the same length
 as breaks, or a named character vector whose names are used to match
 replacement the labels for matching breaks.}

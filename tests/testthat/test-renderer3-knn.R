@@ -10,7 +10,7 @@ mixtureKNN$other.error$text.V1.error <- -2.6
 classifier.linetypes <- c(
   Bayes="dashed",
   KNN="solid")
-label.colors <- c(
+a_label.colors <- c(
   "0"="#377EB8",
   "1"="#FF7F00")
 set.colors <-
@@ -24,7 +24,7 @@ errorPlot <- a_plot()+
   a_theme_bw()+
   a_theme_animint(height=500)+
   a_geom_text(aes(min.neighbors, error.prop,
-                color=set, label="Bayes"),
+                color=set, a_label="Bayes"),
             showSelected="classifier",
             hjust=1,
             data=mixtureKNN$Bayes.segment)+
@@ -67,9 +67,9 @@ scatterPlot <- a_plot()+
   xlab("Input feature 1")+
   ylab("Input feature 2")+
   a_coord_equal()+
-  a_scale_color_manual(values=label.colors)+
+  a_scale_color_manual(values=a_label.colors)+
   a_scale_linetype_manual(values=classifier.linetypes)+
-  a_geom_point(aes(V1, V2, color=label),
+  a_geom_point(aes(V1, V2, color=a_label),
              showSelected="neighbors",
              size=0.2,
              data=mixtureKNN$show.grid)+
@@ -81,29 +81,29 @@ scatterPlot <- a_plot()+
             color=set.colors[["test"]],
             size=1,
             data=mixtureKNN$Bayes.boundary)+
-  a_geom_point(aes(V1, V2, color=label,
+  a_geom_point(aes(V1, V2, color=a_label,
                  fill=prediction),
              showSelected="neighbors",
              size=3,
              shape=21,
              data=mixtureKNN$show.points)+
   a_scale_fill_manual(values=c(error="black", correct="transparent"))+
-  a_geom_text(aes(text.V1.error, text.V2.bottom, label=paste(set, "Error:")),
+  a_geom_text(aes(text.V1.error, text.V2.bottom, a_label=paste(set, "Error:")),
             data=mixtureKNN$Bayes.error,
             hjust=0)+
-  a_geom_text(aes(text.V1.prop, text.V2.bottom, label=sprintf("%.3f", error.prop)),
+  a_geom_text(aes(text.V1.prop, text.V2.bottom, a_label=sprintf("%.3f", error.prop)),
             data=mixtureKNN$Bayes.error,
             hjust=1)+
-  a_geom_text(aes(text.V1.error, V2.bottom, label=paste(set, "Error:")),
+  a_geom_text(aes(text.V1.error, V2.bottom, a_label=paste(set, "Error:")),
             showSelected="neighbors",
             data=mixtureKNN$other.error,
             hjust=0)+
-  a_geom_text(aes(text.V1.prop, V2.bottom, label=sprintf("%.3f", error.prop)),
+  a_geom_text(aes(text.V1.prop, V2.bottom, a_label=sprintf("%.3f", error.prop)),
             showSelected="neighbors",
             data=mixtureKNN$other.error,
             hjust=1)+
   a_geom_text(aes(V1, V2,
-                label=paste0(
+                a_label=paste0(
                   neighbors,
                   " nearest neighbor",
                   ifelse(neighbors==1, "", "s"),

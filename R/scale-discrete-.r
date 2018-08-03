@@ -7,7 +7,7 @@
 #' at integer positions).  This is what allows jittering to work.
 #'
 #' @param ... common discrete scale parameters: \code{name}, \code{breaks},
-#'  \code{labels}, \code{na.value}, \code{limits} and \code{a_guide}.  See
+#'  \code{a_labels}, \code{na.value}, \code{limits} and \code{a_guide}.  See
 #'  \code{\link{discrete_a_scale}} for more details
 #' @param expand a numeric vector of length two giving multiplicative and
 #'   additive expansion constants. These constants ensure that the data is
@@ -25,7 +25,7 @@
 #'       a_geom_jitter())
 #'
 #' d + a_scale_x_discrete("Cut")
-#' d + a_scale_x_discrete("Cut", labels = c("Fair" = "F","Good" = "G",
+#' d + a_scale_x_discrete("Cut", a_labels = c("Fair" = "F","Good" = "G",
 #'   "Very Good" = "VG","Perfect" = "P","Ideal" = "I"))
 #'
 #' # Use limits to adjust the which levels (and in what order)
@@ -44,7 +44,7 @@
 #' # Use abbreviate as a formatter to reduce long names
 #' a_plot(mpg, aes(reorder(manufacturer, displ), cty)) +
 #'   a_geom_point() +
-#'   a_scale_x_discrete(labels = abbreviate)
+#'   a_scale_x_discrete(a_labels = abbreviate)
 #' }
 a_scale_x_discrete <- function(..., expand = waiver()) {
   sc <- discrete_a_scale(c("x", "xmin", "xmax", "xend"), "position_d", identity, ...,

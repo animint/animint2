@@ -4,7 +4,7 @@
 \alias{make_text}
 \title{Convenvience function for a showSelected plot label.}
 \usage{
-make_text(data, x, y, label.var, format = NULL)
+make_text(data, x, y, a_label.var, format = NULL)
 }
 \arguments{
 \item{data}{data.frame of relevant data}
@@ -13,7 +13,7 @@ make_text(data, x, y, label.var, format = NULL)
 
 \item{y}{y coordinate of label position}
 
-\item{label.var}{variable matching showSelected, used to obtain label value}
+\item{a_label.var}{variable matching showSelected, used to obtain label value}
 
 \item{format}{String format for label. Use \%d, \%f, etc. to insert relevant label.var value.}
 }

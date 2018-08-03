@@ -153,15 +153,15 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
       ret[[n]]$range <- out$range
       ret[[n]]$major <- out$major_source
       ret[[n]]$minor <- out$minor_source
-      ret[[n]]$labels <- out$labels
+      ret[[n]]$a_labels <- out$a_labels
     }
 
     details <- list(
       orientation = orientation,
       x.range = ret$x$range, y.range = ret$y$range,
       x.proj = ret$x$proj, y.proj = ret$y$proj,
-      x.major = ret$x$major, x.minor = ret$x$minor, x.labels = ret$x$labels,
-      y.major = ret$y$major, y.minor = ret$y$minor, y.labels = ret$y$labels
+      x.major = ret$x$major, x.minor = ret$x$minor, x.a_labels = ret$x$a_labels,
+      y.major = ret$y$major, y.minor = ret$y$minor, y.a_labels = ret$y$a_labels
     )
     details
   },
@@ -223,7 +223,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
     ))
     pos <- self$transform(x_intercept, scale_details)
 
-    a_guide_axis(pos$x, scale_details$x.labels, "bottom", a_theme)
+    a_guide_axis(pos$x, scale_details$x.a_labels, "bottom", a_theme)
   },
 
   render_axis_v = function(self, scale_details, a_theme) {
@@ -235,7 +235,7 @@ a_CoordMap <- a_ggproto("a_CoordMap", a_Coord,
     ))
     pos <- self$transform(x_intercept, scale_details)
 
-    a_guide_axis(pos$y, scale_details$y.labels, "left", a_theme)
+    a_guide_axis(pos$y, scale_details$y.a_labels, "left", a_theme)
   }
 )
 

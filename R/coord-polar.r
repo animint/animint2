@@ -116,13 +116,13 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
       ret[[n]]$range <- out$range
       ret[[n]]$major <- out$major_source
       ret[[n]]$minor <- out$minor_source
-      ret[[n]]$labels <- out$labels
+      ret[[n]]$a_labels <- out$a_labels
     }
 
     details = list(
       x.range = ret$x$range, y.range = ret$y$range,
-      x.major = ret$x$major, x.minor = ret$x$minor, x.labels = ret$x$labels,
-      y.major = ret$y$major, y.minor = ret$y$minor, y.labels = ret$y$labels
+      x.major = ret$x$major, x.minor = ret$x$minor, x.a_labels = ret$x$a_labels,
+      y.major = ret$y$major, y.minor = ret$y$minor, y.a_labels = ret$y$a_labels
     )
 
     if (self$theta == "y") {
@@ -149,7 +149,7 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
 
   render_axis_v = function(self, scale_details, a_theme) {
     x <- r_rescale(self, scale_details$r.major, scale_details) + 0.5
-    a_guide_axis(x, scale_details$r.labels, "left", a_theme)
+    a_guide_axis(x, scale_details$r.a_labels, "left", a_theme)
   },
 
   render_axis_h = function(scale_details, a_theme) {
@@ -206,28 +206,28 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
     }
 
     theta <- theta_rescale(self, scale_details$theta.major, scale_details)
-    labels <- scale_details$theta.labels
+    a_labels <- scale_details$theta.a_labels
 
     # Combine the two ends of the scale if they are close
     theta <- theta[!is.na(theta)]
     ends_apart <- (theta[length(theta)] - theta[1]) %% (2 * pi)
     if (length(theta) > 0 && ends_apart < 0.05) {
-      n <- length(labels)
-      if (is.expression(labels)) {
+      n <- length(a_labels)
+      if (is.expression(a_labels)) {
         combined <- substitute(paste(a, "/", b),
-          list(a = labels[[1]], b = labels[[n]]))
+          list(a = a_labels[[1]], b = a_labels[[n]]))
       } else {
-        combined <- paste(labels[1], labels[n], sep = "/")
+        combined <- paste(a_labels[1], a_labels[n], sep = "/")
       }
-      labels[[n]] <- combined
-      labels <- labels[-1]
+      a_labels[[n]] <- combined
+      a_labels <- a_labels[-1]
       theta <- theta[-1]
     }
 
     grobTree(
-      if (length(labels) > 0) a_element_render(
+      if (length(a_labels) > 0) a_element_render(
         a_theme, "axis.text.x",
-        labels, 0.45 * sin(theta) + 0.5, 0.45 * cos(theta) + 0.5,
+        a_labels, 0.45 * sin(theta) + 0.5, 0.45 * cos(theta) + 0.5,
         hjust = 0.5, vjust = 0.5,
         default.units = "native"
       ),
@@ -241,28 +241,28 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
     }
 
     theta <- theta_rescale(self, scale_details$theta.major, scale_details)
-    labels <- scale_details$theta.labels
+    a_labels <- scale_details$theta.a_labels
 
     # Combine the two ends of the scale if they are close
     theta <- theta[!is.na(theta)]
     ends_apart <- (theta[length(theta)] - theta[1]) %% (2*pi)
     if (length(theta) > 0 && ends_apart < 0.05) {
-      n <- length(labels)
-      if (is.expression(labels)) {
+      n <- length(a_labels)
+      if (is.expression(a_labels)) {
         combined <- substitute(paste(a, "/", b),
-          list(a = labels[[1]], b = labels[[n]]))
+          list(a = a_labels[[1]], b = a_labels[[n]]))
       } else {
-        combined <- paste(labels[1], labels[n], sep = "/")
+        combined <- paste(a_labels[1], a_labels[n], sep = "/")
       }
-      labels[[n]] <- combined
-      labels <- labels[-1]
+      a_labels[[n]] <- combined
+      a_labels <- a_labels[-1]
       theta <- theta[-1]
     }
 
     grobTree(
-      if (length(labels) > 0) a_element_render(
+      if (length(a_labels) > 0) a_element_render(
         a_theme, "axis.text.x",
-        labels,
+        a_labels,
         unit(0.45 * sin(theta) + 0.5, "native"),
         unit(0.45 * cos(theta) + 0.5, "native"),
         hjust = 0.5, vjust = 0.5
@@ -271,7 +271,7 @@ a_CoordPolar <- a_ggproto("a_CoordPolar", a_Coord,
     )
   },
 
-  labels = function(self, scale_details) {
+  a_labels = function(self, scale_details) {
     if (self$theta == "y") {
       list(x = scale_details$y, y = scale_details$x)
     } else {

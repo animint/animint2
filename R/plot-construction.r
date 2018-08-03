@@ -86,16 +86,16 @@ add_a_plot <- function(p, object, objectname) {
     p$a_theme <- update_a_theme(p$a_theme, object)
   } else if (inherits(object, "a_Scale")) {
     p$scales$add(object)
-  } else if (inherits(object, "labels")) {
-    p <- update_labels(p, object)
+  } else if (inherits(object, "a_labels")) {
+    p <- update_a_labels(p, object)
   } else if (inherits(object, "a_guides")) {
     p <- update_a_guides(p, object)
   } else if (inherits(object, "uneval")) {
       p$mapping <- defaults(object, p$mapping)
 
-      labels <- lapply(object, deparse)
-      names(labels) <- names(object)
-      p <- update_labels(p, labels)
+      a_labels <- lapply(object, deparse)
+      names(a_labels) <- names(object)
+      p <- update_a_labels(p, a_labels)
   } else if (is.a_Coord(object)) {
       p$coordinates <- object
       p
@@ -109,11 +109,11 @@ add_a_plot <- function(p, object, objectname) {
   } else if (is.a_layer(object)) {
     p$layers <- append(p$layers, object)
 
-    # Add any new labels
+    # Add any new a_labels
     mapping <- make_labels(object$mapping)
     default <- make_labels(object$a_stat$default_aes)
     new_labels <- defaults(mapping, default)
-    p$labels <- defaults(p$labels, new_labels)
+    p$a_labels <- defaults(p$a_labels, new_labels)
   } else {
     stop("Don't know how to add ", objectname, " to a plot",
       call. = FALSE)

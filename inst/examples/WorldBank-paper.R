@@ -17,7 +17,7 @@ wb.paper <-
                   clickSelects="country",
                   showSelected="year",
                   data=WorldBank)+
-       a_geom_text(aes(fertility.rate, life.expectancy, label=country,
+       a_geom_text(aes(fertility.rate, life.expectancy, a_label=country,
                      key=country), #also use key here!
                  clickSelects="country",
                  showSelected=c("country", "year", "region"),

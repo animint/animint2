@@ -34,21 +34,21 @@ NULL
 #' @rdname a_scale_size
 #' @export
 #' @usage NULL
-a_scale_size_continuous <- function(name = waiver(), breaks = waiver(), labels = waiver(),
+a_scale_size_continuous <- function(name = waiver(), breaks = waiver(), a_labels = waiver(),
                                   limits = NULL, range = c(1, 6),
                                   trans = "identity", a_guide = "legend") {
   continuous_a_scale("size", "area", area_pal(range), name = name,
-    breaks = breaks, labels = labels, limits = limits, trans = trans,
+    breaks = breaks, a_labels = a_labels, limits = limits, trans = trans,
     a_guide = a_guide)
 }
 
 #' @rdname a_scale_size
 #' @export
-a_scale_radius <- function(name = waiver(), breaks = waiver(), labels = waiver(),
+a_scale_radius <- function(name = waiver(), breaks = waiver(), a_labels = waiver(),
                          limits = NULL, range = c(1, 6),
                          trans = "identity", a_guide = "legend") {
   continuous_a_scale("size", "radius", rescale_pal(range), name = name,
-    breaks = breaks, labels = labels, limits = limits, trans = trans,
+    breaks = breaks, a_labels = a_labels, limits = limits, trans = trans,
     a_guide = a_guide)
 }
 
@@ -68,7 +68,7 @@ a_scale_size_discrete <- function(..., range = c(2, 6)) {
 }
 
 #' @param ... Other arguments passed on to \code{\link{continuous_a_scale}}
-#'   to control name, limits, breaks, labels and so forth.
+#'   to control name, limits, breaks, a_labels and so forth.
 #' @param max_size Size of largest points.
 #' @export
 #' @rdname a_scale_size

@@ -15,7 +15,7 @@ algos <-
        make_text(perfs,x,y,"ds"),
        selectDS=a_plot()+
        ## a_geom_text(aes(Misclassification, Time, 
-       ##                label=ds, showSelected=alg),
+       ##                a_label=ds, showSelected=alg),
        ##            data=perfMeans)+
        a_geom_point(aes(Misclassification, Time, colour=alg),
                   clickSelects="ds", showSelected="alg",
@@ -28,7 +28,7 @@ algos <-
        make_text(perfs,x,log10(y),"ds"),
        selectDSLog=a_plot()+
        a_geom_text(aes(Misclassification, log10(Time), 
-                      label=ds),
+                      a_label=ds),
                  showSelected="alg",
                  data=perfMeans, alpha=1/4)+
        a_geom_point(aes(Misclassification, log10(Time), colour=alg),

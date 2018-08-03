@@ -32,7 +32,7 @@ details. When creating a theme, the margins should be placed on the
 side of the text facing towards the center of the plot.}
 
 \item{debug}{If \code{TRUE}, aids visual debugging by drawing a solid
-rectangle behind the complete text area, and a point where each label
+rectangle behind the complete text area, and a point where each a_label
 is anchored.}
 }
 \description{

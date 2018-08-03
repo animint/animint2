@@ -13,7 +13,7 @@ wb <- subset(wb2010, !is.na(population) &
     !is.na(fertility.rate) & !is.na(life.expectancy))
 viz <- list(scatter=a_plot()+
   a_geom_text(aes(y=fertility.rate, x=life.expectancy,
-                label=country, size=population, colour=population),
+                a_label=country, size=population, colour=population),
             data=wb)+
   a_scale_size_continuous(range=c(10,20)))
 

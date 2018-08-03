@@ -22,12 +22,12 @@ getLegend <- function(mb, i){
   sc.aes <- sc$aesthetics
   bk <- scale_breaks(sc)
   val <- scale_map(sc, bk)
-  labels <- scale_labels(sc)
+  a_labels <- scale_labels(sc)
   if(sc.aes %in% c("colour", "fill")){
     val <- toRGB(val)
   }
-  df <- data.frame(breaks = bk, value = val, label = labels)
-  df <- df[which(rowSums(is.na(df))==0),] # return only those entries that have breaks, values, and labels.
+  df <- data.frame(breaks = bk, value = val, a_label = a_labels)
+  df <- df[which(rowSums(is.na(df))==0),] # return only those entries that have breaks, values, and a_labels.
   if(a_guidetype=="none"){
     NULL
   } else{
@@ -58,7 +58,7 @@ data <- a_plot_build(p)
 gdefs <- a_guides_train(scales = scales,
                       theme = theme,
                       a_guides = a_guides,
-                      labels = labels)
+                      a_labels = a_labels)
 if (length(gdefs) == 0) return(a_zeroGrob())
 gdefs <- a_guides_merge(gdefs)
 gdefs
@@ -67,7 +67,7 @@ getLegend <- function(mb){
   a_guidetype <- mb$name
   sc.aes <- names(mb$key)[which(substr(names(mb$key), 1, 1)!=".")]
   val <- mb$key[[sc.aes]]
-  labels <- mb$key[[".label"]]
+  a_labels <- mb$key[[".a_label"]]
   key <- mb$key
   if("colour"%in%sc.aes){
     key[["colour"]] <- toRGB(key$colour)

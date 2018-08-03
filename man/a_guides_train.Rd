@@ -4,7 +4,7 @@
 \alias{a_guides_train}
 \title{train each scale in scales and generate the definition of guide}
 \usage{
-a_guides_train(scales, a_theme, a_guides, labels)
+a_guides_train(scales, a_theme, a_guides, a_labels)
 }
 \arguments{
 \item{scales}{...}
@@ -13,7 +13,7 @@ a_guides_train(scales, a_theme, a_guides, labels)
 
 \item{a_guides}{...}
 
-\item{labels}{....}
+\item{a_labels}{....}
 }
 \description{
 train each scale in scales and generate the definition of guide

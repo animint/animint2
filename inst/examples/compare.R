@@ -9,7 +9,7 @@ sets$set.id <- 1:nrow(sets)
 diff.df <- ddply(sets, .(N, norm), summarize,
                    N=N[1], norm=norm[1],
                    mean=mean(diff), sd=sd(diff))
-## Axes labels.
+## Axes a_labels.
 xl <- xlab("feature 1")
 yl <- ylab("feature 2")
 x.lab <- "number of labeled pairs in the training set"
@@ -25,7 +25,7 @@ dots <-
        a_geom_point(aes(Xtp.1, Xtp.2, colour=factor(yt)),
                   showSelected="set.id",
                   data=subset(compare$train, yt==1))+
-       a_scale_colour_manual("label",values=c("1"="red","-1"="black"))+
+       a_scale_colour_manual("a_label",values=c("1"="red","-1"="black"))+
        xl+yl+
        ggtitle("training data"),
        error=a_plot()+
@@ -49,8 +49,8 @@ dots <-
        a_geom_line(aes(N, mean, group=norm), clickSelects="norm", 
                    data=diff.df)+
        a_geom_hline(yintercept=0, color="red")+
-       a_geom_text(aes(x,y,label=label),color="red",
-                 data=data.frame(x=150,y=1,label="no difference"))+
+       a_geom_text(aes(x,y,a_label=a_label),color="red",
+                 data=data.frame(x=150,y=1,a_label="no difference"))+
        ggtitle("test error difference, select norm")+
        xlab(x.lab)+
        ylab("<- compare better (test error percent difference) rank better->"))

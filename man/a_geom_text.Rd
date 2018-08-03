@@ -7,8 +7,8 @@
 \usage{
 a_geom_label(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "identity", ..., parse = FALSE, nudge_x = 0, nudge_y = 0,
-  label.padding = unit(0.25, "lines"), label.r = unit(0.15, "lines"),
-  label.size = 0.25, na.rm = FALSE, show.legend = NA,
+  a_label.padding = unit(0.25, "lines"), a_label.r = unit(0.15, "lines"),
+  a_label.size = 0.25, na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
 a_geom_text(mapping = NULL, data = NULL, a_stat = "identity",
@@ -53,11 +53,11 @@ displayed as described in ?plotmath}
 \item{nudge_x, nudge_y}{Horizontal and vertical adjustment to nudge labels by.
 Useful for offsetting text from points, particularly on discrete scales.}
 
-\item{label.padding}{Amount of padding around label. Defaults to 0.25 lines.}
+\item{a_label.padding}{Amount of padding around a_label. Defaults to 0.25 lines.}
 
-\item{label.r}{Radius of rounded corners. Defaults to 0.15 lines.}
+\item{a_label.r}{Radius of rounded corners. Defaults to 0.15 lines.}
 
-\item{label.size}{Size of label border, in mm.}
+\item{a_label.size}{Size of a_label border, in mm.}
 
 \item{na.rm}{If \code{FALSE} (the default), removes missing values with
 a warning.  If \code{TRUE} silently removes missing values.}
@@ -109,7 +109,7 @@ it away from the center
 }
 
 \examples{
-p <- a_plot(mtcars, aes(wt, mpg, label = rownames(mtcars)))
+p <- a_plot(mtcars, aes(wt, mpg, a_label = rownames(mtcars)))
 
 p + a_geom_text()
 # Avoid overlaps
@@ -141,12 +141,12 @@ p + a_geom_text(aes(size = wt)) + a_scale_radius(range = c(3,6))
 # You can display expressions by setting parse = TRUE.  The
 # details of the display are described in ?plotmath, but note that
 # a_geom_text uses strings, not expressions.
-p + a_geom_text(aes(label = paste(wt, "^(", cyl, ")", sep = "")),
+p + a_geom_text(aes(a_label = paste(wt, "^(", cyl, ")", sep = "")),
   parse = TRUE)
 
 # Add a text annotation
 p + a_geom_text() + a_annotate("text",
-label = "plot mpg vs. wt", x = 2, y = 15, size = 8, colour = "red")
+a_label = "plot mpg vs. wt", x = 2, y = 15, size = 8, colour = "red")
 
 \donttest{
 # Aligning labels and bars --------------------------------------------------
@@ -158,15 +158,15 @@ df <- data.frame(
 
 # ggplot2 doesn't know you want to give the labels the same virtual width
 # as the bars:
-a_plot(data = df, aes(x, y, fill = grp, label = y)) +
+a_plot(data = df, aes(x, y, fill = grp, a_label = y)) +
   a_geom_bar(a_stat = "identity", a_position = "dodge") +
   a_geom_text(a_position = "dodge")
 # So tell it:
-a_plot(data = df, aes(x, y, fill = grp, label = y)) +
+a_plot(data = df, aes(x, y, fill = grp, a_label = y)) +
   a_geom_bar(a_stat = "identity", a_position = "dodge") +
   a_geom_text(a_position = a_position_dodge(0.9))
 # Use you can't nudge and dodge text, so instead adjust the y postion
-a_plot(data = df, aes(x, y, fill = grp, label = y)) +
+a_plot(data = df, aes(x, y, fill = grp, a_label = y)) +
   a_geom_bar(a_stat = "identity", a_position = "dodge") +
   a_geom_text(aes(y = y + 0.05), a_position = a_position_dodge(0.9), vjust = 0)
 
@@ -174,7 +174,7 @@ a_plot(data = df, aes(x, y, fill = grp, label = y)) +
 # need to do the computation yourself
 df <- transform(df, mid_y = ave(df$y, df$x, FUN = function(val) cumsum(val) - (0.5 * val)))
 
-a_plot(data = df, aes(x, y, fill = grp, label = y)) +
+a_plot(data = df, aes(x, y, fill = grp, a_label = y)) +
  a_geom_bar(a_stat = "identity") +
  a_geom_text(aes(y = mid_y))
 
@@ -185,8 +185,8 @@ df <- data.frame(
   text = c("bottom-left", "bottom-right", "top-left", "top-right", "center")
 )
 a_plot(df, aes(x, y)) +
-  a_geom_text(aes(label = text))
+  a_geom_text(aes(a_label = text))
 a_plot(df, aes(x, y)) +
-  a_geom_text(aes(label = text), vjust = "inward", hjust = "inward")
+  a_geom_text(aes(a_label = text), vjust = "inward", hjust = "inward")
 }
 }
