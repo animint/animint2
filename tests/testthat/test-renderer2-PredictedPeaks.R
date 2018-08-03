@@ -252,7 +252,7 @@ specific_hlines <- function(html=getHTML()){
 }
 
 specific.id <- "plot_scatter_thresh_type_variable_specific"
-xpath <- sprintf('//td[@id="%s_label"]', specific.id)
+xpath <- sprintf('//td[@id="%s_a_label"]', specific.id)
 specific_opacity <- function(html=getHTML()){
   as.numeric(getStyleValue(html, xpath, "opacity"))
 }

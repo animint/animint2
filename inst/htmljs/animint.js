@@ -28,7 +28,7 @@ var animint = function (to_select, json_file) {
           } else if (r_type == "numeric") {
             d[v_name] = parseFloat(d[v_name]);
           } else if (r_type == "factor" || r_type == "rgb" 
-		     || r_type == "linetype" || r_type == "label" 
+		     || r_type == "linetype" || r_type == "a_label" 
 		     || r_type == "character") {
             // keep it as a character
           } else if (r_type == "character" & v_name == "outliers") {
@@ -251,7 +251,7 @@ var animint = function (to_select, json_file) {
     var ytitlepadding = 5 + measureText(p_info["ytitle"], 11).height;
 
     // 'margins' are fixed across panels and do not
-    // include title/axis/label padding (since these are not
+    // include title/axis/a_label padding (since these are not
     // fixed across panels). They do, however, account for
     // spacing between panels
     var text_height_pixels = measureText("foo", 11).height;
@@ -798,7 +798,7 @@ var animint = function (to_select, json_file) {
       }
     }
     s_info.legend_tds = 
-      element.selectAll("tr."+legend_class_name(s_name)+" td.legend_entry_label")
+      element.selectAll("tr."+legend_class_name(s_name)+" td.legend_entry_a_label")
     ;
     update_legend_opacity(s_name);
   }; //end of add_selector()
@@ -1402,7 +1402,7 @@ var animint = function (to_select, json_file) {
           .attr("font-size", get_size)
           .style("text-anchor", get_text_anchor)
           .text(function (d) {
-            return d.label;
+            return d.a_label;
           });
       };
       eAppend = "text";
@@ -2026,14 +2026,14 @@ var animint = function (to_select, json_file) {
       ;
       var legend_class = legend_class_name(l_info["class"]);
       var legend_id = p_info.plot_id + "_" + legend_class;
-      // the legend table with breaks/value/label .
+      // the legend table with breaks/value/a_label .
       // TODO: variable and value should be set in the compiler! What
-      // if label is different from the data value?
+      // if a_label is different from the data value?
       for(var entry_i=0; entry_i < l_info.entries.length; entry_i++){
 	var entry = l_info.entries[entry_i];
 	entry.variable = l_info.selector;
-	entry.value = entry.label;
-	entry.id = safe_name(legend_id + "_" + entry["label"]);
+	entry.value = entry.a_label;
+	entry.id = safe_name(legend_id + "_" + entry["a_label"]);
       }
       var legend_rows = legend_table.selectAll("tr")
         .data(l_info.entries)
@@ -2126,9 +2126,9 @@ var animint = function (to_select, json_file) {
       }
       legend_rows.append("td")
 	.attr("align", "left") // TODO: right for numbers?
-	.attr("class", "legend_entry_label")
-	.attr("id", function(d){ return d["id"]+"_label"; })
-	.text(function(d){ return d["label"];});
+	.attr("class", "legend_entry_a_label")
+	.attr("id", function(d){ return d["id"]+"_a_label"; })
+	.text(function(d){ return d["a_label"];});
     }
   }
 

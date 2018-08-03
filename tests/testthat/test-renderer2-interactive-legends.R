@@ -103,7 +103,7 @@ test_that("Two plots with both color and fill", {
   clickID("plot_factor_vs_fac_variable_0")
   expect_equal(length(get_circles("factor")), 32)
   td.list <- getNodeSet(
-    info$html, '//tr[@class="vs_variable"]//td[@class="legend_entry_label"]')
+    info$html, '//tr[@class="vs_variable"]//td[@class="legend_entry_a_label"]')
   value.vec <- sapply(td.list, xmlValue)
   expect_identical(value.vec, c("1.00", "0.75", "0.50", "0.25", "0.00"))
   style.mat <- getStyleValue(
