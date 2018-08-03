@@ -201,7 +201,7 @@ test_that("a_geom_point(aes(color)) legend shows as circle stroke", {
 
 get.opacity <- function(class.name){
   xpath <- sprintf(
-    '//tr[@class="%s"]//td[@class="legend_entry_label"]',
+    '//tr[@class="%s"]//td[@class="legend_entry_a_label"]',
     class.name)
   getStyleValue(getHTML(), xpath, "opacity")
 }

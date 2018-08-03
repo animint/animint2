@@ -84,13 +84,13 @@ get_elements <- function(id){
   ## For debugging a NoSuchElement error I insert print statements.
   ##print("before css selector")
   tr.list <- div$findChildElements(
-    "css selector", "table.legend tr.label_variable")
+    "css selector", "table.legend tr.a_label_variable")
   a <- tr.list[[1]]
   b <- tr.list[[2]]
   ##print("before show_hide")
   show_hide <- div$findChildElement("class name", "show_hide_selector_widgets")
   ##print("before col_selector_widget")
-  widget <- div$findChildElement("class name", "label_variable_selector_widget")
+  widget <- div$findChildElement("class name", "a_label_variable_selector_widget")
   list(a178=a,
        b934=b,
        show_hide=show_hide,

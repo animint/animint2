@@ -15,7 +15,7 @@ viz <- list(
 info <- animint2HTML(viz)
 
 test_that("all species are selected for url with no selection", {
-  opacity.str <- getStyleValue(info$html, "//td[@class='legend_entry_label']", "opacity")
+  opacity.str <- getStyleValue(info$html, "//td[@class='legend_entry_a_label']", "opacity")
   opacity.num <- as.numeric(opacity.str)
   opacity.exp <- rep(1, 6)
   expect_equal(opacity.num, opacity.exp)
@@ -40,7 +40,7 @@ Sys.sleep(10)
 html <- getHTML()
 
 test_that("one species is selected for url with selection", {
-  entry.xpath <- "//td[@class='legend_entry_label']"
+  entry.xpath <- "//td[@class='legend_entry_a_label']"
   node.list <- getNodeSet(html, entry.xpath)
   opacity.str <- getStyleValue(html, entry.xpath, "opacity")
   opacity.num <- as.numeric(opacity.str)
