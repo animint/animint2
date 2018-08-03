@@ -10,7 +10,7 @@ mixtureKNN$other.error$text.V1.error <- -2.6
 classifier.linetypes <- c(
   Bayes="dashed",
   KNN="solid")
-a_label.colors <- c(
+label.colors <- c(
   "0"="#377EB8",
   "1"="#FF7F00")
 set.colors <-
@@ -67,9 +67,9 @@ scatterPlot <- a_plot()+
   xlab("Input feature 1")+
   ylab("Input feature 2")+
   a_coord_equal()+
-  a_scale_color_manual(values=a_label.colors)+
+  a_scale_color_manual(values=label.colors)+
   a_scale_linetype_manual(values=classifier.linetypes)+
-  a_geom_point(aes(V1, V2, color=a_label),
+  a_geom_point(aes(V1, V2, color=label),
              showSelected="neighbors",
              size=0.2,
              data=mixtureKNN$show.grid)+
@@ -81,7 +81,7 @@ scatterPlot <- a_plot()+
             color=set.colors[["test"]],
             size=1,
             data=mixtureKNN$Bayes.boundary)+
-  a_geom_point(aes(V1, V2, color=a_label,
+  a_geom_point(aes(V1, V2, color=label,
                  fill=prediction),
              showSelected="neighbors",
              size=3,
