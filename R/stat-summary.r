@@ -144,7 +144,7 @@ a_StatSummary <- a_ggproto("a_StatSummary", a_Stat,
                      fun.ymax = NULL, fun.ymin = NULL, fun.args = list(),
                      na.rm = FALSE) {
 
-    fun <- make_summary_fun(fun.data, fun.y, fun.ymax, fun.ymin, fun.args)
+    fun <- a_make_summary_fun(fun.data, fun.y, fun.ymax, fun.ymin, fun.args)
     summarise_by_x(data, fun)
   }
 )
