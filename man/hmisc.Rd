@@ -2,20 +2,20 @@
 % Please edit documentation in R/stat-summary.r
 \name{hmisc}
 \alias{hmisc}
-\alias{mean_cl_boot}
-\alias{mean_cl_normal}
-\alias{mean_sdl}
-\alias{median_hilow}
+\alias{a_mean_cl_boot}
+\alias{a_mean_cl_normal}
+\alias{a_mean_sdl}
+\alias{a_median_hilow}
 \title{Wrap up a selection of summary functions from Hmisc to make it easy to use
 with \code{\link{a_stat_summary}}.}
 \usage{
-mean_cl_boot(x, ...)
+a_mean_cl_boot(x, ...)
 
-mean_cl_normal(x, ...)
+a_mean_cl_normal(x, ...)
 
-mean_sdl(x, ...)
+a_mean_sdl(x, ...)
 
-median_hilow(x, ...)
+a_median_hilow(x, ...)
 }
 \arguments{
 \item{x}{a numeric vector}

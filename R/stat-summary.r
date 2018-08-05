@@ -32,7 +32,7 @@
 #' multiple values at once (e.g. ymin and ymax), use \code{fun.data}.
 #'
 #' If no aggregation functions are suppled, will default to
-#' \code{\link{mean_se}}.
+#' \code{\link{a_mean_se}}.
 #'
 #' @param fun.data A function that is given the complete data and should
 #'   return a data frame with variables \code{ymin}, \code{y}, and \code{ymax}.
@@ -74,17 +74,17 @@
 #' d <- a_plot(mtcars, aes(cyl, mpg)) + a_geom_point()
 #' # The crossbar a_geom needs grouping to be specified when used with
 #' # a continuous x axis.
-#' d + a_stat_sum_df("mean_cl_boot", mapping = aes(group = cyl))
-#' d + a_stat_sum_df("mean_sdl", mapping = aes(group = cyl))
-#' d + a_stat_sum_df("mean_sdl", fun.args = list(mult = 1), mapping = aes(group = cyl))
-#' d + a_stat_sum_df("median_hilow", mapping = aes(group = cyl))
+#' d + a_stat_sum_df("a_mean_cl_boot", mapping = aes(group = cyl))
+#' d + a_stat_sum_df("a_mean_sdl", mapping = aes(group = cyl))
+#' d + a_stat_sum_df("a_mean_sdl", fun.args = list(mult = 1), mapping = aes(group = cyl))
+#' d + a_stat_sum_df("a_median_hilow", mapping = aes(group = cyl))
 #'
 #' # An example with highly skewed distributions:
 #' if (require("ggplot2movies")) {
 #' set.seed(596)
 #' mov <- movies[sample(nrow(movies), 1000), ]
 #'  m2 <- a_plot(mov, aes(x = factor(round(rating)), y = votes)) + a_geom_point()
-#'  m2 <- m2 + a_stat_summary(fun.data = "mean_cl_boot", a_geom = "crossbar",
+#'  m2 <- m2 + a_stat_summary(fun.data = "a_mean_cl_boot", a_geom = "crossbar",
 #'                          colour = "red", width = 0.3) + xlab("rating")
 #' m2
 #' # Notice how the overplotting skews off visual perception of the mean
@@ -182,7 +182,7 @@ summarise_by_x <- function(data, summary, ...) {
 #' @name hmisc
 NULL
 
-wrap_hmisc <- function(fun) {
+a_wrap_hmisc <- function(fun) {
 
   function(x, ...) {
     if (!requireNamespace("Hmisc", quietly = TRUE))
@@ -200,16 +200,16 @@ wrap_hmisc <- function(fun) {
 }
 #' @export
 #' @rdname hmisc
-mean_cl_boot <- wrap_hmisc("smean.cl.boot")
+a_mean_cl_boot <- a_wrap_hmisc("smean.cl.boot")
 #' @export
 #' @rdname hmisc
-mean_cl_normal <- wrap_hmisc("smean.cl.normal")
+a_mean_cl_normal <- a_wrap_hmisc("smean.cl.normal")
 #' @export
 #' @rdname hmisc
-mean_sdl <- wrap_hmisc("smean.sdl")
+a_mean_sdl <- a_wrap_hmisc("smean.sdl")
 #' @export
 #' @rdname hmisc
-median_hilow <- wrap_hmisc("smedian.hilow")
+a_median_hilow <- a_wrap_hmisc("smedian.hilow")
 
 #' Calculate mean and standard errors on either side.
 #'
@@ -217,7 +217,7 @@ median_hilow <- wrap_hmisc("smedian.hilow")
 #' @param mult number of multiples of standard error
 #' @seealso for use with \code{\link{a_stat_summary}}
 #' @export
-mean_se <- function(x, mult = 1) {
+a_mean_se <- function(x, mult = 1) {
   x <- stats::na.omit(x)
   se <- mult * sqrt(stats::var(x) / length(x))
   mean <- mean(x)

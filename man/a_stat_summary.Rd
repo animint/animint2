@@ -99,7 +99,7 @@ number, but is somewhat less flexible. If your summary function computes
 multiple values at once (e.g. ymin and ymax), use \code{fun.data}.
 
 If no aggregation functions are suppled, will default to
-\code{\link{mean_se}}.
+\code{\link{a_mean_se}}.
 }
 
 \examples{
@@ -135,17 +135,17 @@ a_stat_sum_df <- function(fun, a_geom="crossbar", ...) {
 d <- a_plot(mtcars, aes(cyl, mpg)) + a_geom_point()
 # The crossbar a_geom needs grouping to be specified when used with
 # a continuous x axis.
-d + a_stat_sum_df("mean_cl_boot", mapping = aes(group = cyl))
-d + a_stat_sum_df("mean_sdl", mapping = aes(group = cyl))
-d + a_stat_sum_df("mean_sdl", fun.args = list(mult = 1), mapping = aes(group = cyl))
-d + a_stat_sum_df("median_hilow", mapping = aes(group = cyl))
+d + a_stat_sum_df("a_mean_cl_boot", mapping = aes(group = cyl))
+d + a_stat_sum_df("a_mean_sdl", mapping = aes(group = cyl))
+d + a_stat_sum_df("a_mean_sdl", fun.args = list(mult = 1), mapping = aes(group = cyl))
+d + a_stat_sum_df("a_median_hilow", mapping = aes(group = cyl))
 
 # An example with highly skewed distributions:
 if (require("ggplot2movies")) {
 set.seed(596)
 mov <- movies[sample(nrow(movies), 1000), ]
  m2 <- a_plot(mov, aes(x = factor(round(rating)), y = votes)) + a_geom_point()
- m2 <- m2 + a_stat_summary(fun.data = "mean_cl_boot", a_geom = "crossbar",
+ m2 <- m2 + a_stat_summary(fun.data = "a_mean_cl_boot", a_geom = "crossbar",
                          colour = "red", width = 0.3) + xlab("rating")
 m2
 # Notice how the overplotting skews off visual perception of the mean

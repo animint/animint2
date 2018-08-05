@@ -44,7 +44,7 @@ a_StatSummaryBin <- a_ggproto("a_StatSummaryBin", a_Stat,
                            bins = 30, binwidth = NULL, origin = NULL, right = FALSE,
                            na.rm = FALSE) {
 
-    fun <- make_summary_fun(fun.data, fun.y, fun.ymax, fun.ymin, fun.args)
+    fun <- a_make_summary_fun(fun.data, fun.y, fun.ymax, fun.ymin, fun.args)
 
     breaks <- bin2d_breaks(scales$x, NULL, origin, binwidth, bins, right = right)
 
@@ -58,7 +58,7 @@ a_StatSummaryBin <- a_ggproto("a_StatSummaryBin", a_Stat,
   }
 )
 
-make_summary_fun <- function(fun.data, fun.y, fun.ymax, fun.ymin, fun.args) {
+a_make_summary_fun <- function(fun.data, fun.y, fun.ymax, fun.ymin, fun.args) {
   if (!is.null(fun.data)) {
     # Function that takes complete data frame as input
     fun.data <- match.fun(fun.data)
@@ -81,9 +81,9 @@ make_summary_fun <- function(fun.data, fun.y, fun.ymax, fun.ymin, fun.args) {
       )
     }
   } else {
-    message("No summary function supplied, defaulting to `mean_se()")
+    message("No summary function supplied, defaulting to `a_mean_se()")
     function(df) {
-      mean_se(df$y)
+      a_mean_se(df$y)
     }
   }
 }
