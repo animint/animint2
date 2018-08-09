@@ -9,7 +9,7 @@ viz <- list(
   parameters=a_plot()+
     ggtitle("parameters at selected iteration")+
     a_scale_fill_gradient(low="white", high="blue")+
-    a_geom_tile(aes(state, experiment, fill=frequency,
+    a_geom_tile(a_aes(state, experiment, fill=frequency,
                   key=paste(state, experiment)),
               showSelected="iteration",
               data=emission)+
@@ -21,7 +21,7 @@ viz <- list(
                space="free",
                scales="free_y")+
     a_scale_y_discrete(drop=FALSE)+
-    a_geom_point(aes(state.to, state.from, color=probability,
+    a_geom_point(a_aes(state.to, state.from, color=probability,
                   key=paste(state.from, state.to)),
                showSelected="iteration",
                size=10,
@@ -29,7 +29,7 @@ viz <- list(
   metrics=a_plot()+
     ggtitle("convergence metrics, select iteration")+
     make_tallrect(ChromHMMiterations$metrics, "iteration")+
-    a_geom_line(aes(iteration, metric.value),
+    a_geom_line(a_aes(iteration, metric.value),
               data=ChromHMMiterations$metrics)+
     a_theme_bw()+
     a_theme_animint(height=500)+

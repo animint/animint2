@@ -18,23 +18,23 @@
 #' @param a_geom,a_stat Use to override the default connection between
 #'   \code{a_geom_histogram}/\code{a_geom_freqpoly} and \code{a_stat_bin}.
 #' @examples
-#' a_plot(diamonds, aes(carat)) +
+#' a_plot(diamonds, a_aes(carat)) +
 #'   a_geom_histogram()
-#' a_plot(diamonds, aes(carat)) +
+#' a_plot(diamonds, a_aes(carat)) +
 #'   a_geom_histogram(binwidth = 0.01)
-#' a_plot(diamonds, aes(carat)) +
+#' a_plot(diamonds, a_aes(carat)) +
 #'   a_geom_histogram(bins = 200)
 #'
 #' # Rather than stacking histograms, it's easier to compare frequency
 #' # polygons
-#' a_plot(diamonds, aes(price, fill = cut)) +
+#' a_plot(diamonds, a_aes(price, fill = cut)) +
 #'   a_geom_histogram(binwidth = 500)
-#' a_plot(diamonds, aes(price, colour = cut)) +
+#' a_plot(diamonds, a_aes(price, colour = cut)) +
 #'   a_geom_freqpoly(binwidth = 500)
 #'
 #' # To make it easier to compare distributions with very different counts,
 #' # put density on the y axis instead of the default count
-#' a_plot(diamonds, aes(price, ..density.., colour = cut)) +
+#' a_plot(diamonds, a_aes(price, ..density.., colour = cut)) +
 #'   a_geom_freqpoly(binwidth = 500)
 #'
 #' if (require("ggplot2movies")) {
@@ -42,12 +42,12 @@
 #' # count of observations, but the sum of some other variable.
 #' # For example, the following plot shows the number of movies
 #' # in each rating.
-#' m <- a_plot(movies, aes(rating))
+#' m <- a_plot(movies, a_aes(rating))
 #' m + a_geom_histogram(binwidth = 0.1)
 #'
 #' # If, however, we want to see the number of votes cast in each
 #' # category, we need to weight by the votes variable
-#' m + a_geom_histogram(aes(weight = votes), binwidth = 0.1) + ylab("votes")
+#' m + a_geom_histogram(a_aes(weight = votes), binwidth = 0.1) + ylab("votes")
 #'
 #' # For transformed scales, binwidth applies to the transformed data.
 #' # The bins have constant width on the transformed scale.
@@ -67,7 +67,7 @@
 #'
 #' # You can also transform the y axis.  Remember that the base of the bars
 #' # has value 0, so log transformations are not appropriate
-#' m <- a_plot(movies, aes(x = rating))
+#' m <- a_plot(movies, a_aes(x = rating))
 #' m + a_geom_histogram(binwidth = 0.5) + a_scale_y_sqrt()
 #' }
 #' rm(movies)
@@ -78,7 +78,7 @@ a_geom_histogram <- function(mapping = NULL, data = NULL,
                            bins = NULL,
                            na.rm = FALSE,
                            show.legend = NA,
-                           inherit.aes = TRUE) {
+                           inherit.a_aes = TRUE) {
 
   a_layer(
     data = data,
@@ -87,7 +87,7 @@ a_geom_histogram <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomBar,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       binwidth = binwidth,
       bins = bins,

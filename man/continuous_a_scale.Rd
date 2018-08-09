@@ -4,13 +4,13 @@
 \alias{continuous_a_scale}
 \title{Continuous scale constructor.}
 \usage{
-continuous_a_scale(aesthetics, scale_name, palette, name = waiver(),
+continuous_a_scale(a_aesthetics, scale_name, palette, name = waiver(),
   breaks = waiver(), minor_breaks = waiver(), a_labels = waiver(),
   limits = NULL, rescaler = rescale, oob = censor, expand = waiver(),
   na.value = NA_real_, trans = "identity", a_guide = "legend")
 }
 \arguments{
-\item{aesthetics}{the names of the aesthetics that this scale works with}
+\item{a_aesthetics}{the names of the aesthetics that this scale works with}
 
 \item{scale_name}{the name of the scale}
 

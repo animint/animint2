@@ -7,15 +7,15 @@
 \usage{
 a_geom_contour(mapping = NULL, data = NULL, a_stat = "contour",
   a_position = "identity", ..., lineend = "butt", linejoin = "round",
-  linemitre = 1, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  linemitre = 1, na.rm = FALSE, show.legend = NA, inherit.a_aes = TRUE)
 
 a_stat_contour(mapping = NULL, data = NULL, a_geom = "contour",
   a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -57,7 +57,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -81,11 +81,11 @@ Display contours of a 3d surface in 2d.
 
 \examples{
 #' # Basic plot
-v <- a_plot(faithfuld, aes(waiting, eruptions, z = density))
+v <- a_plot(faithfuld, a_aes(waiting, eruptions, z = density))
 v + a_geom_contour()
 
 # Or compute from raw data
-a_plot(faithful, aes(waiting, eruptions)) +
+a_plot(faithful, a_aes(waiting, eruptions)) +
   a_geom_density_2d()
 
 \donttest{
@@ -99,9 +99,9 @@ v + a_geom_contour(binwidth = 0.01)
 v + a_geom_contour(binwidth = 0.001)
 
 # Other parameters
-v + a_geom_contour(aes(colour = ..level..))
+v + a_geom_contour(a_aes(colour = ..level..))
 v + a_geom_contour(colour = "red")
-v + a_geom_raster(aes(fill = density)) +
+v + a_geom_raster(a_aes(fill = density)) +
   a_geom_contour(colour = "white")
 }
 }

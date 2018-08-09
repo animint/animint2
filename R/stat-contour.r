@@ -10,7 +10,7 @@ a_stat_contour <- function(mapping = NULL, data = NULL,
                          ...,
                          na.rm = FALSE,
                          show.legend = NA,
-                         inherit.aes = TRUE) {
+                         inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -18,7 +18,7 @@ a_stat_contour <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -32,7 +32,7 @@ a_stat_contour <- function(mapping = NULL, data = NULL,
 #' @export
 a_StatContour <- a_ggproto("a_StatContour", a_Stat,
   required_aes = c("x", "y", "z"),
-  default_aes = aes(order = ..level..),
+  default_aes = a_aes(order = ..level..),
 
   compute_group = function(data, scales, bins = NULL, binwidth = NULL,
                            breaks = NULL, complete = FALSE, na.rm = FALSE) {
@@ -60,7 +60,7 @@ a_StatContour <- a_ggproto("a_StatContour", a_Stat,
 #
 # breaks <- seq(95, 195, length.out = 10)
 # contours <- contourLines(v3d, breaks)
-# a_plot(contours, aes(x, y)) +
+# a_plot(contours, a_aes(x, y)) +
 #   a_geom_path() +
 #   facet_wrap(~piece)
 contour_lines <- function(data, breaks, complete = FALSE) {
@@ -107,7 +107,7 @@ poly_dir <- function(x, y) {
 # To fix breaks and complete the polygons, we need to add 0-4 corner points.
 #
 # contours <- ddply(contours, "piece", mutate, dir = animint2:::poly_dir(x, y))
-# a_plot(contours, aes(x, y)) +
-#   a_geom_path(aes(group = piece, colour = factor(dir)))
+# a_plot(contours, a_aes(x, y)) +
+#   a_geom_path(a_aes(group = piece, colour = factor(dir)))
 # last_plot() + facet_wrap(~ level)
 

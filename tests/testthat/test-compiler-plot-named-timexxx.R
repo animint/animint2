@@ -6,12 +6,12 @@ subset(not.na, is.na(not.na$population))
 not.na[not.na$country=="Kuwait", "population"] <- 1700000
 viz <-
   list(scatter=a_plot()+
-         a_geom_point(aes(life.expectancy, fertility.rate,
+         a_geom_point(a_aes(life.expectancy, fertility.rate,
                         colour=region, size=population),
                     clickSelects="country",
                     showSelected="year",
                     data=not.na)+
-       a_geom_text(aes(life.expectancy, fertility.rate, a_label=country),
+       a_geom_text(a_aes(life.expectancy, fertility.rate, a_label=country),
                  data=not.na,
                      showSelected="country", showSelected2="year")+
        a_scale_size_animint(breaks=10^(5:9))+
@@ -19,7 +19,7 @@ viz <-
 
        timeSeries=a_plot()+
        make_tallrect(WorldBank, "year")+
-       a_geom_line(aes(year, life.expectancy, group=country, colour=region),
+       a_geom_line(a_aes(year, life.expectancy, group=country, colour=region),
                  data=WorldBank, size=4, alpha=3/5,
                      clickSelects="country"),
 
@@ -38,12 +38,12 @@ test_that("plot named timeSeries is OK with time option list", {
 
 bad <-
   list(scatter=a_plot()+
-         a_geom_point(aes(life.expectancy, fertility.rate,
+         a_geom_point(a_aes(life.expectancy, fertility.rate,
                         colour=region, size=population),
                     clickSelects="country",
                       showSelected="year", 
                   data=not.na)+
-       a_geom_text(aes(life.expectancy, fertility.rate, a_label=country),
+       a_geom_text(a_aes(life.expectancy, fertility.rate, a_label=country),
                  data=not.na,
                      showSelected=c("country", "year"))+
        a_scale_size_animint(breaks=10^(5:9))+
@@ -51,7 +51,7 @@ bad <-
 
        time=a_plot()+
        make_tallrect(WorldBank, "year")+
-       a_geom_line(aes(year, life.expectancy, group=country, colour=region),
+       a_geom_line(a_aes(year, life.expectancy, group=country, colour=region),
                  data=WorldBank, size=4, alpha=3/5,
                      clickSelects="country"),
 

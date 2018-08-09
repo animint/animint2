@@ -1,6 +1,6 @@
-find_a_scale <- function(aes, x, env = parent.frame()) {
+find_a_scale <- function(a_aes, x, env = parent.frame()) {
   type <- a_scale_type(x)
-  candidates <- paste("a_scale", aes, type, sep = "_")
+  candidates <- paste("a_scale", a_aes, type, sep = "_")
 
   for (a_scale in candidates) {
     a_scale_f <- find_global(a_scale, env, mode = "function")
@@ -8,7 +8,7 @@ find_a_scale <- function(aes, x, env = parent.frame()) {
       return(a_scale_f())
   }
 
-  # Failure to find a scale is not an error because some "aesthetics" don't
+  # Failure to find a scale is not an error because some "a_aesthetics" don't
   # need scales (e.g. group), and it allows others to extend ggplot2 with
   # their own aesthetics
 

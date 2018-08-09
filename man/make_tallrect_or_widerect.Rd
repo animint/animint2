@@ -6,11 +6,11 @@
 tiles the x or y range. This function is used internally by
 make_tallrect or make_widerect, which are more user-friendly.}
 \usage{
-make_tallrect_or_widerect(aes.prefix, a_geom_xrect, data, var.name,
+make_tallrect_or_widerect(a_aes.prefix, a_geom_xrect, data, var.name,
   even = FALSE, alpha = 0.5, ..., data.fun = identity)
 }
 \arguments{
-\item{aes.prefix}{"x" or "y"}
+\item{a_aes.prefix}{"x" or "y"}
 
 \item{a_geom_xrect}{a_geom_tallrect or a_geom_widerect}
 
@@ -24,7 +24,7 @@ make_tallrect_or_widerect(aes.prefix, a_geom_xrect, data, var.name,
 
 \item{...}{passed to a_geom_xrect}
 
-\item{data.fun}{called on data passed to a_geom_xrect(aes(..),
+\item{data.fun}{called on data passed to a_geom_xrect(a_aes(..),
 data.fun(df)) this is useful in facetted plots, for adding
 columns to the data.frame, if you want that a_geom in only one
 panel.}

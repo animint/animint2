@@ -22,20 +22,20 @@ NULL
 #' @examples
 #' # Generate data
 #' rainbow <- matrix(hcl(seq(0, 360, length.out = 50 * 50), 80, 70), nrow = 50)
-#' a_plot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, a_aes(mpg, wt)) +
 #'   a_geom_point() +
 #'   a_annotation_raster(rainbow, 15, 20, 3, 4)
 #' # To fill up whole plot
-#' a_plot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, a_aes(mpg, wt)) +
 #'   a_annotation_raster(rainbow, -Inf, Inf, -Inf, Inf) +
 #'   a_geom_point()
 #'
 #' rainbow2 <- matrix(hcl(seq(0, 360, length.out = 10), 80, 70), nrow = 1)
-#' a_plot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, a_aes(mpg, wt)) +
 #'   a_annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf) +
 #'   a_geom_point()
 #' rainbow2 <- matrix(hcl(seq(0, 360, length.out = 10), 80, 70), nrow = 1)
-#' a_plot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, a_aes(mpg, wt)) +
 #'   a_annotation_raster(rainbow2, -Inf, Inf, -Inf, Inf, interpolate = TRUE) +
 #'   a_geom_point()
 a_annotation_raster <- function(raster, xmin, xmax, ymin, ymax,
@@ -48,7 +48,7 @@ a_annotation_raster <- function(raster, xmin, xmax, ymin, ymax,
     a_stat = a_StatIdentity,
     a_position = a_PositionIdentity,
     a_geom = a_GeomRasterAnn,
-    inherit.aes = TRUE,
+    inherit.a_aes = TRUE,
     params = list(
       raster = raster,
       xmin = xmin,

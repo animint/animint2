@@ -28,7 +28,7 @@ a_stat_ydensity <- function(mapping = NULL, data = NULL,
                           a_scale = "area",
                           na.rm = FALSE,
                           show.legend = NA,
-                          inherit.aes = TRUE) {
+                          inherit.a_aes = TRUE) {
   a_scale <- match.arg(a_scale, c("area", "count", "width"))
 
   a_layer(
@@ -38,7 +38,7 @@ a_stat_ydensity <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       bw = bw,
       adjust = adjust,

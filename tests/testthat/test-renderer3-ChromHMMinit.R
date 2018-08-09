@@ -16,7 +16,7 @@ viz <- list(
   parameters=a_plot()+
     ggtitle("parameters at selected iteration")+
     a_scale_fill_gradient(low="white", high="blue")+
-    a_geom_tile(aes(state, experiment, fill=frequency,
+    a_geom_tile(a_aes(state, experiment, fill=frequency,
                   key=paste(state, experiment)),
               showSelected=c("repeat.fac", "iteration"),
               ##chunk_vars=c("repeat.fac"),
@@ -29,7 +29,7 @@ viz <- list(
                space="free",
                scales="free_y")+
     a_scale_y_discrete(drop=FALSE)+
-    a_geom_point(aes(state.to, state.from, color=probability,
+    a_geom_point(a_aes(state.to, state.from, color=probability,
                    key=paste(state.from, state.to)),
                showSelected=c("repeat.fac", "iteration"),
                size=8,
@@ -39,7 +39,7 @@ viz <- list(
   metrics=a_plot()+
     ggtitle("convergence metrics, select iteration")+
     make_tallrect(ChromHMMinit$metrics, "iteration")+
-    a_geom_line(aes(iteration, metric.value,
+    a_geom_line(a_aes(iteration, metric.value,
                   group=repeat.fac),
               clickSelects="repeat.fac",
               size=3,
@@ -55,7 +55,7 @@ viz <- list(
     a_theme_animint(height=500, width=400)+
     a_theme(panel.margin=grid::unit(0, "cm"))+
     a_facet_grid(metric.name ~ ., space="fixed", scales="free")+
-    a_geom_point(aes(repeat.fac, metric.value),
+    a_geom_point(a_aes(repeat.fac, metric.value),
                clickSelects="repeat.fac",
                size=5,
                data=subset(last.iteration, metric.name != "Change"))+

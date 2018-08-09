@@ -1,9 +1,9 @@
 #' @export
 #' @examples
-#' a_plot(mpg, aes(displ, hwy)) +
+#' a_plot(mpg, a_aes(displ, hwy)) +
 #'   a_geom_point(alpha = 0.5, colour = "blue")
 #'
-#' a_plot(mpg, aes(displ, hwy)) +
+#' a_plot(mpg, a_aes(displ, hwy)) +
 #'   a_geom_point(colour = alpha("blue", 0.5))
 scales::alpha
 

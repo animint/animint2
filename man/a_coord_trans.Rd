@@ -31,15 +31,15 @@ how to create your own.
 
 # Three ways of doing transformation in ggplot:
 #  * by transforming the data
-a_plot(diamonds, aes(log10(carat), log10(price))) +
+a_plot(diamonds, a_aes(log10(carat), log10(price))) +
   a_geom_point()
 #  * by transforming the scales
-a_plot(diamonds, aes(carat, price)) +
+a_plot(diamonds, a_aes(carat, price)) +
   a_geom_point() +
   a_scale_x_log10() +
   a_scale_y_log10()
 #  * by transforming the coordinate system:
-a_plot(diamonds, aes(carat, price)) +
+a_plot(diamonds, a_aes(carat, price)) +
   a_geom_point() +
   a_coord_trans(x = "log10", y = "log10")
 
@@ -51,13 +51,13 @@ a_plot(diamonds, aes(carat, price)) +
 
 d <- subset(diamonds, carat > 0.5)
 
-a_plot(d, aes(carat, price)) +
+a_plot(d, a_aes(carat, price)) +
   a_geom_point() +
   a_geom_smooth(method = "lm") +
   a_scale_x_log10() +
   a_scale_y_log10()
 
-a_plot(d, aes(carat, price)) +
+a_plot(d, a_aes(carat, price)) +
   a_geom_point() +
   a_geom_smooth(method = "lm") +
   a_coord_trans(x = "log10", y = "log10")
@@ -68,7 +68,7 @@ a_plot(d, aes(carat, price)) +
 
 # With a combination of scale and coordinate transformation, it's
 # possible to do back-transformations:
-a_plot(diamonds, aes(carat, price)) +
+a_plot(diamonds, a_aes(carat, price)) +
   a_geom_point() +
   a_geom_smooth(method = "lm") +
   a_scale_x_log10() +
@@ -76,13 +76,13 @@ a_plot(diamonds, aes(carat, price)) +
   a_coord_trans(x = scales::exp_trans(10), y = scales::exp_trans(10))
 
 # cf.
-a_plot(diamonds, aes(carat, price)) +
+a_plot(diamonds, a_aes(carat, price)) +
   a_geom_point() +
   a_geom_smooth(method = "lm")
 
 # Also works with discrete scales
 df <- data.frame(a = abs(rnorm(26)),letters)
-plot <- a_plot(df,aes(a,letters)) + a_geom_point()
+plot <- a_plot(df,a_aes(a,letters)) + a_geom_point()
 
 plot + a_coord_trans(x = "log10")
 plot + a_coord_trans(x = "sqrt")

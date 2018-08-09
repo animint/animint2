@@ -15,7 +15,7 @@ a_stat_density_2d <- function(mapping = NULL, data = NULL,
                             h = NULL,
                             na.rm = FALSE,
                             show.legend = NA,
-                            inherit.aes = TRUE) {
+                            inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -23,7 +23,7 @@ a_stat_density_2d <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       contour = contour,
@@ -44,7 +44,7 @@ a_stat_density2d <- a_stat_density_2d
 #' @usage NULL
 #' @export
 a_StatDensity2d <- a_ggproto("a_StatDensity2d", a_Stat,
-  default_aes = aes(colour = "#3366FF", size = 0.5),
+  default_aes = a_aes(colour = "#3366FF", size = 0.5),
 
   required_aes = c("x", "y"),
 

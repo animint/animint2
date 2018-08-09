@@ -1,8 +1,8 @@
 acontext("facet-coord")
 
-p <- a_plot(mtcars, aes(mpg, wt)) + 
+p <- a_plot(mtcars, a_aes(mpg, wt)) + 
   a_geom_point(colour='grey50', size = 4) + 
-  a_geom_point(aes(colour = cyl)) 
+  a_geom_point(a_aes(colour = cyl)) 
 
 test_that("a_coord_fixed() + a_facet_wrap(nrow=1) with shrunk y-axis", {
   ratio2 <- 2

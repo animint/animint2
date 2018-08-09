@@ -4,7 +4,7 @@ miris <- iris
 miris$kingdom <- "plantae"
 
 gg <- a_plot()+
-  a_geom_point(aes(Petal.Length, Petal.Width),
+  a_geom_point(a_aes(Petal.Length, Petal.Width),
              data=miris)
 
 viz <-

@@ -9,16 +9,16 @@ a_geom_label(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "identity", ..., parse = FALSE, nudge_x = 0, nudge_y = 0,
   a_label.padding = unit(0.25, "lines"), a_label.r = unit(0.15, "lines"),
   a_label.size = 0.25, na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  inherit.a_aes = TRUE)
 
 a_geom_text(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "identity", ..., parse = FALSE, nudge_x = 0, nudge_y = 0,
   check_overlap = FALSE, na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -66,7 +66,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -109,7 +109,7 @@ it away from the center
 }
 
 \examples{
-p <- a_plot(mtcars, aes(wt, mpg, a_label = rownames(mtcars)))
+p <- a_plot(mtcars, a_aes(wt, mpg, a_label = rownames(mtcars)))
 
 p + a_geom_text()
 # Avoid overlaps
@@ -119,7 +119,7 @@ p + a_geom_label()
 # Change size of the label
 p + a_geom_text(size = 10)
 
-# Set aesthetics to fixed value
+# Set a_aesthetics to fixed value
 p + a_geom_point() + a_geom_text(hjust = 0, nudge_x = 0.05)
 p + a_geom_point() + a_geom_text(vjust = 0, nudge_y = 0.5)
 p + a_geom_point() + a_geom_text(angle = 45)
@@ -128,20 +128,20 @@ p + a_geom_point() + a_geom_text(angle = 45)
 p + a_geom_text(family = "Times New Roman")
 }
 
-# Add aesthetic mappings
-p + a_geom_text(aes(colour = factor(cyl)))
-p + a_geom_text(aes(colour = factor(cyl))) +
+# Add a_aesthetic mappings
+p + a_geom_text(a_aes(colour = factor(cyl)))
+p + a_geom_text(a_aes(colour = factor(cyl))) +
   a_scale_colour_discrete(l = 40)
-p + a_geom_label(aes(fill = factor(cyl)), colour = "white", fontface = "bold")
+p + a_geom_label(a_aes(fill = factor(cyl)), colour = "white", fontface = "bold")
 
-p + a_geom_text(aes(size = wt))
+p + a_geom_text(a_aes(size = wt))
 # a_scale height of text, rather than sqrt(height)
-p + a_geom_text(aes(size = wt)) + a_scale_radius(range = c(3,6))
+p + a_geom_text(a_aes(size = wt)) + a_scale_radius(range = c(3,6))
 
 # You can display expressions by setting parse = TRUE.  The
 # details of the display are described in ?plotmath, but note that
 # a_geom_text uses strings, not expressions.
-p + a_geom_text(aes(a_label = paste(wt, "^(", cyl, ")", sep = "")),
+p + a_geom_text(a_aes(a_label = paste(wt, "^(", cyl, ")", sep = "")),
   parse = TRUE)
 
 # Add a text annotation
@@ -158,25 +158,25 @@ df <- data.frame(
 
 # ggplot2 doesn't know you want to give the labels the same virtual width
 # as the bars:
-a_plot(data = df, aes(x, y, fill = grp, a_label = y)) +
+a_plot(data = df, a_aes(x, y, fill = grp, a_label = y)) +
   a_geom_bar(a_stat = "identity", a_position = "dodge") +
   a_geom_text(a_position = "dodge")
 # So tell it:
-a_plot(data = df, aes(x, y, fill = grp, a_label = y)) +
+a_plot(data = df, a_aes(x, y, fill = grp, a_label = y)) +
   a_geom_bar(a_stat = "identity", a_position = "dodge") +
   a_geom_text(a_position = a_position_dodge(0.9))
 # Use you can't nudge and dodge text, so instead adjust the y postion
-a_plot(data = df, aes(x, y, fill = grp, a_label = y)) +
+a_plot(data = df, a_aes(x, y, fill = grp, a_label = y)) +
   a_geom_bar(a_stat = "identity", a_position = "dodge") +
-  a_geom_text(aes(y = y + 0.05), a_position = a_position_dodge(0.9), vjust = 0)
+  a_geom_text(a_aes(y = y + 0.05), a_position = a_position_dodge(0.9), vjust = 0)
 
 # To place text in the middle of each bar in a stacked barplot, you
 # need to do the computation yourself
 df <- transform(df, mid_y = ave(df$y, df$x, FUN = function(val) cumsum(val) - (0.5 * val)))
 
-a_plot(data = df, aes(x, y, fill = grp, a_label = y)) +
+a_plot(data = df, a_aes(x, y, fill = grp, a_label = y)) +
  a_geom_bar(a_stat = "identity") +
- a_geom_text(aes(y = mid_y))
+ a_geom_text(a_aes(y = mid_y))
 
 # Justification -------------------------------------------------------------
 df <- data.frame(
@@ -184,9 +184,9 @@ df <- data.frame(
   y = c(1, 2, 1, 2, 1.5),
   text = c("bottom-left", "bottom-right", "top-left", "top-right", "center")
 )
-a_plot(df, aes(x, y)) +
-  a_geom_text(aes(a_label = text))
-a_plot(df, aes(x, y)) +
-  a_geom_text(aes(a_label = text), vjust = "inward", hjust = "inward")
+a_plot(df, a_aes(x, y)) +
+  a_geom_text(a_aes(a_label = text))
+a_plot(df, a_aes(x, y)) +
+  a_geom_text(a_aes(a_label = text), vjust = "inward", hjust = "inward")
 }
 }

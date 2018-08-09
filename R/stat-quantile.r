@@ -19,7 +19,7 @@ a_stat_quantile <- function(mapping = NULL, data = NULL,
                           method.args = list(),
                           na.rm = FALSE,
                           show.legend = NA,
-                          inherit.aes = TRUE) {
+                          inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -27,7 +27,7 @@ a_stat_quantile <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       quantiles = quantiles,
       formula = formula,

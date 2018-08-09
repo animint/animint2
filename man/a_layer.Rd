@@ -5,8 +5,8 @@
 \title{Create a new layer}
 \usage{
 a_layer(a_geom = NULL, a_stat = NULL, data = NULL, mapping = NULL,
-  a_position = NULL, params = list(), inherit.aes = TRUE, subset = NULL,
-  show.legend = NA)
+  a_position = NULL, params = list(), inherit.a_aes = TRUE,
+  subset = NULL, show.legend = NA)
 }
 \arguments{
 \item{a_geom}{The geometric object to use display the data}
@@ -28,8 +28,8 @@ layer, as a string.}
    the plot data. The return value must be a \code{data.frame.}, and
    will be used as the layer data.}
 
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -38,7 +38,7 @@ a call to a position adjustment function.}
 
 \item{params}{Additional parameters to the \code{a_geom} and \code{a_stat}.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -57,15 +57,15 @@ calls but it can also be created directly using this function.
 }
 \examples{
 # geom calls are just a short cut for layer
-a_plot(mpg, aes(displ, hwy)) + a_geom_point()
+a_plot(mpg, a_aes(displ, hwy)) + a_geom_point()
 # shortcut for
-a_plot(mpg, aes(displ, hwy)) +
+a_plot(mpg, a_aes(displ, hwy)) +
   a_layer(a_geom = "point", a_stat = "identity", a_position = "identity",
     params = list(na.rm = FALSE)
   )
 
 # use a function as data to plot a subset of global data
-a_plot(mpg, aes(displ, hwy)) +
+a_plot(mpg, a_aes(displ, hwy)) +
   a_layer(a_geom = "point", a_stat = "identity", a_position = "identity",
     data = head, params = list(na.rm = FALSE)
   )

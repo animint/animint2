@@ -15,7 +15,7 @@ update_a_labels(p, a_labels)
 Update axis/legend labels
 }
 \examples{
-p <- a_plot(mtcars, aes(mpg, wt)) + a_geom_point()
+p <- a_plot(mtcars, a_aes(mpg, wt)) + a_geom_point()
 update_a_labels(p, list(x = "New x"))
 update_a_labels(p, list(x = expression(x / y ^ 2)))
 update_a_labels(p, list(x = "New x", y = "New Y"))

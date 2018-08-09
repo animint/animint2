@@ -25,33 +25,33 @@
 #'   \code{\link{loess}} for local smooths
 #' @export
 #' @examples
-#' a_plot(mpg, aes(displ, hwy)) +
+#' a_plot(mpg, a_aes(displ, hwy)) +
 #'   a_geom_point() +
 #'   a_geom_smooth()
 #'
 #' # Use span to control the "wiggliness" of the default loess smoother
 #' # The span is the fraction of points used to fit each local regression:
 #' # small numbers make a wigglier curve, larger numbers make a smoother curve.
-#' a_plot(mpg, aes(displ, hwy)) +
+#' a_plot(mpg, a_aes(displ, hwy)) +
 #'   a_geom_point() +
 #'   a_geom_smooth(span = 0.3)
 #'
 #' # Instead of a loess smooth, you can use any other modelling function:
-#' a_plot(mpg, aes(displ, hwy)) +
+#' a_plot(mpg, a_aes(displ, hwy)) +
 #'   a_geom_point() +
 #'   a_geom_smooth(method = "lm", se = FALSE)
 #'
-#' a_plot(mpg, aes(displ, hwy)) +
+#' a_plot(mpg, a_aes(displ, hwy)) +
 #'   a_geom_point() +
 #'   a_geom_smooth(method = "lm", formula = y ~ splines::bs(x, 3), se = FALSE)
 #'
 #' # Smoothes are automatically fit to each group (defined by categorical
 #' # aesthetics or the group aesthetic) and for each facet
 #'
-#' a_plot(mpg, aes(displ, hwy, colour = class)) +
+#' a_plot(mpg, a_aes(displ, hwy, colour = class)) +
 #'   a_geom_point() +
 #'   a_geom_smooth(se = FALSE, method = "lm")
-#' a_plot(mpg, aes(displ, hwy)) +
+#' a_plot(mpg, a_aes(displ, hwy)) +
 #'   a_geom_point() +
 #'   a_geom_smooth(span = 0.8) +
 #'   a_facet_wrap(~drv)
@@ -62,15 +62,15 @@
 #' }
 #' # To fit a logistic regression, you need to coerce the values to
 #' # a numeric vector lying between 0 and 1.
-#' a_plot(rpart::kyphosis, aes(Age, Kyphosis)) +
+#' a_plot(rpart::kyphosis, a_aes(Age, Kyphosis)) +
 #'   a_geom_jitter(height = 0.05) +
 #'   binomial_smooth()
 #'
-#' a_plot(rpart::kyphosis, aes(Age, as.numeric(Kyphosis) - 1)) +
+#' a_plot(rpart::kyphosis, a_aes(Age, as.numeric(Kyphosis) - 1)) +
 #'   a_geom_jitter(height = 0.05) +
 #'   binomial_smooth()
 #'
-#' a_plot(rpart::kyphosis, aes(Age, as.numeric(Kyphosis) - 1)) +
+#' a_plot(rpart::kyphosis, a_aes(Age, as.numeric(Kyphosis) - 1)) +
 #'   a_geom_jitter(height = 0.05) +
 #'   binomial_smooth(formula = y ~ splines::ns(x, 2))
 #'
@@ -85,7 +85,7 @@ a_geom_smooth <- function(mapping = NULL, data = NULL,
                         se = TRUE,
                         na.rm = FALSE,
                         show.legend = NA,
-                        inherit.aes = TRUE) {
+                        inherit.a_aes = TRUE) {
 
   params <- list(
     na.rm = na.rm,
@@ -104,7 +104,7 @@ a_geom_smooth <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomSmooth,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = params
   )
 }
@@ -130,6 +130,6 @@ a_GeomSmooth <- a_ggproto("a_GeomSmooth", a_Geom,
 
   required_aes = c("x", "y"),
 
-  default_aes = aes(colour = "#3366FF", fill = "grey60", size = 1,
+  default_aes = a_aes(colour = "#3366FF", fill = "grey60", size = 1,
     linetype = 1, weight = 1, alpha = 0.4)
 )

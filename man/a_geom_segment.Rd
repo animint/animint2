@@ -7,16 +7,16 @@
 \usage{
 a_geom_segment(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "identity", ..., arrow = NULL, lineend = "butt",
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  na.rm = FALSE, show.legend = NA, inherit.a_aes = TRUE)
 
 a_geom_curve(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "identity", ..., curvature = 0.5, angle = 90, ncp = 5,
   arrow = NULL, lineend = "butt", na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -56,7 +56,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -84,24 +84,24 @@ the default plot specification, e.g. \code{\link{borders}}.}
 }
 
 \examples{
-b <- a_plot(mtcars, aes(wt, mpg)) +
+b <- a_plot(mtcars, a_aes(wt, mpg)) +
   a_geom_point()
 
 df <- data.frame(x1 = 2.62, x2 = 3.57, y1 = 21.0, y2 = 15.0)
 b +
- a_geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "curve"), data = df) +
- a_geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "segment"), data = df)
+ a_geom_curve(a_aes(x = x1, y = y1, xend = x2, yend = y2, colour = "curve"), data = df) +
+ a_geom_segment(a_aes(x = x1, y = y1, xend = x2, yend = y2, colour = "segment"), data = df)
 
-b + a_geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = -0.2)
-b + a_geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = 1)
+b + a_geom_curve(a_aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = -0.2)
+b + a_geom_curve(a_aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = 1)
 b + a_geom_curve(
-  aes(x = x1, y = y1, xend = x2, yend = y2),
+  a_aes(x = x1, y = y1, xend = x2, yend = y2),
   data = df,
   arrow = arrow(length = unit(0.03, "npc"))
 )
 
-a_plot(seals, aes(long, lat)) +
-  a_geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat),
+a_plot(seals, a_aes(long, lat)) +
+  a_geom_segment(a_aes(xend = long + delta_long, yend = lat + delta_lat),
     arrow = arrow(length = unit(0.1,"cm"))) +
     borders("state")
 
@@ -110,8 +110,8 @@ counts <- as.data.frame(table(x = rpois(100,5)))
 counts$x <- as.numeric(as.character(counts$x))
 with(counts, plot(x, Freq, type = "h", lwd = 10))
 
-a_plot(counts, aes(x, Freq)) +
-  a_geom_segment(aes(xend = x, yend = 0), size = 10, lineend = "butt")
+a_plot(counts, a_aes(x, Freq)) +
+  a_geom_segment(a_aes(xend = x, yend = 0), size = 10, lineend = "butt")
 }
 \seealso{
 \code{\link{a_geom_path}} and \code{\link{a_geom_line}} for multi-

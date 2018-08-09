@@ -34,12 +34,12 @@ arrests$region <- tolower(rownames(USArrests))
 
 choro <- merge(states, arrests, sort = FALSE, by = "region")
 choro <- choro[order(choro$order), ]
-a_plot(choro, aes(long, lat)) +
-  a_geom_polygon(aes(group = group, fill = assault)) +
+a_plot(choro, a_aes(long, lat)) +
+  a_geom_polygon(a_aes(group = group, fill = assault)) +
   a_coord_map("albers",  at0 = 45.5, lat1 = 29.5)
 
-a_plot(choro, aes(long, lat)) +
-  a_geom_polygon(aes(group = group, fill = assault / murder)) +
+a_plot(choro, a_aes(long, lat)) +
+  a_geom_polygon(a_aes(group = group, fill = assault / murder)) +
   a_coord_map("albers",  at0 = 45.5, lat1 = 29.5)
 }
 }

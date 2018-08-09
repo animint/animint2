@@ -2,8 +2,8 @@
 match_calculated_aes <- "^\\.\\.([a-zA-Z._]+)\\.\\.$"
 
 # Determine if aesthetic is calculated
-is_calculated_aes <- function(aesthetics) {
-  vars <- lapply(aesthetics, find_vars)
+is_calculated_aes <- function(a_aesthetics) {
+  vars <- lapply(a_aesthetics, find_vars)
 
   vapply(vars, function(x) any(grepl(match_calculated_aes, x)), logical(1))
 }

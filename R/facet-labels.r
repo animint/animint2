@@ -68,7 +68,7 @@
 #' @name labellers
 #' @examples
 #' mtcars$cyl2 <- factor(mtcars$cyl, labels = c("alpha", "beta", "gamma"))
-#' p <- a_plot(mtcars, aes(wt, mpg)) + a_geom_point()
+#' p <- a_plot(mtcars, a_aes(wt, mpg)) + a_geom_point()
 #'
 #' # Displaying only the values
 #' p + a_facet_grid(. ~ cyl)
@@ -192,7 +192,7 @@ find_names <- function(expr) {
 #' @examples
 #' # The variables mentioned in the plotmath expression must be
 #' # backquoted and referred to by their names.
-#' p <- a_plot(mtcars, aes(wt, mpg)) + a_geom_point()
+#' p <- a_plot(mtcars, a_aes(wt, mpg)) + a_geom_point()
 #' p + a_facet_grid(vs ~ ., labeller = a_label_bquote(alpha ^ .(vs)))
 #' p + a_facet_grid(. ~ vs, labeller = a_label_bquote(cols = .(vs) ^ .(vs)))
 #' p + a_facet_grid(. ~ vs + am, labeller = a_label_bquote(cols = .(am) ^ .(vs)))
@@ -283,7 +283,7 @@ resolve_labeller <- function(rows, cols, a_labels) {
 #' @seealso \code{\link{labeller}()}, \link{labellers}
 #' @export
 #' @examples
-#' p <- a_plot(mtcars, aes(disp, drat)) + a_geom_point()
+#' p <- a_plot(mtcars, a_aes(disp, drat)) + a_geom_point()
 #' p + a_facet_wrap(~am)
 #'
 #' # Rename labels on the fly with a lookup character vector
@@ -359,7 +359,7 @@ as_labeller <- function(x, default = a_label_value, multi_line = TRUE) {
 #' @export
 #' @examples
 #' \donttest{
-#' p1 <- a_plot(mtcars, aes(x = mpg, y = wt)) + a_geom_point()
+#' p1 <- a_plot(mtcars, a_aes(x = mpg, y = wt)) + a_geom_point()
 #'
 #' # You can assign different labellers to variables:
 #' p1 + facet_grid(vs + am ~ gear,
@@ -374,7 +374,7 @@ as_labeller <- function(x, default = a_label_value, multi_line = TRUE) {
 #'   substr(string, 1, 1) <- toupper(substr(string, 1, 1))
 #'   string
 #' }
-#' p2 <- a_plot(msleep, aes(x = sleep_total, y = awake)) + a_geom_point()
+#' p2 <- a_plot(msleep, a_aes(x = sleep_total, y = awake)) + a_geom_point()
 #' p2 + facet_grid(vore ~ conservation, labeller = labeller(vore = capitalize))
 #'
 #' # Or use character vectors as lookup tables:

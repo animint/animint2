@@ -11,7 +11,7 @@
 #' @inheritParams a_geom_point
 #' @export
 #' @examples
-#' d <- a_plot(diamonds, aes(carat, price))
+#' d <- a_plot(diamonds, a_aes(carat, price))
 #' d + a_geom_hex()
 #'
 #' \donttest{
@@ -29,7 +29,7 @@ a_geom_hex <- function(mapping = NULL, data = NULL,
                      ...,
                      na.rm = FALSE,
                      show.legend = NA,
-                     inherit.aes = TRUE) {
+                     inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -37,7 +37,7 @@ a_geom_hex <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomHex,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -65,7 +65,7 @@ a_GeomHex <- a_ggproto("a_GeomHex", a_Geom,
 
   required_aes = c("x", "y"),
 
-  default_aes = aes(colour = NA, fill = "grey50", size = 0.5, alpha = NA),
+  default_aes = a_aes(colour = NA, fill = "grey50", size = 0.5, alpha = NA),
 
   draw_key = a_draw_key_polygon
 )

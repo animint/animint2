@@ -42,25 +42,25 @@
 #' @param fun.args Optional additional arguments passed on to the functions.
 #' @export
 #' @examples
-#' d <- a_plot(mtcars, aes(cyl, mpg)) + a_geom_point()
+#' d <- a_plot(mtcars, a_aes(cyl, mpg)) + a_geom_point()
 #'
 #' # You can supply individual functions to summarise the value at
 #' # each x:
 #' d + a_stat_summary(fun.y = "median", colour = "red", size = 2, a_geom = "point")
 #' d + a_stat_summary(fun.y = "mean", colour = "red", size = 2, a_geom = "point")
-#' d + aes(colour = factor(vs)) + a_stat_summary(fun.y = mean, a_geom="line")
+#' d + a_aes(colour = factor(vs)) + a_stat_summary(fun.y = mean, a_geom="line")
 #'
 #' d + a_stat_summary(fun.y = mean, fun.ymin = min, fun.ymax = max,
 #'   colour = "red")
 #'
-#' d <- a_plot(diamonds, aes(cut))
+#' d <- a_plot(diamonds, a_aes(cut))
 #' d + a_geom_bar()
-#' d + a_stat_summary_bin(aes(y = price), fun.y = "mean", a_geom = "bar")
+#' d + a_stat_summary_bin(a_aes(y = price), fun.y = "mean", a_geom = "bar")
 #'
 #' \donttest{
 #' # Don't use ylim to zoom into a summary plot - this throws the
 #' # data away
-#' p <- a_plot(mtcars, aes(cyl, mpg)) +
+#' p <- a_plot(mtcars, a_aes(cyl, mpg)) +
 #'   a_stat_summary(fun.y = "mean", a_geom = "point")
 #' p
 #' p + ylim(15, 30)
@@ -71,19 +71,19 @@
 #' a_stat_sum_df <- function(fun, a_geom="crossbar", ...) {
 #'   a_stat_summary(fun.data = fun, colour = "red", a_geom = a_geom, width = 0.2, ...)
 #' }
-#' d <- a_plot(mtcars, aes(cyl, mpg)) + a_geom_point()
+#' d <- a_plot(mtcars, a_aes(cyl, mpg)) + a_geom_point()
 #' # The crossbar a_geom needs grouping to be specified when used with
 #' # a continuous x axis.
-#' d + a_stat_sum_df("a_mean_cl_boot", mapping = aes(group = cyl))
-#' d + a_stat_sum_df("a_mean_sdl", mapping = aes(group = cyl))
-#' d + a_stat_sum_df("a_mean_sdl", fun.args = list(mult = 1), mapping = aes(group = cyl))
-#' d + a_stat_sum_df("a_median_hilow", mapping = aes(group = cyl))
+#' d + a_stat_sum_df("a_mean_cl_boot", mapping = a_aes(group = cyl))
+#' d + a_stat_sum_df("a_mean_sdl", mapping = a_aes(group = cyl))
+#' d + a_stat_sum_df("a_mean_sdl", fun.args = list(mult = 1), mapping = a_aes(group = cyl))
+#' d + a_stat_sum_df("a_median_hilow", mapping = a_aes(group = cyl))
 #'
 #' # An example with highly skewed distributions:
 #' if (require("ggplot2movies")) {
 #' set.seed(596)
 #' mov <- movies[sample(nrow(movies), 1000), ]
-#'  m2 <- a_plot(mov, aes(x = factor(round(rating)), y = votes)) + a_geom_point()
+#'  m2 <- a_plot(mov, a_aes(x = factor(round(rating)), y = votes)) + a_geom_point()
 #'  m2 <- m2 + a_stat_summary(fun.data = "a_mean_cl_boot", a_geom = "crossbar",
 #'                          colour = "red", width = 0.3) + xlab("rating")
 #' m2
@@ -112,7 +112,7 @@ a_stat_summary <- function(mapping = NULL, data = NULL,
                          fun.args = list(),
                          na.rm = FALSE,
                          show.legend = NA,
-                         inherit.aes = TRUE) {
+                         inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -120,7 +120,7 @@ a_stat_summary <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       fun.data = fun.data,
       fun.y = fun.y,

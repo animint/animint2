@@ -9,15 +9,15 @@
 \usage{
 a_geom_density_2d(mapping = NULL, data = NULL, a_stat = "density2d",
   a_position = "identity", ..., lineend = "butt", linejoin = "round",
-  linemitre = 1, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  linemitre = 1, na.rm = FALSE, show.legend = NA, inherit.a_aes = TRUE)
 
 a_stat_density_2d(mapping = NULL, data = NULL, a_geom = "density_2d",
   a_position = "identity", ..., contour = TRUE, n = 100, h = NULL,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  na.rm = FALSE, show.legend = NA, inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -56,7 +56,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -87,25 +87,25 @@ Same as \code{\link{a_stat_contour}}
 }
 
 \examples{
-m <- a_plot(faithful, aes(x = eruptions, y = waiting)) +
+m <- a_plot(faithful, a_aes(x = eruptions, y = waiting)) +
  a_geom_point() +
  xlim(0.5, 6) +
  ylim(40, 110)
 m + a_geom_density_2d()
 \donttest{
-m + a_stat_density_2d(aes(fill = ..level..), a_geom = "polygon")
+m + a_stat_density_2d(a_aes(fill = ..level..), a_geom = "polygon")
 
 set.seed(4393)
 dsmall <- diamonds[sample(nrow(diamonds), 1000), ]
-d <- a_plot(dsmall, aes(x, y))
-# If you map an aesthetic to a categorical variable, you will get a
+d <- a_plot(dsmall, a_aes(x, y))
+# If you map an a_aesthetic to a categorical variable, you will get a
 # set of contours for each value of that variable
-d + a_geom_density_2d(aes(colour = cut))
+d + a_geom_density_2d(a_aes(colour = cut))
 
 # If we turn contouring off, we can use use geoms like tiles:
-d + a_stat_density_2d(a_geom = "raster", aes(fill = ..density..), contour = FALSE)
+d + a_stat_density_2d(a_geom = "raster", a_aes(fill = ..density..), contour = FALSE)
 # Or points:
-d + a_stat_density_2d(a_geom = "point", aes(size = ..density..), n = 20, contour = FALSE)
+d + a_stat_density_2d(a_geom = "point", a_aes(size = ..density..), n = 20, contour = FALSE)
 }
 }
 \seealso{

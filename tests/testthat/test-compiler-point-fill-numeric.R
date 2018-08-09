@@ -1,16 +1,16 @@
-acontext("a_geom_point(aes(fill=numeric))")
+acontext("a_geom_point(a_aes(fill=numeric))")
 
 viz <-
   list(fill=a_plot()+
-       a_geom_point(aes(Sepal.Width, Petal.Width,
+       a_geom_point(a_aes(Sepal.Width, Petal.Width,
                       fill=Petal.Length),
                   data=iris, color="black", size=5, pch=21),
        size=a_plot()+
-       a_geom_point(aes(Sepal.Width, Petal.Width,
+       a_geom_point(a_aes(Sepal.Width, Petal.Width,
                       size=Sepal.Length),
                   data=iris, color="black", fill="red", pch=21),
        color=a_plot()+
-       a_geom_point(aes(Sepal.Width, Petal.Width,
+       a_geom_point(a_aes(Sepal.Width, Petal.Width,
                       color=Petal.Length),
                   data=iris, size=5)+
        a_scale_color_continuous("petal length"))

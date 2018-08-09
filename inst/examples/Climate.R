@@ -35,40 +35,40 @@ countries <- subset(countries, ((-long)>54)&((-long)<118))
 
 temp.seq <- a_plot() + 
   make_tallrect(data=climate, "time2") + 
-  a_geom_line(data=climate, aes(x=time2, y=temperature), showSelected="id")
+  a_geom_line(data=climate, a_aes(x=time2, y=temperature), showSelected="id")
 
 clouds.high <- a_plot() + 
-  a_geom_tile(data=climate, aes(x=long, y=lat, fill=cloudhigh),
+  a_geom_tile(data=climate, a_aes(x=long, y=lat, fill=cloudhigh),
             clickSelects="id", showSelected="time2", colour="grey")+ 
   a_scale_fill_gradient("Coverage", low="skyblue", high="white", limits=c(0, 75)) + 
-  a_geom_path(data=countries, aes(x=long, y=lat, group=group)) + 
+  a_geom_path(data=countries, a_aes(x=long, y=lat, group=group)) + 
   ggtitle("High Altitute Cloud Cover")+ 
   a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
         axis.ticks=a_element_blank(), axis.title=a_element_blank())
 
 clouds.mid <- a_plot() + 
-  a_geom_tile(data=climate, aes(x=long, y=lat, fill=cloudmid),
+  a_geom_tile(data=climate, a_aes(x=long, y=lat, fill=cloudmid),
             clickSelects="id", showSelected="time2", colour="grey")+ 
   a_scale_fill_gradient("Coverage", low="skyblue", high="white", limits=c(0, 75)) + 
-  a_geom_path(data=countries, aes(x=long, y=lat, group=group)) + 
+  a_geom_path(data=countries, a_aes(x=long, y=lat, group=group)) + 
   ggtitle("Mid Altitute Cloud Cover")+ 
   a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
         axis.ticks=a_element_blank(), axis.title=a_element_blank())
 
 clouds.low <- a_plot() + 
-  a_geom_tile(data=climate, aes(x=long, y=lat, fill=cloudlow),
+  a_geom_tile(data=climate, a_aes(x=long, y=lat, fill=cloudlow),
             clickSelects="id", showSelected="time2", colour="grey")+ 
   a_scale_fill_gradient("Coverage", low="skyblue", high="white", limits=c(0, 75)) + 
-  a_geom_path(data=countries, aes(x=long, y=lat, group=group)) + 
+  a_geom_path(data=countries, a_aes(x=long, y=lat, group=group)) + 
   ggtitle("Low Altitute Cloud Cover")+ 
   a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
         axis.ticks=a_element_blank(), axis.title=a_element_blank())
 
 ozone.map <- a_plot() + 
-  a_geom_tile(data=climate, aes(x=long, y=lat, fill=ozone),
+  a_geom_tile(data=climate, a_aes(x=long, y=lat, fill=ozone),
             clickSelects="id", showSelected="time2", colour="grey")+ 
   a_scale_fill_gradient("Concentration", low="white", high="brown") + 
-  a_geom_path(data=countries, aes(x=long, y=lat, group=group)) + 
+  a_geom_path(data=countries, a_aes(x=long, y=lat, group=group)) + 
   ggtitle("Ozone Concentration")+ 
   a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
         axis.ticks=a_element_blank(), axis.title=a_element_blank())
@@ -77,10 +77,10 @@ ozone.map <- a_plot() +
 climate <- ddply(climate, .(id, month), transform, tempdev = temperature - mean(temperature))
 
 temperature.map <- a_plot() + 
-  a_geom_tile(data=climate, aes(x=long, y=lat, fill=tempdev),
+  a_geom_tile(data=climate, a_aes(x=long, y=lat, fill=tempdev),
             clickSelects="id", showSelected="time2", colour="grey")+ 
   a_scale_fill_gradient2("Temperature", low="blue", mid="white", high="red", limits=c(-20, 20), midpoint=0) + 
-  a_geom_path(data=countries, aes(x=long, y=lat, group=group)) + 
+  a_geom_path(data=countries, a_aes(x=long, y=lat, group=group)) + 
   ggtitle("Temperature Deviation from Monthly Norm")+ 
   a_theme(axis.line=a_element_blank(), axis.text=a_element_blank(), 
         axis.ticks=a_element_blank(), axis.title=a_element_blank())

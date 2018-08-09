@@ -20,7 +20,7 @@ test_that("error for stat=bin and showSelected", {
     a_theme_bw()+
     a_theme(panel.margin=grid::unit(0, "lines"))+
     a_geom_bar(
-      aes(count, group=stack, fill=stack),
+      a_aes(count, group=stack, fill=stack),
       showSelected="a_facet",
       binwidth=1,
       data = df,
@@ -41,7 +41,7 @@ test_that("no warning for stat=bin without showSelected", {
     a_theme_bw()+
     a_theme(panel.margin=grid::unit(0, "lines"))+
     a_geom_bar(
-      aes(count, group=stack, fill=stack),
+      a_aes(count, group=stack, fill=stack),
       binwidth=1,
       data = df,
       stat = "bin",

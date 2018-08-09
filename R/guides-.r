@@ -13,7 +13,7 @@
 #'
 #' dat <- data.frame(x = 1:5, y = 1:5, p = 1:5, q = factor(1:5),
 #'  r = factor(1:5))
-#' p <- a_plot(dat, aes(x, y, colour = p, size = q, shape = r)) + a_geom_point()
+#' p <- a_plot(dat, a_aes(x, y, colour = p, size = q, shape = r)) + a_geom_point()
 #'
 #' # without guide specification
 #' p
@@ -48,8 +48,8 @@
 #' p + a_theme(legend.a_position = "bottom", legend.box = "horizontal")
 #'
 #' # Set order for multiple guides
-#' a_plot(mpg, aes(displ, cty)) +
-#'   a_geom_point(aes(size = hwy, colour = cyl, shape = drv)) +
+#' a_plot(mpg, a_aes(displ, cty)) +
+#'   a_geom_point(a_aes(size = hwy, colour = cyl, shape = drv)) +
 #'   a_guides(
 #'    colour = a_guide_colourbar(order = 1),
 #'    shape = a_guide_legend(order = 2),
@@ -169,7 +169,7 @@ a_guides_train <- function(scales, a_theme, a_guides, a_labels) {
     # which is prior to a_scale_ZZZ(a_guide=XXX)
     # a_guide is determined in order of:
     #   + a_guides(XXX) > + a_scale_ZZZ(a_guide=XXX) > default(i.e., legend)
-    output <- a_scale$aesthetics[1]
+    output <- a_scale$a_aesthetics[1]
     a_guide <- a_guides[[output]] %||% a_scale$a_guide
 
     # this should be changed to testing a_guide == "none"
@@ -182,8 +182,8 @@ a_guides_train <- function(scales, a_theme, a_guides, a_labels) {
     a_guide <- validate_guide(a_guide)
 
     # check the consistency of the guide and scale.
-    if (a_guide$available_aes != "any" && !a_scale$aesthetics %in% a_guide$available_aes)
-      stop("Guide '", a_guide$name, "' cannot be used for '", a_scale$aesthetics, "'.")
+    if (a_guide$available_aes != "any" && !a_scale$a_aesthetics %in% a_guide$available_aes)
+      stop("Guide '", a_guide$name, "' cannot be used for '", a_scale$a_aesthetics, "'.")
 
     a_guide$title <- a_guide$title %|W|% a_scale$name %|W|% a_labels[[output]]
 

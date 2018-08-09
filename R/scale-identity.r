@@ -5,8 +5,8 @@
 #'   \code{\link{continuous_a_scale}}
 #' @param a_guide Guide to use for this scale - defaults to \code{"none"}.
 #' @examples
-#' a_plot(luv_colours, aes(u, v)) +
-#'   a_geom_point(aes(colour = col), size = 3) +
+#' a_plot(luv_colours, a_aes(u, v)) +
+#'   a_geom_point(a_aes(colour = col), size = 3) +
 #'   a_scale_color_identity() +
 #'   a_coord_equal()
 #'
@@ -15,27 +15,27 @@
 #'   y = 1:4,
 #'   colour = c("red", "green", "blue", "yellow")
 #' )
-#' a_plot(df, aes(x, y)) + a_geom_tile(aes(fill = colour))
-#' a_plot(df, aes(x, y)) +
-#'   a_geom_tile(aes(fill = colour)) +
+#' a_plot(df, a_aes(x, y)) + a_geom_tile(a_aes(fill = colour))
+#' a_plot(df, a_aes(x, y)) +
+#'   a_geom_tile(a_aes(fill = colour)) +
 #'   a_scale_fill_identity()
 #'
 #' # To get a legend guide, specify a_guide = "legend"
-#' a_plot(df, aes(x, y)) +
-#'   a_geom_tile(aes(fill = colour)) +
+#' a_plot(df, a_aes(x, y)) +
+#'   a_geom_tile(a_aes(fill = colour)) +
 #'   a_scale_fill_identity(a_guide = "legend")
 #' # But you'll typically also need to supply breaks and a_labels:
-#' a_plot(df, aes(x, y)) +
-#'   a_geom_tile(aes(fill = colour)) +
+#' a_plot(df, a_aes(x, y)) +
+#'   a_geom_tile(a_aes(fill = colour)) +
 #'   a_scale_fill_identity("trt", a_labels = letters[1:4], breaks = df$colour,
 #'   a_guide = "legend")
 #'
 #' # cyl scaled to appropriate size
-#' a_plot(mtcars, aes(mpg, wt)) + a_geom_point(aes(size = cyl))
+#' a_plot(mtcars, a_aes(mpg, wt)) + a_geom_point(a_aes(size = cyl))
 #'
 #' # cyl used as point size
-#' a_plot(mtcars, aes(mpg, wt)) +
-#'   a_geom_point(aes(size = cyl)) +
+#' a_plot(mtcars, a_aes(mpg, wt)) +
+#'   a_geom_point(a_aes(size = cyl)) +
 #'   a_scale_size_identity()
 NULL
 

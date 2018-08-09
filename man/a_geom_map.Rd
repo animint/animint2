@@ -5,11 +5,11 @@
 \title{Polygons from a reference map.}
 \usage{
 a_geom_map(mapping = NULL, data = NULL, a_stat = "identity", ..., map,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  na.rm = FALSE, show.legend = NA, inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -47,7 +47,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -81,13 +81,13 @@ positions <- data.frame(
   2.2, 2.1, 1.7, 2.1, 3.2, 2.8, 2.1, 2.2, 3.3, 3.2)
 )
 
-a_plot(values) + a_geom_map(aes(map_id = id), map = positions) +
+a_plot(values) + a_geom_map(a_aes(map_id = id), map = positions) +
   expand_limits(positions)
-a_plot(values, aes(fill = value)) +
-  a_geom_map(aes(map_id = id), map = positions) +
+a_plot(values, a_aes(fill = value)) +
+  a_geom_map(a_aes(map_id = id), map = positions) +
   expand_limits(positions)
-a_plot(values, aes(fill = value)) +
-  a_geom_map(aes(map_id = id), map = positions) +
+a_plot(values, a_aes(fill = value)) +
+  a_geom_map(a_aes(map_id = id), map = positions) +
   expand_limits(positions) + ylim(0, 3)
 
 # Better example
@@ -95,13 +95,13 @@ crimes <- data.frame(state = tolower(rownames(USArrests)), USArrests)
 crimesm <- reshape2::melt(crimes, id = 1)
 if (require(maps)) {
   states_map <- map_data("state")
-  a_plot(crimes, aes(map_id = state)) +
-    a_geom_map(aes(fill = Murder), map = states_map) +
+  a_plot(crimes, a_aes(map_id = state)) +
+    a_geom_map(a_aes(fill = Murder), map = states_map) +
     expand_limits(x = states_map$long, y = states_map$lat)
 
   last_plot() + a_coord_map()
-  a_plot(crimesm, aes(map_id = state)) +
-    a_geom_map(aes(fill = value), map = states_map) +
+  a_plot(crimesm, a_aes(map_id = state)) +
+    a_geom_map(a_aes(fill = value), map = states_map) +
     expand_limits(x = states_map$long, y = states_map$lat) +
     a_facet_wrap( ~ variable)
 }

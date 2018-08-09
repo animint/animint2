@@ -6,14 +6,14 @@ data(WorldBank, package = "animint2")
 ## http://bost.ocks.org/mike/constancy/
 no.time <-
   list(scatter=a_plot()+
-       a_geom_point(aes(life.expectancy, fertility.rate,
+       a_geom_point(a_aes(life.expectancy, fertility.rate,
                       colour=region, size=population,
                       tooltip=paste(country, "population", population),
                       key=country), # key aesthetic for animated transitions!
                   showSelected="year",
                   clickSelects="country",
                   data=WorldBank)+
-       a_geom_text(aes(life.expectancy, fertility.rate, a_label=country,
+       a_geom_text(a_aes(life.expectancy, fertility.rate, a_label=country,
                      key=country), # also use key here!
                  showSelected=c("country", "year"),
                  data=WorldBank)+
@@ -22,13 +22,13 @@ no.time <-
        
        ts=a_plot()+
        make_tallrect(WorldBank, "year")+
-       a_geom_line(aes(year, life.expectancy, group=country, colour=region),
+       a_geom_line(a_aes(year, life.expectancy, group=country, colour=region),
                  clickSelects="country",
                  data=WorldBank, size=4, alpha=3/5),
 
        bar=a_plot()+
        a_theme_animint(height=2400)+
-       a_geom_bar(aes(country, life.expectancy, fill=region,
+       a_geom_bar(a_aes(country, life.expectancy, fill=region,
                     key=country),
                 showSelected="year", clickSelects="country",
                 data=WorldBank, a_stat="identity", a_position="identity")+

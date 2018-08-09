@@ -16,24 +16,24 @@
 #'   (x, y), and an angle and radius.
 #' @export
 #' @examples
-#' b <- a_plot(mtcars, aes(wt, mpg)) +
+#' b <- a_plot(mtcars, a_aes(wt, mpg)) +
 #'   a_geom_point()
 #'
 #' df <- data.frame(x1 = 2.62, x2 = 3.57, y1 = 21.0, y2 = 15.0)
 #' b +
-#'  a_geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "curve"), data = df) +
-#'  a_geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "segment"), data = df)
+#'  a_geom_curve(a_aes(x = x1, y = y1, xend = x2, yend = y2, colour = "curve"), data = df) +
+#'  a_geom_segment(a_aes(x = x1, y = y1, xend = x2, yend = y2, colour = "segment"), data = df)
 #'
-#' b + a_geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = -0.2)
-#' b + a_geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = 1)
+#' b + a_geom_curve(a_aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = -0.2)
+#' b + a_geom_curve(a_aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = 1)
 #' b + a_geom_curve(
-#'   aes(x = x1, y = y1, xend = x2, yend = y2),
+#'   a_aes(x = x1, y = y1, xend = x2, yend = y2),
 #'   data = df,
 #'   arrow = arrow(length = unit(0.03, "npc"))
 #' )
 #'
-#' a_plot(seals, aes(long, lat)) +
-#'   a_geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat),
+#' a_plot(seals, a_aes(long, lat)) +
+#'   a_geom_segment(a_aes(xend = long + delta_long, yend = lat + delta_lat),
 #'     arrow = arrow(length = unit(0.1,"cm"))) +
 #'     borders("state")
 #'
@@ -42,8 +42,8 @@
 #' counts$x <- as.numeric(as.character(counts$x))
 #' with(counts, plot(x, Freq, type = "h", lwd = 10))
 #'
-#' a_plot(counts, aes(x, Freq)) +
-#'   a_geom_segment(aes(xend = x, yend = 0), size = 10, lineend = "butt")
+#' a_plot(counts, a_aes(x, Freq)) +
+#'   a_geom_segment(a_aes(xend = x, yend = 0), size = 10, lineend = "butt")
 a_geom_segment <- function(mapping = NULL, data = NULL,
                          a_stat = "identity", a_position = "identity",
                          ...,
@@ -51,7 +51,7 @@ a_geom_segment <- function(mapping = NULL, data = NULL,
                          lineend = "butt",
                          na.rm = FALSE,
                          show.legend = NA,
-                         inherit.aes = TRUE) {
+                         inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -59,7 +59,7 @@ a_geom_segment <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomSegment,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       arrow = arrow,
       lineend = lineend,
@@ -76,7 +76,7 @@ a_geom_segment <- function(mapping = NULL, data = NULL,
 a_GeomSegment <- a_ggproto("a_GeomSegment", a_Geom,
   required_aes = c("x", "y", "xend", "yend"),
   non_missing_aes = c("linetype", "size", "shape"),
-  default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
+  default_aes = a_aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
 
   draw_panel = function(data, panel_scales, a_coord, arrow = NULL,
                         lineend = "butt", na.rm = FALSE) {

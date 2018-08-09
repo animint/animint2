@@ -8,32 +8,32 @@ signal.colors <- c(estimate="#0adb0a",
                    latent="#0098ef")
 breakpointError <- list(
   signal=a_plot()+
-    a_geom_point(aes(position, signal),
+    a_geom_point(a_aes(position, signal),
                showSelected="samples",
                data=breakpoints$signals)+
-    a_geom_line(aes(position, signal), colour=signal.colors[["latent"]],
+    a_geom_line(a_aes(position, signal), colour=signal.colors[["latent"]],
               data=breakpoints$imprecision)+
-    a_geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
+    a_geom_segment(a_aes(first.base, mean, xend=last.base, yend=mean),
                  showSelected=c("segments", "samples"),
                  colour=signal.colors[["estimate"]],
                  data=breakpoints$segments)+
-    a_geom_vline(aes(xintercept=base),
+    a_geom_vline(a_aes(xintercept=base),
                showSelected=c("segments", "samples"),
                colour=signal.colors[["estimate"]],
                linetype="dashed",
                data=breakpoints$breaks),
   points=a_plot()+
-    a_geom_point(aes(samples, error,
+    a_geom_point(a_aes(samples, error,
                    id=paste0("samples", samples)),
                showSelected="segments",
                clickSelects="samples",
                data=only.error, stat="identity"),
   error=a_plot()+
-    a_geom_vline(aes(xintercept=segments, 
+    a_geom_vline(a_aes(xintercept=segments, 
                    id=paste0("segments", segments)),
                clickSelects="segments",
                data=only.segments, lwd=17, alpha=1/2)+
-    a_geom_line(aes(segments, error, group=samples),
+    a_geom_line(a_aes(segments, error, group=samples),
               clickSelects="samples",
               data=only.error, lwd=4),
   first=list(samples=150, segments=4),
@@ -89,7 +89,7 @@ test_that("default is single selection", {
   expect_match(selector.types$segments, "single")
 })
 
-test_that("aes(id) geoms have ids", {
+test_that("a_aes(id) geoms have ids", {
   nodes <- getNodeSet(info$html, '//*[@id][@class="a_geom"]')
   expect_equal(length(nodes), 24)
 })
@@ -185,24 +185,24 @@ seg.color <- "#55B1F7"
 tornado.lines <-
   list(map=a_plot()+
        make_text(UStornadoCounts, -100, 50, "year", "Tornadoes in %d")+
-       a_geom_polygon(aes(x=long, y=lat, group=group,
+       a_geom_polygon(a_aes(x=long, y=lat, group=group,
                         id=state),
                     clickSelects="state",
                     data=USpolygons, fill="black", colour="grey") +
-       a_geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
+       a_geom_segment(a_aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
                     showSelected="year",
                     colour=seg.color, data=UStornadoes)+
        a_scale_fill_manual(values=c(end=seg.color))+
        a_theme_animint(width=750, height=500)+
-       a_geom_point(aes(endLong, endLat, fill=place),
+       a_geom_point(a_aes(endLong, endLat, fill=place),
                   colour=seg.color, showSelected="year",
                   data=data.frame(UStornadoes,place="end")),
        ts=a_plot()+
-       a_geom_text(aes(year, count, a_label=state),
+       a_geom_text(a_aes(year, count, a_label=state),
                  hjust=0, showSelected="state",
                  data=subset(UStornadoCounts, year==max(year)))+
        make_tallrect(UStornadoCounts, "year")+
-       a_geom_line(aes(year, count,
+       a_geom_line(a_aes(year, count,
                      group=state),
                  showSelected="state",
                 data=UStornadoCounts),

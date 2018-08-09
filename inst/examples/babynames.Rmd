@@ -46,7 +46,7 @@ renderPlot({
   map_data("state") %>% 
     tbl_df() %>% left_join(getDat()) %>%
   a_plot() + 
-    a_geom_polygon(aes(x = long, y = lat, group = group, fill = diff), colour = "grey") +
+    a_geom_polygon(a_aes(x = long, y = lat, group = group, fill = diff), colour = "grey") +
     a_scale_fill_gradient2(midpoint = 0) +
     ggtitle(paste("Gender difference by state for", input$babyname, "in", input$year))
 })
@@ -56,7 +56,7 @@ Throw out that don't occur in *both* genders?
 
 ```{r, eval=FALSE}
 a_plot() + 
-  a_geom_polygon(aes(x = long, y = lat, group = group, fill = diff), colour = "grey") +
+  a_geom_polygon(a_aes(x = long, y = lat, group = group, fill = diff), colour = "grey") +
   a_scale_fill_gradient2(midpoint = 0) +
   ggtitle(paste("Gender difference by state for", input$babyname, "in", input$year))
 

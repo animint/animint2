@@ -15,18 +15,18 @@
 #'   \code{a_geom_density} and \code{a_stat_density}.
 #' @export
 #' @examples
-#' a_plot(diamonds, aes(carat)) +
+#' a_plot(diamonds, a_aes(carat)) +
 #'   a_geom_density()
 #'
-#' a_plot(diamonds, aes(carat)) +
+#' a_plot(diamonds, a_aes(carat)) +
 #'   a_geom_density(adjust = 1/5)
-#' a_plot(diamonds, aes(carat)) +
+#' a_plot(diamonds, a_aes(carat)) +
 #'   a_geom_density(adjust = 5)
 #'
-#' a_plot(diamonds, aes(depth, colour = cut)) +
+#' a_plot(diamonds, a_aes(depth, colour = cut)) +
 #'   a_geom_density() +
 #'   xlim(55, 70)
-#' a_plot(diamonds, aes(depth, fill = cut, colour = cut)) +
+#' a_plot(diamonds, a_aes(depth, fill = cut, colour = cut)) +
 #'   a_geom_density(alpha = 0.1) +
 #'   xlim(55, 70)
 #'
@@ -36,14 +36,14 @@
 #' # density
 #'
 #' # Loses marginal densities
-#' a_plot(diamonds, aes(carat, fill = cut)) +
+#' a_plot(diamonds, a_aes(carat, fill = cut)) +
 #'   a_geom_density(a_position = "stack")
 #' # Preserves marginal densities
-#' a_plot(diamonds, aes(carat, ..count.., fill = cut)) +
+#' a_plot(diamonds, a_aes(carat, ..count.., fill = cut)) +
 #'   a_geom_density(a_position = "stack")
 #'
 #' # You can use a_position="fill" to produce a conditional density estimate
-#' a_plot(diamonds, aes(carat, ..count.., fill = cut)) +
+#' a_plot(diamonds, a_aes(carat, ..count.., fill = cut)) +
 #'   a_geom_density(a_position = "fill")
 #' }
 a_geom_density <- function(mapping = NULL, data = NULL,
@@ -51,7 +51,7 @@ a_geom_density <- function(mapping = NULL, data = NULL,
                          ...,
                          na.rm = FALSE,
                          show.legend = NA,
-                         inherit.aes = TRUE) {
+                         inherit.a_aes = TRUE) {
 
   a_layer(
     data = data,
@@ -60,7 +60,7 @@ a_geom_density <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomDensity,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -75,7 +75,7 @@ a_geom_density <- function(mapping = NULL, data = NULL,
 #' @include geom-ribbon.r
 a_GeomDensity <- a_ggproto("a_GeomDensity", a_GeomArea,
   default_aes = defaults(
-    aes(fill = NA, weight = 1, colour = "black", alpha = NA),
+    a_aes(fill = NA, weight = 1, colour = "black", alpha = NA),
     a_GeomArea$default_aes
   )
 )

@@ -16,8 +16,8 @@ a_geom_vline(mapping = NULL, data = NULL, ..., xintercept, na.rm = FALSE,
   show.legend = NA)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -83,7 +83,7 @@ aesthetics that control the position of the line:
 }
 
 \examples{
-p <- a_plot(mtcars, aes(wt, mpg)) + a_geom_point()
+p <- a_plot(mtcars, a_aes(wt, mpg)) + a_geom_point()
 
 # Fixed values
 p + a_geom_vline(xintercept = 5)
@@ -100,17 +100,17 @@ p + a_geom_abline(intercept = 37, slope = -5)
 p + a_geom_smooth(method = "lm", se = FALSE)
 
 # To show different lines in different facets, use aesthetics
-p <- a_plot(mtcars, aes(mpg, wt)) +
+p <- a_plot(mtcars, a_aes(mpg, wt)) +
   a_geom_point() +
   a_facet_wrap(~ cyl)
 
 mean_wt <- data.frame(cyl = c(4, 6, 8), wt = c(2.28, 3.11, 4.00))
-p + a_geom_hline(aes(yintercept = wt), mean_wt)
+p + a_geom_hline(a_aes(yintercept = wt), mean_wt)
 
 # You can also control other aesthetics
-a_plot(mtcars, aes(mpg, wt, colour = wt)) +
+a_plot(mtcars, a_aes(mpg, wt, colour = wt)) +
   a_geom_point() +
-  a_geom_hline(aes(yintercept = wt, colour = wt), mean_wt) +
+  a_geom_hline(a_aes(yintercept = wt, colour = wt), mean_wt) +
   a_facet_wrap(~ cyl)
 }
 \seealso{

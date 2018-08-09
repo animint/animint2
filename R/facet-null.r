@@ -5,7 +5,7 @@
 #' @examples
 #' # facet_null is the default facetting specification if you
 #' # don't override it with facet_grid or facet_wrap
-#' a_plot(mtcars, aes(mpg, wt)) + a_geom_point()
+#' a_plot(mtcars, a_aes(mpg, wt)) + a_geom_point()
 a_facet_null <- function(shrink = TRUE) {
   a_facet(shrink = shrink, subclass = "null")
 }

@@ -28,7 +28,7 @@ a_stat_density <- function(mapping = NULL, data = NULL,
                          trim = FALSE,
                          na.rm = FALSE,
                          show.legend = NA,
-                         inherit.aes = TRUE) {
+                         inherit.a_aes = TRUE) {
 
   a_layer(
     data = data,
@@ -37,7 +37,7 @@ a_stat_density <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       bw = bw,
       adjust = adjust,
@@ -55,7 +55,7 @@ a_stat_density <- function(mapping = NULL, data = NULL,
 #' @export
 a_StatDensity <- a_ggproto("a_StatDensity", a_Stat,
   required_aes = "x",
-  default_aes = aes(y = ..density.., fill = NA),
+  default_aes = a_aes(y = ..density.., fill = NA),
 
   compute_group = function(data, scales, bw = "nrd0", adjust = 1, kernel = "gaussian",
                            trim = FALSE, na.rm = FALSE) {

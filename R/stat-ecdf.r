@@ -17,12 +17,12 @@
 #' @examples
 #' \donttest{
 #' df <- data.frame(x = rnorm(1000))
-#' a_plot(df, aes(x)) + a_stat_ecdf(a_geom = "step")
+#' a_plot(df, a_aes(x)) + a_stat_ecdf(a_geom = "step")
 #'
 #' df <- data.frame(x = c(rnorm(100, 0, 3), rnorm(100, 0, 10)),
 #'                  g = gl(2, 100))
 #'
-#' a_plot(df, aes(x, colour = g)) + a_stat_ecdf()
+#' a_plot(df, a_aes(x, colour = g)) + a_stat_ecdf()
 #' }
 a_stat_ecdf <- function(mapping = NULL, data = NULL,
                       a_geom = "step", a_position = "identity",
@@ -31,7 +31,7 @@ a_stat_ecdf <- function(mapping = NULL, data = NULL,
                       pad = TRUE,
                       na.rm = FALSE,
                       show.legend = NA,
-                      inherit.aes = TRUE) {
+                      inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -39,7 +39,7 @@ a_stat_ecdf <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       n = n,
       na.rm = na.rm,
@@ -70,7 +70,7 @@ a_StatEcdf <- a_ggproto("a_StatEcdf", a_Stat,
     data.frame(x = x, y = y)
   },
 
-  default_aes = aes(y = ..y..),
+  default_aes = a_aes(y = ..y..),
 
   required_aes = c("x")
 )

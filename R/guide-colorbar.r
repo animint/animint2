@@ -43,8 +43,8 @@
 #' @examples
 #' df <- reshape2::melt(outer(1:4, 1:4), varnames = c("X1", "X2"))
 #'
-#' p1 <- a_plot(df, aes(X1, X2)) + a_geom_tile(aes(fill = value))
-#' p2 <- p1 + a_geom_point(aes(size = value))
+#' p1 <- a_plot(df, a_aes(X1, X2)) + a_geom_tile(a_aes(fill = value))
+#' p2 <- p1 + a_geom_point(a_aes(size = value))
 #'
 #' # Basic form
 #' p1 + a_scale_fill_continuous(a_guide = "colorbar")
@@ -167,7 +167,7 @@ a_guide_colourbar <- function(
 a_guide_train.colorbar <- function(a_guide, a_scale) {
 
   # do nothing if a_scale are inappropriate
-  if (length(intersect(a_scale$aesthetics, c("color", "colour", "fill"))) == 0) {
+  if (length(intersect(a_scale$a_aesthetics, c("color", "colour", "fill"))) == 0) {
     warning("colorbar guide needs colour or fill scales.")
     return(NULL)
   }
@@ -182,7 +182,7 @@ a_guide_train.colorbar <- function(a_guide, a_scale) {
   if (length(breaks) == 0 || all(is.na(breaks)))
     return()
 
-  ticks <- as.data.frame(setNames(list(a_scale$map(breaks)), a_scale$aesthetics[1]))
+  ticks <- as.data.frame(setNames(list(a_scale$map(breaks)), a_scale$a_aesthetics[1]))
   ticks$.value <- breaks
   ticks$.a_label <- a_scale$get_labels(breaks)
 

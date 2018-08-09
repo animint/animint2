@@ -2,7 +2,7 @@ acontext("showSelected=var, showSelected2=var")
 
 viz <- list(
   points=a_plot()+
-    a_geom_point(aes(Sepal.Length, Petal.Length),
+    a_geom_point(a_aes(Sepal.Length, Petal.Length),
                showSelected=c("Species", "Species"),
                data=iris)
   )
@@ -20,7 +20,7 @@ test_that("50 <circle> rendered at first", {
   expect_equal(length(circle.list), 50)
 })
 
-test_that("redundant aes not saved to tsv", {
+test_that("redundant a_aes not saved to tsv", {
   a_geom.tsv <- Sys.glob(
     file.path("animint-htmltest", "a_geom1_point_points_*.tsv"))
   expect_equal(length(a_geom.tsv), 1)
@@ -41,7 +41,7 @@ test_that("selector widgets table initially visible", {
 
 viz <- list(
   length=a_plot()+
-    a_geom_point(aes(Sepal.Length, Petal.Length,
+    a_geom_point(a_aes(Sepal.Length, Petal.Length,
                    color=Species),
                showSelected="Species",
                data=iris)
@@ -68,11 +68,11 @@ test_that("selector widgets table initially invisible", {
 
 viz <- list(
   length=a_plot()+
-    a_geom_point(aes(Sepal.Length, Petal.Length),
+    a_geom_point(a_aes(Sepal.Length, Petal.Length),
                showSelected="Species",
                data=iris),
   width=a_plot()+
-    a_geom_point(aes(Sepal.Width, Petal.Width),
+    a_geom_point(a_aes(Sepal.Width, Petal.Width),
                clickSelects="Species",
                data=iris)
   )
@@ -109,7 +109,7 @@ test_that("selector widgets table initially invisible", {
 iris$kingdom <- "plantae"
 viz <- list(
   points=a_plot()+
-    a_geom_point(aes(Petal.Length, Sepal.Length,
+    a_geom_point(a_aes(Petal.Length, Sepal.Length,
                    color=Species),
                showSelected=c("Species", "kingdom"),
                data=iris)

@@ -6,7 +6,7 @@
 #' @param ... other arguments
 #' @param na.rm ...
 #' @param show.legend ...
-#' @param inherit.aes ...
+#' @param inherit.a_aes ...
 #' @return ggplot2 layer
 #' @export
 #' @example inst/examples/breakpoints.R
@@ -15,7 +15,7 @@ a_geom_tallrect <- function(mapping = NULL, data = NULL,
                           ...,
                           na.rm = FALSE,
                           show.legend = NA,
-                          inherit.aes = TRUE) {
+                          inherit.a_aes = TRUE) {
   a_layer(
     a_geom = a_GeomTallRect,
     data = data,
@@ -23,7 +23,7 @@ a_geom_tallrect <- function(mapping = NULL, data = NULL,
     a_stat = a_stat,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -36,7 +36,7 @@ a_geom_tallrect <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomTallRect <- a_ggproto("a_GeomTallRect", a_Geom,
-                                 default_aes = aes(colour = "grey35",
+                                 default_aes = a_aes(colour = "grey35",
                                                    fill = "grey35", 
                                                    size = 0.5, 
                                                    linetype = 1,
@@ -78,7 +78,7 @@ a_GeomTallRect <- a_ggproto("a_GeomTallRect", a_Geom,
 #' @param ... other arguments
 #' @param na.rm ...
 #' @param show.legend ...
-#' @param inherit.aes ...
+#' @param inherit.a_aes ...
 #' @return ggplot2 layer
 #' @export
 #' @examples
@@ -90,7 +90,7 @@ a_geom_widerect <- function(mapping = NULL, data = NULL,
                           ...,
                           na.rm = FALSE,
                           show.legend = NA,
-                          inherit.aes = TRUE) {
+                          inherit.a_aes = TRUE) {
   a_layer(
     a_geom = a_GeomWideRect,
     data = data,
@@ -98,7 +98,7 @@ a_geom_widerect <- function(mapping = NULL, data = NULL,
     a_stat = a_stat,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -111,7 +111,7 @@ a_geom_widerect <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomWideRect <- a_ggproto("a_GeomWideRect", a_Geom,
-                                 default_aes = aes(colour = "grey35", 
+                                 default_aes = a_aes(colour = "grey35", 
                                                    fill = "grey35", 
                                                    size = 0.5, 
                                                    linetype = 1,
@@ -179,24 +179,24 @@ make_widerect <- function(data, y.name, even=FALSE, alpha=0.5, ...){
 #' Make a clickSelects a_geom_widerect or a_geom_tallrect that completely
 #' tiles the x or y range. This function is used internally by
 #' make_tallrect or make_widerect, which are more user-friendly.
-#' @param aes.prefix "x" or "y"
+#' @param a_aes.prefix "x" or "y"
 #' @param a_geom_xrect a_geom_tallrect or a_geom_widerect
 #' @param data data.frame to analyze for unique var.name values.
 #' @param var.name variable to be used for clickSelects
 #' @param even Logical parameter, should xrects be of even width?
 #' @param alpha transparency of a selected xrect, default 1/2.
 #' @param ... passed to a_geom_xrect
-#' @param data.fun called on data passed to a_geom_xrect(aes(..),
+#' @param data.fun called on data passed to a_geom_xrect(a_aes(..),
 #'   data.fun(df)) this is useful in facetted plots, for adding
 #'   columns to the data.frame, if you want that a_geom in only one
 #'   panel.
 #' @return a a_geom_xrect layer
 #' @author Toby Dylan Hocking
 #' @export
-make_tallrect_or_widerect <- function(aes.prefix, a_geom_xrect, data, var.name, even=FALSE, alpha=0.5, ..., data.fun=identity){
-  stopifnot(is.character(aes.prefix))
-  stopifnot(length(aes.prefix)==1)
-  stopifnot(aes.prefix %in% c("x", "y"))
+make_tallrect_or_widerect <- function(a_aes.prefix, a_geom_xrect, data, var.name, even=FALSE, alpha=0.5, ..., data.fun=identity){
+  stopifnot(is.character(a_aes.prefix))
+  stopifnot(length(a_aes.prefix)==1)
+  stopifnot(a_aes.prefix %in% c("x", "y"))
   stopifnot(is.function(a_geom_xrect))
   data <- as.data.frame(data)
   stopifnot(is.character(var.name))
@@ -224,16 +224,16 @@ make_tallrect_or_widerect <- function(aes.prefix, a_geom_xrect, data, var.name, 
   a_geom.df$key <- with(a_geom.df, ifelse(
     click.val==show.val, 1,
     paste(click.val, show.val)))
-  aes.string.args <- list()
+  a_aes.string.args <- list()
   ss_params <- c(var="show.val")
   cs_params <- c(var="click.val")
-  aes.string.args[["key"]] <- "key"
+  a_aes.string.args[["key"]] <- "key"
   for(suffix in c("min", "max")){
-    aes.str <- paste0(aes.prefix, suffix)
+    a_aes.str <- paste0(a_aes.prefix, suffix)
     a_geom.df[[suffix]] <- df[a_geom.df$click.i, suffix]
-    aes.string.args[[aes.str]] <- suffix
+    a_aes.string.args[[a_aes.str]] <- suffix
   }
-  a <- do.call(aes_string, aes.string.args)
+  a <- do.call(a_aes_string, a_aes.string.args)
   a_geom_xrect(a, data.fun(a_geom.df),
              showSelected = ss_params, clickSelects = cs_params,
              alpha=alpha, ...)
@@ -253,7 +253,7 @@ make_bar <- function(data, x.name, alpha=1){
   stopifnot(length(x.name)==1)
   x <- data[,x.name]
   stopifnot(is.numeric(x))
-  a_stat_summary(aes_string(x=x.name, y=x.name), clickSelects=x.name,
+  a_stat_summary(a_aes_string(x=x.name, y=x.name), clickSelects=x.name,
                data=data, alpha=alpha, fun.y=length, a_geom="bar")
 }
 
@@ -294,6 +294,6 @@ make_text <- function(data, x, y, a_label.var, format=NULL){
   }
   stopifnot(is.function(format))
   data$a_label <- format(data$a_label)
-  a <- aes_string(x="x",y="y",a_label="a_label")
+  a <- a_aes_string(x="x",y="y",a_label="a_label")
   a_geom_text(a, showSelected=a_label.var, data)
 }

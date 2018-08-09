@@ -71,18 +71,18 @@ mmir.selection <-
        a_theme_animint(width=600)+
        a_theme(panel.margin=grid::unit(0, "lines"))+
        a_facet_grid(. ~ a_geom)+
-       a_geom_text(aes(0, error, a_label=signal),
+       a_geom_text(a_aes(0, error, a_label=signal),
                  clickSelects="signal",
                  data=sig.a_labels, hjust=1)+
        a_scale_x_continuous("segments", breaks=c(1, 5, 10, 20),
                           limits=c(-2, 20))+
        xlab("squared error")+
-       a_geom_line(aes(segments, error,
+       a_geom_line(a_aes(segments, error,
                      group=signal),
                  data=data.frame(model.selection, a_geom="line"),
                  clickSelects="signal",
                  alpha=0.6, size=8)+
-       a_geom_path(aes(segments, error,
+       a_geom_path(a_aes(segments, error,
                      group=signal),
                  data=data.frame(model.selection, a_geom="path"),
                      clickSelects="signal",
@@ -94,25 +94,25 @@ mmir.selection <-
        a_scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
        a_scale_fill_manual(values=breakpoint.colors,a_guide="none")+
-       a_geom_blank(aes(first.base/1e6, logratio+2/8), data=intreg$ann)+
+       a_geom_blank(a_aes(first.base/1e6, logratio+2/8), data=intreg$ann)+
        ggtitle("Copy number profile and maximum likelihood segmentation")+
        ylab("logratio")+
-       a_geom_point(aes(base/1e6, logratio),
+       a_geom_point(a_aes(base/1e6, logratio),
                   data=intreg$sig,
                       showSelected="signal")+
-       a_geom_segment(aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean),
+       a_geom_segment(a_aes(first.base/1e6, mean, xend=last.base/1e6, yend=mean),
                     data=intreg$seg, colour=signal.colors[["estimate"]],
                         showSelected=c("signal", "segments"))+
-       a_geom_segment(aes(base/1e6, min.logratio,
+       a_geom_segment(a_aes(base/1e6, min.logratio,
                         xend=base/1e6, yend=max.logratio),
                   colour=signal.colors[["estimate"]],
                     showSelected=c("signal", "segments"),
                   linetype="dashed",
                   data=intreg$breaks)+
-       a_geom_text(aes(base/1e6, max.logratio, a_label=paste("signal", signal)),
+       a_geom_text(a_aes(base/1e6, max.logratio, a_label=paste("signal", signal)),
                  data=sig.names,
                  showSelected="signal")+
-       a_geom_text(aes(base/1e6, min.logratio,
+       a_geom_text(a_aes(base/1e6, min.logratio,
                      a_label=sprintf("%d segment%s", segments,
                        ifelse(segments==1, "", "s"))),
                  data=sig.seg.names,

@@ -48,7 +48,7 @@ a_stat_bin <- function(mapping = NULL, data = NULL,
                      pad = FALSE,
                      na.rm = FALSE,
                      show.legend = NA,
-                     inherit.aes = TRUE) {
+                     inherit.a_aes = TRUE) {
 
   a_layer(
     data = data,
@@ -57,7 +57,7 @@ a_stat_bin <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       binwidth = binwidth,
       bins = bins,
@@ -137,7 +137,7 @@ a_StatBin <- a_ggproto("a_StatBin", a_Stat,
     bin_vector(data$x, bins, weight = data$weight, pad = pad)
   },
 
-  default_aes = aes(y = ..count..),
+  default_aes = a_aes(y = ..count..),
   required_aes = c("x")
 )
 

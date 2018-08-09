@@ -5,7 +5,7 @@
 a_StatBindot <- a_ggproto("a_StatBindot", a_Stat,
   required_aes = "x",
   non_missing_aes = "weight",
-  default_aes = aes(y = ..count..),
+  default_aes = a_aes(y = ..count..),
 
   setup_params = function(data, params) {
     if (is.null(params$binwidth)) {

@@ -33,7 +33,7 @@
 #' # Currently we need to manually merge the two together
 #' datapoly <- merge(values, positions, by = c("id"))
 #'
-#' (p <- a_plot(datapoly, aes(x = x, y = y)) + a_geom_polygon(aes(fill = value, group = id)))
+#' (p <- a_plot(datapoly, a_aes(x = x, y = y)) + a_geom_polygon(a_aes(fill = value, group = id)))
 #'
 #' # Which seems like a lot of work, but then it's easy to add on
 #' # other features in this coordinate system, e.g.:
@@ -52,7 +52,7 @@ a_geom_polygon <- function(mapping = NULL, data = NULL,
                          ...,
                          na.rm = FALSE,
                          show.legend = NA,
-                         inherit.aes = TRUE) {
+                         inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -60,7 +60,7 @@ a_geom_polygon <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomPolygon,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -100,7 +100,7 @@ a_GeomPolygon <- a_ggproto("a_GeomPolygon", a_Geom,
     )
   },
 
-  default_aes = aes(colour = "NA", fill = "grey20", size = 0.5, linetype = 1,
+  default_aes = a_aes(colour = "NA", fill = "grey20", size = 0.5, linetype = 1,
     alpha = NA),
 
   handle_na = function(data, params) {

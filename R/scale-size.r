@@ -13,7 +13,7 @@
 #' @seealso \code{\link{a_scale_size_area}} if you want 0 values to be mapped
 #'   to points with size 0.
 #' @examples
-#' p <- a_plot(mpg, aes(displ, hwy, size = hwy)) +
+#' p <- a_plot(mpg, a_aes(displ, hwy, size = hwy)) +
 #'    a_geom_point()
 #' p
 #' p + a_scale_size("Highway mpg")
@@ -23,7 +23,7 @@
 #' p + a_scale_size_area()
 #'
 #' # This is most useful when size is a count
-#' a_plot(mpg, aes(class, cyl)) +
+#' a_plot(mpg, a_aes(class, cyl)) +
 #'   a_geom_count() +
 #'   a_scale_size_area()
 #'

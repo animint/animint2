@@ -13,7 +13,7 @@ a_stat_bin_2d <- function(mapping = NULL, data = NULL,
                         drop = TRUE,
                         na.rm = FALSE,
                         show.legend = NA,
-                        inherit.aes = TRUE) {
+                        inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -21,7 +21,7 @@ a_stat_bin_2d <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       bins = bins,
       binwidth = binwidth,
@@ -43,7 +43,7 @@ a_stat_bin2d <- a_stat_bin_2d
 #' @usage NULL
 #' @export
 a_StatBin2d <- a_ggproto("a_StatBin2d", a_Stat,
-  default_aes = aes(fill = ..count..),
+  default_aes = a_aes(fill = ..count..),
   required_aes = c("x", "y"),
 
   compute_group = function(data, scales, binwidth = NULL, bins = 30,

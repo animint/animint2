@@ -9,20 +9,20 @@
 \usage{
 a_geom_freqpoly(mapping = NULL, data = NULL, a_stat = "bin",
   a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  inherit.a_aes = TRUE)
 
 a_geom_histogram(mapping = NULL, data = NULL, a_stat = "bin",
   a_position = "stack", ..., binwidth = NULL, bins = NULL,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  na.rm = FALSE, show.legend = NA, inherit.a_aes = TRUE)
 
 a_stat_bin(mapping = NULL, data = NULL, a_geom = "bar",
   a_position = "stack", ..., binwidth = NULL, bins = NULL,
   center = NULL, boundary = NULL, closed = c("right", "left"),
-  pad = FALSE, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  pad = FALSE, na.rm = FALSE, show.legend = NA, inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -55,7 +55,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -122,23 +122,23 @@ may need to look at a few to uncover the full story behind your data.
 }
 
 \examples{
-a_plot(diamonds, aes(carat)) +
+a_plot(diamonds, a_aes(carat)) +
   a_geom_histogram()
-a_plot(diamonds, aes(carat)) +
+a_plot(diamonds, a_aes(carat)) +
   a_geom_histogram(binwidth = 0.01)
-a_plot(diamonds, aes(carat)) +
+a_plot(diamonds, a_aes(carat)) +
   a_geom_histogram(bins = 200)
 
 # Rather than stacking histograms, it's easier to compare frequency
 # polygons
-a_plot(diamonds, aes(price, fill = cut)) +
+a_plot(diamonds, a_aes(price, fill = cut)) +
   a_geom_histogram(binwidth = 500)
-a_plot(diamonds, aes(price, colour = cut)) +
+a_plot(diamonds, a_aes(price, colour = cut)) +
   a_geom_freqpoly(binwidth = 500)
 
 # To make it easier to compare distributions with very different counts,
 # put density on the y axis instead of the default count
-a_plot(diamonds, aes(price, ..density.., colour = cut)) +
+a_plot(diamonds, a_aes(price, ..density.., colour = cut)) +
   a_geom_freqpoly(binwidth = 500)
 
 if (require("ggplot2movies")) {
@@ -146,12 +146,12 @@ if (require("ggplot2movies")) {
 # count of observations, but the sum of some other variable.
 # For example, the following plot shows the number of movies
 # in each rating.
-m <- a_plot(movies, aes(rating))
+m <- a_plot(movies, a_aes(rating))
 m + a_geom_histogram(binwidth = 0.1)
 
 # If, however, we want to see the number of votes cast in each
 # category, we need to weight by the votes variable
-m + a_geom_histogram(aes(weight = votes), binwidth = 0.1) + ylab("votes")
+m + a_geom_histogram(a_aes(weight = votes), binwidth = 0.1) + ylab("votes")
 
 # For transformed scales, binwidth applies to the transformed data.
 # The bins have constant width on the transformed scale.
@@ -171,7 +171,7 @@ m + a_geom_histogram(origin = 0) + a_coord_trans(x = "sqrt")
 
 # You can also transform the y axis.  Remember that the base of the bars
 # has value 0, so log transformations are not appropriate
-m <- a_plot(movies, aes(x = rating))
+m <- a_plot(movies, a_aes(x = rating))
 m + a_geom_histogram(binwidth = 0.5) + a_scale_y_sqrt()
 }
 rm(movies)

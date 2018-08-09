@@ -92,7 +92,7 @@ argument.
 
 \examples{
 mtcars$cyl2 <- factor(mtcars$cyl, labels = c("alpha", "beta", "gamma"))
-p <- a_plot(mtcars, aes(wt, mpg)) + a_geom_point()
+p <- a_plot(mtcars, a_aes(wt, mpg)) + a_geom_point()
 
 # Displaying only the values
 p + a_facet_grid(. ~ cyl)

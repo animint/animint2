@@ -12,7 +12,7 @@ a_stat_sum <- function(mapping = NULL, data = NULL,
                      ...,
                      na.rm = FALSE,
                      show.legend = NA,
-                     inherit.aes = TRUE) {
+                     inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -20,7 +20,7 @@ a_stat_sum <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -33,14 +33,14 @@ a_stat_sum <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_StatSum <- a_ggproto("a_StatSum", a_Stat,
-  default_aes = aes(size = ..n..),
+  default_aes = a_aes(size = ..n..),
 
   required_aes = c("x", "y"),
 
   compute_panel = function(data, scales) {
     if (is.null(data$weight)) data$weight <- 1
 
-    group_by <- setdiff(intersect(names(data), .all_aesthetics), "weight")
+    group_by <- setdiff(intersect(names(data), .all_a_aesthetics), "weight")
 
     counts <- plyr::count(data, group_by, wt_var = "weight")
     counts <- plyr::rename(counts, c(freq = "n"), warn_missing = FALSE)

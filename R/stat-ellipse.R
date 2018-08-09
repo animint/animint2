@@ -19,26 +19,26 @@
 #' @inheritParams a_geom_point
 #' @export
 #' @examples
-#' a_plot(faithful, aes(waiting, eruptions)) +
+#' a_plot(faithful, a_aes(waiting, eruptions)) +
 #'   a_geom_point() +
 #'   a_stat_ellipse()
 #'
-#' a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
+#' a_plot(faithful, a_aes(waiting, eruptions, color = eruptions > 3)) +
 #'   a_geom_point() +
 #'   a_stat_ellipse()
 #'
-#' a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
+#' a_plot(faithful, a_aes(waiting, eruptions, color = eruptions > 3)) +
 #'   a_geom_point() +
 #'   a_stat_ellipse(type = "norm", linetype = 2) +
 #'   a_stat_ellipse(type = "t")
 #'
-#' a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
+#' a_plot(faithful, a_aes(waiting, eruptions, color = eruptions > 3)) +
 #'   a_geom_point() +
 #'   a_stat_ellipse(type = "norm", linetype = 2) +
 #'   a_stat_ellipse(type = "euclid", level = 3) +
 #'   a_coord_fixed()
 #'
-#' a_plot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
+#' a_plot(faithful, a_aes(waiting, eruptions, fill = eruptions > 3)) +
 #'   a_stat_ellipse(a_geom = "polygon")
 a_stat_ellipse <- function(mapping = NULL, data = NULL,
                          a_geom = "path", a_position = "identity",
@@ -48,7 +48,7 @@ a_stat_ellipse <- function(mapping = NULL, data = NULL,
                          segments = 51,
                          na.rm = FALSE,
                          show.legend = NA,
-                         inherit.aes = TRUE) {
+                         inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -56,7 +56,7 @@ a_stat_ellipse <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       type = type,
       level = level,

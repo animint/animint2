@@ -39,24 +39,24 @@
 #' @inheritParams a_layer
 #' @export
 #' @examples
-#' p <- a_plot(mtcars, aes(wt, mpg))
+#' p <- a_plot(mtcars, a_aes(wt, mpg))
 #' p + a_geom_point()
 #'
-#' # Add aesthetic mappings
-#' p + a_geom_point(aes(colour = factor(cyl)))
-#' p + a_geom_point(aes(shape = factor(cyl)))
-#' p + a_geom_point(aes(size = qsec))
+#' # Add a_aesthetic mappings
+#' p + a_geom_point(a_aes(colour = factor(cyl)))
+#' p + a_geom_point(a_aes(shape = factor(cyl)))
+#' p + a_geom_point(a_aes(size = qsec))
 #'
 #' # Change scales
-#' p + a_geom_point(aes(colour = cyl)) + a_scale_colour_gradient(low = "blue")
-#' p + a_geom_point(aes(shape = factor(cyl))) + a_scale_shape(solid = FALSE)
+#' p + a_geom_point(a_aes(colour = cyl)) + a_scale_colour_gradient(low = "blue")
+#' p + a_geom_point(a_aes(shape = factor(cyl))) + a_scale_shape(solid = FALSE)
 #'
-#' # Set aesthetics to fixed value
-#' a_plot(mtcars, aes(wt, mpg)) + a_geom_point(colour = "red", size = 3)
+#' # Set a_aesthetics to fixed value
+#' a_plot(mtcars, a_aes(wt, mpg)) + a_geom_point(colour = "red", size = 3)
 #'
 #' \donttest{
 #' # Varying alpha is useful for large datasets
-#' d <- a_plot(diamonds, aes(carat, price))
+#' d <- a_plot(diamonds, a_aes(carat, price))
 #' d + a_geom_point(alpha = 1/10)
 #' d + a_geom_point(alpha = 1/20)
 #' d + a_geom_point(alpha = 1/100)
@@ -65,37 +65,37 @@
 #' # For shapes that have a border (like 21), you can colour the inside and
 #' # outside separately. Use the stroke aesthetic to modify the width of the
 #' # border
-#' a_plot(mtcars, aes(wt, mpg)) +
+#' a_plot(mtcars, a_aes(wt, mpg)) +
 #'   a_geom_point(shape = 21, colour = "black", fill = "white", size = 5, stroke = 5)
 #'
 #' \donttest{
 #' # You can create interesting shapes by layering multiple points of
 #' # different sizes
-#' p <- a_plot(mtcars, aes(mpg, wt, shape = factor(cyl)))
-#' p + a_geom_point(aes(colour = factor(cyl)), size = 4) +
+#' p <- a_plot(mtcars, a_aes(mpg, wt, shape = factor(cyl)))
+#' p + a_geom_point(a_aes(colour = factor(cyl)), size = 4) +
 #'   a_geom_point(colour = "grey90", size = 1.5)
 #' p + a_geom_point(colour = "black", size = 4.5) +
 #'   a_geom_point(colour = "pink", size = 4) +
-#'   a_geom_point(aes(shape = factor(cyl)))
+#'   a_geom_point(a_aes(shape = factor(cyl)))
 #'
 #' # These extra layers don't usually appear in the legend, but we can
 #' # force their inclusion
 #' p + a_geom_point(colour = "black", size = 4.5, show.legend = TRUE) +
 #'   a_geom_point(colour = "pink", size = 4, show.legend = TRUE) +
-#'   a_geom_point(aes(shape = factor(cyl)))
+#'   a_geom_point(a_aes(shape = factor(cyl)))
 #'
 #' # a_geom_point warns when missing values have been dropped from the data set
 #' # and not plotted, you can turn this off by setting na.rm = TRUE
 #' mtcars2 <- transform(mtcars, mpg = ifelse(runif(32) < 0.2, NA, mpg))
-#' a_plot(mtcars2, aes(wt, mpg)) + a_geom_point()
-#' a_plot(mtcars2, aes(wt, mpg)) + a_geom_point(na.rm = TRUE)
+#' a_plot(mtcars2, a_aes(wt, mpg)) + a_geom_point()
+#' a_plot(mtcars2, a_aes(wt, mpg)) + a_geom_point(na.rm = TRUE)
 #' }
 a_geom_point <- function(mapping = NULL, data = NULL,
                        a_stat = "identity", a_position = "identity",
                        ...,
                        na.rm = FALSE,
                        show.legend = NA,
-                       inherit.aes = TRUE) {
+                       inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -103,7 +103,7 @@ a_geom_point <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomPoint,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -118,7 +118,7 @@ a_geom_point <- function(mapping = NULL, data = NULL,
 a_GeomPoint <- a_ggproto("a_GeomPoint", a_Geom,
   required_aes = c("x", "y"),
   non_missing_aes = c("size", "shape"),
-  default_aes = aes(
+  default_aes = a_aes(
     shape = 19, colour = "black", size = 1.5, fill = NA,
     alpha = NA, stroke = 0.5
   ),

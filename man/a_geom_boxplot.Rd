@@ -9,15 +9,15 @@ a_geom_boxplot(mapping = NULL, data = NULL, a_stat = "boxplot",
   a_position = "dodge", ..., outlier.colour = NULL, outlier.color = NULL,
   outlier.shape = 19, outlier.size = 1.5, outlier.stroke = 0.5,
   notch = FALSE, notchwidth = 0.5, varwidth = FALSE, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  show.legend = NA, inherit.a_aes = TRUE)
 
 a_stat_boxplot(mapping = NULL, data = NULL, a_geom = "boxplot",
   a_position = "dodge", ..., coef = 1.5, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  show.legend = NA, inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -69,7 +69,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -117,7 +117,7 @@ See McGill et al. (1978) for more details.
 }
 
 \examples{
-p <- a_plot(mpg, aes(class, hwy))
+p <- a_plot(mpg, a_aes(class, hwy))
 p + a_geom_boxplot()
 p + a_geom_boxplot() + a_geom_jitter(width = 0.2)
 p + a_geom_boxplot() + a_coord_flip()
@@ -130,14 +130,14 @@ p + a_geom_boxplot(fill = "white", colour = "#3366FF")
 p + a_geom_boxplot(outlier.colour = "red", outlier.shape = 1)
 
 # Boxplots are automatically dodged when any aesthetic is a factor
-p + a_geom_boxplot(aes(colour = drv))
+p + a_geom_boxplot(a_aes(colour = drv))
 
 # You can also use boxplots with continuous x, as long as you supply
 # a grouping variable. cut_width is particularly useful
-a_plot(diamonds, aes(carat, price)) +
+a_plot(diamonds, a_aes(carat, price)) +
   a_geom_boxplot()
-a_plot(diamonds, aes(carat, price)) +
-  a_geom_boxplot(aes(group = cut_width(carat, 0.25)))
+a_plot(diamonds, a_aes(carat, price)) +
+  a_geom_boxplot(a_aes(group = cut_width(carat, 0.25)))
 
 \donttest{
 # It's possible to draw a boxplot with your own computations if you
@@ -151,9 +151,9 @@ df <- data.frame(
   y75 = quantile(y, 0.75),
   y100 = max(y)
 )
-a_plot(df, aes(x)) +
+a_plot(df, a_aes(x)) +
   a_geom_boxplot(
-   aes(ymin = y0, lower = y25, middle = y50, upper = y75, ymax = y100),
+   a_aes(ymin = y0, lower = y25, middle = y50, upper = y75, ymax = y100),
    a_stat = "identity"
  )
 }

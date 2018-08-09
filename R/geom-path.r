@@ -20,29 +20,29 @@
 #' @export
 #' @examples
 #' # a_geom_line() is suitable for time series
-#' a_plot(economics, aes(date, unemploy)) + a_geom_line()
-#' a_plot(economics_long, aes(date, value01, colour = variable)) +
+#' a_plot(economics, a_aes(date, unemploy)) + a_geom_line()
+#' a_plot(economics_long, a_aes(date, value01, colour = variable)) +
 #'   a_geom_line()
 #'
 #' # a_geom_step() is useful when you want to highlight exactly when
 #' # the y value chanes
 #' recent <- economics[economics$date > as.Date("2013-01-01"), ]
-#' a_plot(recent, aes(date, unemploy)) + a_geom_line()
-#' a_plot(recent, aes(date, unemploy)) + a_geom_step()
+#' a_plot(recent, a_aes(date, unemploy)) + a_geom_line()
+#' a_plot(recent, a_aes(date, unemploy)) + a_geom_step()
 #'
 #' # a_geom_path lets you explore how two variables are related over time,
 #' # e.g. unemployment and personal savings rate
-#' m <- a_plot(economics, aes(unemploy/pop, psavert))
+#' m <- a_plot(economics, a_aes(unemploy/pop, psavert))
 #' m + a_geom_path()
-#' m + a_geom_path(aes(colour = as.numeric(date)))
+#' m + a_geom_path(a_aes(colour = as.numeric(date)))
 #'
 #' # Changing parameters ----------------------------------------------
-#' a_plot(economics, aes(date, unemploy)) +
+#' a_plot(economics, a_aes(date, unemploy)) +
 #'   a_geom_line(colour = "red")
 #'
 #' # Use the arrow parameter to add an arrow to the line
 #' # See ?arrow for more details
-#' c <- a_plot(economics, aes(x = date, y = pop))
+#' c <- a_plot(economics, a_aes(x = date, y = pop))
 #' c + a_geom_line(arrow = arrow())
 #' c + a_geom_line(
 #'   arrow = arrow(angle = 15, ends = "both", type = "closed")
@@ -50,7 +50,7 @@
 #'
 #' # Control line join parameters
 #' df <- data.frame(x = 1:3, y = c(4, 1, 9))
-#' base <- a_plot(df, aes(x, y))
+#' base <- a_plot(df, a_aes(x, y))
 #' base + a_geom_path(size = 10)
 #' base + a_geom_path(size = 10, lineend = "round")
 #' base + a_geom_path(size = 10, linejoin = "mitre", lineend = "butt")
@@ -62,9 +62,9 @@
 #'   y2 = c(NA, 2, 3, 4, 5),
 #'   y3 = c(1, 2, NA, 4, 5)
 #' )
-#' a_plot(df, aes(x, y1)) + a_geom_point() + a_geom_line()
-#' a_plot(df, aes(x, y2)) + a_geom_point() + a_geom_line()
-#' a_plot(df, aes(x, y3)) + a_geom_point() + a_geom_line()
+#' a_plot(df, a_aes(x, y1)) + a_geom_point() + a_geom_line()
+#' a_plot(df, a_aes(x, y2)) + a_geom_point() + a_geom_line()
+#' a_plot(df, a_aes(x, y3)) + a_geom_point() + a_geom_line()
 #'
 #' \donttest{
 #' # Setting line type vs colour/size
@@ -77,13 +77,13 @@
 #'   group = rep(c("a","b"),
 #'   each = 100)
 #' )
-#' p <- a_plot(df, aes(x=x, y=y, group=group))
+#' p <- a_plot(df, a_aes(x=x, y=y, group=group))
 #' # These work
 #' p + a_geom_line(linetype = 2)
-#' p + a_geom_line(aes(colour = group), linetype = 2)
-#' p + a_geom_line(aes(colour = x))
+#' p + a_geom_line(a_aes(colour = group), linetype = 2)
+#' p + a_geom_line(a_aes(colour = x))
 #' # But this doesn't
-#' should_stop(p + a_geom_line(aes(colour = x), linetype=2))
+#' should_stop(p + a_geom_line(a_aes(colour = x), linetype=2))
 #' }
 a_geom_path <- function(mapping = NULL, data = NULL,
                       a_stat = "identity", a_position = "identity",
@@ -94,7 +94,7 @@ a_geom_path <- function(mapping = NULL, data = NULL,
                       arrow = NULL,
                       na.rm = FALSE,
                       show.legend = NA,
-                      inherit.aes = TRUE) {
+                      inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -102,7 +102,7 @@ a_geom_path <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomPath,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       lineend = lineend,
       linejoin = linejoin,
@@ -121,7 +121,7 @@ a_geom_path <- function(mapping = NULL, data = NULL,
 a_GeomPath <- a_ggproto("a_GeomPath", a_Geom,
   required_aes = c("x", "y"),
 
-  default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
+  default_aes = a_aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
 
   handle_na = function(data, params) {
     keep <- function(x) {
@@ -227,7 +227,7 @@ a_GeomPath <- a_ggproto("a_GeomPath", a_Geom,
 #' @rdname a_geom_path
 a_geom_line <- function(mapping = NULL, data = NULL, a_stat = "identity",
                       a_position = "identity", na.rm = FALSE,
-                      show.legend = NA, inherit.aes = TRUE, ...) {
+                      show.legend = NA, inherit.a_aes = TRUE, ...) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -235,7 +235,7 @@ a_geom_line <- function(mapping = NULL, data = NULL, a_stat = "identity",
     a_geom = a_GeomLine,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -260,7 +260,7 @@ a_GeomLine <- a_ggproto("a_GeomLine", a_GeomPath,
 #' @rdname a_geom_path
 a_geom_step <- function(mapping = NULL, data = NULL, a_stat = "identity",
                       a_position = "identity", direction = "hv",
-                      na.rm = FALSE, show.legend = NA, inherit.aes = TRUE, ...) {
+                      na.rm = FALSE, show.legend = NA, inherit.a_aes = TRUE, ...) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -268,7 +268,7 @@ a_geom_step <- function(mapping = NULL, data = NULL, a_stat = "identity",
     a_geom = a_GeomStep,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       direction = direction,
       na.rm = na.rm,

@@ -45,7 +45,7 @@
 #'   One of "horizontal" or "vertical."
 #' @param default.unit A character string indicating \code{\link[grid]{unit}}
 #'   for \code{keywidth} and \code{keyheight}.
-#' @param override.aes A list specifying aesthetic parameters of legend key.
+#' @param override.a_aes A list specifying aesthetic parameters of legend key.
 #'   See details and examples.
 #' @param nrow The desired number of rows of legends.
 #' @param ncol The desired number of column of legends.
@@ -64,8 +64,8 @@
 #' \donttest{
 #' df <- reshape2::melt(outer(1:4, 1:4), varnames = c("X1", "X2"))
 #'
-#' p1 <- a_plot(df, aes(X1, X2)) + a_geom_tile(aes(fill = value))
-#' p2 <- p1 + a_geom_point(aes(size = value))
+#' p1 <- a_plot(df, a_aes(X1, X2)) + a_geom_tile(a_aes(fill = value))
+#' p2 <- p1 + a_geom_point(a_aes(size = value))
 #'
 #' # Basic form
 #' p1 + a_scale_fill_continuous(a_guide = "legend")
@@ -114,17 +114,17 @@
 #' # Set aesthetic of legend key
 #'
 #' # very low alpha value make it difficult to see legend key
-#' p3 <- a_plot(diamonds, aes(carat, price)) +
-#'   a_geom_point(aes(colour = color), alpha = 1/100)
+#' p3 <- a_plot(diamonds, a_aes(carat, price)) +
+#'   a_geom_point(a_aes(colour = color), alpha = 1/100)
 #' p3
 #'
-#' # override.aes overwrites the alpha
-#' p3 + a_guides(colour = a_guide_legend(override.aes = list(alpha = 1)))
+#' # override.a_aes overwrites the alpha
+#' p3 + a_guides(colour = a_guide_legend(override.a_aes = list(alpha = 1)))
 #'
 #' # multiple row/col legends
 #' df <- data.frame(x = 1:20, y = 1:20, color = letters[1:20])
-#' p <- a_plot(df, aes(x, y)) +
-#'   a_geom_point(aes(colour = color))
+#' p <- a_plot(df, a_aes(x, y)) +
+#'   a_geom_point(a_aes(colour = color))
 #' p + a_guides(col = a_guide_legend(nrow = 8))
 #' p + a_guides(col = a_guide_legend(ncol = 8))
 #' p + a_guides(col = a_guide_legend(nrow = 8, byrow = TRUE))
@@ -156,7 +156,7 @@ a_guide_legend <- function(
   # general
   direction = NULL,
   default.unit = "line",
-  override.aes = list(),
+  override.a_aes = list(),
   nrow = NULL,
   ncol = NULL,
   byrow = FALSE,
@@ -190,7 +190,7 @@ a_guide_legend <- function(
 
       # general
       direction = direction,
-      override.aes = rename_aes(override.aes),
+      override.a_aes = rename_aes(override.a_aes),
       nrow = nrow,
       ncol = ncol,
       byrow = byrow,
@@ -212,7 +212,7 @@ a_guide_train.legend <- function(a_guide, a_scale) {
   if (length(breaks) == 0 || all(is.na(breaks)))
     return()
 
-  key <- as.data.frame(setNames(list(a_scale$map(breaks)), a_scale$aesthetics[1]),
+  key <- as.data.frame(setNames(list(a_scale$map(breaks)), a_scale$a_aesthetics[1]),
     stringsAsFactors = FALSE)
   key$.a_label <- a_scale$get_labels(breaks)
 
@@ -242,9 +242,9 @@ a_guide_train.legend <- function(a_guide, a_scale) {
 #' @export
 a_guide_merge.legend <- function(a_guide, new_guide) {
   a_guide$key <- merge(a_guide$key, new_guide$key, sort = FALSE)
-  a_guide$override.aes <- c(a_guide$override.aes, new_guide$override.aes)
-  if (any(duplicated(names(a_guide$override.aes)))) warning("Duplicated override.aes is ignored.")
-  a_guide$override.aes <- a_guide$override.aes[!duplicated(names(a_guide$override.aes))]
+  a_guide$override.a_aes <- c(a_guide$override.a_aes, new_guide$override.a_aes)
+  if (any(duplicated(names(a_guide$override.a_aes)))) warning("Duplicated override.a_aes is ignored.")
+  a_guide$override.a_aes <- a_guide$override.a_aes[!duplicated(names(a_guide$override.a_aes))]
   a_guide
 }
 
@@ -252,17 +252,17 @@ a_guide_merge.legend <- function(a_guide, new_guide) {
 a_guide_geom.legend <- function(a_guide, layers, default_mapping) {
   # arrange common data for vertical and horizontal guide
   a_guide$geoms <- plyr::llply(layers, function(a_layer) {
-    all <- names(c(a_layer$mapping, if (a_layer$inherit.aes) default_mapping, a_layer$a_stat$default_aes))
+    all <- names(c(a_layer$mapping, if (a_layer$inherit.a_aes) default_mapping, a_layer$a_stat$default_aes))
     a_geom <- c(a_layer$a_geom$required_aes, names(a_layer$a_geom$default_aes))
     matched <- intersect(intersect(all, a_geom), names(a_guide$key))
     matched <- setdiff(matched, names(a_layer$a_geom_params))
-    matched <- setdiff(matched, names(a_layer$aes_params))
+    matched <- setdiff(matched, names(a_layer$a_aes_params))
 
     if (length(matched) > 0) {
       # This a_layer contributes to the legend
       if (is.na(a_layer$show.legend) || a_layer$show.legend) {
         # Default is to include it
-        data <- a_layer$a_geom$use_defaults(a_guide$key[matched], a_layer$aes_params)
+        data <- a_layer$a_geom$use_defaults(a_guide$key[matched], a_layer$a_aes_params)
       } else {
         return(NULL)
       }
@@ -272,12 +272,12 @@ a_guide_geom.legend <- function(a_guide, layers, default_mapping) {
         # Default is to exclude it
         return(NULL)
       } else {
-        data <- a_layer$a_geom$use_defaults(NULL, a_layer$aes_params)[rep(1, nrow(a_guide$key)), ]
+        data <- a_layer$a_geom$use_defaults(NULL, a_layer$a_aes_params)[rep(1, nrow(a_guide$key)), ]
       }
     }
 
-    # override.aes in a_guide_legend manually changes the a_geom
-    data <- utils::modifyList(data, a_guide$override.aes)
+    # override.a_aes in a_guide_legend manually changes the a_geom
+    data <- utils::modifyList(data, a_guide$override.a_aes)
 
     list(
       draw_key = a_layer$a_geom$draw_key,

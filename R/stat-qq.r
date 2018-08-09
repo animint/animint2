@@ -17,20 +17,20 @@
 #' @examples
 #' \donttest{
 #' df <- data.frame(y = rt(200, df = 5))
-#' p <- a_plot(df, aes(sample = y))
+#' p <- a_plot(df, a_aes(sample = y))
 #' p + a_stat_qq()
 #' p + a_geom_point(a_stat = "qq")
 #'
 #' # Use fitdistr from MASS to estimate distribution params
 #' params <- as.list(MASS::fitdistr(df$y, "t")$estimate)
-#' a_plot(df, aes(sample = y)) +
+#' a_plot(df, a_aes(sample = y)) +
 #'   a_stat_qq(distribution = qt, dparams = params["df"])
 #'
 #' # Using to explore the distribution of a variable
 #' a_plot(mtcars) +
-#'   a_stat_qq(aes(sample = mpg))
+#'   a_stat_qq(a_aes(sample = mpg))
 #' a_plot(mtcars) +
-#'   a_stat_qq(aes(sample = mpg, colour = factor(cyl)))
+#'   a_stat_qq(a_aes(sample = mpg, colour = factor(cyl)))
 #' }
 a_stat_qq <- function(mapping = NULL, data = NULL,
                     a_geom = "point", a_position = "identity",
@@ -39,7 +39,7 @@ a_stat_qq <- function(mapping = NULL, data = NULL,
                     dparams = list(),
                     na.rm = FALSE,
                     show.legend = NA,
-                    inherit.aes = TRUE) {
+                    inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -47,7 +47,7 @@ a_stat_qq <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       distribution = distribution,
       dparams = dparams,
@@ -66,7 +66,7 @@ a_geom_qq <- a_stat_qq
 #' @usage NULL
 #' @export
 a_StatQq <- a_ggproto("a_StatQq", a_Stat,
-  default_aes = aes(y = ..sample.., x = ..theoretical..),
+  default_aes = a_aes(y = ..sample.., x = ..theoretical..),
 
   required_aes = c("sample"),
 

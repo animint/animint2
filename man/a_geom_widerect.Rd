@@ -6,7 +6,7 @@
 \usage{
 a_geom_widerect(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  inherit.a_aes = TRUE)
 }
 \arguments{
 \item{mapping}{aesthetic mapping}
@@ -23,7 +23,7 @@ a_geom_widerect(mapping = NULL, data = NULL, a_stat = "identity",
 
 \item{show.legend}{...}
 
-\item{inherit.aes}{...}
+\item{inherit.a_aes}{...}
 }
 \value{
 ggplot2 layer

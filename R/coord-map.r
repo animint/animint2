@@ -34,7 +34,7 @@
 #' if (require("maps")) {
 #' nz <- map_data("nz")
 #' # Prepare a map of NZ
-#' nzmap <- a_plot(nz, aes(x = long, y = lat, group = group)) +
+#' nzmap <- a_plot(nz, a_aes(x = long, y = lat, group = group)) +
 #'   a_geom_polygon(fill = "white", colour = "black")
 #'
 #' # Plot it in cartesian coordinates
@@ -49,7 +49,7 @@
 #' nzmap + a_coord_map("azequalarea", orientation = c(-36.92,174.6,0))
 #'
 #' states <- map_data("state")
-#' usamap <- a_plot(states, aes(long, lat, group = group)) +
+#' usamap <- a_plot(states, a_aes(long, lat, group = group)) +
 #'   a_geom_polygon(fill = "white", colour = "black")
 #'
 #' # Use cartesian coordinates
@@ -71,7 +71,7 @@
 #'
 #' # World map, using a_geom_path instead of a_geom_polygon
 #' world <- map_data("world")
-#' worldmap <- a_plot(world, aes(x = long, y = lat, group = group)) +
+#' worldmap <- a_plot(world, a_aes(x = long, y = lat, group = group)) +
 #'   a_geom_path() +
 #'   a_scale_y_continuous(breaks = (-2:2) * 30) +
 #'   a_scale_x_continuous(breaks = (-4:4) * 45)

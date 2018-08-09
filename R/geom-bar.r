@@ -37,42 +37,42 @@
 #' @examples
 #' # a_geom_bar is designed to make it easy to create bar charts that show
 #' # counts (or sums of weights)
-#' g <- a_plot(mpg, aes(class))
+#' g <- a_plot(mpg, a_aes(class))
 #' # Number of cars in each class:
 #' g + a_geom_bar()
 #' # Total engine displacement of each class
-#' g + a_geom_bar(aes(weight = displ))
+#' g + a_geom_bar(a_aes(weight = displ))
 #'
 #' # To show (e.g.) means, you need a_stat = "identity"
 #' df <- data.frame(trt = c("a", "b", "c"), outcome = c(2.3, 1.9, 3.2))
-#' a_plot(df, aes(trt, outcome)) +
+#' a_plot(df, a_aes(trt, outcome)) +
 #'   a_geom_bar(a_stat = "identity")
 #' # But a_geom_point() display exactly the same information and doesn't
 #' # require the y-axis to touch zero.
-#' a_plot(df, aes(trt, outcome)) +
+#' a_plot(df, a_aes(trt, outcome)) +
 #'   a_geom_point()
 #'
 #' # You can also use a_geom_bar() with continuous data, in which case
 #' # it will show counts at unique locations
 #' df <- data.frame(x = rep(c(2.9, 3.1, 4.5), c(5, 10, 4)))
-#' a_plot(df, aes(x)) + a_geom_bar()
+#' a_plot(df, a_aes(x)) + a_geom_bar()
 #' # cf. a histogram of the same data
-#' a_plot(df, aes(x)) + a_geom_histogram(binwidth = 0.5)
+#' a_plot(df, a_aes(x)) + a_geom_histogram(binwidth = 0.5)
 #'
 #' \donttest{
 #' # Bar charts are automatically stacked when multiple bars are placed
 #' # at the same location
-#' g + a_geom_bar(aes(fill = drv))
+#' g + a_geom_bar(a_aes(fill = drv))
 #'
 #' # You can instead dodge, or fill them
-#' g + a_geom_bar(aes(fill = drv), a_position = "dodge")
-#' g + a_geom_bar(aes(fill = drv), a_position = "fill")
+#' g + a_geom_bar(a_aes(fill = drv), a_position = "dodge")
+#' g + a_geom_bar(a_aes(fill = drv), a_position = "fill")
 #'
 #' # To change plot order of bars, change levels in underlying factor
 #' reorder_size <- function(x) {
 #'   factor(x, levels = names(sort(table(x))))
 #' }
-#' a_plot(mpg, aes(reorder_size(class))) + a_geom_bar()
+#' a_plot(mpg, a_aes(reorder_size(class))) + a_geom_bar()
 #' }
 a_geom_bar <- function(mapping = NULL, data = NULL,
                      a_stat = "count", a_position = "stack",
@@ -81,14 +81,14 @@ a_geom_bar <- function(mapping = NULL, data = NULL,
                      binwidth = NULL,
                      na.rm = FALSE,
                      show.legend = NA,
-                     inherit.aes = TRUE) {
+                     inherit.a_aes = TRUE) {
 
   if (!is.null(binwidth)) {
     warning("`a_geom_bar()` no longer has a `binwidth` parameter. ",
       "Please use `a_geom_histogram()` instead.", call. = "FALSE")
     return(a_geom_histogram(mapping = mapping, data = data,
       a_position = a_position, width = width, binwidth = binwidth, ...,
-      na.rm = na.rm, show.legend = show.legend, inherit.aes = inherit.aes))
+      na.rm = na.rm, show.legend = show.legend, inherit.a_aes = inherit.a_aes))
   }
 
   a_layer(
@@ -98,7 +98,7 @@ a_geom_bar <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomBar,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       width = width,
       na.rm = na.rm,

@@ -6,18 +6,18 @@ gapminder <-
   list(title="Linked scatterplot and time series",
        ts=a_plot()+
        make_tallrect(WorldBank, "year")+
-       a_geom_line(aes(year, life.expectancy, group=country, color=region),
+       a_geom_line(a_aes(year, life.expectancy, group=country, color=region),
                  clickSelects="country",
                  data=WorldBank, size=4, alpha=3/5),
        time=list(variable="year",ms=3000),
        duration=list(year=1000),
        scatter=a_plot()+
-       a_geom_point(aes(fertility.rate, life.expectancy,
+       a_geom_point(a_aes(fertility.rate, life.expectancy,
                       key=country, colour=region, size=population),
                   showSelected="year",
                   clickSelects="country",
                   data=WorldBank)+
-       a_geom_text(aes(fertility.rate, life.expectancy, a_label=country),
+       a_geom_text(a_aes(fertility.rate, life.expectancy, a_label=country),
                  showSelected=c("country", "year"),
                  data=WorldBank)+
        make_text(WorldBank, 5, 80, "year")+
@@ -29,7 +29,7 @@ data(worldPop)
 ## inspired by polychartjs.
 popPlots <-
   list(bars=a_plot()+
-       a_geom_bar(aes(x=subcontinent, y=population),
+       a_geom_bar(a_aes(x=subcontinent, y=population),
                 clickSelects="subcontinent",
                 showSelected="year",
                 data=worldPop, a_stat="identity", a_position="identity")+
@@ -41,14 +41,14 @@ popPlots <-
        ## This make_tallrect tiles the background of the lineplot with
        ## rects that can be clicked to select the year variable.
        make_tallrect(worldPop, "year")+
-       ## This a_geom_point does not have aes(clickSelects) so its alpha
+       ## This a_geom_point does not have a_aes(clickSelects) so its alpha
        ## transparency behaves normally: all points have alpha=1/4.
-       a_geom_point(aes(year, population, colour=type),
+       a_geom_point(a_aes(year, population, colour=type),
                   data=worldPop, size=4, alpha=1/4)+
-       ## This a_geom_line DOES have aes(clickSelects) so only the
+       ## This a_geom_line DOES have a_aes(clickSelects) so only the
        ## selected line has the specified alpha=3/4. The other
        ## unselected lines have 0.5 less (alpha=1/4).
-       a_geom_line(aes(year, population, group=subcontinent),
+       a_geom_line(a_aes(year, population, group=subcontinent),
                  clickSelects="subcontinent",
                  data=worldPop, size=4, alpha=3/4))
 animint2dir(popPlots, "WorldPop-interactive")
@@ -57,7 +57,7 @@ animint2dir(popPlots, "WorldPop-interactive")
 popAnim <- c(popPlots, list(time=list(variable="year",ms=2000)))
 animint2dir(popAnim, "WorldPop-animated")
 ## Make the animation smooth by specifying a duration of 1000 ms for
-## geoms with aes(showSelected=year).
+## geoms with a_aes(showSelected=year).
 popSmooth <- c(popAnim, list(duration=list(year=1000)))
 animint2dir(popSmooth, "WorldPop-smooth")
 

@@ -6,11 +6,11 @@
 \usage{
 a_stat_function(mapping = NULL, data = NULL, a_geom = "path",
   a_position = "identity", ..., fun, xlim = NULL, n = 101,
-  args = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  args = list(), na.rm = FALSE, show.legend = NA, inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -53,7 +53,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -80,7 +80,7 @@ df <- data.frame(
   x = rnorm(100)
 )
 x <- df$x
-base <- a_plot(df, aes(x)) + a_geom_density()
+base <- a_plot(df, a_aes(x)) + a_geom_density()
 base + a_stat_function(fun = dnorm, colour = "red")
 base + a_stat_function(fun = dnorm, colour = "red", args = list(mean = 3))
 
@@ -88,18 +88,18 @@ base + a_stat_function(fun = dnorm, colour = "red", args = list(mean = 3))
 # Examples adapted from Kohske Takahashi
 
 # Specify range of x-axis
-a_plot(data.frame(x = c(0, 2)), aes(x)) +
+a_plot(data.frame(x = c(0, 2)), a_aes(x)) +
   a_stat_function(fun = exp, a_geom = "line")
 
 # Plot a normal curve
-a_plot(data.frame(x = c(-5, 5)), aes(x)) + a_stat_function(fun = dnorm)
+a_plot(data.frame(x = c(-5, 5)), a_aes(x)) + a_stat_function(fun = dnorm)
 
 # To specify a different mean or sd, use the args parameter to supply new values
-a_plot(data.frame(x = c(-5, 5)), aes(x)) +
+a_plot(data.frame(x = c(-5, 5)), a_aes(x)) +
   a_stat_function(fun = dnorm, args = list(mean = 2, sd = .5))
 
 # Two functions on the same plot
-f <- a_plot(data.frame(x = c(0, 10)), aes(x))
+f <- a_plot(data.frame(x = c(0, 10)), a_aes(x))
 f + a_stat_function(fun = sin, colour = "red") +
   a_stat_function(fun = cos, colour = "blue")
 

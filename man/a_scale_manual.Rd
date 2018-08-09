@@ -39,8 +39,8 @@ Create your own discrete scale.
 }
 \examples{
 \donttest{
-p <- a_plot(mtcars, aes(mpg, wt)) +
-  a_geom_point(aes(colour = factor(cyl)))
+p <- a_plot(mtcars, a_aes(mpg, wt)) +
+  a_geom_point(a_aes(colour = factor(cyl)))
 
 p + a_scale_colour_manual(values = c("red","blue", "green"))
 p + a_scale_colour_manual(

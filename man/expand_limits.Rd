@@ -15,15 +15,15 @@ panels or all plots.  This function is a thin wrapper around
 \code{\link{a_geom_blank}} that makes it easy to add such values.
 }
 \examples{
-p <- a_plot(mtcars, aes(mpg, wt)) + a_geom_point()
+p <- a_plot(mtcars, a_aes(mpg, wt)) + a_geom_point()
 p + expand_limits(x = 0)
 p + expand_limits(y = c(1, 9))
 p + expand_limits(x = 0, y = 0)
 
-a_plot(mtcars, aes(mpg, wt)) +
-  a_geom_point(aes(colour = cyl)) +
+a_plot(mtcars, a_aes(mpg, wt)) +
+  a_geom_point(a_aes(colour = cyl)) +
   expand_limits(colour = seq(2, 10, by = 2))
-a_plot(mtcars, aes(mpg, wt)) +
-  a_geom_point(aes(colour = factor(cyl))) +
+a_plot(mtcars, a_aes(mpg, wt)) +
+  a_geom_point(a_aes(colour = factor(cyl))) +
   expand_limits(colour = factor(seq(2, 10, by = 2)))
 }

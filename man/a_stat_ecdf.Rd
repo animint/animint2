@@ -6,11 +6,11 @@
 \usage{
 a_stat_ecdf(mapping = NULL, data = NULL, a_geom = "step",
   a_position = "identity", ..., n = NULL, pad = TRUE, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  show.legend = NA, inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -51,7 +51,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -70,11 +70,11 @@ Empirical Cumulative Density Function
 \examples{
 \donttest{
 df <- data.frame(x = rnorm(1000))
-a_plot(df, aes(x)) + a_stat_ecdf(a_geom = "step")
+a_plot(df, a_aes(x)) + a_stat_ecdf(a_geom = "step")
 
 df <- data.frame(x = c(rnorm(100, 0, 3), rnorm(100, 0, 10)),
                  g = gl(2, 100))
 
-a_plot(df, aes(x, colour = g)) + a_stat_ecdf()
+a_plot(df, a_aes(x, colour = g)) + a_stat_ecdf()
 }
 }

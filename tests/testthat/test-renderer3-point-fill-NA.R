@@ -10,13 +10,13 @@ species.colors <-
 viz <- list(
   petals=a_plot()+
     a_scale_color_manual(values=species.colors)+
-    a_geom_point(aes(Petal.Length, Petal.Width, color=Species),
+    a_geom_point(a_aes(Petal.Length, Petal.Width, color=Species),
                fill=NA,
                shape=21,
                data=iris)
   )
 
-test_that("a_geom_point(aes(color), fill=NA) renders fill transparent", {
+test_that("a_geom_point(a_aes(color), fill=NA) renders fill transparent", {
   info <- animint2HTML(viz)
   style.mat <- getStyleValue(
     info$html, '//g[@class="a_geom1_point_petals"]//circle', c("fill", "stroke"))

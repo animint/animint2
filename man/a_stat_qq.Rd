@@ -7,15 +7,17 @@
 \usage{
 a_stat_qq(mapping = NULL, data = NULL, a_geom = "point",
   a_position = "identity", ..., distribution = stats::qnorm,
-  dparams = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  dparams = list(), na.rm = FALSE, show.legend = NA,
+  inherit.a_aes = TRUE)
 
 a_geom_qq(mapping = NULL, data = NULL, a_geom = "point",
   a_position = "identity", ..., distribution = stats::qnorm,
-  dparams = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  dparams = list(), na.rm = FALSE, show.legend = NA,
+  inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -55,7 +57,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -79,19 +81,19 @@ Calculation for quantile-quantile plot.
 \examples{
 \donttest{
 df <- data.frame(y = rt(200, df = 5))
-p <- a_plot(df, aes(sample = y))
+p <- a_plot(df, a_aes(sample = y))
 p + a_stat_qq()
 p + a_geom_point(a_stat = "qq")
 
 # Use fitdistr from MASS to estimate distribution params
 params <- as.list(MASS::fitdistr(df$y, "t")$estimate)
-a_plot(df, aes(sample = y)) +
+a_plot(df, a_aes(sample = y)) +
   a_stat_qq(distribution = qt, dparams = params["df"])
 
 # Using to explore the distribution of a variable
 a_plot(mtcars) +
-  a_stat_qq(aes(sample = mpg))
+  a_stat_qq(a_aes(sample = mpg))
 a_plot(mtcars) +
-  a_stat_qq(aes(sample = mpg, colour = factor(cyl)))
+  a_stat_qq(a_aes(sample = mpg, colour = factor(cyl)))
 }
 }

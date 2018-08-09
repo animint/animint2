@@ -16,20 +16,20 @@ algo.colors <-
 path.before.params <- list(
   title="Test ROC curves, predicted peaks and errors",
   roc=a_plot()+
-  a_geom_path(aes(FPR, TPR, group=Model, key=Model, color=Model),
+  a_geom_path(a_aes(FPR, TPR, group=Model, key=Model, color=Model),
             data=TestROC$roc)+
   a_scale_color_manual(values=algo.colors, breaks=names(algo.colors))+
-  a_geom_point(aes(FPR, TPR, color=Model, key=paste(model, parameter),
+  a_geom_point(a_aes(FPR, TPR, color=Model, key=paste(model, parameter),
                  size=parameter,
                  fill=parameter),
              shape=21,
              data=subset(TestROC$parameters, parameter=="learned"))+
-  a_geom_point(aes(FPR, TPR, color=Model, key=paste(model, parameter),
+  a_geom_point(a_aes(FPR, TPR, color=Model, key=paste(model, parameter),
                  size=parameter,
                  fill=parameter),
              shape=21,
              data=subset(TestROC$parameters, parameter=="default"))+
-  a_geom_point(aes(FPR, TPR, color=Model,
+  a_geom_point(a_aes(FPR, TPR, color=Model,
                  key=ModelParam),
              clickSelects="ModelParam",
              size=4,
@@ -67,20 +67,20 @@ test_that("path before params, 5 paths rendered", {
 path.after.params <- list(
   title="Test ROC curves, predicted peaks and errors",
   roc=a_plot()+
-  a_geom_point(aes(FPR, TPR, color=Model, key=paste(model, parameter),
+  a_geom_point(a_aes(FPR, TPR, color=Model, key=paste(model, parameter),
                  size=parameter,
                  fill=parameter),
              shape=21,
              data=subset(TestROC$parameters, parameter=="learned"))+
-  a_geom_point(aes(FPR, TPR, color=Model, key=paste(model, parameter),
+  a_geom_point(a_aes(FPR, TPR, color=Model, key=paste(model, parameter),
                  size=parameter,
                  fill=parameter),
              shape=21,
              data=subset(TestROC$parameters, parameter=="default"))+
   a_scale_color_manual(values=algo.colors, breaks=names(algo.colors))+
-  a_geom_path(aes(FPR, TPR, group=Model, key=Model, color=Model),
+  a_geom_path(a_aes(FPR, TPR, group=Model, key=Model, color=Model),
             data=TestROC$roc)+
-  a_geom_point(aes(FPR, TPR, color=Model,
+  a_geom_point(a_aes(FPR, TPR, color=Model,
                  key=ModelParam),
              clickSelects="ModelParam",
              size=4,

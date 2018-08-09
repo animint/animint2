@@ -9,9 +9,9 @@
 #' @rdname a_scale_linetype
 #' @export
 #' @examples
-#' base <- a_plot(economics_long, aes(date, value01))
-#' base + a_geom_line(aes(group = variable))
-#' base + a_geom_line(aes(linetype = variable))
+#' base <- a_plot(economics_long, a_aes(date, value01))
+#' base + a_geom_line(a_aes(group = variable))
+#' base + a_geom_line(a_aes(linetype = variable))
 #'
 #' # See a_scale_manual for more flexibility
 a_scale_linetype <- function(..., na.value = "blank") {

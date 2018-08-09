@@ -20,7 +20,7 @@ dat <- do.call("rbind", datz)
 
 p <- a_plot() + 
   a_geom_point(data = dat, 
-             aes(x = x, y = y, colour = species),
+             a_aes(x = x, y = y, colour = species),
              showSelected = "step")
 plist <- list(
   plot = p,

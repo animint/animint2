@@ -11,7 +11,7 @@ a_stat_summary_hex <- function(mapping = NULL, data = NULL,
                              fun.args = list(),
                              na.rm = FALSE,
                              show.legend = NA,
-                             inherit.aes = TRUE) {
+                             inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -19,7 +19,7 @@ a_stat_summary_hex <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       bins = bins,
       binwidth = binwidth,
@@ -37,7 +37,7 @@ a_stat_summary_hex <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_StatSummaryHex <- a_ggproto("a_StatSummaryHex", a_Stat,
-  default_aes = aes(fill = ..value..),
+  default_aes = a_aes(fill = ..value..),
 
   required_aes = c("x", "y", "z"),
 

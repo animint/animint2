@@ -11,7 +11,7 @@ a_geom_curve <- function(mapping = NULL, data = NULL,
                        lineend = "butt",
                        na.rm = FALSE,
                        show.legend = NA,
-                       inherit.aes = TRUE) {
+                       inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -19,7 +19,7 @@ a_geom_curve <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomCurve,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       arrow = arrow,
       curvature = curvature,

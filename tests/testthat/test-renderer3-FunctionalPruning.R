@@ -3,22 +3,22 @@ acontext("FunctionalPruning")
 data(FunctionalPruning, package="animint2")
 min.bug.viz <- list(
   pruning=a_plot()+
-    a_geom_line(aes(mean, cost),
+    a_geom_line(a_aes(mean, cost),
               showSelected="minimization",
               color="grey",
               size=5,
               data=FunctionalPruning$envelope)+
-    a_geom_line(aes(mean, cost, color=data.i.fac,
+    a_geom_line(a_aes(mean, cost, color=data.i.fac,
                   group=paste(piece.i, data.i)),
               showSelected="minimization",
               data=FunctionalPruning$cost.lines)+
-    a_geom_point(aes(min.cost.mean, min.cost,
+    a_geom_point(a_aes(min.cost.mean, min.cost,
                    color=data.i.fac),
                showSelected="minimization",
                size=5,
                data=FunctionalPruning$minima),
   data=a_plot()+
-    a_geom_tile(aes(timestep, total.segments,
+    a_geom_tile(a_aes(timestep, total.segments,
                   fill=optimal.cost,
                   id=paste0("segs", total.segments, "time", timestep)),
               clickSelects="minimization",

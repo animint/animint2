@@ -71,11 +71,11 @@ qplot <- function(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
   arguments <- as.list(match.call()[-1])
   env <- parent.frame()
 
-  aesthetics <- compact(arguments[.all_aesthetics])
-  aesthetics <- aesthetics[!is.constant(aesthetics)]
-  aes_names <- names(aesthetics)
-  aesthetics <- rename_aes(aesthetics)
-  class(aesthetics) <- "uneval"
+  a_aesthetics <- compact(arguments[.all_a_aesthetics])
+  a_aesthetics <- a_aesthetics[!is.constant(a_aesthetics)]
+  a_aes_names <- names(a_aesthetics)
+  a_aesthetics <- rename_aes(a_aesthetics)
+  class(a_aesthetics) <- "uneval"
 
   if (missing(data)) {
     # If data not explicitly specified, will be pulled from workspace
@@ -91,10 +91,10 @@ qplot <- function(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
 
   # Work out plot data, and modify aesthetics, if necessary
   if ("auto" %in% a_geom) {
-    if ("sample" %in% aes_names) {
+    if ("sample" %in% a_aes_names) {
       a_geom[a_geom == "auto"] <- "qq"
     } else if (missing(y)) {
-      x <- eval(aesthetics$x, data, env)
+      x <- eval(a_aesthetics$x, data, env)
       if (is.discrete(x)) {
         a_geom[a_geom == "auto"] <- "bar"
       } else {
@@ -103,13 +103,13 @@ qplot <- function(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
       if (missing(ylab)) ylab <- "count"
     } else {
       if (missing(x)) {
-        aesthetics$x <- bquote(seq_along(.(y)), aesthetics)
+        a_aesthetics$x <- bquote(seq_along(.(y)), a_aesthetics)
       }
       a_geom[a_geom == "auto"] <- "point"
     }
   }
 
-  p <- a_plot(data, aesthetics, environment = env)
+  p <- a_plot(data, a_aesthetics, environment = env)
 
   if (is.null(facets)) {
     p <- p + a_facet_null()
@@ -126,7 +126,7 @@ qplot <- function(x, y = NULL, ..., data, facets = NULL, margins = FALSE,
     # Arguments are unevaluated because some are aesthetics. Need to evaluate
     # params - can't do in correct env because that's lost (no lazyeval)
     # so do the best we can by evaluating in parent frame.
-    params <- arguments[setdiff(names(arguments), c(aes_names, argnames))]
+    params <- arguments[setdiff(names(arguments), c(a_aes_names, argnames))]
     params <- lapply(params, eval, parent.frame())
 
     p <- p + do.call(paste0("a_geom_", g), params)

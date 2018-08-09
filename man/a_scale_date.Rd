@@ -88,7 +88,7 @@ df <- data.frame(
   date = last_month,
   price = runif(30)
 )
-base <- a_plot(df, aes(date, price)) +
+base <- a_plot(df, a_aes(date, price)) +
   a_geom_line()
 
 # The date scale will attempt to pick sensible defaults for

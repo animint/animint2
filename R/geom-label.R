@@ -14,7 +14,7 @@ a_geom_label <- function(mapping = NULL, data = NULL,
                        a_label.size = 0.25,
                        na.rm = FALSE,
                        show.legend = NA,
-                       inherit.aes = TRUE) {
+                       inherit.a_aes = TRUE) {
   if (!missing(nudge_x) || !missing(nudge_y)) {
     if (!missing(a_position)) {
       stop("Specify either `a_position` or `nudge_x`/`nudge_y`", call. = FALSE)
@@ -30,7 +30,7 @@ a_geom_label <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomLabel,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       parse = parse,
       a_label.padding = a_label.padding,
@@ -50,7 +50,7 @@ a_geom_label <- function(mapping = NULL, data = NULL,
 a_GeomLabel <- a_ggproto("a_GeomLabel", a_Geom,
   required_aes = c("x", "y", "a_label"),
 
-  default_aes = aes(
+  default_aes = a_aes(
     colour = "black", fill = "white", size = 3.88, angle = 0,
     hjust = 0.5, vjust = 0.5, alpha = NA, family = "", fontface = 1,
     lineheight = 1.2

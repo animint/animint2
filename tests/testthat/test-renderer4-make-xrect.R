@@ -18,28 +18,28 @@ viz.data.fun <- list(
     a_theme_bw()+
     a_theme_animint(width=1000, height=800)+
     a_theme(panel.margin=grid::unit(0, "lines"))+
-    a_geom_line(aes(year, life.expectancy, group=country, colour=region,
+    a_geom_line(a_aes(year, life.expectancy, group=country, colour=region,
                   id = country),
               clickSelects="country",
               data=TS(not.na), size=4, alpha=3/5)+
-    a_geom_point(aes(year, life.expectancy, color=region, size=population),
+    a_geom_point(a_aes(year, life.expectancy, color=region, size=population),
                showSelected="country",
                clickSelects="country",
                data=TS(not.na))+
-    a_geom_path(aes(fertility.rate, year, group=country, colour=region),
+    a_geom_path(a_aes(fertility.rate, year, group=country, colour=region),
               clickSelects="country",
               data=TS2(not.na), size=4, alpha=3/5)+
-    a_geom_point(aes(fertility.rate, year, color=region, size=population),
+    a_geom_point(a_aes(fertility.rate, year, color=region, size=population),
                showSelected="country",
                clickSelects="country",
                data=TS2(not.na))+
     make_widerect(not.na, "year", data.fun=TS2)+
-  a_geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population,
+  a_geom_point(a_aes(fertility.rate, life.expectancy, colour=region, size=population,
                  key=country), # key aesthetic for animated transitions!
              clickSelects="country",
              showSelected="year",
              data=SCATTER(not.na))+
-    a_geom_text(aes(fertility.rate, life.expectancy, a_label=country,
+    a_geom_text(a_aes(fertility.rate, life.expectancy, a_label=country,
                   key=country), #also use key here!
               showSelected=c("country", "year"),
               clickSelects="country",

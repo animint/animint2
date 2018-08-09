@@ -6,11 +6,11 @@
 \usage{
 a_geom_errorbarh(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -46,7 +46,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -69,11 +69,11 @@ df <- data.frame(
 
 # Define the top and bottom of the errorbars
 
-p <- a_plot(df, aes(resp, trt, colour = group))
+p <- a_plot(df, a_aes(resp, trt, colour = group))
 p + a_geom_point() +
-  a_geom_errorbarh(aes(xmax = resp + se, xmin = resp - se))
+  a_geom_errorbarh(a_aes(xmax = resp + se, xmin = resp - se))
 p + a_geom_point() +
-  a_geom_errorbarh(aes(xmax = resp + se, xmin = resp - se, height = .2))
+  a_geom_errorbarh(a_aes(xmax = resp + se, xmin = resp - se, height = .2))
 }
 \seealso{
 \code{\link{a_geom_errorbar}}: vertical error bars

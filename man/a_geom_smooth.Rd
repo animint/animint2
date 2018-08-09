@@ -7,17 +7,17 @@
 \usage{
 a_geom_smooth(mapping = NULL, data = NULL, a_stat = "smooth",
   a_position = "identity", ..., method = "auto", formula = y ~ x,
-  se = TRUE, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  se = TRUE, na.rm = FALSE, show.legend = NA, inherit.a_aes = TRUE)
 
 a_stat_smooth(mapping = NULL, data = NULL, a_geom = "smooth",
   a_position = "identity", ..., method = "auto", formula = y ~ x,
   se = TRUE, n = 80, span = 0.75, fullrange = FALSE, level = 0.95,
   method.args = list(), na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -61,7 +61,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -113,33 +113,33 @@ scale, and then back-transformed to the response scale.
 }
 
 \examples{
-a_plot(mpg, aes(displ, hwy)) +
+a_plot(mpg, a_aes(displ, hwy)) +
   a_geom_point() +
   a_geom_smooth()
 
 # Use span to control the "wiggliness" of the default loess smoother
 # The span is the fraction of points used to fit each local regression:
 # small numbers make a wigglier curve, larger numbers make a smoother curve.
-a_plot(mpg, aes(displ, hwy)) +
+a_plot(mpg, a_aes(displ, hwy)) +
   a_geom_point() +
   a_geom_smooth(span = 0.3)
 
 # Instead of a loess smooth, you can use any other modelling function:
-a_plot(mpg, aes(displ, hwy)) +
+a_plot(mpg, a_aes(displ, hwy)) +
   a_geom_point() +
   a_geom_smooth(method = "lm", se = FALSE)
 
-a_plot(mpg, aes(displ, hwy)) +
+a_plot(mpg, a_aes(displ, hwy)) +
   a_geom_point() +
   a_geom_smooth(method = "lm", formula = y ~ splines::bs(x, 3), se = FALSE)
 
 # Smoothes are automatically fit to each group (defined by categorical
 # aesthetics or the group aesthetic) and for each facet
 
-a_plot(mpg, aes(displ, hwy, colour = class)) +
+a_plot(mpg, a_aes(displ, hwy, colour = class)) +
   a_geom_point() +
   a_geom_smooth(se = FALSE, method = "lm")
-a_plot(mpg, aes(displ, hwy)) +
+a_plot(mpg, a_aes(displ, hwy)) +
   a_geom_point() +
   a_geom_smooth(span = 0.8) +
   a_facet_wrap(~drv)
@@ -150,15 +150,15 @@ binomial_smooth <- function(...) {
 }
 # To fit a logistic regression, you need to coerce the values to
 # a numeric vector lying between 0 and 1.
-a_plot(rpart::kyphosis, aes(Age, Kyphosis)) +
+a_plot(rpart::kyphosis, a_aes(Age, Kyphosis)) +
   a_geom_jitter(height = 0.05) +
   binomial_smooth()
 
-a_plot(rpart::kyphosis, aes(Age, as.numeric(Kyphosis) - 1)) +
+a_plot(rpart::kyphosis, a_aes(Age, as.numeric(Kyphosis) - 1)) +
   a_geom_jitter(height = 0.05) +
   binomial_smooth()
 
-a_plot(rpart::kyphosis, aes(Age, as.numeric(Kyphosis) - 1)) +
+a_plot(rpart::kyphosis, a_aes(Age, as.numeric(Kyphosis) - 1)) +
   a_geom_jitter(height = 0.05) +
   binomial_smooth(formula = y ~ splines::ns(x, 2))
 

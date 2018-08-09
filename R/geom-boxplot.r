@@ -46,7 +46,7 @@
 #' @references McGill, R., Tukey, J. W. and Larsen, W. A. (1978) Variations of
 #'     box plots. The American Statistician 32, 12-16.
 #' @examples
-#' p <- a_plot(mpg, aes(class, hwy))
+#' p <- a_plot(mpg, a_aes(class, hwy))
 #' p + a_geom_boxplot()
 #' p + a_geom_boxplot() + a_geom_jitter(width = 0.2)
 #' p + a_geom_boxplot() + a_coord_flip()
@@ -59,14 +59,14 @@
 #' p + a_geom_boxplot(outlier.colour = "red", outlier.shape = 1)
 #'
 #' # Boxplots are automatically dodged when any aesthetic is a factor
-#' p + a_geom_boxplot(aes(colour = drv))
+#' p + a_geom_boxplot(a_aes(colour = drv))
 #'
 #' # You can also use boxplots with continuous x, as long as you supply
 #' # a grouping variable. cut_width is particularly useful
-#' a_plot(diamonds, aes(carat, price)) +
+#' a_plot(diamonds, a_aes(carat, price)) +
 #'   a_geom_boxplot()
-#' a_plot(diamonds, aes(carat, price)) +
-#'   a_geom_boxplot(aes(group = cut_width(carat, 0.25)))
+#' a_plot(diamonds, a_aes(carat, price)) +
+#'   a_geom_boxplot(a_aes(group = cut_width(carat, 0.25)))
 #'
 #' \donttest{
 #' # It's possible to draw a boxplot with your own computations if you
@@ -80,9 +80,9 @@
 #'   y75 = quantile(y, 0.75),
 #'   y100 = max(y)
 #' )
-#' a_plot(df, aes(x)) +
+#' a_plot(df, a_aes(x)) +
 #'   a_geom_boxplot(
-#'    aes(ymin = y0, lower = y25, middle = y50, upper = y75, ymax = y100),
+#'    a_aes(ymin = y0, lower = y25, middle = y50, upper = y75, ymax = y100),
 #'    a_stat = "identity"
 #'  )
 #' }
@@ -99,7 +99,7 @@ a_geom_boxplot <- function(mapping = NULL, data = NULL,
                          varwidth = FALSE,
                          na.rm = FALSE,
                          show.legend = NA,
-                         inherit.aes = TRUE) {
+                         inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -107,7 +107,7 @@ a_geom_boxplot <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomBoxplot,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       outlier.colour = outlier.color %||% outlier.colour,
       outlier.shape = outlier.shape,
@@ -221,7 +221,7 @@ a_GeomBoxplot <- a_ggproto("a_GeomBoxplot", a_Geom,
 
   draw_key = a_draw_key_boxplot,
 
-  default_aes = aes(weight = 1, colour = "grey20", fill = "white", size = 0.5,
+  default_aes = a_aes(weight = 1, colour = "grey20", fill = "white", size = 0.5,
     alpha = NA, shape = 19, linetype = "solid"),
 
   required_aes = c("x", "lower", "upper", "middle", "ymin", "ymax")

@@ -5,15 +5,15 @@ breaks <- 10^(4:9)
 viz <-
   list(ts=a_plot()+
        make_tallrect(WorldBank, "year")+
-       a_geom_line(aes(year, life.expectancy, group=country, colour=region),
+       a_geom_line(a_aes(year, life.expectancy, group=country, colour=region),
                  clickSelects="country",
                  data=WorldBank, size=3, alpha=3/5),
        scatter=a_plot()+
-       a_geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population),
+       a_geom_point(a_aes(fertility.rate, life.expectancy, colour=region, size=population),
                   clickSelects="country",
                   showSelected=c("year"),
                   data=WorldBank)+
-       a_geom_text(aes(fertility.rate, life.expectancy, a_label=country),
+       a_geom_text(a_aes(fertility.rate, life.expectancy, a_label=country),
                  showSelected=c("country", "year"),
                  data=WorldBank)+
        make_text(WorldBank, 5, 80, "year")+
@@ -29,11 +29,11 @@ test_that('breaks are respected', {
 
 test_that('hiding both legends works with a_geom_point(show.legend=FALSE)', {
   viz$scatter <- a_plot()+
-    a_geom_point(aes(fertility.rate, life.expectancy, colour=region, size=population),
+    a_geom_point(a_aes(fertility.rate, life.expectancy, colour=region, size=population),
                clickSelects="country",
                showSelected=c("year"),
                data=WorldBank, show.legend=FALSE)+
-    a_geom_text(aes(fertility.rate, life.expectancy, a_label=country),
+    a_geom_text(a_aes(fertility.rate, life.expectancy, a_label=country),
               showSelected=c("country", "year"),
               data=WorldBank)+
     make_text(WorldBank, 5, 80, "year")
@@ -71,8 +71,8 @@ error.types <-
 
 gg <- 
   a_plot(error.types)+
-    a_geom_point(aes(x, x))+
-    a_geom_tallrect(aes(xmin=x, xmax=x+0.5, fill=x),
+    a_geom_point(a_aes(x, x))+
+    a_geom_tallrect(a_aes(xmin=x, xmax=x+0.5, fill=x),
                   color="black")
 
 expected.legend.list <- 

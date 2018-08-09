@@ -24,7 +24,7 @@ This transforms objects to labeller functions. Used internally by
 \code{\link{labeller}()}.
 }
 \examples{
-p <- a_plot(mtcars, aes(disp, drat)) + a_geom_point()
+p <- a_plot(mtcars, a_aes(disp, drat)) + a_geom_point()
 p + a_facet_wrap(~am)
 
 # Rename labels on the fly with a lookup character vector

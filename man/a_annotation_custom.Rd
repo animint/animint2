@@ -34,7 +34,7 @@ Inf values can be used to fill the full plot panel (see examples).
 \examples{
 # Dummy plot
 df <- data.frame(x = 1:10, y = 1:10)
-base <- a_plot(df, aes(x, y)) +
+base <- a_plot(df, a_aes(x, y)) +
   a_geom_blank() +
   a_theme_bw()
 
@@ -46,7 +46,7 @@ base + a_annotation_custom(
 
 # Inset plot
 df2 <- data.frame(x = 1 , y = 1)
-g <- ggplotGrob(a_plot(df2, aes(x, y)) +
+g <- ggplotGrob(a_plot(df2, a_aes(x, y)) +
   a_geom_point() +
   a_theme(plot.background = a_element_rect(colour = "black")))
 base + a_annotation_custom(grob = g, xmin = 1, xmax = 10, ymin = 8, ymax = 10)

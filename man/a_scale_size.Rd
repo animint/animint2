@@ -76,7 +76,7 @@ perception. \code{a_scale_size_area} ensures that a value of 0 is mapped
 to a size of 0.
 }
 \examples{
-p <- a_plot(mpg, aes(displ, hwy, size = hwy)) +
+p <- a_plot(mpg, a_aes(displ, hwy, size = hwy)) +
    a_geom_point()
 p
 p + a_scale_size("Highway mpg")
@@ -86,7 +86,7 @@ p + a_scale_size(range = c(0, 10))
 p + a_scale_size_area()
 
 # This is most useful when size is a count
-a_plot(mpg, aes(class, cyl)) +
+a_plot(mpg, a_aes(class, cyl)) +
   a_geom_count() +
   a_scale_size_area()
 

@@ -25,7 +25,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' a_plot(mtcars, aes(mpg, wt)) + a_geom_point()
+#' a_plot(mtcars, a_aes(mpg, wt)) + a_geom_point()
 #'
 #' ggsave("mtcars.pdf")
 #' ggsave("mtcars.png")

@@ -1,11 +1,11 @@
 acontext("a_geom_point_stroke")
 
 stroke_in_R <- 5
-p1 <- a_plot(mtcars, aes(wt, mpg)) +
+p1 <- a_plot(mtcars, a_aes(wt, mpg)) +
   a_geom_point(shape = 21, colour = "black", fill = "white",
              size = 5, stroke = stroke_in_R)
 
-p2 <- a_plot(mtcars, aes(wt, mpg, stroke=cyl)) +
+p2 <- a_plot(mtcars, a_aes(wt, mpg, stroke=cyl)) +
   a_geom_point(shape = 21, colour = "black", fill = "white", size = 5)
 
 viz <- list(p1=p1, p2=p2)
@@ -25,7 +25,7 @@ test_that("points are rendered with stroke-width", {
   expect_equal(stroke_width_val, stroke_in_R)
 })
 
-test_that("aes(stroke) works", {
+test_that("a_aes(stroke) works", {
   stroke_vals_2 <-
     getStyleValue(info$html, '//g[@class="a_geom2_point_p2"]//circle',
                   "stroke-width")

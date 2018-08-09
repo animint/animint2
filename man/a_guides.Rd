@@ -22,7 +22,7 @@ Guides for each scale can be set in call of \code{a_scale_*} with argument
 
 dat <- data.frame(x = 1:5, y = 1:5, p = 1:5, q = factor(1:5),
  r = factor(1:5))
-p <- a_plot(dat, aes(x, y, colour = p, size = q, shape = r)) + a_geom_point()
+p <- a_plot(dat, a_aes(x, y, colour = p, size = q, shape = r)) + a_geom_point()
 
 # without guide specification
 p
@@ -57,8 +57,8 @@ p + a_theme(legend.a_position = "bottom")
 p + a_theme(legend.a_position = "bottom", legend.box = "horizontal")
 
 # Set order for multiple guides
-a_plot(mpg, aes(displ, cty)) +
-  a_geom_point(aes(size = hwy, colour = cyl, shape = drv)) +
+a_plot(mpg, a_aes(displ, cty)) +
+  a_geom_point(a_aes(size = hwy, colour = cyl, shape = drv)) +
   a_guides(
    colour = a_guide_colourbar(order = 1),
    shape = a_guide_legend(order = 2),

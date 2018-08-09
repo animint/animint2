@@ -20,7 +20,7 @@ a_stat_count <- function(mapping = NULL, data = NULL,
                        width = NULL,
                        na.rm = FALSE,
                        show.legend = NA,
-                       inherit.aes = TRUE) {
+                       inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -28,7 +28,7 @@ a_stat_count <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       width = width,
@@ -44,7 +44,7 @@ a_stat_count <- function(mapping = NULL, data = NULL,
 #' @include stat-.r
 a_StatCount <- a_ggproto("a_StatCount", a_Stat,
   required_aes = "x",
-  default_aes = aes(y = ..count..),
+  default_aes = a_aes(y = ..count..),
 
   setup_params = function(data, params) {
     if (!is.null(data$y)){

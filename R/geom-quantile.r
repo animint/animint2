@@ -14,7 +14,7 @@
 #' @param a_geom,a_stat Use to override the default connection between
 #'   \code{a_geom_quantile} and \code{a_stat_quantile}.
 #' @examples
-#' m <- a_plot(mpg, aes(displ, 1 / hwy)) + a_geom_point()
+#' m <- a_plot(mpg, a_aes(displ, 1 / hwy)) + a_geom_point()
 #' m + a_geom_quantile()
 #' m + a_geom_quantile(quantiles = 0.5)
 #' q10 <- seq(0.05, 0.95, by = 0.05)
@@ -36,7 +36,7 @@ a_geom_quantile <- function(mapping = NULL, data = NULL,
                           linemitre = 1,
                           na.rm = FALSE,
                           show.legend = NA,
-                          inherit.aes = TRUE) {
+                          inherit.a_aes = TRUE) {
 
   a_layer(
     data = data,
@@ -45,7 +45,7 @@ a_geom_quantile <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomQuantile,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       lineend = lineend,
       linejoin = linejoin,
@@ -63,7 +63,7 @@ a_geom_quantile <- function(mapping = NULL, data = NULL,
 #' @include geom-path.r
 a_GeomQuantile <- a_ggproto("a_GeomQuantile", a_GeomPath,
   default_aes = defaults(
-    aes(weight = 1, colour = "#3366FF", size = 0.5),
+    a_aes(weight = 1, colour = "#3366FF", size = 0.5),
     a_GeomPath$default_aes
   )
 )

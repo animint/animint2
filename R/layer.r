@@ -6,8 +6,8 @@
 #'
 #' @export
 #' @inheritParams a_geom_point
-#' @param mapping Set of aesthetic mappings created by \code{\link{aes}} or
-#'   \code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+#' @param mapping Set of aesthetic mappings created by \code{\link{a_aes}} or
+#'   \code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 #'   default), it is combined with the default mapping at the top level of the
 #'   plot. You must supply \code{mapping} if there is no plot mapping.
 #' @param data The data to be displayed in this layer. There are three
@@ -31,7 +31,7 @@
 #' @param show.legend logical. Should this layer be included in the legends?
 #'   \code{NA}, the default, includes if any aesthetics are mapped.
 #'   \code{FALSE} never includes, and \code{TRUE} always includes.
-#' @param inherit.aes If \code{FALSE}, overrides the default aesthetics,
+#' @param inherit.a_aes If \code{FALSE}, overrides the default aesthetics,
 #'   rather than combining with them. This is most useful for helper functions
 #'   that define both data and aesthetics and shouldn't inherit behaviour from
 #'   the default plot specification, e.g. \code{\link{borders}}.
@@ -40,15 +40,15 @@
 #'   layer.
 #' @examples
 #' # geom calls are just a short cut for layer
-#' a_plot(mpg, aes(displ, hwy)) + a_geom_point()
+#' a_plot(mpg, a_aes(displ, hwy)) + a_geom_point()
 #' # shortcut for
-#' a_plot(mpg, aes(displ, hwy)) +
+#' a_plot(mpg, a_aes(displ, hwy)) +
 #'   a_layer(a_geom = "point", a_stat = "identity", a_position = "identity",
 #'     params = list(na.rm = FALSE)
 #'   )
 #'
 #' # use a function as data to plot a subset of global data
-#' a_plot(mpg, aes(displ, hwy)) +
+#' a_plot(mpg, a_aes(displ, hwy)) +
 #'   a_layer(a_geom = "point", a_stat = "identity", a_position = "identity",
 #'     data = head, params = list(na.rm = FALSE)
 #'   )
@@ -56,7 +56,7 @@
 a_layer <- function(a_geom = NULL, a_stat = NULL,
                   data = NULL, mapping = NULL,
                   a_position = NULL, params = list(),
-                  inherit.aes = TRUE, subset = NULL, show.legend = NA) {
+                  inherit.a_aes = TRUE, subset = NULL, show.legend = NA) {
   if (is.null(a_geom))
     stop("Attempted to create layer with no geom.", call. = FALSE)
   if (is.null(a_stat))
@@ -78,7 +78,7 @@ a_layer <- function(a_geom = NULL, a_stat = NULL,
 
   data <- a_fortify(data)
   if (!is.null(mapping) && !inherits(mapping, "uneval")) {
-    stop("Mapping must be created by `aes()` or `aes_()`", call. = FALSE)
+    stop("Mapping must be created by `a_aes()` or `a_aes_()`", call. = FALSE)
   }
 
   if (is.character(a_geom))
@@ -95,11 +95,11 @@ a_layer <- function(a_geom = NULL, a_stat = NULL,
 
   # Split up params between aesthetics, geom, and stat
   params <- rename_aes(params)
-  aes_params  <- params[intersect(names(params), a_geom$aesthetics())]
+  a_aes_params  <- params[intersect(names(params), a_geom$a_aesthetics())]
   a_geom_params <- params[intersect(names(params), a_geom$parameters(TRUE))]
   a_stat_params <- params[intersect(names(params), a_stat$parameters(TRUE))]
 
-  all <- c(a_geom$parameters(TRUE), a_stat$parameters(TRUE), a_geom$aesthetics())
+  all <- c(a_geom$parameters(TRUE), a_stat$parameters(TRUE), a_geom$a_aesthetics())
   extra <- setdiff(names(params), all)
 
   # Handle extra params
@@ -125,10 +125,10 @@ a_layer <- function(a_geom = NULL, a_stat = NULL,
     a_stat_params = a_stat_params,
     data = data,
     mapping = mapping,
-    aes_params = aes_params,
+    a_aes_params = a_aes_params,
     subset = subset,
     a_position = a_position,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     show.legend = show.legend,
     extra_params = extra_params
   )
@@ -140,10 +140,10 @@ a_Layer <- a_ggproto("a_Layer", NULL,
   a_stat = NULL,
   a_stat_params = NULL,
   data = NULL,
-  aes_params = NULL,
+  a_aes_params = NULL,
   mapping = NULL,
   a_position = NULL,
-  inherit.aes = FALSE,
+  inherit.a_aes = FALSE,
   extra_params = NULL,
   print = function(self) {
     if (!is.null(self$mapping)) {
@@ -172,20 +172,20 @@ a_Layer <- a_ggproto("a_Layer", NULL,
 
   compute_aesthetics = function(self, data, plot) {
     # For annotation geoms, it is useful to be able to ignore the default aes
-    if (self$inherit.aes) {
-      aesthetics <- defaults(self$mapping, plot$mapping)
+    if (self$inherit.a_aes) {
+      a_aesthetics <- defaults(self$mapping, plot$mapping)
     } else {
-      aesthetics <- self$mapping
+      a_aesthetics <- self$mapping
     }
 
     # Drop aesthetics that are set or calculated
-    set <- names(aesthetics) %in% names(self$aes_params)
-    calculated <- is_calculated_aes(aesthetics)
-    aesthetics <- aesthetics[!set & !calculated]
+    set <- names(a_aesthetics) %in% names(self$a_aes_params)
+    calculated <- is_calculated_aes(a_aesthetics)
+    a_aesthetics <- a_aesthetics[!set & !calculated]
 
     # Override grouping if set in layer
     if (!is.null(self$a_geom_params$group)) {
-      aesthetics[["group"]] <- self$aes_params$group
+      a_aesthetics[["group"]] <- self$a_aes_params$group
     }
 
     # Old subsetting method
@@ -194,11 +194,11 @@ a_Layer <- a_ggproto("a_Layer", NULL,
       data <- data[rowSums(include, na.rm = TRUE) == ncol(include), ]
     }
 
-    scales_add_defaults(plot$scales, data, aesthetics, plot$plot_env)
+    scales_add_defaults(plot$scales, data, a_aesthetics, plot$plot_env)
 
-    # Evaluate and check aesthetics
-    aesthetics <- compact(aesthetics)
-    evaled <- lapply(aesthetics, eval, envir = data, enclos = plot$plot_env)
+    # Evaluate and check a_aesthetics
+    a_aesthetics <- compact(a_aesthetics)
+    evaled <- lapply(a_aesthetics, eval, envir = data, enclos = plot$plot_env)
 
     n <- nrow(data)
     if (n == 0) {
@@ -236,17 +236,17 @@ a_Layer <- a_ggproto("a_Layer", NULL,
     if (empty(data)) return(data.frame())
 
     # Assemble aesthetics from layer, plot and stat mappings
-    aesthetics <- self$mapping
-    if (self$inherit.aes) {
-      aesthetics <- defaults(aesthetics, plot$mapping)
+    a_aesthetics <- self$mapping
+    if (self$inherit.a_aes) {
+      a_aesthetics <- defaults(a_aesthetics, plot$mapping)
     }
-    aesthetics <- defaults(aesthetics, self$a_stat$default_aes)
-    aesthetics <- compact(aesthetics)
+    a_aesthetics <- defaults(a_aesthetics, self$a_stat$default_aes)
+    a_aesthetics <- compact(a_aesthetics)
 
-    new <- strip_dots(aesthetics[is_calculated_aes(aesthetics)])
+    new <- strip_dots(a_aesthetics[is_calculated_aes(a_aesthetics)])
     if (length(new) == 0) return(data)
 
-    # Add map stat output to aesthetics
+    # Add map stat output to a_aesthetics
     a_stat_data <- plyr::quickdf(lapply(new, eval, data, baseenv()))
     names(a_stat_data) <- names(new)
 
@@ -263,11 +263,11 @@ a_Layer <- a_ggproto("a_Layer", NULL,
 
   compute_geom_1 = function(self, data) {
     if (empty(data)) return(data.frame())
-    data <- self$a_geom$setup_data(data, c(self$a_geom_params, self$aes_params))
+    data <- self$a_geom$setup_data(data, c(self$a_geom_params, self$a_aes_params))
 
     check_required_aesthetics(
       self$a_geom$required_aes,
-      c(names(data), names(self$aes_params)),
+      c(names(data), names(self$a_aes_params)),
       snake_class(self$a_geom)
     )
 
@@ -287,7 +287,7 @@ a_Layer <- a_ggproto("a_Layer", NULL,
     # Combine aesthetics, defaults, & params
     if (empty(data)) return(data)
 
-    self$a_geom$use_defaults(data, self$aes_params)
+    self$a_geom$use_defaults(data, self$a_aes_params)
   },
 
   draw_geom = function(self, data, panel, a_coord) {

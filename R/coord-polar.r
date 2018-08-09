@@ -14,14 +14,14 @@
 #' # grammar.  Use with EXTREME caution.
 #'
 #' #' # A pie chart = stacked bar chart + polar coordinates
-#' pie <- a_plot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
+#' pie <- a_plot(mtcars, a_aes(x = factor(1), fill = factor(cyl))) +
 #'  a_geom_bar(width = 1)
 #' pie + a_coord_polar(theta = "y")
 #'
 #' \donttest{
 #'
 #' # A coxcomb plot = bar chart + polar coordinates
-#' cxc <- a_plot(mtcars, aes(x = factor(cyl))) +
+#' cxc <- a_plot(mtcars, a_aes(x = factor(cyl))) +
 #'   a_geom_bar(width = 1, colour = "black")
 #' cxc + a_coord_polar()
 #' # A new type of plot?
@@ -35,7 +35,7 @@
 #'   variable = c("does not resemble", "resembles"),
 #'   value = c(20, 80)
 #' )
-#' a_plot(df, aes(x = "", y = value, fill = variable)) +
+#' a_plot(df, a_aes(x = "", y = value, fill = variable)) +
 #'   a_geom_bar(width = 1, a_stat = "identity") +
 #'   a_scale_fill_manual(values = c("red", "yellow")) +
 #'   a_coord_polar("y", start = pi / 3) +
@@ -46,7 +46,7 @@
 #' movies$rrating <- cut_interval(movies$rating, length = 1)
 #' movies$budgetq <- cut_number(movies$budget, 4)
 #'
-#' doh <- a_plot(movies, aes(x = rrating, fill = budgetq))
+#' doh <- a_plot(movies, a_aes(x = rrating, fill = budgetq))
 #'
 #' # Wind rose
 #' doh + a_geom_bar(width = 1) + a_coord_polar()

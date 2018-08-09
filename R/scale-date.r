@@ -21,7 +21,7 @@
 #'   date = last_month,
 #'   price = runif(30)
 #' )
-#' base <- a_plot(df, aes(date, price)) +
+#' base <- a_plot(df, a_aes(date, price)) +
 #'   a_geom_line()
 #'
 #' # The date scale will attempt to pick sensible defaults for
@@ -105,7 +105,7 @@ a_scale_y_datetime <- function(name = waiver(),
   )
 }
 
-a_scale_datetime <- function(aesthetics, trans,
+a_scale_datetime <- function(a_aesthetics, trans,
                            breaks = pretty_breaks(), minor_breaks = waiver(),
                            a_labels = waiver(), date_breaks = waiver(),
                            date_labels = waiver(),
@@ -128,7 +128,7 @@ a_scale_datetime <- function(aesthetics, trans,
     a_labels <- date_format(date_labels)
   }
 
-  sc <- continuous_a_scale(aesthetics, name, identity,
+  sc <- continuous_a_scale(a_aesthetics, name, identity,
                          breaks = breaks, minor_breaks = minor_breaks, a_labels = a_labels,
                          a_guide = "none", trans = trans, ...)
 

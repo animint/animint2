@@ -20,21 +20,21 @@ a_position_jitter(width = NULL, height = NULL)
 Jitter points to avoid overplotting.
 }
 \examples{
-a_plot(mtcars, aes(am, vs)) + a_geom_point()
+a_plot(mtcars, a_aes(am, vs)) + a_geom_point()
 
 # Default amount of jittering will generally be too much for
 # small datasets:
-a_plot(mtcars, aes(am, vs)) + a_geom_jitter()
+a_plot(mtcars, a_aes(am, vs)) + a_geom_jitter()
 
 # Two ways to override
-a_plot(mtcars, aes(am, vs)) +
+a_plot(mtcars, a_aes(am, vs)) +
   a_geom_jitter(width = 0.1, height = 0.1)
-a_plot(mtcars, aes(am, vs)) +
+a_plot(mtcars, a_aes(am, vs)) +
   a_geom_jitter(a_position = a_position_jitter(width = 0.1, height = 0.1))
 
 # The default works better for large datasets, where it will
 # take up as much space as a boxplot or a bar
-a_plot(mpg, aes(class, hwy)) +
+a_plot(mpg, a_aes(class, hwy)) +
   a_geom_jitter() +
   a_geom_boxplot()
 }

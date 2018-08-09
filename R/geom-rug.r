@@ -10,7 +10,7 @@
 #'   bottom, and left.
 #' @export
 #' @examples
-#' p <- a_plot(mtcars, aes(wt, mpg))
+#' p <- a_plot(mtcars, a_aes(wt, mpg))
 #' p + a_geom_point()
 #' p + a_geom_point() + a_geom_rug()
 #' p + a_geom_point() + a_geom_rug(sides="b")    # Rug on bottom only
@@ -22,7 +22,7 @@ a_geom_rug <- function(mapping = NULL, data = NULL,
                      sides = "bl",
                      na.rm = FALSE,
                      show.legend = NA,
-                     inherit.aes = TRUE) {
+                     inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -30,7 +30,7 @@ a_geom_rug <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomRug,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       sides = sides,
       na.rm = na.rm,
@@ -89,7 +89,7 @@ a_GeomRug <- a_ggproto("a_GeomRug", a_Geom,
     gTree(children = do.call("gList", rugs))
   },
 
-  default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
+  default_aes = a_aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
 
   draw_key = a_draw_key_path
 )

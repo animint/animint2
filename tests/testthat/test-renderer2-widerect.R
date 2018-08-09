@@ -12,11 +12,11 @@ viz <- list(
   gg=a_plot()+
     a_theme_bw()+
     a_theme_animint(height=200, width=2000)+
-    a_geom_widerect(aes(ymin=min.C, ymax=max.C),
+    a_geom_widerect(a_aes(ymin=min.C, ymax=max.C),
                   color=NA,
                   fill="grey",
                   data=recommendation)+
-    a_geom_line(aes(time, temp.C),
+    a_geom_line(a_aes(time, temp.C),
               data=temp.time)
   )
 
@@ -48,54 +48,54 @@ years$status <- ifelse(years$year %% 2, "odd", "even")
 wb.facets <-
   list(ts=a_plot()+
        xlab("")+
-       a_geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2,
+       a_geom_tallrect(a_aes(xmin=year-1/2, xmax=year+1/2,
                          linetype=status),
                      clickSelects="year",
                      data=TS(years), alpha=1/2)+
        a_theme_bw()+
        a_theme_animint(width=1000, height=800)+
        a_theme(panel.margin=grid::unit(0, "lines"))+
-       a_geom_line(aes(year, life.expectancy, group=country, colour=region,
+       a_geom_line(a_aes(year, life.expectancy, group=country, colour=region,
                      id = country),
                  clickSelects="country",
                  data=TS(not.na), size=4, alpha=3/5)+
-       a_geom_point(aes(year, life.expectancy, color=region, size=population),
+       a_geom_point(a_aes(year, life.expectancy, color=region, size=population),
                   clickSelects="country",
                   showSelected="country",
                   data=TS(not.na))+
 
-       a_geom_path(aes(fertility.rate, year, group=country, colour=region),
+       a_geom_path(a_aes(fertility.rate, year, group=country, colour=region),
                  clickSelects="country",
                  data=TS2(not.na), size=4, alpha=3/5)+
-       a_geom_point(aes(fertility.rate, year, color=region, size=population),
+       a_geom_point(a_aes(fertility.rate, year, color=region, size=population),
                   showSelected="country", clickSelects="country",
                   data=TS2(not.na))+
-       a_geom_widerect(aes(ymin=year-1/2, ymax=year+1/2,
+       a_geom_widerect(a_aes(ymin=year-1/2, ymax=year+1/2,
                          linetype=status,
                          id=paste0("year", year)),
                      clickSelects="year",
                      data=TS2(years), alpha=1/2)+
 
-       a_geom_point(aes(fertility.rate, life.expectancy,
+       a_geom_point(a_aes(fertility.rate, life.expectancy,
                       colour=region, size=population,
                       key=country), # key aesthetic for animated transitions!
                   clickSelects="country",
                   showSelected="year",
                   data=SCATTER(not.na))+
-       a_geom_text(aes(fertility.rate, life.expectancy, a_label=country,
+       a_geom_text(a_aes(fertility.rate, life.expectancy, a_label=country,
                      key=country), #also use key here!
                  showSelected=c("country", "year"),
                  clickSelects="country",
                  data=SCATTER(not.na))+
        a_scale_size_animint(breaks=10^(5:9))+
        a_facet_grid(side ~ top, scales="free")+
-       a_geom_text(aes(5, 85, a_label=paste0("year = ", year)),
+       a_geom_text(a_aes(5, 85, a_label=paste0("year = ", year)),
                  showSelected="year",
                  data=SCATTER(years)),
 
        bar=a_plot()+
        a_theme_animint(height=2400)+
-       a_geom_bar(aes(country, life.expectancy, fill=region,
+       a_geom_bar(a_aes(country, life.expectancy, fill=region,
                     key=country, id=gsub(" ", "_", country)),
                 showSelected="year", clickSelects="country",
                 data=not.na, a_stat="identity", a_position="identity")+

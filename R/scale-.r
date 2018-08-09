@@ -15,7 +15,7 @@ a_Scale <- a_ggproto("a_Scale", NULL,
 
                  call = NULL,
 
-                 aesthetics = aes(),
+                 a_aesthetics = a_aes(),
                  scale_name = NULL,
                  palette = function() {
                    stop("Not implemented", call. = FALSE)
@@ -43,9 +43,9 @@ a_Scale <- a_ggproto("a_Scale", NULL,
                  train_df = function(self, df) {
                    if (empty(df)) return()
 
-                   aesthetics <- intersect(self$aesthetics, names(df))
-                   for (aesthetic in aesthetics) {
-                     self$train(df[[aesthetic]])
+                   a_aesthetics <- intersect(self$a_aesthetics, names(df))
+                   for (a_aesthetic in a_aesthetics) {
+                     self$train(df[[a_aesthetic]])
                    }
                    invisible()
                  },
@@ -68,10 +68,10 @@ a_Scale <- a_ggproto("a_Scale", NULL,
                  transform_df = function(self, df) {
                    if (empty(df)) return()
 
-                   aesthetics <- intersect(self$aesthetics, names(df))
-                   if (length(aesthetics) == 0) return()
+                   a_aesthetics <- intersect(self$a_aesthetics, names(df))
+                   if (length(a_aesthetics) == 0) return()
 
-                   lapply(df[aesthetics], self$transform)
+                   lapply(df[a_aesthetics], self$transform)
                  },
 
                  transform = function(self, x) {
@@ -82,14 +82,14 @@ a_Scale <- a_ggproto("a_Scale", NULL,
                  map_df = function(self, df, i = NULL) {
                    if (empty(df)) return()
 
-                   aesthetics <- intersect(self$aesthetics, names(df))
-                   names(aesthetics) <- aesthetics
-                   if (length(aesthetics) == 0) return()
+                   a_aesthetics <- intersect(self$a_aesthetics, names(df))
+                   names(a_aesthetics) <- a_aesthetics
+                   if (length(a_aesthetics) == 0) return()
 
                    if (is.null(i)) {
-                     lapply(aesthetics, function(j) self$map(df[[j]]))
+                     lapply(a_aesthetics, function(j) self$map(df[[j]]))
                    } else {
-                     lapply(aesthetics, function(j) self$map(df[[j]][i]))
+                     lapply(a_aesthetics, function(j) self$map(df[[j]][i]))
                    }
                  },
 
@@ -233,7 +233,7 @@ a_ScaleContinuous <- a_ggproto("a_ScaleContinuous", a_Scale,
                              breaks <- censor(self$trans$transform(breaks), self$trans$transform(limits),
                                               only.finite = FALSE)
                              if (length(breaks) == 0) {
-                               stop("Zero breaks in scale for ", paste(self$aesthetics, collapse = "/"),
+                               stop("Zero breaks in scale for ", paste(self$a_aesthetics, collapse = "/"),
                                     call. = FALSE)
                              }
                              breaks
@@ -517,7 +517,7 @@ a_ScaleDiscrete <- a_ggproto("a_ScaleDiscrete", a_Scale,
 #'   discrete variables.
 #' @param a_guide Name of a_guide object, or object itself.
 #' @export
-continuous_a_scale <- function(aesthetics, scale_name, palette, name = waiver(),
+continuous_a_scale <- function(a_aesthetics, scale_name, palette, name = waiver(),
                              breaks = waiver(), minor_breaks = waiver(),
                              a_labels = waiver(), limits = NULL,
                              rescaler = rescale, oob = censor,
@@ -526,7 +526,7 @@ continuous_a_scale <- function(aesthetics, scale_name, palette, name = waiver(),
 
   check_breaks_labels(breaks, a_labels)
 
-  if (is.null(breaks) && !is_position_aes(aesthetics) && a_guide != "none") {
+  if (is.null(breaks) && !is_position_aes(a_aesthetics) && a_guide != "none") {
     a_guide <- "none"
   }
 
@@ -538,7 +538,7 @@ continuous_a_scale <- function(aesthetics, scale_name, palette, name = waiver(),
   a_ggproto(NULL, a_ScaleContinuous,
           call = match.call(),
 
-          aesthetics = aesthetics,
+          a_aesthetics = a_aesthetics,
           scale_name = scale_name,
           palette = palette,
 
@@ -562,7 +562,7 @@ continuous_a_scale <- function(aesthetics, scale_name, palette, name = waiver(),
 #' Discrete scale constructor.
 #'
 #' @export
-#' @param aesthetics the names of the aesthetics that this scale works with
+#' @param a_aesthetics the names of the aesthetics that this scale works with
 #' @param scale_name the name of the scale
 #' @param palette a palette function that when called with a single integer
 #'   argument (the number of levels in the scale) returns the values that
@@ -600,20 +600,20 @@ continuous_a_scale <- function(aesthetics, scale_name, palette, name = waiver(),
 #' @param a_guide the name of, or actual function, used to create the
 #'   a_guide. See \code{\link{a_guides}} for more info.
 #' @export
-discrete_a_scale <- function(aesthetics, scale_name, palette, name = waiver(), breaks = waiver(),
+discrete_a_scale <- function(a_aesthetics, scale_name, palette, name = waiver(), breaks = waiver(),
                            a_labels = waiver(), limits = NULL, expand = waiver(), na.value = NA, drop = TRUE,
                            a_guide = "legend") {
 
   check_breaks_labels(breaks, a_labels)
 
-  if (is.null(breaks) && !is_position_aes(aesthetics) && a_guide != "none") {
+  if (is.null(breaks) && !is_position_aes(a_aesthetics) && a_guide != "none") {
     a_guide <- "none"
   }
 
   a_ggproto(NULL, a_ScaleDiscrete,
           call = match.call(),
 
-          aesthetics = aesthetics,
+          a_aesthetics = a_aesthetics,
           scale_name = scale_name,
           palette = palette,
 

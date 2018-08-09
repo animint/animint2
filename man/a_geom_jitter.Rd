@@ -6,11 +6,11 @@
 \usage{
 a_geom_jitter(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "jitter", ..., width = NULL, height = NULL,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  na.rm = FALSE, show.legend = NA, inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -64,7 +64,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -80,20 +80,20 @@ in smaller datasets.
 }
 
 \examples{
-p <- a_plot(mpg, aes(cyl, hwy))
+p <- a_plot(mpg, a_aes(cyl, hwy))
 p + a_geom_point()
 p + a_geom_jitter()
 
 # Add aesthetic mappings
-p + a_geom_jitter(aes(colour = class))
+p + a_geom_jitter(a_aes(colour = class))
 
 # Use smaller width/height to emphasise categories
-a_plot(mpg, aes(cyl, hwy)) + a_geom_jitter()
-a_plot(mpg, aes(cyl, hwy)) + a_geom_jitter(width = 0.25)
+a_plot(mpg, a_aes(cyl, hwy)) + a_geom_jitter()
+a_plot(mpg, a_aes(cyl, hwy)) + a_geom_jitter(width = 0.25)
 
 # Use larger width/height to completely smooth away discreteness
-a_plot(mpg, aes(cty, hwy)) + a_geom_jitter()
-a_plot(mpg, aes(cty, hwy)) + a_geom_jitter(width = 0.5, height = 0.5)
+a_plot(mpg, a_aes(cty, hwy)) + a_geom_jitter()
+a_plot(mpg, a_aes(cty, hwy)) + a_geom_jitter(width = 0.5, height = 0.5)
 }
 \seealso{
 \code{\link{a_geom_point}} for regular, unjittered points,

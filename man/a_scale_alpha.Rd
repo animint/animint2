@@ -24,14 +24,14 @@ breaks, labels and so forth.}
 that is the most common use of alpha, and it saves a bit of typing.
 }
 \examples{
-(p <- a_plot(mtcars, aes(mpg, cyl)) +
-  a_geom_point(aes(alpha = cyl)))
+(p <- a_plot(mtcars, a_aes(mpg, cyl)) +
+  a_geom_point(a_aes(alpha = cyl)))
 p + a_scale_alpha("cylinders")
 p + a_scale_alpha("number\\nof\\ncylinders")
 
 p + a_scale_alpha(range = c(0.4, 0.8))
 
-(p <- a_plot(mtcars, aes(mpg, cyl)) +
-  a_geom_point(aes(alpha = factor(cyl))))
+(p <- a_plot(mtcars, a_aes(mpg, cyl)) +
+  a_geom_point(a_aes(alpha = factor(cyl))))
 p + a_scale_alpha_discrete(range = c(0.4, 0.8))
 }

@@ -10,7 +10,7 @@
 #'   \code{a_geom_bin2d} and \code{a_stat_bin2d}.
 #' @seealso \code{\link{a_stat_binhex}} for hexagonal binning
 #' @examples
-#' d <- a_plot(diamonds, aes(x, y)) + xlim(4, 10) + ylim(4, 10)
+#' d <- a_plot(diamonds, a_aes(x, y)) + xlim(4, 10) + ylim(4, 10)
 #' d + a_geom_bin2d()
 #'
 #' # You can control the size of the bins by specifying the number of
@@ -25,7 +25,7 @@ a_geom_bin2d <- function(mapping = NULL, data = NULL,
                        ...,
                        na.rm = FALSE,
                        show.legend = NA,
-                       inherit.aes = TRUE) {
+                       inherit.a_aes = TRUE) {
 
   a_layer(
     data = data,
@@ -34,7 +34,7 @@ a_geom_bin2d <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomTile,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...

@@ -6,11 +6,11 @@
 \usage{
 a_stat_ellipse(mapping = NULL, data = NULL, a_geom = "path",
   a_position = "identity", ..., type = "t", level = 0.95, segments = 51,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  na.rm = FALSE, show.legend = NA, inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -57,7 +57,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -67,26 +67,26 @@ The method for calculating the ellipses has been modified from
 \code{car::ellipse} (Fox and Weisberg, 2011)
 }
 \examples{
-a_plot(faithful, aes(waiting, eruptions)) +
+a_plot(faithful, a_aes(waiting, eruptions)) +
   a_geom_point() +
   a_stat_ellipse()
 
-a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
+a_plot(faithful, a_aes(waiting, eruptions, color = eruptions > 3)) +
   a_geom_point() +
   a_stat_ellipse()
 
-a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
+a_plot(faithful, a_aes(waiting, eruptions, color = eruptions > 3)) +
   a_geom_point() +
   a_stat_ellipse(type = "norm", linetype = 2) +
   a_stat_ellipse(type = "t")
 
-a_plot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
+a_plot(faithful, a_aes(waiting, eruptions, color = eruptions > 3)) +
   a_geom_point() +
   a_stat_ellipse(type = "norm", linetype = 2) +
   a_stat_ellipse(type = "euclid", level = 3) +
   a_coord_fixed()
 
-a_plot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
+a_plot(faithful, a_aes(waiting, eruptions, fill = eruptions > 3)) +
   a_stat_ellipse(a_geom = "polygon")
 }
 \references{

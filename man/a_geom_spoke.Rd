@@ -7,11 +7,11 @@
 \usage{
 a_geom_spoke(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -47,7 +47,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -65,11 +65,11 @@ df <- expand.grid(x = 1:10, y=1:10)
 df$angle <- runif(100, 0, 2*pi)
 df$speed <- runif(100, 0, sqrt(0.1 * df$x))
 
-a_plot(df, aes(x, y)) +
+a_plot(df, a_aes(x, y)) +
   a_geom_point() +
-  a_geom_spoke(aes(angle = angle), radius = 0.5)
+  a_geom_spoke(a_aes(angle = angle), radius = 0.5)
 
-a_plot(df, aes(x, y)) +
+a_plot(df, a_aes(x, y)) +
   a_geom_point() +
-  a_geom_spoke(aes(angle = angle, radius = speed))
+  a_geom_spoke(a_aes(angle = angle, radius = speed))
 }

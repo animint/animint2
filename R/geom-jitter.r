@@ -16,20 +16,20 @@
 #'     distribution of a variable
 #' @export
 #' @examples
-#' p <- a_plot(mpg, aes(cyl, hwy))
+#' p <- a_plot(mpg, a_aes(cyl, hwy))
 #' p + a_geom_point()
 #' p + a_geom_jitter()
 #'
 #' # Add aesthetic mappings
-#' p + a_geom_jitter(aes(colour = class))
+#' p + a_geom_jitter(a_aes(colour = class))
 #'
 #' # Use smaller width/height to emphasise categories
-#' a_plot(mpg, aes(cyl, hwy)) + a_geom_jitter()
-#' a_plot(mpg, aes(cyl, hwy)) + a_geom_jitter(width = 0.25)
+#' a_plot(mpg, a_aes(cyl, hwy)) + a_geom_jitter()
+#' a_plot(mpg, a_aes(cyl, hwy)) + a_geom_jitter(width = 0.25)
 #'
 #' # Use larger width/height to completely smooth away discreteness
-#' a_plot(mpg, aes(cty, hwy)) + a_geom_jitter()
-#' a_plot(mpg, aes(cty, hwy)) + a_geom_jitter(width = 0.5, height = 0.5)
+#' a_plot(mpg, a_aes(cty, hwy)) + a_geom_jitter()
+#' a_plot(mpg, a_aes(cty, hwy)) + a_geom_jitter(width = 0.5, height = 0.5)
 a_geom_jitter <- function(mapping = NULL, data = NULL,
                         a_stat = "identity", a_position = "jitter",
                         ...,
@@ -37,7 +37,7 @@ a_geom_jitter <- function(mapping = NULL, data = NULL,
                         height = NULL,
                         na.rm = FALSE,
                         show.legend = NA,
-                        inherit.aes = TRUE) {
+                        inherit.a_aes = TRUE) {
   if (!missing(width) || !missing(height)) {
     if (!missing(a_position)) {
       stop("Specify either `a_position` or `width`/`height`", call. = FALSE)
@@ -53,7 +53,7 @@ a_geom_jitter <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomPoint,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...

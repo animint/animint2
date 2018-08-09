@@ -11,19 +11,19 @@
 #' df$angle <- runif(100, 0, 2*pi)
 #' df$speed <- runif(100, 0, sqrt(0.1 * df$x))
 #'
-#' a_plot(df, aes(x, y)) +
+#' a_plot(df, a_aes(x, y)) +
 #'   a_geom_point() +
-#'   a_geom_spoke(aes(angle = angle), radius = 0.5)
+#'   a_geom_spoke(a_aes(angle = angle), radius = 0.5)
 #'
-#' a_plot(df, aes(x, y)) +
+#' a_plot(df, a_aes(x, y)) +
 #'   a_geom_point() +
-#'   a_geom_spoke(aes(angle = angle, radius = speed))
+#'   a_geom_spoke(a_aes(angle = angle, radius = speed))
 a_geom_spoke <- function(mapping = NULL, data = NULL,
                        a_stat = "identity", a_position = "identity",
                        ...,
                        na.rm = FALSE,
                        show.legend = NA,
-                       inherit.aes = TRUE) {
+                       inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -31,7 +31,7 @@ a_geom_spoke <- function(mapping = NULL, data = NULL,
     a_stat = a_stat,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...

@@ -61,55 +61,55 @@
 #' @references Wilkinson, L. (1999) Dot plots. The American Statistician,
 #'    53(3), 276-281.
 #' @examples
-#' a_plot(mtcars, aes(x = mpg)) + a_geom_dotplot()
-#' a_plot(mtcars, aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5)
+#' a_plot(mtcars, a_aes(x = mpg)) + a_geom_dotplot()
+#' a_plot(mtcars, a_aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5)
 #'
 #' # Use fixed-width bins
-#' a_plot(mtcars, aes(x = mpg)) +
+#' a_plot(mtcars, a_aes(x = mpg)) +
 #'   a_geom_dotplot(method="histodot", binwidth = 1.5)
 #'
 #' # Some other stacking methods
-#' a_plot(mtcars, aes(x = mpg)) +
+#' a_plot(mtcars, a_aes(x = mpg)) +
 #'   a_geom_dotplot(binwidth = 1.5, stackdir = "center")
-#' a_plot(mtcars, aes(x = mpg)) +
+#' a_plot(mtcars, a_aes(x = mpg)) +
 #'   a_geom_dotplot(binwidth = 1.5, stackdir = "centerwhole")
 #'
 #' # y axis isn't really meaningful, so hide it
-#' a_plot(mtcars, aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5) +
+#' a_plot(mtcars, a_aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5) +
 #'   a_scale_y_continuous(NULL, breaks = NULL)
 #'
 #' # Overlap dots vertically
-#' a_plot(mtcars, aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5, stackratio = .7)
+#' a_plot(mtcars, a_aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5, stackratio = .7)
 #'
 #' # Expand dot diameter
-#' a_plot(mtcars, aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5, dotsize = 1.25)
+#' a_plot(mtcars, a_aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5, dotsize = 1.25)
 #'
 #' \donttest{
 #' # Examples with stacking along y axis instead of x
-#' a_plot(mtcars, aes(x = 1, y = mpg)) +
+#' a_plot(mtcars, a_aes(x = 1, y = mpg)) +
 #'   a_geom_dotplot(binaxis = "y", stackdir = "center")
 #'
-#' a_plot(mtcars, aes(x = factor(cyl), y = mpg)) +
+#' a_plot(mtcars, a_aes(x = factor(cyl), y = mpg)) +
 #'   a_geom_dotplot(binaxis = "y", stackdir = "center")
 #'
-#' a_plot(mtcars, aes(x = factor(cyl), y = mpg)) +
+#' a_plot(mtcars, a_aes(x = factor(cyl), y = mpg)) +
 #'   a_geom_dotplot(binaxis = "y", stackdir = "centerwhole")
 #'
-#' a_plot(mtcars, aes(x = factor(vs), fill = factor(cyl), y = mpg)) +
+#' a_plot(mtcars, a_aes(x = factor(vs), fill = factor(cyl), y = mpg)) +
 #'   a_geom_dotplot(binaxis = "y", stackdir = "center", a_position = "dodge")
 #'
 #' # binpositions="all" ensures that the bins are aligned between groups
-#' a_plot(mtcars, aes(x = factor(am), y = mpg)) +
+#' a_plot(mtcars, a_aes(x = factor(am), y = mpg)) +
 #'   a_geom_dotplot(binaxis = "y", stackdir = "center", binpositions="all")
 #'
 #' # Stacking multiple groups, with different fill
-#' a_plot(mtcars, aes(x = mpg, fill = factor(cyl))) +
+#' a_plot(mtcars, a_aes(x = mpg, fill = factor(cyl))) +
 #'   a_geom_dotplot(stackgroups = TRUE, binwidth = 1, binpositions = "all")
 #'
-#' a_plot(mtcars, aes(x = mpg, fill = factor(cyl))) +
+#' a_plot(mtcars, a_aes(x = mpg, fill = factor(cyl))) +
 #'   a_geom_dotplot(stackgroups = TRUE, binwidth = 1, method = "histodot")
 #'
-#' a_plot(mtcars, aes(x = 1, y = mpg, fill = factor(cyl))) +
+#' a_plot(mtcars, a_aes(x = 1, y = mpg, fill = factor(cyl))) +
 #'   a_geom_dotplot(binaxis = "y", stackgroups = TRUE, binwidth = 1, method = "histodot")
 #' }
 a_geom_dotplot <- function(mapping = NULL, data = NULL,
@@ -129,7 +129,7 @@ a_geom_dotplot <- function(mapping = NULL, data = NULL,
                          drop = FALSE,
                          na.rm = FALSE,
                          show.legend = NA,
-                         inherit.aes = TRUE) {
+                         inherit.a_aes = TRUE) {
   # If identical(a_position, "stack") or a_position is a_position_stack(), tell them
   # to use stackgroups=TRUE instead. Need to use identical() instead of ==,
   # because == will fail if object is a_position_stack() or a_position_dodge()
@@ -147,7 +147,7 @@ a_geom_dotplot <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomDotplot,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     # Need to make sure that the binaxis goes to both the stat and the geom
     params = list(
       binaxis = binaxis,
@@ -176,7 +176,7 @@ a_GeomDotplot <- a_ggproto("a_GeomDotplot", a_Geom,
   required_aes = c("x", "y"),
   non_missing_aes = c("size", "shape"),
 
-  default_aes = aes(colour = "black", fill = "black", alpha = NA),
+  default_aes = a_aes(colour = "black", fill = "black", alpha = NA),
 
   setup_data = function(data, params) {
     data$width <- data$width %||%

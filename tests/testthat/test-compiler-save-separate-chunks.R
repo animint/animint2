@@ -18,9 +18,9 @@ map_flu <- do.call(rbind, map.by.weekend)
 # visualize CDC FluView data
 # activity level heatmap
 level.heatmap <- a_plot() + 
-  a_geom_tile(aes(x = WEEKEND, y = STATENAME, fill = level),
+  a_geom_tile(a_aes(x = WEEKEND, y = STATENAME, fill = level),
             data = state_flu) + 
-  a_geom_tallrect(aes(xmin = WEEKEND - 3, xmax = WEEKEND + 3), 
+  a_geom_tallrect(a_aes(xmin = WEEKEND - 3, xmax = WEEKEND + 3), 
                 data = state_flu, alpha = .5,
                     clickSelects = "WEEKEND") + 
   a_scale_x_date(expand = c(0, 0)) + 
@@ -51,7 +51,7 @@ p <- a_plot() +
 
 test_that("save separate chunks for a_geom_polygon", {
   state.map <- p + 
-    a_geom_polygon(aes(x = long, y = lat, group = group, fill = level),
+    a_geom_polygon(a_aes(x = long, y = lat, group = group, fill = level),
                  data = map_flu, 
                    showSelected = "WEEKEND",                  
                  colour = "black", size = 1)
@@ -101,7 +101,7 @@ test_that("save separate chunks for a_geom_point without specifying group", {
   # the compiler will not break a geom into chunks if any of the resulting 
   # chunk tsv files is estimated to be less than 4KB.
   state.map <- p + 
-    a_geom_point(aes(x = mean.long, y = mean.lat, fill = level),
+    a_geom_point(a_aes(x = mean.long, y = mean.lat, fill = level),
                data = flu.points, 
                    showSelected = "WEEKEND",
                color = "black",
@@ -132,7 +132,7 @@ test_that("save separate chunks for a_geom_point without specifying group", {
   
   ## force to split into chunks
   state.map <- p + 
-    a_geom_point(aes(x = mean.long, y = mean.lat, fill = level),
+    a_geom_point(a_aes(x = mean.long, y = mean.lat, fill = level),
                data = flu.points, 
                    showSelected = "WEEKEND",                
                color = "black",
@@ -199,14 +199,14 @@ unique.year.vec <- unique(points.not.na$year)
 unique.country.vec <- unique(no.israel$country)
 
 scatter <- a_plot()+
-  a_geom_point(aes(life.expectancy, fertility.rate,
+  a_geom_point(a_aes(life.expectancy, fertility.rate,
                  colour=region, size=population,
                  tooltip=paste(country, "population", population),
                  key=country), # key aesthetic for animated transitions!
              clickSelects="country",
              showSelected="year",
              data=no.israel)+
-  a_geom_text(aes(life.expectancy, fertility.rate, a_label=country,
+  a_geom_text(a_aes(life.expectancy, fertility.rate, a_label=country,
                 key=country), # also use key here!
             data=no.israel,
             showSelected=c("country", "year"),
@@ -217,7 +217,7 @@ scatter <- a_plot()+
 
 ts <- a_plot()+
   make_tallrect(no.israel, "year")+
-  a_geom_line(aes(year, life.expectancy, group=country, colour=region),
+  a_geom_line(a_aes(year, life.expectancy, group=country, colour=region),
             data=no.israel, size=4, alpha=3/5,
                 clickSelects="country")
 
@@ -288,15 +288,15 @@ only.segments <- subset(only.error, samples==samples[1])
 signal.colors <- c(estimate="#0adb0a", latent="#0098ef")
 
 signal <- a_plot()+
-  a_geom_point(aes(position, signal),
+  a_geom_point(a_aes(position, signal),
              data=breakpoints$signals, showSelected="samples")+
-  a_geom_line(aes(position, signal), colour=signal.colors[["latent"]],
+  a_geom_line(a_aes(position, signal), colour=signal.colors[["latent"]],
             data=breakpoints$imprecision)+
-  a_geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
+  a_geom_segment(a_aes(first.base, mean, xend=last.base, yend=mean),
                colour=signal.colors[["estimate"]],
                    showSelected=c("segments", "samples"),
                data=breakpoints$segments)+
-  a_geom_vline(aes(xintercept=base),
+  a_geom_vline(a_aes(xintercept=base),
              colour=signal.colors[["estimate"]],
                  showSelected=c("segments", "samples"),
              linetype="dashed",

@@ -6,7 +6,7 @@ a_geom_pointrange <- function(mapping = NULL, data = NULL,
                             fatten = 4,
                             na.rm = FALSE,
                             show.legend = NA,
-                            inherit.aes = TRUE) {
+                            inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -14,7 +14,7 @@ a_geom_pointrange <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomPointrange,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       fatten = fatten,
       na.rm = na.rm,
@@ -28,7 +28,7 @@ a_geom_pointrange <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomPointrange <- a_ggproto("a_GeomPointrange", a_Geom,
-  default_aes = aes(colour = "black", size = 0.5, linetype = 1, shape = 19,
+  default_aes = a_aes(colour = "black", size = 0.5, linetype = 1, shape = 19,
     fill = NA, alpha = NA, stroke = 1),
 
   draw_key = a_draw_key_pointrange,

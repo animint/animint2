@@ -15,20 +15,20 @@ height.
 }
 \examples{
 # Stacking is the default behaviour for most area plots:
-a_plot(mtcars, aes(factor(cyl), fill = factor(vs))) + a_geom_bar()
+a_plot(mtcars, a_aes(factor(cyl), fill = factor(vs))) + a_geom_bar()
 # Fill makes it easier to compare proportions
-a_plot(mtcars, aes(factor(cyl), fill = factor(vs))) +
+a_plot(mtcars, a_aes(factor(cyl), fill = factor(vs))) +
   a_geom_bar(a_position = "fill")
 
 # To change stacking order, use factor() to change order of levels
 mtcars$vs <- factor(mtcars$vs, levels = c(1,0))
-a_plot(mtcars, aes(factor(cyl), fill = factor(vs))) + a_geom_bar()
+a_plot(mtcars, a_aes(factor(cyl), fill = factor(vs))) + a_geom_bar()
 
-a_plot(diamonds, aes(price, fill = cut)) +
+a_plot(diamonds, a_aes(price, fill = cut)) +
   a_geom_histogram(binwidth = 500)
 # When used with a histogram, a_position_fill creates a conditional density
 # estimate
-a_plot(diamonds, aes(price, fill = cut)) +
+a_plot(diamonds, a_aes(price, fill = cut)) +
   a_geom_histogram(binwidth = 500, a_position = "fill")
 
 # Stacking is also useful for time series
@@ -38,12 +38,12 @@ data.set <- data.frame(
   Value = rpois(16, 10)
 )
 
-a_plot(data.set, aes(Time, Value)) + a_geom_area(aes(fill = Type))
+a_plot(data.set, a_aes(Time, Value)) + a_geom_area(a_aes(fill = Type))
 
 # If you want to stack lines, you need to say so:
-a_plot(data.set, aes(Time, Value)) + a_geom_line(aes(colour = Type))
-a_plot(data.set, aes(Time, Value)) +
-  a_geom_line(a_position = "stack", aes(colour = Type))
+a_plot(data.set, a_aes(Time, Value)) + a_geom_line(a_aes(colour = Type))
+a_plot(data.set, a_aes(Time, Value)) +
+  a_geom_line(a_position = "stack", a_aes(colour = Type))
 
 # But realise that this makes it *much* harder to compare individual
 # trends

@@ -8,7 +8,7 @@ a_stat_bin_hex <- function(mapping = NULL, data = NULL,
                          binwidth = NULL,
                          na.rm = FALSE,
                          show.legend = NA,
-                         inherit.aes = TRUE) {
+                         inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -16,7 +16,7 @@ a_stat_bin_hex <- function(mapping = NULL, data = NULL,
     a_geom = a_geom,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       bins = bins,
       binwidth = binwidth,
@@ -36,7 +36,7 @@ a_stat_binhex <- a_stat_bin_hex
 #' @usage NULL
 #' @export
 a_StatBinhex <- a_ggproto("a_StatBinhex", a_Stat,
-  default_aes = aes(fill = ..value..),
+  default_aes = a_aes(fill = ..value..),
 
   required_aes = c("x", "y"),
 

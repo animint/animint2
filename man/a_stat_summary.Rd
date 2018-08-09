@@ -8,16 +8,16 @@
 a_stat_summary_bin(mapping = NULL, data = NULL, a_geom = "pointrange",
   a_position = "identity", ..., fun.data = NULL, fun.y = NULL,
   fun.ymax = NULL, fun.ymin = NULL, fun.args = list(), na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  show.legend = NA, inherit.a_aes = TRUE)
 
 a_stat_summary(mapping = NULL, data = NULL, a_geom = "pointrange",
   a_position = "identity", ..., fun.data = NULL, fun.y = NULL,
   fun.ymax = NULL, fun.ymin = NULL, fun.args = list(), na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  show.legend = NA, inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -62,7 +62,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -103,25 +103,25 @@ If no aggregation functions are suppled, will default to
 }
 
 \examples{
-d <- a_plot(mtcars, aes(cyl, mpg)) + a_geom_point()
+d <- a_plot(mtcars, a_aes(cyl, mpg)) + a_geom_point()
 
 # You can supply individual functions to summarise the value at
 # each x:
 d + a_stat_summary(fun.y = "median", colour = "red", size = 2, a_geom = "point")
 d + a_stat_summary(fun.y = "mean", colour = "red", size = 2, a_geom = "point")
-d + aes(colour = factor(vs)) + a_stat_summary(fun.y = mean, a_geom="line")
+d + a_aes(colour = factor(vs)) + a_stat_summary(fun.y = mean, a_geom="line")
 
 d + a_stat_summary(fun.y = mean, fun.ymin = min, fun.ymax = max,
   colour = "red")
 
-d <- a_plot(diamonds, aes(cut))
+d <- a_plot(diamonds, a_aes(cut))
 d + a_geom_bar()
-d + a_stat_summary_bin(aes(y = price), fun.y = "mean", a_geom = "bar")
+d + a_stat_summary_bin(a_aes(y = price), fun.y = "mean", a_geom = "bar")
 
 \donttest{
 # Don't use ylim to zoom into a summary plot - this throws the
 # data away
-p <- a_plot(mtcars, aes(cyl, mpg)) +
+p <- a_plot(mtcars, a_aes(cyl, mpg)) +
   a_stat_summary(fun.y = "mean", a_geom = "point")
 p
 p + ylim(15, 30)
@@ -132,19 +132,19 @@ p + a_coord_cartesian(ylim = c(15, 30))
 a_stat_sum_df <- function(fun, a_geom="crossbar", ...) {
   a_stat_summary(fun.data = fun, colour = "red", a_geom = a_geom, width = 0.2, ...)
 }
-d <- a_plot(mtcars, aes(cyl, mpg)) + a_geom_point()
+d <- a_plot(mtcars, a_aes(cyl, mpg)) + a_geom_point()
 # The crossbar a_geom needs grouping to be specified when used with
 # a continuous x axis.
-d + a_stat_sum_df("a_mean_cl_boot", mapping = aes(group = cyl))
-d + a_stat_sum_df("a_mean_sdl", mapping = aes(group = cyl))
-d + a_stat_sum_df("a_mean_sdl", fun.args = list(mult = 1), mapping = aes(group = cyl))
-d + a_stat_sum_df("a_median_hilow", mapping = aes(group = cyl))
+d + a_stat_sum_df("a_mean_cl_boot", mapping = a_aes(group = cyl))
+d + a_stat_sum_df("a_mean_sdl", mapping = a_aes(group = cyl))
+d + a_stat_sum_df("a_mean_sdl", fun.args = list(mult = 1), mapping = a_aes(group = cyl))
+d + a_stat_sum_df("a_median_hilow", mapping = a_aes(group = cyl))
 
 # An example with highly skewed distributions:
 if (require("ggplot2movies")) {
 set.seed(596)
 mov <- movies[sample(nrow(movies), 1000), ]
- m2 <- a_plot(mov, aes(x = factor(round(rating)), y = votes)) + a_geom_point()
+ m2 <- a_plot(mov, a_aes(x = factor(round(rating)), y = votes)) + a_geom_point()
  m2 <- m2 + a_stat_summary(fun.data = "a_mean_cl_boot", a_geom = "crossbar",
                          colour = "red", width = 0.3) + xlab("rating")
 m2

@@ -7,15 +7,15 @@
 \usage{
 a_geom_ribbon(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  inherit.a_aes = TRUE)
 
 a_geom_area(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "stack", na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE, ...)
+  inherit.a_aes = TRUE, ...)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -51,7 +51,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -76,15 +76,15 @@ see the individual pattern as you move up the stack.
 \examples{
 # Generate data
 huron <- data.frame(year = 1875:1972, level = as.vector(LakeHuron))
-h <- a_plot(huron, aes(year))
+h <- a_plot(huron, a_aes(year))
 
-h + a_geom_ribbon(aes(ymin=0, ymax=level))
-h + a_geom_area(aes(y = level))
+h + a_geom_ribbon(a_aes(ymin=0, ymax=level))
+h + a_geom_area(a_aes(y = level))
 
-# Add aesthetic mappings
+# Add a_aesthetic mappings
 h +
-  a_geom_ribbon(aes(ymin = level - 1, ymax = level + 1), fill = "grey70") +
-  a_geom_line(aes(y = level))
+  a_geom_ribbon(a_aes(ymin = level - 1, ymax = level + 1), fill = "grey70") +
+  a_geom_line(a_aes(y = level))
 }
 \seealso{
 \code{\link{a_geom_bar}} for discrete intervals (bars),

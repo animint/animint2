@@ -17,17 +17,17 @@
 #'
 #' # Define the top and bottom of the errorbars
 #'
-#' p <- a_plot(df, aes(resp, trt, colour = group))
+#' p <- a_plot(df, a_aes(resp, trt, colour = group))
 #' p + a_geom_point() +
-#'   a_geom_errorbarh(aes(xmax = resp + se, xmin = resp - se))
+#'   a_geom_errorbarh(a_aes(xmax = resp + se, xmin = resp - se))
 #' p + a_geom_point() +
-#'   a_geom_errorbarh(aes(xmax = resp + se, xmin = resp - se, height = .2))
+#'   a_geom_errorbarh(a_aes(xmax = resp + se, xmin = resp - se, height = .2))
 a_geom_errorbarh <- function(mapping = NULL, data = NULL,
                            a_stat = "identity", a_position = "identity",
                            ...,
                            na.rm = FALSE,
                            show.legend = NA,
-                           inherit.aes = TRUE) {
+                           inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -35,7 +35,7 @@ a_geom_errorbarh <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomErrorbarh,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -49,7 +49,7 @@ a_geom_errorbarh <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomErrorbarh <- a_ggproto("a_GeomErrorbarh", a_Geom,
-  default_aes = aes(colour = "black", size = 0.5, linetype = 1, height = 0.5,
+  default_aes = a_aes(colour = "black", size = 0.5, linetype = 1, height = 0.5,
     alpha = NA),
 
   draw_key = a_draw_key_path,

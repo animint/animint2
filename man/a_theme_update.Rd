@@ -30,7 +30,7 @@ a_theme. \code{a_theme_replace} will completely replace the element, so any
 unspecified values will overwrite the current value in the a_theme with \code{NULL}s.
 }
 \examples{
-p <- a_plot(mtcars, aes(mpg, wt)) +
+p <- a_plot(mtcars, a_aes(mpg, wt)) +
   a_geom_point()
 p
 old <- a_theme_set(a_theme_bw())
@@ -55,8 +55,8 @@ a_theme_set(old)
 a_theme_get()
 
 
-a_plot(mtcars, aes(mpg, wt)) +
-  a_geom_point(aes(color = mpg)) +
+a_plot(mtcars, a_aes(mpg, wt)) +
+  a_geom_point(a_aes(color = mpg)) +
   a_theme(legend.a_position = c(0.95, 0.95),
         legend.justification = c(1, 1))
 last_plot() +

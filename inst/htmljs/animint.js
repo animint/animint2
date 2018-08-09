@@ -181,9 +181,9 @@ var animint = function (to_select, json_file) {
     // Determine what style to use to show the selection for this
     // geom. This is a hack and should be removed when we implement
     // the selected.color, selected.size, etc aesthetics.
-    if(g_info.aes.hasOwnProperty("fill") &&
+    if(g_info.a_aes.hasOwnProperty("fill") &&
        g_info.a_geom == "rect" &&
-       g_info.aes.hasOwnProperty("clickSelects")){
+       g_info.a_aes.hasOwnProperty("clickSelects")){
       g_info.select_style = "stroke";
     }else{
       g_info.select_style = "opacity";
@@ -965,10 +965,10 @@ var animint = function (to_select, json_file) {
     var p_name = g_names[g_names.length - 1];
     var scales = Plots[p_name].scales[PANEL];
     var selected_arrays = [ [] ]; //double array necessary.
-    g_info.subset_order.forEach(function (aes_name) {
+    g_info.subset_order.forEach(function (a_aes_name) {
       var selected, values;
       var new_arrays = [];
-      if(0 < aes_name.indexOf(".variable")){ 
+      if(0 < a_aes_name.indexOf(".variable")){ 
 	selected_arrays.forEach(function(old_array){
 	  var some_data = chunk;
 	  old_array.forEach(function(value){
@@ -985,11 +985,11 @@ var animint = function (to_select, json_file) {
 	    new_arrays.push(new_array);
 	  })
 	})
-      }else{//not .variable aes:
-	if(aes_name == "PANEL"){
+      }else{//not .variable a_aes:
+	if(a_aes_name == "PANEL"){
 	  selected = PANEL;
 	}else{
-          var s_name = g_info.aes[aes_name];
+          var s_name = g_info.a_aes[a_aes_name];
           selected = Selectors[s_name].selected;
 	}
 	if(isArray(selected)){ 
@@ -1040,7 +1040,7 @@ var animint = function (to_select, json_file) {
         data = data.concat(some_data);
       }
     });
-    var aes = g_info.aes;
+    var a_aes = g_info.a_aes;
     var toXY = function (xy, a) {
       return function (d) {
         return scales[xy](d[a]);
@@ -1049,7 +1049,7 @@ var animint = function (to_select, json_file) {
     var layer_g_element = svg.select("g." + g_info.classed);
     var panel_g_element = layer_g_element.select("g.PANEL" + PANEL);
     var elements = panel_g_element.selectAll(".a_geom");
-    // TODO: standardize this code across aes/styles.
+    // TODO: standardize this code across a_aes/styles.
     var base_opacity = 1;
     if (g_info.params.alpha) {
       base_opacity = g_info.params.alpha;
@@ -1057,7 +1057,7 @@ var animint = function (to_select, json_file) {
     //alert(g_info.classed+" "+base_opacity);
     var get_alpha = function (d) {
       var a;
-      if (aes.hasOwnProperty("alpha") && d.hasOwnProperty("alpha")) {
+      if (a_aes.hasOwnProperty("alpha") && d.hasOwnProperty("alpha")) {
         a = d["alpha"];
       } else {
         a = base_opacity;
@@ -1072,7 +1072,7 @@ var animint = function (to_select, json_file) {
       size = g_info.params.size;
     }
     var get_size = function (d) {
-      if (aes.hasOwnProperty("size") && d.hasOwnProperty("size")) {
+      if (a_aes.hasOwnProperty("size") && d.hasOwnProperty("size")) {
         return d["size"];
       }
       return size;
@@ -1084,7 +1084,7 @@ var animint = function (to_select, json_file) {
       stroke_width = g_info.params.stroke;
     }
     var get_stroke_width = function (d) {
-      if (aes.hasOwnProperty("stroke") && d.hasOwnProperty("stroke")) {
+      if (a_aes.hasOwnProperty("stroke") && d.hasOwnProperty("stroke")) {
         return d["stroke"];
       }
       return stroke_width;
@@ -1097,7 +1097,7 @@ var animint = function (to_select, json_file) {
 
     var get_dasharray = function (d) {
       var lt = linetype;
-      if (aes.hasOwnProperty("linetype") && d.hasOwnProperty("linetype")) {
+      if (a_aes.hasOwnProperty("linetype") && d.hasOwnProperty("linetype")) {
         lt = d["linetype"];
       }
       return linetypesize2dasharray(lt, get_size(d));
@@ -1125,13 +1125,13 @@ var animint = function (to_select, json_file) {
       fill = g_info.params.colour;
     }
 
-    // For aes(hjust) the compiler should make an "anchor" column.
+    // For a_aes(hjust) the compiler should make an "anchor" column.
     var text_anchor = "middle";
     if(g_info.params.hasOwnProperty("anchor")){
       text_anchor = g_info.params["anchor"];
     }
     var get_text_anchor;
-    if(g_info.aes.hasOwnProperty("hjust")) {
+    if(g_info.a_aes.hasOwnProperty("hjust")) {
       get_text_anchor = function(d){
 	return d["anchor"];
       }
@@ -1146,7 +1146,7 @@ var animint = function (to_select, json_file) {
     var id_fun = function(d){
       return d.id;
     };
-    if(g_info.aes.hasOwnProperty("key")){
+    if(g_info.a_aes.hasOwnProperty("key")){
       key_fun = function(d){
         return d.key;
       };
@@ -1160,14 +1160,14 @@ var animint = function (to_select, json_file) {
       // just group ids, which is the kv variable in the code below
 
       // // case of only 1 line and no groups.
-      // if(!aes.hasOwnProperty("group")){
+      // if(!a_aes.hasOwnProperty("group")){
       //     kv = [{"key":0,"value":0}];
       //     data = {0:data};
       // }else{
       //     // we need to use a path for each group.
       //     var kv = d3.entries(d3.keys(data));
       //     kv = kv.map(function(d){
-      // 	d[aes.group] = d.value;
+      // 	d[a_aes.group] = d.value;
       // 	return d;
       //     });
       // }
@@ -1175,7 +1175,7 @@ var animint = function (to_select, json_file) {
       // For an example consider breakpointError$error which is
       // defined using this R code
 
-      // geom_line(aes(segments, error, group=bases.per.probe,
+      // geom_line(a_aes(segments, error, group=bases.per.probe,
       //    clickSelects=bases.per.probe), data=only.error, lwd=4)
 
       // Inside update_geom the variables take the following values
@@ -1222,7 +1222,7 @@ var animint = function (to_select, json_file) {
       }
       var kv_array = d3.entries(d3.keys(keyed_data));
       var kv = kv_array.map(function (d) {
-        //d[aes.group] = d.value;
+        //d[a_aes.group] = d.value;
 
         // Need to store the clickSelects value that will
         // be passed to the selector when we click on this
@@ -1554,16 +1554,16 @@ var animint = function (to_select, json_file) {
     }
     elements.exit().remove();
     var enter = elements.enter();
-    if(g_info.aes.hasOwnProperty("href")){
+    if(g_info.a_aes.hasOwnProperty("href")){
       enter = enter.append("svg:a")
         .append("svg:"+eAppend);
     }else{
       enter = enter.append(eAppend)
 	      .attr("class", "a_geom");
     }
-    var has_clickSelects = g_info.aes.hasOwnProperty("clickSelects");
+    var has_clickSelects = g_info.a_aes.hasOwnProperty("clickSelects");
     var has_clickSelects_variable =
-      g_info.aes.hasOwnProperty("clickSelects.variable");
+      g_info.a_aes.hasOwnProperty("clickSelects.variable");
     if (has_clickSelects || has_clickSelects_variable) {
       var selected_funs = {
 	"opacity":{
@@ -1571,7 +1571,7 @@ var animint = function (to_select, json_file) {
 	    var alpha_on = get_alpha(d);
 	    var alpha_off = get_alpha(d) - 0.5;
 	    if(has_clickSelects){
-              return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects,
+              return ifSelectedElse(d.clickSelects, g_info.a_aes.clickSelects,
 				    alpha_on, alpha_off);
 	    }else if(has_clickSelects_variable){
 	      return ifSelectedElse(d["clickSelects.value"],
@@ -1588,7 +1588,7 @@ var animint = function (to_select, json_file) {
 	    var stroke_on = "black";
 	    var stroke_off = "transparent";
 	    if(has_clickSelects){
-	      return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects,
+	      return ifSelectedElse(d.clickSelects, g_info.a_aes.clickSelects,
 				    stroke_on, stroke_off);
 	    }else{
 	      return ifSelectedElse(d["clickSelects.value"],
@@ -1613,13 +1613,13 @@ var animint = function (to_select, json_file) {
       // basically use this in two ways:
 
       // 1. By specifying
-      // geom_vline(aes(clickSelects=variable),alpha=0.5), which
+      // geom_vline(a_aes(clickSelects=variable),alpha=0.5), which
       // implies a normal alpha transparency of 0.5. So all the vlines
       // are hidden (normal alpha 0.5 - 0.5 = 0), except the current
       // selection and the current element under the mouse pointer are
       // drawn a bit faded with alpha=0.5.
 
-      // 2. By specifying e.g. geom_point(aes(clickSelects=variable)),
+      // 2. By specifying e.g. geom_point(a_aes(clickSelects=variable)),
       // that implies a normal alpha=1. Thus the current selection and
       // the current element under the mouse pointer are fully drawn
       // with alpha=1 and the others are shown but a bit faded with
@@ -1628,7 +1628,7 @@ var animint = function (to_select, json_file) {
       // Edit 19 March 2014: Now there are two styles to show the
       // selection, depending on the geom. For most geoms it is as
       // described above. But for geoms like rects with
-      // aes(fill=numericVariable), using opacity to indicate the
+      // a_aes(fill=numericVariable), using opacity to indicate the
       // selection results in a misleading decoding of the fill
       // variable. So in this case we set stroke to "black" for the
       // current selection.
@@ -1655,7 +1655,7 @@ var animint = function (to_select, json_file) {
 	  // The main idea of how clickSelects works: when we click
 	  // something, we call update_selector with the clicked
 	  // value.
-            var s_name = g_info.aes.clickSelects;
+            var s_name = g_info.a_aes.clickSelects;
             update_selector(s_name, d.clickSelects);
 	});
       }else{
@@ -1668,7 +1668,7 @@ var animint = function (to_select, json_file) {
     }else{//has neither clickSelects nor clickSelects.variable.
       elements.style("opacity", get_alpha);
     }
-    var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
+    var has_tooltip = g_info.a_aes.hasOwnProperty("tooltip");
     if(has_clickSelects || has_tooltip || has_clickSelects_variable){
       var text_fun, get_one;
       if(g_info.data_is_object){
@@ -1687,7 +1687,7 @@ var animint = function (to_select, json_file) {
 	};
       }else if(has_clickSelects){
 	text_fun = function(d){
-          var v_name = g_info.aes.clickSelects;
+          var v_name = g_info.a_aes.clickSelects;
           return v_name + " " + d.clickSelects;
 	};
       }else{ //clickSelects_variable
@@ -1712,10 +1712,10 @@ var animint = function (to_select, json_file) {
       var milliseconds = Selectors[selector_name].duration;
       elements = elements.transition().duration(milliseconds);
     }
-    if(g_info.aes.hasOwnProperty("id")){
+    if(g_info.a_aes.hasOwnProperty("id")){
       elements.attr("id", id_fun);
     }
-    if(g_info.aes.hasOwnProperty("href")){
+    if(g_info.a_aes.hasOwnProperty("href")){
       // elements are <a>, children are e.g. <circle>
       var linked_geoms = elements.select(eAppend);
       // d3.select(linked_geoms).data(data, key_fun); // WHY did we need this?
@@ -2075,7 +2075,7 @@ var animint = function (to_select, json_file) {
       // scale lines so they are visible in the legend. (does not
       // affect plot scaling)
       if(l_info.geoms.indexOf("polygon")>-1){
-        // aesthetics that would draw a rect
+        // a_aesthetics that would draw a rect
         legend_svgs.append("rect")
           .attr("x", 2)
 	        .attr("y", 2)
@@ -2090,7 +2090,7 @@ var animint = function (to_select, json_file) {
           .style("opacity", function(d){return d["polygonalpha"]||1;});
       }
       if(l_info.geoms.indexOf("text")>-1){
-        // aesthetics that would draw a rect
+        // a_aesthetics that would draw a rect
         legend_svgs.append("text")
 	        .attr("x", 10)
 	        .attr("y", 14)
@@ -2100,7 +2100,7 @@ var animint = function (to_select, json_file) {
 	        .text("a");
       }
       if(l_info.geoms.indexOf("path")>-1){
-        // aesthetics that would draw a line
+        // a_aesthetics that would draw a line
         legend_svgs.append("line")
           .attr("x1", 1).attr("x2", 19).attr("y1", 7).attr("y2", 7)
           .style("stroke-width", function(d){
@@ -2113,7 +2113,7 @@ var animint = function (to_select, json_file) {
           .style("opacity", function(d){return d["pathalpha"]||1;});
       }
       if(l_info.geoms.indexOf("point")>-1){
-        // aesthetics that would draw a point
+        // a_aesthetics that would draw a point
         legend_svgs.append("circle")
           .attr("cx", 10)
           .attr("cy", 7)

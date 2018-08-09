@@ -10,17 +10,17 @@
 #' wht <- glht(amod, linfct = mcp(tension = "Tukey"))
 #'
 #' a_fortify(wht)
-#' a_plot(wht, aes(lhs, estimate)) + a_geom_point()
+#' a_plot(wht, a_aes(lhs, estimate)) + a_geom_point()
 #'
 #' CI <- confint(wht)
 #' a_fortify(CI)
-#' a_plot(CI, aes(lhs, estimate, ymin = lwr, ymax = upr)) +
+#' a_plot(CI, a_aes(lhs, estimate, ymin = lwr, ymax = upr)) +
 #'    a_geom_pointrange()
 #'
 #' a_fortify(summary(wht))
-#' a_plot(mapping = aes(lhs, estimate)) +
-#'    a_geom_linerange(aes(ymin = lwr, ymax = upr), data = CI) +
-#'    a_geom_point(aes(size = p), data = summary(wht)) +
+#' a_plot(mapping = a_aes(lhs, estimate)) +
+#'    a_geom_linerange(a_aes(ymin = lwr, ymax = upr), data = CI) +
+#'    a_geom_point(a_aes(size = p), data = summary(wht)) +
 #'    a_scale_size(trans = "reverse")
 #'
 #' cld <- cld(wht)

@@ -13,7 +13,7 @@
 #' @export
 #' @examples
 #' dsub <- diamonds[ sample(nrow(diamonds), 1000), ]
-#' a_plot(dsub, aes(x = cut, y = carat, fill = clarity)) +
+#' a_plot(dsub, a_aes(x = cut, y = carat, fill = clarity)) +
 #'   a_geom_boxplot(outlier.size = 0) +
 #'   a_geom_point(pch = 21, a_position = a_position_jitterdodge())
 a_position_jitterdodge <- function(jitter.width = NULL, jitter.height = 0,

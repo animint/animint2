@@ -10,23 +10,23 @@
 \usage{
 a_geom_crossbar(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "identity", ..., fatten = 2.5, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  show.legend = NA, inherit.a_aes = TRUE)
 
 a_geom_errorbar(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  inherit.a_aes = TRUE)
 
 a_geom_linerange(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "identity", ..., na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  inherit.a_aes = TRUE)
 
 a_geom_pointrange(mapping = NULL, data = NULL, a_stat = "identity",
   a_position = "identity", ..., fatten = 4, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  show.legend = NA, inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -66,7 +66,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -90,30 +90,30 @@ df <- data.frame(
   lower = c(0.8, 4.6, 2.4, 3.6)
 )
 
-p <- a_plot(df, aes(trt, resp, colour = group))
-p + a_geom_linerange(aes(ymin = lower, ymax = upper))
-p + a_geom_pointrange(aes(ymin = lower, ymax = upper))
-p + a_geom_crossbar(aes(ymin = lower, ymax = upper), width = 0.2)
-p + a_geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2)
+p <- a_plot(df, a_aes(trt, resp, colour = group))
+p + a_geom_linerange(a_aes(ymin = lower, ymax = upper))
+p + a_geom_pointrange(a_aes(ymin = lower, ymax = upper))
+p + a_geom_crossbar(a_aes(ymin = lower, ymax = upper), width = 0.2)
+p + a_geom_errorbar(a_aes(ymin = lower, ymax = upper), width = 0.2)
 
 # Draw lines connecting group means
 p +
-  a_geom_line(aes(group = group)) +
-  a_geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2)
+  a_geom_line(a_aes(group = group)) +
+  a_geom_errorbar(a_aes(ymin = lower, ymax = upper), width = 0.2)
 
 # If you want to dodge bars and errorbars, you need to manually
 # specify the dodge width
-p <- a_plot(df, aes(trt, resp, fill = group))
+p <- a_plot(df, a_aes(trt, resp, fill = group))
 p +
  a_geom_bar(a_position = "dodge", a_stat = "identity") +
- a_geom_errorbar(aes(ymin = lower, ymax = upper), a_position = "dodge", width = 0.25)
+ a_geom_errorbar(a_aes(ymin = lower, ymax = upper), a_position = "dodge", width = 0.25)
 
 # Because the bars and errorbars have different widths
 # we need to specify how wide the objects we are dodging are
 dodge <- a_position_dodge(width=0.9)
 p +
   a_geom_bar(a_position = dodge, a_stat = "identity") +
-  a_geom_errorbar(aes(ymin = lower, ymax = upper), a_position = dodge, width = 0.25)
+  a_geom_errorbar(a_aes(ymin = lower, ymax = upper), a_position = dodge, width = 0.25)
 }
 \seealso{
 \code{\link{a_stat_summary}} for examples of these guys in use,

@@ -25,20 +25,20 @@ years <- transform(years, title = factor(sprintf("Population in %d", year)),
 ## this should be similar to the example on polychartjs.com
 popPlots <-
   list(bars = a_plot() +
-         a_geom_bar(aes(x = subcontinent, y = population),
+         a_geom_bar(a_aes(x = subcontinent, y = population),
                   showSelected = "year",
                   data = worldPop, a_stat = "identity", a_position = "identity") +
-         a_geom_text(aes(x = subcontinent, y = population,
+         a_geom_text(a_aes(x = subcontinent, y = population,
                        a_label = title),
                    showSelected = "year",
                    data = years) + a_coord_flip(),
        lines = a_plot() +
-         a_geom_vline(aes(xintercept = year),
+         a_geom_vline(a_aes(xintercept = year),
                     clickSelects = "year",
                     data = years, alpha = 1/2, size = 12)+
-         a_geom_line(aes(year, population, group = subcontinent),
+         a_geom_line(a_aes(year, population, group = subcontinent),
                    data = worldPop, alpha = 3/4, size = 4)+
-         a_geom_point(aes(year, population, fill = type, colour = type),
+         a_geom_point(a_aes(year, population, fill = type, colour = type),
                     data = worldPop))
 popPlots$bars
 popPlots$lines
@@ -58,7 +58,7 @@ popPlots$bars + a_facet_wrap("year") +a_theme_bw() +
 ```{r "ggbarplots2"}
 ## simpler example using make_tallrect.
 popPlot <- a_plot() + make_tallrect(worldPop, "year") +
-  a_geom_line(aes(year, population, group = subcontinent),
+  a_geom_line(a_aes(year, population, group = subcontinent),
             data = worldPop, size = 4)
 popPlot
 ```
@@ -71,17 +71,17 @@ structure(list(lines = popPlot, bars = popPlots$bars), class = "animint")
 ## Show the currently selected continent on both plots.
 popPlots2 <-
   list(bars = a_plot() +
-         a_geom_bar(aes(x = subcontinent, y = population),
+         a_geom_bar(a_aes(x = subcontinent, y = population),
                       showSelected = "year", clickSelects = "subcontinent",
                   data = worldPop, a_stat = "identity", a_position = "identity") +
-         a_geom_text(aes(x = subcontinent, y = population,
+         a_geom_text(a_aes(x = subcontinent, y = population,
                        a_label = title), showSelected = "year",
                    data = years) + a_coord_flip(),
        lines = a_plot() +
          make_tallrect(worldPop, "year") +
-         a_geom_point(aes(year, population, colour = type),
+         a_geom_point(a_aes(year, population, colour = type),
                     data = worldPop, size = 4, alpha = 1/4) +
-         a_geom_line(aes(year, population, group = subcontinent),
+         a_geom_line(a_aes(year, population, group = subcontinent),
                    clickSelects = "subcontinent",
                    data = worldPop, size = 4, alpha = 3/4))
 popPlots2
@@ -101,24 +101,24 @@ popCumSum$subcontinent.lab.height <- 1-as.numeric(popCumSum$subcontinent.names)/
 
 popPlots3 <-
   list(bars = a_plot() +
-         a_geom_bar(aes(x = subcontinent, y = population),
+         a_geom_bar(a_aes(x = subcontinent, y = population),
                       showSelected = "year", clickSelects = "subcontinent",
                   data = worldPop, a_stat = "identity", a_position = "identity") +
-         a_geom_text(aes(x = subcontinent, y = population,
+         a_geom_text(a_aes(x = subcontinent, y = population,
                        a_label = title), showSelected = "year",
                    data = years) +
          a_coord_flip(),
        lines = a_plot() +
          make_tallrect(worldPop, "year")+
-         a_geom_line(aes(year, population, group = subcontinent),
+         a_geom_line(a_aes(year, population, group = subcontinent),
                    clickSelects = "subcontinent",
                    data = worldPop, size = 4, alpha = 3/4) +
-         a_geom_point(aes(year, population, colour = type), 
+         a_geom_point(a_aes(year, population, colour = type), 
                     clickSelects = "subcontinent",
                     data = worldPop, size = 4, alpha = .6) +
          a_scale_colour_manual(values = c("black", "red")),
        stack = a_plot() + 
-         a_geom_rect(aes(xmin = 0, xmax = 0.4, ymin = cumPop.lower, ymax = cumPop,
+         a_geom_rect(a_aes(xmin = 0, xmax = 0.4, ymin = cumPop.lower, ymax = cumPop,
                        fill = factor(subcontinent)), 
                    showSelected = "year", clickSelects = "subcontinent",
                    data = popCumSum, colour = "#000000") +

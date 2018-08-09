@@ -5,7 +5,7 @@ acontext("many facets")
 n.circles <- 40
 df <- data.frame(x=0, y=0, a_facet=1:n.circles)
 gg <- a_plot()+
-  a_geom_point(aes(x, y), data=df)+
+  a_geom_point(a_aes(x, y), data=df)+
   a_theme_bw()+
   a_theme(panel.margin=grid::unit(0, "cm"))
 viz <-

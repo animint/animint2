@@ -9,8 +9,8 @@
 #'   given \code{na.value}.
 #' @examples
 #' \donttest{
-#' p <- a_plot(mtcars, aes(mpg, wt)) +
-#'   a_geom_point(aes(colour = factor(cyl)))
+#' p <- a_plot(mtcars, a_aes(mpg, wt)) +
+#'   a_geom_point(a_aes(colour = factor(cyl)))
 #'
 #' p + a_scale_colour_manual(values = c("red","blue", "green"))
 #' p + a_scale_colour_manual(
@@ -74,7 +74,7 @@ a_scale_alpha_manual <- function(..., values) {
 }
 
 
-manual_a_scale <- function(aesthetic, values, ...) {
+manual_a_scale <- function(a_aesthetic, values, ...) {
   pal <- function(n) {
     if (n > length(values)) {
       stop("Insufficient values in manual scale. ", n, " needed but only ",
@@ -82,5 +82,5 @@ manual_a_scale <- function(aesthetic, values, ...) {
     }
     values
   }
-  discrete_a_scale(aesthetic, "manual", pal, ...)
+  discrete_a_scale(a_aesthetic, "manual", pal, ...)
 }

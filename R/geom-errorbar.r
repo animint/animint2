@@ -5,7 +5,7 @@ a_geom_errorbar <- function(mapping = NULL, data = NULL,
                           ...,
                           na.rm = FALSE,
                           show.legend = NA,
-                          inherit.aes = TRUE) {
+                          inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -13,7 +13,7 @@ a_geom_errorbar <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomErrorbar,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -26,7 +26,7 @@ a_geom_errorbar <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomErrorbar <- a_ggproto("a_GeomErrorbar", a_Geom,
-  default_aes = aes(colour = "black", size = 0.5, linetype = 1, width = 0.5,
+  default_aes = a_aes(colour = "black", size = 0.5, linetype = 1, width = 0.5,
     alpha = NA),
 
   draw_key = a_draw_key_path,

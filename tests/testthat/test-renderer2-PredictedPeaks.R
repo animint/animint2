@@ -20,13 +20,13 @@ viz <- list(
     a_theme_animint(width=1500, height=100)+
     a_theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
           axis.ticks.x=a_element_blank(), axis.title.x=a_element_blank())+
-    ## a_geom_text(aes(relative.middle, type.fac, a_label=samples.up,
+    ## a_geom_text(a_aes(relative.middle, type.fac, a_label=samples.up,
     ##               clickSelects=peak.name,
     ##               showSelected2=chrom,
     ##               showSelected=dotID),
     ##           size=11,
     ##           data=PredictedPeaks$chromCounts)+
-    a_geom_text(aes(relative.middle, type.fac, a_label=samples.up,
+    a_geom_text(a_aes(relative.middle, type.fac, a_label=samples.up,
                   href=paste0(
                     "http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=",
                     chrom, ":", zoomStart, "-", zoomEnd)),
@@ -39,28 +39,28 @@ viz <- list(
     a_theme_animint(width=1500, height=330)+
     a_scale_y_discrete("chromosome", drop=FALSE)+ 
     a_scale_x_continuous("position on chromosome (mega bases)")+
-    a_geom_text(aes(0, chrom, a_label=paste0(peaks, "_")),
+    a_geom_text(a_aes(0, chrom, a_label=paste0(peaks, "_")),
               clickSelects="chrom",
               showSelected="dotID",
               hjust=1,
               size=11,
               data=PredictedPeaks$countsByChrom)+
-    a_geom_segment(aes(chromStart/1e6, chrom,
+    a_geom_segment(a_aes(chromStart/1e6, chrom,
                      xend=chromEnd/1e6, yend=chrom),
                  clickSelects="chrom",
                  size=9,
                  data=PredictedPeaks$chrom.ranges)+
-    a_geom_point(aes(chromEnd/1e6, chrom,
+    a_geom_point(a_aes(chromEnd/1e6, chrom,
                    id=chrom),
                clickSelects="chrom",
                size=5,
                data=PredictedPeaks$chrom.ranges)+
-    a_geom_text(aes(max(PredictedPeaks$chrom.ranges$chromEnd)/2e6, chrom,
+    a_geom_text(a_aes(max(PredictedPeaks$chrom.ranges$chromEnd)/2e6, chrom,
                   a_label=totals),
               showSelected="dotID",
               data=PredictedPeaks$scatter.text),
   scatter=a_plot()+
-    a_geom_hline(aes(yintercept=N),
+    a_geom_hline(a_aes(yintercept=N),
                color="grey",
                data=PredictedPeaks$counts.Input)+
     a_scale_x_continuous("number of samples with a peak")+
@@ -69,10 +69,10 @@ viz <- list(
     a_scale_fill_gradient(low="grey", high="red")+
     a_theme_animint(width=1500)+
     a_theme(panel.margin=grid::unit(0, "cm"))+
-    a_geom_vline(aes(xintercept=N),
+    a_geom_vline(a_aes(xintercept=N),
                color="grey",
                data=PredictedPeaks$counts.not.Input)+
-    a_geom_rect(aes(xmin=up-size, xmax=up+size,
+    a_geom_rect(a_aes(xmin=up-size, xmax=up+size,
                   ymin=Input-size, ymax=Input+size,
                   tooltip=totals,
                   fill=log10(count)),
@@ -156,7 +156,7 @@ viz <- list(
     a_theme_animint(width=1500, height=100)+
     a_theme(axis.line.x=a_element_blank(), axis.text.x=a_element_blank(), 
           axis.ticks.x=a_element_blank(), axis.title.x=a_element_blank())+
-    a_geom_text(aes(relative.middle, type.fac, a_label=samples.up),
+    a_geom_text(a_aes(relative.middle, type.fac, a_label=samples.up),
               showSelected=c("dotID", "chrom"),
               clickSelects="peak.name",
               size=11,
@@ -167,36 +167,36 @@ viz <- list(
     a_theme_animint(width=1500, height=330)+
     a_scale_y_discrete("chromosome", drop=FALSE)+ 
     a_scale_x_continuous("position on chromosome (mega bases)")+
-    a_geom_text(aes(0, chrom, a_label=paste0(peaks, "_")),
+    a_geom_text(a_aes(0, chrom, a_label=paste0(peaks, "_")),
               clickSelects="chrom",
               showSelected="dotID",
               hjust=1,
               size=11,
               data=PredictedPeaks$countsByChrom)+
-    a_geom_segment(aes(chromStart/1e6, chrom,
+    a_geom_segment(a_aes(chromStart/1e6, chrom,
                      xend=chromEnd/1e6, yend=chrom),
                  clickSelects="chrom",
                  size=9,
                  data=PredictedPeaks$chrom.ranges)+
-    a_geom_point(aes(chromEnd/1e6, chrom),
+    a_geom_point(a_aes(chromEnd/1e6, chrom),
                id="chrom",
                clickSelects="chrom",
                size=5,
                data=PredictedPeaks$chrom.ranges)+
-    a_geom_text(aes(max(PredictedPeaks$chrom.ranges$chromEnd)/2e6, chrom,
+    a_geom_text(a_aes(max(PredictedPeaks$chrom.ranges$chromEnd)/2e6, chrom,
                   a_label=totals),
               showSelected="dotID",
              data=PredictedPeaks$scatter.text),
   scatter=a_plot()+
-    a_geom_vline(aes(xintercept=N, color=thresh.type),
+    a_geom_vline(a_aes(xintercept=N, color=thresh.type),
                data=PredictedPeaks$counts.not.Input)+
     a_scale_color_manual("threshold", values=c(
                                       "max samples"="grey",
                                       specific="grey30"))+
-    a_geom_hline(aes(yintercept=max.input.samples+0.5, color=thresh.type),
+    a_geom_hline(a_aes(yintercept=max.input.samples+0.5, color=thresh.type),
                show.legend=TRUE,
                data=thresh.df)+
-    a_geom_hline(aes(yintercept=N, color=thresh.type),
+    a_geom_hline(a_aes(yintercept=N, color=thresh.type),
                show.legend=TRUE,
                data=PredictedPeaks$counts.Input)+
     a_scale_x_continuous("number of samples with a peak")+
@@ -205,7 +205,7 @@ viz <- list(
     a_scale_fill_gradient(low="grey", high="red")+
     a_theme_animint(width=1500)+
     a_theme(panel.margin=grid::unit(0, "cm"))+
-    a_geom_rect(aes(xmin=up-size, xmax=up+size,
+    a_geom_rect(a_aes(xmin=up-size, xmax=up+size,
                   ymin=Input-size, ymax=Input+size,
                   tooltip=totals,
                   fill=log10(count)),
@@ -213,7 +213,7 @@ viz <- list(
               showSelected="chrom",
               color="transparent",
               data=PredictedPeaks$bg.rect)+
-   a_geom_point(aes(up, Input),
+   a_geom_point(a_aes(up, Input),
               showSelected="peak.name",
               data=hover.dots),
   selectize=list(dotID=TRUE, chrom=FALSE),

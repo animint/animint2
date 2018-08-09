@@ -12,17 +12,17 @@ NULL
 #' usamap <- map_data("state")
 #'
 #' seal.sub <- subset(seals, long > -130 & lat < 45 & lat > 40)
-#' a_plot(seal.sub, aes(x = long, y = lat)) +
+#' a_plot(seal.sub, a_aes(x = long, y = lat)) +
 #'   a_annotation_map(usamap, fill = "NA", colour = "grey50") +
-#'   a_geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat))
+#'   a_geom_segment(a_aes(xend = long + delta_long, yend = lat + delta_lat))
 #'
 #' seal2 <- transform(seal.sub,
 #'   latr = cut(lat, 2),
 #'   longr = cut(long, 2))
 #'
-#' a_plot(seal2,  aes(x = long, y = lat)) +
+#' a_plot(seal2,  a_aes(x = long, y = lat)) +
 #'   a_annotation_map(usamap, fill = "NA", colour = "grey50") +
-#'   a_geom_segment(aes(xend = long + delta_long, yend = lat + delta_lat)) +
+#'   a_geom_segment(a_aes(xend = long + delta_long, yend = lat + delta_lat)) +
 #'   a_facet_grid(latr ~ longr, scales = "free", space = "free")
 #' }
 a_annotation_map <- function(map, ...) {
@@ -38,7 +38,7 @@ a_annotation_map <- function(map, ...) {
     a_stat = a_StatIdentity,
     a_geom = a_GeomAnnotationMap,
     a_position = a_PositionIdentity,
-    inherit.aes = FALSE,
+    inherit.a_aes = FALSE,
     params = list(map = map, ...)
   )
 }

@@ -12,16 +12,16 @@
 #' @inheritParams a_geom_point
 #' @export
 #' @examples
-#' a_plot(mpg, aes(cty, hwy)) +
+#' a_plot(mpg, a_aes(cty, hwy)) +
 #'  a_geom_point()
 #'
-#' a_plot(mpg, aes(cty, hwy)) +
+#' a_plot(mpg, a_aes(cty, hwy)) +
 #'  a_geom_count()
 #'
 #' # Best used in conjunction with a_scale_size_area which ensures that
 #' # counts of zero would be given size 0. Doesn't make much different
 #' # here because the smallest count is already close to 0.
-#' a_plot(mpg, aes(cty, hwy)) +
+#' a_plot(mpg, a_aes(cty, hwy)) +
 #'  a_geom_count()
 #'  a_scale_size_area()
 #'
@@ -29,24 +29,24 @@
 #' # By default, all categorical variables in the plot form the groups.
 #' # Specifying a_geom_count without a group identifier leads to a plot which is
 #' # not useful:
-#' d <- a_plot(diamonds, aes(x = cut, y = clarity))
-#' d + a_geom_count(aes(size = ..prop..))
+#' d <- a_plot(diamonds, a_aes(x = cut, y = clarity))
+#' d + a_geom_count(a_aes(size = ..prop..))
 #' # To correct this problem and achieve a more desirable plot, we need
 #' # to specify which group the proportion is to be calculated over.
-#' d + a_geom_count(aes(size = ..prop.., group = 1)) +
+#' d + a_geom_count(a_aes(size = ..prop.., group = 1)) +
 #'   a_scale_size_area(max_size = 10)
 #'
 #' # Or group by x/y variables to have rows/columns sum to 1.
-#' d + a_geom_count(aes(size = ..prop.., group = cut)) +
+#' d + a_geom_count(a_aes(size = ..prop.., group = cut)) +
 #'   a_scale_size_area(max_size = 10)
-#' d + a_geom_count(aes(size = ..prop.., group = clarity)) +
+#' d + a_geom_count(a_aes(size = ..prop.., group = clarity)) +
 #'   a_scale_size_area(max_size = 10)
 a_geom_count <- function(mapping = NULL, data = NULL,
                        a_stat = "sum", a_position = "identity",
                        ...,
                        na.rm = FALSE,
                        show.legend = NA,
-                       inherit.aes = TRUE) {
+                       inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -54,7 +54,7 @@ a_geom_count <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomPoint,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...

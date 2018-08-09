@@ -36,13 +36,13 @@ NULL
 #'   2.2, 2.1, 1.7, 2.1, 3.2, 2.8, 2.1, 2.2, 3.3, 3.2)
 #' )
 #'
-#' a_plot(values) + a_geom_map(aes(map_id = id), map = positions) +
+#' a_plot(values) + a_geom_map(a_aes(map_id = id), map = positions) +
 #'   expand_limits(positions)
-#' a_plot(values, aes(fill = value)) +
-#'   a_geom_map(aes(map_id = id), map = positions) +
+#' a_plot(values, a_aes(fill = value)) +
+#'   a_geom_map(a_aes(map_id = id), map = positions) +
 #'   expand_limits(positions)
-#' a_plot(values, aes(fill = value)) +
-#'   a_geom_map(aes(map_id = id), map = positions) +
+#' a_plot(values, a_aes(fill = value)) +
+#'   a_geom_map(a_aes(map_id = id), map = positions) +
 #'   expand_limits(positions) + ylim(0, 3)
 #'
 #' # Better example
@@ -50,13 +50,13 @@ NULL
 #' crimesm <- reshape2::melt(crimes, id = 1)
 #' if (require(maps)) {
 #'   states_map <- map_data("state")
-#'   a_plot(crimes, aes(map_id = state)) +
-#'     a_geom_map(aes(fill = Murder), map = states_map) +
+#'   a_plot(crimes, a_aes(map_id = state)) +
+#'     a_geom_map(a_aes(fill = Murder), map = states_map) +
 #'     expand_limits(x = states_map$long, y = states_map$lat)
 #'
 #'   last_plot() + a_coord_map()
-#'   a_plot(crimesm, aes(map_id = state)) +
-#'     a_geom_map(aes(fill = value), map = states_map) +
+#'   a_plot(crimesm, a_aes(map_id = state)) +
+#'     a_geom_map(a_aes(fill = value), map = states_map) +
 #'     expand_limits(x = states_map$long, y = states_map$lat) +
 #'     a_facet_wrap( ~ variable)
 #' }
@@ -66,7 +66,7 @@ a_geom_map <- function(mapping = NULL, data = NULL,
                      map,
                      na.rm = FALSE,
                      show.legend = NA,
-                     inherit.aes = TRUE) {
+                     inherit.a_aes = TRUE) {
   # Get map input into correct form
   stopifnot(is.data.frame(map))
   if (!is.null(map$lat)) map$y <- map$lat
@@ -81,7 +81,7 @@ a_geom_map <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomMap,
     a_position = a_PositionIdentity,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       map = map,
       na.rm = na.rm,

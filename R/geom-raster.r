@@ -16,7 +16,7 @@ a_geom_raster <- function(mapping = NULL, data = NULL,
                         interpolate = FALSE,
                         na.rm = FALSE,
                         show.legend = NA,
-                        inherit.aes = TRUE)
+                        inherit.a_aes = TRUE)
 {
   stopifnot(is.numeric(hjust), length(hjust) == 1)
   stopifnot(is.numeric(vjust), length(vjust) == 1)
@@ -28,7 +28,7 @@ a_geom_raster <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomRaster,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       hjust = hjust,
       vjust = vjust,
@@ -44,7 +44,7 @@ a_geom_raster <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomRaster <- a_ggproto("a_GeomRaster", a_Geom,
-  default_aes = aes(fill = "grey20", alpha = NA),
+  default_aes = a_aes(fill = "grey20", alpha = NA),
   non_missing_aes = "fill",
   required_aes = c("x", "y"),
 

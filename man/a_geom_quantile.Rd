@@ -7,16 +7,16 @@
 \usage{
 a_geom_quantile(mapping = NULL, data = NULL, a_stat = "quantile",
   a_position = "identity", ..., lineend = "butt", linejoin = "round",
-  linemitre = 1, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  linemitre = 1, na.rm = FALSE, show.legend = NA, inherit.a_aes = TRUE)
 
 a_stat_quantile(mapping = NULL, data = NULL, a_geom = "quantile",
   a_position = "identity", ..., quantiles = c(0.25, 0.5, 0.75),
   formula = NULL, method = "rq", method.args = list(), na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  show.legend = NA, inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -55,7 +55,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -89,7 +89,7 @@ This can be used as a continuous analogue of a a_geom_boxplot.
 }
 
 \examples{
-m <- a_plot(mpg, aes(displ, 1 / hwy)) + a_geom_point()
+m <- a_plot(mpg, a_aes(displ, 1 / hwy)) + a_geom_point()
 m + a_geom_quantile()
 m + a_geom_quantile(quantiles = 0.5)
 q10 <- seq(0.05, 0.95, by = 0.05)

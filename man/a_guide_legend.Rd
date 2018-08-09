@@ -9,7 +9,7 @@ a_guide_legend(title = waiver(), title.a_position = NULL,
   a_label = TRUE, a_label.a_position = NULL, a_label.a_theme = NULL,
   a_label.hjust = NULL, a_label.vjust = NULL, keywidth = NULL,
   keyheight = NULL, direction = NULL, default.unit = "line",
-  override.aes = list(), nrow = NULL, ncol = NULL, byrow = FALSE,
+  override.a_aes = list(), nrow = NULL, ncol = NULL, byrow = FALSE,
   reverse = FALSE, order = 0, ...)
 }
 \arguments{
@@ -63,7 +63,7 @@ One of "horizontal" or "vertical."}
 \item{default.unit}{A character string indicating \code{\link[grid]{unit}}
 for \code{keywidth} and \code{keyheight}.}
 
-\item{override.aes}{A list specifying aesthetic parameters of legend key.
+\item{override.a_aes}{A list specifying aesthetic parameters of legend key.
 See details and examples.}
 
 \item{nrow}{The desired number of rows of legends.}
@@ -100,8 +100,8 @@ see \code{\link{a_guides}}.
 \donttest{
 df <- reshape2::melt(outer(1:4, 1:4), varnames = c("X1", "X2"))
 
-p1 <- a_plot(df, aes(X1, X2)) + a_geom_tile(aes(fill = value))
-p2 <- p1 + a_geom_point(aes(size = value))
+p1 <- a_plot(df, a_aes(X1, X2)) + a_geom_tile(a_aes(fill = value))
+p2 <- p1 + a_geom_point(a_aes(size = value))
 
 # Basic form
 p1 + a_scale_fill_continuous(a_guide = "legend")
@@ -150,17 +150,17 @@ p1 + a_scale_fill_continuous(breaks = c(5, 10, 15),
 # Set aesthetic of legend key
 
 # very low alpha value make it difficult to see legend key
-p3 <- a_plot(diamonds, aes(carat, price)) +
-  a_geom_point(aes(colour = color), alpha = 1/100)
+p3 <- a_plot(diamonds, a_aes(carat, price)) +
+  a_geom_point(a_aes(colour = color), alpha = 1/100)
 p3
 
-# override.aes overwrites the alpha
-p3 + a_guides(colour = a_guide_legend(override.aes = list(alpha = 1)))
+# override.a_aes overwrites the alpha
+p3 + a_guides(colour = a_guide_legend(override.a_aes = list(alpha = 1)))
 
 # multiple row/col legends
 df <- data.frame(x = 1:20, y = 1:20, color = letters[1:20])
-p <- a_plot(df, aes(x, y)) +
-  a_geom_point(aes(colour = color))
+p <- a_plot(df, a_aes(x, y)) +
+  a_geom_point(a_aes(colour = color))
 p + a_guides(col = a_guide_legend(nrow = 8))
 p + a_guides(col = a_guide_legend(ncol = 8))
 p + a_guides(col = a_guide_legend(nrow = 8, byrow = TRUE))

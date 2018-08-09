@@ -122,7 +122,7 @@ p_df4 <- p_df3 %>%
 
 # total number of attacks
 p_time <- a_plot() + 
-  a_geom_line(aes(date, total_attacks), data = p_df2) + 
+  a_geom_line(a_aes(date, total_attacks), data = p_df2) + 
   make_tallrect(p_df2, "date") + 
   labs(y = "Total Attacks", x = "Date", 
        title = "Pirate Attacks from 1995 to 2013") + 
@@ -130,9 +130,9 @@ p_time <- a_plot() +
 
 # points on world map
 p_points <- a_plot() + 
-  a_geom_polygon(aes(long, lat, group = group), size = I(1), 
+  a_geom_polygon(a_aes(long, lat, group = group), size = I(1), 
                data = countries, fill = "lightgrey", colour = "darkgreen") +
-  a_geom_point(aes(coords.x1, coords.x2),
+  a_geom_point(a_aes(coords.x1, coords.x2),
              showSelected = "date", 
              size = 3, alpha = I(.5), data = p_df) + 
   make_text(p_df, 0, 90, "date", "Pirate Attacks in %d") + 
@@ -144,12 +144,12 @@ p_points <- a_plot() +
 
 # tiles on world map
 p_tiles <- a_plot() + 
-  a_geom_polygon(aes(long, lat, group = group), size = I(1), 
+  a_geom_polygon(a_aes(long, lat, group = group), size = I(1), 
                data = countries, fill = "lightgrey", colour = "darkgreen") +
-  a_geom_tile(aes(xmid, ymid, fill = log(attacks)), 
+  a_geom_tile(a_aes(xmid, ymid, fill = log(attacks)), 
             showSelected = "date", clickSelects = "id", 
             data = p_df3, colour = I("red")) + 
-  a_geom_text(aes(xmid, ymid, a_label = id),
+  a_geom_text(a_aes(xmid, ymid, a_label = id),
             showSelected = "id", 
             data = p_df3) + 
   make_text(p_df, 0, 90, "date", "Pirate Attacks from 1995 to %d") + 
@@ -165,10 +165,10 @@ p_tiles <- a_plot() +
 # tiles over time
 p_time2 <- a_plot() + 
   make_tallrect(p_df2, "date") + 
-  a_geom_line(aes(date, log(attacks), group = id), 
+  a_geom_line(a_aes(date, log(attacks), group = id), 
             clickSelects = "id", showSelected = "id", 
             data = p_df3) + 
-  a_geom_text(aes(text_loc_x, text_loc_y, a_label = id), 
+  a_geom_text(a_aes(text_loc_x, text_loc_y, a_label = id), 
             clickSelects = "id", showSelected = "id", 
             colour = "red", data = p_df4) + 
   a_scale_y_continuous(a_labels = c(1, 7, 55, 400), name = "Total Attacks") + 

@@ -11,11 +11,11 @@
 #' @export
 #' @examples
 #' #' # Basic plot
-#' v <- a_plot(faithfuld, aes(waiting, eruptions, z = density))
+#' v <- a_plot(faithfuld, a_aes(waiting, eruptions, z = density))
 #' v + a_geom_contour()
 #'
 #' # Or compute from raw data
-#' a_plot(faithful, aes(waiting, eruptions)) +
+#' a_plot(faithful, a_aes(waiting, eruptions)) +
 #'   a_geom_density_2d()
 #'
 #' \donttest{
@@ -29,9 +29,9 @@
 #' v + a_geom_contour(binwidth = 0.001)
 #'
 #' # Other parameters
-#' v + a_geom_contour(aes(colour = ..level..))
+#' v + a_geom_contour(a_aes(colour = ..level..))
 #' v + a_geom_contour(colour = "red")
-#' v + a_geom_raster(aes(fill = density)) +
+#' v + a_geom_raster(a_aes(fill = density)) +
 #'   a_geom_contour(colour = "white")
 #' }
 a_geom_contour <- function(mapping = NULL, data = NULL,
@@ -42,7 +42,7 @@ a_geom_contour <- function(mapping = NULL, data = NULL,
                          linemitre = 1,
                          na.rm = FALSE,
                          show.legend = NA,
-                         inherit.aes = TRUE) {
+                         inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -50,7 +50,7 @@ a_geom_contour <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomContour,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       lineend = lineend,
       linejoin = linejoin,
@@ -67,6 +67,6 @@ a_geom_contour <- function(mapping = NULL, data = NULL,
 #' @export
 #' @include geom-path.r
 a_GeomContour <- a_ggproto("a_GeomContour", a_GeomPath,
-  default_aes = aes(weight = 1, colour = "#3366FF", size = 0.5, linetype = 1,
+  default_aes = a_aes(weight = 1, colour = "#3366FF", size = 0.5, linetype = 1,
     alpha = NA)
 )

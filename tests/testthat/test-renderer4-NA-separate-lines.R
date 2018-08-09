@@ -6,16 +6,16 @@ data(txhousing)
 
 ## san.marcos <- subset(txhousing, city=="San Marcos")
 ## a_plot()+
-##   a_geom_line(aes(x = date, y = median),
+##   a_geom_line(a_aes(x = date, y = median),
 ##             data=san.marcos)
 
 viz <- list(
   ggdata=a_plot(txhousing)+
-    a_geom_line(aes(x = date, y = median, group = city), 
+    a_geom_line(a_aes(x = date, y = median, group = city), 
               clickSelects="city",
               alpha = 0.6),
   selected=a_plot()+
-    a_geom_line(aes(x = date, y = median, group = city),
+    a_geom_line(a_aes(x = date, y = median, group = city),
               showSelected="city",
               data=txhousing),
   first=list(city="San Marcos")

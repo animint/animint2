@@ -231,12 +231,12 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
   ranges <- built$panel$ranges
   
   ## needed for when group, etc. is an expression:
-  g$aes <- sapply(l$mapping, function(k) as.character(as.expression(k)))
+  g$a_aes <- sapply(l$mapping, function(k) as.character(as.expression(k)))
 
   ## use un-named parameters so that they will not be exported
   ## to JSON as a named object, since that causes problems with
   ## e.g. colour.
-  ## 'colour', 'size' etc. have been moved to aes_params
+  ## 'colour', 'size' etc. have been moved to a_aes_params
   g$params <- getLayerParams(l)
   
   ## Make a list of variables to use for subsetting. subset_order is the
@@ -267,42 +267,42 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
   ## plot.Selectors.
 
   ## Separate .variable/.value selectors
-  s.aes <- selectSSandCS(g$aes)
-  meta$selector.aes[[g$classed]] <- s.aes
+  s.a_aes <- selectSSandCS(g$a_aes)
+  meta$selector.a_aes[[g$classed]] <- s.a_aes
 
-  ## Do not copy group unless it is specified in aes, and do not copy
+  ## Do not copy group unless it is specified in a_aes, and do not copy
   ## showSelected variables which are specified multiple times.
-  do.not.copy <- colsNotToCopy(g, s.aes)
+  do.not.copy <- colsNotToCopy(g, s.a_aes)
   copy.cols <- ! names(d) %in% do.not.copy
   
   g.data <- d[copy.cols]
   
-  is.ss <- names(g$aes) %in% s.aes$showSelected$one
-  show.vars <- g$aes[is.ss]
+  is.ss <- names(g$a_aes) %in% s.a_aes$showSelected$one
+  show.vars <- g$a_aes[is.ss]
   pre.subset.order <- as.list(names(show.vars))
 
-  is.cs <- names(g$aes) %in% s.aes$clickSelects$one
-  update.vars <- g$aes[is.ss | is.cs]
+  is.cs <- names(g$a_aes) %in% s.a_aes$clickSelects$one
+  update.vars <- g$a_aes[is.ss | is.cs]
 
   update.var.names <- if(0 < length(update.vars)){
     data.frame(variable=names(update.vars), value=NA)
   }
   
-  interactive.aes <- with(s.aes, {
+  interactive.a_aes <- with(s.a_aes, {
     rbind(clickSelects$several, showSelected$several,
           update.var.names)
   })
 
   ## Construct the selector.
-  for(row.i in seq_along(interactive.aes$variable)){
-    aes.row <- interactive.aes[row.i, ]
-    is.variable.value <- !is.na(aes.row$value)
+  for(row.i in seq_along(interactive.a_aes$variable)){
+    a_aes.row <- interactive.a_aes[row.i, ]
+    is.variable.value <- !is.na(a_aes.row$value)
     selector.df <- if(is.variable.value){
-      selector.vec <- g.data[[paste(aes.row$variable)]]
-      data.frame(value.col=aes.row$value,
+      selector.vec <- g.data[[paste(a_aes.row$variable)]]
+      data.frame(value.col=a_aes.row$value,
                  selector.name=unique(paste(selector.vec)))
     }else{
-      value.col <- paste(aes.row$variable)
+      value.col <- paste(a_aes.row$variable)
       data.frame(value.col,
                  selector.name=update.vars[[value.col]])
     }
@@ -310,7 +310,7 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
       sel.row <- selector.df[sel.i,]
       value.col <- paste(sel.row$value.col)
       selector.name <- paste(sel.row$selector.name)
-      ## If this selector was defined by .variable .value aes, then we
+      ## If this selector was defined by .variable .value a_aes, then we
       ## will not generate selectize widgets.
       meta$selectors[[selector.name]]$is.variable.value <- is.variable.value
       ## If this selector has no defined type yet, we define it once
@@ -327,7 +327,7 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
       ## If this selector does not have any clickSelects then we show
       ## the selectize widgets by default.
       for(look.for in c("showSelected", "clickSelects")){
-        if(grepl(look.for, aes.row$variable)){
+        if(grepl(look.for, a_aes.row$variable)){
           meta$selectors[[selector.name]][[look.for]] <- TRUE
         }
       }
@@ -341,7 +341,7 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
     }
   }
 
-  is.show <- grepl("showSelected", names(g$aes))
+  is.show <- grepl("showSelected", names(g$a_aes))
   has.show <- any(is.show)
   ## Error if non-identity stat is used with showSelected, since
   ## typically the stats will delete the showSelected column from the
@@ -350,9 +350,9 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
   ## clickSelects/showSelected values may show up in the same bin.
   a_stat.type <- class(l$a_stat)[[1]]
   checkForNonIdentityAndSS(a_stat.type, has.show, is.show, l,
-                           g$classed, names(g.data), names(g$aes))
+                           g$classed, names(g.data), names(g$a_aes))
   
-  ## Warn if non-identity position is used with animint aes.
+  ## Warn if non-identity position is used with animint a_aes.
   a_position.type <- class(l$a_position)[[1]]
   if(has.show && a_position.type != "a_PositionIdentity"){
     print(l)
@@ -387,9 +387,9 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
         g.data$xend[i] <- (g.data$yend[i] - g.data$intercept[i]) / g.data$slope[i]
       }
     }
-    ## ggplot2 defaults to adding a group aes for ablines!
+    ## ggplot2 defaults to adding a group a_aes for ablines!
     ## Remove it since it is meaningless.
-    g$aes <- g$aes[names(g$aes)!="group"]
+    g$a_aes <- g$a_aes[names(g$a_aes)!="group"]
     g.data <- g.data[! names(g.data) %in% c("slope", "intercept")]
     g$a_geom <- "segment"
   } else if(g$a_geom=="point"){
@@ -422,7 +422,7 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
     } 
     if("vjust" %in% names(g$params)) {
       vjustWarning(g$params$vjust)
-    } else if ("vjust" %in% names(g$aes)) {
+    } else if ("vjust" %in% names(g$a_aes)) {
       vjustWarning(g.data$vjust)
     } 
   } else if(g$a_geom=="ribbon"){
@@ -472,7 +472,7 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
     g.data <- plyr::ddply(g.data, "group", function(df) stairstep(df))
     g$a_geom <- "path"
   } else if(g$a_geom=="contour" | g$a_geom=="density2d"){
-    g$aes[["group"]] <- "piece"
+    g$a_aes[["group"]] <- "piece"
     g$a_geom <- "path"
   } else if(g$a_geom=="freqpoly"){
     g$a_geom <- "line"
@@ -485,7 +485,7 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
     ## clickSelects/showSelected values in the same hexbin, then
     ## clicking/hiding hexbins doesn't really make sense. Need to stop
     ## with an error if showSelected/clickSelects is used with hex.
-    g$aes[["group"]] <- "group"
+    g$a_aes[["group"]] <- "group"
     dx <- resolution(g.data$x, FALSE)
     dy <- resolution(g.data$y, FALSE) / sqrt(3) / 2 * 1.15
     hex <- as.data.frame(hexbin::hexcoords(dx, dy))[,1:2]
@@ -574,10 +574,10 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
   time.col <- NULL
   if(is.list(AnimationInfo$time)){ # if this is an animation,
     g.time.list <- list()
-    for(c.or.s in names(s.aes)){
-      cs.info <- s.aes[[c.or.s]]
+    for(c.or.s in names(s.a_aes)){
+      cs.info <- s.a_aes[[c.or.s]]
       for(a in cs.info$one){
-        if(g$aes[[a]] == AnimationInfo$time$var){
+        if(g$a_aes[[a]] == AnimationInfo$time$var){
           g.time.list[[a]] <- g.data[[a]]
           time.col <- a
         }
@@ -611,14 +611,14 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
       stop("chunk_vars must be a character vector; ",
            "use chunk_vars=character() to specify 1 chunk")
     }
-    not.subset <- !designer.chunks %in% g$aes[subset.vec]
+    not.subset <- !designer.chunks %in% g$a_aes[subset.vec]
     if(any(not.subset)){
       stop("invalid chunk_vars ",
            paste(designer.chunks[not.subset], collapse=" "),
            "; possible showSelected variables: ",
-           paste(g$aes[subset.vec], collapse=" "))
+           paste(g$a_aes[subset.vec], collapse=" "))
     }
-    is.chunk <- g$aes[subset.vec] %in% designer.chunks
+    is.chunk <- g$a_aes[subset.vec] %in% designer.chunks
     chunk.cols <- subset.vec[is.chunk]
     nest.cols <- subset.vec[!is.chunk]
   }else{ #infer a default, either 0 or 1 chunk vars:
@@ -628,7 +628,7 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
       chunk.cols <- NULL
     }else{
       selector.types <- sapply(meta$selectors, "[[", "type")
-      selector.names <- g$aes[subset.vec]
+      selector.names <- g$a_aes[subset.vec]
       subset.types <- selector.types[selector.names]
       can.chunk <- subset.types != "multiple"
       names(can.chunk) <- subset.vec
@@ -710,7 +710,7 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
     
   ## Also add pointers to these chunks from the related selectors.
   if(length(chunk.cols)){
-    selector.names <- as.character(g$aes[chunk.cols])
+    selector.names <- as.character(g$a_aes[chunk.cols])
     chunk.name <- paste(selector.names, collapse="_")
     g$chunk_order <- as.list(selector.names)
     for(selector.name in selector.names){
@@ -732,24 +732,24 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
     g$nest_order <- c(g$nest_order, "PANEL")
   }
 
-  ## nest_order should contain both .variable .value aesthetics, but
+  ## nest_order should contain both .variable .value a_aesthetics, but
   ## subset_order should contain only .variable.
-  if((nrow(s.aes$showSelected$several) > 0)){
-    g$nest_order <- with(s.aes$showSelected$several, {
+  if((nrow(s.a_aes$showSelected$several) > 0)){
+    g$nest_order <- with(s.a_aes$showSelected$several, {
       c(g$nest_order, paste(variable), paste(value))
     })
     g$subset_order <-
-      c(g$subset_order, paste(s.aes$showSelected$several$variable))
+      c(g$subset_order, paste(s.a_aes$showSelected$several$variable))
   }
     
   ## group should be the last thing in nest_order, if it is present.
   data.object.geoms <- c("line", "path", "ribbon", "polygon")
-  if("group" %in% names(g$aes) && g$a_geom %in% data.object.geoms){
+  if("group" %in% names(g$a_aes) && g$a_geom %in% data.object.geoms){
     g$nest_order <- c(g$nest_order, "group")
   }
 
   ## Some geoms should be split into separate groups if there are NAs.
-  if(any(is.na(g.data)) && "group" %in% names(g$aes)){
+  if(any(is.na(g.data)) && "group" %in% names(g$a_aes)){
     sp.cols <- unlist(c(chunk.cols, g$nest_order))
     order.args <- list()
     for(sp.col in sp.cols){
@@ -771,7 +771,7 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
 
   ## Determine if there are any "common" data that can be saved
   ## separately to reduce disk usage.
-  data.or.null <- getCommonChunk(g.data, chunk.cols, g$aes)
+  data.or.null <- getCommonChunk(g.data, chunk.cols, g$a_aes)
   g.data.varied <- if(is.null(data.or.null)){
     split.x(na.omit(g.data), chunk.cols)
   }else{
@@ -795,10 +795,10 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
 #' Several new aesthetics control interactivity.
 #' The most important two are
 #' \itemize{
-#' \item \code{aes(showSelected=variable)} means that
+#' \item \code{a_aes(showSelected=variable)} means that
 #'   only the subset of the data that corresponds to
 #'   the selected value of variable will be shown.
-#' \item \code{aes(clickSelects=variable)} means that clicking
+#' \item \code{a_aes(clickSelects=variable)} means that clicking
 #'   this geom will change the currently selected value of variable.
 #' }
 #' The others are described on https://github.com/tdhock/animint/wiki/Advanced-features-present-animint-but-not-in-ggplot2
@@ -1016,7 +1016,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       selectize[1]
     }else{
       ## If the designer did not set selectize, then we set a default
-      ## (if .variable .value aes, then no selectize; otherwise if
+      ## (if .variable .value a_aes, then no selectize; otherwise if
       ## there are less than 1000 values then yes).
       if(isTRUE(meta$selectors[[selector.name]]$is.variable.value)){
         FALSE
@@ -1040,7 +1040,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       as.list(unique(unlist(lapply(values.update, "[[", "update"))))
   }
   
-  ## For a static data viz with no interactive aes, no need to check
+  ## For a static data viz with no interactive a_aes, no need to check
   ## for trivial showSelected variables with only 1 level.
   checkSingleShowSelectedValue(meta$selectors)
 
@@ -1070,10 +1070,10 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
           # If there is a geom where the axes updates have non numeric values,
           # we stop and throw an informative warning
           # It does not make sense to have axes updates for non numeric values
-          aesthetic_names <- names(g.list[[p.name]][[num]]$g$aes)
+          a_aesthetic_names <- names(g.list[[p.name]][[num]]$g$a_aes)
           
-          axis_col_name <- aesthetic_names[grepl(axis, aesthetic_names)]
-          axis_col <- g.list[[p.name]][[num]]$g$aes[[ axis_col_name[[1]] ]]
+          axis_col_name <- a_aesthetic_names[grepl(axis, a_aesthetic_names)]
+          axis_col <- g.list[[p.name]][[num]]$g$a_aes[[ axis_col_name[[1]] ]]
           axis_is_numeric <- is.numeric(a_plot.list[[p.name]]$built$plot$layers[[num]]$data[[axis_col]])
           if(!axis_is_numeric){
             stop(paste0("'update_axes' specified for '", toupper(axis),
@@ -1084,8 +1084,8 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
           
           # handle cases for showSelected: showSelectedlegendfill,
           # showSelectedlegendcolour etc.
-          choose_ss <- grepl("^showSelected", aesthetic_names)
-          ss_selectors <- g.list[[p.name]][[num]]$g$aes[choose_ss]
+          choose_ss <- grepl("^showSelected", a_aesthetic_names)
+          ss_selectors <- g.list[[p.name]][[num]]$g$a_aes[choose_ss]
           # Do not calculate domains for multiple selectors
           remove_ss <- c()
           for(j in seq_along(ss_selectors)){
@@ -1109,7 +1109,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
             subset_domains[num] <- compute_domains(
               built_data,
               axis, strsplit(names(g.list[[p.name]])[[num]], "_")[[1]][[3]],
-              names(sort(ss_selectors)), split_by_panel, g.list[[p.name]][[num]]$g$aes)
+              names(sort(ss_selectors)), split_by_panel, g.list[[p.name]][[num]]$g$a_aes)
           }
         }
         subset_domains <- subset_domains[!sapply(subset_domains, is.null)]
@@ -1157,7 +1157,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   
   ## Now that selectors are all defined, go back through geoms to
   ## check if there are any warnings to issue.
-  issueSelectorWarnings(meta$geoms, meta$selector.aes, meta$duration)
+  issueSelectorWarnings(meta$geoms, meta$selector.a_aes, meta$duration)
   
   ## These geoms need to be updated when the time.var is animated, so
   ## let's make a list of all possible values to cycle through, from
@@ -1310,15 +1310,15 @@ getLegendList <- function(plistextra){
   # locate guide argument in a_scale_*, and use that for a default.
   # Note, however, that guides(colour = ...) has precendence! See https://gist.github.com/cpsievert/ece28830a6c992b29ab6
   a_guides.args <- list()
-  for(aes.name in c("colour", "fill")){
-    aes.loc <- which(scales$find(aes.name))
-    a_guide.type <- if (length(aes.loc) == 1){
-      scales$scales[[aes.loc]][["a_guide"]]
+  for(a_aes.name in c("colour", "fill")){
+    a_aes.loc <- which(scales$find(a_aes.name))
+    a_guide.type <- if (length(a_aes.loc) == 1){
+      scales$scales[[a_aes.loc]][["a_guide"]]
     }else{
       "legend"
     }
     if(a_guide.type=="colourbar")a_guide.type <- "legend"
-    a_guides.args[[aes.name]] <- a_guide.type
+    a_guides.args[[a_aes.name]] <- a_guide.type
   }
   a_guides.result <- do.call(a_guides, a_guides.args)
   a_guides.list <- plyr::defaults(plot$a_guides, a_guides.result)
@@ -1400,8 +1400,8 @@ getLegendList <- function(plistextra){
   ## the legend shows a numeric variable, then it should be reversed.
   for(legend.name in names(gdefs)){
     key.df <- gdefs[[legend.name]]$key
-    aes.name <- names(key.df)[1]
-    a_scale.i <- which(scales$find(aes.name))
+    a_aes.name <- names(key.df)[1]
+    a_scale.i <- which(scales$find(a_aes.name))
     if(length(a_scale.i) == 1){
       sc <- scales$scales[[a_scale.i]]
       gdefs[[legend.name]]$breaks <- sc$breaks

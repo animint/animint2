@@ -18,7 +18,7 @@
 #' @inheritParams a_geom_point
 #' @export
 #' @examples
-#' p <- a_plot(mtcars, aes(x = wt, y = mpg)) + a_geom_point()
+#' p <- a_plot(mtcars, a_aes(x = wt, y = mpg)) + a_geom_point()
 #' p + a_annotate("text", x = 4, y = 25, a_label = "Some text")
 #' p + a_annotate("text", x = 2:5, y = 25, a_label = "Some text")
 #' p + a_annotate("rect", xmin = 3, xmax = 4.2, ymin = 12, ymax = 21,
@@ -37,14 +37,14 @@ a_annotate <- function(a_geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
     x = x, xmin = xmin, xmax = xmax, xend = xend,
     y = y, ymin = ymin, ymax = ymax, yend = yend
   ))
-  aesthetics <- c(a_position, list(...))
+  a_aesthetics <- c(a_position, list(...))
 
-  # Check that all aesthetic have compatible lengths
-  lengths <- vapply(aesthetics, length, integer(1))
+  # Check that all a_aesthetic have compatible lengths
+  lengths <- vapply(a_aesthetics, length, integer(1))
   unequal <- length(unique(setdiff(lengths, 1L))) > 1L
   if (unequal) {
     bad <- lengths != 1L
-    details <- paste(names(aesthetics)[bad], " (", lengths[bad], ")",
+    details <- paste(names(a_aesthetics)[bad], " (", lengths[bad], ")",
       sep = "", collapse = ", ")
     stop("Unequal parameter lengths: ", details, call. = FALSE)
   }
@@ -59,8 +59,8 @@ a_annotate <- function(a_geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
     a_stat = a_StatIdentity,
     a_position = a_PositionIdentity,
     data = data,
-    mapping = aes_all(names(data)),
-    inherit.aes = FALSE,
+    mapping = a_aes_all(names(data)),
+    inherit.a_aes = FALSE,
     show.legend = FALSE
   )
 }

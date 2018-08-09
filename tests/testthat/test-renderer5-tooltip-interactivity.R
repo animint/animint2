@@ -3,7 +3,7 @@ acontext("tooltip-interactivity")
 data("CO2")
 
 plot_viz <- a_plot() + 
-  a_geom_point(aes(conc, uptake, color=Treatment, tooltip=Plant),
+  a_geom_point(a_aes(conc, uptake, color=Treatment, tooltip=Plant),
              data = CO2)
 viz <- list(p=plot_viz)
 info <- animint2HTML(viz)

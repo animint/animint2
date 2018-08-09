@@ -9,11 +9,11 @@ a_geom_dotplot(mapping = NULL, data = NULL, a_position = "identity", ...,
   binpositions = "bygroup", stackdir = "up", stackratio = 1,
   dotsize = 1, stackgroups = FALSE, origin = NULL, right = TRUE,
   width = 0.9, drop = FALSE, na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -82,7 +82,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -126,55 +126,55 @@ to match the number of dots.
 }
 
 \examples{
-a_plot(mtcars, aes(x = mpg)) + a_geom_dotplot()
-a_plot(mtcars, aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5)
+a_plot(mtcars, a_aes(x = mpg)) + a_geom_dotplot()
+a_plot(mtcars, a_aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5)
 
 # Use fixed-width bins
-a_plot(mtcars, aes(x = mpg)) +
+a_plot(mtcars, a_aes(x = mpg)) +
   a_geom_dotplot(method="histodot", binwidth = 1.5)
 
 # Some other stacking methods
-a_plot(mtcars, aes(x = mpg)) +
+a_plot(mtcars, a_aes(x = mpg)) +
   a_geom_dotplot(binwidth = 1.5, stackdir = "center")
-a_plot(mtcars, aes(x = mpg)) +
+a_plot(mtcars, a_aes(x = mpg)) +
   a_geom_dotplot(binwidth = 1.5, stackdir = "centerwhole")
 
 # y axis isn't really meaningful, so hide it
-a_plot(mtcars, aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5) +
+a_plot(mtcars, a_aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5) +
   a_scale_y_continuous(NULL, breaks = NULL)
 
 # Overlap dots vertically
-a_plot(mtcars, aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5, stackratio = .7)
+a_plot(mtcars, a_aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5, stackratio = .7)
 
 # Expand dot diameter
-a_plot(mtcars, aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5, dotsize = 1.25)
+a_plot(mtcars, a_aes(x = mpg)) + a_geom_dotplot(binwidth = 1.5, dotsize = 1.25)
 
 \donttest{
 # Examples with stacking along y axis instead of x
-a_plot(mtcars, aes(x = 1, y = mpg)) +
+a_plot(mtcars, a_aes(x = 1, y = mpg)) +
   a_geom_dotplot(binaxis = "y", stackdir = "center")
 
-a_plot(mtcars, aes(x = factor(cyl), y = mpg)) +
+a_plot(mtcars, a_aes(x = factor(cyl), y = mpg)) +
   a_geom_dotplot(binaxis = "y", stackdir = "center")
 
-a_plot(mtcars, aes(x = factor(cyl), y = mpg)) +
+a_plot(mtcars, a_aes(x = factor(cyl), y = mpg)) +
   a_geom_dotplot(binaxis = "y", stackdir = "centerwhole")
 
-a_plot(mtcars, aes(x = factor(vs), fill = factor(cyl), y = mpg)) +
+a_plot(mtcars, a_aes(x = factor(vs), fill = factor(cyl), y = mpg)) +
   a_geom_dotplot(binaxis = "y", stackdir = "center", a_position = "dodge")
 
 # binpositions="all" ensures that the bins are aligned between groups
-a_plot(mtcars, aes(x = factor(am), y = mpg)) +
+a_plot(mtcars, a_aes(x = factor(am), y = mpg)) +
   a_geom_dotplot(binaxis = "y", stackdir = "center", binpositions="all")
 
 # Stacking multiple groups, with different fill
-a_plot(mtcars, aes(x = mpg, fill = factor(cyl))) +
+a_plot(mtcars, a_aes(x = mpg, fill = factor(cyl))) +
   a_geom_dotplot(stackgroups = TRUE, binwidth = 1, binpositions = "all")
 
-a_plot(mtcars, aes(x = mpg, fill = factor(cyl))) +
+a_plot(mtcars, a_aes(x = mpg, fill = factor(cyl))) +
   a_geom_dotplot(stackgroups = TRUE, binwidth = 1, method = "histodot")
 
-a_plot(mtcars, aes(x = 1, y = mpg, fill = factor(cyl))) +
+a_plot(mtcars, a_aes(x = 1, y = mpg, fill = factor(cyl))) +
   a_geom_dotplot(binaxis = "y", stackgroups = TRUE, binwidth = 1, method = "histodot")
 }
 }

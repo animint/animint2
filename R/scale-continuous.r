@@ -10,7 +10,7 @@
 #' @examples
 #' \donttest{
 #' if (require(ggplot2movies)) {
-#' m <- a_plot(subset(movies, votes > 1000), aes(rating, votes)) +
+#' m <- a_plot(subset(movies, votes > 1000), a_aes(rating, votes)) +
 #'   a_geom_point(na.rm = TRUE)
 #' m
 #'
@@ -52,21 +52,21 @@
 #'   x = rnorm(10) * 100000,
 #'   y = seq(0, 1, length.out = 10)
 #' )
-#' p <- a_plot(df, aes(x, y)) + a_geom_point()
+#' p <- a_plot(df, a_aes(x, y)) + a_geom_point()
 #' p + a_scale_y_continuous(a_labels = scales::percent)
 #' p + a_scale_y_continuous(a_labels = scales::dollar)
 #' p + a_scale_x_continuous(a_labels = scales::comma)
 #'
 #' # Other shortcut functions
-#' a_plot(movies, aes(rating, votes)) +
+#' a_plot(movies, a_aes(rating, votes)) +
 #'   a_geom_point() +
 #'   ylim(1e4, 5e4)
 #' #   * axis labels
-#' a_plot(movies, aes(rating, votes)) +
+#' a_plot(movies, a_aes(rating, votes)) +
 #'   a_geom_point() +
 #'   labs(x = "My x axis", y = "My y axis")
 #' #   * log scaling
-#' a_plot(movies, aes(rating, votes)) +
+#' a_plot(movies, a_aes(rating, votes)) +
 #'   a_geom_point() +
 #'   a_scale_x_log10() +
 #'   a_scale_y_log10()

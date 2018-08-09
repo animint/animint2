@@ -17,16 +17,16 @@
 #' xlim(c(10, 20))
 #' xlim("a", "b", "c")
 #'
-#' a_plot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, a_aes(mpg, wt)) +
 #'   a_geom_point() +
 #'   xlim(15, 20)
 #' # with automatic lower limit
-#' a_plot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, a_aes(mpg, wt)) +
 #'   a_geom_point() +
 #'   xlim(NA, 20)
 #'
 #' # Change both xlim and ylim
-#' a_plot(mtcars, aes(mpg, wt)) +
+#' a_plot(mtcars, a_aes(mpg, wt)) +
 #'   a_geom_point() +
 #'   lims(x = c(10, 20), y = c(3, 5))
 lims <- function(...) {
@@ -114,19 +114,19 @@ limits.POSIXlt <- function(lims, var) {
 #'   should be included in each scale.
 #' @export
 #' @examples
-#' p <- a_plot(mtcars, aes(mpg, wt)) + a_geom_point()
+#' p <- a_plot(mtcars, a_aes(mpg, wt)) + a_geom_point()
 #' p + expand_limits(x = 0)
 #' p + expand_limits(y = c(1, 9))
 #' p + expand_limits(x = 0, y = 0)
 #'
-#' a_plot(mtcars, aes(mpg, wt)) +
-#'   a_geom_point(aes(colour = cyl)) +
+#' a_plot(mtcars, a_aes(mpg, wt)) +
+#'   a_geom_point(a_aes(colour = cyl)) +
 #'   expand_limits(colour = seq(2, 10, by = 2))
-#' a_plot(mtcars, aes(mpg, wt)) +
-#'   a_geom_point(aes(colour = factor(cyl))) +
+#' a_plot(mtcars, a_aes(mpg, wt)) +
+#'   a_geom_point(a_aes(colour = factor(cyl))) +
 #'   expand_limits(colour = factor(seq(2, 10, by = 2)))
 expand_limits <- function(...) {
   data <- data.frame(..., stringsAsFactors = FALSE)
 
-  a_geom_blank(aes_all(names(data)), data, inherit.aes = FALSE)
+  a_geom_blank(a_aes_all(names(data)), data, inherit.a_aes = FALSE)
 }

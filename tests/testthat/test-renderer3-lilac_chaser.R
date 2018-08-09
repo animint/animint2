@@ -21,13 +21,13 @@ vi_lilac_chaser <- function(np = 10,
     p1 <- a_plot(data = df) +
         # Display the points
         a_geom_point(data = df,
-                   aes(x = sinv, y = cosv),
+                   a_aes(x = sinv, y = cosv),
                    showSelected = "ptn",
                    col = col,
                    size = p.size) +
         # Display the '+' mark
-        a_geom_segment(aes(x=-0.1, y=0, xend=0.1, yend=0), size=c.size) +
-        a_geom_segment(aes(x=0, y=-0.1, xend=0, yend=0.1), size=c.size) +
+        a_geom_segment(a_aes(x=-0.1, y=0, xend=0.1, yend=0), size=c.size) +
+        a_geom_segment(a_aes(x=0, y=-0.1, xend=0, yend=0.1), size=c.size) +
         xlim(c(-1.33, 1.33)) +
         ylim(c(-1.33, 1.33)) +
         # Hide the axes, titles and others..

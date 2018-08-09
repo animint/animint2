@@ -12,7 +12,7 @@ a_geom_hline <- function(mapping = NULL, data = NULL,
   # Act like an annotation
   if (!missing(yintercept)) {
     data <- data.frame(yintercept = yintercept)
-    mapping <- aes(yintercept = yintercept)
+    mapping <- a_aes(yintercept = yintercept)
     show.legend <- FALSE
   }
 
@@ -23,7 +23,7 @@ a_geom_hline <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomHline,
     a_position = a_PositionIdentity,
     show.legend = show.legend,
-    inherit.aes = FALSE,
+    inherit.a_aes = FALSE,
     params = list(
       na.rm = na.rm,
       ...
@@ -47,7 +47,7 @@ a_GeomHline <- a_ggproto("a_GeomHline", a_Geom,
     a_GeomSegment$draw_panel(unique(data), panel_scales, a_coord)
   },
 
-  default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
+  default_aes = a_aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
   required_aes = "yintercept",
 
   draw_key = a_draw_key_path

@@ -39,7 +39,7 @@ NULL
 #'   \code{show.legend} are overridden
 #' @export
 #' @examples
-#' p <- a_plot(mtcars, aes(wt, mpg)) + a_geom_point()
+#' p <- a_plot(mtcars, a_aes(wt, mpg)) + a_geom_point()
 #'
 #' # Fixed values
 #' p + a_geom_vline(xintercept = 5)
@@ -56,17 +56,17 @@ NULL
 #' p + a_geom_smooth(method = "lm", se = FALSE)
 #'
 #' # To show different lines in different facets, use aesthetics
-#' p <- a_plot(mtcars, aes(mpg, wt)) +
+#' p <- a_plot(mtcars, a_aes(mpg, wt)) +
 #'   a_geom_point() +
 #'   a_facet_wrap(~ cyl)
 #'
 #' mean_wt <- data.frame(cyl = c(4, 6, 8), wt = c(2.28, 3.11, 4.00))
-#' p + a_geom_hline(aes(yintercept = wt), mean_wt)
+#' p + a_geom_hline(a_aes(yintercept = wt), mean_wt)
 #'
 #' # You can also control other aesthetics
-#' a_plot(mtcars, aes(mpg, wt, colour = wt)) +
+#' a_plot(mtcars, a_aes(mpg, wt, colour = wt)) +
 #'   a_geom_point() +
-#'   a_geom_hline(aes(yintercept = wt, colour = wt), mean_wt) +
+#'   a_geom_hline(a_aes(yintercept = wt, colour = wt), mean_wt) +
 #'   a_facet_wrap(~ cyl)
 a_geom_abline <- function(mapping = NULL, data = NULL,
                         ...,
@@ -87,7 +87,7 @@ a_geom_abline <- function(mapping = NULL, data = NULL,
     if (missing(intercept)) intercept <- 0
 
     data <- data.frame(intercept = intercept, slope = slope)
-    mapping <- aes(intercept = intercept, slope = slope)
+    mapping <- a_aes(intercept = intercept, slope = slope)
     show.legend <- FALSE
   }
 
@@ -98,7 +98,7 @@ a_geom_abline <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomAbline,
     a_position = a_PositionIdentity,
     show.legend = show.legend,
-    inherit.aes = FALSE,
+    inherit.a_aes = FALSE,
     params = list(
       na.rm = na.rm,
       ...
@@ -122,7 +122,7 @@ a_GeomAbline <- a_ggproto("a_GeomAbline", a_Geom,
     a_GeomSegment$draw_panel(unique(data), panel_scales, a_coord)
   },
 
-  default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
+  default_aes = a_aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
   required_aes = c("slope", "intercept"),
 
   draw_key = a_draw_key_abline

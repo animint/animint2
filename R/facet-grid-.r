@@ -45,7 +45,7 @@
 #'   will be shown, regardless of whether or not they appear in the data.
 #' @export
 #' @examples
-#' p <- a_plot(mpg, aes(displ, cty)) + a_geom_point()
+#' p <- a_plot(mpg, a_aes(displ, cty)) + a_geom_point()
 #'
 #' p + a_facet_grid(. ~ cyl)
 #' p + a_facet_grid(drv ~ .)
@@ -66,7 +66,7 @@
 #' # You can also choose whether the scales should be constant
 #' # across all panels (the default), or whether they should be allowed
 #' # to vary
-#' mt <- a_plot(mtcars, aes(mpg, wt, colour = factor(cyl))) +
+#' mt <- a_plot(mtcars, a_aes(mpg, wt, colour = factor(cyl))) +
 #'   a_geom_point()
 #'
 #' mt + a_facet_grid(. ~ cyl, scales = "free")
@@ -74,13 +74,13 @@
 #' # If scales and space are free, then the mapping between position
 #' # and values in the data will be the same across all panels. This
 #' # is particularly useful for categorical axes
-#' a_plot(mpg, aes(drv, model)) +
+#' a_plot(mpg, a_aes(drv, model)) +
 #'   a_geom_point() +
 #'   a_facet_grid(manufacturer ~ ., scales = "free", space = "free") +
 #'   a_theme(strip.text.y = a_element_text(angle = 0))
 #'
 #' # Facet labels ------------------------------------------------------
-#' p <- a_plot(mtcars, aes(wt, mpg)) + a_geom_point()
+#' p <- a_plot(mtcars, a_aes(wt, mpg)) + a_geom_point()
 #' p
 #'
 #' # a_label_both() displays both variable name and value
@@ -88,7 +88,7 @@
 #'
 #' # a_label_parsed() parses text into mathematical expressions, see ?plotmath
 #' mtcars$cyl2 <- factor(mtcars$cyl, labels = c("alpha", "beta", "sqrt(x, y)"))
-#' a_plot(mtcars, aes(wt, mpg)) +
+#' a_plot(mtcars, a_aes(wt, mpg)) +
 #'   a_geom_point() +
 #'   a_facet_grid(. ~ cyl2, labeller = a_label_parsed)
 #'
@@ -100,7 +100,7 @@
 #'   am = factor(am, levels = 0:1, c("Automatic", "Manual")),
 #'   gear = factor(gear, levels = 3:5, labels = c("Three", "Four", "Five"))
 #' )
-#' p <- a_plot(data, aes(mpg, disp)) + a_geom_point()
+#' p <- a_plot(data, a_aes(mpg, disp)) + a_geom_point()
 #' p + a_facet_grid(am ~ gear, switch = "both")
 #' # It looks better without boxes around the strips
 #' p + a_facet_grid(am ~ gear, switch = "both") +
@@ -110,7 +110,7 @@
 #' \donttest{
 #' # Margins can be specified by logically (all yes or all no) or by specific
 #' # variables as (character) variable names
-#' mg <- a_plot(mtcars, aes(x = mpg, y = wt)) + a_geom_point()
+#' mg <- a_plot(mtcars, a_aes(x = mpg, y = wt)) + a_geom_point()
 #' mg + a_facet_grid(vs + am ~ gear)
 #' mg + a_facet_grid(vs + am ~ gear, margins = TRUE)
 #' mg + a_facet_grid(vs + am ~ gear, margins = "am")

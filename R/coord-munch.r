@@ -58,9 +58,9 @@ munch_data <- function(data, dist = NULL, segment_length = 0.01) {
   # Replicate other aesthetics: defined by start point but also
   # must include final point
   id <- c(rep(seq_len(nrow(data) - 1), extra), nrow(data))
-  aes_df <- data[id, setdiff(names(data), c("x", "y")), drop = FALSE]
+  a_aes_df <- data[id, setdiff(names(data), c("x", "y")), drop = FALSE]
 
-  plyr::unrowname(data.frame(x = x, y = y, aes_df))
+  plyr::unrowname(data.frame(x = x, y = y, a_aes_df))
 }
 
 # Interpolate.

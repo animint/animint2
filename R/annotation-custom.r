@@ -23,7 +23,7 @@ NULL
 #' @examples
 #' # Dummy plot
 #' df <- data.frame(x = 1:10, y = 1:10)
-#' base <- a_plot(df, aes(x, y)) +
+#' base <- a_plot(df, a_aes(x, y)) +
 #'   a_geom_blank() +
 #'   a_theme_bw()
 #'
@@ -35,7 +35,7 @@ NULL
 #'
 #' # Inset plot
 #' df2 <- data.frame(x = 1 , y = 1)
-#' g <- ggplotGrob(a_plot(df2, aes(x, y)) +
+#' g <- ggplotGrob(a_plot(df2, a_aes(x, y)) +
 #'   a_geom_point() +
 #'   a_theme(plot.background = a_element_rect(colour = "black")))
 #' base + a_annotation_custom(grob = g, xmin = 1, xmax = 10, ymin = 8, ymax = 10)
@@ -45,7 +45,7 @@ a_annotation_custom <- function(grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax
     a_stat = a_StatIdentity,
     a_position = a_PositionIdentity,
     a_geom = a_GeomCustomAnn,
-    inherit.aes = TRUE,
+    inherit.a_aes = TRUE,
     params = list(
       grob = grob,
       xmin = xmin,
@@ -84,7 +84,7 @@ a_GeomCustomAnn <- a_ggproto("a_GeomCustomAnn", a_Geom,
     editGrob(grob, vp = vp, name = paste(grob$name, a_annotation_id()))
   },
 
-  default_aes = aes_(xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)
+  default_aes = a_aes_(xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)
 )
 
 a_annotation_id <- local({

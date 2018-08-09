@@ -4,7 +4,7 @@ df <- data.frame(z=rnorm(100))
 
 viz <-
   list(step=a_plot()+
-         a_geom_step(aes(seq_along(z), z),
+         a_geom_step(a_aes(seq_along(z), z),
                    data=df,
                    size=3,
                    color="grey50"))

@@ -6,7 +6,7 @@ a_geom_crossbar <- function(mapping = NULL, data = NULL,
                           fatten = 2.5,
                           na.rm = FALSE,
                           show.legend = NA,
-                          inherit.aes = TRUE) {
+                          inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -14,7 +14,7 @@ a_geom_crossbar <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomCrossbar,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       fatten = fatten,
       na.rm = na.rm,
@@ -32,7 +32,7 @@ a_GeomCrossbar <- a_ggproto("a_GeomCrossbar", a_Geom,
     a_GeomErrorbar$setup_data(data, params)
   },
 
-  default_aes = aes(colour = "black", fill = NA, size = 0.5, linetype = 1,
+  default_aes = a_aes(colour = "black", fill = NA, size = 0.5, linetype = 1,
     alpha = NA),
 
   required_aes = c("x", "y", "ymin", "ymax"),

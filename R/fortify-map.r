@@ -12,13 +12,13 @@
 #' if (require("maps")) {
 #' ca <- map("county", "ca", plot = FALSE, fill = TRUE)
 #' head(a_fortify(ca))
-#' a_plot(ca, aes(long, lat)) +
-#'   a_geom_polygon(aes(group = group))
+#' a_plot(ca, a_aes(long, lat)) +
+#'   a_geom_polygon(a_aes(group = group))
 #'
 #' tx <- map("county", "texas", plot = FALSE, fill = TRUE)
 #' head(a_fortify(tx))
-#' a_plot(tx, aes(long, lat)) +
-#'   a_geom_polygon(aes(group = group), colour = "white")
+#' a_plot(tx, a_aes(long, lat)) +
+#'   a_geom_polygon(a_aes(group = group), colour = "white")
 #' }
 a_fortify.map <- function(model, data, ...) {
   df <- as.data.frame(model[c("x", "y")])
@@ -55,12 +55,12 @@ a_fortify.map <- function(model, data, ...) {
 #'
 #' choro <- merge(states, arrests, sort = FALSE, by = "region")
 #' choro <- choro[order(choro$order), ]
-#' a_plot(choro, aes(long, lat)) +
-#'   a_geom_polygon(aes(group = group, fill = assault)) +
+#' a_plot(choro, a_aes(long, lat)) +
+#'   a_geom_polygon(a_aes(group = group, fill = assault)) +
 #'   a_coord_map("albers",  at0 = 45.5, lat1 = 29.5)
 #'
-#' a_plot(choro, aes(long, lat)) +
-#'   a_geom_polygon(aes(group = group, fill = assault / murder)) +
+#' a_plot(choro, a_aes(long, lat)) +
+#'   a_geom_polygon(a_aes(group = group, fill = assault / murder)) +
 #'   a_coord_map("albers",  at0 = 45.5, lat1 = 29.5)
 #' }
 map_data <- function(map, region = ".", exact = FALSE, ...) {
@@ -84,28 +84,28 @@ map_data <- function(map, region = ".", exact = FALSE, ...) {
 #' ia <- map_data("county", "iowa")
 #' mid_range <- function(x) mean(range(x))
 #' seats <- plyr::ddply(ia, "subregion", plyr::colwise(mid_range, c("lat", "long")))
-#' a_plot(ia, aes(long, lat)) +
-#'   a_geom_polygon(aes(group = group), fill = NA, colour = "grey60") +
-#'   a_geom_text(aes(label = subregion), data = seats, size = 2, angle = 45)
+#' a_plot(ia, a_aes(long, lat)) +
+#'   a_geom_polygon(a_aes(group = group), fill = NA, colour = "grey60") +
+#'   a_geom_text(a_aes(label = subregion), data = seats, size = 2, angle = 45)
 #'
 #' data(us.cities)
 #' capitals <- subset(us.cities, capital == 2)
-#' a_plot(capitals, aes(long, lat)) +
+#' a_plot(capitals, a_aes(long, lat)) +
 #'   borders("state") +
-#'   a_geom_point(aes(size = pop)) +
+#'   a_geom_point(a_aes(size = pop)) +
 #'   a_scale_size_area() +
 #'   a_coord_quickmap()
 #'
 #' # Same map, with some world context
-#' a_plot(capitals, aes(long, lat)) +
+#' a_plot(capitals, a_aes(long, lat)) +
 #'   borders("world", xlim = c(-130, -60), ylim = c(20, 50)) +
-#'   a_geom_point(aes(size = pop)) +
+#'   a_geom_point(a_aes(size = pop)) +
 #'   a_scale_size_area() +
 #'   a_coord_quickmap()
 #' }
 borders <- function(database = "world", regions = ".", fill = NA,
                     colour = "grey50", xlim = NULL, ylim = NULL, ...) {
   df <- map_data(database, regions, xlim = xlim, ylim = ylim)
-  a_geom_polygon(aes_(~long, ~lat, group = ~group), data = df,
-    fill = fill, colour = colour, ..., inherit.aes = FALSE)
+  a_geom_polygon(a_aes_(~long, ~lat, group = ~group), data = df,
+    fill = fill, colour = colour, ..., inherit.a_aes = FALSE)
 }

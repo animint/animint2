@@ -5,7 +5,7 @@ a_geom_rect <- function(mapping = NULL, data = NULL,
                       ...,
                       na.rm = FALSE,
                       show.legend = NA,
-                      inherit.aes = TRUE) {
+                      inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -13,7 +13,7 @@ a_geom_rect <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomRect,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -26,23 +26,23 @@ a_geom_rect <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomRect <- a_ggproto("a_GeomRect", a_Geom,
-  default_aes = aes(colour = NA, fill = "grey35", size = 0.5, linetype = 1,
+  default_aes = a_aes(colour = NA, fill = "grey35", size = 0.5, linetype = 1,
     alpha = NA),
 
   required_aes = c("xmin", "xmax", "ymin", "ymax"),
 
   draw_panel = function(self, data, panel_scales, a_coord) {
     if (!a_coord$is_linear()) {
-      aesthetics <- setdiff(
+      a_aesthetics <- setdiff(
         names(data), c("x", "y", "xmin", "xmax", "ymin", "ymax")
       )
 
       polys <- plyr::alply(data, 1, function(row) {
         poly <- rect_to_poly(row$xmin, row$xmax, row$ymin, row$ymax)
-        aes <- as.data.frame(row[aesthetics],
+        a_aes <- as.data.frame(row[a_aesthetics],
           stringsAsFactors = FALSE)[rep(1,5), ]
 
-        a_GeomPolygon$draw_panel(cbind(poly, aes), panel_scales, a_coord)
+        a_GeomPolygon$draw_panel(cbind(poly, a_aes), panel_scales, a_coord)
       })
 
       ggname("bar", do.call("grobTree", polys))

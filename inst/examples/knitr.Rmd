@@ -9,7 +9,7 @@ data(worldPop)
 ## inspired by polychartjs.
 viz <-
   list(bars=a_plot()+
-       a_geom_bar(aes(x=subcontinent, y=population),
+       a_geom_bar(a_aes(x=subcontinent, y=population),
                     clickSelects="subcontinent", showSelected="year",
                 data=worldPop, a_stat="identity", a_position="identity")+
        ## This make_text creates a a_geom_text that shows the current
@@ -20,14 +20,14 @@ viz <-
        ## This make_tallrect tiles the background of the lineplot with
        ## rects that can be clicked to select the year variable.
        make_tallrect(worldPop, "year")+
-       ## This a_geom_point does not have aes(clickSelects) so its alpha
+       ## This a_geom_point does not have a_aes(clickSelects) so its alpha
        ## transparency behaves normally: all points have alpha=1/4.
-       a_geom_point(aes(year, population, colour=type),
+       a_geom_point(a_aes(year, population, colour=type),
                   data=worldPop, size=4, alpha=1/4)+
-       ## This a_geom_line DOES have aes(clickSelects) so only the
+       ## This a_geom_line DOES have a_aes(clickSelects) so only the
        ## selected line has the specified alpha=3/4. The other
        ## unselected lines have 0.5 less (alpha=1/4).
-       a_geom_line(aes(year, population, group=subcontinent),
+       a_geom_line(a_aes(year, population, group=subcontinent),
                      clickSelects="subcontinent",
                  data=worldPop, size=4, alpha=3/4),
        time=list(variable="year", ms=2000),

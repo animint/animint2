@@ -1,8 +1,8 @@
 acontext('a_facet_grid(space="free")')
 
-no.panels <- a_plot(mtcars, aes(mpg, wt)) + 
+no.panels <- a_plot(mtcars, a_aes(mpg, wt)) + 
   a_geom_point(colour='grey50', size = 4) + 
-  a_geom_point(aes(colour = cyl)) 
+  a_geom_point(a_aes(colour = cyl)) 
 
 viz <-
   list(freeBoth = no.panels +
@@ -98,9 +98,9 @@ test_that("width_proportion is constant or variable", {
   expect_true(!both.equal(info$plots$freeBoth$layout$width_proportion))
 })
 
-no.panels <- a_plot(mtcars, aes(wt, mpg)) + 
+no.panels <- a_plot(mtcars, a_aes(wt, mpg)) + 
   a_geom_point(colour='grey50', size = 4) + 
-  a_geom_point(aes(colour = cyl)) 
+  a_geom_point(a_aes(colour = cyl)) 
 
 viz <-
   list(freeBoth = no.panels +

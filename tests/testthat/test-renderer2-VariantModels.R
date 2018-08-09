@@ -70,14 +70,14 @@ viz <- list(
     a_scale_x_continuous("")+
     a_scale_color_manual(values=method.colors, a_guide="none")+
     a_scale_fill_manual("threshold", values=thresh.colors, a_guide="none")+
-    a_geom_point(aes(metric.value, filterVar.fac, color=method,
+    a_geom_point(a_aes(metric.value, filterVar.fac, color=method,
                    fill=thresh.type),
                clickSelects="test.fold",
                showSelected=c("method", "thresh.type"),
                size=5,
                pch=21,
                data=add.filterVar.rev(VariantModels$auc))+
-    a_geom_point(aes(
+    a_geom_point(a_aes(
       error.or.Inf,
       filterVar.fac,
       key=filterVar,
@@ -106,21 +106,21 @@ viz <- list(
         lapply(a_label_df, paste)
       }
     })+
-    a_geom_path(aes(FPR, TPR,
+    a_geom_path(a_aes(FPR, TPR,
                   ##showSelected=method, #not needed!
                   group=method, tooltip=method, color=method),
               clickSelects="test.fold",
               size=5,
               data=VariantModels$roc)+
     a_scale_fill_manual("threshold", values=thresh.colors)+
-    a_geom_point(aes(FPR, TPR, color=method,
+    a_geom_point(a_aes(FPR, TPR, color=method,
                    ##showSelected=method, #not needed!
                    fill=thresh.type),
                clickSelects="test.fold",
                pch=21,
                size=4,
                data=subset(VariantModels$auc, metric.name=="auc"))+
-    a_geom_point(aes(
+    a_geom_point(a_aes(
       FPR, TPR,
       key=method,
       ##showSelected=method, #not needed!
@@ -132,11 +132,11 @@ viz <- list(
                pch=21,
                data=data_roc),
   error=a_plot()+
-    a_geom_hline(aes(yintercept=min.errors),
+    a_geom_hline(a_aes(yintercept=min.errors),
                showSelected=c("test.fold", "thresh.type"),
                data=minima.df,
                color="grey50")+
-    a_geom_vline(aes(xintercept=threshold),
+    a_geom_vline(a_aes(xintercept=threshold),
                showSelected=c("test.fold", "thresh.type", "method"),
                data=add.filterVar.fac(auc.min.error),
                color="grey50")+
@@ -150,12 +150,12 @@ viz <- list(
       a_label_value(a_label_df)
     }, scales="free", space="fixed")+
     a_scale_color_manual(values=fp.fn.colors)+
-    a_geom_line(aes(threshold, error.value,
+    a_geom_line(a_aes(threshold, error.value,
                   group=error.type, color=error.type),
               showSelected=c("test.fold", "thresh.type", "method"),
               data=add.filterVar.fac(VariantModels$error))+
     a_scale_fill_manual(values=method.colors, a_guide="none")+
-    a_geom_tallrect(aes(
+    a_geom_tallrect(a_aes(
       xmin=xmin, xmax=xmax,
       fill=method),
       showSelected=c("test.fold", "thresh.type", "method"),

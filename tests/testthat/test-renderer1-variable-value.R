@@ -49,34 +49,34 @@ viz <-
   list(errorLines=a_plot()+
          a_scale_color_manual(values=c(one="red", two="black"))+
          a_scale_size_manual(values=c(one=1, two=2))+
-         a_geom_line(aes(bases.per.problem, errors,
+         a_geom_line(a_aes(bases.per.problem, errors,
                        color=chunks, size=chunks),
                    data=one.error)+
-         a_geom_line(aes(bases.per.problem, errors,
+         a_geom_line(a_aes(bases.per.problem, errors,
                        color=chunks, size=chunks),
                    data=two.error),
 
     problems=a_plot()+
          ggtitle("select problem")+
-         a_geom_segment(aes(problemStart, problem.i,
+         a_geom_segment(a_aes(problemStart, problem.i,
                           xend=problemEnd, yend=problem.i),
                       clickSelects="problem.name",
                       showSelected="bases.per.problem",
                       size=5,
                       data=data.frame(problems, sample.id="problems"))+
-         a_geom_text(aes(200, 5,
+         a_geom_text(a_aes(200, 5,
                        a_label=paste("problem size", bases.per.problem)),
                    showSelected="bases.per.problem",
                    data=data.frame(sizes, sample.id="problems"))+
-         a_geom_segment(aes(peakStart, problem.i,
+         a_geom_segment(a_aes(peakStart, problem.i,
                           xend=peakEnd, yend=problem.i),
                       showSelected=showSelected.vec,
                       clickSelects="problem.name",
                       data=data.frame(peak.problems, sample.id="problems"),
                       size=10,
                       color="deepskyblue")+
-         ## TODO: yend=y=0 as params not aes?
-         a_geom_segment(aes(peakStart, 0,
+         ## TODO: yend=y=0 as params not a_aes?
+         a_geom_segment(a_aes(peakStart, 0,
                           xend=peakEnd, yend=0),
                       showSelected=showSelected.vec,
                       clickSelects="problem.name",
@@ -91,21 +91,21 @@ viz <-
        
        sizes=a_plot()+
          ggtitle("select problem size")+
-         a_geom_point(aes(bases.per.problem, problems),
+         a_geom_point(a_aes(bases.per.problem, problems),
                     clickSelects="bases.per.problem",
                     size=10,
                     data=sizes),
 
        peaks=a_plot()+
          ggtitle("select number of peaks")+
-         a_geom_point(aes(peaks, peaks,
+         a_geom_point(a_aes(peaks, peaks,
                         color=error.type,
                         id=peaks),
                     showSelected=c("problem.name", "bases.per.problem"),
                     clickSelects = clickSelects.vec,
                     size=10,
                     data=peaks)+
-         a_geom_text(aes(1, 3, a_label=problem.name),
+         a_geom_text(a_aes(1, 3, a_label=problem.name),
                    showSelected=c("problem.name", "bases.per.problem"),
                    data=problems))
 
@@ -184,13 +184,13 @@ test_that("clicking increases the number of peaks", {
 viz.for <-
   list(problems=a_plot()+
          ggtitle("select problem")+
-         a_geom_segment(aes(problemStart, problem.i,
+         a_geom_segment(a_aes(problemStart, problem.i,
                           xend=problemEnd, yend=problem.i),
                       clickSelects="problem.name",
                       showSelected="bases.per.problem",
                       size=5,
                       data=data.frame(problems, sample.id="problems"))+
-         a_geom_text(aes(200, 5,
+         a_geom_text(a_aes(200, 5,
                        a_label=paste("problem size", bases.per.problem)),
                    showSelected="bases.per.problem",
                    data=data.frame(sizes, sample.id="problems"))+
@@ -202,14 +202,14 @@ viz.for <-
        
        sizes=a_plot()+
          ggtitle("select problem size")+
-         a_geom_point(aes(bases.per.problem, problems),
+         a_geom_point(a_aes(bases.per.problem, problems),
                     clickSelects="bases.per.problem",
                     size=10,
                     data=sizes),
 
        peaks=a_plot()+
          ggtitle("select number of peaks")+
-         a_geom_text(aes(1, 3, a_label=problem.name),
+         a_geom_text(a_aes(1, 3, a_label=problem.name),
                    showSelected="problem.name",
                    data=problems))
 

@@ -7,16 +7,17 @@
 \usage{
 a_geom_violin(mapping = NULL, data = NULL, a_stat = "ydensity",
   a_position = "dodge", ..., draw_quantiles = NULL, trim = TRUE,
-  a_scale = "area", na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+  a_scale = "area", na.rm = FALSE, show.legend = NA,
+  inherit.a_aes = TRUE)
 
 a_stat_ydensity(mapping = NULL, data = NULL, a_geom = "violin",
   a_position = "dodge", ..., bw = "nrd0", adjust = 1,
   kernel = "gaussian", trim = TRUE, a_scale = "area", na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  show.legend = NA, inherit.a_aes = TRUE)
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
-\code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
+\item{mapping}{Set of aesthetic mappings created by \code{\link{a_aes}} or
+\code{\link{a_aes_}}. If specified and \code{inherit.a_aes = TRUE} (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply \code{mapping} if there is no plot mapping.}
 
@@ -59,7 +60,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+\item{inherit.a_aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
@@ -98,7 +99,7 @@ Violin plot.
 }
 
 \examples{
-p <- a_plot(mtcars, aes(factor(cyl), mpg))
+p <- a_plot(mtcars, a_aes(factor(cyl), mpg))
 p + a_geom_violin()
 
 \donttest{
@@ -120,10 +121,10 @@ p + a_geom_violin(adjust = .5)
 # Add aesthetic mappings
 # Note that violins are automatically dodged when any aesthetic is
 # a factor
-p + a_geom_violin(aes(fill = cyl))
-p + a_geom_violin(aes(fill = factor(cyl)))
-p + a_geom_violin(aes(fill = factor(vs)))
-p + a_geom_violin(aes(fill = factor(am)))
+p + a_geom_violin(a_aes(fill = cyl))
+p + a_geom_violin(a_aes(fill = factor(cyl)))
+p + a_geom_violin(a_aes(fill = factor(vs)))
+p + a_geom_violin(a_aes(fill = factor(am)))
 
 # Set aesthetics to fixed value
 p + a_geom_violin(fill = "grey80", colour = "#3366FF")
@@ -136,7 +137,7 @@ if (require("ggplot2movies")) {
 # Scale transformations occur before the density statistics are computed.
 # Coordinate transformations occur afterwards.  Observe the effect on the
 # number of outliers.
-m <- a_plot(movies, aes(y = votes, x = rating, group = cut_width(rating, 0.5)))
+m <- a_plot(movies, a_aes(y = votes, x = rating, group = cut_width(rating, 0.5)))
 m + a_geom_violin()
 m + a_geom_violin() + a_scale_y_log10()
 m + a_geom_violin() + a_coord_trans(y = "log10")
@@ -144,9 +145,9 @@ m + a_geom_violin() + a_scale_y_log10() + a_coord_trans(y = "log10")
 
 # Violin plots with continuous x:
 # Use the group aesthetic to group observations in violins
-a_plot(movies, aes(year, budget)) + a_geom_violin()
-a_plot(movies, aes(year, budget)) +
-  a_geom_violin(aes(group = cut_width(year, 10)), a_scale = "width")
+a_plot(movies, a_aes(year, budget)) + a_geom_violin()
+a_plot(movies, a_aes(year, budget)) +
+  a_geom_violin(a_aes(group = cut_width(year, 10)), a_scale = "width")
 }
 }
 }

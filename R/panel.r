@@ -79,14 +79,14 @@ train_position <- function(panel, data, x_scale, y_scale) {
     match_id <- match(a_layer_data$PANEL, layout$PANEL)
 
     if (!is.null(x_scale)) {
-      x_vars <- intersect(x_scale$aesthetics, names(a_layer_data))
+      x_vars <- intersect(x_scale$a_aesthetics, names(a_layer_data))
       SCALE_X <- layout$SCALE_X[match_id]
 
       scale_apply(a_layer_data, x_vars, "train", SCALE_X, panel$x_scales)
     }
 
     if (!is.null(y_scale)) {
-      y_vars <- intersect(y_scale$aesthetics, names(a_layer_data))
+      y_vars <- intersect(y_scale$a_aesthetics, names(a_layer_data))
       SCALE_Y <- layout$SCALE_Y[match_id]
 
       scale_apply(a_layer_data, y_vars, "train", SCALE_Y, panel$y_scales)
@@ -119,13 +119,13 @@ map_position <- function(panel, data, x_scale, y_scale) {
 
     # Loop through each variable, mapping across each scale, then joining
     # back together
-    x_vars <- intersect(x_scale$aesthetics, names(a_layer_data))
+    x_vars <- intersect(x_scale$a_aesthetics, names(a_layer_data))
     names(x_vars) <- x_vars
     SCALE_X <- layout$SCALE_X[match_id]
     new_x <- scale_apply(a_layer_data, x_vars, "map", SCALE_X, panel$x_scales)
     a_layer_data[, x_vars] <- new_x
 
-    y_vars <- intersect(y_scale$aesthetics, names(a_layer_data))
+    y_vars <- intersect(y_scale$a_aesthetics, names(a_layer_data))
     names(y_vars) <- y_vars
     SCALE_Y <- layout$SCALE_Y[match_id]
     new_y <- scale_apply(a_layer_data, y_vars, "map", SCALE_Y, panel$y_scales)

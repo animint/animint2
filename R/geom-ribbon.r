@@ -23,21 +23,21 @@
 #' @examples
 #' # Generate data
 #' huron <- data.frame(year = 1875:1972, level = as.vector(LakeHuron))
-#' h <- a_plot(huron, aes(year))
+#' h <- a_plot(huron, a_aes(year))
 #'
-#' h + a_geom_ribbon(aes(ymin=0, ymax=level))
-#' h + a_geom_area(aes(y = level))
+#' h + a_geom_ribbon(a_aes(ymin=0, ymax=level))
+#' h + a_geom_area(a_aes(y = level))
 #'
-#' # Add aesthetic mappings
+#' # Add a_aesthetic mappings
 #' h +
-#'   a_geom_ribbon(aes(ymin = level - 1, ymax = level + 1), fill = "grey70") +
-#'   a_geom_line(aes(y = level))
+#'   a_geom_ribbon(a_aes(ymin = level - 1, ymax = level + 1), fill = "grey70") +
+#'   a_geom_line(a_aes(y = level))
 a_geom_ribbon <- function(mapping = NULL, data = NULL,
                         a_stat = "identity", a_position = "identity",
                         ...,
                         na.rm = FALSE,
                         show.legend = NA,
-                        inherit.aes = TRUE) {
+                        inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -45,7 +45,7 @@ a_geom_ribbon <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomRibbon,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -58,7 +58,7 @@ a_geom_ribbon <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomRibbon <- a_ggproto("a_GeomRibbon", a_Geom,
-  default_aes = aes(colour = NA, fill = "grey20", size = 0.5, linetype = 1,
+  default_aes = a_aes(colour = NA, fill = "grey20", size = 0.5, linetype = 1,
     alpha = NA),
 
   required_aes = c("x", "ymin", "ymax"),
@@ -74,11 +74,11 @@ a_GeomRibbon <- a_ggproto("a_GeomRibbon", a_Geom,
     data <- data[order(data$group, data$x), ]
 
     # Check that aesthetics are constant
-    aes <- unique(data[c("colour", "fill", "size", "linetype", "alpha")])
-    if (nrow(aes) > 1) {
+    a_aes <- unique(data[c("colour", "fill", "size", "linetype", "alpha")])
+    if (nrow(a_aes) > 1) {
       stop("Aesthetics can not vary with a ribbon")
     }
-    aes <- as.list(aes)
+    a_aes <- as.list(a_aes)
 
     # Instead of removing NA values from the data and plotting a single
     # polygon, we want to "stop" plotting the polygon whenever we're
@@ -99,10 +99,10 @@ a_GeomRibbon <- a_ggproto("a_GeomRibbon", a_Geom,
       munched$x, munched$y, id = munched$id,
       default.units = "native",
       gp = gpar(
-        fill = alpha(aes$fill, aes$alpha),
-        col = aes$colour,
-        lwd = aes$size * .pt,
-        lty = aes$linetype)
+        fill = alpha(a_aes$fill, a_aes$alpha),
+        col = a_aes$colour,
+        lwd = a_aes$size * .pt,
+        lty = a_aes$linetype)
     ))
   }
 )
@@ -111,7 +111,7 @@ a_GeomRibbon <- a_ggproto("a_GeomRibbon", a_Geom,
 #' @export
 a_geom_area <- function(mapping = NULL, data = NULL, a_stat = "identity",
                       a_position = "stack", na.rm = FALSE, show.legend = NA,
-                      inherit.aes = TRUE, ...) {
+                      inherit.a_aes = TRUE, ...) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -119,7 +119,7 @@ a_geom_area <- function(mapping = NULL, data = NULL, a_stat = "identity",
     a_geom = a_GeomArea,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -132,7 +132,7 @@ a_geom_area <- function(mapping = NULL, data = NULL, a_stat = "identity",
 #' @usage NULL
 #' @export
 a_GeomArea <- a_ggproto("a_GeomArea", a_GeomRibbon,
-  default_aes = aes(colour = NA, fill = "grey20", size = 0.5, linetype = 1,
+  default_aes = a_aes(colour = NA, fill = "grey20", size = 0.5, linetype = 1,
     alpha = NA),
 
   required_aes = c("x", "y"),

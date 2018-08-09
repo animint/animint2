@@ -25,36 +25,36 @@
 #'   lower = c(0.8, 4.6, 2.4, 3.6)
 #' )
 #'
-#' p <- a_plot(df, aes(trt, resp, colour = group))
-#' p + a_geom_linerange(aes(ymin = lower, ymax = upper))
-#' p + a_geom_pointrange(aes(ymin = lower, ymax = upper))
-#' p + a_geom_crossbar(aes(ymin = lower, ymax = upper), width = 0.2)
-#' p + a_geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2)
+#' p <- a_plot(df, a_aes(trt, resp, colour = group))
+#' p + a_geom_linerange(a_aes(ymin = lower, ymax = upper))
+#' p + a_geom_pointrange(a_aes(ymin = lower, ymax = upper))
+#' p + a_geom_crossbar(a_aes(ymin = lower, ymax = upper), width = 0.2)
+#' p + a_geom_errorbar(a_aes(ymin = lower, ymax = upper), width = 0.2)
 #'
 #' # Draw lines connecting group means
 #' p +
-#'   a_geom_line(aes(group = group)) +
-#'   a_geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2)
+#'   a_geom_line(a_aes(group = group)) +
+#'   a_geom_errorbar(a_aes(ymin = lower, ymax = upper), width = 0.2)
 #'
 #' # If you want to dodge bars and errorbars, you need to manually
 #' # specify the dodge width
-#' p <- a_plot(df, aes(trt, resp, fill = group))
+#' p <- a_plot(df, a_aes(trt, resp, fill = group))
 #' p +
 #'  a_geom_bar(a_position = "dodge", a_stat = "identity") +
-#'  a_geom_errorbar(aes(ymin = lower, ymax = upper), a_position = "dodge", width = 0.25)
+#'  a_geom_errorbar(a_aes(ymin = lower, ymax = upper), a_position = "dodge", width = 0.25)
 #'
 #' # Because the bars and errorbars have different widths
 #' # we need to specify how wide the objects we are dodging are
 #' dodge <- a_position_dodge(width=0.9)
 #' p +
 #'   a_geom_bar(a_position = dodge, a_stat = "identity") +
-#'   a_geom_errorbar(aes(ymin = lower, ymax = upper), a_position = dodge, width = 0.25)
+#'   a_geom_errorbar(a_aes(ymin = lower, ymax = upper), a_position = dodge, width = 0.25)
 a_geom_linerange <- function(mapping = NULL, data = NULL,
                            a_stat = "identity", a_position = "identity",
                            ...,
                            na.rm = FALSE,
                            show.legend = NA,
-                           inherit.aes = TRUE) {
+                           inherit.a_aes = TRUE) {
   a_layer(
     data = data,
     mapping = mapping,
@@ -62,7 +62,7 @@ a_geom_linerange <- function(mapping = NULL, data = NULL,
     a_geom = a_GeomLinerange,
     a_position = a_position,
     show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    inherit.a_aes = inherit.a_aes,
     params = list(
       na.rm = na.rm,
       ...
@@ -75,7 +75,7 @@ a_geom_linerange <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 a_GeomLinerange <- a_ggproto("a_GeomLinerange", a_Geom,
-  default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
+  default_aes = a_aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
 
   draw_key = a_draw_key_vpath,
 
