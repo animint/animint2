@@ -22,7 +22,7 @@ test_that("informative error for time option with no showSelected", {
   )
   expect_error({
     animint2dir(viz, open.browser=FALSE)
-  }, "no interactive a_aes for time variable Species")
+  }, "no interactive aes for time variable Species")
 })
 
 test_that("no error for time option with clickSelects", {
@@ -87,7 +87,7 @@ test_that("warn no key for a_geom_text with showSelected=duration var", {
   viz.duration$duration <- list(year=2000)
   expect_warning({
     info <- animint2dir(viz.duration, open.browser=FALSE)
-  }, "to ensure that smooth transitions are interpretable, a_aes(key) should be specifed for geoms with showSelected=year, problem: a_geom2_text_scatter", fixed=TRUE)
+  }, "to ensure that smooth transitions are interpretable, aes(key) should be specifed for geoms with showSelected=year, problem: a_geom2_text_scatter", fixed=TRUE)
 })
 
 viz.key.duration <- list(

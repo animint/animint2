@@ -231,7 +231,7 @@ for(problem.name in names(p.list)){
   p$bases.per.problem <- pp$bases.per.problem[1]
   
   viz.for$problems <- viz.for$problems+
-    a_geom_segment(aes_string("peakStart", "problem.i",
+    a_geom_segment(a_aes_string("peakStart", "problem.i",
                             id="problem.nodots",
                             xend="peakEnd", yend="problem.i"),
                  showSelected=c(s.name, "bases.per.problem"),
@@ -239,7 +239,7 @@ for(problem.name in names(p.list)){
                  data=data.frame(pp, sample.id="problems"),
                  size=10,
                  color="deepskyblue")+
-    a_geom_segment(aes_string("peakStart", "0",
+    a_geom_segment(a_aes_string("peakStart", "0",
                             xend="peakEnd", yend="0"),
                  showSelected=c(s.name, "bases.per.problem"),
                  clickSelects="problem.name",
@@ -247,7 +247,7 @@ for(problem.name in names(p.list)){
                  size=10,
                  color="deepskyblue")
   viz.for$peaks <- viz.for$peaks+
-         a_geom_point(aes_string("peaks", "peaks"),
+         a_geom_point(a_aes_string("peaks", "peaks"),
                     showSelected=c("problem.name", "bases.per.problem"),
                     clickSelects=s.name,
                     size=10,
