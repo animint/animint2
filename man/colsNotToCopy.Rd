@@ -4,12 +4,12 @@
 \alias{colsNotToCopy}
 \title{Filter out columns that do not need to be copied}
 \usage{
-colsNotToCopy(g, s.aes)
+colsNotToCopy(g, s.a_aes)
 }
 \arguments{
 \item{g}{Geom with columns}
 
-\item{s.aes}{Selector aesthetics}
+\item{s.a_aes}{Selector aesthetics}
 }
 \value{
 Character vector of columns not to be copied

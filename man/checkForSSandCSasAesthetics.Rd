@@ -2,13 +2,13 @@
 % Please edit documentation in R/z_animintHelpers.R
 \name{checkForSSandCSasAesthetics}
 \alias{checkForSSandCSasAesthetics}
-\title{Check if showSelected and clickSelects have been used as aesthetics
+\title{Check if showSelected and clickSelects have been used as a_aesthetics
 as in old syntax. If yes, raise error}
 \usage{
-checkForSSandCSasAesthetics(aesthetics, plot_name)
+checkForSSandCSasAesthetics(a_aesthetics, plot_name)
 }
 \arguments{
-\item{aesthetics}{list. aesthetics mapping of the layer}
+\item{a_aesthetics}{list. aesthetics mapping of the layer}
 
 \item{plot_name}{character vector of the plot the layer belongs to}
 }
@@ -16,6 +16,6 @@ checkForSSandCSasAesthetics(aesthetics, plot_name)
 \code{NULL} Throws error if used as aesthetics
 }
 \description{
-Check if showSelected and clickSelects have been used as aesthetics
+Check if showSelected and clickSelects have been used as a_aesthetics
 as in old syntax. If yes, raise error
 }

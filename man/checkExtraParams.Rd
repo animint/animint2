@@ -4,13 +4,13 @@
 \alias{checkExtraParams}
 \title{Check \code{extra_params} argument for duplicates, non-named list}
 \usage{
-checkExtraParams(extra_params, aes_mapping)
+checkExtraParams(extra_params, a_aes_mapping)
 }
 \arguments{
 \item{extra_params}{named list containing the details of showSelected
 and clickSelects values of the layer}
 
-\item{aes_mapping}{aesthetics mapping of the layer}
+\item{a_aes_mapping}{aesthetics mapping of the layer}
 }
 \value{
 Modified \code{extra_params} list

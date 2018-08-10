@@ -4,10 +4,10 @@
 \alias{addSSandCSasAesthetics}
 \title{Add the showSelected/clickSelects params to the aesthetics mapping}
 \usage{
-addSSandCSasAesthetics(aesthetics, extra_params)
+addSSandCSasAesthetics(a_aesthetics, extra_params)
 }
 \arguments{
-\item{aesthetics}{list. Original aesthetics mapping of the layer}
+\item{a_aesthetics}{list. Original aesthetics mapping of the layer}
 
 \item{extra_params}{named list containing the details of showSelected
 and clickSelects values of the layer}

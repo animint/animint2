@@ -4,13 +4,13 @@
 \alias{selectSSandCS}
 \title{Separate .variable/.value selectors}
 \usage{
-selectSSandCS(aesthetics_list)
+selectSSandCS(a_aesthetics_list)
 }
 \arguments{
-\item{aesthetics_list}{aesthetics mapping of the layer}
+\item{a_aesthetics_list}{aesthetics mapping of the layer}
 }
 \value{
-Modified \code{aes.list} list with separated
+Modified \code{a_aes.list} list with separated
 showSelected.variable/value
 }
 \description{

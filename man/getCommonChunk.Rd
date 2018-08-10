@@ -4,12 +4,12 @@
 \alias{getCommonChunk}
 \title{Save the common columns for each tsv to one chunk}
 \usage{
-getCommonChunk(built, chunk.vars, aes.list)
+getCommonChunk(built, chunk.vars, a_aes.list)
 }
 \arguments{
 \item{built}{data.frame of built data.}
 
-\item{aes.list}{a character vector of aesthetics.}
+\item{a_aes.list}{a character vector of a_aesthetics.}
 
 \item{vars}{character vector of chunk variable names to split on.}
 }

@@ -4,12 +4,12 @@
 \alias{issueSelectorWarnings}
 \title{Issue warnings for selectors}
 \usage{
-issueSelectorWarnings(geoms, selector.aes, duration)
+issueSelectorWarnings(geoms, selector.a_aes, duration)
 }
 \arguments{
 \item{geoms}{\code{geoms} to check for warnings}
 
-\item{selector.aes}{selectors for each geom}
+\item{selector.a_aes}{selectors for each geom}
 
 \item{duration}{animation variable information to check for \code{key} value}
 }
