@@ -5,7 +5,6 @@ animint2 provides an animated, interactive grammar of graphics
 ** Installation
 
 #+BEGIN_SRC R
-devtools::install_github("faizan-khan-iit/ggplot2@validate-params")
 devtools::install_github("tdhock/animint2")
 #+END_SRC
 
@@ -21,7 +20,11 @@ new syntax.
 
 This package is a redesign of [[https://github.com/tdhock/animint][animint]] with a cleaner syntax. In the
 old animint we had showSelected/clickSelects as aesthetics, and in
-animint2 they are now parameters. Consider the following example [[http://members.cbio.mines-paristech.fr/~thocking/data/PeakSegJoint-H3K4me3-test/1/figure-train-errors/][data
+animint2 they are now parameters. 
+
+This package contains all forked functions with a_* prefix. For eg: a_geom_point()
+
+Consider the following example [[http://members.cbio.mines-paristech.fr/~thocking/data/PeakSegJoint-H3K4me3-test/1/figure-train-errors/][data
 viz]], adapted from
 [[file:tests/testthat/test-renderer1-variable-value.R]]. The data set used
 to draw the blue line segments in the bottom plot looks like this:
