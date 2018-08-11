@@ -22,7 +22,7 @@ This package is a redesign of [[https://github.com/tdhock/animint][animint]] wit
 old animint we had showSelected/clickSelects as aesthetics, and in
 animint2 they are now parameters. 
 
-This package contains all the forked functions of ggplot2 functions and is no longer dependent on any branch of ggplot2.  
+This package contains all the forked functions of ggplot2 and is no longer dependent on any branch of ggplot2.
 
 Consider the following example [[http://members.cbio.mines-paristech.fr/~thocking/data/PeakSegJoint-H3K4me3-test/1/figure-train-errors/][data
 viz]], adapted from
