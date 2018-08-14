@@ -11,21 +11,22 @@ new_panel <- function() {
   structure(list(), class = "panel")
 }
 
-# Learn the layout of panels within a plot.
-#
-# This is determined by the facet, which returns a data frame, than
-# when joined to the data to be plotted tells us which panel it should
-# appear in, where that panel appears in the grid, and what scales it
-# uses.
-#
-# As well as the layout info, this function also adds empty lists in which
-# to house the x and y scales.
-#
-# @param the panel object to train
-# @param the facetting specification
-# @param data a list of data frames (one for each layer), and one for the plot
-# @param plot_data the default data frame
-# @return an updated panel object
+#' Learn the layout of panels within a plot.
+#'
+#' This is determined by the facet, which returns a data frame, than
+#' when joined to the data to be plotted tells us which panel it should
+#' appear in, where that panel appears in the grid, and what scales it
+#' uses.
+#'
+#' As well as the layout info, this function also adds empty lists in which
+#' to house the x and y scales.
+#'
+#' @param panel the panel object to train
+#' @param facet the facetting specification
+#' @param data a list of data frames (one for each layer), and one for the plot
+#' @param plot_data the default data frame
+#' @return an updated panel object
+#' @keywords internal
 g_train_layout <- function(panel, facet, data, plot_data) {
   layout <- facet_train_layout(facet, c(list(plot_data), data))
   panel$layout <- layout
@@ -51,15 +52,16 @@ map_layout <- function(panel, facet, data) {
   })
 }
 
-# Train position scales with data
-#
-# If panel-specific scales are not already present, will clone from
-# the scales provided in the parameter
-#
-# @param panel the panel object to train
-# @param data a list of data frames (one for each layer)
-# @param x_scale x scale for the plot
-# @param y_scale y scale for the plot
+#' Train position scales with data
+#'
+#' If panel-specific scales are not already present, will clone from
+#' the scales provided in the parameter
+#'
+#' @param panel the panel object to train
+#' @param data a list of data frames (one for each layer)
+#' @param x_scale x scale for the plot
+#' @param y_scale y scale for the plot
+#' @keywords internal
 train_position <- function(panel, data, x_scale, y_scale) {
   # Initialise scales if needed, and possible.
   layout <- panel$layout
