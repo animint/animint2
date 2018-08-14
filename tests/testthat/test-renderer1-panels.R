@@ -229,7 +229,7 @@ test_that("no minor grid lines is handed correctly", {
                  a_aes(x = duration, y = waiting)) + 
       a_geom_contour(data = geyser, 
                    a_aes(x = duration, y = waiting), 
-                   colour = "blue", size = .5, stat = "density2d") + 
+                   colour = "blue", size = .5, a_stat = "density2d") + 
       xlim(0.5, 6) + a_scale_y_log10(limits = c(40,110)) +
       ggtitle("a_geom_contour 2d density")
   ))
