@@ -76,10 +76,10 @@ geom_segment(aes(
   segment for the first row of data will only be shown if =1= is
   selected for the =size.100.problem.1peaks= selector.
 
-The new syntax uses parameters instead of =aes=, so is much more concise:
+The new syntax uses parameters instead of =a_aes=, so is much more concise:
 
 #+BEGIN_SRC R
-geom_segment(
+a_geom_segment(
  showSelected=c(selector.name="peaks", "bases.per.problem"),
  clickSelects="problem.name")
 #+END_SRC
