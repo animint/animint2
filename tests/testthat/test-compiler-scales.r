@@ -133,12 +133,12 @@ test_that("scales looked for in appropriate place", {
   p0 <- qplot(mpg, wt, data = mtcars) + scale_x_continuous("0")
   expect_equal(xlabel(p0), "0")
 
-  scale_x_continuous <- function(...) scale_x_continuous("1")
+  scale_x_continuous <- function(...) animint2::scale_x_continuous("1")
   p1 <- qplot(mpg, wt, data = mtcars)
   expect_equal(xlabel(p1), "1")
 
   f <- function() {
-    scale_x_continuous <- function(...) scale_x_continuous("2")
+    scale_x_continuous <- function(...) animint2::scale_x_continuous("2")
     qplot(mpg, wt, data = mtcars)
   }
   p2 <- f()
