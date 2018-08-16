@@ -10,7 +10,7 @@
 #' layer. These are useful for tests.
 #'
 #' @param plot a_plot object
-#' @seealso \code{\link{print.a_plot}} and \code{\link{benchplot}} for
+#' @seealso \code{\link{print.a_plot}} and \code{\link{a_benchplot}} for
 #'  functions that contain the complete set of steps for generating
 #'  a a_plot2 plot.
 #' @keywords internal
@@ -127,7 +127,7 @@ a_layer_grob <- function(plot, i = 1L) {
 #' to (e.g.) make the legend box 2 cm wide, or combine multiple plots into
 #' a single display, preserving aspect ratios across the plots.
 #'
-#' @seealso \code{\link{print.a_plot}} and \code{link{benchplot}} for
+#' @seealso \code{\link{print.a_plot}} and \code{link{a_benchplot}} for
 #'  for functions that contain the complete set of steps for generating
 #'  a a_plot2 plot.
 #' @return a \code{\link{gtable}} object

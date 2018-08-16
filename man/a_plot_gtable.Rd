@@ -22,7 +22,7 @@ to (e.g.) make the legend box 2 cm wide, or combine multiple plots into
 a single display, preserving aspect ratios across the plots.
 }
 \seealso{
-\code{\link{print.a_plot}} and \code{link{benchplot}} for
+\code{\link{print.a_plot}} and \code{link{a_benchplot}} for
  for functions that contain the complete set of steps for generating
  a a_plot2 plot.
 }
