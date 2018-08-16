@@ -2,7 +2,7 @@
 #'
 #' \code{a_geom_path()} connects the observations in the order in which they appear
 #' in the data. \code{a_geom_line()} connects them in order of the variable on the
-#' x axis. \code{a_geom_step()} creates a stairstep plot, highlighting exactly
+#' x axis. \code{a_geom_step()} creates a a_stairstep plot, highlighting exactly
 #' when changes occur.
 #'
 #' @section Aesthetics:
@@ -284,17 +284,17 @@ a_geom_step <- function(mapping = NULL, data = NULL, a_stat = "identity",
 #' @include geom-path.r
 a_GeomStep <- a_ggproto("a_GeomStep", a_GeomPath,
   draw_panel = function(data, panel_scales, a_coord, direction = "hv") {
-    data <- plyr::ddply(data, "group", stairstep, direction = direction)
+    data <- plyr::ddply(data, "group", a_stairstep, direction = direction)
     a_GeomPath$draw_panel(data, panel_scales, a_coord)
   }
 )
 
-#' Calculate stairsteps
+#' Calculate a_stairsteps
 #' Used by \code{\link{a_geom_step}}
 #' @param data ...
 #' @param direction ...
 #' @export
-stairstep <- function(data, direction="hv") {
+a_stairstep <- function(data, direction="hv") {
   direction <- match.arg(direction, c("hv", "vh"))
   data <- as.data.frame(data)[order(data$x), ]
   n <- nrow(data)

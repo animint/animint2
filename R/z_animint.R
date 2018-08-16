@@ -469,7 +469,7 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
     g$a_geom <- "polygon"
   } else if(g$a_geom=="step"){
     datanames <- names(g.data)
-    g.data <- plyr::ddply(g.data, "group", function(df) stairstep(df))
+    g.data <- plyr::ddply(g.data, "group", function(df) a_stairstep(df))
     g$a_geom <- "path"
   } else if(g$a_geom=="contour" | g$a_geom=="density2d"){
     g$a_aes[["group"]] <- "piece"

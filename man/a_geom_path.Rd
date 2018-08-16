@@ -76,7 +76,7 @@ the default plot specification, e.g. \code{\link{borders}}.}
 \description{
 \code{a_geom_path()} connects the observations in the order in which they appear
 in the data. \code{a_geom_line()} connects them in order of the variable on the
-x axis. \code{a_geom_step()} creates a stairstep plot, highlighting exactly
+x axis. \code{a_geom_step()} creates a a_stairstep plot, highlighting exactly
 when changes occur.
 }
 \section{Aesthetics}{
