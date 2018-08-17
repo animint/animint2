@@ -111,7 +111,7 @@ parsePlot <- function(meta, plot, plot.name){
     plot$a_labels$y <- temp
   }
   is.blank <- function(el.name){
-    x <- calc_element(el.name, plot$a_theme)
+    x <- a_calc_element(el.name, plot$a_theme)
     "a_element_blank"%in%attr(x,"class")
   }
 

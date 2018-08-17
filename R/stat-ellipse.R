@@ -76,12 +76,12 @@ a_StatEllipse <- a_ggproto("a_StatEllipse", a_Stat,
 
   compute_group = function(data, scales, type = "t", level = 0.95,
                            segments = 51, na.rm = FALSE) {
-    calculate_ellipse(data = data, vars = c("x", "y"), type = type,
+    a_calculate_ellipse(data = data, vars = c("x", "y"), type = type,
                       level = level, segments = segments)
   }
 )
 
-calculate_ellipse <- function(data, vars, type, level, segments){
+a_calculate_ellipse <- function(data, vars, type, level, segments){
   dfn <- 2
   dfd <- nrow(data) - 1
 

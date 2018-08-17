@@ -525,11 +525,11 @@ update_a_theme <- function(olda_theme, newa_theme) {
 #' @param verbose If TRUE, print out which elements this one inherits from
 #' @examples
 #' t <- a_theme_grey()
-#' calc_element('text', t)
+#' a_calc_element('text', t)
 #'
 #' # Compare the "raw" element definition to the element with calculated inheritance
 #' t$axis.text.x
-#' calc_element('axis.text.x', t, verbose = TRUE)
+#' a_calc_element('axis.text.x', t, verbose = TRUE)
 #'
 #' # This reports that axis.text.x inherits from axis.text,
 #' # which inherits from text. You can view each of them with:
@@ -538,7 +538,7 @@ update_a_theme <- function(olda_theme, newa_theme) {
 #' t$text
 #'
 #' @export
-calc_element <- function(a_element, a_theme, verbose = FALSE) {
+a_calc_element <- function(a_element, a_theme, verbose = FALSE) {
   if (verbose) message(a_element, " --> ", appendLF = FALSE)
 
   # If this is a_element_blank, don't inherit anything from parents
@@ -572,7 +572,7 @@ calc_element <- function(a_element, a_theme, verbose = FALSE) {
 
   # Calculate the parent objects' inheritance
   if (verbose) message(paste(pnames, collapse = ", "))
-  parents <- lapply(pnames, calc_element, a_theme, verbose)
+  parents <- lapply(pnames, a_calc_element, a_theme, verbose)
 
   # Combine the properties of this element with all parents
   Reduce(combine_elements, parents, a_theme[[a_element]])

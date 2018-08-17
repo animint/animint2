@@ -310,7 +310,7 @@ a_guide_gengrob.legend <- function(a_guide, a_theme) {
 
   grob.title <- ggname("a_guide.title",
     a_element_grob(
-      a_guide$title.a_theme %||% calc_element("legend.title", a_theme),
+      a_guide$title.a_theme %||% a_calc_element("legend.title", a_theme),
       a_label = a_guide$title,
       hjust = a_guide$title.hjust %||% a_theme$legend.title.align %||% 0,
       vjust = a_guide$title.vjust %||% 0.5,
@@ -326,7 +326,7 @@ a_guide_gengrob.legend <- function(a_guide, a_theme) {
   if (!a_guide$a_label || is.null(a_guide$key$.a_label)) {
     grob.a_labels <- rep(list(a_zeroGrob()), nrow(a_guide$key))
   } else {
-    a_label.a_theme <- a_guide$a_label.a_theme %||% calc_element("legend.text", a_theme)
+    a_label.a_theme <- a_guide$a_label.a_theme %||% a_calc_element("legend.text", a_theme)
 
     # a_label.a_theme in param of a_guide_legend() > a_theme$legend.text.align > default
     # hjust/vjust in a_theme$legend.text and a_label.a_theme are ignored.

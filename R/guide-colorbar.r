@@ -273,7 +273,7 @@ a_guide_gengrob.colorbar <- function(a_guide, a_theme) {
   # title
   grob.title <- ggname("a_guide.title",
     a_element_grob(
-      a_guide$title.a_theme %||% calc_element("legend.title", a_theme),
+      a_guide$title.a_theme %||% a_calc_element("legend.title", a_theme),
       a_label = a_guide$title,
       hjust = a_guide$title.hjust %||% a_theme$legend.title.align %||% 0,
       vjust = a_guide$title.vjust %||% 0.5
@@ -287,7 +287,7 @@ a_guide_gengrob.colorbar <- function(a_guide, a_theme) {
   title_height.c <- c(title_height)
 
   # a_label
-  a_label.a_theme <- a_guide$a_label.a_theme %||% calc_element("legend.text", a_theme)
+  a_label.a_theme <- a_guide$a_label.a_theme %||% a_calc_element("legend.text", a_theme)
   grob.a_label <- {
     if (!a_guide$a_label)
       a_zeroGrob()

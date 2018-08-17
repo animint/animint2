@@ -129,7 +129,7 @@ a_GeomLogticks <- a_ggproto("a_GeomLogticks", a_Geom,
     if (grepl("[b|t]", sides)) {
 
       # Get positions of x tick marks
-      xticks <- calc_logticks(
+      xticks <- a_calc_logticks(
         base = base,
         minpow = floor(panel_scales$x.range[1]),
         maxpow = ceiling(panel_scales$x.range[2]),
@@ -164,7 +164,7 @@ a_GeomLogticks <- a_ggproto("a_GeomLogticks", a_Geom,
 
 
     if (grepl("[l|r]", sides)) {
-      yticks <- calc_logticks(
+      yticks <- a_calc_logticks(
         base = base,
         minpow = floor(panel_scales$y.range[1]),
         maxpow = ceiling(panel_scales$y.range[2]),
@@ -209,7 +209,7 @@ a_GeomLogticks <- a_ggproto("a_GeomLogticks", a_Geom,
 # - value: the position of the log tick on the data axis, for example 1, 2, ..., 9, 10, 20, ...
 # - start: on the other axis, start position of the line (usually 0)
 # - end: on the other axis, end position of the line (for example, .1, .2, or .3)
-calc_logticks <- function(base = 10, ticks_per_base = base - 1,
+a_calc_logticks <- function(base = 10, ticks_per_base = base - 1,
     minpow = 0, maxpow = minpow + 1, start = 0, shortend = .1, midend = .2, longend = .3) {
 
   # Number of blocks of tick marks

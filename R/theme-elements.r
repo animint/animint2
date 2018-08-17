@@ -108,7 +108,7 @@ is.rel <- function(x) inherits(x, "rel")
 a_element_render <- function(a_theme, a_element, ..., name = NULL) {
 
   # Get the a_element from the a_theme, calculating inheritance
-  el <- calc_element(a_element, a_theme)
+  el <- a_calc_element(a_element, a_theme)
   if (is.null(el)) {
     message("Theme element ", a_element, " missing")
     return(a_zeroGrob())

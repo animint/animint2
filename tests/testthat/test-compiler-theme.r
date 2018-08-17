@@ -81,7 +81,7 @@ test_that("Calculating a_theme element inheritance", {
   t <- a_theme_grey() + a_theme(axis.title = a_element_text(colour = 'red'))
 
   # Check that properties are passed along from axis.title to axis.title.x
-  e <- calc_element('axis.title.x', t)
+  e <- a_calc_element('axis.title.x', t)
   expect_identical(e$colour, 'red')
   expect_false(is.null(e$family))
   expect_false(is.null(e$face))
@@ -92,15 +92,15 @@ test_that("Calculating a_theme element inheritance", {
   t <- a_theme_grey(base_size = 12) +
     a_theme(axis.title   = a_element_text(size = rel(0.5))) +
     a_theme(axis.title.x = a_element_text(size = rel(0.5)))
-  e <- calc_element('axis.title', t)
+  e <- a_calc_element('axis.title', t)
   expect_identical(e$size, 6)
-  ex <- calc_element('axis.title.x', t)
+  ex <- a_calc_element('axis.title.x', t)
   expect_identical(ex$size, 3)
 
 
   # Check that a a_theme_blank in a parent node gets passed along to children
   t <- a_theme_grey() + a_theme(text = a_element_blank())
-  expect_identical(calc_element('axis.title.x', t), a_element_blank())
+  expect_identical(a_calc_element('axis.title.x', t), a_element_blank())
 })
 
 

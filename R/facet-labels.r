@@ -531,7 +531,7 @@ ggstrip <- function(text, horizontal = TRUE, a_theme) {
   text_a_theme <- if (horizontal) "strip.text.x" else "strip.text.y"
   if (is.list(text)) text <- text[[1]]
 
-  a_element <- calc_element(text_a_theme, a_theme)
+  a_element <- a_calc_element(text_a_theme, a_theme)
   if (inherits(a_element, "a_element_blank"))
     return(a_zeroGrob())
 
