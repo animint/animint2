@@ -44,8 +44,8 @@ a_PositionJitter <- a_ggproto("a_PositionJitter", a_Position,
 
   setup_params = function(self, data) {
     list(
-      width = self$width %||% resolution(data$x, zero = FALSE) * 0.4,
-      height = self$height %||% resolution(data$y, zero = FALSE) * 0.4
+      width = self$width %||% a_resolution(data$x, zero = FALSE) * 0.4,
+      height = self$height %||% a_resolution(data$y, zero = FALSE) * 0.4
     )
   },
 

@@ -117,7 +117,7 @@ a_GeomBar <- a_ggproto("a_GeomBar", a_GeomRect,
 
   setup_data = function(data, params) {
     data$width <- data$width %||%
-      params$width %||% (resolution(data$x, FALSE) * 0.9)
+      params$width %||% (a_resolution(data$x, FALSE) * 0.9)
     transform(data,
       ymin = pmin(y, 0), ymax = pmax(y, 0),
       xmin = x - width / 2, xmax = x + width / 2, width = NULL

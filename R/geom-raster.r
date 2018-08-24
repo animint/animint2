@@ -52,8 +52,8 @@ a_GeomRaster <- a_ggproto("a_GeomRaster", a_Geom,
     hjust <- params$hjust %||% 0.5
     vjust <- params$vjust %||% 0.5
 
-    w <- resolution(data$x, FALSE)
-    h <- resolution(data$y, FALSE)
+    w <- a_resolution(data$x, FALSE)
+    h <- a_resolution(data$y, FALSE)
 
     data$xmin <- data$x - w * (1 - hjust)
     data$xmax <- data$x + w * hjust
@@ -70,8 +70,8 @@ a_GeomRaster <- a_ggproto("a_GeomRaster", a_Geom,
     data <- a_coord$transform(data, panel_scales)
 
     # Convert vector of data to raster
-    x_pos <- as.integer((data$x - min(data$x)) / resolution(data$x, FALSE))
-    y_pos <- as.integer((data$y - min(data$y)) / resolution(data$y, FALSE))
+    x_pos <- as.integer((data$x - min(data$x)) / a_resolution(data$x, FALSE))
+    y_pos <- as.integer((data$y - min(data$y)) / a_resolution(data$y, FALSE))
 
     nrow <- max(y_pos) + 1
     ncol <- max(x_pos) + 1

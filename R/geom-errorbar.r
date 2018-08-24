@@ -35,7 +35,7 @@ a_GeomErrorbar <- a_ggproto("a_GeomErrorbar", a_Geom,
 
   setup_data = function(data, params) {
     data$width <- data$width %||%
-      params$width %||% (resolution(data$x, FALSE) * 0.9)
+      params$width %||% (a_resolution(data$x, FALSE) * 0.9)
 
     transform(data,
       xmin = x - width / 2, xmax = x + width / 2, width = NULL

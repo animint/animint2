@@ -209,7 +209,7 @@ make_tallrect_or_widerect <- function(a_aes.prefix, a_geom_xrect, data, var.name
   stopifnot(length(alpha)==1)
   stopifnot(is.function(data.fun))
   vals <- sort(unique(x))
-  Delta <- if(even) rep(resolution(vals), length(vals)-1)/2 else diff(vals)/2
+  Delta <- if(even) rep(a_resolution(vals), length(vals)-1)/2 else diff(vals)/2
   breaks <- c(vals[1] - Delta[1],
               vals[-1] - Delta,
               vals[length(vals)]+Delta[length(Delta)])

@@ -83,8 +83,8 @@ a_GeomHex <- a_ggproto("a_GeomHex", a_Geom,
 hexGrob <- function(x, y, size = rep(1, length(x)), colour = "grey50", fill = "grey90") {
   stopifnot(length(y) == length(x))
 
-  dx <- resolution(x, FALSE)
-  dy <- resolution(y, FALSE) / sqrt(3) / 2 * 1.15
+  dx <- a_resolution(x, FALSE)
+  dy <- a_resolution(y, FALSE) / sqrt(3) / 2 * 1.15
 
   hexC <- hexbin::hexcoords(dx, dy, n = 1)
 

@@ -129,7 +129,7 @@ a_geom_boxplot <- function(mapping = NULL, data = NULL,
 a_GeomBoxplot <- a_ggproto("a_GeomBoxplot", a_Geom,
   setup_data = function(data, params) {
     data$width <- data$width %||%
-      params$width %||% (resolution(data$x, FALSE) * 0.9)
+      params$width %||% (a_resolution(data$x, FALSE) * 0.9)
 
     if (!is.null(data$outliers)) {
       suppressWarnings({

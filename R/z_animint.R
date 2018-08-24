@@ -486,8 +486,8 @@ saveLayer <- function(l, d, meta, a_layer_name, a_plot, built, AnimationInfo){
     ## clicking/hiding hexbins doesn't really make sense. Need to stop
     ## with an error if showSelected/clickSelects is used with hex.
     g$a_aes[["group"]] <- "group"
-    dx <- resolution(g.data$x, FALSE)
-    dy <- resolution(g.data$y, FALSE) / sqrt(3) / 2 * 1.15
+    dx <- a_resolution(g.data$x, FALSE)
+    dy <- a_resolution(g.data$y, FALSE) / sqrt(3) / 2 * 1.15
     hex <- as.data.frame(hexbin::hexcoords(dx, dy))[,1:2]
     hex <- rbind(hex, hex[1,]) # to join hexagon back to first point
     g.data$group <- as.numeric(interaction(g.data$group, 1:nrow(g.data)))

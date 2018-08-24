@@ -100,7 +100,7 @@ a_geom_violin <- function(mapping = NULL, data = NULL,
 a_GeomViolin <- a_ggproto("a_GeomViolin", a_Geom,
   setup_data = function(data, params) {
     data$width <- data$width %||%
-      params$width %||% (resolution(data$x, FALSE) * 0.9)
+      params$width %||% (a_resolution(data$x, FALSE) * 0.9)
 
     # ymin, ymax, xmin, and xmax define the bounding rectangle for each group
     plyr::ddply(data, "group", transform,
