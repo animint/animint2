@@ -1,6 +1,8 @@
 library("testthat")
 library("animint2")
 library("RSelenium");library("XML")
+setwd("testthat")
+source("helper-functions.R")
 
 ## RSelenium does not work with all versions of firefox, TDH usually
 ## tests using one of the following.
@@ -32,8 +34,6 @@ if(filter == ""){
   filter <- NULL
 }
 if(interactive()){
-  setwd("testthat")
-  source("helper-functions.R")
   tests_init("firefox")
 }
 

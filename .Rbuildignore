@@ -8,3 +8,4 @@ inst/examples
 README.org
 tableau-notes.org
 .*~
+.travis.yml

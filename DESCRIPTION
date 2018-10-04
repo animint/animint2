@@ -39,7 +39,7 @@ Description: The animint package provided an interactive grammar
  clickSelects and showSelected are now specified as parameters,
  rather than aesthetics.
 Depends:
-    R (>= 3.3.2)
+    R (>= 3.4.0)
 Imports:
     digest,
     RJSONIO,
@@ -259,7 +259,6 @@ Collate:
     'z_knitr.R'
     'z_print.R'
     'z_scales.R'
-    'z_testHelpers.R'
     'z_theme_animint.R'
     'z_transformShape.R'
 RoxygenNote: 6.1.0
