@@ -2,7 +2,9 @@ library("testthat")
 library("animint2")
 library("RSelenium");library("XML")
 setwd("testthat")
+getwd()
 source("helper-functions.R")
+source("helper-plot-data.r")
 
 ## RSelenium does not work with all versions of firefox, TDH usually
 ## tests using one of the following.
