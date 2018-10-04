@@ -18,6 +18,12 @@ geom_tallrect(mapping = NULL, data = NULL, stat = "identity",
 \item{position}{position mapping, defaults to identity}
 
 \item{...}{other arguments}
+
+\item{na.rm}{remove missing values?}
+
+\item{show.legend}{TRUE or FALSE}
+
+\item{inherit.aes}{TRUE or FALSE}
 }
 \value{
 ggplot2 layer

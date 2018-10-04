@@ -2,12 +2,13 @@
 # All input and output done with data.frames to facilitate
 # multiple input and output variables
 
+#' @rdname animint2-ggproto
 #' @export
 a_scales_list <- function() {
   ggproto(NULL, ScalesList)
 }
 
-#' @noRd
+#' @rdname animint2-ggproto
 #' @export
 ScalesList <- ggproto("ScalesList", NULL,
   scales = NULL,

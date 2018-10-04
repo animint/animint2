@@ -632,6 +632,7 @@ checkSingleShowSelectedValue <- function(selectors){
 
 #' Set plot width and height for all plots
 #' @param meta meta object with all information
+#' @param AllPlotsInfo plot info list
 #' @return \code{NULL}. Sizes are stored in meta object
 setPlotSizes <- function(meta, AllPlotsInfo){
   # Set both width and height
@@ -746,10 +747,12 @@ getLegend <- function(mb){
 
 ##' Save the common columns for each tsv to one chunk
 ##' @param built data.frame of built data.
-##' @param vars character vector of chunk variable names to split on.
+##' @param chunk.vars which variables to chunk on.
 ##' @param aes.list a character vector of aesthetics.
+##' @param vars character vector of chunk variable names to split on.
 ##' @return a list of common and varied data to save, or NULL if there is
 ##' no common data.
+##' @importFrom stats na.omit
 getCommonChunk <- function(built, chunk.vars, aes.list){
   if(length(chunk.vars) == 0){
     return(NULL)

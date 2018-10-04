@@ -18,11 +18,12 @@ new syntax.
 
 ** Differences with old animint
 
-This package is a redesign of [[https://github.com/tdhock/animint][animint]] with a cleaner syntax. In the
-old animint we had showSelected/clickSelects as aesthetics, and in
-animint2 they are now parameters. 
-
-This package contains all the forked functions of ggplot2 and is no longer dependent on any branch of ggplot2.
+This package is a redesign of [[https://github.com/tdhock/animint][animint]] with:
+- Cleaner syntax. In the old animint we had showSelected/clickSelects
+  as aesthetics, and in animint2 they are now parameters.
+- Easier installation. The old animint depended on ggplot2 but
+  animint2 does not (it has copied the necessary functions from
+  ggplot2). 
 
 Consider the following example [[http://members.cbio.mines-paristech.fr/~thocking/data/PeakSegJoint-H3K4me3-test/1/figure-train-errors/][dataviz]], adapted from
 [[file:tests/testthat/test-renderer1-variable-value.R]]. The data set used

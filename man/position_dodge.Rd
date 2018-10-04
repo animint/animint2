@@ -51,3 +51,4 @@ Other position adjustments: \code{\link{position_fill}},
   \code{\link{position_jitter}},
   \code{\link{position_nudge}}
 }
+\concept{position adjustments}

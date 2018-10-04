@@ -18,6 +18,12 @@ geom_widerect(mapping = NULL, data = NULL, stat = "identity",
 \item{position}{position mapping, defaults to identity}
 
 \item{...}{other arguments}
+
+\item{na.rm}{remove missing values?}
+
+\item{show.legend}{TRUE OR FALSE}
+
+\item{inherit.aes}{TRUE OR FALSE}
 }
 \value{
 ggplot2 layer

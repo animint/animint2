@@ -5,8 +5,8 @@
 \title{Create a new layer}
 \usage{
 layer(geom = NULL, stat = NULL, data = NULL, mapping = NULL,
-  position = NULL, params = list(), inherit.aes = TRUE, subset = NULL,
-  show.legend = NA)
+  position = NULL, params = list(), inherit.aes = TRUE,
+  subset = NULL, show.legend = NA)
 }
 \arguments{
 \item{geom}{The geometric object to use display the data}

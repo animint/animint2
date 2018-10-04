@@ -29,6 +29,7 @@ is.rgb <- function(x){
 #' Convert R colors to RGB hexadecimal color values
 #' @param x character
 #' @return hexadecimal color value or "transparent" if is.na
+#' @importFrom grDevices col2rgb rgb
 #' @export
 toRGB <- function(x){
   is.transparent <- is.na(x) | x=="transparent"

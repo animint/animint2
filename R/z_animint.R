@@ -1,5 +1,7 @@
 #' Convert a ggplot to a list.
 #' @param meta environment with previously calculated plot data, and a new plot to parse, already stored in plot and plot.name.
+#' @param plot ggplot list object
+#' @param plot.name name of plot
 #' @return nothing, info is stored in meta.
 #' @export
 #' @import plyr
@@ -210,11 +212,16 @@ storeLayer <- function(meta, g, g.data.varied){
 #' @param l one layer of the ggplot object.
 #' @param d one layer of calculated data from ggplot_build(p).
 #' @param meta environment of meta-data.
-#' @param geom_num the number of geom in the plot. Each geom gets an increasing
+#' @param layer_name name of layer
+#' @param ggplot ggplot 
+#' @param built built list
+#' @param AnimationInfo animation list
 #' ID number starting from 1
 #' @return list representing a layer, with corresponding aesthetics, ranges, and groups.
 #' @export
 saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
+  xminv <- y <- xmaxv <- chunks.for <- NULL
+  ## above to avoid NOTE on CRAN check.
   # Set geom name and layer name
   g <- list(geom=strsplit(layer_name, "_")[[1]][2])
   g$classed <- layer_name
@@ -858,7 +865,8 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
 #' @param css.file character string for non-empty css file to include. Provided file will be copied to the output directory as styles.css
 #' @return invisible list of ggplots in list format.
 #' @export
-#' @seealso \code{\link{ggplot2}}
+#' @import RJSONIO
+#' @importFrom utils browseURL head packageVersion str tail write.table
 #' @example inst/examples/animint.R
 animint2dir <- function(plot.list, out.dir = tempfile(),
                         json.file = "plot.json", open.browser = interactive(),

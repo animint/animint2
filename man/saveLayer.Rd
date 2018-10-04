@@ -13,7 +13,13 @@ saveLayer(l, d, meta, layer_name, ggplot, built, AnimationInfo)
 
 \item{meta}{environment of meta-data.}
 
-\item{geom_num}{the number of geom in the plot. Each geom gets an increasing
+\item{layer_name}{name of layer}
+
+\item{ggplot}{ggplot}
+
+\item{built}{built list}
+
+\item{AnimationInfo}{animation list
 ID number starting from 1}
 }
 \value{

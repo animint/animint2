@@ -12,13 +12,13 @@ geom_freqpoly(mapping = NULL, data = NULL, stat = "bin",
   inherit.aes = TRUE)
 
 geom_histogram(mapping = NULL, data = NULL, stat = "bin",
-  position = "stack", ..., binwidth = NULL, bins = NULL, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  position = "stack", ..., binwidth = NULL, bins = NULL,
+  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
-stat_bin(mapping = NULL, data = NULL, geom = "bar", position = "stack",
-  ..., binwidth = NULL, bins = NULL, center = NULL, boundary = NULL,
-  closed = c("right", "left"), pad = FALSE, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+stat_bin(mapping = NULL, data = NULL, geom = "bar",
+  position = "stack", ..., binwidth = NULL, bins = NULL,
+  center = NULL, boundary = NULL, closed = c("right", "left"),
+  pad = FALSE, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -96,9 +96,6 @@ frequency polygons touch 0. Defaults to \code{FALSE}.}
 Display a 1d distribution by dividing into bins and counting the number
 of observations in each bin. Histograms use bars; frequency polygons use
 lines.
-
-\code{stat_bin} is suitable only for continuous x data. If your x data is
-  discrete, you probably want to use \code{\link{stat_count}}.
 }
 \details{
 By default, \code{stat_bin} uses 30 bins - this is not a good default,

@@ -9,6 +9,8 @@ getCommonChunk(built, chunk.vars, aes.list)
 \arguments{
 \item{built}{data.frame of built data.}
 
+\item{chunk.vars}{which variables to chunk on.}
+
 \item{aes.list}{a character vector of aesthetics.}
 
 \item{vars}{character vector of chunk variable names to split on.}

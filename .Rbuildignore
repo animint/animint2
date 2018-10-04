@@ -1,2 +1,10 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+build.sh
+data-raw
+IDEAS.html
+IDEAS.org
+inst/examples
+README.org
+tableau-notes.org
+.*~

@@ -8,6 +8,8 @@ setPlotSizes(meta, AllPlotsInfo)
 }
 \arguments{
 \item{meta}{meta object with all information}
+
+\item{AllPlotsInfo}{plot info list}
 }
 \value{
 \code{NULL}. Sizes are stored in meta object

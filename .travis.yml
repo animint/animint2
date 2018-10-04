@@ -18,10 +18,10 @@ install:
   # install uninstalled packages which this pkg depends on/links to/suggests.
   - ./travis-tool.sh install_deps
   - ./travis-tool.sh install_github jimhester/covr ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa
+  - Rscript -e "devtools::install(dep=FALSE)"
 
 script:
-  - Rscript -e "devtools::install(dep=FALSE)"
-  - Rscript -e "source('tests/testthat.R', chdir=TRUE)"
+  - if [ "$TEST_SUITE" == "CRAN" ];then bash build.sh;else Rscript -e "source('tests/testthat.R', chdir = TRUE)";fi
 
 after_success:
   - Rscript -e "library(covr);coveralls()"
@@ -44,5 +44,6 @@ env:
     - TEST_SUITE=renderer4
     - TEST_SUITE=renderer5
     - TEST_SUITE=compiler
+    - TEST_SUITE=CRAN
     
     

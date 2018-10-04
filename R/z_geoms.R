@@ -4,6 +4,9 @@
 #' @param stat statistic mapping, defaults to identity
 #' @param position position mapping, defaults to identity
 #' @param ... other arguments
+#' @param na.rm remove missing values?
+#' @param show.legend TRUE or FALSE
+#' @param inherit.aes TRUE or FALSE
 #' @return ggplot2 layer
 #' @export
 #' @example inst/examples/breakpoints.R
@@ -73,6 +76,9 @@ GeomTallRect <- ggproto("GeomTallRect",Geom,
 #' @param stat statistic mapping, defaults to identity
 #' @param position position mapping, defaults to identity
 #' @param ... other arguments
+#' @param na.rm remove missing values?
+#' @param show.legend TRUE OR FALSE
+#' @param inherit.aes TRUE OR FALSE
 #' @return ggplot2 layer
 #' @export
 #' @examples

@@ -14,13 +14,14 @@
 %   R/geom-vline.r, R/position-.r, R/position-dodge.r, R/position-fill.r,
 %   R/position-identity.r, R/position-jitter.r, R/position-jitterdodge.R,
 %   R/position-nudge.R, R/position-stack.r, R/scale-.r, R/scale-continuous.r,
-%   R/scale-date.r, R/scale-discrete-.r, R/scale-identity.r, R/stat-bin.r,
-%   R/stat-bin2d.r, R/stat-bindot.r, R/stat-binhex.r, R/stat-boxplot.r,
-%   R/stat-contour.r, R/stat-count.r, R/stat-density-2d.r, R/stat-density.r,
-%   R/stat-ecdf.r, R/stat-ellipse.R, R/stat-function.r, R/stat-identity.r,
-%   R/stat-qq.r, R/stat-quantile.r, R/stat-smooth.r, R/stat-sum.r,
-%   R/stat-summary-2d.r, R/stat-summary-bin.R, R/stat-summary-hex.r,
-%   R/stat-summary.r, R/stat-unique.r, R/stat-ydensity.r, R/z_geoms.R
+%   R/scale-date.r, R/scale-discrete-.r, R/scale-identity.r, R/scales-.r,
+%   R/stat-bin.r, R/stat-bin2d.r, R/stat-bindot.r, R/stat-binhex.r,
+%   R/stat-boxplot.r, R/stat-contour.r, R/stat-count.r, R/stat-density-2d.r,
+%   R/stat-density.r, R/stat-ecdf.r, R/stat-ellipse.R, R/stat-function.r,
+%   R/stat-identity.r, R/stat-qq.r, R/stat-quantile.r, R/stat-smooth.r,
+%   R/stat-sum.r, R/stat-summary-2d.r, R/stat-summary-bin.R,
+%   R/stat-summary-hex.r, R/stat-summary.r, R/stat-unique.r, R/stat-ydensity.r,
+%   R/z_geoms.R
 \docType{data}
 \name{animint2-ggproto}
 \alias{animint2-ggproto}
@@ -84,12 +85,15 @@
 \alias{PositionStack}
 \alias{Scale}
 \alias{ScaleContinuous}
+\alias{ScaleDiscrete}
 \alias{ScaleContinuousPosition}
 \alias{ScaleContinuousDatetime}
 \alias{ScaleContinuousDate}
 \alias{ScaleDiscretePosition}
 \alias{ScaleDiscreteIdentity}
 \alias{ScaleContinuousIdentity}
+\alias{a_scales_list}
+\alias{ScalesList}
 \alias{StatBin}
 \alias{StatBin2d}
 \alias{StatBindot}
@@ -116,6 +120,12 @@
 \alias{GeomTallRect}
 \alias{GeomWideRect}
 \title{Base ggproto classes for ggplot2}
+\format{An object of class \code{ScalesList} (inherits from \code{ggproto}) of length 9.}
+\usage{
+a_scales_list()
+
+ScalesList
+}
 \description{
 If you are creating a new geom, stat, position, or scale in another package,
 you'll need to extend from \code{animint2::Geom}, \code{animint2::Stat},

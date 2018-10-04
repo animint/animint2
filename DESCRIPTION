@@ -1,15 +1,48 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
 Version: 2018.10.4
-Author: Toby Dylan Hocking, Susan VanderPlas, Carson Sievert, Kevin Ferris,
-    Tony Tsai, Faizan Khan, Vivek Kumar
-Maintainer: Toby Dylan Hocking <toby.hocking@r-project.org>
-Description: A redesign of animint with a new syntax: clickSelects
-    and showSelected are now specified as parameters.
+Authors@R: c(
+    person("Toby", "Hocking",
+     email="toby.hocking@r-project.org",
+     role=c("aut", "cre"),
+     comment="Original animint code"),
+    person("Hadley", "Wickham",
+     role=c("aut"),
+     comment="Forked ggplot2 code"),
+    person("Winston", "Chang",
+     role="aut",
+     comment="Forked ggplot2 code"),
+    person("RStudio",
+     role = c("cph"),
+     comment="Forked ggplot2 code"),
+    person("Susan", "VanderPlas",
+     role="aut",
+     comment="Animint GSOC 2013"),
+    person("Carson", "Sievert",
+     role="aut",
+     comment="Animint GSOC 2014"),
+    person("Kevin", "Ferris",
+     role="aut",
+     comment="Animint GSOC 2015"),
+    person("Tony", "Tsai",
+     role="aut",
+     comment="Animint GSOC 2015"),
+    person("Faizan", "Khan",
+     role="aut",
+     comment="Animint GSOC 2016-2017"),
+    person("Vivek", "Kumar",
+     role="aut",
+     comment="Animint GSOC 2018"))
+Description: The animint package provided an interactive grammar
+ of graphics by depending on ggplot2. This is a redesign of animint
+ which no longer depends on ggplot2, and has a new syntax:
+ clickSelects and showSelected are now specified as parameters,
+ rather than aesthetics.
 Depends:
     R (>= 3.3.2)
 Imports:
     digest,
+    RJSONIO,
     grid,
     gtable (>= 0.1.1),
     MASS,
@@ -27,12 +60,10 @@ Suggests:
     htmltools,
     rmarkdown,
     testthat,
-    RSelenium,
-    XML,
+    RSelenium, XML,
     devtools,
     httr,
     maps,
-    covr,
     ggplot2movies,
     hexbin,
     Hmisc,
@@ -231,4 +262,4 @@ Collate:
     'z_testHelpers.R'
     'z_theme_animint.R'
     'z_transformShape.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
