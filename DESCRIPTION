@@ -1,8 +1,8 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2018.06.06
+Version: 2018.10.4
 Author: Toby Dylan Hocking, Susan VanderPlas, Carson Sievert, Kevin Ferris,
-    Tony Tsai, Faizan Khan
+    Tony Tsai, Faizan Khan, Vivek Kumar
 Maintainer: Toby Dylan Hocking <toby.hocking@r-project.org>
 Description: A redesign of animint with a new syntax: clickSelects
     and showSelected are now specified as parameters.
