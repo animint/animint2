@@ -2,7 +2,6 @@ library("testthat")
 library("animint2")
 library("RSelenium");library("XML")
 setwd("testthat")
-getwd()
 source("helper-functions.R")
 source("helper-plot-data.r")
 
