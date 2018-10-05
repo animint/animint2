@@ -9,3 +9,4 @@ README.org
 tableau-notes.org
 .*~
 .travis.yml
+travis-tool.sh
