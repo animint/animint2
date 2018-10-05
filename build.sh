@@ -4,12 +4,6 @@ cd ..
 rm -rf animint2-release
 cp -r animint2 animint2-release
 grep -v RSelenium animint2/DESCRIPTION > animint2-release/DESCRIPTION
-rm -rf animint2-release/tests/testthat/pids.txt
-rm -rf animint2-release/tests/testthat/intreg-selection
-rm -rf animint2-release/tests/testthat/animint-htmltest
-rm -rf animint2-release/tests/testthat/ANIMINT_TEST_FOO
-rm -rf animint2-release/tests/testthat/test-compiler-gist.R
-rm -rf animint2-release/tests/testthat/.httr-oauth
 cat <<EOF > animint2-release/tests/testthat.R 
 library(testthat)
 test_check("animint2", filter="compiler")

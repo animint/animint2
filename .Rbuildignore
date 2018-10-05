@@ -10,3 +10,9 @@ tableau-notes.org
 .*~
 .travis.yml
 travis-tool.sh
+pids.txt
+intreg-selection
+animint-htmltest
+ANIMINT_TEST_FOO
+test-compiler-gist.R
+.httr-oauth
