@@ -1,9 +1,12 @@
 language: c
 
+sudo: required
+
 before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
+  - sudo apt-get install texlive
 install:
   # Dependencies for shiny/rmarkdown integration
   # Thanks RStudio! https://github.com/rstudio/rmarkdown/blob/master/.travis.yml
@@ -17,11 +20,11 @@ install:
   - $HOME/opt/pandoc/pandoc --version
   # install uninstalled packages which this pkg depends on/links to/suggests.
   - ./travis-tool.sh install_deps
-  - ./travis-tool.sh install_github jimhester/covr faizan-khan-iit/ggplot2@e62066b462070a3a46f403d6f63531413a3a20ce ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa
+  - ./travis-tool.sh install_github jimhester/covr ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa
+  - Rscript -e "devtools::install(dep=FALSE)"
 
 script:
-  - Rscript -e "devtools::install(dep=FALSE)"
-  - Rscript -e "source('tests/testthat.R', chdir=TRUE)"
+  - if [ "$TEST_SUITE" == "CRAN" ];then bash build.sh;else Rscript -e "source('tests/testthat.R', chdir = TRUE)";fi
 
 after_success:
   - Rscript -e "library(covr);coveralls()"
@@ -44,5 +47,6 @@ env:
     - TEST_SUITE=renderer4
     - TEST_SUITE=renderer5
     - TEST_SUITE=compiler
+    - TEST_SUITE=CRAN
     
     

@@ -15,7 +15,6 @@ knit_meta()
   
   
 ```{r plot-1-top}
-library(ggplot2Animint) 
 library(animint2)
 dat <- data.frame(x = 1:10, y = 1:10, label = rep(c("a178", "b934"), 5))
 q2 <- list(q = qplot(x, y, data = dat, colour = label, 

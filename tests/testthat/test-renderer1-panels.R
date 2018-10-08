@@ -124,16 +124,13 @@ test_that("panel backgrounds render correctly", {
   expect_equal(length(background_petal), 1)
   expect_equal(length(blank_petal), 0)  # no rectangle for element_blank()
   expect_equal(length(gg538), 1)
-
   # test background fills
   match_sepal <- str_match_perl(attr_back_sepal["style",], fillPattern)
   value_sepal <- match_sepal[, "value"]
   expect_color(value_sepal[1], "lightblue")
-
   match_petal <- str_match_perl(attr_back_petal["style",], fillPattern)
   value_petal <- match_petal[, "value"]
   expect_color(value_petal[1], "white")
-  
   match_gg538 <- str_match_perl(attr_gg538["style",], fillPattern)
   value_gg538 <- match_gg538[, "value"]
   expect_color(value_gg538[1], "#F0F0F0")
@@ -143,12 +140,10 @@ test_that("panel borders render correctly", {
   # testing that there are the correct number of panels
   expect_equal(length(border_sepal), 3)
   expect_equal(length(border_petal), 1)
-
   # test border colors
   match_sepal <- str_match_perl(attr_border_sepal["style",], strokePattern)
   value_sepal <- match_sepal[, "value"]
   expect_color(value_sepal[1], "black")
-
   match_petal <- str_match_perl(attr_border_petal["style",], strokePattern)
   value_petal <- match_petal[, "value"]
   expect_color(value_petal[1], "grey50")
@@ -163,16 +158,13 @@ test_that("grid lines are drawn correctly", {
   expect_equal(length(grid_major_blank), 0)
   expect_equal(length(grid_minor_blank), 0)
   expect_equal(length(grid_major_gg538), 9)
-  
   # correct color of grid lines
   match_sepal <- str_match_perl(attr_major_sepal["style",], strokePattern)
   value_sepal <- match_sepal[, "value"]
   expect_color(value_sepal[1], "white")
-  
   match_petal <- str_match_perl(attr_major_petal["style",], strokePattern)
   value_petal <- match_petal[, "value"]
   expect_color(value_petal[1], "grey90")
-  
   match_gg538 <- str_match_perl(attr_major_gg538["style",], strokePattern)
   value_gg538 <- match_gg538[, "value"]
   expect_color(value_gg538[1], "#D2D2D2")
@@ -212,11 +204,16 @@ test_that("multiple selection sex_smoker plot", {
 
 test_that("renderer can handle only one grid line", {
   info <- animint2HTML(list(
-    petal = p2 + scale_y_log10()
+    petal = p2 +
+      theme(
+        panel.grid.minor = element_line(colour="black"))+
+      scale_y_log10(breaks=c(0.1, 1))
   ))
   # extract grids
-  grid_minor_hor <- getNodeSet(info$html, '//svg//g[@class="grid_minor"]//g[@class="hor"]//line')
-  grid_minor_vert <- getNodeSet(info$html, '//svg//g[@class="grid_minor"]//g[@class="vert"]//line')
+  grid_minor_hor <- getNodeSet(
+    info$html, '//svg//g[@class="grid_minor"]//g[@class="hor"]//line')
+  grid_minor_vert <- getNodeSet(
+    info$html, '//svg//g[@class="grid_minor"]//g[@class="vert"]//line')
   expect_equal(length(grid_minor_hor), 1)
   expect_equal(length(grid_minor_vert), 4)
 })
@@ -225,12 +222,14 @@ test_that("no minor grid lines is handed correctly", {
   data(geyser, package = "MASS")
   info <- animint2HTML(list(
     g = ggplot() +  
+      theme(
+        panel.grid.minor = element_line(colour="black"))+
       geom_point(data = geyser, 
                  aes(x = duration, y = waiting)) + 
       geom_contour(data = geyser, 
                    aes(x = duration, y = waiting), 
                    colour = "blue", size = .5, stat = "density2d") + 
-      xlim(0.5, 6) + scale_y_log10(limits = c(40,110)) +
+      xlim(0.5, 6) + scale_y_log10(breaks=50) +
       ggtitle("geom_contour 2d density")
   ))
   # extract grids
