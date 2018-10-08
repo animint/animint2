@@ -13,6 +13,10 @@ the selector called "arclength" with the value in column
 
 DEP: no longer depend on any branch of ggplot2.
 
+train_layout from ggplot2 - R/panel.r function is now
+g_train_layout. train_layout from animint2 - R/z_facet.R function is
+the same. Both are internal functions.
+
 2017.08.24
 
 DSL: clickSelects/showSelected are now specified as parameters rather
