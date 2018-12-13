@@ -20,7 +20,7 @@ install:
   - $HOME/opt/pandoc/pandoc --version
   # install uninstalled packages which this pkg depends on/links to/suggests.
   - Rscript -e 'install.packages("devtools", repos="http://cloud.r-project.org")'
-  - Rscript -e 'devtools::install_github(c("jimhester/covr", "ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa"))'
+  - Rscript -e 'options(repos="http://cloud.r-project.org");devtools::install_github(c("jimhester/covr", "ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa"))'
   - Rscript -e 'options(repos="http://cloud.r-project.org");devtools::install_deps()'
   - Rscript -e "devtools::install(dep=FALSE)"
 
