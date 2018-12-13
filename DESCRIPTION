@@ -261,4 +261,4 @@ Collate:
     'z_scales.R'
     'z_theme_animint.R'
     'z_transformShape.R'
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
