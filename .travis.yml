@@ -21,7 +21,7 @@ install:
   # Below to avoid error when omegahat repos not available.
   - export R_REMOTES_NO_ERRORS_FROM_WARNINGS=TRUE
   - ./travis-tool.sh install_deps
-  - ./travis-tool.sh install_github jimhester/covr ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa
+  - ./travis-tool.sh install_github jimhester/covr
   - Rscript -e "devtools::install(dep=FALSE)"
 
 script:
