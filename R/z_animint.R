@@ -767,6 +767,24 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     g.data$group <- subgroup.vec
   }
 
+  ## Find infinite values and replace with range min/max.
+  range.list <- list(
+    y=sapply(ranges, "[[", "y.range"),
+    x=sapply(ranges, "[[", "x.range"))
+  for(xy in names(range.list)){
+    xy.col.vec <- grep(paste0("^", xy), names(g.data), value=TRUE)
+    find.rep.vec <- c(-Inf, Inf)#order is important here!
+    for(row.i in seq_along(find.rep.vec)){
+      xy.col.df <- g.data[, xy.col.vec, drop=FALSE]
+      to.rep <- xy.col.df == find.rep.vec[[row.i]]
+      row.vec <- row(to.rep)[to.rep]
+      panel.vec <- g.data$PANEL[row.vec]
+      extreme.vec <- range.list[[xy]][row.i, panel.vec]
+      xy.col.df[to.rep] <- extreme.vec
+      g.data[, xy.col.vec] <- xy.col.df
+    }
+  }
+  
   ## Determine if there are any "common" data that can be saved
   ## separately to reduce disk usage.
   data.or.null <- getCommonChunk(g.data, chunk.cols, g$aes)
