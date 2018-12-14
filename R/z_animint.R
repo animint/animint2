@@ -768,10 +768,9 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   }
 
   ## Find infinite values and replace with range min/max.
-  range.list <- list(
-    y=sapply(ranges, "[[", "y.range"),
-    x=sapply(ranges, "[[", "x.range"))
-  for(xy in names(range.list)){
+  for(xy in c("x", "y")){
+    range.name <- paste0(xy, ".range")
+    range.mat <- sapply(ranges, "[[", range.name)
     xy.col.vec <- grep(paste0("^", xy), names(g.data), value=TRUE)
     find.rep.vec <- c(-Inf, Inf)#order is important here!
     for(row.i in seq_along(find.rep.vec)){
@@ -779,7 +778,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
       to.rep <- xy.col.df == find.rep.vec[[row.i]]
       row.vec <- row(to.rep)[to.rep]
       panel.vec <- g.data$PANEL[row.vec]
-      extreme.vec <- range.list[[xy]][row.i, panel.vec]
+      extreme.vec <- range.mat[row.i, panel.vec]
       xy.col.df[to.rep] <- extreme.vec
       g.data[, xy.col.vec] <- xy.col.df
     }

@@ -106,19 +106,14 @@ get_grid <- function(pars, theme.pars, plot.meta, meta, built, major = T) {
   }
   
   ## x and y locations
-  if(major) {
-    pars$loc$x <- as.list(built$panel$ranges[[1]]$x.major_source)
-    pars$loc$y <- as.list(built$panel$ranges[[1]]$y.major_source)
-  } else {
-    pars$loc$x <- as.list(built$panel$ranges[[1]]$x.minor_source)
-    pars$loc$y <- as.list(built$panel$ranges[[1]]$y.minor_source)
-    ## remove minor lines when major lines are already drawn
-    pars$loc$x <- pars$loc$x[
-      !(pars$loc$x %in% plot.meta$grid_major$loc$x)
-      ]
-    pars$loc$y <- pars$loc$y[
-      !(pars$loc$y %in% plot.meta$grid_major$loc$y)
-      ]
+  for(xy in c("x", "y")){
+    e.name <- paste0(
+      xy, ".",
+      ifelse(major, "major", "minor"),
+      "_source")
+    pars$loc[[xy]] <- lapply(built$panel$ranges, function(L){
+      as.list(L[[e.name]])
+    })
   }
   pars
 }
