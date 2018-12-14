@@ -18,12 +18,10 @@ install:
   - chmod +x $HOME/opt/pandoc/pandoc*
   - rm pandoc-1.12.3.zip
   - $HOME/opt/pandoc/pandoc --version
-  - Rscript -e 'install.packages("devtools", repos="http://cloud.r-project.org")'
+  # Below to avoid error when omegahat repos not available.
   - Rscript -e 'Sys.getenv("R_REMOTES_NO_ERRORS_FROM_WARNINGS")'
-  - export R_REMOTES_NO_ERRORS_FROM_WARNINGS=TRUE
-  - Rscript -e 'Sys.getenv("R_REMOTES_NO_ERRORS_FROM_WARNINGS")'
-  - Rscript -e 'options(repos="http://cloud.r-project.org");devtools::install_github(c("jimhester/covr", "ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa"))'
-  - Rscript -e 'options(repos="http://cloud.r-project.org");devtools::install_deps()'
+  - ./travis-tool.sh install_deps
+  - ./travis-tool.sh install_github jimhester/covr ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa
   - Rscript -e "devtools::install(dep=FALSE)"
 
 script:
