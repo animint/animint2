@@ -9,6 +9,12 @@ is no column named arclength in the data -- this would mean to update
 the selector called "arclength" with the value in column
 "arclength.click" -- less disk space, and faster compiling.
 
+2018.12.14 PR#27
+
+animint fun, export print method.
+
+infinite values converted to range min/max before saving tsv files.
+
 2018.10.4
 
 DEP: no longer depend on any branch of ggplot2.
