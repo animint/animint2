@@ -8,7 +8,10 @@ limits <- data.frame(
 viz <- list(
   gg=ggplot()+
     theme_bw()+
-    theme(panel.margin=grid::unit(0, "lines"))+
+    theme(
+      panel.grid.major=element_line(color="red"),
+      panel.grid.minor=element_line(color="blue"),
+      panel.margin=grid::unit(0, "lines"))+
     facet_grid(side ~ top, scales="free")+
     geom_segment(aes(
       i, lower, yend=upper, xend=i),

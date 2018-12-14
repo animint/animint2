@@ -654,70 +654,43 @@ var animint = function (to_select, json_file) {
           });
       }
       
-      // function to draw major/minor grid lines 
-      var grid_line = function(grid_background, grid_class) {
-        // if grid lines are defined
-        if(Object.keys(grid_background).length > 1) {
-          var col = grid_background.colour;
-          var lt = grid_background.linetype;
-          var size = grid_background.size;
-          var cap = grid_background.lineend;
-          // group for grid lines
-          var grid = background.append("g")
-            .attr("class", grid_class);
-
-          // group for horizontal grid lines
-          var grid_hor = grid.append("g")
-            .attr("class", "hor");
-          // draw horizontal grid lines if they are defined
-          if(typeof grid_background.loc.y != "undefined") {
-            // coercing y lines to array if necessary
-            if(typeof grid_background.loc.y == "number") grid_background.loc.y = [grid_background.loc.y];
-            // drawing lines
-            grid_hor.selectAll("line")
-              .data(function() { return d3.values(grid_background.loc.y); })
-              .enter()
-              .append("line")
-              .attr("x1", plotdim.xstart)
-              .attr("x2", plotdim.xend)
-              .attr("y1", function(d) { return scales[panel_i].y(d); })
-              .attr("y2", function(d) { return scales[panel_i].y(d); })
-              .style("stroke", col)
-              .style("stroke-linecap", cap)
-              .style("stroke-width", size)
-              .style("stroke-dasharray", function() {
-                return linetypesize2dasharray(lt, size);
-              });;
-          }
-
-          // group for vertical grid lines
-          var grid_vert = grid.append("g")
-            .attr("class", "vert");
-          // draw vertical grid lines if they are defined
-          if(typeof grid_background.loc.x != "undefined") {
-            // coercing x lines to array if necessary
-            if(typeof grid_background.loc.x == "number") grid_background.loc.x = [grid_background.loc.x];
-            // drawing lines
-            grid_vert.selectAll("line")
-              .data(function() { return d3.values(grid_background.loc.x); })
-              .enter()
-              .append("line")
-              .attr("x1", function(d) { return scales[panel_i].x(d); })
-              .attr("x2", function(d) { return scales[panel_i].x(d); })
-              .attr("y1", plotdim.ystart)
-              .attr("y2", plotdim.yend)
-              .style("stroke", col)
-              .style("stroke-linecap", cap)
-              .style("stroke-width", size)
-              .style("stroke-dasharray", function() {
-                return linetypesize2dasharray(lt, size);
-              });;
-          }
-        }
-      }
       // drawing the grid lines
-      grid_line(p_info.grid_minor, "grid_minor");
-      grid_line(p_info.grid_major, "grid_major");
+      ["grid_minor", "grid_major"].forEach(function(grid_class){
+	var grid_background = p_info[grid_class];
+        // if grid lines are defined
+        if(grid_background.hasOwnProperty("size")) {
+          var grid = background.append("g")
+              .attr("class", grid_class);
+	  ["x","y"].forEach(function(scale_var){
+	    var const_var;
+	    if(scale_var == "x"){
+	      const_var = "y";
+	    }else{
+	      const_var = "x";
+	    }
+            grid.append("g")
+              .attr("class", scale_var)
+              .selectAll("line")
+              .data(grid_background.loc[scale_var][layout_i])
+              .enter()
+              .append("line")
+              .attr(const_var + "1", plotdim[const_var + "start"])
+              .attr(const_var + "2", plotdim[const_var + "end"])
+              .attr(scale_var + "1", function(d) {
+		return scales[panel_i][scale_var](d);
+	      })
+              .attr(scale_var + "2", function(d) {
+		return scales[panel_i][scale_var](d);
+	      })
+              .style("stroke", grid_background.colour)
+              .style("stroke-linecap", grid_background.lineend)
+              .style("stroke-width", grid_background.size)
+              .style("stroke-dasharray", linetypesize2dasharray(
+		grid_background.linetype, grid_background.size))
+	    ;
+	  });
+	}
+      });
       
       // drawing border
       // uses insert to draw it right before the #plottitle
@@ -1855,17 +1828,9 @@ var animint = function (to_select, json_file) {
   function update_grids(p_name, axes, panel_i, grid_vals, scales){
     // Select panel to update
     var bgr = element.select("#plot_"+p_name).select(".bgr"+panel_i);
-
-    var orient;
-    if(axes == "x"){
-      orient = "vert";
-    }else{
-      orient = "hor";
-    }
-    
     // Update major and minor grid lines
     ["minor", "major"].forEach(function(grid_class, j){
-      var lines = bgr.select(".grid_"+grid_class).select("."+orient);
+      var lines = bgr.select(".grid_"+grid_class).select("."+axes);
       var xy1, xy2;
       if(axes == "x"){
         xy1 = lines.select("line").attr("y1");
