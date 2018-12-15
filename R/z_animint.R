@@ -777,7 +777,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     for(row.i in seq_along(find.rep.vec)){
       xy.col.df <- g.data[, xy.col.vec, drop=FALSE]
       to.rep <- xy.col.df == find.rep.vec[[row.i]]
-      if(any(to.rep)){
+      if(any(to.rep, na.rm=TRUE)){
         row.vec <- row(to.rep)[to.rep]
         panel.vec <- if(is.numeric(g.data$PANEL)){
           g.data$PANEL[row.vec]
