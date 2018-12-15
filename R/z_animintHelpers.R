@@ -387,7 +387,6 @@ checkPlotForAnimintExtensions <- function(p, plot_name){
       print(L)
       print(list(problem.aes=update.vars[!has.var],
                  data.variables=names(L$data)))
-      browser()
       stop("data does not have interactive variables")
     }
     has.cs <- !is.null(L$extra_params$clickSelects)
@@ -982,6 +981,7 @@ checkForSSandCSasAesthetics <- function(aesthetics, plot_name){
 ##' @details Used before calling ggplot_build in parsePlot and while checking
 ##' animint extensions to raise error
 addSSandCSasAesthetics <- function(aesthetics, extra_params){
+  class(aesthetics) <- "list"
   for(param.name in c("clickSelects", "showSelected")){
     selector.vec <- extra_params[[param.name]]
     if(is.character(selector.vec)){
