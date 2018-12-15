@@ -1736,18 +1736,18 @@ var animint = function (to_select, json_file) {
       return selected_values;
   };
   
-  var counter=-1;    
-  var update_selector_url = function() {
-      var selected_values=get_values();
-      var url=value_tostring(selected_values);
-      if(counter===-1){
-      $(".table_selector_widgets").after("<table style='display:none' class='urltable'><tr class='selectorurl'></tr></table>");
-      $(".selectorurl").append("<p>Current URL</p>");
-      $(".selectorurl").append("<a href=''></a>");
-      counter++;
-      }
-      $(".selectorurl a").attr("href",url).text(url);
-  };
+  // var counter=-1;    
+  // var update_selector_url = function() {
+  //     var selected_values=get_values();
+  //     var url=value_tostring(selected_values);
+  //     if(counter===-1){
+  //     $(".table_selector_widgets").after("<table style='display:none' class='urltable'><tr class='selectorurl'></tr></table>");
+  //     $(".selectorurl").append("<p>Current URL</p>");
+  //     $(".selectorurl").append("<a href=''></a>");
+  //     counter++;
+  //     }
+  //     $(".selectorurl a").attr("href",url).text(url);
+  // };
 
   // update scales for the plots that have update_axes option in
   // theme_animint
