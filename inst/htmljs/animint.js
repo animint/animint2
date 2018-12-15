@@ -1907,7 +1907,7 @@ var animint = function (to_select, json_file) {
 	s_info.selected.splice(i_value, 1);
       }
     }
-    update_selector_url()
+    // update_selector_url()
     // if there are levels, then there is a selectize widget which
     // should be updated.
     if(isArray(s_info.levels)){
@@ -2508,7 +2508,7 @@ var animint = function (to_select, json_file) {
       };
       document.addEventListener("visibilitychange", onchange);
     }
-    update_selector_url()
+    // update_selector_url()
     var check_func=function(){
           var status_array = $('.status').map(function(){
                return $.trim($(this).text());
