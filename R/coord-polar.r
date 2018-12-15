@@ -58,7 +58,7 @@ coord_polar <- function(theta = "x", start = 0, direction = 1) {
   theta <- match.arg(theta, c("x", "y"))
   r <- if (theta == "x") "y" else "x"
 
-  ggproto(NULL, CoordPolar,
+  gganimintproto(NULL, CoordPolar,
     theta = theta,
     r = r,
     start = start,
@@ -66,11 +66,11 @@ coord_polar <- function(theta = "x", start = 0, direction = 1) {
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-CoordPolar <- ggproto("CoordPolar", Coord,
+CoordPolar <- gganimintproto("CoordPolar", Coord,
 
   aspect = function(details) 1,
 

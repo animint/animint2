@@ -104,11 +104,11 @@ annotation_logticks <- function(base = 10, sides = "bl", scaled = TRUE,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomLogticks <- ggproto("GeomLogticks", Geom,
+GeomLogticks <- gganimintproto("GeomLogticks", Geom,
   extra_params = "",
   handle_na = function(data, params) {
     data

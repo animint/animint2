@@ -48,17 +48,17 @@
 #' # displayed bigger
 #' d + coord_cartesian(xlim = c(0, 1))
 coord_cartesian <- function(xlim = NULL, ylim = NULL, expand = TRUE) {
-  ggproto(NULL, CoordCartesian,
+  gganimintproto(NULL, CoordCartesian,
     limits = list(x = xlim, y = ylim),
     expand = expand
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-CoordCartesian <- ggproto("CoordCartesian", Coord,
+CoordCartesian <- gganimintproto("CoordCartesian", Coord,
 
   is_linear = function() TRUE,
 

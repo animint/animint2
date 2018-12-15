@@ -111,11 +111,11 @@ geom_point <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomPoint <- ggproto("GeomPoint", Geom,
+GeomPoint <- gganimintproto("GeomPoint", Geom,
   required_aes = c("x", "y"),
   non_missing_aes = c("size", "shape"),
   default_aes = aes(

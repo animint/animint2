@@ -1,8 +1,8 @@
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-StatBindot <- ggproto("StatBindot", Stat,
+StatBindot <- gganimintproto("StatBindot", Stat,
   required_aes = "x",
   non_missing_aes = "weight",
   default_aes = aes(y = ..count..),
@@ -20,7 +20,7 @@ StatBindot <- ggproto("StatBindot", Stat,
       snake_class(self),
       finite = TRUE
     )
-    ggproto_parent(Stat, self)$compute_layer(data, params, panels)
+    gganimintproto_parent(Stat, self)$compute_layer(data, params, panels)
   },
 
   compute_panel = function(self, data, scales, na.rm = FALSE, binwidth = NULL,
@@ -54,7 +54,7 @@ StatBindot <- ggproto("StatBindot", Stat,
 
     }
 
-    ggproto_parent(Stat, self)$compute_panel(data, scales, binwidth = binwidth,
+    gganimintproto_parent(Stat, self)$compute_panel(data, scales, binwidth = binwidth,
       binaxis = binaxis, method = method, binpositions = binpositions,
       origin = origin, width = width, drop = drop,
       right = right)

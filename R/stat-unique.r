@@ -30,10 +30,10 @@ stat_unique <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-StatUnique <- ggproto("StatUnique", Stat,
+StatUnique <- gganimintproto("StatUnique", Stat,
   compute_panel = function(data, scales) unique(data)
 )

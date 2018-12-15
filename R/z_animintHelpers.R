@@ -354,7 +354,6 @@ checkPlotForAnimintExtensions <- function(p, plot_name){
   if(!grepl(pattern, plot_name)){
     stop("ggplot names must match ", pattern)
   }
-
   # Check layer by layer for proper extensions
   for(L in p$layers){
     ## This code assumes that the layer has the complete aesthetic
@@ -388,6 +387,7 @@ checkPlotForAnimintExtensions <- function(p, plot_name){
       print(L)
       print(list(problem.aes=update.vars[!has.var],
                  data.variables=names(L$data)))
+      browser()
       stop("data does not have interactive variables")
     }
     has.cs <- !is.null(L$extra_params$clickSelects)
@@ -982,59 +982,34 @@ checkForSSandCSasAesthetics <- function(aesthetics, plot_name){
 ##' @details Used before calling ggplot_build in parsePlot and while checking
 ##' animint extensions to raise error
 addSSandCSasAesthetics <- function(aesthetics, extra_params){
-  for(i in seq_along(extra_params)){
-    if(names(extra_params)[[i]] == "showSelected"){
-      if(is.null(names(extra_params[[i]]))){
-        names(extra_params[[i]]) <-
-          rep("", length(extra_params[[i]]))
+  for(param.name in c("clickSelects", "showSelected")){
+    selector.vec <- extra_params[[param.name]]
+    if(is.character(selector.vec)){
+      if(is.null(names(selector.vec))){
+        names(selector.vec) <- rep("", length(selector.vec))
       }
-      for(j in seq_along(extra_params[[i]])){
-
-        ## If .variable/.value have been specified
-        if(names(extra_params[[i]])[[j]] != ""){
-          aesthetics[[length(aesthetics)+1]] <-
-            as.symbol(names(extra_params[[i]])[[j]])
-          names(aesthetics)[[length(aesthetics)]] <-
-            paste0("showSelected.variable")
-          aesthetics[[length(aesthetics)+1]] <-
-            as.symbol(extra_params[[i]][[j]])
-          names(aesthetics)[[length(aesthetics)]] <-
-            paste0("showSelected.value")
+      for(j in seq_along(selector.vec)){
+        if(names(selector.vec)[[j]] != ""){
+          aesthetics[[paste0(param.name, ".variable")]] <-
+            as.symbol(names(selector.vec)[[j]])
+          aesthetics[[paste0(param.name, ".value")]] <-
+            as.symbol(selector.vec[[j]])
         }else{
-          ss_added_by_legend <- aesthetics[ grepl("^showSelectedlegend", names(aesthetics)) ]
-          if(!extra_params[[i]][[j]] %in% ss_added_by_legend){
-            aesthetics[[length(aesthetics)+1]] <- as.symbol(extra_params[[i]][[j]])
-            names(aesthetics)[[length(aesthetics)]] <-
-              paste0("showSelected", j)
+          if(param.name=="clickSelects"){
+            aesthetics[["clickSelects"]] <- as.symbol(selector.vec[[j]])
+          }else{
+            ss_added_by_legend <- grep(
+              "^showSelectedlegend", names(aesthetics), value=TRUE)
+            if(!selector.vec[[j]] %in% ss_added_by_legend){
+              aesthetics[[paste0("showSelected", j)]] <-
+                as.symbol(selector.vec[[j]])
+            }
           }
         }
       }
     }
-
-    if(names(extra_params)[[i]] == "clickSelects"){
-      if(is.null(names(extra_params[[i]]))){
-        names(extra_params[[i]]) <-
-          rep("", length(extra_params[[i]]))
-      }
-      for(j in seq_along(extra_params[[i]])){
-        if(names(extra_params[[i]])[[j]] != ""){
-          aesthetics[[length(aesthetics)+1]] <-
-            as.symbol(names(extra_params[[i]])[[j]])
-          names(aesthetics)[[length(aesthetics)]] <-
-            paste0("clickSelects.variable")
-          aesthetics[[length(aesthetics)+1]] <-
-            as.symbol(extra_params[[i]][[j]])
-          names(aesthetics)[[length(aesthetics)]] <-
-            paste0("clickSelects.value")
-        }else{
-          aesthetics[[length(aesthetics)+1]] <- as.symbol(extra_params[[i]][[j]])
-          names(aesthetics)[[length(aesthetics)]] <-
-            paste0("clickSelects")
-        }
-      }
-    }
   }
-  return(aesthetics)
+  aesthetics
 }
 
 ##' Check \code{extra_params} argument for duplicates, non-named list

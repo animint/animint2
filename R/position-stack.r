@@ -45,11 +45,11 @@ position_stack <- function() {
   PositionStack
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-PositionStack <- ggproto("PositionStack", Position,
+PositionStack <- gganimintproto("PositionStack", Position,
   # requires one of c("ymax", "y"),
 
   setup_data = function(self, data, params) {

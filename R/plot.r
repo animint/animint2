@@ -102,7 +102,7 @@ ggplot.data.frame <- function(data, mapping = aes(), ...,
     coordinates = coord_cartesian(),
     facet = facet_null(),
     plot_env = environment
-  ), class = c("gg", "ggplot"))
+  ), class = c("gganimint", "gganimintplot"))
 
   p$labels <- make_labels(mapping)
 
@@ -121,7 +121,7 @@ a_plot_clone <- function(plot) {
 #' @param x An object to test
 #' @keywords internal
 #' @export
-is.ggplot <- function(x) inherits(x, "ggplot")
+is.ggplot <- function(x) inherits(x, "gganimintplot")
 
 #' Draw plot on current graphics device.
 #'
@@ -134,11 +134,11 @@ is.ggplot <- function(x) inherits(x, "ggplot")
 #'   is a list with components that contain the plot itself, the data,
 #'   information about the scales, panels etc.
 #' @export
-#' @method print ggplot
-print.ggplot <- function(x, newpage = is.null(vp), vp = NULL, ...) {
+#' @method print gganimintplot
+print.gganimintplot <- function(x, newpage = is.null(vp), vp = NULL, ...) {
   set_last_plot(x)
   if (newpage) grid.newpage()
-  
+
   # Record dependency on 'animint2' on the display list
   # (AFTER grid.newpage())
   grDevices::recordGraphics(
@@ -161,6 +161,6 @@ print.ggplot <- function(x, newpage = is.null(vp), vp = NULL, ...) {
   invisible(data)
 }
 #' @rdname print.ggplot
-#' @method plot ggplot
+#' @method plot gganimintplot
 #' @export
-plot.ggplot <- print.ggplot
+plot.gganimintplot <- print.gganimintplot

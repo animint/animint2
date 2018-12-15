@@ -61,11 +61,11 @@ annotation_raster <- function(raster, xmin, xmax, ymin, ymax,
 
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomRasterAnn <- ggproto("GeomRasterAnn", Geom,
+GeomRasterAnn <- gganimintproto("GeomRasterAnn", Geom,
   extra_params = "",
   handle_na = function(data, params) {
     data

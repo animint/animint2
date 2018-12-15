@@ -97,18 +97,18 @@ coord_trans <- function(x = "identity", y = "identity", limx = NULL, limy = NULL
   if (is.character(y)) y <- as.trans(y)
 
 
-  ggproto(NULL, CoordTrans,
+  gganimintproto(NULL, CoordTrans,
     trans = list(x = x, y = y),
     limits = list(x = limx, y = limy)
   )
 }
 
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-CoordTrans <- ggproto("CoordTrans", Coord,
+CoordTrans <- gganimintproto("CoordTrans", Coord,
 
   distance = function(self, x, y, scale_details) {
     max_dist <- dist_euclidean(scale_details$x.range, scale_details$y.range)

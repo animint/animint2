@@ -5,29 +5,29 @@
 #' \code{\link{continuous_range}} and \code{\link{discrete_range}}.
 #'
 #' @noRd
-Range <- ggproto("Range", NULL,
+Range <- gganimintproto("Range", NULL,
   range = NULL,
   reset = function(self) {
     self$range <- NULL
   }
 )
 
-RangeDiscrete <- ggproto("RangeDiscrete", Range,
+RangeDiscrete <- gganimintproto("RangeDiscrete", Range,
   train = function(self, x, drop = FALSE) {
     self$range <- scales::train_discrete(x, self$range, drop)
   }
 )
 
-RangeContinuous <- ggproto("RangeContinuous", Range,
+RangeContinuous <- gganimintproto("RangeContinuous", Range,
   train = function(self, x) {
     self$range <- scales::train_continuous(x, self$range)
   }
 )
 
 continuous_range <- function() {
-  ggproto(NULL, RangeContinuous)
+  gganimintproto(NULL, RangeContinuous)
 }
 
 discrete_range <- function() {
-  ggproto(NULL, RangeDiscrete)
+  gganimintproto(NULL, RangeDiscrete)
 }

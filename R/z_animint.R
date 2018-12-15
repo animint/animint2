@@ -54,6 +54,7 @@ parsePlot <- function(meta, plot, plot.name){
     ## which will give error when we check if showSelected/clickSelects have
     ## been used as aesthetics
     L$mapping <- L$orig_mapping
+    class(L$mapping) <- "list"
 
     ## If any legends are specified, add showSelected aesthetic
     L <- addShowSelectedForLegend(meta, plot.info$legend, L)
@@ -776,14 +777,20 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     for(row.i in seq_along(find.rep.vec)){
       xy.col.df <- g.data[, xy.col.vec, drop=FALSE]
       to.rep <- xy.col.df == find.rep.vec[[row.i]]
-      row.vec <- row(to.rep)[to.rep]
-      panel.vec <- g.data$PANEL[row.vec]
-      extreme.vec <- range.mat[row.i, panel.vec]
-      xy.col.df[to.rep] <- extreme.vec
-      g.data[, xy.col.vec] <- xy.col.df
+      if(any(to.rep)){
+        row.vec <- row(to.rep)[to.rep]
+        panel.vec <- if(is.numeric(g.data$PANEL)){
+          g.data$PANEL[row.vec]
+        }else{
+          1
+        }
+        extreme.vec <- range.mat[row.i, panel.vec]
+        xy.col.df[to.rep] <- extreme.vec
+        g.data[, xy.col.vec] <- xy.col.df
+      }
     }
   }
-  
+
   ## Determine if there are any "common" data that can be saved
   ## separately to reduce disk usage.
   data.or.null <- getCommonChunk(g.data, chunk.cols, g$aes)

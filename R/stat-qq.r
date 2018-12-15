@@ -61,11 +61,11 @@ stat_qq <- function(mapping = NULL, data = NULL,
 #' @rdname stat_qq
 geom_qq <- stat_qq
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-StatQq <- ggproto("StatQq", Stat,
+StatQq <- gganimintproto("StatQq", Stat,
   default_aes = aes(y = ..sample.., x = ..theoretical..),
 
   required_aes = c("sample"),

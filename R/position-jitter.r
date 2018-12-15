@@ -29,17 +29,17 @@
 #'   geom_jitter() +
 #'   geom_boxplot()
 position_jitter <- function(width = NULL, height = NULL) {
-  ggproto(NULL, PositionJitter,
+  gganimintproto(NULL, PositionJitter,
     width = width,
     height = height
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-PositionJitter <- ggproto("PositionJitter", Position,
+PositionJitter <- gganimintproto("PositionJitter", Position,
   required_aes = c("x", "y"),
 
   setup_params = function(self, data) {

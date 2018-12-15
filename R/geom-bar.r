@@ -107,12 +107,12 @@ geom_bar <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
 #' @include geom-rect.r
-GeomBar <- ggproto("GeomBar", GeomRect,
+GeomBar <- gganimintproto("GeomBar", GeomRect,
   required_aes = "x",
 
   setup_data = function(data, params) {
@@ -126,6 +126,6 @@ GeomBar <- ggproto("GeomBar", GeomRect,
 
   draw_panel = function(self, data, panel_scales, coord, width = NULL) {
     # Hack to ensure that width is detected as a parameter
-    ggproto_parent(GeomRect, self)$draw_panel(data, panel_scales, coord)
+    gganimintproto_parent(GeomRect, self)$draw_panel(data, panel_scales, coord)
   }
 )

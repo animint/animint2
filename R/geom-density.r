@@ -68,12 +68,12 @@ geom_density <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
 #' @include geom-ribbon.r
-GeomDensity <- ggproto("GeomDensity", GeomArea,
+GeomDensity <- gganimintproto("GeomDensity", GeomArea,
   default_aes = defaults(
     aes(fill = NA, weight = 1, colour = "black", alpha = NA),
     GeomArea$default_aes

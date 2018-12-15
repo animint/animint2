@@ -366,7 +366,7 @@ theme <- function(..., complete = FALSE, validate = TRUE) {
     mapply(validate_element, elements, names(elements))
   }
 
-  structure(elements, class = c("theme", "gg"),
+  structure(elements, class = c("theme", "gganimint"),
             complete = complete, validate = validate)
 }
 

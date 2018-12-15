@@ -21,11 +21,11 @@ geom_rect <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomRect <- ggproto("GeomRect", Geom,
+GeomRect <- gganimintproto("GeomRect", Geom,
   default_aes = aes(colour = NA, fill = "grey35", size = 0.5, linetype = 1,
     alpha = NA),
 

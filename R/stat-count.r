@@ -37,12 +37,12 @@ stat_count <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
 #' @include stat-.r
-StatCount <- ggproto("StatCount", Stat,
+StatCount <- gganimintproto("StatCount", Stat,
   required_aes = "x",
   default_aes = aes(y = ..count..),
 

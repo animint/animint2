@@ -27,11 +27,11 @@ geom_blank <- function(mapping = NULL, data = NULL,
 }
 
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomBlank <- ggproto("GeomBlank", Geom,
+GeomBlank <- gganimintproto("GeomBlank", Geom,
   default_aes = aes(),
   handle_na = function(data, params) data,
   draw_panel = function(...) nullGrob()

@@ -4,18 +4,18 @@ position_fill <- function() {
   PositionFill
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-PositionFill <- ggproto("PositionFill", Position,
+PositionFill <- gganimintproto("PositionFill", Position,
   required_aes = c("x", "ymax"),
 
   setup_data = function(self, data, params) {
     if (!is.null(data$ymin) && !all(data$ymin == 0))
       warning("Filling not well defined when ymin != 0", call. = FALSE)
 
-    ggproto_parent(Position, self)$setup_data(data)
+    gganimintproto_parent(Position, self)$setup_data(data)
   },
 
   compute_panel = function(data, params, scales) {

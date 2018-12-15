@@ -49,11 +49,11 @@ stat_density <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-StatDensity <- ggproto("StatDensity", Stat,
+StatDensity <- gganimintproto("StatDensity", Stat,
   required_aes = "x",
   default_aes = aes(y = ..density.., fill = NA),
 

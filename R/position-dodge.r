@@ -36,14 +36,14 @@
 #'   position = position_dodge(width = 0.90))
 #' }
 position_dodge <- function(width = NULL) {
-  ggproto(NULL, PositionDodge, width = width)
+  gganimintproto(NULL, PositionDodge, width = width)
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-PositionDodge <- ggproto("PositionDodge", Position,
+PositionDodge <- gganimintproto("PositionDodge", Position,
   required_aes = "x",
   width = NULL,
   setup_params = function(self, data) {

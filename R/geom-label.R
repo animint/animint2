@@ -43,11 +43,11 @@ geom_label <- function(mapping = NULL, data = NULL,
 }
 
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomLabel <- ggproto("GeomLabel", Geom,
+GeomLabel <- gganimintproto("GeomLabel", Geom,
   required_aes = c("x", "y", "label"),
 
   default_aes = aes(

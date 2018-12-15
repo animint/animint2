@@ -19,18 +19,18 @@
 position_jitterdodge <- function(jitter.width = NULL, jitter.height = 0,
                                  dodge.width = 0.75) {
 
-  ggproto(NULL, PositionJitterdodge,
+  gganimintproto(NULL, PositionJitterdodge,
     jitter.width = jitter.width,
     jitter.height = jitter.height,
     dodge.width = dodge.width
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-PositionJitterdodge <- ggproto("PositionJitterdodge", Position,
+PositionJitterdodge <- gganimintproto("PositionJitterdodge", Position,
   jitter.width = NULL,
   jitter.height = NULL,
   dodge.width = NULL,

@@ -82,7 +82,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Collate:
-    'ggproto.r'
+    'gganimintproto.r'
     'aaa-.r'
     'aes-calculated.r'
     'aes-colour-fill-alpha.r'

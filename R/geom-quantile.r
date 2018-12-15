@@ -56,12 +56,12 @@ geom_quantile <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
 #' @include geom-path.r
-GeomQuantile <- ggproto("GeomQuantile", GeomPath,
+GeomQuantile <- gganimintproto("GeomQuantile", GeomPath,
   default_aes = defaults(
     aes(weight = 1, colour = "#3366FF", size = 0.5),
     GeomPath$default_aes

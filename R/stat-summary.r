@@ -133,11 +133,11 @@ stat_summary <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-StatSummary <- ggproto("StatSummary", Stat,
+StatSummary <- gganimintproto("StatSummary", Stat,
   required_aes = c("x", "y"),
 
   compute_panel = function(data, scales, fun.data = NULL, fun.y = NULL,

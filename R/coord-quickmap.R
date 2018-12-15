@@ -2,17 +2,17 @@
 #' @export
 #' @rdname coord_map
 coord_quickmap <- function(xlim = NULL, ylim = NULL, expand = TRUE) {
-  ggproto(NULL, CoordQuickmap,
+  gganimintproto(NULL, CoordQuickmap,
     limits = list(x = xlim, y = ylim),
     expand = expand
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-CoordQuickmap <- ggproto("CoordQuickmap", CoordCartesian,
+CoordQuickmap <- gganimintproto("CoordQuickmap", CoordCartesian,
 
   aspect = function(ranges) {
     # compute coordinates of center point of map
