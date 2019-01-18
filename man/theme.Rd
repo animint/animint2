@@ -26,8 +26,8 @@ which in turn inherits from \code{text}. All text elements inherit
 directly or indirectly from \code{text}; all lines inherit from
 \code{line}, and all rectangular objects inherit from \code{rect}.
 
-For more examples of modifying properties using inheritance, see
-\code{\link{+.gg}} and \code{\link{\%+replace\%}}.
+For more examples of modifying properties using inheritance,
+\code{\link{\%+replace\%}}.
 
 To see a graphical representation of the inheritance tree, see the
 last example below.
@@ -293,8 +293,6 @@ p + mytheme
 }
 }
 \seealso{
-\code{\link{+.gg}}
-
 \code{\link{\%+replace\%}}
 
 \code{\link{rel}}

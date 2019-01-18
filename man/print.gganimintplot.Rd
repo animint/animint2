@@ -2,9 +2,12 @@
 % Please edit documentation in R/plot.r
 \name{print.gganimintplot}
 \alias{print.gganimintplot}
+\alias{plot.gganimintplot}
 \title{Draw plot on current graphics device.}
 \usage{
 \method{print}{gganimintplot}(x, newpage = is.null(vp), vp = NULL, ...)
+
+\method{plot}{gganimintplot}(x, newpage = is.null(vp), vp = NULL, ...)
 }
 \arguments{
 \item{x}{plot to display}

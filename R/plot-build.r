@@ -10,7 +10,7 @@
 #' layer. These are useful for tests.
 #'
 #' @param plot ggplot object
-#' @seealso \code{\link{print.ggplot}} and \code{\link{benchplot}} for
+#' @seealso \code{\link{print.gganimintplot}} and \code{\link{benchplot}} for
 #'  functions that contain the complete set of steps for generating
 #'  a ggplot2 plot.
 #' @keywords internal
@@ -127,7 +127,7 @@ layer_grob <- function(plot, i = 1L) {
 #' to (e.g.) make the legend box 2 cm wide, or combine multiple plots into
 #' a single display, preserving aspect ratios across the plots.
 #'
-#' @seealso \code{\link{print.ggplot}} and \code{link{benchplot}} for
+#' @seealso \code{\link{print.gganimintplot}} and \code{link{benchplot}} for
 #'  for functions that contain the complete set of steps for generating
 #'  a ggplot2 plot.
 #' @return a \code{\link{gtable}} object

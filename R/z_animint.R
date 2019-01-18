@@ -881,7 +881,6 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
 #' \item shape. Open and closed circles can be represented by manipulating fill and colour scales and using default (circle) points, but d3 does not support many R shape types, so mapping between the two is difficult.
 #' }
 #'
-#' @aliases animint
 #' @param plot.list a named list of ggplots and option lists.
 #' @param out.dir directory to store html/js/csv files.
 #' @param json.file character string that names the JSON file with metadata associated with the plot.
