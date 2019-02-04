@@ -10,7 +10,7 @@
 #'
 #'
 #' @param ... named list of theme settings
-#' @seealso \code{\link{\%+replace\%}} and \code{\link{+.gg}}
+#' @seealso \code{\link{\%+replace\%}} 
 #' @export
 #' @examples
 #' p <- ggplot(mtcars, aes(mpg, wt)) +
@@ -74,8 +74,8 @@ print.theme <- function(x, ...) utils::str(x)
 #' directly or indirectly from \code{text}; all lines inherit from
 #' \code{line}, and all rectangular objects inherit from \code{rect}.
 #'
-#' For more examples of modifying properties using inheritance, see
-#' \code{\link{+.gg}} and \code{\link{\%+replace\%}}.
+#' For more examples of modifying properties using inheritance,
+#' \code{\link{\%+replace\%}}.
 #'
 #' To see a graphical representation of the inheritance tree, see the
 #' last example below.
@@ -220,7 +220,6 @@ print.theme <- function(x, ...) utils::str(x)
 #'   differently when added to a ggplot object.
 #' @param validate TRUE to run validate_element, FALSE to bypass checks.
 #'
-#' @seealso \code{\link{+.gg}}
 #' @seealso \code{\link{\%+replace\%}}
 #' @seealso \code{\link{rel}}
 #' @seealso \code{\link{element_blank}}
@@ -426,7 +425,6 @@ theme_set <- .theme$set
 #' @param t2name A name of the t2 object. This is used for printing
 #'   informative error messages.
 #'
-#' @seealso +.gg
 #'
 add_theme <- function(t1, t2, t2name) {
   if (!is.theme(t2)) {

@@ -160,7 +160,7 @@ print.gganimintplot <- function(x, newpage = is.null(vp), vp = NULL, ...) {
 
   invisible(data)
 }
-#' @rdname print.ggplot
+#' @rdname print.gganimintplot
 #' @method plot gganimintplot
 #' @export
 plot.gganimintplot <- print.gganimintplot

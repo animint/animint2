@@ -2,7 +2,6 @@
 % Please edit documentation in R/z_animint.R
 \name{animint2dir}
 \alias{animint2dir}
-\alias{animint}
 \title{Compile and render an animint in a local directory}
 \usage{
 animint2dir(plot.list, out.dir = tempfile(), json.file = "plot.json",
