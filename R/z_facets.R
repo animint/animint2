@@ -2,7 +2,7 @@
 # Determine titles to put on facet panels.
 # The implementation here is a modified version of facet_strips.
 getStrips <- function(facet, panel, ...)
-  # ... is a placeholder at the moment in case we want to implement 
+  # ... is a placeholder at the moment in case we want to implement
   # themes or special options later
   UseMethod("getStrips")
 
@@ -12,7 +12,7 @@ getStrips.grid <- function(facet, panel, ...) {
   strips.empty <- strips.right <- strips.top <- rep("", npanels)
   # right strips in a grid are only drawn on the last column
   row_vars <- unique(panel$layout[names(facet$rows)])
-  strips.right[with(panel$layout, COL == max(COL))] <- 
+  strips.right[with(panel$layout, COL == max(COL))] <-
     build_strip(panel, row_vars, facet$labeller, side = "right", ...)
   # top strips in a grid layout are only drawn on the first row
   col_vars <- unique(panel$layout[names(facet$cols)])
@@ -36,7 +36,7 @@ build_strip <- function(panel, label_df, labeller, side = "right", ...) {
   labels <- matrix(list(), nrow = nrow(label_df), ncol = ncol(label_df))
   labels <- lapply(labeller(label_df), cbind)
   labels <- do.call("cbind", labels)
-  
+
   # unlike ggplot2, we collapse "layers" of strips into 1 layer
   apply(labels, 1, paste, collapse = "; ")
 }
@@ -56,11 +56,11 @@ getStrips.null <- function(facet, panel, ...) {
   list(top = list(""), right = list(""), n = list(top = 0, right = 0))
 }
 
-# Attach AXIS_X/AXIS_Y columns to the panel layout if 
+# Attach AXIS_X/AXIS_Y columns to the panel layout if
 # facet_grids is used.
 # Currently every axis is rendered,
 # but this could be helpful if we decide not to that.
-flag_axis <- function(facet, layout) 
+flag_axis <- function(facet, layout)
   UseMethod("flag_axis")
 
 flag_axis.grid <- function(facet, layout) {
@@ -91,11 +91,11 @@ train_layout <- function(facet, coord, layout, ranges) {
   ydiffs <- sapply(ranges, function(z) diff(z$y.range))
   xdiffs <- sapply(ranges, function(z) diff(z$x.range))
   # if x or y scale is 'free', then ignore the ratio
-  if (length(unique(xdiffs)) > 1 || length(unique(ydiffs)) > 1) 
+  if (length(unique(xdiffs)) > 1 || length(unique(ydiffs)) > 1)
     coord$ratio <- NULL
   has.ratio <- !is.null(coord$ratio)
   layout$coord_fixed <- has.ratio
-  if (has.ratio) { 
+  if (has.ratio) {
     spaces <- fixed_spaces(ranges, coord$ratio)
     layout <- cbind(layout, width_proportion = spaces$x, height_proportion = spaces$y)
     layout$width_proportion <- layout$width_proportion/ncols
@@ -116,11 +116,11 @@ train_layout <- function(facet, coord, layout, ranges) {
         space.type <- paste0("SPACE_", u.type)
         vals <- layout[[scale.type]]
         uv <- unique(vals)
-        diffs <- sapply(ranges[which(vals %in% uv)],
-                        function(x) { diff(x[[range.type]]) })
-        udiffs <- unique(diffs)
+        diffs <- sapply(ranges[uv], function(x) {
+          diff(x[[range.type]])
+        })
         # decide the proportion of the height/width each scale deserves based on the range
-        props <- data.frame(tmp1 = uv, tmp2 = udiffs / sum(udiffs))
+        props <- data.frame(tmp1 = uv, tmp2 = diffs / sum(diffs))
         names(props) <- c(scale.type, space.type)
         layout <- plyr::join(layout, props, by = scale.type)
       }
@@ -134,7 +134,7 @@ train_layout <- function(facet, coord, layout, ranges) {
 # fixed cartesian coordinates (on a 0-1 scale)
 # inspired from https://github.com/hadley/ggplot2/blob/dfcb56ec067910e1a3a04693d8f1e146cc7fb796/R/coord-fixed.r#L34-36
 fixed_spaces <- function(ranges, ratio = 1) {
-  aspect <- sapply(ranges, 
+  aspect <- sapply(ranges,
                    function(z) diff(z$y.range) / diff(z$x.range) * ratio)
   spaces <- list(y = aspect)
   spaces$x <- 1/spaces$y
