@@ -1085,58 +1085,82 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
         # for the axes updates. Else every panel uses the same domain
         panels <- ggplot.list[[p.name]]$built$panel$layout$PANEL
         axes_drawn <-
-          ggplot.list[[p.name]]$built$panel$layout[[paste0("AXIS_",
-                                                           toupper(axis))]]
+          ggplot.list[[p.name]]$built$panel$layout[[
+            paste0("AXIS_", toupper(axis))]]
         panels_used <- panels[axes_drawn]
         split_by_panel <- all(panels == panels_used)
-        for(num in seq_along(ggplot.list[[p.name]]$built$plot$layers)){
-          # If there is a geom where the axes updates have non numeric values,
-          # we stop and throw an informative warning
-          # It does not make sense to have axes updates for non numeric values
-          aesthetic_names <- names(g.list[[p.name]][[num]]$g$aes)
-
-          axis_col_name <- aesthetic_names[grepl(axis, aesthetic_names)]
-          axis_col <- g.list[[p.name]][[num]]$g$aes[[ axis_col_name[[1]] ]]
-          axis_is_numeric <- is.numeric(ggplot.list[[p.name]]$built$plot$layers[[num]]$data[[axis_col]])
-          if(!axis_is_numeric){
-            stop(paste0("'update_axes' specified for '", toupper(axis),
-                        "' axis on plot '", p.name,
-                        "' but the column '", axis_col, "' is non-numeric.",
-                        " Axes updates are only available for numeric data."))
-          }
-
-          # handle cases for showSelected: showSelectedlegendfill,
-          # showSelectedlegendcolour etc.
-          choose_ss <- grepl("^showSelected", aesthetic_names)
-          ss_selectors <- g.list[[p.name]][[num]]$g$aes[choose_ss]
-          # Do not calculate domains for multiple selectors
-          remove_ss <- c()
-          for(j in seq_along(ss_selectors)){
-            if(meta$selectors[[ ss_selectors[[j]] ]]$type != "single"){
-              remove_ss <- c(remove_ss, ss_selectors[j])
+        for(layer.i in seq_along(ggplot.list[[p.name]]$built$plot$layers)){
+          ## If there is a geom where the axes updates have non numeric values,
+          ## we stop and throw an informative warning
+          ## It does not make sense to have axes updates for non numeric values
+          aesthetic_names <- names(g.list[[p.name]][[layer.i]]$g$aes)
+          axis_pattern <- paste0("^", axis)
+          axis_col_name <- grep(axis_pattern, aesthetic_names, value=TRUE)
+          if(0==length(axis_col_name)){
+            ##geom_abline does not have any x/y aes to contribute to
+            ##the scale computations so we just ignore this layer --
+            ##TODO all of this logic for computing the axes updates
+            ##should be moved to the geom classes.
+          }else{
+            first_axis_name <- axis_col_name[[1]]
+            axis_col <- g.list[[p.name]][[layer.i]]$g$aes[[first_axis_name]]
+            axis_is_numeric <- is.numeric(
+              ggplot.list[[p.name]]$built$plot$layers[[
+                layer.i]]$data[[axis_col]])
+            if(!axis_is_numeric){
+              stop(paste0(
+                "'update_axes' specified for '", toupper(axis),
+                "' axis on plot '", p.name,
+                "' but the column '", axis_col, "' is non-numeric.",
+                " Axes updates are only available for numeric data."))
+            }
+            ## handle cases for showSelected: showSelectedlegendfill,
+            ## showSelectedlegendcolour etc.
+            choose_ss <- grepl("^showSelected", aesthetic_names)
+            ss_selectors <- g.list[[p.name]][[layer.i]]$g$aes[choose_ss]
+            ## Do not calculate domains for multiple selectors
+            remove_ss <- c()
+            for(j in seq_along(ss_selectors)){
+              if(meta$selectors[[ ss_selectors[[j]] ]]$type != "single"){
+                remove_ss <- c(remove_ss, ss_selectors[j])
+              }
+            }
+            ss_selectors <- ss_selectors[!ss_selectors %in% remove_ss]
+            ## Only save those selectors which are used by plot
+            for(ss in ss_selectors){
+              if(!ss %in% AllPlotsInfo[[p.name]]$axis_domains[[axis]]$selectors){
+                AllPlotsInfo[[p.name]]$axis_domains[[axis]]$selectors <- c(
+                  ss, AllPlotsInfo[[p.name]]$axis_domains[[axis]]$selectors)
+              }
+            }
+            ## Set up built_data to compute domains
+            built_data <-
+              ggplot.list[[p.name]]$built$plot$layers[[layer.i]]$data
+            built_data$PANEL <-
+              ggplot.list[[p.name]]$built$data[[layer.i]]$PANEL
+            if(length(ss_selectors) > 0){
+              subset_domains[layer.i] <- compute_domains(
+                built_data,
+                axis,
+                strsplit(names(g.list[[p.name]])[[layer.i]], "_")[[1]][[2]],
+                names(sort(ss_selectors)),
+                split_by_panel,
+                g.list[[p.name]][[layer.i]]$g$aes)
             }
           }
-          ss_selectors <- ss_selectors[!ss_selectors %in% remove_ss]
-          # Only save those selectors which are used by plot
-          for(ss in ss_selectors){
-            if(!ss %in% AllPlotsInfo[[p.name]]$axis_domains[[axis]]$selectors){
-              AllPlotsInfo[[p.name]]$axis_domains[[axis]]$selectors <-
-                c(ss, AllPlotsInfo[[p.name]]$axis_domains[[axis]]$selectors)
-            }
-          }
-          ## Set up built_data to compute domains
-          built_data <- ggplot.list[[p.name]]$built$plot$layers[[num]]$data
-          built_data$PANEL <- ggplot.list[[p.name]]$built$data[[num]]$PANEL
-
-          if(length(ss_selectors) > 0){
-            subset_domains[num] <- compute_domains(
-              built_data,
-              axis, strsplit(names(g.list[[p.name]])[[num]], "_")[[1]][[2]],
-              names(sort(ss_selectors)), split_by_panel, g.list[[p.name]][[num]]$g$aes)
-          }
-        }
+        }##for(layer.i
         subset_domains <- subset_domains[!sapply(subset_domains, is.null)]
-        if(length(subset_domains) > 0){
+        if(length(subset_domains)==0){
+          warning(paste("update_axes specified for", toupper(axis),
+            "axis on plot", p.name,
+            "but found no geoms with showSelected=singleSelectionVariable,",
+            "so created a plot with no updates for",
+            toupper(axis), "axis"), call. = FALSE)
+          # Do not save in plot.json file if axes is not getting updated
+          update_axes <- AllPlotsInfo[[p.name]]$options$update_axes
+          AllPlotsInfo[[p.name]]$options$update_axes <-
+            update_axes[!axis == update_axes]
+        }else{
           use_domain <- get_domain(subset_domains)
           # Save for renderer
           AllPlotsInfo[[p.name]]$axis_domains[[axis]]$domains <- use_domain
@@ -1152,16 +1176,6 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
                 meta$selectors[[ss]]$selected
             }
           }
-        }else{
-          warning(paste("update_axes specified for", toupper(axis),
-            "axis on plot", p.name,
-            "but found no geoms with showSelected=singleSelectionVariable,",
-            "so created a plot with no updates for",
-            toupper(axis), "axis"), call. = FALSE)
-          # Do not save in plot.json file if axes is not getting updated
-          update_axes <- AllPlotsInfo[[p.name]]$options$update_axes
-          AllPlotsInfo[[p.name]]$options$update_axes <-
-            update_axes[!axis == update_axes]
         }
       }
     }
@@ -1175,7 +1189,7 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
       ## Every plot has a list of geom names.
       AllPlotsInfo[[p.name]]$geoms <- c(
         AllPlotsInfo[[p.name]]$geoms, list(g$classed))
-    }#layer.i
+    }
   }
 
   ## Now that selectors are all defined, go back through geoms to

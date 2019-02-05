@@ -1,5 +1,9 @@
 TODO
 
+add test with tdhock/changepoint-data-structure/figure-loss-small.R --
+right now it works with update_axes but if I add clickSelects it stops
+working (but it should still work).
+
 support variable mapping and scales that can the user can
 interactively update.
 
