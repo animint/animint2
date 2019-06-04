@@ -155,8 +155,8 @@ test_that("axis ticks change when plots are updated",{
 get_grid_lines <- function(html, p_name, grid_class){
   path.i <-
     '//svg[@id="plot_%s"]//g[@class="grid_%s"]//g[@class="%s"]//line'
-  path.hor <- sprintf(path.i, p_name, grid_class, "hor")
-  path.vert <- sprintf(path.i, p_name, grid_class, "vert")
+  path.hor <- sprintf(path.i, p_name, grid_class, "y")
+  path.vert <- sprintf(path.i, p_name, grid_class, "x")
   nodes_h <- getNodeSet(html, path.hor)
   nodes_v <- getNodeSet(html, path.vert)
   # take x1, x2, y1, y2 values only
