@@ -1,28 +1,9 @@
-language: c
+language: r
 
 sudo: required
 
-before_install:
-  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - chmod 755 ./travis-tool.sh
-  - ./travis-tool.sh bootstrap
-  - sudo apt-get install texlive
-install:
-  # Dependencies for shiny/rmarkdown integration
-  # Thanks RStudio! https://github.com/rstudio/rmarkdown/blob/master/.travis.yml
-  # Install binary pandoc from Rstudio
-  - mkdir -p $HOME/opt/pandoc
-  - curl -O http://s3.amazonaws.com/rstudio-buildtools/pandoc-1.12.3.zip
-  - unzip -j pandoc-1.12.3.zip pandoc-1.12.3/linux/debian/x86_64/pandoc
-    -d $HOME/opt/pandoc
-  - chmod +x $HOME/opt/pandoc/pandoc*
-  - rm pandoc-1.12.3.zip
-  - $HOME/opt/pandoc/pandoc --version
-  # Below to avoid error when omegahat repos not available.
-  - export R_REMOTES_NO_ERRORS_FROM_WARNINGS=TRUE
-  - ./travis-tool.sh install_deps
-  - ./travis-tool.sh install_github jimhester/covr
-  - Rscript -e "devtools::install(dep=FALSE)"
+apt_packages:
+  - texlive
 
 script:
   - if [ "$TEST_SUITE" == "CRAN" ];then bash build.sh;else Rscript -e "source('tests/testthat.R', chdir = TRUE)";fi
