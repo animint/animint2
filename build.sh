@@ -9,6 +9,10 @@ for data in UStornadoes WorldBank worldPop generation.loci breakpoints intreg Fl
     cp animint2/data/$data.RData animint2-release/data
     cp animint2/man/$data.Rd animint2-release/man
 done
+for data in diamonds economics faithfuld luv_colours midwest mpg msleep presidential seals txhousing; do
+    cp animint2/data/$data.rda animint2-release/data
+    cp animint2/man/$data.Rd animint2-release/man
+done
 grep -v RSelenium animint2/DESCRIPTION > animint2-release/DESCRIPTION
 cat <<EOF > animint2-release/tests/testthat.R 
 library(testthat)
