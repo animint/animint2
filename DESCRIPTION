@@ -71,7 +71,6 @@ Suggests:
     mapproj,
     maptools,
     mgcv,
-    multcomp,
     nlme,
     quantreg,
     rpart,
@@ -124,7 +123,6 @@ Collate:
     'facet-wrap.r'
     'fortify-lm.r'
     'fortify-map.r'
-    'fortify-multcomp.r'
     'fortify-spatial.r'
     'fortify.r'
     'stat-.r'
