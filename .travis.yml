@@ -20,6 +20,7 @@ notifications:
     on_failure: change
 
 env:
+  - R_REMOTES_NO_ERRORS_FROM_WARNINGS=TRUE
   global:
     - secure: "h06r9Nn7Y01TKEsPy9IWlSj38GopqKcjaNY5pH2/tRfQzNtlmDJKz2R028d5LtVk3tdpen6GTTKwDeWVmQUH63p6BffNjrhmB+JTk+2g4SSx8C8gJqSF0zPEIzz+8012PxXaW/4MIA8l/EJN1Y8ESxsLJNacBJYkWYNYLMCoRZ4="
   matrix:
