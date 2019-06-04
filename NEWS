@@ -13,7 +13,16 @@ is no column named arclength in the data -- this would mean to update
 the selector called "arclength" with the value in column
 "arclength.click" -- less disk space, and faster compiling.
 
-2018.12.14 PR#27
+2019.6.4 PR#27
+
+bugfix for facet_grid(scales/space="free")
+
+bugfix for update_axes with geom_abline
+
+bugfix for graph height computation, which only showed up when there
+were lots of rows in the facet spec.
+
+2018.12.14 
 
 animint fun, export print method.
 
