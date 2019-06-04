@@ -370,10 +370,12 @@ var animint = function (to_select, json_file) {
 
     // the *entire graph* height/width
     var graph_width = p_info.options.width - 
-        ncols * (margin.left + margin.right + strip_width) -
+        ncols * (margin.left + margin.right) -
+	strip_width -
         n_yaxes * axispaddingy - ytitlepadding;
     var graph_height = p_info.options.height - 
-        nrows * (margin.top + margin.bottom + strip_height) -
+        nrows * (margin.top + margin.bottom) -
+	strip_height -
         titlepadding - n_xaxes * axispaddingx - xtitlepadding;
 
     // Impose the pixelated aspect ratio of the graph upon the width/height
