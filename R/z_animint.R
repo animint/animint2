@@ -779,7 +779,9 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
       to.rep <- xy.col.df == find.rep.vec[[row.i]]
       if(any(to.rep, na.rm=TRUE)){
         row.vec <- row(to.rep)[to.rep]
-        panel.vec <- if(is.numeric(g.data$PANEL)){
+        ## PANEL may be a factor so it is not good enough to do
+        ## if(is.numeric(g.data$PANEL))
+        panel.vec <- if("PANEL" %in% names(g.data)){
           g.data$PANEL[row.vec]
         }else{
           1
