@@ -6,6 +6,7 @@ apt_packages:
   - texlive
 
 script:
+  - R CMD INSTALL .
   - if [ "$TEST_SUITE" == "CRAN" ];then bash build.sh;else Rscript -e "source('tests/testthat.R', chdir = TRUE)";fi
 
 after_success:
