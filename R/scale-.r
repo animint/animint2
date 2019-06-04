@@ -526,7 +526,7 @@ continuous_scale <- function(aesthetics, scale_name, palette, name = waiver(),
 
   check_breaks_labels(breaks, labels)
 
-  if (is.null(breaks) && !is_position_aes(aesthetics) && guide != "none") {
+  if (is.null(breaks) && !all(is_position_aes(aesthetics)) && guide != "none") {
     guide <- "none"
   }
 
@@ -606,7 +606,7 @@ discrete_scale <- function(aesthetics, scale_name, palette, name = waiver(), bre
 
   check_breaks_labels(breaks, labels)
 
-  if (is.null(breaks) && !is_position_aes(aesthetics) && guide != "none") {
+  if (is.null(breaks) && !all(is_position_aes(aesthetics)) && guide != "none") {
     guide <- "none"
   }
 

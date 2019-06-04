@@ -130,6 +130,6 @@ plot_dev <- function(device, filename, dpi = 300) {
 }
 
 #' @export
-grid.draw.ggplot <- function(x, recording = TRUE) {
+grid.draw.gganimintplot <- function(x, recording = TRUE) {
   print(x)
 }
