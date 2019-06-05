@@ -854,7 +854,7 @@ var animint = function (to_select, json_file) {
         .style("fill", "red");
       download_chunk(g_info, tsv_name, function(chunk){
       	loading.remove();
-	      draw_panels(g_info, chunk, selector_name);
+	draw_panels(g_info, chunk, selector_name);
       });
     }
   };
@@ -894,7 +894,13 @@ var animint = function (to_select, json_file) {
   // download_chunk is called from update_geom and download_next.
   function download_chunk(g_info, tsv_name, funAfter){
     if(g_info.download_status.hasOwnProperty(tsv_name)){
-      funAfter();
+      var chunk;
+      if(g_info.data_is_object){
+	chunk = {};
+      }else{
+	chunk = [];
+      }
+      funAfter(chunk);
       return; // do not download twice.
     }
     g_info.download_status[tsv_name] = "downloading";
