@@ -773,24 +773,23 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     range.name <- paste0(xy, ".range")
     range.mat <- sapply(ranges, "[[", range.name)
     xy.col.vec <- grep(paste0("^", xy), names(g.data), value=TRUE)
-    find.rep.vec <- c(-Inf, Inf)#order is important here!
-    for(row.i in seq_along(find.rep.vec)){
-      xy.col.df <- g.data[, xy.col.vec, drop=FALSE]
-      to.rep <- xy.col.df == find.rep.vec[[row.i]]
-      if(any(to.rep, na.rm=TRUE)){
-        row.vec <- row(to.rep)[to.rep]
-        ## PANEL may be a factor so it is not good enough to do
-        ## if(is.numeric(g.data$PANEL))
-        panel.vec <- if("PANEL" %in% names(g.data)){
-          g.data$PANEL[row.vec]
-        }else{
-          1
-        }
-        extreme.vec <- range.mat[row.i, panel.vec]
-        xy.col.df[to.rep] <- extreme.vec
-        g.data[, xy.col.vec] <- xy.col.df
+    xy.col.df <- g.data[, xy.col.vec, drop=FALSE]
+    cmp.list <- list(`<`, `>`)#order is important here!
+    for(row.i in seq_along(cmp.list)){
+      ## PANEL may be a factor so it is not good enough to do
+      ## if(is.numeric(g.data$PANEL))
+      panel.vec <- if("PANEL" %in% names(g.data)){
+        g.data$PANEL
+      }else{
+        rep(1, nrow(g.data))
       }
+      extreme.vec <- range.mat[row.i, panel.vec]
+      cmp <- cmp.list[[row.i]]
+      to.rep <- cmp(xy.col.df, extreme.vec)
+      row.vec <- row(to.rep)[to.rep]
+      xy.col.df[to.rep] <- extreme.vec[row.vec]
     }
+    g.data[, xy.col.vec] <- xy.col.df
   }
 
   ## Determine if there are any "common" data that can be saved
