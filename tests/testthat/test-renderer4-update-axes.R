@@ -74,24 +74,17 @@ updated_tick_diff_x <- sapply(rect_nodes2[1, ], getTickDiff, axis="x")
 updated_tick_diff_y <- sapply(rect_nodes2[2, ], getTickDiff, axis="y")
 
 test_that("axis ticks change when plots are updated",{
-  # initial updates -> axis ticks are different for x and y axis
-  expect_length(unique(original_tick_diff_x), 2)
-  expect_length(unique(original_tick_diff_y), 2)
-  
   #no_updates
   expect_equal(updated_tick_diff_x[1], original_tick_diff_x[1])
   expect_equal(updated_tick_diff_y[1], original_tick_diff_y[1])
-  
   #update_x
   expect_true(unequal(updated_tick_diff_x[2], original_tick_diff_x[2],
                       tolerance=0.01))
   expect_equal(updated_tick_diff_y[2], original_tick_diff_y[2])
-  
   #update_y
   expect_equal(updated_tick_diff_x[3], original_tick_diff_x[3])
   expect_true(unequal(updated_tick_diff_y[3], original_tick_diff_y[3],
                       tolerance=0.01))
-  
   #update_xy
   expect_true(unequal(updated_tick_diff_x[4], original_tick_diff_x[4],
                       tolerance=0.01))
