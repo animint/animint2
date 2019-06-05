@@ -33,11 +33,10 @@ Authors@R: c(
     person("Vivek", "Kumar",
      role="aut",
      comment="Animint GSOC 2018"))
-Description: The animint package provided an interactive grammar
- of graphics by depending on ggplot2. This is a redesign of animint
- which no longer depends on ggplot2, and has a new syntax:
- clickSelects and showSelected are now specified as parameters,
- rather than aesthetics.
+Description: Functions are provided for defining animated,
+ interactive data visualizations in R code, and rendering
+ on a web page. Sievert et al., JCGS 2018
+ <doi:10.1080/10618600.2018.1513367>
 Depends:
     R (>= 3.4.0)
 Imports:

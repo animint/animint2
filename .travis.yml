@@ -9,9 +9,6 @@ script:
   - R CMD INSTALL .
   - if [ "$TEST_SUITE" == "CRAN" ];then bash build.sh;else Rscript -e "source('tests/testthat.R', chdir = TRUE)";fi
 
-after_success:
-  - Rscript -e "library(covr);coveralls()"
-
 after_failure:
   - ./travis-tool.sh dump_logs
 

@@ -10,22 +10,26 @@ devtools::install_github("tdhock/animint2")
 
 ** Usage
 
-For animint2 usage examples, see our extensive set of [[file:tests/testthat][test cases]].
+The best reference for learning is the [[http://members.cbio.mines-paristech.fr/~thocking/animint2-manual/Ch02-ggplot2.html][Animint2 Designer Manual]], which
+provides several examples and exercises to get you started using
+animint2.
 
-Another good reference is the [[http://cbio.ensmp.fr/~thocking/animint-book/Ch02-ggplot2.html][Animint Designer Manual]], which uses the
-old syntax. We eventually plan to port all of those examples to the
-new syntax.
+For some examples of what kinds of interactive data visualizations can
+be created, see [[https://github.com/tdhock/animint/wiki/Gallery][the animint gallery]].
+
+For additional usage examples, see our extensive set of [[file:tests/testthat][test cases]].
 
 ** Differences with old animint
 
 This package is a redesign of [[https://github.com/tdhock/animint][animint]] with:
 - Cleaner syntax. In the old animint we had showSelected/clickSelects
-  as aesthetics, and in animint2 they are now parameters.
+  as aesthetics, and in animint2 they are now geom parameters.
 - Easier installation. The old animint depended on ggplot2 but
   animint2 does not (it has copied the necessary functions from
   ggplot2). 
 
-Consider the following example [[http://members.cbio.mines-paristech.fr/~thocking/data/PeakSegJoint-H3K4me3-test/1/figure-train-errors/][dataviz]], adapted from
+For a concrete example of how the syntax changed, consider the
+following example [[http://members.cbio.mines-paristech.fr/~thocking/data/PeakSegJoint-H3K4me3-test/1/figure-train-errors/][dataviz]], adapted from
 [[file:tests/testthat/test-renderer1-variable-value.R]]. The data set used
 to draw the blue line segments in the bottom plot looks like this:
 
@@ -58,9 +62,10 @@ geom_segment(aes(
   data=peaks.dt)
 #+END_SRC
 
-- In both animint and animint2, there are "selectors" which are
-  variables in the interactive graphic that can change based on what
-  you click on. 
+In both animint and animint2, there are "selectors" which are
+variables in the interactive graphic that can change based on what you
+click on. In the old animint, selectors were specified using
+aesthetics:
 - The =aes(clickSelects)= means that whenever you click on one of these
   segments, the =problem.name= selector will change. For example
   clicking the segment that is plotted for the first row of data will
@@ -76,7 +81,8 @@ geom_segment(aes(
   segment for the first row of data will only be shown if =1= is
   selected for the =size.100.problem.1peaks= selector.
 
-The new syntax uses parameters instead of =aes=, so is much more concise:
+The new animint2 syntax uses parameters instead of aesthetics, so is
+much more concise:
 
 #+BEGIN_SRC R
 geom_segment(
