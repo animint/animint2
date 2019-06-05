@@ -69,3 +69,19 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
   ## e$clickElement()
   invisible(TRUE)
 }
+## get both horizontal and vertical grid lines
+get_grid_lines <- function(html, p_name, grid_class){
+  path.i <-
+    '//svg[@id="plot_%s"]//g[@class="grid_%s"]//g[@class="%s"]//line'
+  path.hor <- sprintf(path.i, p_name, grid_class, "y")
+  path.vert <- sprintf(path.i, p_name, grid_class, "x")
+  nodes_h <- getNodeSet(html, path.hor)
+  nodes_v <- getNodeSet(html, path.vert)
+  # take x1, x2, y1, y2 values only
+  attr_h <- sapply(nodes_h, xmlAttrs)[1:4, ]
+  attr_v <- sapply(nodes_v, xmlAttrs)[1:4, ]
+  attr_h <- apply(attr_h, 2, as.numeric)
+  attr_v <- apply(attr_v, 2, as.numeric)
+  return(list(hor=attr_h, vert=attr_v))
+}
+
