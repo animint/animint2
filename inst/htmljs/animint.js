@@ -2532,7 +2532,10 @@ var animint = function (to_select, json_file) {
          selector_values=re.exec(selector_values)[1];
          var array_values = selector_values.split(',');
          var s_info=Selectors[selector_nam]
-          if(s_info.type=="single"){
+          if(s_info.type=="single"){//TODO fix
+//[ERROR - 2019-06-05T18:30:55.358Z] Session [e7c4e500-871e-11e9-a9b5-8dab1f486f7e] - page.onError - msg: TypeError: 'undefined' is not an object (evaluating 's_info.type')
+//[ERROR - 2019-06-05T18:30:55.360Z] Session [e7c4e500-871e-11e9-a9b5-8dab1f486f7e] - page.onError - stack:
+//  (anonymous function) (http://localhost:4848/animint-htmltest/animint.js:2535)
              
                   array_values.forEach(function(element) {
                       
