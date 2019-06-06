@@ -6,7 +6,10 @@
 ##' @return same as animint2dir
 ##' @author Toby Dylan Hocking
 print.animint <- function(x, ...){
-  animint2dir(x, ...)
+  if(is.null(x$out.dir)){
+    message('Saving animint in temporary directory; specify output directory using animint(out.dir="path/to/directory")')
+  }
+  animint2dir(x, x$out.dir, ...)
 }
 
 ##' Create an animated, interactive data visualization. This function

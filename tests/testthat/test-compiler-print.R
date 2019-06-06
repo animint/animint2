@@ -15,7 +15,8 @@ test_that("message when out.dir unspecified", {
 
 out.dir <- file.path(tempdir(), "animint-out")
 unlink(out.dir, recursive=TRUE)
-vizout <- c(viz, list(out.dir=out.dir))
+vizout <- viz
+vizout$out.dir <- out.dir
 test_that("out.dir option is respected", {
   expect_false(file.exists(out.dir))
   print(vizout)

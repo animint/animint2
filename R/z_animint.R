@@ -892,9 +892,12 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
 #' @import RJSONIO
 #' @importFrom utils browseURL head packageVersion str tail write.table
 #' @example inst/examples/animint.R
-animint2dir <- function(plot.list, out.dir = tempfile(),
+animint2dir <- function(plot.list, out.dir = NULL,
                         json.file = "plot.json", open.browser = interactive(),
                         css.file = "") {
+  if(is.null(out.dir)){
+    out.dir <- tempfile()
+  }
   ## Check plot.list for errors
   checkPlotList(plot.list)
 
@@ -926,6 +929,9 @@ animint2dir <- function(plot.list, out.dir = tempfile(),
   if(is.character(plot.list$title)){
     meta$title <- plot.list$title[[1]]
     plot.list$title <- NULL
+  }
+  if(!is.null(plot.list$out.dir)){
+    plot.list$out.dir <- NULL
   }
 
   ## Extract essential info from ggplots, reality checks.
