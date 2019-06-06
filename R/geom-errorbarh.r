@@ -44,11 +44,11 @@ geom_errorbarh <- function(mapping = NULL, data = NULL,
 }
 
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomErrorbarh <- ggproto("GeomErrorbarh", Geom,
+GeomErrorbarh <- gganimintproto("GeomErrorbarh", Geom,
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, height = 0.5,
     alpha = NA),
 

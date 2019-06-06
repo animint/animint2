@@ -370,10 +370,12 @@ var animint = function (to_select, json_file) {
 
     // the *entire graph* height/width
     var graph_width = p_info.options.width - 
-        ncols * (margin.left + margin.right + strip_width) -
+        ncols * (margin.left + margin.right) -
+	strip_width -
         n_yaxes * axispaddingy - ytitlepadding;
     var graph_height = p_info.options.height - 
-        nrows * (margin.top + margin.bottom + strip_height) -
+        nrows * (margin.top + margin.bottom) -
+	strip_height -
         titlepadding - n_xaxes * axispaddingx - xtitlepadding;
 
     // Impose the pixelated aspect ratio of the graph upon the width/height
@@ -654,70 +656,43 @@ var animint = function (to_select, json_file) {
           });
       }
       
-      // function to draw major/minor grid lines 
-      var grid_line = function(grid_background, grid_class) {
-        // if grid lines are defined
-        if(Object.keys(grid_background).length > 1) {
-          var col = grid_background.colour;
-          var lt = grid_background.linetype;
-          var size = grid_background.size;
-          var cap = grid_background.lineend;
-          // group for grid lines
-          var grid = background.append("g")
-            .attr("class", grid_class);
-
-          // group for horizontal grid lines
-          var grid_hor = grid.append("g")
-            .attr("class", "hor");
-          // draw horizontal grid lines if they are defined
-          if(typeof grid_background.loc.y != "undefined") {
-            // coercing y lines to array if necessary
-            if(typeof grid_background.loc.y == "number") grid_background.loc.y = [grid_background.loc.y];
-            // drawing lines
-            grid_hor.selectAll("line")
-              .data(function() { return d3.values(grid_background.loc.y); })
-              .enter()
-              .append("line")
-              .attr("x1", plotdim.xstart)
-              .attr("x2", plotdim.xend)
-              .attr("y1", function(d) { return scales[panel_i].y(d); })
-              .attr("y2", function(d) { return scales[panel_i].y(d); })
-              .style("stroke", col)
-              .style("stroke-linecap", cap)
-              .style("stroke-width", size)
-              .style("stroke-dasharray", function() {
-                return linetypesize2dasharray(lt, size);
-              });;
-          }
-
-          // group for vertical grid lines
-          var grid_vert = grid.append("g")
-            .attr("class", "vert");
-          // draw vertical grid lines if they are defined
-          if(typeof grid_background.loc.x != "undefined") {
-            // coercing x lines to array if necessary
-            if(typeof grid_background.loc.x == "number") grid_background.loc.x = [grid_background.loc.x];
-            // drawing lines
-            grid_vert.selectAll("line")
-              .data(function() { return d3.values(grid_background.loc.x); })
-              .enter()
-              .append("line")
-              .attr("x1", function(d) { return scales[panel_i].x(d); })
-              .attr("x2", function(d) { return scales[panel_i].x(d); })
-              .attr("y1", plotdim.ystart)
-              .attr("y2", plotdim.yend)
-              .style("stroke", col)
-              .style("stroke-linecap", cap)
-              .style("stroke-width", size)
-              .style("stroke-dasharray", function() {
-                return linetypesize2dasharray(lt, size);
-              });;
-          }
-        }
-      }
       // drawing the grid lines
-      grid_line(p_info.grid_minor, "grid_minor");
-      grid_line(p_info.grid_major, "grid_major");
+      ["grid_minor", "grid_major"].forEach(function(grid_class){
+	var grid_background = p_info[grid_class];
+        // if grid lines are defined
+        if(grid_background.hasOwnProperty("size")) {
+          var grid = background.append("g")
+              .attr("class", grid_class);
+	  ["x","y"].forEach(function(scale_var){
+	    var const_var;
+	    if(scale_var == "x"){
+	      const_var = "y";
+	    }else{
+	      const_var = "x";
+	    }
+            grid.append("g")
+              .attr("class", scale_var)
+              .selectAll("line")
+              .data(grid_background.loc[scale_var][layout_i])
+              .enter()
+              .append("line")
+              .attr(const_var + "1", plotdim[const_var + "start"])
+              .attr(const_var + "2", plotdim[const_var + "end"])
+              .attr(scale_var + "1", function(d) {
+		return scales[panel_i][scale_var](d);
+	      })
+              .attr(scale_var + "2", function(d) {
+		return scales[panel_i][scale_var](d);
+	      })
+              .style("stroke", grid_background.colour)
+              .style("stroke-linecap", grid_background.lineend)
+              .style("stroke-width", grid_background.size)
+              .style("stroke-dasharray", linetypesize2dasharray(
+		grid_background.linetype, grid_background.size))
+	    ;
+	  });
+	}
+      });
       
       // drawing border
       // uses insert to draw it right before the #plottitle
@@ -879,7 +854,7 @@ var animint = function (to_select, json_file) {
         .style("fill", "red");
       download_chunk(g_info, tsv_name, function(chunk){
       	loading.remove();
-	      draw_panels(g_info, chunk, selector_name);
+	draw_panels(g_info, chunk, selector_name);
       });
     }
   };
@@ -919,7 +894,13 @@ var animint = function (to_select, json_file) {
   // download_chunk is called from update_geom and download_next.
   function download_chunk(g_info, tsv_name, funAfter){
     if(g_info.download_status.hasOwnProperty(tsv_name)){
-      funAfter();
+      var chunk;
+      if(g_info.data_is_object){
+	chunk = {};
+      }else{
+	chunk = [];
+      }
+      funAfter(chunk);
       return; // do not download twice.
     }
     g_info.download_status[tsv_name] = "downloading";
@@ -1763,18 +1744,18 @@ var animint = function (to_select, json_file) {
       return selected_values;
   };
   
-  var counter=-1;    
-  var update_selector_url = function() {
-      var selected_values=get_values();
-      var url=value_tostring(selected_values);
-      if(counter===-1){
-      $(".table_selector_widgets").after("<table style='display:none' class='urltable'><tr class='selectorurl'></tr></table>");
-      $(".selectorurl").append("<p>Current URL</p>");
-      $(".selectorurl").append("<a href=''></a>");
-      counter++;
-      }
-      $(".selectorurl a").attr("href",url).text(url);
-  };
+  // var counter=-1;    
+  // var update_selector_url = function() {
+  //     var selected_values=get_values();
+  //     var url=value_tostring(selected_values);
+  //     if(counter===-1){
+  //     $(".table_selector_widgets").after("<table style='display:none' class='urltable'><tr class='selectorurl'></tr></table>");
+  //     $(".selectorurl").append("<p>Current URL</p>");
+  //     $(".selectorurl").append("<a href=''></a>");
+  //     counter++;
+  //     }
+  //     $(".selectorurl a").attr("href",url).text(url);
+  // };
 
   // update scales for the plots that have update_axes option in
   // theme_animint
@@ -1855,17 +1836,9 @@ var animint = function (to_select, json_file) {
   function update_grids(p_name, axes, panel_i, grid_vals, scales){
     // Select panel to update
     var bgr = element.select("#plot_"+p_name).select(".bgr"+panel_i);
-
-    var orient;
-    if(axes == "x"){
-      orient = "vert";
-    }else{
-      orient = "hor";
-    }
-    
     // Update major and minor grid lines
     ["minor", "major"].forEach(function(grid_class, j){
-      var lines = bgr.select(".grid_"+grid_class).select("."+orient);
+      var lines = bgr.select(".grid_"+grid_class).select("."+axes);
       var xy1, xy2;
       if(axes == "x"){
         xy1 = lines.select("line").attr("y1");
@@ -1925,9 +1898,11 @@ var animint = function (to_select, json_file) {
   }
 
   var update_selector = function (v_name, value) {
+    if(!Selectors.hasOwnProperty(v_name)){
+      return;
+    }
     value = value + "";
     var s_info = Selectors[v_name];
-    
     if(s_info.type == "single"){
       // value is the new selection.
       s_info.selected = value;
@@ -1942,7 +1917,7 @@ var animint = function (to_select, json_file) {
 	s_info.selected.splice(i_value, 1);
       }
     }
-    update_selector_url()
+    // update_selector_url()
     // if there are levels, then there is a selectize widget which
     // should be updated.
     if(isArray(s_info.levels)){
@@ -2543,66 +2518,61 @@ var animint = function (to_select, json_file) {
       };
       document.addEventListener("visibilitychange", onchange);
     }
-    update_selector_url()
+    // update_selector_url()
     var check_func=function(){
-          var status_array = $('.status').map(function(){
-               return $.trim($(this).text());
-            }).get();
-       status_array=status_array.slice(1)
-       return status_array.every(function(elem){ return elem === "displayed"});           
-      }
-     if(window.location.hash) {
-         var fragment=window.location.hash;
-         fragment=fragment.slice(1);
-         fragment=decodeURI(fragment)
-         var frag_array=fragment.split(/(.*?})/);
-         frag_array=frag_array.filter(function(x){ return x!=""})
-         frag_array.forEach(function(selector_string){ 
-         var selector_hash=selector_string.split("=");
-         var selector_nam=selector_hash[0];
-         var selector_values=selector_hash[1];
-         var re = /\{(.*?)\}/;
-         selector_values=re.exec(selector_values)[1];
-         var array_values = selector_values.split(',');
-         var s_info=Selectors[selector_nam]
-          if(s_info.type=="single"){
-             
-                  array_values.forEach(function(element) {
-                      
-                      wait_until_then(100, check_func, update_selector,selector_nam,element)
-                      if(response.time)Animation.pause(true)
-                    });   
-                 
-             }
-             else{
-                  var old_selections = Selectors[selector_nam].selected;
-                  // the levels that need to have selections turned on
-                  array_values
-                    .filter(function(n) {
-                      return old_selections.indexOf(n) == -1;
-                    })
-                    .forEach(function(element) {
-                        wait_until_then(100, check_func, update_selector,selector_nam,element)
-                         if(response.time){
-                        Animation.pause(true)
-                        }
-                    });
-                  
-            
-                  old_selections
-                    .filter(function(n) {
-                      return array_values.indexOf(n) == -1;
-                    })
-                    .forEach(function(element) {
-                       wait_until_then(100, check_func, update_selector,selector_nam,element)
-                       if(response.time){
-                        Animation.pause(true)
-                       }
-                    });     
-             }
-         
-      })
-      }
+      var status_array = $('.status').map(function(){
+        return $.trim($(this).text());
+      }).get();
+      status_array=status_array.slice(1)
+      return status_array.every(function(elem){ return elem === "displayed"});           
+    }
+    if(window.location.hash) {
+      var fragment=window.location.hash;
+      fragment=fragment.slice(1);
+      fragment=decodeURI(fragment)
+      var frag_array=fragment.split(/(.*?})/);
+      frag_array=frag_array.filter(function(x){ return x!=""})
+      frag_array.forEach(function(selector_string){ 
+        var selector_hash=selector_string.split("=");
+        var selector_nam=selector_hash[0];
+        var selector_values=selector_hash[1];
+        var re = /\{(.*?)\}/;
+        selector_values = re.exec(selector_values)[1];
+        var array_values = selector_values.split(',');
+	if(Selectors.hasOwnProperty(selector_nam)){
+          var s_info = Selectors[selector_nam]
+          if(s_info.type=="single"){//TODO fix
+            array_values.forEach(function(element) {
+              wait_until_then(100, check_func, update_selector,selector_nam,element)
+              if(response.time)Animation.pause(true)
+            });   
+          }else{
+            var old_selections = Selectors[selector_nam].selected;
+            // the levels that need to have selections turned on
+            array_values
+              .filter(function(n) {
+		return old_selections.indexOf(n) == -1;
+              })
+              .forEach(function(element) {
+		wait_until_then(100, check_func, update_selector,selector_nam,element)
+		if(response.time){
+                  Animation.pause(true)
+		}
+              });
+            old_selections
+              .filter(function(n) {
+		return array_values.indexOf(n) == -1;
+              })
+              .forEach(function(element) {
+		wait_until_then(100, check_func, update_selector,selector_nam,element)
+		if(response.time){
+                  Animation.pause(true)
+		}
+              });     
+          }//if(single) else multiple selection
+	}//if(Selectors.hasOwnProperty(selector_nam))
+      })//frag_array.forEach
+    }//if(window.location.hash)
   });
 };
 

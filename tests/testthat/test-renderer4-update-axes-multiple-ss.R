@@ -102,16 +102,11 @@ updated_tick_diff_x2 <- sapply(rect_nodes3[1, ], getTickDiff, axis="x")
 updated_tick_diff_y2 <- sapply(rect_nodes3[2, ], getTickDiff, axis="y")
 
 test_that("axis ticks change when plots are updated",{
-  # initial updates -> axis ticks are different for x and y axis
-  expect_length(unique(original_tick_diff_x), 2)
-  expect_length(unique(original_tick_diff_y), 2)
-  
   #no_updates
   expect_equal(updated_tick_diff_x1[1], original_tick_diff_x[1])
   expect_equal(updated_tick_diff_y1[1], original_tick_diff_y[1])
   expect_equal(updated_tick_diff_x2[1], original_tick_diff_x[1])
   expect_equal(updated_tick_diff_y2[1], original_tick_diff_y[1])
-  
   #update_x
   expect_true(unequal(updated_tick_diff_x1[2], original_tick_diff_x[2],
                       tolerance=0.01))
@@ -121,7 +116,6 @@ test_that("axis ticks change when plots are updated",{
                       tolerance=0.01))
   expect_equal(updated_tick_diff_y1[2], original_tick_diff_y[2])
   expect_equal(updated_tick_diff_y2[2], original_tick_diff_y[2])
-  
   #update_y
   expect_equal(updated_tick_diff_x1[3], original_tick_diff_x[3])
   expect_equal(updated_tick_diff_x2[3], original_tick_diff_x[3])
@@ -131,7 +125,6 @@ test_that("axis ticks change when plots are updated",{
                       tolerance=0.01))
   expect_true(unequal(updated_tick_diff_y2[3], updated_tick_diff_y1[3],
                       tolerance=0.01))
-  
   #update_xy
   expect_true(unequal(updated_tick_diff_x1[4], original_tick_diff_x[4],
                       tolerance=0.01))
@@ -150,22 +143,6 @@ test_that("axis ticks change when plots are updated",{
 
 ## ------------------------------------------------------------------- ##
 ## Test for grid updates
-
-## get both horizontal and vertical grid lines
-get_grid_lines <- function(html, p_name, grid_class){
-  path.i <-
-    '//svg[@id="plot_%s"]//g[@class="grid_%s"]//g[@class="%s"]//line'
-  path.hor <- sprintf(path.i, p_name, grid_class, "hor")
-  path.vert <- sprintf(path.i, p_name, grid_class, "vert")
-  nodes_h <- getNodeSet(html, path.hor)
-  nodes_v <- getNodeSet(html, path.vert)
-  # take x1, x2, y1, y2 values only
-  attr_h <- sapply(nodes_h, xmlAttrs)[1:4, ]
-  attr_v <- sapply(nodes_v, xmlAttrs)[1:4, ]
-  attr_h <- apply(attr_h, 2, as.numeric)
-  attr_v <- apply(attr_v, 2, as.numeric)
-  return(list(hor=attr_h, vert=attr_v))
-}
 
 minor_grid_attr1 <- minor_grid_attr2 <- minor_grid_attr3 <- list()
 major_grid_attr1 <- major_grid_attr2 <- major_grid_attr3 <- list()

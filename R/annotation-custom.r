@@ -57,11 +57,11 @@ annotation_custom <- function(grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax =
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomCustomAnn <- ggproto("GeomCustomAnn", Geom,
+GeomCustomAnn <- gganimintproto("GeomCustomAnn", Geom,
   extra_params = "",
   handle_na = function(data, params) {
     data

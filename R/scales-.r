@@ -2,15 +2,15 @@
 # All input and output done with data.frames to facilitate
 # multiple input and output variables
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @export
 a_scales_list <- function() {
-  ggproto(NULL, ScalesList)
+  gganimintproto(NULL, ScalesList)
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @export
-ScalesList <- ggproto("ScalesList", NULL,
+ScalesList <- gganimintproto("ScalesList", NULL,
   scales = NULL,
 
   find = function(self, aesthetic) {
@@ -51,11 +51,11 @@ ScalesList <- ggproto("ScalesList", NULL,
   # This actually makes a descendant of self, which is functionally the same
   # as a actually clone for most purposes.
   clone = function(self) {
-    ggproto(NULL, self, scales = lapply(self$scales, function(s) s$clone()))
+    gganimintproto(NULL, self, scales = lapply(self$scales, function(s) s$clone()))
   },
 
   non_position_scales = function(self) {
-    ggproto(NULL, self, scales = self$scales[!self$find("x") & !self$find("y")])
+    gganimintproto(NULL, self, scales = self$scales[!self$find("x") & !self$find("y")])
   },
 
   get_scales = function(self, output) {

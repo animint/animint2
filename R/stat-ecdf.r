@@ -49,11 +49,11 @@ stat_ecdf <- function(mapping = NULL, data = NULL,
 }
 
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-StatEcdf <- ggproto("StatEcdf", Stat,
+StatEcdf <- gganimintproto("StatEcdf", Stat,
   compute_group = function(data, scales, n = NULL, pad = TRUE) {
     # If n is NULL, use raw values; otherwise interpolate
     if (is.null(n)) {

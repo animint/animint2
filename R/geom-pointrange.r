@@ -23,11 +23,11 @@ geom_pointrange <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomPointrange <- ggproto("GeomPointrange", Geom,
+GeomPointrange <- gganimintproto("GeomPointrange", Geom,
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, shape = 19,
     fill = NA, alpha = NA, stroke = 1),
 

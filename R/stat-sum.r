@@ -28,11 +28,11 @@ stat_sum <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-StatSum <- ggproto("StatSum", Stat,
+StatSum <- gganimintproto("StatSum", Stat,
   default_aes = aes(size = ..n..),
 
   required_aes = c("x", "y"),

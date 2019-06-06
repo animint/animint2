@@ -28,11 +28,11 @@ stat_identity <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-StatIdentity <- ggproto("StatIdentity", Stat,
+StatIdentity <- gganimintproto("StatIdentity", Stat,
   compute_layer = function(data, scales, params) {
     data
   }

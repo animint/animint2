@@ -40,11 +40,11 @@ stat_quantile <- function(mapping = NULL, data = NULL,
 }
 
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-StatQuantile <- ggproto("StatQuantile", Stat,
+StatQuantile <- gganimintproto("StatQuantile", Stat,
   required_aes = c("x", "y"),
 
   compute_group = function(data, scales, quantiles = c(0.25, 0.5, 0.75),

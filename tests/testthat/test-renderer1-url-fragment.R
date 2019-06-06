@@ -50,12 +50,12 @@ test_that("one species is selected for url with selection", {
   expect_equal(opacity.num[!is.setosa], rep(0.5, 4))
 })
 
-test_that("Current Url is displayed properly",{
-  url.xpath <- "//tr[@class='selectorurl']//a"
-  node <- getNodeSet(html,url.xpath)
-  href <- xmlValue(node[[1]])
-  expect_equal(href,paste0(new_address,'observation={5}'))
-})
+## test_that("Current Url is displayed properly",{
+##   url.xpath <- "//tr[@class='selectorurl']//a"
+##   node <- getNodeSet(html,url.xpath)
+##   href <- xmlValue(node[[1]])
+##   expect_equal(href,paste0(new_address,'observation={5}'))
+## })
 
 remDr$navigate(old_address)
 

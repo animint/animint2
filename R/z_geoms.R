@@ -31,11 +31,11 @@ geom_tallrect <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomTallRect <- ggproto("GeomTallRect",Geom,
+GeomTallRect <- gganimintproto("GeomTallRect",Geom,
                         default_aes = aes(colour = "grey35",
                                                    fill = "grey35", 
                                                    size = 0.5, 
@@ -106,11 +106,11 @@ geom_widerect <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomWideRect <- ggproto("GeomWideRect",Geom,
+GeomWideRect <- gganimintproto("GeomWideRect",Geom,
                                  default_aes =aes(colour = "grey35", 
                                                    fill = "grey35", 
                                                    size = 0.5, 

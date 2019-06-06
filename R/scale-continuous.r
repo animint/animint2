@@ -89,7 +89,7 @@ scale_x_continuous <- function(name = waiver(), breaks = waiver(),
     guide = "none"
   )
 
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
+  # TODO: Fix this hack. We're reassigning the parent gganimintproto object, but this
   # object should in the first place be created with the correct parent.
   sc$super <- ScaleContinuousPosition
   class(sc) <- class(ScaleContinuousPosition)
@@ -111,7 +111,7 @@ scale_y_continuous <- function(name = waiver(), breaks = waiver(),
     guide = "none"
   )
 
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
+  # TODO: Fix this hack. We're reassigning the parent gganimintproto object, but this
   # object should in the first place be created with the correct parent.
   sc$super <- ScaleContinuousPosition
   class(sc) <- class(ScaleContinuousPosition)
@@ -120,11 +120,11 @@ scale_y_continuous <- function(name = waiver(), breaks = waiver(),
 }
 
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-ScaleContinuousPosition <- ggproto("ScaleContinuousPosition", ScaleContinuous,
+ScaleContinuousPosition <- gganimintproto("ScaleContinuousPosition", ScaleContinuous,
   # Position aesthetics don't map, because the coordinate system takes
   # care of it. But they do need to be made in to doubles, so stat methods
   # can tell the difference between continuous and discrete data.

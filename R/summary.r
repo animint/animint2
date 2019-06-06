@@ -3,13 +3,13 @@
 #' @param object ggplot2 object to summarise
 #' @param ... other arguments ignored (for compatibility with generic)
 #' @keywords internal
-#' @method summary ggplot
+#' @method summary gganimintplot
 #' @export
 #' @examples
 #' p <- ggplot(mtcars, aes(mpg, wt)) +
 #'   geom_point()
 #' summary(p)
-summary.ggplot <- function(object, ...) {
+summary.gganimintplot <- function(object, ...) {
   wrap <- function(x) paste(
     paste(strwrap(x, exdent = 2), collapse = "\n"),
     "\n", sep = ""

@@ -23,8 +23,8 @@
 %   R/stat-summary-hex.r, R/stat-summary.r, R/stat-unique.r, R/stat-ydensity.r,
 %   R/z_geoms.R
 \docType{data}
-\name{animint2-ggproto}
-\alias{animint2-ggproto}
+\name{animint2-gganimintproto}
+\alias{animint2-gganimintproto}
 \alias{Geom}
 \alias{GeomCustomAnn}
 \alias{GeomLogticks}
@@ -119,8 +119,8 @@
 \alias{StatYdensity}
 \alias{GeomTallRect}
 \alias{GeomWideRect}
-\title{Base ggproto classes for ggplot2}
-\format{An object of class \code{ScalesList} (inherits from \code{ggproto}) of length 9.}
+\title{Base gganimintproto classes for ggplot2}
+\format{An object of class \code{ScalesList} (inherits from \code{gganimintproto}) of length 9.}
 \usage{
 a_scales_list()
 
@@ -138,7 +138,7 @@ All \code{geom_*} functions (like \code{geom_point}) return a layer that
 contains a \code{Geom*} object (like \code{GeomPoint}). The \code{Geom*}
 object is responsible for rendering the data in the plot.
 
-Each of the \code{Geom*} objects is a \code{\link{ggproto}} object, descended
+Each of the \code{Geom*} objects is a \code{\link{gganimintproto}} object, descended
 from the top-level \code{Geom}, and each implements various methods and
 fields. To create a new type of Geom object, you typically will want to
 implement one or more of the following:
@@ -192,7 +192,7 @@ The way that the \code{coord_*} functions work is slightly different from the
 actually "instantiates" the \code{Coord*} object by creating a descendant,
 and returns that.
 
-Each of the \code{Coord*} objects is a \code{\link{ggproto}} object,
+Each of the \code{Coord*} objects is a \code{\link{gganimintproto}} object,
 descended from the top-level \code{Coord}.  To create a new type of Coord
 object, you typically will want to implement one or more of the following:
 
@@ -219,7 +219,7 @@ All \code{stat_*} functions (like \code{stat_bin}) return a layer that
 contains a \code{Stat*} object (like \code{StatBin}). The \code{Stat*}
 object is responsible for rendering the data in the plot.
 
-Each of the \code{Stat*} objects is a \code{\link{ggproto}} object, descended
+Each of the \code{Stat*} objects is a \code{\link{gganimintproto}} object, descended
 from the top-level \code{Stat}, and each implements various methods and
 fields. To create a new type of Stat object, you typically will want to
 implement one or more of the following:
@@ -271,7 +271,7 @@ the \code{geom_*} and \code{stat_*} functions, because a \code{position_*}
 function actually "instantiates" the \code{Position*} object by creating a
 descendant, and returns that.
 
-Each of the \code{Position*} objects is a \code{\link{ggproto}} object,
+Each of the \code{Position*} objects is a \code{\link{gganimintproto}} object,
 descended from the top-level \code{Position}, and each implements the
 following methods:
 
@@ -311,12 +311,12 @@ All \code{scale_*} functions (like \code{scale_x_continuous}) return a
 \code{Scale*} object (like \code{ScaleContinuous}). The \code{Scale*}
 object represents a single scale.
 
-Each of the \code{Scale*} objects is a \code{\link{ggproto}} object,
+Each of the \code{Scale*} objects is a \code{\link{gganimintproto}} object,
 descended from the top-level \code{Scale}.
 }
 
 \seealso{
-ggproto
+gganimintproto
 }
 \keyword{datasets}
 \keyword{internal}

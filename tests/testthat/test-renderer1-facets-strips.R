@@ -46,3 +46,36 @@ test_that("facet_wrap() strip labels are placed correctly", {
   expect_equal(labs, c("4, 0", "4, 1", "6, 0", 
                        "6, 1", "8, 0", "8, 1"))
 })
+
+test_that("strip pos sensible for wrap(nrow=1)", {
+  oneRow <- list(
+    wrapPlot=p +
+      facet_wrap(~cyl+am, nrow=1))
+  info <- animint2HTML(oneRow)
+  text.list <- getNodeSet(info$html, "//g[@class='topStrip']//text")
+  translate.vec <- sapply(text.list, function(x)xmlAttrs(x)[["transform"]])
+  translate.mat <- str_match_perl(translate.vec, translatePattern)
+  trans.x <- as.numeric(translate.mat[, "x"])
+  trans.y <- as.numeric(translate.mat[, "y"])
+  expect_equal(diff(trans.y), rep(0, 5))
+  expect_true(all(0 < diff(trans.x)))
+  expect_true(all(0 < trans.x))
+  expect_true(all(0 < trans.y))
+})
+
+test_that("strip pos sensible for wrap(ncol=1)", {
+  oneCol <- list(
+    wrapPlot=p +
+      facet_wrap(~cyl+am, ncol=1))
+  info <- animint2HTML(oneCol)
+  text.list <- getNodeSet(info$html, "//g[@class='topStrip']//text")
+  translate.vec <- sapply(text.list, function(x)xmlAttrs(x)[["transform"]])
+  translate.mat <- str_match_perl(translate.vec, translatePattern)
+  trans.x <- as.numeric(translate.mat[, "x"])
+  trans.y <- as.numeric(translate.mat[, "y"])
+  expect_true(all(0 < diff(trans.y)))
+  expect_equal(diff(trans.x), rep(0, 5))
+  expect_true(all(0 < trans.x))
+  expect_true(all(0 < trans.y))
+})
+

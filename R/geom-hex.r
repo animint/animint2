@@ -46,11 +46,11 @@ geom_hex <- function(mapping = NULL, data = NULL,
 }
 
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomHex <- ggproto("GeomHex", Geom,
+GeomHex <- gganimintproto("GeomHex", Geom,
   draw_group = function(data, panel_scales, coord) {
     if (!inherits(coord, "CoordCartesian")) {
       stop("geom_hex() only works with Cartesian coordinates", call. = FALSE)

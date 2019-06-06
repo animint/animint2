@@ -10,8 +10,6 @@
 benchplot <- function(x) {
 
   construct <- system.time(force(x))
-  stopifnot(inherits(x, "ggplot"))
-
   build <- system.time(data <- ggplot_build(x))
   render <- system.time(grob <- ggplot_gtable(data))
   draw <- system.time(grid.draw(grob))

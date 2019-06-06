@@ -32,11 +32,11 @@ stat_summary_bin <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-StatSummaryBin <- ggproto("StatSummaryBin", Stat,
+StatSummaryBin <- gganimintproto("StatSummaryBin", Stat,
   required_aes = c("x", "y"),
 
   compute_group = function(data, scales, fun.data = NULL, fun.y = NULL,

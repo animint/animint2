@@ -132,7 +132,7 @@ scale_datetime <- function(aesthetics, trans,
     breaks = breaks, minor_breaks = minor_breaks, labels = labels,
     guide = "none", trans = trans, ...)
 
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
+  # TODO: Fix this hack. We're reassigning the parent gganimintproto object, but this
   # object should in the first place be created with the correct parent.
   scale_class <- switch(trans, date = ScaleContinuousDate, time = ScaleContinuousDatetime)
   sc$super <- scale_class
@@ -141,21 +141,21 @@ scale_datetime <- function(aesthetics, trans,
 }
 
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-ScaleContinuousDatetime <- ggproto("ScaleContinuousDatetime", ScaleContinuous,
+ScaleContinuousDatetime <- gganimintproto("ScaleContinuousDatetime", ScaleContinuous,
   map = function(self, x, limits = self$get_limits()) {
     self$oob(x, limits)
   }
 )
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-ScaleContinuousDate <- ggproto("ScaleContinuousDate", ScaleContinuous,
+ScaleContinuousDate <- gganimintproto("ScaleContinuousDate", ScaleContinuous,
   map = function(self, x, limits = self$get_limits()) {
     self$oob(x, limits)
   }

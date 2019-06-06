@@ -76,11 +76,11 @@ stat_function <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-StatFunction <- ggproto("StatFunction", Stat,
+StatFunction <- gganimintproto("StatFunction", Stat,
   default_aes = aes(y = ..y..),
 
   compute_group = function(data, scales, fun, xlim = NULL, n = 101, args = list()) {

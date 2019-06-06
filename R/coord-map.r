@@ -84,7 +84,7 @@
 #' worldmap + coord_map("ortho", orientation = c(41, -74, 0))
 #' }
 coord_map <- function(projection="mercator", ..., orientation = NULL, xlim = NULL, ylim = NULL) {
-  ggproto(NULL, CoordMap,
+  gganimintproto(NULL, CoordMap,
     projection = projection,
     orientation = orientation,
     limits = list(x = xlim, y = ylim),
@@ -92,11 +92,11 @@ coord_map <- function(projection="mercator", ..., orientation = NULL, xlim = NUL
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-CoordMap <- ggproto("CoordMap", Coord,
+CoordMap <- gganimintproto("CoordMap", Coord,
 
   transform = function(self, data, scale_details) {
     trans <- mproject(self, data$x, data$y, scale_details$orientation)

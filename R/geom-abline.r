@@ -106,11 +106,11 @@ geom_abline <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomAbline <- ggproto("GeomAbline", Geom,
+GeomAbline <- gganimintproto("GeomAbline", Geom,
   draw_panel = function(data, panel_scales, coord) {
     ranges <- coord$range(panel_scales)
 

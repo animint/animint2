@@ -118,7 +118,7 @@ layer <- function(geom = NULL, stat = NULL,
     extra_params <- params[extra]
   }
 
-  ggproto("LayerInstance", Layer,
+  gganimintproto("LayerInstance", Layer,
     geom = geom,
     geom_params = geom_params,
     stat = stat,
@@ -134,7 +134,7 @@ layer <- function(geom = NULL, stat = NULL,
   )
 }
 
-Layer <- ggproto("Layer", NULL,
+Layer <- gganimintproto("Layer", NULL,
   geom = NULL,
   geom_params = NULL,
   stat = NULL,

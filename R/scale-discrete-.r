@@ -50,7 +50,7 @@ scale_x_discrete <- function(..., expand = waiver()) {
   sc <- discrete_scale(c("x", "xmin", "xmax", "xend"), "position_d", identity, ...,
     expand = expand, guide = "none")
 
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
+  # TODO: Fix this hack. We're reassigning the parent gganimintproto object, but this
   # object should in the first place be created with the correct parent.
   sc$super <- ScaleDiscretePosition
   class(sc) <- class(ScaleDiscretePosition)
@@ -64,7 +64,7 @@ scale_y_discrete <- function(..., expand = waiver()) {
   sc <- discrete_scale(c("y", "ymin", "ymax", "yend"), "position_d", identity, ...,
     expand = expand, guide = "none")
 
-  # TODO: Fix this hack. We're reassigning the parent ggproto object, but this
+  # TODO: Fix this hack. We're reassigning the parent gganimintproto object, but this
   # object should in the first place be created with the correct parent.
   sc$super <- ScaleDiscretePosition
   class(sc) <- class(ScaleDiscretePosition)
@@ -78,11 +78,11 @@ scale_y_discrete <- function(..., expand = waiver()) {
 # mapping, but makes it possible to place objects at non-integer positions,
 # as is necessary for jittering etc.
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-ScaleDiscretePosition <- ggproto("ScaleDiscretePosition", ScaleDiscrete,
+ScaleDiscretePosition <- gganimintproto("ScaleDiscretePosition", ScaleDiscrete,
 
   train = function(self, x) {
     if (is.discrete(x)) {
@@ -133,7 +133,7 @@ ScaleDiscretePosition <- ggproto("ScaleDiscretePosition", ScaleDiscrete,
   },
 
   clone = function(self) {
-    new <- ggproto(NULL, self)
+    new <- gganimintproto(NULL, self)
     new$range <- discrete_range()
     new$range_c <- continuous_range()
     new

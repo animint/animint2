@@ -114,11 +114,11 @@ geom_path <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomPath <- ggproto("GeomPath", Geom,
+GeomPath <- gganimintproto("GeomPath", Geom,
   required_aes = c("x", "y"),
 
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
@@ -243,12 +243,12 @@ geom_line <- function(mapping = NULL, data = NULL, stat = "identity",
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
 #' @include geom-path.r
-GeomLine <- ggproto("GeomLine", GeomPath,
+GeomLine <- gganimintproto("GeomLine", GeomPath,
   setup_data = function(data, params) {
     data[order(data$PANEL, data$group, data$x), ]
   }
@@ -277,12 +277,12 @@ geom_step <- function(mapping = NULL, data = NULL, stat = "identity",
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
 #' @include geom-path.r
-GeomStep <- ggproto("GeomStep", GeomPath,
+GeomStep <- gganimintproto("GeomStep", GeomPath,
   draw_panel = function(data, panel_scales, coord, direction = "hv") {
     data <- plyr::ddply(data, "group", stairstep, direction = direction)
     GeomPath$draw_panel(data, panel_scales, coord)

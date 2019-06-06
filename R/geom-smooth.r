@@ -109,11 +109,11 @@ geom_smooth <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomSmooth <- ggproto("GeomSmooth", Geom,
+GeomSmooth <- gganimintproto("GeomSmooth", Geom,
   draw_group = function(data, panel_scales, coord) {
     ribbon <- transform(data, colour = NA)
     path <- transform(data, alpha = NA)

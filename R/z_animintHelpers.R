@@ -12,7 +12,7 @@ addShowSelectedForLegend <- function(meta, legend, L){
     s.name <- one.legend$selector
     is.variable.name <- is.character(s.name) && length(s.name) == 1
     layer.has.variable <- s.name %in% names(L$data)
-    
+
     if(is.variable.name && layer.has.variable) {
       ## grabbing the variable from the data
       var <- L$data[, s.name]
@@ -64,20 +64,20 @@ addShowSelectedForLegend <- function(meta, legend, L){
 get_bg <- function(pars, theme.pars) {
   # if pars is not an empty list - occurs when using element_blank()
   if(length(pars) > 0) {
-    
+
     ## if elements are not specified, they inherit from theme.pars$rect
     for(i in 1:length(pars)) {
       if(is.null(pars[[i]])) pars[[i]] <- unname(theme.pars$rect[[i]])
     }
-    
+
     # convert fill to RGB if necessary
     if(!(is.rgb(pars$fill))) pars$fill <- unname(toRGB(pars$fill))
     # convert color to RGB if necessary
     if(!(is.rgb(pars$colour))) pars$colour <- unname(toRGB(pars$colour))
-    
+
     # remove names (JSON file was getting confused)
     pars <- lapply(pars, unname)
-    
+
   }
   pars
 }
@@ -87,11 +87,11 @@ get_bg <- function(pars, theme.pars) {
 get_grid <- function(pars, theme.pars, plot.meta, meta, built, major = T) {
   # if pars is not an empty list - occurs when using element_blank()
   if(length(pars) > 0) {
-    
-    ## if elements are not specified, they inherit from 
+
+    ## if elements are not specified, they inherit from
     ##    theme.pars$panel.grid then from theme.pars$line
     for(i in names(pars)) {
-      if(is.null(pars[[i]])) pars[[i]] <- 
+      if(is.null(pars[[i]])) pars[[i]] <-
           if(!is.null(theme.pars$panel.grid[[i]])) {
             theme.pars$panel.grid[[i]]
           } else {
@@ -100,25 +100,20 @@ get_grid <- function(pars, theme.pars, plot.meta, meta, built, major = T) {
     }
     # convert colour to RGB if necessary
     if(!is.rgb(pars$colour)) pars$colour <- unname(toRGB(pars$colour))
-    
+
     # remove names (JSON file was getting confused)
     pars <- lapply(pars, unname)
   }
-  
+
   ## x and y locations
-  if(major) {
-    pars$loc$x <- as.list(built$panel$ranges[[1]]$x.major_source)
-    pars$loc$y <- as.list(built$panel$ranges[[1]]$y.major_source)
-  } else {
-    pars$loc$x <- as.list(built$panel$ranges[[1]]$x.minor_source)
-    pars$loc$y <- as.list(built$panel$ranges[[1]]$y.minor_source)
-    ## remove minor lines when major lines are already drawn
-    pars$loc$x <- pars$loc$x[
-      !(pars$loc$x %in% plot.meta$grid_major$loc$x)
-      ]
-    pars$loc$y <- pars$loc$y[
-      !(pars$loc$y %in% plot.meta$grid_major$loc$y)
-      ]
+  for(xy in c("x", "y")){
+    e.name <- paste0(
+      xy, ".",
+      ifelse(major, "major", "minor"),
+      "_source")
+    pars$loc[[xy]] <- lapply(built$panel$ranges, function(L){
+      as.list(L[[e.name]])
+    })
   }
   pars
 }
@@ -187,7 +182,7 @@ hjust2anchor <- function(hjust){
 
 
 #' Get all parameters for a layer
-#' 
+#'
 #' @param l A single layer of the plot
 #' @return All parameters in the layer
 getLayerParams <- function(l){
@@ -207,7 +202,7 @@ getLayerParams <- function(l){
 
 
 #' Filter out columns that do not need to be copied
-#' 
+#'
 #' @param g Geom with columns
 #' @param s.aes Selector aesthetics
 #' @return Character vector of columns not to be copied
@@ -224,14 +219,14 @@ colsNotToCopy <- function(g, s.aes){
     ##"bar", "histogram", #?
     "hline", "vline",
     "jitter", "linerange",
-    "point", 
+    "point",
     "rect", "segment")
   dont.need.group <- ! g$geom %in% need.group
   remove.group <- group.meaningless ||
     group.not.specified && 1 < n.groups && dont.need.group
   do.not.copy <- c(
     if(remove.group)"group")
-  
+
   do.not.copy
 }
 
@@ -295,7 +290,7 @@ removeUniquePanelValue <- function(g.data, plot.has.panels){
 
 
 #' Check plot.list for errors
-#' 
+#'
 #' Check that plot.list is a list and every element is named
 #' @param plot.list from \code{animint2dir} to check for errors
 #' @return Throws an error for invalid values
@@ -311,7 +306,7 @@ checkPlotList <- function(plot.list){
 
 
 #' Environment to store meta data
-#' 
+#'
 #' Get a new environment to store meta-data. Used to alter state in the
 #' lower-level functions
 #' @return A new environment to store meta data
@@ -325,16 +320,16 @@ newEnvironment <- function(){
 
 
 #' Check animation variable for errors
-#' 
+#'
 #' @param timeVarList \code{plot.list$time} in \code{animint2dir} to check
 #' for errors
-#' @return \code{NULL} :Stops with an error for invalid input 
+#' @return \code{NULL} :Stops with an error for invalid input
 checkAnimationTimeVar <- function(timeVarList){
   # Check if both ms duration and variable are present
   if(!all(c("ms", "variable") %in% names(timeVarList))){
     stop("time option list needs ms, variable")
   }
-  
+
   ms <- timeVarList$ms
   stopifnot(is.numeric(ms))
   stopifnot(length(ms)==1)
@@ -348,18 +343,17 @@ checkAnimationTimeVar <- function(timeVarList){
 }
 
 #' Performs error checking on the plot for animint extensions
-#' 
+#'
 #' @param p plot from \code{plot.list} to check for errors
 #' @param plot_name plot name error check. Should be alphanumeric and should
 #' begin with an alphabet
-#' @return \code{NULL} :Stops with an error for invalid input 
+#' @return \code{NULL} :Stops with an error for invalid input
 checkPlotForAnimintExtensions <- function(p, plot_name){
   # Check if plot is properly named
   pattern <- "^[a-zA-Z][a-zA-Z0-9]*$"
   if(!grepl(pattern, plot_name)){
     stop("ggplot names must match ", pattern)
   }
-  
   # Check layer by layer for proper extensions
   for(L in p$layers){
     ## This code assumes that the layer has the complete aesthetic
@@ -372,7 +366,7 @@ checkPlotForAnimintExtensions <- function(p, plot_name){
       stop("aes names must be unique, problems: ",
            paste(names(name.counts)[is.dup], collapse=", "))
     }
-    
+
     ## Add SS and CS as aesthetics before checking for interactive aes
     ## TODO: We are doing this twice. Once in parsePlot too. Restructure
     ## to avoid this
@@ -388,7 +382,7 @@ checkPlotForAnimintExtensions <- function(p, plot_name){
       # check whether the variable is in the global data
       has.var <- update.vars %in% names(p$data)
     }
-    
+
     if(!all(has.var)){
       print(L)
       print(list(problem.aes=update.vars[!has.var],
@@ -418,7 +412,7 @@ compute_domains <- function(built_data, axes, geom_name,
       }
     }
   }
-  
+
   names(built_data)[names_present] <- sapply(names(built_data)[names_present], return_names, rev(mapping))
   # Different geoms will use diff columns to calculate domains for
   # showSelected subsets. Eg. geom_bar will use 'xmin', 'xmax', 'ymin',
@@ -462,11 +456,11 @@ compute_domains <- function(built_data, axes, geom_name,
                                  ".", levels(inter_data))
     inter_data
   }
-  
+
   if(geom_name %in% c("point", "path", "text", "line")){
     # We suppress 'returning Inf' warnings when we compute a factor
     # interaction that has no data to display
-    domain_vals[[use_cols[1]]] <- 
+    domain_vals[[use_cols[1]]] <-
       suppressWarnings(lapply(split(built_data[[use_cols[1]]],
                                     split_by),
                               range, na.rm=TRUE))
@@ -485,7 +479,7 @@ compute_domains <- function(built_data, axes, geom_name,
                               range, na.rm=TRUE))
   }else if(geom_name %in% c("ribbon")){
     if(axes=="x"){
-      domain_vals[[use_cols[1]]] <- 
+      domain_vals[[use_cols[1]]] <-
         suppressWarnings(lapply(split(built_data[[use_cols[1]]],
                                       split_by),
                                 range, na.rm=TRUE))
@@ -684,12 +678,12 @@ merge_recurse <- function(dfs){
 #' @return list of legend information, NULL if guide=FALSE.
 getLegend <- function(mb){
   guidetype <- mb$name
-  
+
   ## The main idea of legends:
-  
+
   ## 1. Here in getLegend I export the legend entries as a list of
   ## rows that can be used in a data() bind in D3.
-  
+
   ## 2. In add_legend in the JS code I create a <table> for every
   ## legend, and then I bind the legend entries to <tr>, <td>, and
   ## <svg> elements.
@@ -739,7 +733,7 @@ getLegend <- function(mb){
          class = if(mb$is.discrete)mb$selector else mb$title,
          selector = mb$selector,
          is_discrete= mb$is.discrete,
-         legend_type = mb$legend_type, 
+         legend_type = mb$legend_type,
          entries = data)
   }
 }
@@ -762,13 +756,13 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     ## group for deciding common data.
     built$group <- NULL
   }
-  
+
   ## Remove columns with all NA values
   ## so that common.not.na is not empty
   ## due to the plot's alpha, stroke or other columns
   all.nas <- sapply(built, function(x){all(is.na(x))})
   built <- built[, !all.nas]
-  
+
   ## Treat factors as characters, to avoid having them be coerced to
   ## integer later.
   for(col.name in names(built)){
@@ -776,12 +770,12 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
       built[, col.name] <- paste(built[, col.name])
     }
   }
-  
+
   ## If there is only one chunk, then there is no point of making a
   ## common data file.
   chunk.rows.tab <- table(built[, chunk.vars])
   if(length(chunk.rows.tab) == 1) return(NULL)
-  
+
   ## If there is no group column, and all the chunks are the same
   ## size, then add one based on the row number.
   if(! "group" %in% names(built)){
@@ -796,7 +790,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
       return(NULL)
     }
   }
-  
+
   built.by.group <- split(built, built$group)
   group.tab <- table(built[, c("group", chunk.vars)])
   each.group.same.size <- apply(group.tab, 1, function(group.size.vec){
@@ -809,7 +803,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
       0
     }
   })
-  
+
   checkCommon <- function(col.name){
     for(group.name in names(built.by.group)){
       data.vec <- built.by.group[[group.name]][[col.name]]
@@ -832,11 +826,11 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     }
     TRUE
   }
-  
+
   all.col.names <- names(built)
   col.name.vec <- all.col.names[!all.col.names %in% chunk.vars]
   is.common <- sapply(col.name.vec, checkCommon)
-  
+
   ## TODO: another criterion could be used to save disk space even if
   ## there is only 1 chunk.
   n.common <- sum(is.common)
@@ -907,13 +901,13 @@ varied.chunk <- function(df.or.list, cols){
 split.x <- function(x, vars){
   if(length(vars)==0)return(x)
   if(is.data.frame(x)){
-    
+
     ## Remove columns with all NA values
     ## so that x is not empty due to
     ## the plot's alpha, stroke or other columns
     all.nas <- sapply(x, function(col.m){all(is.na(col.m))})
     x <- x[, !all.nas]
-    
+
     # rows with NA should not be saved
     x <- na.omit(x)
     if(length(vars) == 1){
@@ -942,7 +936,7 @@ saveChunks <- function(x, meta){
   if(is.data.frame(x)){
     this.i <- meta$chunk.i
     csv.name <- sprintf("%s_chunk%d.tsv", meta$g$classed, this.i)
-    write.table(x, file.path(meta$out.dir, csv.name), quote=FALSE, 
+    write.table(x, file.path(meta$out.dir, csv.name), quote=FALSE,
                 row.names=FALSE, sep="\t")
     meta$chunk.i <- meta$chunk.i + 1L
     this.i
@@ -964,7 +958,7 @@ checkForSSandCSasAesthetics <- function(aesthetics, plot_name){
   for(i in seq_along(aesthetics)){
     aes_has_ss_cs <- grepl("^showSelected", names(aesthetics)[[i]]) ||
       grepl("^clickSelects$", names(aesthetics)[[i]])
-    
+
     ## Show error only if showSelected is not added by animint code for legends
     ## TODO: Better check this before adding showSelectedlegend...
     ss_added_by_legend <- grepl("^showSelectedlegend", names(aesthetics)[[i]])
@@ -985,61 +979,37 @@ checkForSSandCSasAesthetics <- function(aesthetics, plot_name){
 ##' and clickSelects values of the layer
 ##' @return Modified aesthetics list with showSelected/clickSelects params added
 ##' @details Used before calling ggplot_build in parsePlot and while checking
-##' animint extensions to raise error 
+##' animint extensions to raise error
 addSSandCSasAesthetics <- function(aesthetics, extra_params){
-  for(i in seq_along(extra_params)){
-    if(names(extra_params)[[i]] == "showSelected"){
-      if(is.null(names(extra_params[[i]]))){
-        names(extra_params[[i]]) <- 
-          rep("", length(extra_params[[i]]))
+  class(aesthetics) <- "list"
+  for(param.name in c("clickSelects", "showSelected")){
+    selector.vec <- extra_params[[param.name]]
+    if(is.character(selector.vec)){
+      if(is.null(names(selector.vec))){
+        names(selector.vec) <- rep("", length(selector.vec))
       }
-      for(j in seq_along(extra_params[[i]])){
-        
-        ## If .variable/.value have been specified
-        if(names(extra_params[[i]])[[j]] != ""){
-          aesthetics[[length(aesthetics)+1]] <-
-            as.symbol(names(extra_params[[i]])[[j]])
-          names(aesthetics)[[length(aesthetics)]] <-
-            paste0("showSelected.variable")
-          aesthetics[[length(aesthetics)+1]] <-
-            as.symbol(extra_params[[i]][[j]])
-          names(aesthetics)[[length(aesthetics)]] <-
-            paste0("showSelected.value")
+      for(j in seq_along(selector.vec)){
+        if(names(selector.vec)[[j]] != ""){
+          aesthetics[[paste0(param.name, ".variable")]] <-
+            as.symbol(names(selector.vec)[[j]])
+          aesthetics[[paste0(param.name, ".value")]] <-
+            as.symbol(selector.vec[[j]])
         }else{
-          ss_added_by_legend <- aesthetics[ grepl("^showSelectedlegend", names(aesthetics)) ]
-          if(!extra_params[[i]][[j]] %in% ss_added_by_legend){
-            aesthetics[[length(aesthetics)+1]] <- as.symbol(extra_params[[i]][[j]])
-            names(aesthetics)[[length(aesthetics)]] <-
-              paste0("showSelected", j)
+          if(param.name=="clickSelects"){
+            aesthetics[["clickSelects"]] <- as.symbol(selector.vec[[j]])
+          }else{
+            ss_added_by_legend <- grep(
+              "^showSelectedlegend", names(aesthetics), value=TRUE)
+            if(!selector.vec[[j]] %in% ss_added_by_legend){
+              aesthetics[[paste0("showSelected", j)]] <-
+                as.symbol(selector.vec[[j]])
+            }
           }
         }
       }
     }
-    
-    if(names(extra_params)[[i]] == "clickSelects"){
-      if(is.null(names(extra_params[[i]]))){
-        names(extra_params[[i]]) <- 
-          rep("", length(extra_params[[i]]))
-      }
-      for(j in seq_along(extra_params[[i]])){
-        if(names(extra_params[[i]])[[j]] != ""){
-          aesthetics[[length(aesthetics)+1]] <-
-            as.symbol(names(extra_params[[i]])[[j]])
-          names(aesthetics)[[length(aesthetics)]] <-
-            paste0("clickSelects.variable")
-          aesthetics[[length(aesthetics)+1]] <-
-            as.symbol(extra_params[[i]][[j]])
-          names(aesthetics)[[length(aesthetics)]] <-
-            paste0("clickSelects.value")
-        }else{
-          aesthetics[[length(aesthetics)+1]] <- as.symbol(extra_params[[i]][[j]])
-          names(aesthetics)[[length(aesthetics)]] <-
-            paste0("clickSelects")
-        }
-      }
-    }
   }
-  return(aesthetics)
+  aesthetics
 }
 
 ##' Check \code{extra_params} argument for duplicates, non-named list
@@ -1048,25 +1018,30 @@ addSSandCSasAesthetics <- function(aesthetics, extra_params){
 ##' @param aes_mapping aesthetics mapping of the layer
 ##' @return Modified \code{extra_params} list
 checkExtraParams <- function(extra_params, aes_mapping){
-  for(i in seq_along(extra_params)){
-    if(names(extra_params)[[i]] %in% c("showSelected", "clickSelects")){
-      if(is.null(names(extra_params[[i]]))){
-        ## If showSelected/clickSelects is not a named vector (due to no SSvar=SSval),
-        ## just put empty strings as names
-        names(extra_params[[i]]) <- 
-          rep("", length(extra_params[[i]]))
-      }
-      ## Remove duplicates
-      extra_params[[i]] <- extra_params[[i]][ !duplicated(extra_params[[i]]) ]
-      
-      ## Remove from extra_params if already added by legend
-      if(names(extra_params)[[i]] %in% c("showSelected")){
-        ss_added_by_legend <- aes_mapping[grepl("^showSelectedlegend", names(aes_mapping))]
-        extra_params[[i]] <- extra_params[[i]][ !extra_params[[i]] %in% ss_added_by_legend ]
-      }
+  cs.ss <- intersect(names(extra_params), c("showSelected", "clickSelects"))
+  for(i in cs.ss){
+    ep <- extra_params[[i]]
+    if(!is.character(ep)){
+      print(aes_mapping)
+      print(extra_params)
+      stop(i, " must be a character vector")
     }
+    if(is.null(names(ep))){
+      ## If showSelected/clickSelects is not a named vector (due to
+      ## no SSvar=SSval), just put empty strings as names
+      names(ep) <- rep("", length(ep))
+    }
+    ## Remove duplicates
+    ep <- ep[ !duplicated(ep) ]
+    ## Remove from extra_params if already added by legend
+    if(i=="showSelected"){
+      ss_added_by_legend <- aes_mapping[grepl(
+        "^showSelectedlegend", names(aes_mapping))]
+      ep <- ep[ !ep %in% ss_added_by_legend ]
+    }
+    extra_params[[i]] <- ep
   }
-  return(extra_params)
+  extra_params
 }
 
 ##' Separate .variable/.value selectors

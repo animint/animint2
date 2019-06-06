@@ -69,11 +69,11 @@ geom_segment <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomSegment <- ggproto("GeomSegment", Geom,
+GeomSegment <- gganimintproto("GeomSegment", Geom,
   required_aes = c("x", "y", "xend", "yend"),
   non_missing_aes = c("linetype", "size", "shape"),
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),

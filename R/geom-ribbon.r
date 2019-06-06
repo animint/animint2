@@ -53,11 +53,11 @@ geom_ribbon <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomRibbon <- ggproto("GeomRibbon", Geom,
+GeomRibbon <- gganimintproto("GeomRibbon", Geom,
   default_aes = aes(colour = NA, fill = "grey20", size = 0.5, linetype = 1,
     alpha = NA),
 
@@ -127,11 +127,11 @@ geom_area <- function(mapping = NULL, data = NULL, stat = "identity",
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomArea <- ggproto("GeomArea", GeomRibbon,
+GeomArea <- gganimintproto("GeomArea", GeomRibbon,
   default_aes = aes(colour = NA, fill = "grey20", size = 0.5, linetype = 1,
     alpha = NA),
 

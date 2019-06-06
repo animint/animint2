@@ -122,11 +122,11 @@ geom_boxplot <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomBoxplot <- ggproto("GeomBoxplot", Geom,
+GeomBoxplot <- gganimintproto("GeomBoxplot", Geom,
   setup_data = function(data, params) {
     data$width <- data$width %||%
       params$width %||% (resolution(data$x, FALSE) * 0.9)

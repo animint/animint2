@@ -23,11 +23,11 @@ geom_crossbar <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname animint2-ggproto
+#' @rdname animint2-gganimintproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomCrossbar <- ggproto("GeomCrossbar", Geom,
+GeomCrossbar <- gganimintproto("GeomCrossbar", Geom,
   setup_data = function(data, params) {
     GeomErrorbar$setup_data(data, params)
   },
