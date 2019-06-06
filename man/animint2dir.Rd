@@ -4,7 +4,7 @@
 \alias{animint2dir}
 \title{Compile and render an animint in a local directory}
 \usage{
-animint2dir(plot.list, out.dir = tempfile(), json.file = "plot.json",
+animint2dir(plot.list, out.dir = NULL, json.file = "plot.json",
   open.browser = interactive(), css.file = "")
 }
 \arguments{

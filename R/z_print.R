@@ -12,11 +12,19 @@ print.animint <- function(x, ...){
   animint2dir(x, x$out.dir, ...)
 }
 
-##' Create an animated, interactive data visualization. This function
-##' creates a list with the items in ... and attaches the animint
-##' class. It also provides default names for un-named ggplots. The
-##' easiest way to learn is by reading the Animint2 Manual,
+##' Create an animated, interactive data visualization. The easiest
+##' way to get started is by reading the Animint2 Manual,
 ##' http://members.cbio.mines-paristech.fr/~thocking/animint2-manual/Ch02-ggplot2.html
+##' @details This function creates a list with the items in ... and
+##'   attaches the animint class. It also provides default names for
+##'   un-named ggplots. The list should contain ggplots and
+##'   options. Each geom can be made interactive by using the 
+##'   showSelected and clickSelects parameters; each should be a
+##'   character vector of selection variable names. For example
+##'   geom_line(clickSelects="country") means that clicking the line
+##'   changes the value of the "country" selection variable;
+##'   geom_point(showSelected="year") means to only show the subset of
+##'   data for the currently selected year.
 ##' @export
 ##' @title Create an animint
 ##' @param ... ggplots and options
@@ -28,14 +36,11 @@ print.animint <- function(x, ...){
 ##' years <- unique(WorldBank[, "year", drop=FALSE])
 ##' y1960 <- subset(WorldBank, year==1960)
 ##' animint(
-##'   ## options specify viz title, time=animation variable,
-##'   ## duration=smooth transitions, multiple selection (selector.types),
-##'   ## first selection.
-##'   title="Linked scatterplot and time series",
-##'   time=list(variable="year",ms=3000),
-##'   duration=list(year=1000),
-##'   selector.types=list(country="multiple"),
-##'   first=list(
+##'   title="Linked scatterplot and time series", #web page title.
+##'   time=list(variable="year",ms=3000), #variable and time delay used for animation.
+##'   duration=list(year=1000), #smooth transition duration in milliseconds.
+##'   selector.types=list(country="multiple"), #single/multiple selection for each variable.
+##'   first=list( #selected values to show when viz is first rendered.
 ##'     country=c("Canada", "Japan"),
 ##'     year=1970),
 ##'   ## ggplots are rendered together for an interactive data viz.
