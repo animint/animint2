@@ -9,12 +9,67 @@ print.animint <- function(x, ...){
   animint2dir(x, ...)
 }
 
-##' create a list and attach animint class
+##' Create an animated, interactive data visualization. This function
+##' creates a list with the items in ... and attaches the animint
+##' class. It also provides default names for un-named ggplots. The
+##' easiest way to learn is by reading the Animint2 Manual,
+##' http://members.cbio.mines-paristech.fr/~thocking/animint2-manual/Ch02-ggplot2.html
 ##' @export
-##' @title create an animint
+##' @title Create an animint
 ##' @param ... ggplots and options
 ##' @return list of class animint
 ##' @author Toby Dylan Hocking
+##' @examples
+##' library(animint2)
+##' data(WorldBank, package="animint2")
+##' years <- unique(WorldBank[, "year", drop=FALSE])
+##' y1960 <- subset(WorldBank, year==1960)
+##' animint(
+##'   ## options specify viz title, time=animation variable,
+##'   ## duration=smooth transitions, multiple selection (selector.types),
+##'   ## first selection.
+##'   title="Linked scatterplot and time series",
+##'   time=list(variable="year",ms=3000),
+##'   duration=list(year=1000),
+##'   selector.types=list(country="multiple"),
+##'   first=list(
+##'     country=c("Canada", "Japan"),
+##'     year=1970),
+##'   ## ggplots are rendered together for an interactive data viz.
+##'   ts=ggplot()+
+##'     theme_animint(width=500)+
+##'     make_tallrect(WorldBank, "year")+
+##'     geom_text(aes(
+##'       year, life.expectancy, label=country),
+##'       showSelected="country",
+##'       clickSelects="country",
+##'       hjust=1,
+##'       data=y1960)+
+##'     scale_x_continuous(limits=c(1950, NA))+
+##'     geom_line(aes(
+##'       year, life.expectancy, group=country, color=region),
+##'       clickSelects="country",
+##'       data=WorldBank,
+##'       size=4,
+##'       alpha=0.55),
+##'   scatter=ggplot()+
+##'     geom_point(aes(
+##'       fertility.rate, life.expectancy,
+##'       key=country, colour=region, size=population),
+##'       showSelected="year",
+##'       clickSelects="country",
+##'       data=WorldBank)+
+##'     geom_text(aes(
+##'       fertility.rate, life.expectancy,
+##'       key=country,
+##'       label=country),
+##'       showSelected=c("country", "year"),
+##'       data=WorldBank)+
+##'     geom_text(aes(
+##'       5, 80, key=1, label=paste("year =", year)),
+##'       showSelected="year",
+##'       data=years)+
+##'     scale_size_animint(pixel.range=c(2,20), breaks=10^(4:9)))
 animint <- function(...){
   L <- list(...)
   default.name.vec <- plot.num.vec <- paste0("plot", seq_along(L))
