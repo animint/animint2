@@ -37,9 +37,10 @@ Authors@R: c(
      comment="Animint GSOC 2018"))
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
- on a web page. The research paper by Sievert et al., JCGS 2018
- <doi:10.1080/10618600.2018.1513367> describes the concepts
- implemented.
+ on a web page. The 2018 Journal of Computational and 
+ Graphical Statistics paper,
+ <doi:10.1080/10618600.2018.1513367>
+ describes the concepts implemented.
 Depends:
     R (>= 3.4.0)
 Imports:
