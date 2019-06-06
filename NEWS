@@ -13,7 +13,11 @@ is no column named arclength in the data -- this would mean to update
 the selector called "arclength" with the value in column
 "arclength.click" -- less disk space, and faster compiling.
 
-2019.6.4 PR#27
+2019.6.6 PR#27
+
+animint(out.dir="path/to/dir") is respected by print.animint
+
+2019.6.4
 
 bugfix for facet_grid(scales/space="free")
 
