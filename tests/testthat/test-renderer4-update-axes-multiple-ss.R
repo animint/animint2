@@ -102,16 +102,11 @@ updated_tick_diff_x2 <- sapply(rect_nodes3[1, ], getTickDiff, axis="x")
 updated_tick_diff_y2 <- sapply(rect_nodes3[2, ], getTickDiff, axis="y")
 
 test_that("axis ticks change when plots are updated",{
-  # initial updates -> axis ticks are different for x and y axis
-  expect_length(unique(original_tick_diff_x), 2)
-  expect_length(unique(original_tick_diff_y), 2)
-  
   #no_updates
   expect_equal(updated_tick_diff_x1[1], original_tick_diff_x[1])
   expect_equal(updated_tick_diff_y1[1], original_tick_diff_y[1])
   expect_equal(updated_tick_diff_x2[1], original_tick_diff_x[1])
   expect_equal(updated_tick_diff_y2[1], original_tick_diff_y[1])
-  
   #update_x
   expect_true(unequal(updated_tick_diff_x1[2], original_tick_diff_x[2],
                       tolerance=0.01))
@@ -121,7 +116,6 @@ test_that("axis ticks change when plots are updated",{
                       tolerance=0.01))
   expect_equal(updated_tick_diff_y1[2], original_tick_diff_y[2])
   expect_equal(updated_tick_diff_y2[2], original_tick_diff_y[2])
-  
   #update_y
   expect_equal(updated_tick_diff_x1[3], original_tick_diff_x[3])
   expect_equal(updated_tick_diff_x2[3], original_tick_diff_x[3])
@@ -131,7 +125,6 @@ test_that("axis ticks change when plots are updated",{
                       tolerance=0.01))
   expect_true(unequal(updated_tick_diff_y2[3], updated_tick_diff_y1[3],
                       tolerance=0.01))
-  
   #update_xy
   expect_true(unequal(updated_tick_diff_x1[4], original_tick_diff_x[4],
                       tolerance=0.01))
