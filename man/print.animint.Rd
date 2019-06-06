@@ -7,7 +7,8 @@
 \method{print}{animint}(x, ...)
 }
 \arguments{
-\item{x}{List of ggplots and options}
+\item{x}{List of ggplots and options. In particular the out.dir
+option is passed along to animint2dir.}
 
 \item{...}{passed to animint2dir}
 }

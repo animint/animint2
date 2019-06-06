@@ -1,7 +1,8 @@
 ##' Print animint by rendering to local directory.
 ##' @export
 ##' @title print animint
-##' @param x List of ggplots and options
+##' @param x List of ggplots and options. In particular the out.dir
+##'   option is passed along to animint2dir.
 ##' @param ... passed to animint2dir
 ##' @return same as animint2dir
 ##' @author Toby Dylan Hocking
