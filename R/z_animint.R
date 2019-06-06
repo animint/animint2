@@ -811,93 +811,36 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
 }
 
 
-#' Compile and render an animint in a local directory
+#' Compile and render an animint in a local directory.
 #'
-#' An animint is a list of ggplots and options that defines
-#' an interactive animation and can be viewed in a web browser.
-#' Several new aesthetics control interactivity.
-#' The most important two are
-#' \itemize{
-#' \item \code{aes(showSelected=variable)} means that
-#'   only the subset of the data that corresponds to
-#'   the selected value of variable will be shown.
-#' \item \code{aes(clickSelects=variable)} means that clicking
-#'   this geom will change the currently selected value of variable.
-#' }
-#' The others are described on https://github.com/tdhock/animint/wiki/Advanced-features-present-animint-but-not-in-ggplot2
-#'
-#' Supported ggplot2 geoms:
-#' \itemize{
-#' \item point
-#' \item jitter
-#' \item line
-#' \item rect
-#' \item tallrect (new with this package)
-#' \item segment
-#' \item hline
-#' \item vline
-#' \item bar
-#' \item text
-#' \item tile
-#' \item raster
-#' \item ribbon
-#' \item abline
-#' \item density
-#' \item path
-#' \item polygon
-#' \item histogram
-#' \item violin
-#' \item linerange
-#' \item step
-#' \item contour
-#' \item density2d
-#' \item area
-#' \item freqpoly
-#' \item hex
-#' }
-#' Unsupported geoms:
-#' \itemize{
-#' \item rug
-#' \item dotplot
-#' \item quantile - should *theoretically* work but in practice does not work
-#' \item smooth - can be created using geom_line and geom_ribbon
-#' \item boxplot - can be created using geom_rect and geom_segment
-#' \item crossbar - can be created using geom_rect and geom_segment
-#' \item pointrange - can be created using geom_linerange and geom_point
-#' \item bin2d - bin using ddply() and then use geom_tile()
-#' \item map - can be created using geom_polygon or geom_path
-#'}
-#' Supported scales:
-#' \itemize{
-#' \item alpha,
-#' \item fill/colour (brewer, gradient, identity, manual)
-#' \item linetype
-#' \item x and y axis scales, manual break specification, label formatting
-#' \item x and y axis theme elements: axis.line, axis.ticks, axis.text, axis.title can be set to element_blank(); other theme modifications not supported at this time, but would be possible with custom css files.
-#' \item area
-#' \item size
-#' }
-#' Unsupported scales:
-#' \itemize{
-#' \item shape. Open and closed circles can be represented by manipulating fill and colour scales and using default (circle) points, but d3 does not support many R shape types, so mapping between the two is difficult.
-#' }
-#'
+#' This function converts an animint plot.list into a directory of
+#' files which can be used to render the interactive data
+#' visualization in a web browser.
 #' @param plot.list a named list of ggplots and option lists.
-#' @param out.dir directory to store html/js/csv files.
-#' @param json.file character string that names the JSON file with metadata associated with the plot.
-#' @param open.browser Should R open a browser? If yes, be sure to configure your browser to allow access to local files, as some browsers block this by default (e.g. chrome).
-#' @param css.file character string for non-empty css file to include. Provided file will be copied to the output directory as styles.css
+#' @param out.dir directory to store html/js/csv files. If it exists
+#'   already, it will be removed before writing the new
+#'   directory/files.
+#' @param json.file character string that names the JSON file with
+#'   metadata associated with the plot.
+#' @param open.browser Should R open a browser? If yes, be sure to
+#'   configure your browser to allow access to local files, as some
+#'   browsers block this by default (e.g. chrome).
+#' @param css.file character string for non-empty css file to
+#'   include. Provided file will be copied to the output directory as
+#'   styles.css
 #' @return invisible list of ggplots in list format.
 #' @export
 #' @import RJSONIO
-#' @importFrom utils browseURL head packageVersion str tail write.table
-#' @example inst/examples/animint.R
+#' @importFrom utils browseURL head packageVersion str tail
+#'   write.table
+#' @example inst/examples/animint2dir.R
 animint2dir <- function(plot.list, out.dir = NULL,
                         json.file = "plot.json", open.browser = interactive(),
                         css.file = "") {
   if(is.null(out.dir)){
     out.dir <- tempfile()
   }
+  unlink(out.dir, recursive=TRUE)
   ## Check plot.list for errors
   checkPlotList(plot.list)
 

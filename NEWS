@@ -17,6 +17,8 @@ the selector called "arclength" with the value in column
 
 animint(out.dir="path/to/dir") is respected by print.animint
 
+animint2dir removes previous out.dir
+
 2019.6.4
 
 bugfix for facet_grid(scales/space="free")
