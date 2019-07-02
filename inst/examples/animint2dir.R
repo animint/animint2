@@ -22,7 +22,7 @@ gapminder <-
                  data=WorldBank)+
        make_text(WorldBank, 5, 80, "year")+
        scale_size_animint(pixel.range=c(2,20), breaks=10^(4:9)))
-animint2dir(gapminder, "WorldBank-viz")
+animint2dir(gapminder)
 
 data(worldPop)
 ## Linked bar and line plots of world population by subcontinent,
@@ -51,13 +51,13 @@ popPlots <-
        geom_line(aes(year, population, group=subcontinent),
                  clickSelects="subcontinent",
                  data=worldPop, size=4, alpha=3/4))
-animint2dir(popPlots, "WorldPop-interactive")
+animint2dir(popPlots)
 ## Make it animated by specifying year as the variable to animate and
 ## an interval of 2000 milliseconds between animation frames.
 popAnim <- c(popPlots, list(time=list(variable="year",ms=2000)))
-animint2dir(popAnim, "WorldPop-animated")
+animint2dir(popAnim)
 ## Make the animation smooth by specifying a duration of 1000 ms for
 ## geoms with aes(showSelected=year).
 popSmooth <- c(popAnim, list(duration=list(year=1000)))
-animint2dir(popSmooth, "WorldPop-smooth")
+animint2dir(popSmooth)
 

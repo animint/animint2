@@ -26,7 +26,7 @@ for(signal.name in names(models.by.signal)){
     model$data <- NA
     for(segment.i in 1:nrow(model)){
       one.segment <- model[segment.i, ]
-      seg.data <- 
+      seg.data <-
         subset(signal,
                one.segment$first.base < base &
                  base < one.segment$last.base)
@@ -35,7 +35,7 @@ for(signal.name in names(models.by.signal)){
       model$rss[segment.i] <- sum(residual.vec * residual.vec)
     }
     stopifnot(sum(model$data) == nrow(signal))
-    model.stats <- 
+    model.stats <-
       data.frame(signal=signal.name,
                  segments,
                  error=sum(model$rss),
@@ -62,7 +62,7 @@ sig.names <- do.call(rbind, sig.names.list)
 sig.labels <- do.call(rbind, sig.labels.list)
 
 ## Plot segments rather than penalty.
-mmir.selection <- 
+mmir.selection <-
   list(error=ggplot()+
        ggtitle("Select profile and number of segments")+
        make_tallrect(model.selection, "segments",
@@ -90,7 +90,7 @@ mmir.selection <-
 
        signal=ggplot()+
          theme_bw()+
-       theme_animint(width=800)+       
+       theme_animint(width=800)+
        scale_x_continuous("position on chromosome (mega base pairs)",
                           breaks=c(100,200))+
        scale_fill_manual(values=breakpoint.colors,guide="none")+
@@ -121,7 +121,8 @@ mmir.selection <-
 
        first=list(signal="4.2", segments=4))
 
-animint2dir(mmir.selection, "intreg-selection", open.browser=FALSE)
+tdir <- tempfile()
+animint2dir(mmir.selection, tdir, open.browser=FALSE)
 
 all.increasing <- function(num.vec){
   stopifnot(is.numeric(num.vec))
@@ -133,7 +134,7 @@ expected.list <-
 result.list <- list()
 for(g.class in names(expected.list)){
   expected <- expected.list[[g.class]]
-  tsv.path <- Sys.glob(file.path("intreg-selection", paste0(g.class, "*")))
+  tsv.path <- Sys.glob(file.path(tdir, paste0(g.class, "*")))
   g.data <- read.table(tsv.path, header=TRUE, comment.char = "")
   tsv.by.signal <- split(g.data, g.data$clickSelects)
   for(signal.name in names(tsv.by.signal)){

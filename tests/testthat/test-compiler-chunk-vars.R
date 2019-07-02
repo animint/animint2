@@ -13,7 +13,7 @@ test_that("produce as many chunk files as specified", {
   animint2dir(viz, tdir, open.browser=FALSE)
   tsv.files <- Sys.glob(file.path(tdir, "*.tsv"))
   expect_equal(length(tsv.files), 3)
-  
+
   viz <- list(iris=ggplot()+
                 geom_point(aes(Petal.Width, Sepal.Length),
                            showSelected="Species",
@@ -35,7 +35,7 @@ test_that("produce informative errors for bad chunk_vars", {
   expect_error({
     animint2dir(viz, open.browser=FALSE)
   }, "invalid chunk_vars species; possible showSelected variables: Species")
-  
+
   viz <- list(iris=ggplot()+
                 geom_point(aes(Petal.Width, Sepal.Length),
                            showSelected="Species",
@@ -51,7 +51,7 @@ only.error <- subset(breakpoints$error,type=="E")
 only.segments <- subset(only.error,bases.per.probe==bases.per.probe[1])
 signal.colors <- c(estimate="#0adb0a",
                    latent="#0098ef")
-breakpointError <- 
+breakpointError <-
   list(signal=ggplot()+
          geom_point(aes(position, signal),
                     showSelected="bases.per.probe",
@@ -69,10 +69,10 @@ breakpointError <-
                     data=breakpoints$breaks),
        error=ggplot()+
          geom_vline(aes(xintercept=segments),
-                    clickSelects="segments",                    
+                    clickSelects="segments",
                     data=only.segments, lwd=17, alpha=1/2)+
          geom_line(aes(segments, error, group=bases.per.probe),
-                   clickSelects="bases.per.probe",                   
+                   clickSelects="bases.per.probe",
                    data=only.error, lwd=4))
 
 bytes.used <- function(file.vec, apparent.size = FALSE){
@@ -93,7 +93,7 @@ bytes.used <- function(file.vec, apparent.size = FALSE){
   })
 }
 
-test.paths <- 
+test.paths <-
   c(tempfile=tempfile(),
     HOME=file.path(Sys.getenv("HOME"), "ANIMINT_TEST_FOO"),
     getwd=file.path(getwd(),"ANIMINT_TEST_FOO"))
