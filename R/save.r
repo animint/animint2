@@ -27,14 +27,14 @@
 #' \dontrun{
 #' ggplot(mtcars, aes(mpg, wt)) + geom_point()
 #'
-#' ggsave("mtcars.pdf")
-#' ggsave("mtcars.png")
+#' ggsave(file.path(tempdir(), "mtcars.pdf"))
+#' ggsave(file.path(tempdir(), "mtcars.png"))
 #'
-#' ggsave("mtcars.pdf", width = 4, height = 4)
-#' ggsave("mtcars.pdf", width = 20, height = 20, units = "cm")
+#' ggsave(file.path(tempdir(), "mtcars.pdf"), width = 4, height = 4)
+#' ggsave(file.path(tempdir(), "mtcars.pdf"), width = 20, height = 20, units = "cm")
 #'
-#' unlink("mtcars.pdf")
-#' unlink("mtcars.png")
+#' unlink(file.path(tempdir(), "mtcars.pdf"))
+#' unlink(file.path(tempdir(), "mtcars.png"))
 #'
 #' # specify device when saving to a file with unknown extension
 #' # (for example a server supplied temporary file)

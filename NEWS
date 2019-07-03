@@ -13,6 +13,10 @@ is no column named arclength in the data -- this would mean to update
 the selector called "arclength" with the value in column
 "arclength.click" -- less disk space, and faster compiling.
 
+2019.7.3
+
+ggsave(file.path(tempdir(), f)) in examples.
+
 2019.7.2
 
 animint2dir writes to temp dir rather than user dir during examples/tests.
