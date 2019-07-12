@@ -13,6 +13,10 @@ is no column named arclength in the data -- this would mean to update
 the selector called "arclength" with the value in column
 "arclength.click" -- less disk space, and faster compiling.
 
+2019.7.12
+
+Added three authors which are mentioned in Rd/R files.
+
 2019.7.3
 
 ggsave(file.path(tempdir(), f)) in examples.
