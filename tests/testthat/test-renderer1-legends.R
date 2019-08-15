@@ -125,5 +125,5 @@ test_that("ok to have two plots based on a common plot", {
   info <- animint2HTML(viz)
   p1 <- getNodeSet(info$html, '//g[@class="geom1_line_noLegends"]//path')
   p2 <- getNodeSet(info$html, '//g[@class="geom2_line_zoom"]//path')
-  expect_equal(length(p2), length(p2))
+  expect_equal(length(p1), length(p2))
 })
