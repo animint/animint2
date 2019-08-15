@@ -785,7 +785,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
       }
       extreme.vec <- range.mat[row.i, panel.vec]
       cmp <- cmp.list[[row.i]]
-      to.rep <- cmp(xy.col.df, extreme.vec)
+      to.rep <- cmp(xy.col.df, extreme.vec) & !is.na(xy.col.df)
       row.vec <- row(to.rep)[to.rep]
       xy.col.df[to.rep] <- extreme.vec[row.vec]
     }
