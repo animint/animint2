@@ -34,9 +34,25 @@ be created, see [[https://github.com/tdhock/animint/wiki/Gallery][the animint ga
 
 For additional usage examples, see our extensive set of [[file:tests/testthat][test cases]].
 
-** Differences with old animint
+** Differences with other packages
 
-This package is a redesign of [[https://github.com/tdhock/animint][animint]] with:
+[[https://amstat.tandfonline.com/doi/abs/10.1080/10618600.2018.1513367?journalCode=ucgs20][Our JCGS paper]] provides a detailed comparison (an executive summary is below).
+
+*** R packages for animated graphics
+
+R packages [[https://github.com/tdhock/gganim][gganim]], [[https://cloud.r-project.org/web/packages/animation/][animation]] and [[https://github.com/thomasp85/gganimate][gganimate]] can generate animated graphics, in which the only interaction is going forward or backward in time. In contrast animint2 provides animation and also interaction with other variables (not only time).
+
+*** shiny+plotly web applications
+
+Typical shiny web applications provide interactive graphics with indirect manipulation (via menus/buttons/etc) but the emphasis in animint2 is direct manipulation (via mouse clicks on lines/points/etc). Direct manipulation in shiny apps can also be achieved using the excellent [[https://plotly-r.com/introduction-1.html][plotly]] package, in which interactivity can be specified using events; in contrast animint2 uses the clickSelects/showSelected keywords to specify interactivity.
+
+*** loon exploratory graphics
+
+[[http://great-northern-diver.github.io/loon/][loon]] is an excellent R package for interactive exploratory graphics; the focus of animint2 is interactive presentation graphics.
+
+*** Old animint
+
+animint2 is a redesign of [[https://github.com/tdhock/animint][animint]] with:
 - Cleaner syntax. In the old animint we had showSelected/clickSelects
   as aesthetics, and in animint2 they are now geom parameters.
 - Easier installation. The old animint depended on ggplot2 but
