@@ -35,7 +35,7 @@ Authors@R: c(
     person("Kevin", "Ferris",
      role="aut",
      comment="Animint GSOC 2015"),
-    person("Tony", "Tsai",
+    person("Jun", "Cai",
      role="aut",
      comment="Animint GSOC 2015"),
     person("Faizan", "Khan",
