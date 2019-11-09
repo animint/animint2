@@ -7,10 +7,10 @@ animint2 provides an animated, interactive grammar of graphics
 Animint2 is a fork of [[https://github.com/hadley/ggplot2][ggplot2]] that
 makes it possible to design multi-layer, multi-plot,
 interactive, and possibly animated data visualizations using just a
-few lines of R code. Animint2 adds the clickSelects and showSelected
+few lines of R code. Animint2 adds the clickSelects and show Selected
 interactive keywords to the grammar of graphics, and
 renders to the web using [[http://d3js.org/][D3]]. For example, this multi-layer
-facetted interactive animation of WorldBank data was defined using
+facetted interactive animation of World Bank data was defined using
 only [[inst/examples/WorldBank-facets.R][about 60 lines of R code]].
 
 [[http://cbio.ensmp.fr/~thocking/WorldBank-facets/][https://raw.githubusercontent.com/tdhock/animint/master/screencast-WorldBank.gif]]
