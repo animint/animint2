@@ -62,7 +62,7 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
   # some tests don't run reliably with phantomjs (see tests-widerect.R)
   Sys.setenv("ANIMINT_BROWSER" = browserName)
   # wait a maximum of 30 seconds when searching for elements.
-  remDr$setImplicitWaitTimeout(milliseconds = 30000)
+  remDr$setTimeout(type = "implicit", milliseconds = 30000)
   # wait a maximum of 30 seconds for a particular type of operation to execute
   remDr$setTimeout(type = "page load", milliseconds = 30000)
   # if we navigate to localhost:%s/htmltest directly, some browsers will
