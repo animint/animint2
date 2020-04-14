@@ -90,51 +90,6 @@ viz <- HitOrMissMonteCarlo()
 
 info <- animint2HTML(viz)
 
-# Test of needed data columns in TSV files
-chunk1.tsv <- file.path("animint-htmltest", "geom1_path_vizone_chunk1.tsv")
-chunk1 <- read.table(chunk1.tsv, sep="\t", header=TRUE,
-                     comment.char="", quote="")
-
-chunk2.tsv <- file.path("animint-htmltest", "geom2_point_vizone_chunk1.tsv")
-chunk2 <- read.table(chunk2.tsv, sep="\t", header=TRUE,
-                     comment.char="", quote="")
-
-chunk3.tsv <- file.path("animint-htmltest", "geom5_path_viztwo_chunk1.tsv")
-chunk3 <- read.table(chunk3.tsv, sep="\t", header=TRUE,
-                     comment.char="", quote="")
-
-chunk4.tsv <- file.path("animint-htmltest", "geom6_text_viztwo_chunk1.tsv")
-chunk4 <- read.table(chunk4.tsv, sep="\t", header=TRUE,
-                     comment.char="", quote="")
-
-chunk5.tsv <- file.path("animint-htmltest", "geom4_hline_viztwo_chunk1.tsv")
-chunk5 <- read.table(chunk5.tsv, sep="\t", header=TRUE,
-                     comment.char="", quote="")
-
-chunk6.tsv <- file.path("animint-htmltest", "geom3_tallrect_viztwo_chunk1.tsv")
-chunk6 <- read.table(chunk6.tsv, sep="\t", header=TRUE,
-                     comment.char="", quote="")
-
-test_that("Integration Curve data contains expected columns", {
-  path_expected_cols <- c("x", "y", "group")
-  point_expected_cols <- c("shape", "colour", "x", "y", "key", "showSelectedlegendshapecolour", "showSelected1", "fill")
-  
-  expect_identical(sort(names(chunk1)), sort(path_expected_cols))
-  expect_identical(sort(names(chunk2)), sort(point_expected_cols))
-})
-
-test_that("Pi estimation graph data contains expected columns", {
-  path_expected_cols <- c("x", "y", "showSelected1", "key", "group")
-  text_expected_cols <- c("x", "y", "key", "label", "showSelected1", "group")
-  tallrect_expected_cols <- c("xmin", "xmax", "clickSelects", "group")
-  hline_expected_cols <- c("yintercept")
-  
-  expect_identical(sort(names(chunk3)), sort(path_expected_cols))
-  expect_identical(sort(names(chunk4)), sort(text_expected_cols))
-  expect_identical(sort(names(chunk5)), sort(hline_expected_cols))
-  expect_identical(sort(names(chunk6)), sort(tallrect_expected_cols))
-})
-
 test_that("x and y labels are not null", {
   xlabel <- getNodeSet(info$html, "//text[@class='xtitle']")
   ylabel <- getNodeSet(info$html, "//text[@class='ytitle']")
@@ -161,11 +116,11 @@ test_that("Different Points Are Rendered on Integration Curve", {
 test_that("Different points are rendered on Pi estimation plot", {
   coordPanel1 <- getNodeSet(info$html, "//g[@class='geom5_path_viztwo']/g[@class='PANEL1']/path/@d")
 
-  Sys.sleep(1.739)
+  Sys.sleep(2)
 
   info$newHtml <- getHTML()
 
   coordPanel2 <- getNodeSet(info$newHtml, "//g[@class='geom5_path_viztwo']/g[@class='PANEL1']/path/@d")
-
+  
   expect_false(identical(coordPanel1, coordPanel2))
 })
