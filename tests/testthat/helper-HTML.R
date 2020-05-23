@@ -44,25 +44,40 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
   # start-up remote driver
   if (browserName == "phantomjs") {
     message("Starting phantomjs binary. To shut it down, run: \n pJS$stop()")
-    pJS <<- RSelenium::phantom()
+    
+    pJS <<- wdman::phantomjs(
+                  port = 4445L,
+                  phantomver = "latest"
+                )
+    
   } else {
     message("Starting selenium binary. To shut it down, run: \n",
             "remDr$closeWindow() \n",
             "remDr$closeServer()")
-    RSelenium::checkForServer(dir = system.file("bin", package = "RSelenium"))
-    selenium <- RSelenium::startServer()
-  }
-  # give an binaries a moment to start up
+
+    selServer <- wdman::selenium(
+                  port = 4445L, 
+                  version = "3.141.59"
+                )
+  
+  # give the binaries a moment to start up
   Sys.sleep(8)
-  remDr <<- RSelenium::remoteDriver(browserName = browserName, ...)
-  # give the backend a moment to start-up
+  remDr <<- RSelenium::remoteDriver(
+              port = 4445L,
+              browser = browserName,
+            )
+  }
+  
+  # wait for the remote driver to start-up
   Sys.sleep(6)
   remDr$open(silent = TRUE)
-  Sys.sleep(2)
+ 
   # some tests don't run reliably with phantomjs (see tests-widerect.R)
   Sys.setenv("ANIMINT_BROWSER" = browserName)
-  # wait a maximum of 30 seconds when searching for elements.
-  remDr$setImplicitWaitTimeout(milliseconds = 30000)
+  # wait a maximum of 30 seconds when searchinsg for elements.
+  
+  remDr$setTimeout(type = "implicit", milliseconds = 30000)
+   
   # wait a maximum of 30 seconds for a particular type of operation to execute
   remDr$setTimeout(type = "page load", milliseconds = 30000)
   # if we navigate to localhost:%s/htmltest directly, some browsers will
@@ -88,4 +103,3 @@ get_grid_lines <- function(html, p_name, grid_class){
   attr_v <- apply(attr_v, 2, as.numeric)
   return(list(hor=attr_h, vert=attr_v))
 }
-
