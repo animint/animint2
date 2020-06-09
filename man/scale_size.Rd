@@ -10,13 +10,25 @@
 \alias{scale_size_date}
 \title{Scale size (area or radius).}
 \usage{
-scale_radius(name = waiver(), breaks = waiver(), labels = waiver(),
-  limits = NULL, range = c(1, 6), trans = "identity",
-  guide = "legend")
+scale_radius(
+  name = waiver(),
+  breaks = waiver(),
+  labels = waiver(),
+  limits = NULL,
+  range = c(1, 6),
+  trans = "identity",
+  guide = "legend"
+)
 
-scale_size(name = waiver(), breaks = waiver(), labels = waiver(),
-  limits = NULL, range = c(1, 6), trans = "identity",
-  guide = "legend")
+scale_size(
+  name = waiver(),
+  breaks = waiver(),
+  labels = waiver(),
+  limits = NULL,
+  range = c(1, 6),
+  trans = "identity",
+  guide = "legend"
+)
 
 scale_size_area(..., max_size = 6)
 }

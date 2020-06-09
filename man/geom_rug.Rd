@@ -4,9 +4,17 @@
 \alias{geom_rug}
 \title{Marginal rug plots.}
 \usage{
-geom_rug(mapping = NULL, data = NULL, stat = "identity",
-  position = "identity", ..., sides = "bl", na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+geom_rug(
+  mapping = NULL,
+  data = NULL,
+  stat = "identity",
+  position = "identity",
+  ...,
+  sides = "bl",
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or

@@ -27,7 +27,7 @@ that is the most common use of alpha, and it saves a bit of typing.
 (p <- ggplot(mtcars, aes(mpg, cyl)) +
   geom_point(aes(alpha = cyl)))
 p + scale_alpha("cylinders")
-p + scale_alpha("number\\nof\\ncylinders")
+p + scale_alpha("number\nof\ncylinders")
 
 p + scale_alpha(range = c(0.4, 0.8))
 

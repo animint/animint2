@@ -7,18 +7,46 @@
 \alias{stat_bin}
 \title{Histograms and frequency polygons.}
 \usage{
-geom_freqpoly(mapping = NULL, data = NULL, stat = "bin",
-  position = "identity", ..., na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+geom_freqpoly(
+  mapping = NULL,
+  data = NULL,
+  stat = "bin",
+  position = "identity",
+  ...,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 
-geom_histogram(mapping = NULL, data = NULL, stat = "bin",
-  position = "stack", ..., binwidth = NULL, bins = NULL,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+geom_histogram(
+  mapping = NULL,
+  data = NULL,
+  stat = "bin",
+  position = "stack",
+  ...,
+  binwidth = NULL,
+  bins = NULL,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 
-stat_bin(mapping = NULL, data = NULL, geom = "bar",
-  position = "stack", ..., binwidth = NULL, bins = NULL,
-  center = NULL, boundary = NULL, closed = c("right", "left"),
-  pad = FALSE, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+stat_bin(
+  mapping = NULL,
+  data = NULL,
+  geom = "bar",
+  position = "stack",
+  ...,
+  binwidth = NULL,
+  bins = NULL,
+  center = NULL,
+  boundary = NULL,
+  closed = c("right", "left"),
+  pad = FALSE,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or

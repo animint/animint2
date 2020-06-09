@@ -6,8 +6,7 @@
 \alias{ggplot.data.frame}
 \title{Create a new ggplot plot.}
 \usage{
-ggplot(data = NULL, mapping = aes(), ...,
-  environment = parent.frame())
+ggplot(data = NULL, mapping = aes(), ..., environment = parent.frame())
 }
 \arguments{
 \item{data}{Default dataset to use for plot. If not already a data.frame,

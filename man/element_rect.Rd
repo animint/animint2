@@ -4,8 +4,13 @@
 \alias{element_rect}
 \title{Theme element: rectangle.}
 \usage{
-element_rect(fill = NULL, colour = NULL, size = NULL,
-  linetype = NULL, color = NULL)
+element_rect(
+  fill = NULL,
+  colour = NULL,
+  size = NULL,
+  linetype = NULL,
+  color = NULL
+)
 }
 \arguments{
 \item{fill}{fill colour}

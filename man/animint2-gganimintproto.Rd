@@ -120,7 +120,9 @@
 \alias{GeomTallRect}
 \alias{GeomWideRect}
 \title{Base gganimintproto classes for ggplot2}
-\format{An object of class \code{ScalesList} (inherits from \code{gganimintproto}) of length 9.}
+\format{
+An object of class \code{ScalesList} (inherits from \code{gganimintproto}) of length 9.
+}
 \usage{
 a_scales_list()
 

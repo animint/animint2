@@ -4,7 +4,8 @@
 \name{txhousing}
 \alias{txhousing}
 \title{Housing sales in TX.}
-\format{A data frame with 8602 observations and 9 variables:
+\format{
+A data frame with 8602 observations and 9 variables:
 \itemize{
 \item{city}{Name of MLS area}
 \item{year,month,date}{Date}
@@ -14,7 +15,8 @@
 \item{listings}{Total active listings}
 \item{inventory}{"Months inventory": amount of time it would take to sell
   all current listings at current pace of sales.}
-}}
+}
+}
 \usage{
 txhousing
 }

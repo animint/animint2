@@ -41,7 +41,7 @@ p + ggtitle("New plot title", subtitle = "A subtitle")
 p + labs(title = "New plot title", subtitle = "A subtitle")
 
 # Can add a plot caption underneath the whole plot (for sources, notes or
-# copyright), similar to the \\code{sub} parameter in base R, with the
+# copyright), similar to the \code{sub} parameter in base R, with the
 # following
 p + labs(caption = "(based on data from ...)")
 

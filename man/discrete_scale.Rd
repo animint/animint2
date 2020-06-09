@@ -4,9 +4,19 @@
 \alias{discrete_scale}
 \title{Discrete scale constructor.}
 \usage{
-discrete_scale(aesthetics, scale_name, palette, name = waiver(),
-  breaks = waiver(), labels = waiver(), limits = NULL,
-  expand = waiver(), na.value = NA, drop = TRUE, guide = "legend")
+discrete_scale(
+  aesthetics,
+  scale_name,
+  palette,
+  name = waiver(),
+  breaks = waiver(),
+  labels = waiver(),
+  limits = NULL,
+  expand = waiver(),
+  na.value = NA,
+  drop = TRUE,
+  guide = "legend"
+)
 }
 \arguments{
 \item{aesthetics}{the names of the aesthetics that this scale works with}

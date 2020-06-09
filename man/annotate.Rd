@@ -4,9 +4,19 @@
 \alias{annotate}
 \title{Create an annotation layer.}
 \usage{
-annotate(geom, x = NULL, y = NULL, xmin = NULL, xmax = NULL,
-  ymin = NULL, ymax = NULL, xend = NULL, yend = NULL, ...,
-  na.rm = FALSE)
+annotate(
+  geom,
+  x = NULL,
+  y = NULL,
+  xmin = NULL,
+  xmax = NULL,
+  ymin = NULL,
+  ymax = NULL,
+  xend = NULL,
+  yend = NULL,
+  ...,
+  na.rm = FALSE
+)
 }
 \arguments{
 \item{geom}{name of geom to use for annotation}

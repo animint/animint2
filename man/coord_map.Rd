@@ -5,8 +5,13 @@
 \alias{coord_quickmap}
 \title{Map projections.}
 \usage{
-coord_map(projection = "mercator", ..., orientation = NULL,
-  xlim = NULL, ylim = NULL)
+coord_map(
+  projection = "mercator",
+  ...,
+  orientation = NULL,
+  xlim = NULL,
+  ylim = NULL
+)
 
 coord_quickmap(xlim = NULL, ylim = NULL, expand = TRUE)
 }

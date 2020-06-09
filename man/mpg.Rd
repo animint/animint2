@@ -4,7 +4,8 @@
 \name{mpg}
 \alias{mpg}
 \title{Fuel economy data from 1999 and 2008 for 38 popular models of car}
-\format{A data frame with 234 rows and 11 variables
+\format{
+A data frame with 234 rows and 11 variables
 \itemize{
   \item manufacturer.
   \item model.
@@ -17,7 +18,8 @@
   \item hwy. highway miles per gallon
   \item fl.
   \item class.
-}}
+}
+}
 \usage{
 mpg
 }

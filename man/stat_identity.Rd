@@ -4,8 +4,15 @@
 \alias{stat_identity}
 \title{Identity statistic.}
 \usage{
-stat_identity(mapping = NULL, data = NULL, geom = "point",
-  position = "identity", ..., show.legend = NA, inherit.aes = TRUE)
+stat_identity(
+  mapping = NULL,
+  data = NULL,
+  geom = "point",
+  position = "identity",
+  ...,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or

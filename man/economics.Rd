@@ -5,7 +5,8 @@
 \alias{economics}
 \alias{economics_long}
 \title{US economic time series.}
-\format{A data frame with 478 rows and 6 variables
+\format{
+A data frame with 478 rows and 6 variables
 \itemize{
   \item date.  Month of data collection
   \item psavert, personal savings rate,
@@ -18,7 +19,10 @@
     \url{http://research.stlouisfed.org/fred2/series/UEMPMED}
   \item pop, total population, in thousands,
    \url{http://research.stlouisfed.org/fred2/series/POP}
-}}
+}
+
+An object of class \code{grouped_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 2870 rows and 4 columns.
+}
 \usage{
 economics
 

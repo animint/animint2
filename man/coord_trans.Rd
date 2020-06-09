@@ -4,8 +4,14 @@
 \alias{coord_trans}
 \title{Transformed cartesian coordinate system.}
 \usage{
-coord_trans(x = "identity", y = "identity", limx = NULL,
-  limy = NULL, xtrans, ytrans)
+coord_trans(
+  x = "identity",
+  y = "identity",
+  limx = NULL,
+  limy = NULL,
+  xtrans,
+  ytrans
+)
 }
 \arguments{
 \item{x, y}{transformers for x and y axes}

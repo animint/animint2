@@ -4,9 +4,19 @@
 \alias{element_text}
 \title{Theme element: text.}
 \usage{
-element_text(family = NULL, face = NULL, colour = NULL,
-  size = NULL, hjust = NULL, vjust = NULL, angle = NULL,
-  lineheight = NULL, color = NULL, margin = NULL, debug = NULL)
+element_text(
+  family = NULL,
+  face = NULL,
+  colour = NULL,
+  size = NULL,
+  hjust = NULL,
+  vjust = NULL,
+  angle = NULL,
+  lineheight = NULL,
+  color = NULL,
+  margin = NULL,
+  debug = NULL
+)
 }
 \arguments{
 \item{family}{font family}
