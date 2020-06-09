@@ -60,13 +60,13 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
                   version = "3.141.59"
                 )
   
+  }
   # give the binaries a moment to start up
   Sys.sleep(8)
   remDr <<- RSelenium::remoteDriver(
-              port = 4445L,
-              browser = browserName,
-            )
-  }
+    port = 4445L,
+    browser = browserName,
+  )
   
   # wait for the remote driver to start-up
   Sys.sleep(6)
