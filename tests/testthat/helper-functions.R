@@ -78,6 +78,11 @@ clickID <- function(...){
   e$clickElement()
 }
 
+clickElementById <- function(...) {
+  id <- c(...)
+  remDr$executeScript(sprintf("document.getElementById('%s').click()", as.character(id)))
+}
+
 rgba.pattern <- paste0(
   "(?<before>rgba?)",
   " *[(] *",
