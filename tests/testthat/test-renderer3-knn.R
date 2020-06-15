@@ -164,9 +164,9 @@ test_that("6 <path> rendered for KNN boundary", {
 test_that("2 <path> rendered for Bayes boundary", {
   expect_equal(length(before$boundary.Bayes), 2)
 })
-# Sys.sleep(15)
+
 clickElementById("plot_data_classifier_variable_Bayes")
-# Sys.sleep(15)
+
 click1 <- get_nodes()
 test_that("first click, 1 <path> rendered for validation error band", {
   expect_equal(length(click1$ribbon), 1)
@@ -188,7 +188,7 @@ test_that("first click, Bayes boundary disappears", {
 })
 
 clickElementById("plot_data_classifier_variable_KNN")
-# Sys.sleep(15)
+
 click2 <- get_nodes()
 test_that("second click, validation error band disappears", {
   expect_equal(length(click2$ribbon), 0)
