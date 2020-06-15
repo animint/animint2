@@ -9,17 +9,17 @@ viz <- list(p=plot_viz)
 info <- animint2HTML(viz)
 
 # Hide titles with Treatment = "nonchilled" 
-clickID(c("plot_p_Treatment_variable_nonchilled"))
+clickElementById(c("plot_p_Treatment_variable_nonchilled"))
 Sys.sleep(0.5)
 info$html_updated1 <- getHTML()
 
 # Hide all titles
-clickID(c("plot_p_Treatment_variable_chilled"))
+clickElementById(c("plot_p_Treatment_variable_chilled"))
 Sys.sleep(0.5)
 info$html_updated2 <- getHTML()
 
 # Show titles with Treatment = "nonchilled"
-clickID(c("plot_p_Treatment_variable_nonchilled"))
+clickElementById(c("plot_p_Treatment_variable_nonchilled"))
 Sys.sleep(0.5)
 info$html_updated3 <- getHTML()
 
