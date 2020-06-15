@@ -53,7 +53,7 @@ test_that("clicking sepal.width legend does nothing", {
 })
 
 test_that("clicking Sepal point doesn't affect sepal plot", {
-  clickID("51")
+  clickElementById("51")
   expect_equal(length(get_circles("petal")), 100)
   expect_equal(length(get_circles("sepal")), 150)
 })
@@ -214,7 +214,7 @@ test_that('aes(color=vs.fac) is OK"', {
   clickID("plot_p_vs_fac_variable_0")
   expect_equal(length(get_circles("p")), 14)
   clickID("plot_p_vs_fac_variable_0")
-  expect_equal(length(get_circles("p")), 32)  
+  expect_equal(length(get_circles("p")), 32)
 })
 
 viz <- list(

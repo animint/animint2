@@ -80,7 +80,9 @@ clickID <- function(...){
 
 clickElementById <- function(...) {
   id <- c(...)
-  remDr$executeScript(sprintf("document.getElementById('%s').click()", as.character(id)))
+  # remDr$executeScript(sprintf("document.getElementById('%s').click()", as.character(id)))
+  # Using Event Dispatcher because above script was unable to click on graph.
+  remDr$executeScript(sprintf("document.getElementById('%s').dispatchEvent(new CustomEvent('click'))", as.character(id)))
 }
 
 rgba.pattern <- paste0(
