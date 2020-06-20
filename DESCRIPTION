@@ -72,7 +72,7 @@ Suggests:
     htmltools,
     rmarkdown,
     testthat,
-    RSelenium, XML,
+    RSelenium (>= 1.7.4), XML,
     devtools,
     httr,
     maps,
