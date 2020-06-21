@@ -265,7 +265,7 @@ test_that("initially rendered hlines", {
 })
 
 test_that("hlines after clicking specific", {
-  clickElementById(specific.id)
+  clickID(specific.id)
   html <- getHTML()
   line.list <- specific_hlines(html)
   expect_equal(length(line.list), 0)
@@ -274,7 +274,7 @@ test_that("hlines after clicking specific", {
 })
 
 test_that("hlines after clicking specific again", {
-  clickElementById(specific.id)
+  clickID(specific.id)
   html <- getHTML()
   line.list <- specific_hlines(html)
   expect_equal(length(line.list), 2)

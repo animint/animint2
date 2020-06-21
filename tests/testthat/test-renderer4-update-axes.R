@@ -47,12 +47,12 @@ expect_error(animint2HTML(viz_fac),
                    "Axes updates are only available for numeric data."))
 
 # Update selection and get HTML
-clickElementById(c("plot_neither_cyl_variable_8"))
+clickID(c("plot_neither_cyl_variable_8"))
 Sys.sleep(0.5)
 info$html_updated1 <- getHTML()
 
 # Update selection and get HTML
-clickElementById(c("plot_neither_cyl_variable_4"))
+clickID(c("plot_neither_cyl_variable_4"))
 Sys.sleep(0.5)
 info$html_updated2 <- getHTML()
 
@@ -287,7 +287,7 @@ viz <- list(ribbon=ribbon, selector.types=list(group="single"))
 expect_no_warning(info <- animint2HTML(viz))
 
 # Update selection and get HTML
-clickElementById(c("plot_ribbon_group_variable_high"))
+clickID(c("plot_ribbon_group_variable_high"))
 Sys.sleep(0.5)
 info$html_updated <- getHTML()
 
@@ -335,7 +335,7 @@ viz$selector.types <- list(z="single")
 expect_no_warning(info <- animint2HTML(viz))
 
 # Update selection and get HTML
-clickElementById(c("plot_rect_z_variable_3"))
+clickID(c("plot_rect_z_variable_3"))
 Sys.sleep(0.5)
 info$html_updated <- getHTML()
 
@@ -395,7 +395,7 @@ viz <- list(segment=segment, selector.types=list(ss="single"))
 expect_no_warning(info <- animint2HTML(viz))
 
 # Update selection and get HTML
-clickElementById(c("plot_segment_ss_variable_3"))
+clickID(c("plot_segment_ss_variable_3"))
 Sys.sleep(0.5)
 info$html_updated <- getHTML()
 
@@ -446,7 +446,7 @@ viz <- list(text=text, selector.types=list(cyl="single"))
 expect_no_warning(info <- animint2HTML(viz))
 
 # Update selection and get HTML
-clickElementById(c("plot_text_cyl_variable_4"))
+clickID(c("plot_text_cyl_variable_4"))
 Sys.sleep(0.5)
 info$html_updated <- getHTML()
 

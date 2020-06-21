@@ -37,23 +37,23 @@ test_that("all points are initially drawn", {
 
 test_that("clicking species legend adds and removes points", {
   # virginica points are removed
-  clickElementById("plot_petal_Species_variable_virginica")
+  clickID("plot_petal_Species_variable_virginica")
   expect_equal(length(get_circles("sepal")), 150)
   expect_equal(length(get_circles("petal")), 100)
   # virginica points are added back
-  clickElementById("plot_petal_Species_variable_virginica")
+  clickID("plot_petal_Species_variable_virginica")
   expect_equal(length(get_circles("sepal")), 150)
   expect_equal(length(get_circles("petal")), 150)
 })
 
 test_that("clicking sepal.width legend does nothing", {
-  clickElementById("plot_petal_Sepal_Width_variable_2_5")
+  clickID("plot_petal_Sepal_Width_variable_2_5")
   expect_equal(length(get_circles("sepal")), 150)
   expect_equal(length(get_circles("petal")), 150)
 })
 
 test_that("clicking Sepal point doesn't affect sepal plot", {
-  clickElementById("51")
+  clickID("51")
   expect_equal(length(get_circles("petal")), 100)
   expect_equal(length(get_circles("sepal")), 150)
 })

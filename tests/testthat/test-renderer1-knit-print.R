@@ -105,32 +105,32 @@ plot1bottom <- get_elements("plot1bottom")
 test_that("clicking top legend adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
   
-  clickElementById("plot1top_q_label_variable_a178")
+  clickID("plot1top_q_label_variable_a178")
   expect_equal(get_circles(), list(5, 10))
   
-  clickElementById("plot1top_q_label_variable_b934")
+  clickID("plot1top_q_label_variable_b934")
   expect_equal(get_circles(), list(0, 10))
   
-  clickElementById("plot1top_q_label_variable_b934")
+  clickID("plot1top_q_label_variable_b934")
   expect_equal(get_circles(), list(5, 10))
   
-  clickElementById("plot1top_q_label_variable_a178")
+  clickID("plot1top_q_label_variable_a178")
   expect_equal(get_circles(), list(10, 10))
 })
 
 test_that("clicking bottom legend adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
   
-  clickElementById("plot1bottom_q_label_variable_a178")
+  clickID("plot1bottom_q_label_variable_a178")
   expect_equal(get_circles(), list(10, 5))
   
-  clickElementById("plot1bottom_q_label_variable_b934")
+  clickID("plot1bottom_q_label_variable_b934")
   expect_equal(get_circles(), list(10, 0))
   
-  clickElementById("plot1bottom_q_label_variable_b934")
+  clickID("plot1bottom_q_label_variable_b934")
   expect_equal(get_circles(), list(10, 5))
   
-  clickElementById("plot1bottom_q_label_variable_a178")
+  clickID("plot1bottom_q_label_variable_a178")
   expect_equal(get_circles(), list(10, 10))
 })
 

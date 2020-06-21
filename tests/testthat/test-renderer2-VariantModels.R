@@ -226,7 +226,7 @@ test_that("initial geom counts", {
   expect_equal(expected.counts, as.numeric(computed.counts))
 })
 
-clickElementById("plot_roc_method_variable_MQ")
+clickID("plot_roc_method_variable_MQ")
 
 thresh.fold2.not.MQ <- subset(thresh.fold2, method != "MQ")
 
@@ -243,7 +243,7 @@ test_that("geom counts after hiding MQ", {
   expect_equal(expected.counts, as.numeric(computed.counts))
 })
 
-clickElementById("plot_roc_thresh_type_variable_min_error")
+clickID("plot_roc_thresh_type_variable_min_error")
 
 test_that("geom counts after hiding min error", {
   expected.counts <- c(
@@ -258,7 +258,7 @@ test_that("geom counts after hiding min error", {
   expect_equal(expected.counts, as.numeric(computed.counts))
 })
 
-clickElementById("plot_roc_thresh_type_variable_selected")
+clickID("plot_roc_thresh_type_variable_selected")
 
 test_that("geom counts after hiding selected", {
   expected.counts <- c(
@@ -273,7 +273,7 @@ test_that("geom counts after hiding selected", {
   expect_equal(expected.counts, as.numeric(computed.counts))
 })
 
-clickElementById("plot_roc_thresh_type_variable_min_error")
+clickID("plot_roc_thresh_type_variable_min_error")
 
 test_that("geom counts after showing min error", {
   expected.counts <- c(
@@ -288,7 +288,7 @@ test_that("geom counts after showing min error", {
   expect_equal(expected.counts, as.numeric(computed.counts))
 })
 
-clickElementById("plot_roc_method_variable_knn")
+clickID("plot_roc_method_variable_knn")
 
 test_that("geom counts after hiding knn", {
   expected.counts <- c(
@@ -303,7 +303,7 @@ test_that("geom counts after hiding knn", {
   expect_equal(expected.counts, as.numeric(computed.counts))
 })
 
-clickElementById("plot_roc_thresh_type_variable_selected")
+clickID("plot_roc_thresh_type_variable_selected")
 
 thresh.fold2.not.knn <- subset(thresh.fold2.not.MQ, method != "knn")
 
@@ -320,7 +320,7 @@ test_that("geom counts after showing selected", {
   expect_equal(expected.counts, as.numeric(computed.counts))
 })
 
-clickElementById("plot_error_error_type_variable_errors")
+clickID("plot_error_error_type_variable_errors")
 
 test_that("geom counts after hiding errors", {
   expected.counts <- c(

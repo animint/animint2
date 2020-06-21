@@ -165,7 +165,7 @@ test_that("2 <path> rendered for Bayes boundary", {
   expect_equal(length(before$boundary.Bayes), 2)
 })
 
-clickElementById("plot_data_classifier_variable_Bayes")
+clickID("plot_data_classifier_variable_Bayes")
 
 click1 <- get_nodes()
 test_that("first click, 1 <path> rendered for validation error band", {
@@ -187,7 +187,7 @@ test_that("first click, Bayes boundary disappears", {
   expect_equal(length(click1$boundary.Bayes), 0)
 })
 
-clickElementById("plot_data_classifier_variable_KNN")
+clickID("plot_data_classifier_variable_KNN")
 
 click2 <- get_nodes()
 test_that("second click, validation error band disappears", {

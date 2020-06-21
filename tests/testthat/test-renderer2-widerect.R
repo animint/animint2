@@ -205,10 +205,10 @@ test_that("animation updates", {
   expect_true(old.year != new.year)
 })
 
-clickElementById("plot_show_hide_animation_controls")
+clickID("plot_show_hide_animation_controls")
 
 test_that("pause stops animation", {
-  clickElementById("play_pause")
+  clickID("play_pause")
   old.year <- getYear()
   Sys.sleep(3)
   new.year <- getYear()
@@ -217,22 +217,22 @@ test_that("pause stops animation", {
 
 test_that("play restarts animation", {
   old.year <- getYear()
-  clickElementById("play_pause")
+  clickID("play_pause")
   Sys.sleep(5)
   new.year <- getYear()
   expect_true(old.year != new.year)
 })
 
 test_that("pause stops animation (second time)", {
-  clickElementById("play_pause")
+  clickID("play_pause")
   old.year <- getYear()
   Sys.sleep(3)
   new.year <- getYear()
   expect_true(old.year == new.year)
 })
 
-clickElementById("plot_ts_status_variable_even")
-clickElementById("plot_ts_status_variable_odd")
+clickID("plot_ts_status_variable_even")
+clickID("plot_ts_status_variable_odd")
 html.no.rects <- getHTML()
 
 test_that("clicking status legend hides tallrects", {
@@ -249,8 +249,8 @@ test_that("clicking status legend does not hide text", {
   expect_equal(length(node.set), 1)
 })
 
-clickElementById("plot_ts_status_variable_even")
-clickElementById("plot_ts_status_variable_odd")
+clickID("plot_ts_status_variable_even")
+clickID("plot_ts_status_variable_odd")
 html.with.rects <- getHTML()
 
 test_that("clicking status legend brings back tallrects", {
@@ -276,7 +276,7 @@ test_that("clicking status legend brings back tallrects", {
 
 test_that("play restarts animation (second time)", {
   old.year <- getYear()
-  clickElementById("play_pause")
+  clickID("play_pause")
   Sys.sleep(5)
   new.year <- getYear()
   expect_true(old.year != new.year)
@@ -294,13 +294,13 @@ test_that("clicking legend removes/adds countries", {
   expect_equal(length(before$rects), 1)
   expect_equal(sum(before$legends=="1"), 14)
   expect_equal(sum(before$legends=="0.5"), 0)
-  clickElementById("plot_ts_region_variable_North_America")
+  clickID("plot_ts_region_variable_North_America")
   Sys.sleep(1)
   oneclick <- rects_and_legends()
   expect_equal(length(oneclick$rects), 0)
   expect_equal(sum(oneclick$legends=="1"), 12)
   expect_equal(sum(oneclick$legends=="0.5"), 2)
-  clickElementById("plot_ts_region_variable_North_America")
+  clickID("plot_ts_region_variable_North_America")
   Sys.sleep(1)
   twoclicks <- rects_and_legends()
   expect_equal(length(twoclicks$rects), 1)
@@ -314,7 +314,7 @@ e$clearElement()
 e$sendKeysToElement(list("3000", key="enter"))
 
 test_that("pause stops animation (third time)", {
-  clickElementById("play_pause")
+  clickID("play_pause")
   old.year <- getYear()
   Sys.sleep(4)
   new.year <- getYear()
@@ -394,10 +394,10 @@ getWidth <- function(){
 }
 
 test_that("middle of transition != after when duration=2000", {
-  clickElementById("year1960")
+  clickID("year1960")
   Sys.sleep(1)
   before.width <- getWidth()
-  clickElementById("year2010")
+  clickID("year2010")
   during.width <- getWidth()
   Sys.sleep(0.1)
   after.width <- getWidth()
@@ -414,10 +414,10 @@ e$sendKeysToElement(list("0", key="enter"))
 Sys.sleep(1)
 
 test_that("middle of transition == after when duration=0", {
-  clickElementById("year1960")
+  clickID("year1960")
   Sys.sleep(1)
   before.width <- getWidth()
-  clickElementById("year2010")
+  clickID("year2010")
   during.width <- getWidth()
   Sys.sleep(0.1)
   after.width <- getWidth()
