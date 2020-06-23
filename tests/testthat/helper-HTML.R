@@ -60,11 +60,15 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
                   port = remotePort,
                   phantomver = "latest"
                 )
+    # Give time for phantomjs binary to start
+    Sys.sleep(8)  
+  } else {
     
+    # If using firefox, you'll need to run selenium-firefox docker image in order to make it work correctly.
+    # We're using docker to avoid version incompatibility issues.
+    message("You need to run selenium docker image(selenium/standalone-firefox:2.53.0) as specified in docs(). \nNote: Ignore if already running.")
   }
   
-  # give the binaries a moment to start up
-  Sys.sleep(8)
   remDr <<- RSelenium::remoteDriver(
     port = remotePort,
     browser = browserName,
