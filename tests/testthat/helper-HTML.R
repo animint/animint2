@@ -23,7 +23,7 @@ getHTML <- function(){
 #' @param browserName Name of the browser to use for testing.
 #' See ?RSelenium::remoteDriver for details.
 #' @param dir character string with the path to animint's source code. Defaults to current directory
-#' @param port port number used for local file server
+#' @param port port portnumber used for local file server
 #' @param ... list of additional options passed onto RSelenium::remoteDriver
 #' @return invisible(TRUE)
 #' @export
@@ -42,29 +42,31 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
   unlink(testDir, recursive = TRUE)
   dir.create(testDir)
   # start-up remote driver
+
+  OS <- Sys.info()[['sysname']]
+    if(OS == "Linux") {
+      animint_server <- "localhost"
+      remotePort <- 4444L
+    }
+    if(OS == "Windows" || OS == "Darwin") {
+      animint_server <- "host.docker.internal"
+      remotePort <- 4445L
+    }
+
   if (browserName == "phantomjs") {
     message("Starting phantomjs binary. To shut it down, run: \n pJS$stop()")
     
     pJS <<- wdman::phantomjs(
-                  port = 4445L,
+                  port = remotePort,
                   phantomver = "latest"
                 )
     
-  } else {
-    message("Starting selenium binary. To shut it down, run: \n",
-            "remDr$closeWindow() \n",
-            "remDr$closeServer()")
-
-    selServer <- wdman::selenium(
-                  port = 4445L, 
-                  version = "3.141.59"
-                )
-  
   }
+  
   # give the binaries a moment to start up
   Sys.sleep(8)
   remDr <<- RSelenium::remoteDriver(
-    port = 4445L,
+    port = remotePort,
     browser = browserName,
   )
   
@@ -82,7 +84,7 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
   remDr$setTimeout(type = "page load", milliseconds = 30000)
   # if we navigate to localhost:%s/htmltest directly, some browsers will
   # redirect to www.htmltest.com. A 'safer' approach is to navigate, then click.
-  remDr$navigate(sprintf("http://localhost:%s/animint-htmltest/", port))
+  remDr$navigate(sprintf("http://%s:%s/animint-htmltest/", animint_server, port))
   ## Why not just navigate to the right URL to begin with?
   ## e <- remDr$findElement("xpath", "//a[@href='animint-htmltest/']")
   ## e$clickElement()
