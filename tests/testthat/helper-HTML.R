@@ -61,6 +61,7 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
                   phantomver = "latest"
                 )
     # Give time for phantomjs binary to start
+    animint_server <- "localhost"
     Sys.sleep(8)  
   } else {
     
