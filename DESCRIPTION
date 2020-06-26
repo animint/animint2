@@ -63,7 +63,8 @@ Imports:
     scales (>= 0.4.1),
     stats,
     tibble,
-    lazyeval
+    lazyeval,
+    knitr (>= 1.5.33)
 Suggests:
     knitr (>= 1.5.33),
     servr,
