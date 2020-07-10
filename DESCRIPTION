@@ -1,6 +1,6 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2020.3.2
+Version: 2020.7.9
 URL: https://github.com/tdhock/animint2
 BugReports: https://github.com/tdhock/animint2/issues
 Authors@R: c(
@@ -43,7 +43,10 @@ Authors@R: c(
      comment="Animint GSOC 2016-2017"),
     person("Vivek", "Kumar",
      role="aut",
-     comment="Animint GSOC 2018"))
+     comment="Animint GSOC 2018"),
+    person("Himanshu", "Singh",
+     role="aut",
+     comment="Animint2 GSoC 2020"))
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
  on a web page. The 2018 Journal of Computational and 

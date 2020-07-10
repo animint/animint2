@@ -13,6 +13,18 @@ is no column named arclength in the data -- this would mean to update
 the selector called "arclength" with the value in column
 "arclength.click" -- less disk space, and faster compiling.
 
+2020.7.9
+
+Using RSelenium Version 1.7.4.
+
+Removed Defunct and Redundant code/examples.
+
+User can test using docker to avoid incompatibility issues.
+
+imports knitr as knit_print imported in namespace.
+
+Use new grid::unitType() to determine unit type of margin in pt/points to line conversion.
+
 2020.3.2
 
 data.frame(stringsAsFactors=TRUE) in tests.
