@@ -7,6 +7,7 @@ limits <- data.frame(
   upper=c(1, 2, Inf))
 viz <- list(
   gg=ggplot()+
+    ggtitle("Inf Test")+
     theme_bw()+
     theme(
       panel.grid.major=element_line(color="red"),
@@ -15,10 +16,10 @@ viz <- list(
     facet_grid(side ~ top, scales="free")+
     geom_segment(aes(
       i, lower, yend=upper, xend=i),
-      data=data.frame(limits, side="yInf", top="left"))+
+      data=data.frame(limits, side="yInf", top="left", stringsAsFactors = TRUE))+
     geom_segment(aes(
       lower+10, i+10, xend=upper+10, yend=i+10),
-      data=data.frame(limits, side="xInf", top="right")))
+      data=data.frame(limits, side="xInf", top="right", stringsAsFactors = TRUE)))
 info <- animint2HTML(viz)
 
 ## First panel, test y values.

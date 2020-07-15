@@ -7,7 +7,7 @@
 #' @return Value in \code{lines}
 #' @note Does NOT work if input is not in \code{pt}. Input is returned as is.
 pt.to.lines <- function(pt_value){
-  if(attributes(pt_value)$unit == "pt"){
+  if(grid::unitType(pt_value) %in% c("pt", "points")){
     pt_value <- round(as.numeric(pt_value) * (0.25/5.5), digits = 2)
   }
   as.numeric(pt_value)
