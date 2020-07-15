@@ -42,15 +42,13 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
   unlink(testDir, recursive = TRUE)
   dir.create(testDir)
   # start-up remote driver
-
+  remotePort <- 4444L
   OS <- Sys.info()[['sysname']]
     if(OS == "Linux") {
-      animint_server <- "localhost"
-      remotePort <- 4444L
+      animint_server <- "localhost"   
     }
     if(OS == "Windows" || OS == "Darwin") {
       animint_server <- "host.docker.internal"
-      remotePort <- 4445L
     }
 
   if (browserName == "phantomjs") {
@@ -67,7 +65,7 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
     
     # If using firefox, you'll need to run selenium-firefox docker image in order to make it work correctly.
     # We're using docker to avoid version incompatibility issues.
-    message("You need to run selenium docker image(selenium/standalone-firefox:2.53.0) as specified in docs(). \nNote: Ignore if already running.")
+    message("You need to run selenium docker image(selenium/standalone-firefox:2.53.0) as specified in docs(https://github.com/tdhock/animint2/wiki/Testing). \nNote: Ignore if already running.")
   }
   
   remDr <<- RSelenium::remoteDriver(
