@@ -383,7 +383,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     }
     g$geom <- "rect"
   } else if(g$geom=="bar"){
-    GeomBar$pre_process(g)
+    GeomBar$pre_process(g, g.data)
   } else if(g$geom=="bin2d"){
     stop("bin2d is not supported in animint. Try using geom_tile() and binning the data yourself.")
   } else if(g$geom=="boxplot"){
