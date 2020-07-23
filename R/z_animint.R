@@ -365,70 +365,13 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## special cases of basic geoms. In ggplot2, this processing is done
   ## in the draw method of the geoms.
   if(g$geom=="abline"){
-    ## loop through each set of slopes/intercepts
-
-    ## TODO: vectorize this code!
-    for(i in 1:nrow(g.data)) {
-
-      # "Trick" ggplot coord_transform into transforming the slope and intercept
-      g.data[i, "x"] <- ranges[[ g.data$PANEL[i] ]]$x.range[1]
-      g.data[i, "xend"] <- ranges[[ g.data$PANEL[i] ]]$x.range[2]
-      g.data[i, "y"] <- g.data$slope[i] * g.data$x[i] + g.data$intercept[i]
-      g.data[i, "yend"] <- g.data$slope[i] * g.data$xend[i] + g.data$intercept[i]
-
-      # make sure that lines don't run off the graph
-      if(g.data$y[i] < ranges[[ g.data$PANEL[i] ]]$y.range[1] ) {
-        g.data$y[i] <- ranges[[ g.data$PANEL[i] ]]$y.range[1]
-        g.data$x[i] <- (g.data$y[i] - g.data$intercept[i]) / g.data$slope[i]
-      }
-      if(g.data$yend[i] > ranges[[ g.data$PANEL[i] ]]$y.range[2]) {
-        g.data$yend[i] <- ranges[[ g.data$PANEL[i] ]]$y.range[2]
-        g.data$xend[i] <- (g.data$yend[i] - g.data$intercept[i]) / g.data$slope[i]
-      }
-    }
-    ## ggplot2 defaults to adding a group aes for ablines!
-    ## Remove it since it is meaningless.
-    g$aes <- g$aes[names(g$aes)!="group"]
-    g.data <- g.data[! names(g.data) %in% c("slope", "intercept")]
-    g$geom <- "segment"
+    GeomAbline$pre_process(g)
   } else if(g$geom=="point"){
-    # Fill set to match ggplot2 default of filled in circle.
-    # Check for fill in both data and params
-    fill.in.data <- ("fill" %in% names(g.data) && any(!is.na(g.data[["fill"]])))
-    fill.in.params <- "fill" %in% names(g$params)
-    fill.specified <- fill.in.data || fill.in.params
-    if(!fill.specified & "colour" %in% names(g.data)){
-      g.data[["fill"]] <- g.data[["colour"]]
-    }
+    GeomPoint$pre_process(g, g.data)
   } else if(g$geom=="text"){
-    ## convert hjust to anchor.
-    hjustRemove <- function(df.or.list){
-      df.or.list$anchor <- hjust2anchor(df.or.list$hjust)
-      df.or.list[names(df.or.list) != "hjust"]
-    }
-    vjustWarning <- function(vjust.vec){
-      not.supported <- vjust.vec != 0
-      if(any(not.supported)){
-        bad.vjust <- unique(vjust.vec[not.supported])
-        print(bad.vjust)
-        warning("animint only supports vjust=0")
-      }
-    }
-    if ("hjust" %in% names(g$params)) {
-      g$params <- hjustRemove(g$params)
-    } else if ("hjust" %in% names(g.data)) {
-      g.data <- hjustRemove(g.data)
-    }
-    if("vjust" %in% names(g$params)) {
-      vjustWarning(g$params$vjust)
-    } else if ("vjust" %in% names(g$aes)) {
-      vjustWarning(g.data$vjust)
-    }
+    GeomText$pre_process(g, g.data)
   } else if(g$geom=="ribbon"){
-    # Color set to match ggplot2 default of fill with no outside border.
-    if("fill"%in%names(g.data) & !"colour"%in%names(g.data)){
-      g.data[["colour"]] <- g.data[["fill"]]
-    }
+    GeomRibbon$pre_process(g.data)
   } else if(g$geom=="density" | g$geom=="area"){
     g$geom <- "ribbon"
   } else if(g$geom=="tile" | g$geom=="raster" | g$geom=="histogram" ){
@@ -440,9 +383,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     }
     g$geom <- "rect"
   } else if(g$geom=="bar"){
-    is.xy <- names(g.data) %in% c("x", "y")
-    g.data <- g.data[!is.xy]
-    g$geom <- "rect"
+    GeomBar$pre_process(g)
   } else if(g$geom=="bin2d"){
     stop("bin2d is not supported in animint. Try using geom_tile() and binning the data yourself.")
   } else if(g$geom=="boxplot"){
@@ -457,15 +398,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     # as a single string which can then be parsed in JavaScript.
     # there has got to be a better way to do this!!
   } else if(g$geom=="violin"){
-    g.data$xminv <- with(g.data, x - violinwidth * (x - xmin))
-    g.data$xmaxv <- with(g.data, x + violinwidth * (xmax - x))
-    newdata <- plyr::ddply(g.data, "group", function(df){
-                  rbind(plyr::arrange(transform(df, x=xminv), y),
-                        plyr::arrange(transform(df, x=xmaxv), -y))
-                })
-    newdata <- plyr::ddply(newdata, "group", function(df) rbind(df, df[1,]))
-    g.data <- newdata
-    g$geom <- "polygon"
+    GeomVoilin$pre_process(g)
   } else if(g$geom=="step"){
     datanames <- names(g.data)
     g.data <- plyr::ddply(g.data, "group", function(df) stairstep(df))
