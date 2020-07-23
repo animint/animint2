@@ -122,7 +122,7 @@ GeomAbline <- gganimintproto("GeomAbline", Geom,
     GeomSegment$draw_panel(unique(data), panel_scales, coord)
   },
 
-  pre_process = function(g) {
+  pre_process = function(g, g.data, ranges) {
     ## loop through each set of slopes/intercepts
 
     ## TODO: vectorize this code!
@@ -149,6 +149,7 @@ GeomAbline <- gganimintproto("GeomAbline", Geom,
     g$aes <- g$aes[names(g$aes)!="group"]
     g.data <- g.data[! names(g.data) %in% c("slope", "intercept")]
     g$geom <- "segment"
+    return(g.data)
   },
 
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),

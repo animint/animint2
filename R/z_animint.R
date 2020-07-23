@@ -365,7 +365,7 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## special cases of basic geoms. In ggplot2, this processing is done
   ## in the draw method of the geoms.
   if(g$geom=="abline"){
-    GeomAbline$pre_process(g)
+    g.data <- GeomAbline$pre_process(g, g.data, ranges)
   } else if(g$geom=="point"){
     GeomPoint$pre_process(g, g.data)
   } else if(g$geom=="text"){
