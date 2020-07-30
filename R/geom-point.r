@@ -148,6 +148,7 @@ GeomPoint <- gganimintproto("GeomPoint", Geom,
     if(!fill.specified & "colour" %in% names(g.data)){
       g.data[["fill"]] <- g.data[["colour"]]
     }
+    return(list(g = g, g.data = g.data))
   },
   draw_key = draw_key_point
 )

@@ -110,6 +110,7 @@ GeomRibbon <- gganimintproto("GeomRibbon", Geom,
     if("fill"%in%names(g.data) & !"colour"%in%names(g.data)){
       g.data[["colour"]] <- g.data[["fill"]]
     }
+    return(g.data)
   }
 )
 

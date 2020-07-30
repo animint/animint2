@@ -220,6 +220,7 @@ GeomText <- gganimintproto("GeomText", Geom,
     } else if ("vjust" %in% names(g$aes)) {
       vjustWarning(g.data$vjust)
     }
+    return(list(g = g, g.data = g.data))
   },
   draw_key = draw_key_text
 )

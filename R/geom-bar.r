@@ -132,5 +132,6 @@ GeomBar <- gganimintproto("GeomBar", GeomRect,
     is.xy <- names(g.data) %in% c("x", "y")
     g.data <- g.data[!is.xy]
     g$geom <- "rect"
+    return(list(g = g, g.data = g.data))
   }
 )

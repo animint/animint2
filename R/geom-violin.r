@@ -165,6 +165,7 @@ GeomViolin <- gganimintproto("GeomViolin", Geom,
     newdata <- plyr::ddply(newdata, "group", function(df) rbind(df, df[1,]))
     g.data <- newdata
     g$geom <- "polygon"
+    return(g)
   }
 )
 

@@ -365,13 +365,28 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   ## special cases of basic geoms. In ggplot2, this processing is done
   ## in the draw method of the geoms.
   if(g$geom=="abline"){
-    g.data <- GeomAbline$pre_process(g, g.data, ranges)
+
+    processed_values <- GeomAbline$pre_process(g, g.data, ranges)
+    g <- processed_values$g
+    g.data <- processed_values$g.data
+    ranges <- processed_values$ranges
+
   } else if(g$geom=="point"){
-    GeomPoint$pre_process(g, g.data)
+
+    processed_values <- GeomPoint$pre_process(g, g.data)
+    g <- processed_values$g
+    g.data <- processed_values$g.data
+
   } else if(g$geom=="text"){
-    GeomText$pre_process(g, g.data)
+
+    processed_values <- GeomText$pre_process(g, g.data)
+    g <- processed_values$g
+    g.data <- processed_values$g.data
+
   } else if(g$geom=="ribbon"){
-    GeomRibbon$pre_process(g.data)
+
+    g.data <- GeomRibbon$pre_process(g.data)
+
   } else if(g$geom=="density" | g$geom=="area"){
     g$geom <- "ribbon"
   } else if(g$geom=="tile" | g$geom=="raster" | g$geom=="histogram" ){
@@ -383,7 +398,11 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     }
     g$geom <- "rect"
   } else if(g$geom=="bar"){
-    GeomBar$pre_process(g, g.data)
+
+    processed_values <- GeomBar$pre_process(g, g.data)
+    g <- processed_values$g
+    g.data <- processed_values$g.data
+
   } else if(g$geom=="bin2d"){
     stop("bin2d is not supported in animint. Try using geom_tile() and binning the data yourself.")
   } else if(g$geom=="boxplot"){
@@ -398,7 +417,9 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
     # as a single string which can then be parsed in JavaScript.
     # there has got to be a better way to do this!!
   } else if(g$geom=="violin"){
-    GeomVoilin$pre_process(g)
+
+    g <- GeomVoilin$pre_process(g)
+    
   } else if(g$geom=="step"){
     datanames <- names(g.data)
     g.data <- plyr::ddply(g.data, "group", function(df) stairstep(df))
