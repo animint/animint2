@@ -265,7 +265,8 @@ test_that("initially rendered hlines", {
 })
 
 test_that("hlines after clicking specific", {
-  html <- clickHTML(id=specific.id)
+  clickID(specific.id)
+  html <- getHTML()
   line.list <- specific_hlines(html)
   expect_equal(length(line.list), 0)
   computed.opacity <- specific_opacity(html)
@@ -273,7 +274,8 @@ test_that("hlines after clicking specific", {
 })
 
 test_that("hlines after clicking specific again", {
-  html <- clickHTML(id=specific.id)
+  clickID(specific.id)
+  html <- getHTML()
   line.list <- specific_hlines(html)
   expect_equal(length(line.list), 2)
   computed.opacity <- specific_opacity(html)

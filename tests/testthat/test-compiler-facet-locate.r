@@ -99,8 +99,9 @@ d <- data.frame(x = 1:9, y = 1:9,
   fy = factor(rep(LETTERS[1:3], each = 3), levels = LETTERS[3:1]))
 
 # Data with factor f with only level B
-d2 <- data.frame(x = 1:9, y = 2:10, fx = "a", fy = "B")
-
+d2 <- data.frame(
+  x = 1:9, y = 2:10, fx = "a", fy = "B",
+  stringsAsFactors=TRUE)
 
 test_that("grid: facet order follows default data frame order", {
   # Facets should be in order:

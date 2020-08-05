@@ -4,9 +4,18 @@
 \alias{facet_wrap}
 \title{Wrap a 1d ribbon of panels into 2d.}
 \usage{
-facet_wrap(facets, nrow = NULL, ncol = NULL, scales = "fixed",
-  shrink = TRUE, labeller = "label_value", as.table = TRUE,
-  switch = NULL, drop = TRUE, dir = "h")
+facet_wrap(
+  facets,
+  nrow = NULL,
+  ncol = NULL,
+  scales = "fixed",
+  shrink = TRUE,
+  labeller = "label_value",
+  as.table = TRUE,
+  switch = NULL,
+  drop = TRUE,
+  dir = "h"
+)
 }
 \arguments{
 \item{facets}{Either a formula or character vector. Use either a

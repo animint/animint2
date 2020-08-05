@@ -39,10 +39,11 @@ ggplot(mpg, aes(class, hwy)) +
   geom_boxplot()
 }
 \seealso{
-Other position adjustments: \code{\link{position_dodge}},
-  \code{\link{position_fill}},
-  \code{\link{position_identity}},
-  \code{\link{position_jitterdodge}},
-  \code{\link{position_nudge}}
+Other position adjustments: 
+\code{\link{position_dodge}()},
+\code{\link{position_fill}()},
+\code{\link{position_identity}()},
+\code{\link{position_jitterdodge}()},
+\code{\link{position_nudge}()}
 }
 \concept{position adjustments}

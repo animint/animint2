@@ -12,15 +12,29 @@
 \alias{scale_y_sqrt}
 \title{Continuous position scales (x & y).}
 \usage{
-scale_x_continuous(name = waiver(), breaks = waiver(),
-  minor_breaks = waiver(), labels = waiver(), limits = NULL,
-  expand = waiver(), oob = censor, na.value = NA_real_,
-  trans = "identity")
+scale_x_continuous(
+  name = waiver(),
+  breaks = waiver(),
+  minor_breaks = waiver(),
+  labels = waiver(),
+  limits = NULL,
+  expand = waiver(),
+  oob = censor,
+  na.value = NA_real_,
+  trans = "identity"
+)
 
-scale_y_continuous(name = waiver(), breaks = waiver(),
-  minor_breaks = waiver(), labels = waiver(), limits = NULL,
-  expand = waiver(), oob = censor, na.value = NA_real_,
-  trans = "identity")
+scale_y_continuous(
+  name = waiver(),
+  breaks = waiver(),
+  minor_breaks = waiver(),
+  labels = waiver(),
+  limits = NULL,
+  expand = waiver(),
+  oob = censor,
+  na.value = NA_real_,
+  trans = "identity"
+)
 
 scale_x_log10(...)
 

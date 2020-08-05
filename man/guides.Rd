@@ -67,7 +67,8 @@ ggplot(mpg, aes(displ, cty)) +
 }
 }
 \seealso{
-Other guides: \code{\link{guide_colourbar}},
-  \code{\link{guide_legend}}
+Other guides: 
+\code{\link{guide_colourbar}()},
+\code{\link{guide_legend}()}
 }
 \concept{guides}

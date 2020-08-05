@@ -7,14 +7,33 @@
 \alias{stat_density2d}
 \title{Contours from a 2d density estimate.}
 \usage{
-geom_density_2d(mapping = NULL, data = NULL, stat = "density2d",
-  position = "identity", ..., lineend = "butt", linejoin = "round",
-  linemitre = 1, na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+geom_density_2d(
+  mapping = NULL,
+  data = NULL,
+  stat = "density2d",
+  position = "identity",
+  ...,
+  lineend = "butt",
+  linejoin = "round",
+  linemitre = 1,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 
-stat_density_2d(mapping = NULL, data = NULL, geom = "density_2d",
-  position = "identity", ..., contour = TRUE, n = 100, h = NULL,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+stat_density_2d(
+  mapping = NULL,
+  data = NULL,
+  geom = "density_2d",
+  position = "identity",
+  ...,
+  contour = TRUE,
+  n = 100,
+  h = NULL,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or

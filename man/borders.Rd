@@ -4,8 +4,15 @@
 \alias{borders}
 \title{Create a layer of map borders.}
 \usage{
-borders(database = "world", regions = ".", fill = NA,
-  colour = "grey50", xlim = NULL, ylim = NULL, ...)
+borders(
+  database = "world",
+  regions = ".",
+  fill = NA,
+  colour = "grey50",
+  xlim = NULL,
+  ylim = NULL,
+  ...
+)
 }
 \arguments{
 \item{database}{map data, see \code{\link[maps]{map}} for details}

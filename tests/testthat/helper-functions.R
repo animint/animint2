@@ -74,8 +74,7 @@ clickHTML <- function(...){
 clickID <- function(...){
   v <- c(...)
   stopifnot(length(v) == 1)
-  e <- remDr$findElement("id", as.character(v))
-  e$clickElement()
+  remDr$executeScript(sprintf("document.getElementById('%s').dispatchEvent(new CustomEvent('click'))", as.character(v)))
 }
 
 rgba.pattern <- paste0(

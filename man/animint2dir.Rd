@@ -4,8 +4,13 @@
 \alias{animint2dir}
 \title{Compile and render an animint in a local directory.}
 \usage{
-animint2dir(plot.list, out.dir = NULL, json.file = "plot.json",
-  open.browser = interactive(), css.file = "")
+animint2dir(
+  plot.list,
+  out.dir = NULL,
+  json.file = "plot.json",
+  open.browser = interactive(),
+  css.file = ""
+)
 }
 \arguments{
 \item{plot.list}{a named list of ggplots and option lists.}

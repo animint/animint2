@@ -1,6 +1,6 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2019.7.3
+Version: 2020.7.9
 URL: https://github.com/tdhock/animint2
 BugReports: https://github.com/tdhock/animint2/issues
 Authors@R: c(
@@ -43,7 +43,10 @@ Authors@R: c(
      comment="Animint GSOC 2016-2017"),
     person("Vivek", "Kumar",
      role="aut",
-     comment="Animint GSOC 2018"))
+     comment="Animint GSOC 2018"),
+    person("Himanshu", "Singh",
+     role="aut",
+     comment="Animint2 GSoC 2020"))
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
  on a web page. The 2018 Journal of Computational and 
@@ -63,9 +66,9 @@ Imports:
     scales (>= 0.4.1),
     stats,
     tibble,
-    lazyeval
+    lazyeval,
+    knitr (>= 1.5.33)
 Suggests:
-    knitr (>= 1.5.33),
     servr,
     gistr (>= 0.2),
     shiny,
@@ -88,7 +91,7 @@ Suggests:
     rpart,
     svglite
 Enhances: sp
-Remotes: ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa
+Remotes: ropensci/RSelenium@v1.7.4
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -271,4 +274,4 @@ Collate:
     'z_scales.R'
     'z_theme_animint.R'
     'z_transformShape.R'
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1

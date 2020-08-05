@@ -39,7 +39,7 @@ test_that("clicking species legend adds and removes points", {
   # virginica points are removed
   clickID("plot_petal_Species_variable_virginica")
   expect_equal(length(get_circles("sepal")), 150)
-  expect_equal(length(get_circles("petal")), 100)  
+  expect_equal(length(get_circles("petal")), 100)
   # virginica points are added back
   clickID("plot_petal_Species_variable_virginica")
   expect_equal(length(get_circles("sepal")), 150)
@@ -214,7 +214,7 @@ test_that('aes(color=vs.fac) is OK"', {
   clickID("plot_p_vs_fac_variable_0")
   expect_equal(length(get_circles("p")), 14)
   clickID("plot_p_vs_fac_variable_0")
-  expect_equal(length(get_circles("p")), 32)  
+  expect_equal(length(get_circles("p")), 32)
 })
 
 viz <- list(

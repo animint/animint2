@@ -1,10 +1,10 @@
 acontext("global variables")
 
 viz <- list(scatter=ggplot()+
-  geom_point(aes(y=Petal.Length, x=Sepal.Length,
-                color=Species),
-             showSelected="Species",
-            data=iris))
+              geom_point(aes(y=Petal.Length, x=Sepal.Length,
+                             color=Species),
+                         showSelected="Species",
+                         data=iris))
 
 myScript <- 'myArray = [];
 for(var b in window) { 
@@ -13,7 +13,7 @@ for(var b in window) {
 return myArray;'
 
 getVariables <- function(){
-  vars <- remDr$executeScript(myScript)[[1]]
+  vars <- remDr$executeScript(myScript)
   # ignore the "plot" variable -- 
   # https://github.com/tdhock/animint/pull/62#issuecomment-100008532
   # also ignore jQuery1238915281937 variable:

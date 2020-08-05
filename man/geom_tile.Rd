@@ -6,18 +6,41 @@
 \alias{geom_tile}
 \title{Draw rectangles.}
 \usage{
-geom_raster(mapping = NULL, data = NULL, stat = "identity",
-  position = "identity", ..., hjust = 0.5, vjust = 0.5,
-  interpolate = FALSE, na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+geom_raster(
+  mapping = NULL,
+  data = NULL,
+  stat = "identity",
+  position = "identity",
+  ...,
+  hjust = 0.5,
+  vjust = 0.5,
+  interpolate = FALSE,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 
-geom_rect(mapping = NULL, data = NULL, stat = "identity",
-  position = "identity", ..., na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+geom_rect(
+  mapping = NULL,
+  data = NULL,
+  stat = "identity",
+  position = "identity",
+  ...,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 
-geom_tile(mapping = NULL, data = NULL, stat = "identity",
-  position = "identity", ..., na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+geom_tile(
+  mapping = NULL,
+  data = NULL,
+  stat = "identity",
+  position = "identity",
+  ...,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or

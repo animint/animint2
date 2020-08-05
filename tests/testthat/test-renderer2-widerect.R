@@ -326,6 +326,9 @@ e$clickElement()
 s.tr <- remDr$findElement("class name", "year_variable_selector_widget")
 s.div <- s.tr$findChildElement("class name", "selectize-input")
 s.div$clickElement()
+# Selenium Versions > 2 do not support the sendKeysToActiveElement function as I found on their github.
+# https://github.com/SeleniumHQ/selenium/issues/7686
+# Looking to make it work with JavaScript or JQuery
 remDr$sendKeysToActiveElement(list(key="backspace"))
 remDr$sendKeysToActiveElement(list("1962"))
 remDr$sendKeysToActiveElement(list(key="enter"))

@@ -4,8 +4,7 @@
 \alias{animint2gist}
 \title{Convert a list of ggplots to an interactive animation and post files as a gist}
 \usage{
-animint2gist(plot.list, description = plot.list$title, browse = TRUE,
-  ...)
+animint2gist(plot.list, description = plot.list$title, browse = TRUE, ...)
 }
 \arguments{
 \item{plot.list}{a named list of ggplots and option lists.}

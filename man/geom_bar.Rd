@@ -5,13 +5,30 @@
 \alias{stat_count}
 \title{Bars, rectangles with bases on x-axis}
 \usage{
-geom_bar(mapping = NULL, data = NULL, stat = "count",
-  position = "stack", ..., width = NULL, binwidth = NULL,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+geom_bar(
+  mapping = NULL,
+  data = NULL,
+  stat = "count",
+  position = "stack",
+  ...,
+  width = NULL,
+  binwidth = NULL,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 
-stat_count(mapping = NULL, data = NULL, geom = "bar",
-  position = "stack", ..., width = NULL, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+stat_count(
+  mapping = NULL,
+  data = NULL,
+  geom = "bar",
+  position = "stack",
+  ...,
+  width = NULL,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or

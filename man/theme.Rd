@@ -248,7 +248,7 @@ z + theme(legend.title = element_text(face = "italic"))
 # To change the title of the legend use the name argument
 # in one of the scale options
 z + scale_colour_brewer(name = "My Legend")
-z + scale_colour_grey(name = "Number of \\nCylinders")
+z + scale_colour_grey(name = "Number of \nCylinders")
 
 # Panel and Plot Attributes
 z + theme(panel.background = element_rect(fill = "black"))

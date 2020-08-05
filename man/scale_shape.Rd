@@ -25,7 +25,7 @@ dsmall <- diamonds[sample(nrow(diamonds), 100), ]
 d + scale_shape(solid = TRUE) # the default
 d + scale_shape(solid = FALSE)
 d + scale_shape(name = "Cut of diamond")
-d + scale_shape(name = "Cut of\\ndiamond")
+d + scale_shape(name = "Cut of\ndiamond")
 
 # To change order of levels, change order of
 # underlying factor

@@ -4,9 +4,17 @@
 \alias{facet_grid}
 \title{Lay out panels in a grid.}
 \usage{
-facet_grid(facets, margins = FALSE, scales = "fixed",
-  space = "fixed", shrink = TRUE, labeller = "label_value",
-  as.table = TRUE, switch = NULL, drop = TRUE)
+facet_grid(
+  facets,
+  margins = FALSE,
+  scales = "fixed",
+  space = "fixed",
+  shrink = TRUE,
+  labeller = "label_value",
+  as.table = TRUE,
+  switch = NULL,
+  drop = TRUE
+)
 }
 \arguments{
 \item{facets}{a formula with the rows (of the tabular display) on the LHS

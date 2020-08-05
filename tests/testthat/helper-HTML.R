@@ -23,7 +23,7 @@ getHTML <- function(){
 #' @param browserName Name of the browser to use for testing.
 #' See ?RSelenium::remoteDriver for details.
 #' @param dir character string with the path to animint's source code. Defaults to current directory
-#' @param port port number used for local file server
+#' @param port port portnumber used for local file server
 #' @param ... list of additional options passed onto RSelenium::remoteDriver
 #' @return invisible(TRUE)
 #' @export
@@ -42,32 +42,52 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
   unlink(testDir, recursive = TRUE)
   dir.create(testDir)
   # start-up remote driver
+  remotePort <- 4444L
+  OS <- Sys.info()[['sysname']]
+    if(OS == "Linux") {
+      animint_server <- "localhost"   
+    }
+    if(OS == "Windows" || OS == "Darwin") {
+      animint_server <- "host.docker.internal"
+    }
+
   if (browserName == "phantomjs") {
     message("Starting phantomjs binary. To shut it down, run: \n pJS$stop()")
-    pJS <<- RSelenium::phantom()
+    
+    pJS <<- wdman::phantomjs(
+                  port = remotePort,
+                  phantomver = "latest"
+                )
+    # Give time for phantomjs binary to start
+    animint_server <- "localhost"
+    Sys.sleep(8)  
   } else {
-    message("Starting selenium binary. To shut it down, run: \n",
-            "remDr$closeWindow() \n",
-            "remDr$closeServer()")
-    RSelenium::checkForServer(dir = system.file("bin", package = "RSelenium"))
-    selenium <- RSelenium::startServer()
+    
+    # If using firefox, you'll need to run selenium-firefox docker image in order to make it work correctly.
+    # We're using docker to avoid version incompatibility issues.
+    message("You need to run selenium docker image(selenium/standalone-firefox:2.53.0) as specified in docs(https://github.com/tdhock/animint2/wiki/Testing). \nNote: Ignore if already running.")
   }
-  # give an binaries a moment to start up
-  Sys.sleep(8)
-  remDr <<- RSelenium::remoteDriver(browserName = browserName, ...)
-  # give the backend a moment to start-up
+  
+  remDr <<- RSelenium::remoteDriver(
+    port = remotePort,
+    browser = browserName,
+  )
+  
+  # wait for the remote driver to start-up
   Sys.sleep(6)
   remDr$open(silent = TRUE)
-  Sys.sleep(2)
+ 
   # some tests don't run reliably with phantomjs (see tests-widerect.R)
   Sys.setenv("ANIMINT_BROWSER" = browserName)
-  # wait a maximum of 30 seconds when searching for elements.
-  remDr$setImplicitWaitTimeout(milliseconds = 30000)
+  # wait a maximum of 30 seconds when searchinsg for elements.
+  
+  remDr$setTimeout(type = "implicit", milliseconds = 30000)
+   
   # wait a maximum of 30 seconds for a particular type of operation to execute
   remDr$setTimeout(type = "page load", milliseconds = 30000)
   # if we navigate to localhost:%s/htmltest directly, some browsers will
   # redirect to www.htmltest.com. A 'safer' approach is to navigate, then click.
-  remDr$navigate(sprintf("http://localhost:%s/animint-htmltest/", port))
+  remDr$navigate(sprintf("http://%s:%s/animint-htmltest/", animint_server, port))
   ## Why not just navigate to the right URL to begin with?
   ## e <- remDr$findElement("xpath", "//a[@href='animint-htmltest/']")
   ## e$clickElement()
@@ -88,4 +108,3 @@ get_grid_lines <- function(html, p_name, grid_class){
   attr_v <- apply(attr_v, 2, as.numeric)
   return(list(hor=attr_h, vert=attr_v))
 }
-

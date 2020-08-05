@@ -100,28 +100,38 @@ get_elements <- function(id){
 plot1top <- get_elements("plot1top")
 plot1bottom <- get_elements("plot1bottom")
 
+# get_circles() returns a list of circles so comparing with list(expected, expected)
+
 test_that("clicking top legend adds/remove points", {
-  expect_equal(get_circles(), c(10, 10))
-  plot1top$a178$clickElement()
-  expect_equal(get_circles(), c(5, 10))
-  plot1top$b934$clickElement()
-  expect_equal(get_circles(), c(0, 10))
-  plot1top$b934$clickElement()
-  expect_equal(get_circles(), c(5, 10))
-  plot1top$a178$clickElement()
-  expect_equal(get_circles(), c(10, 10))
+  expect_equal(get_circles(), list(10, 10))
+  
+  clickID("plot1top_q_label_variable_a178")
+  expect_equal(get_circles(), list(5, 10))
+  
+  clickID("plot1top_q_label_variable_b934")
+  expect_equal(get_circles(), list(0, 10))
+  
+  clickID("plot1top_q_label_variable_b934")
+  expect_equal(get_circles(), list(5, 10))
+  
+  clickID("plot1top_q_label_variable_a178")
+  expect_equal(get_circles(), list(10, 10))
 })
 
 test_that("clicking bottom legend adds/remove points", {
-  expect_equal(get_circles(), c(10, 10))
-  plot1bottom$a178$clickElement()
-  expect_equal(get_circles(), c(10, 5))
-  plot1bottom$b934$clickElement()
-  expect_equal(get_circles(), c(10, 0))
-  plot1bottom$b934$clickElement()
-  expect_equal(get_circles(), c(10, 5))
-  plot1bottom$a178$clickElement()
-  expect_equal(get_circles(), c(10, 10))
+  expect_equal(get_circles(), list(10, 10))
+  
+  clickID("plot1bottom_q_label_variable_a178")
+  expect_equal(get_circles(), list(10, 5))
+  
+  clickID("plot1bottom_q_label_variable_b934")
+  expect_equal(get_circles(), list(10, 0))
+  
+  clickID("plot1bottom_q_label_variable_b934")
+  expect_equal(get_circles(), list(10, 5))
+  
+  clickID("plot1bottom_q_label_variable_a178")
+  expect_equal(get_circles(), list(10, 10))
 })
 
 plot1top$show_hide$clickElement()
@@ -129,15 +139,15 @@ s.div <- plot1top$widget$findChildElement("class name", "selectize-input")
 s.div$clickElement()
 
 test_that("top widget adds/remove points", {
-  expect_equal(get_circles(), c(10, 10))
+  expect_equal(get_circles(), list(10, 10))
   remDr$sendKeysToActiveElement(list(key="backspace"))
-  expect_equal(get_circles(), c(5, 10))
+  expect_equal(get_circles(), list(5, 10))
   remDr$sendKeysToActiveElement(list(key="backspace"))
-  expect_equal(get_circles(), c(0, 10))
+  expect_equal(get_circles(), list(0, 10))
   remDr$sendKeysToActiveElement(list("a", key="enter"))
-  expect_equal(get_circles(), c(5, 10))
+  expect_equal(get_circles(), list(5, 10))
   remDr$sendKeysToActiveElement(list("b", key="enter"))
-  expect_equal(get_circles(), c(10, 10))
+  expect_equal(get_circles(), list(10, 10))
 })
 
 plot1bottom$show_hide$clickElement()
@@ -146,13 +156,13 @@ s.div <-
 s.div$clickElement()
 
 test_that("bottom widget adds/remove points", {
-  expect_equal(get_circles(), c(10, 10))
+  expect_equal(get_circles(), list(10, 10))
   remDr$sendKeysToActiveElement(list(key="backspace"))
-  expect_equal(get_circles(), c(10, 5))
+  expect_equal(get_circles(), list(10, 5))
   remDr$sendKeysToActiveElement(list(key="backspace"))
-  expect_equal(get_circles(), c(10, 0))
+  expect_equal(get_circles(), list(10, 0))
   remDr$sendKeysToActiveElement(list("a", key="enter"))
-  expect_equal(get_circles(), c(10, 5))
+  expect_equal(get_circles(), list(10, 5))
   remDr$sendKeysToActiveElement(list("b", key="enter"))
-  expect_equal(get_circles(), c(10, 10))
+  expect_equal(get_circles(), list(10, 10))
 })
