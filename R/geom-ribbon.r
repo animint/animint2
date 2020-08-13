@@ -105,12 +105,12 @@ GeomRibbon <- gganimintproto("GeomRibbon", Geom,
         lty = aes$linetype)
     ))
   },
-  pre_process = function(g.data) {
+  pre_process = function(g, g.data, ...) {
     # Color set to match ggplot2 default of fill with no outside border.
     if("fill"%in%names(g.data) & !"colour"%in%names(g.data)){
       g.data[["colour"]] <- g.data[["fill"]]
     }
-    return(g.data)
+    return(list(g = g, g.data = g.data))
   }
 )
 

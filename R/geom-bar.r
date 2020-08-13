@@ -128,7 +128,7 @@ GeomBar <- gganimintproto("GeomBar", GeomRect,
     # Hack to ensure that width is detected as a parameter
     gganimintproto_parent(GeomRect, self)$draw_panel(data, panel_scales, coord)
   },
-  pre_process = function(g, g.data) {
+  pre_process = function(g, g.data, ...) {
     is.xy <- names(g.data) %in% c("x", "y")
     g.data <- g.data[!is.xy]
     g$geom <- "rect"

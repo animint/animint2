@@ -149,7 +149,7 @@ GeomAbline <- gganimintproto("GeomAbline", Geom,
     g$aes <- g$aes[names(g$aes)!="group"]
     g.data <- g.data[! names(g.data) %in% c("slope", "intercept")]
     g$geom <- "segment"
-    return(list(g = g, g.data = g.data, ranges = ranges))
+    return(list(g = g, g.data = g.data))
   },
 
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),

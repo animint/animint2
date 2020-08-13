@@ -139,7 +139,7 @@ GeomPoint <- gganimintproto("GeomPoint", Geom,
       )
     )
   },
-  pre_process = function(g, g.data) {
+  pre_process = function(g, g.data, ...) {
     # Fill set to match ggplot2 default of filled in circle.
     # Check for fill in both data and params
     fill.in.data <- ("fill" %in% names(g.data) && any(!is.na(g.data[["fill"]])))

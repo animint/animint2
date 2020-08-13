@@ -155,7 +155,7 @@ GeomViolin <- gganimintproto("GeomViolin", Geom,
     alpha = NA, linetype = "solid"),
 
   required_aes = c("x", "y"),
-  pre_process = function(g) {
+  pre_process = function(g, ...) {
     g.data$xminv <- with(g.data, x - violinwidth * (x - xmin))
     g.data$xmaxv <- with(g.data, x + violinwidth * (xmax - x))
     newdata <- plyr::ddply(g.data, "group", function(df){
@@ -165,7 +165,7 @@ GeomViolin <- gganimintproto("GeomViolin", Geom,
     newdata <- plyr::ddply(newdata, "group", function(df) rbind(df, df[1,]))
     g.data <- newdata
     g$geom <- "polygon"
-    return(g)
+    return(list(g = g, g.data = g.data))
   }
 )
 

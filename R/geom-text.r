@@ -196,7 +196,7 @@ GeomText <- gganimintproto("GeomText", Geom,
       check.overlap = check_overlap
     )
   },
-  pre_process = function(g, g.data) {
+  pre_process = function(g, g.data, ...) {
     ## convert hjust to anchor.
     hjustRemove <- function(df.or.list){
       df.or.list$anchor <- hjust2anchor(df.or.list$hjust)

@@ -209,18 +209,6 @@ storeLayer <- function(meta, g, g.data.varied){
   g
 }
 
-#' Save a layer to disk, save and return meta-data.
-#' @param l one layer of the ggplot object.
-#' @param d one layer of calculated data from ggplot_build(p).
-#' @param meta environment of meta-data.
-#' @param layer_name name of layer
-#' @param ggplot ggplot
-#' @param built built list
-#' @param AnimationInfo animation list
-#' ID number starting from 1
-#' @return list representing a layer, with corresponding aesthetics, ranges, and groups.
-#' @export
-
 #' Compile and render an animint in a local directory.
 #'
 #' This function converts an animint plot.list into a directory of
@@ -369,9 +357,8 @@ animint2dir <- function(plot.list, out.dir = NULL,
       }
       geom_num <- geom_num + 1
       layer_name <- getLayerName(L, geom_num, p.name)
-      gl <- Geom$pre_process(L, df, meta, layer_name,
+      gl <- Geom$export_animint(L, df, meta, layer_name,
                       ggplot.info$ggplot, ggplot.info$built, AnimationInfo)
-
       ## Save Animation Info separately
       AnimationInfo$timeValues <- gl$timeValues
       gl$timeValues <- NULL
