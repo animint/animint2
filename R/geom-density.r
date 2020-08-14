@@ -77,5 +77,10 @@ GeomDensity <- gganimintproto("GeomDensity", GeomArea,
   default_aes = defaults(
     aes(fill = NA, weight = 1, colour = "black", alpha = NA),
     GeomArea$default_aes
-  )
+  ),
+  pre_process= function(g, g.data, ...) {
+    g$geom <- "ribbon"
+    g.data <- g.data[order(g.data$x), ]
+    return(list(g = g, g.data = g.data))
+  }
 )

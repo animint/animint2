@@ -31,7 +31,7 @@ geom_bin2d <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomTile,
+    geom = GeomBind2d,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -41,3 +41,9 @@ geom_bin2d <- function(mapping = NULL, data = NULL,
     )
   )
 }
+
+GeomBind2d <- gganimintproto("GeomBind2d", GeomTile, 
+  pre_process = function(...) {
+    stop("bin2d is not supported in animint. Try using geom_tile() and binning the data yourself.")
+  }
+)

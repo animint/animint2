@@ -146,5 +146,10 @@ GeomArea <- gganimintproto("GeomArea", GeomRibbon,
 
   setup_data = function(data, params) {
     transform(data, ymin = 0, ymax = y)
+  },
+  pre_process = function(g, g.data, ...) {
+    g$geom <- "ribbon"
+    g.data <- g.data[order(g.data$x), ]
+    return(list(g = g, g.data = g.data))
   }
 )

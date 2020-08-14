@@ -67,7 +67,41 @@ GeomHex <- gganimintproto("GeomHex", Geom,
 
   default_aes = aes(colour = NA, fill = "grey50", size = 0.5, alpha = NA),
 
-  draw_key = draw_key_polygon
+  draw_key = draw_key_polygon,
+  pre_process = function(g, g.data) {
+    g$geom <- "polygon"
+    ## TODO: for interactivity we will run into the same problems as
+    ## we did with histograms. Again, if we put several
+    ## clickSelects/showSelected values in the same hexbin, then
+    ## clicking/hiding hexbins doesn't really make sense. Need to stop
+    ## with an error if showSelected/clickSelects is used with hex.
+    g$aes[["group"]] <- "group"
+    dx <- resolution(g.data$x, FALSE)
+    dy <- resolution(g.data$y, FALSE) / sqrt(3) / 2 * 1.15
+    hex <- as.data.frame(hexbin::hexcoords(dx, dy))[,1:2]
+    hex <- rbind(hex, hex[1,]) # to join hexagon back to first point
+    g.data$group <- as.numeric(interaction(g.data$group, 1:nrow(g.data)))
+    ## this has the potential to be a bad assumption -
+    ##   by default, group is identically 1, if the user
+    ##   specifies group, polygons aren't possible to plot
+    ##   using d3, because group will have a different meaning
+    ##   than "one single polygon".
+    # CPS (07-24-14) what about this? --
+    # http://tdhock.github.io/animint/geoms/polygon/index.html
+    newdata <- plyr::ddply(g.data, "group", function(df){
+      df$xcenter <- df$x
+      df$ycenter <- df$y
+      cbind(x=df$x+hex$x, y=df$y+hex$y, df[,-which(names(df)%in%c("x", "y"))])
+    })
+    g.data <- newdata
+    # Color set to match ggplot2 default of tile with no outside border.
+    if(!"colour"%in%names(g.data) & "fill"%in%names(g.data)){
+      g.data[["colour"]] <- g.data[["fill"]]
+      # Make outer border of 0 size if size isn't already specified.
+      if(!"size"%in%names(g.data)) g.data[["size"]] <- 0
+    }
+    return(list(g = g, g.data = g.data))
+  }
 )
 
 

@@ -68,5 +68,10 @@ geom_contour <- function(mapping = NULL, data = NULL,
 #' @include geom-path.r
 GeomContour <- gganimintproto("GeomContour", GeomPath,
   default_aes = aes(weight = 1, colour = "#3366FF", size = 0.5, linetype = 1,
-    alpha = NA)
+    alpha = NA),
+    pre_process = function(g, ...) {
+      g$aes[["group"]] <- "piece"
+      g$geom <- "path"
+      return(list(g = g, g.data = g.data))
+    }
 )
