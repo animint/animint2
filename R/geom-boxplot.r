@@ -225,7 +225,7 @@ GeomBoxplot <- gganimintproto("GeomBoxplot", Geom,
     alpha = NA, shape = 19, linetype = "solid"),
 
   required_aes = c("x", "lower", "upper", "middle", "ymin", "ymax"),
-  pre_process = function(g.data, ...) {
+  pre_process = function(g, g.data, ...) {
     stop("boxplots are not supported. Workaround: rects, lines, and points")
       ## TODO: boxplot support. But it is hard since boxplots are drawn
       ## using multiple geoms and it is not straightforward to deal with
