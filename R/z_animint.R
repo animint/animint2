@@ -357,7 +357,7 @@ animint2dir <- function(plot.list, out.dir = NULL,
       }
       geom_num <- geom_num + 1
       layer_name <- getLayerName(L, geom_num, p.name)
-      gl <- L$geom$export_animint(L, df, meta, layer_name,
+      gl <- Geom$export_animint(L, df, meta, layer_name,
                       ggplot.info$ggplot, ggplot.info$built, AnimationInfo)
       ## Save Animation Info separately
       AnimationInfo$timeValues <- gl$timeValues
