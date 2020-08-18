@@ -31,7 +31,7 @@ geom_bin2d <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomBind2d,
+    geom = GeomBin2d,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -47,7 +47,7 @@ geom_bin2d <- function(mapping = NULL, data = NULL,
 #' @usage NULL
 #' @export
 #' @include geom-rect.r
-GeomBind2d <- gganimintproto("GeomBind2d", GeomRect, 
+GeomBin2d <- gganimintproto("GeomBin2d", GeomRect, 
 extra_params = c("na.rm", "width", "height"),
 
   setup_data = function(data, params) {

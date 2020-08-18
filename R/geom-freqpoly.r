@@ -16,7 +16,7 @@ geom_freqpoly <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomFreqploy,
+    geom = GeomFreqpoly,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -24,7 +24,7 @@ geom_freqpoly <- function(mapping = NULL, data = NULL,
   )
 }
 
-GeomFreqploy <- gganimintproto("GeomFreqpoly", GeomPath,
+GeomFreqpoly <- gganimintproto("GeomFreqpoly", GeomPath,
   pre_process = function(g, g.data, ...) {
     g$geom <- "line"
     g.data <- g.data[order(g.data$x), ]
