@@ -139,6 +139,16 @@ GeomPoint <- gganimintproto("GeomPoint", Geom,
       )
     )
   },
-
+  pre_process = function(g, g.data, ...) {
+    # Fill set to match ggplot2 default of filled in circle.
+    # Check for fill in both data and params
+    fill.in.data <- ("fill" %in% names(g.data) && any(!is.na(g.data[["fill"]])))
+    fill.in.params <- "fill" %in% names(g$params)
+    fill.specified <- fill.in.data || fill.in.params
+    if(!fill.specified & "colour" %in% names(g.data)){
+      g.data[["fill"]] <- g.data[["colour"]]
+    }
+    return(list(g = g, g.data = g.data))
+  },
   draw_key = draw_key_point
 )

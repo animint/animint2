@@ -286,6 +286,12 @@ GeomStep <- gganimintproto("GeomStep", GeomPath,
   draw_panel = function(data, panel_scales, coord, direction = "hv") {
     data <- plyr::ddply(data, "group", stairstep, direction = direction)
     GeomPath$draw_panel(data, panel_scales, coord)
+  },
+  pre_process = function(g, g.data, ...) {
+    datanames <- names(g.data)
+    g.data <- plyr::ddply(g.data, "group", function(df) stairstep(df))
+    g$geom <- "path"
+    return(list(g = g, g.data = g.data))
   }
 )
 

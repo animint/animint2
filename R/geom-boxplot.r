@@ -224,5 +224,18 @@ GeomBoxplot <- gganimintproto("GeomBoxplot", Geom,
   default_aes = aes(weight = 1, colour = "grey20", fill = "white", size = 0.5,
     alpha = NA, shape = 19, linetype = "solid"),
 
-  required_aes = c("x", "lower", "upper", "middle", "ymin", "ymax")
+  required_aes = c("x", "lower", "upper", "middle", "ymin", "ymax"),
+  pre_process = function(g, g.data, ...) {
+    stop("boxplots are not supported. Workaround: rects, lines, and points")
+      ## TODO: boxplot support. But it is hard since boxplots are drawn
+      ## using multiple geoms and it is not straightforward to deal with
+      ## that using our current JS code. There is a straightforward
+      ## workaround: combine working geoms (rects, lines, and points).
+
+      g.data$outliers <- sapply(g.data$outliers, FUN=paste, collapse=" @ ")
+      # outliers are specified as a list... change so that they are specified
+      # as a single string which can then be parsed in JavaScript.
+      # there has got to be a better way to do this!!
+      return(list(g = g, g.data = g.data))
+  }
 )

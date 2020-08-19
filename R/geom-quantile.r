@@ -65,5 +65,9 @@ GeomQuantile <- gganimintproto("GeomQuantile", GeomPath,
   default_aes = defaults(
     aes(weight = 1, colour = "#3366FF", size = 0.5),
     GeomPath$default_aes
-  )
+  ),
+  pre_process = function(g, g.data, ...) {
+    g$geom <- "path"
+    return(list(g = g, g.data = g.data))
+  }
 )

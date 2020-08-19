@@ -196,7 +196,32 @@ GeomText <- gganimintproto("GeomText", Geom,
       check.overlap = check_overlap
     )
   },
-
+  pre_process = function(g, g.data, ...) {
+    ## convert hjust to anchor.
+    hjustRemove <- function(df.or.list){
+      df.or.list$anchor <- hjust2anchor(df.or.list$hjust)
+      df.or.list[names(df.or.list) != "hjust"]
+    }
+    vjustWarning <- function(vjust.vec){
+      not.supported <- vjust.vec != 0
+      if(any(not.supported)){
+        bad.vjust <- unique(vjust.vec[not.supported])
+        print(bad.vjust)
+        warning("animint only supports vjust=0")
+      }
+    }
+    if ("hjust" %in% names(g$params)) {
+      g$params <- hjustRemove(g$params)
+    } else if ("hjust" %in% names(g.data)) {
+      g.data <- hjustRemove(g.data)
+    }
+    if("vjust" %in% names(g$params)) {
+      vjustWarning(g$params$vjust)
+    } else if ("vjust" %in% names(g$aes)) {
+      vjustWarning(g.data$vjust)
+    }
+    return(list(g = g, g.data = g.data))
+  },
   draw_key = draw_key_text
 )
 

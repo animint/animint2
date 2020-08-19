@@ -122,6 +122,36 @@ GeomAbline <- gganimintproto("GeomAbline", Geom,
     GeomSegment$draw_panel(unique(data), panel_scales, coord)
   },
 
+  pre_process = function(g, g.data, ranges) {
+    ## loop through each set of slopes/intercepts
+
+    ## TODO: vectorize this code!
+    for(i in 1:nrow(g.data)) {
+
+    # "Trick" ggplot coord_transform into transforming the slope and intercept
+    g.data[i, "x"] <- ranges[[ g.data$PANEL[i] ]]$x.range[1]
+    g.data[i, "xend"] <- ranges[[ g.data$PANEL[i] ]]$x.range[2]
+    g.data[i, "y"] <- g.data$slope[i] * g.data$x[i] + g.data$intercept[i]
+    g.data[i, "yend"] <- g.data$slope[i] * g.data$xend[i] + g.data$intercept[i]
+
+    # make sure that lines don't run off the graph
+    if(g.data$y[i] < ranges[[ g.data$PANEL[i] ]]$y.range[1] ) {
+        g.data$y[i] <- ranges[[ g.data$PANEL[i] ]]$y.range[1]
+        g.data$x[i] <- (g.data$y[i] - g.data$intercept[i]) / g.data$slope[i]
+    }
+    if(g.data$yend[i] > ranges[[ g.data$PANEL[i] ]]$y.range[2]) {
+        g.data$yend[i] <- ranges[[ g.data$PANEL[i] ]]$y.range[2]
+        g.data$xend[i] <- (g.data$yend[i] - g.data$intercept[i]) / g.data$slope[i]
+    }
+    }
+    ## ggplot2 defaults to adding a group aes for ablines!
+    ## Remove it since it is meaningless.
+    g$aes <- g$aes[names(g$aes)!="group"]
+    g.data <- g.data[! names(g.data) %in% c("slope", "intercept")]
+    g$geom <- "segment"
+    return(list(g = g, g.data = g.data))
+  },
+
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
   required_aes = c("slope", "intercept"),
 

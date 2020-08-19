@@ -73,5 +73,10 @@ geom_density2d <- geom_density_2d
 #' @usage NULL
 #' @export
 GeomDensity2d <- gganimintproto("GeomDensity2d", GeomPath,
-  default_aes = aes(colour = "#3366FF", size = 0.5, linetype = 1, alpha = NA)
+  default_aes = aes(colour = "#3366FF", size = 0.5, linetype = 1, alpha = NA),
+  pre_process = function(g, g.data, ...) {
+    g$aes[["group"]] <- "piece"
+    g$geom <- "path"
+    return(list(g = g, g.data = g.data))
+  }
 )

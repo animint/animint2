@@ -104,6 +104,13 @@ GeomRibbon <- gganimintproto("GeomRibbon", Geom,
         lwd = aes$size * .pt,
         lty = aes$linetype)
     ))
+  },
+  pre_process = function(g, g.data, ...) {
+    # Color set to match ggplot2 default of fill with no outside border.
+    if("fill"%in%names(g.data) & !"colour"%in%names(g.data)){
+      g.data[["colour"]] <- g.data[["fill"]]
+    }
+    return(list(g = g, g.data = g.data))
   }
 )
 
@@ -139,5 +146,10 @@ GeomArea <- gganimintproto("GeomArea", GeomRibbon,
 
   setup_data = function(data, params) {
     transform(data, ymin = 0, ymax = y)
+  },
+  pre_process = function(g, g.data, ...) {
+    g$geom <- "ribbon"
+    g.data <- g.data[order(g.data$x), ]
+    return(list(g = g, g.data = g.data))
   }
 )
