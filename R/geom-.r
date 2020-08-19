@@ -148,17 +148,16 @@ Geom <- gganimintproto("Geom",
     return(list(g = g, g.data = g.data))
   },
 
-#' Save a layer to disk, save and return meta-data.
-#' @param l one layer of the ggplot object.
-#' @param d one layer of calculated data from ggplot_build(p).
-#' @param meta environment of meta-data.
-#' @param layer_name name of layer
-#' @param ggplot ggplot
-#' @param built built list
-#' @param AnimationInfo animation list
-#' ID number starting from 1
-#' @return list representing a layer, with corresponding aesthetics, ranges, and groups.
-#' @export
+# Save a layer to disk, save and return meta-data.
+# l- one layer of the ggplot object.
+# d- one layer of calculated data from ggplot_build(p).
+# meta- environment of meta-data.
+# layer_name- name of layer
+# ggplot- ggplot
+# built- built list
+# AnimationInfo- animation list
+# ID- number starting from 1
+# returns- list representing a layer, with corresponding aesthetics, ranges, and groups.
 
   export_animint = function(l, d, meta, layer_name, ggplot, built, AnimationInfo) {
     xminv <- y <- xmaxv <- chunks.for <- NULL
