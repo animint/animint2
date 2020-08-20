@@ -84,7 +84,7 @@ evolution <-
                    showSelected="locus",
                    data=generation.loci),
        predictions=ggplot()+
-         geom_point(aes(ancestral, estimated),
+         geom_point(aes(ancestral, estimated, key=locus),
                     showSelected="generation",
                     clickSelects="locus",               
                     data=generation.pop, size=4, alpha=3/4),
@@ -93,7 +93,7 @@ evolution <-
                     data=loci,
                     clickSelects="locus",
                     alpha=1/2, lwd=4)+
-         geom_point(aes(locus, frequency),
+         geom_point(aes(locus, frequency, key=locus),
                     showSelected="generation",
                     data=generation.loci),
        duration=list(generation=1000),
