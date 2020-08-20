@@ -17,12 +17,3 @@ test_that("dates in segment annotation work", {
 
   expect_true(all(c("xend", "yend") %in% names(layer_data(p, 2))))
 })
-
-test_that("segment annotations transform with scales", {
-  # This should be a visual test, but contriubtion documentation does not
-  # explain how to make one
-  ggplot(mtcars, aes(wt, mpg)) +
-    geom_point() +
-    annotate("segment", x = 2, y = 10, xend = 5, yend = 30, colour = "red") +
-    scale_y_reverse()
-})
