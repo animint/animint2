@@ -89,10 +89,7 @@ heights of the bars to represent values in the data, use
 }
 \details{
 A bar chart maps the height of the bar to a variable, and so the base of the
-bar must always be shown to produce a valid visual comparison. Naomi Robbins
-has a nice
-\href{http://www.b-eye-network.com/view/index.php?cid=2468}{article on this
-topic}. This is why it doesn't make sense to use a log-scaled y axis with a
+bar must always be shown to produce a valid visual comparison. This is why it doesn't make sense to use a log-scaled y axis with a
 bar chart.
 
 By default, multiple x's occurring in the same place will be stacked atop one

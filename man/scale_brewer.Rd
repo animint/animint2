@@ -45,7 +45,7 @@ to control name, limits, breaks, labels and so forth.}
 index into the list of palettes of appropriate \code{type}}
 
 \item{direction}{Sets the order of colours in the scale. If 1, the default,
-colours are as output by \code{\link[RColorBrewer:ColorBrewer]{RColorBrewer::brewer.pal()}}. If -1, the
+colours are as output by \code{\link[RColorBrewer:brewer.pal]{RColorBrewer::brewer.pal()}}. If -1, the
 order of colours is reversed.}
 
 \item{values}{if colours should not be evenly positioned along the gradient
@@ -70,7 +70,7 @@ continuous scale (6 colours per palette gives nice gradients; more results in
 more saturated colours which do not look as good). However, the original
 colour schemes (particularly the qualitative ones) were not intended for this
 and the perceptual result is left to the appreciation of the user.
-See \url{http://colorbrewer2.org} for more information.
+See \url{https://colorbrewer2.org} for more information.
 }
 \section{Palettes}{
 

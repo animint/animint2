@@ -24,6 +24,10 @@ geom_freqpoly <- function(mapping = NULL, data = NULL,
   )
 }
 
+#' @rdname animint2-gganimintproto
+#' @format NULL
+#' @usage NULL
+#' @export
 GeomFreqpoly <- gganimintproto("GeomFreqpoly", GeomPath,
   pre_process = function(g, g.data, ...) {
     g$geom <- "line"

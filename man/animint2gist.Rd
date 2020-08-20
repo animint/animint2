@@ -12,7 +12,7 @@ animint2gist(plot.list, description = plot.list$title, browse = TRUE, ...)
 \item{description}{Brief description of gist.
 This becomes the plot title on the bl.ocks/username page.}
 
-\item{browse}{logical. Prompt browser to view viz on \url{http://bl.ocks.org}}
+\item{browse}{logical. Prompt browser to view viz on bl.ocks.org}
 
 \item{...}{options passed onto \code{animint2dir} and \code{gistr::gist_create}}
 }
