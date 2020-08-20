@@ -8,7 +8,7 @@
 #' more saturated colours which do not look as good). However, the original
 #' colour schemes (particularly the qualitative ones) were not intended for this
 #' and the perceptual result is left to the appreciation of the user.
-#' See \url{http://colorbrewer2.org} for more information.
+#' See \url{https://colorbrewer2.org} for more information.
 #'
 #' @section Palettes:
 #' The following palettes are available for use with these scales:

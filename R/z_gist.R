@@ -5,7 +5,7 @@
 #' @param plot.list a named list of ggplots and option lists.
 #' @param description Brief description of gist.
 #' This becomes the plot title on the bl.ocks/username page.
-#' @param browse logical. Prompt browser to view viz on \url{http://bl.ocks.org}
+#' @param browse logical. Prompt browser to view viz on bl.ocks.org
 #' @param ... options passed onto \code{animint2dir} and \code{gistr::gist_create}
 #' @export
 #'

@@ -23,22 +23,17 @@
 #' US economic time series.
 #'
 #' This dataset was produced from US economic time series data available from
-#' \url{http://research.stlouisfed.org/fred2}. \code{economics} is in "wide"
+#' \url{https://fred.stlouisfed.org/}. \code{economics} is in "wide"
 #' format, \code{economics_long} is in "long" format.
 #'
 #' @format A data frame with 478 rows and 6 variables
 #' \itemize{
 #'   \item date.  Month of data collection
 #'   \item psavert, personal savings rate,
-#'     \url{http://research.stlouisfed.org/fred2/series/PSAVERT/}
 #'   \item pce, personal consumption expenditures, in billions of dollars,
-#'     \url{http://research.stlouisfed.org/fred2/series/PCE}
 #'   \item unemploy, number of unemployed in thousands,
-#'     \url{http://research.stlouisfed.org/fred2/series/UNEMPLOY}
 #'   \item uempmed, median duration of unemployment, in week,
-#'     \url{http://research.stlouisfed.org/fred2/series/UEMPMED}
 #'   \item pop, total population, in thousands,
-#'    \url{http://research.stlouisfed.org/fred2/series/POP}
 #' }
 #'
 "economics"
@@ -88,7 +83,7 @@
 #' Fuel economy data from 1999 and 2008 for 38 popular models of car
 #'
 #' This dataset contains a subset of the fuel economy data that the EPA makes
-#' available on \url{http://fueleconomy.gov}. It contains only models which
+#' available on \url{https://fueleconomy.gov}. It contains only models which
 #' had a new release every year between 1999 and 2008 - this was used as a
 #' proxy for the popularity of the car.
 #'
@@ -153,7 +148,7 @@
 #' Letters. December (2007).
 #'
 #' @format A data frame with 1155 rows and 4 variables
-#' @references \url{http://www.stat.berkeley.edu/~brill/Papers/jspifinal.pdf}
+#' @references \url{https://www.stat.berkeley.edu/~brill/Papers/jspifinal.pdf}
 "seals"
 
 #' 2d density estimate of Old Faithful data
@@ -178,7 +173,7 @@
 #' Housing sales in TX.
 #'
 #' Information about the housing market in Texas provided by the TAMU
-#' real estate center, \url{http://recenter.tamu.edu/}.
+#' real estate center, \url{https://www.recenter.tamu.edu/}.
 #'
 #' @format A data frame with 8602 observations and 9 variables:
 #' \itemize{
