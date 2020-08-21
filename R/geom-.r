@@ -145,24 +145,22 @@ Geom <- gganimintproto("Geom",
   },
 
   pre_process = function(g, g.data, ranges){
-    return(list(g = g, g.data = g.data))
+    list(g = g, g.data = g.data)
   },
 
-# Save a layer to disk, save and return meta-data.
-# l- one layer of the ggplot object.
-# d- one layer of calculated data from ggplot_build(p).
-# meta- environment of meta-data.
-# layer_name- name of layer
-# ggplot- ggplot
-# built- built list
-# AnimationInfo- animation list
-# ID- number starting from 1
-# returns- list representing a layer, with corresponding aesthetics, ranges, and groups.
-
+  ## Save a layer to disk, save and return meta-data.
+  ## l- one layer of the ggplot object.
+  ## d- one layer of calculated data from ggplot_build(p).
+  ## meta- environment of meta-data.
+  ## layer_name- name of layer
+  ## ggplot- ggplot
+  ## built- built list
+  ## AnimationInfo- animation list
+  ## ID- number starting from 1
+  ## returns- list representing a layer, with corresponding aesthetics, ranges, and groups.
   export_animint = function(l, d, meta, layer_name, ggplot, built, AnimationInfo) {
     xminv <- y <- xmaxv <- chunks.for <- NULL
     ## above to avoid NOTE on CRAN check.
-    # Set geom name and layer name
     g <- list(geom=strsplit(layer_name, "_")[[1]][2])
     g$classed <- layer_name
 

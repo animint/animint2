@@ -333,12 +333,6 @@ animint2dir <- function(plot.list, out.dir = NULL,
     for(layer.i in seq_along(ggplot.info$ggplot$layers)){
       L <- ggplot.info$ggplot$layers[[layer.i]]
       df <- ggplot.info$built$data[[layer.i]]
-
-      ## cat(sprintf(
-      ##   "saving layer %4d / %4d of ggplot %s\n",
-      ##   layer.i, length(ggplot.info$built$data),
-      ##   p.name))
-
       ## Data now contains columns with fill, alpha, colour etc.
       ## Remove from data if they have a single unique value and
       ## are NOT used in mapping to reduce tsv file size
@@ -357,8 +351,12 @@ animint2dir <- function(plot.list, out.dir = NULL,
       }
       geom_num <- geom_num + 1
       layer_name <- getLayerName(L, geom_num, p.name)
-      gl <- Geom$export_animint(L, df, meta, layer_name,
-                      ggplot.info$ggplot, ggplot.info$built, AnimationInfo)
+      if(nrow(df)==0){
+        stop("no data in ", layer_name)
+      }
+      gl <- Geom$export_animint(
+        L, df, meta, layer_name,
+        ggplot.info$ggplot, ggplot.info$built, AnimationInfo)
       ## Save Animation Info separately
       AnimationInfo$timeValues <- gl$timeValues
       gl$timeValues <- NULL
