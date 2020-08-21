@@ -17,10 +17,11 @@ only [[inst/examples/WorldBank-facets.R][about 60 lines of R code]].
 
 ** Installation
 
-Now available on CRAN:
-
 #+BEGIN_SRC R
-install.packages("animint2")
+install.packages("animint2")#from CRAN (stable).
+##OR from GitHub (development).
+if(!require("remotes"))install.packages("remotes")
+remotes:install_github("tdhock/animint2")
 #+END_SRC
 
 ** Usage
