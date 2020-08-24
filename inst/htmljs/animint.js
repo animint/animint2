@@ -1055,22 +1055,10 @@ var animint = function (to_select, json_file) {
       return a;
     }
     var get_stroke_on = function(d) {
-      var a;
-      if (aes.hasOwnProperty("strokeOn") && d.hasOwnProperty("strokeOn")) {
-        a = d["strokeOn"];
-      } else {
-        a = base_opacity;
-      }
-      return a;
+      // TODO Add user configurable stroke
     }
     var get_stroke_off = function(d) {
-      var a;
-      if (aes.hasOwnProperty("strokeOff") && d.hasOwnProperty("strokeOff")) {
-        a = d["strokeOff"];
-      } else {
-        a = base_opacity;
-      }
-      return a;
+      // TODO Add user configurable stroke off
     }
     var size = 2;
     if(g_info.geom == "text"){
