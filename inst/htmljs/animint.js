@@ -213,7 +213,7 @@ var animint = function (to_select, json_file) {
       g_info.common_tsv = common_tsv;
       var common_path = getTSVpath(common_tsv);
       d3.tsv(common_path, function (error, response) {
-	var converted = convert_R_types(response, g_info.types);
+  var converted = convert_R_types(response, g_info.types);
 	g_info.data[common_tsv] = nest_by_group.map(converted);
       });
     } else {
@@ -1045,6 +1045,33 @@ var animint = function (to_select, json_file) {
       }
       return a;
     };
+    var get_alpha_off = function(d) {
+      var a;
+      if(g_info.params.alphaOff) {
+        a = g_info.params.alphaOff;
+      } else{
+        a = get_alpha(d) - 0.5;
+      }
+      return a;
+    }
+    var get_stroke_on = function(d) {
+      var a;
+      if (aes.hasOwnProperty("strokeOn") && d.hasOwnProperty("strokeOn")) {
+        a = d["strokeOn"];
+      } else {
+        a = base_opacity;
+      }
+      return a;
+    }
+    var get_stroke_off = function(d) {
+      var a;
+      if (aes.hasOwnProperty("strokeOff") && d.hasOwnProperty("strokeOff")) {
+        a = d["strokeOff"];
+      } else {
+        a = base_opacity;
+      }
+      return a;
+    }
     var size = 2;
     if(g_info.geom == "text"){
       size = 12;
@@ -1550,7 +1577,7 @@ var animint = function (to_select, json_file) {
 	"opacity":{
 	  "mouseout":function (d) {
 	    var alpha_on = get_alpha(d);
-	    var alpha_off = get_alpha(d) - 0.5;
+      var alpha_off = get_alpha_off(d);
 	    if(has_clickSelects){
               return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects,
 				    alpha_on, alpha_off);
