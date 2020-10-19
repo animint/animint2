@@ -5,7 +5,6 @@
 #' calls but it can also be created directly using this function.
 #'
 #' @export
-#' @inheritParams geom_point
 #' @param mapping Set of aesthetic mappings created by \code{\link{aes}} or
 #'   \code{\link{aes_}}. If specified and \code{inherit.aes = TRUE} (the
 #'   default), it is combined with the default mapping at the top level of the

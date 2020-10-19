@@ -1,6 +1,5 @@
 #' Adjust position by dodging overlaps to the side.
 #'
-#' @inheritParams position_identity
 #' @param width Dodging width, when different to the width of the individual
 #'   elements. This is useful when you want to align narrow geoms with wider
 #'   geoms. See the examples for a use case.

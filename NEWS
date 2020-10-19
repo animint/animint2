@@ -13,6 +13,10 @@ is no column named arclength in the data -- this would mean to update
 the selector called "arclength" with the value in column
 "arclength.click" -- less disk space, and faster compiling.
 
+2020.9.18
+
+update moved mcmaster URL in docs.
+
 2020.8.19
 
 Move geom-specific code from saveLayer/if-else to Geom$export_animint
