@@ -26,7 +26,7 @@ remotes:install_github("tdhock/animint2")
 
 ** Usage
 
-The best reference for learning is the [[http://members.cbio.mines-paristech.fr/~thocking/animint2-manual/Ch02-ggplot2.html][Animint2 Designer Manual]], which
+The best reference for learning is the [[https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch02-ggplot2.html][Animint2 Designer Manual]], which
 provides several examples and exercises to get you started using
 animint2.
 
