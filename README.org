@@ -61,7 +61,7 @@ animint2 is a redesign of [[https://github.com/tdhock/animint][animint]] with:
   ggplot2). 
 
 For a concrete example of how the syntax changed, consider the
-following example [[http://members.cbio.mines-paristech.fr/~thocking/data/PeakSegJoint-H3K4me3-test/1/figure-train-errors/][dataviz]], adapted from
+following example [[http://bl.ocks.org/tdhock/raw/cfc5d67636ee76d42be0/][dataviz]], adapted from
 [[file:tests/testthat/test-renderer1-variable-value.R]]. The data set used
 to draw the blue line segments in the bottom plot looks like this:
 
