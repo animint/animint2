@@ -76,7 +76,7 @@ you have more than a few points, points may be plotted on top of one
 another. This can severely distort the visual appearance of the plot.
 There is no one solution to this problem, but there are some techniques
 that can help.  You can add additional information with
-\code{\link{geom_smooth}}, \code{\link{geom_quantile}} or
+\code{\link{geom_smooth}} or
 \code{\link{geom_density_2d}}.    Alternatively, you can
 summarise the number of points at each location and display that in some
 way, using \code{\link{stat_sum}}. Another technique is to use transparent
