@@ -21,13 +21,6 @@ vertical, horizontal. This is primarily useful for converting geoms and
 statistics which display y conditional on x, to x conditional on y.
 }
 \examples{
-# Very useful for creating boxplots, and other interval
-# geoms in the horizontal instead of vertical position.
-
-ggplot(diamonds, aes(cut, price)) +
-  geom_boxplot() +
-  coord_flip()
-
 h <- ggplot(diamonds, aes(carat)) +
   geom_histogram()
 h

@@ -11,7 +11,6 @@
 #' \donttest{
 #' ggplot(diamonds, aes(price, fill = cut)) +
 #'   geom_histogram(position="dodge")
-#' # see ?geom_boxplot and ?geom_bar for more examples
 #'
 #' # To dodge items with different widths, you need to be explicit
 #' df <- data.frame(x = c("a","a","b","b"), y = 2:5, g = rep(1:2, 2))

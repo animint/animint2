@@ -31,9 +31,6 @@ qplot(rating, 1, data = movies, geom = "jitter")
 histogram(~ rating, data = movies)
 qplot(rating, data = movies, geom = "histogram")
 
-bwplot(Comedy ~ rating ,data = movies)
-qplot(factor(Comedy), rating, data = movies, geom = "boxplot")
-
 xyplot(wt ~ mpg, mtcars, type = c("p","smooth"))
 qplot(mpg, wt, data = mtcars, geom = c("point","smooth"))
 }

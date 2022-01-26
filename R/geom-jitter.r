@@ -11,9 +11,7 @@
 #' @inheritParams geom_point
 #' @inheritParams position_jitter
 #' @seealso
-#'  \code{\link{geom_point}} for regular, unjittered points,
-#'  \code{\link{geom_boxplot}} for another way of looking at the conditional
-#'     distribution of a variable
+#'  \code{\link{geom_point}} for regular, unjittered points.
 #' @export
 #' @examples
 #' p <- ggplot(mpg, aes(cyl, hwy))

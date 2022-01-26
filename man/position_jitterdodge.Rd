@@ -20,15 +20,7 @@ resolution of the data.}
 the default \code{position_dodge()} width.}
 }
 \description{
-This is primarily used for aligning points generated through
-\code{geom_point()} with dodged boxplots (e.g., a \code{geom_boxplot()} with
-a fill aesthetic supplied).
-}
-\examples{
-dsub <- diamonds[ sample(nrow(diamonds), 1000), ]
-ggplot(dsub, aes(x = cut, y = carat, fill = clarity)) +
-  geom_boxplot(outlier.size = 0) +
-  geom_point(pch = 21, position = position_jitterdodge())
+Adjust position by simultaneously dodging and jittering
 }
 \seealso{
 Other position adjustments: 

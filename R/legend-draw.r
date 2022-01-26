@@ -73,23 +73,6 @@ draw_key_blank <- function(data, params, size) {
 
 #' @export
 #' @rdname draw_key
-draw_key_boxplot <- function(data, params, size) {
-  grobTree(
-    linesGrob(0.5, c(0.1, 0.25)),
-    linesGrob(0.5, c(0.75, 0.9)),
-    rectGrob(height = 0.5, width = 0.75),
-    linesGrob(c(0.125, 0.875), 0.5),
-    gp = gpar(
-      col = data$colour,
-      fill = alpha(data$fill, data$alpha),
-      lwd = data$size * .pt,
-      lty = data$linetype
-    )
-  )
-}
-
-#' @export
-#' @rdname draw_key
 draw_key_crossbar <- function(data, params, size) {
   grobTree(
     rectGrob(height = 0.5, width = 0.75),

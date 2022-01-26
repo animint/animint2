@@ -33,8 +33,6 @@ how to create your own.
 }
 \examples{
 \donttest{
-# See ?geom_boxplot for other examples
-
 # Three ways of doing transformation in ggplot:
 #  * by transforming the data
 ggplot(diamonds, aes(log10(carat), log10(price))) +

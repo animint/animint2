@@ -105,7 +105,5 @@ ggplot(mpg, aes(cty, hwy)) + geom_jitter()
 ggplot(mpg, aes(cty, hwy)) + geom_jitter(width = 0.5, height = 0.5)
 }
 \seealso{
-\code{\link{geom_point}} for regular, unjittered points,
- \code{\link{geom_boxplot}} for another way of looking at the conditional
-    distribution of a variable
+\code{\link{geom_point}} for regular, unjittered points.
 }

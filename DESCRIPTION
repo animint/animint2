@@ -87,7 +87,6 @@ Suggests:
     maptools,
     mgcv,
     nlme,
-    quantreg,
     rpart,
     svglite
 Enhances: sp
