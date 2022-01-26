@@ -13,6 +13,10 @@ is no column named arclength in the data -- this would mean to update
 the selector called "arclength" with the value in column
 "arclength.click" -- less disk space, and faster compiling.
 
+2022.1.25
+
+Remove geom/stat_boxplot/quantile due to errors from CRAN check.
+
 2020.9.18
 
 update moved mcmaster URL in docs.
