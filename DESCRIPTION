@@ -65,8 +65,6 @@ Imports:
     reshape2,
     scales (>= 0.4.1),
     stats,
-    tibble,
-    lazyeval,
     knitr (>= 1.5.33)
 Suggests:
     servr,
