@@ -13,6 +13,13 @@ is no column named arclength in the data -- this would mean to update
 the selector called "arclength" with the value in column
 "arclength.click" -- less disk space, and faster compiling.
 
+allow configurable text size via
+theme(axis.title=element_text(size=20)) etc.
+
+2022.2.2
+
+Default x/y axis text size increased to 16px from 11px in animint.js.
+
 2022.1.25
 
 Remove geom/stat_boxplot/quantile due to errors from CRAN check.

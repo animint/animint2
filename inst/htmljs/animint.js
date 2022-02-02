@@ -718,7 +718,7 @@ var animint = function (to_select, json_file) {
 	.text(p_info["ytitle"])
 	.attr("class", "ytitle")
 	.style("text-anchor", "middle")
-	.style("font-size", "11px")
+	.style("font-size", "16px")
 	.attr("transform", "translate(" + 
 	      ytitle_x +
 	      "," +
@@ -731,7 +731,7 @@ var animint = function (to_select, json_file) {
 	.text(p_info["xtitle"])
 	.attr("class", "xtitle")
 	.style("text-anchor", "middle")
-	.style("font-size", "11px")
+	.style("font-size", "16px")
 	.attr("transform", "translate(" + 
 	      (xtitle_left + xtitle_right)/2 +
 	      "," + 
