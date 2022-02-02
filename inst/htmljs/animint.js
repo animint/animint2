@@ -6,6 +6,8 @@
 // Constructor for animint Object.
 var animint = function (to_select, json_file) {
 
+  var default_axis_px = 16;
+
    function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
@@ -247,8 +249,8 @@ var animint = function (to_select, json_file) {
     var npanels = Math.max.apply(null, panel_names);
 
     // Note axis names are "shared" across panels (just like the title)
-    var xtitlepadding = 5 + measureText(p_info["xtitle"], 11).height;
-    var ytitlepadding = 5 + measureText(p_info["ytitle"], 11).height;
+    var xtitlepadding = 5 + measureText(p_info["xtitle"], default_axis_px).height;
+    var ytitlepadding = 5 + measureText(p_info["ytitle"], default_axis_px).height;
 
     // 'margins' are fixed across panels and do not
     // include title/axis/label padding (since these are not
@@ -718,7 +720,7 @@ var animint = function (to_select, json_file) {
 	.text(p_info["ytitle"])
 	.attr("class", "ytitle")
 	.style("text-anchor", "middle")
-	.style("font-size", "16px")
+	.style("font-size", default_axis_px + "px")
 	.attr("transform", "translate(" + 
 	      ytitle_x +
 	      "," +
@@ -731,7 +733,7 @@ var animint = function (to_select, json_file) {
 	.text(p_info["xtitle"])
 	.attr("class", "xtitle")
 	.style("text-anchor", "middle")
-	.style("font-size", "16px")
+	.style("font-size", default_axis_px + "px")
 	.attr("transform", "translate(" + 
 	      (xtitle_left + xtitle_right)/2 +
 	      "," + 
