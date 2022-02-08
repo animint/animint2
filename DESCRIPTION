@@ -70,7 +70,7 @@ Suggests:
     servr,
     gistr (>= 0.2),
     shiny,
-    RColorBrewer,#to avoid Rd xref NOTE.
+    RColorBrewer,
     htmltools,
     rmarkdown,
     testthat,
@@ -268,4 +268,4 @@ Collate:
     'z_scales.R'
     'z_theme_animint.R'
     'z_transformShape.R'
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
