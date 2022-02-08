@@ -70,6 +70,7 @@ Suggests:
     servr,
     gistr (>= 0.2),
     shiny,
+    RColorBrewer,#to avoid Rd xref NOTE.
     htmltools,
     rmarkdown,
     testthat,

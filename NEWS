@@ -20,6 +20,9 @@ theme(axis.title=element_text(size=20)) etc.
 
 Default x/y axis text size increased to 16px from 11px in animint.js.
 
+Suggest RColorBrewer to avoid CRAN NOTE
+"Undeclared package RColorBrewer in Rd xrefs".
+
 2022.1.25
 
 Remove geom/stat_boxplot/quantile due to errors from CRAN check.
