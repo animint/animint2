@@ -30,3 +30,33 @@ test_that("text may contain commas and parentheses", {
   expect_that(any(grepl("\\(", txt)), is_true())
   expect_that(any(grepl(",", txt)), is_true())
 })
+
+### Test text rotation option
+library(data.table)
+labs <- sapply(0:8, function (x) paste("rot", x, sep=""))
+angle <- sapply(0:8, function(x) x * 45)
+plot.vec <- data.table(
+  x = 0:8,
+  y = 0:8,
+  labs,
+  angle
+)
+
+viz.angle <- list(scatter = scatter.plot <- ggplot() +
+  geom_text(
+    data=plot.vec,
+    aes(x=x, y=y, label=labs, angle=angle),
+    clickSelects = "x",
+    size = 30
+  ))
+
+test_that("text rotation applies to <text transform>", {
+  info <- animint2HTML(viz.angle)
+  # can't use expect_attrs because the exact x and y coordinates in the
+  # transform are not known to in advance
+  geom <- getNodeSet(info$html, '//text[@class="geom"]')
+  transform <- data.table(t(sapply(geom, xmlAttrs)))$transform
+  expect_true(any(grepl("-45", transform)))
+  expect_true(any(grepl("-90", transform)))
+  expect_true(any(grepl("0", transform)))
+})
