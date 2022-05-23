@@ -42,7 +42,7 @@ plot.vec <- data.table(
   angle
 )
 
-viz.angle <- list(scatter = scatter.plot <- ggplot() +
+viz.aes.angle <- list(scatter = scatter.plot <- ggplot() +
   geom_text(
     data=plot.vec,
     aes(x=x, y=y, label=labs, angle=angle),
@@ -50,8 +50,8 @@ viz.angle <- list(scatter = scatter.plot <- ggplot() +
     size = 30
   ))
 
-test_that("text rotation applies to <text transform>", {
-  info <- animint2HTML(viz.angle)
+test_that("text rotation applies to <text transform> when applied in aes", {
+  info <- animint2HTML(viz.aes.angle)
   # can't use expect_attrs because the exact x and y coordinates in the
   # transform are not known to in advance
   geom <- getNodeSet(info$html, '//text[@class="geom"]')
@@ -59,4 +59,22 @@ test_that("text rotation applies to <text transform>", {
   expect_true(any(grepl("-45", transform)))
   expect_true(any(grepl("-90", transform)))
   expect_true(any(grepl("0", transform)))
+})
+
+viz.geom.angle <- list(scatter = scatter.plot <- ggplot() +
+  geom_text(
+    data=plot.vec,
+    aes(x=x, y=y, label=labs, angle=angle),
+    clickSelects = "x",
+    size = 30
+  ))
+
+
+test_that("text rotation applies to <text transform> when used in geom", {
+  info <- animint2HTML(viz.geom.angle)
+  # can't use expect_attrs because the exact x and y coordinates in the
+  # transform are not known to in advance
+  geom <- getNodeSet(info$html, '//text[@class="geom"]')
+  transform <- data.table(t(sapply(geom, xmlAttrs)))$transform
+  expect_true(any(grepl("-90", transform)))
 })

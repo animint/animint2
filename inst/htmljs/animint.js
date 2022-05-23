@@ -1087,20 +1087,28 @@ var animint = function (to_select, json_file) {
     };
     var colour = "black";
     var fill = "black";
-    let angle = "rotate(0)";
+    let angle = 0;
+    if (g_info.params.hasOwnProperty("angle")) {
+      // this doesn't work because x and y will be calculated later on a per 
+      // data point basis, while this is trying to be a global setting for the
+      // whole text element.
+      // x = scales["x"](g_info["x"]);
+      // y = scales["y"](g_info["y"]);
+      angle = g_info.params["angle"];
+    }
     const get_angle = function(d) {
+      x = scales["x"](d["x"]);
+      y = scales["y"](d["y"]);
+      // have to use optional chaining operator because params may be null 
       if (d.hasOwnProperty("angle")) {
-        x = scales["x"](d["x"]);
-        y = scales["y"](d["y"]);
-        console.log(x);
         // ggplot expects angles to be in degrees CCW, SVG uses degrees CW, so 
         // we negate the angle.
         // x and y are the coordinates to rotate around, we choose the original
         // point because otherwise it will rotate around the 0 of its coordinate
         // system, which is the top left of the plot
-        return `rotate(${-d["angle"]}, ${x}, ${y})`;
+        angle = d["angle"];
       }
-      return angle;
+      return `rotate(${-angle}, ${x}, ${y})`;
     };
     var get_colour = function (d) {
       if (d.hasOwnProperty("colour")) {
