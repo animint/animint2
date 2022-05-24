@@ -1,0 +1,46 @@
+name: Automatically Run Test Suite
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  R-CMD-check:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        test-suite: [ renderer1,renderer2,renderer3,renderer4,renderer5,compiler,CRAN]
+    
+    # services:
+    #   selenium:
+    #     image: selenium/standalone-firefox-debug:2.53.0
+    #     ports:
+    #       - 5900:5900
+    #       - 4444:4444
+
+    name: Test Suite ${{ matrix.test-suite }}
+    env: 
+      TEST_SUITE: ${{ matrix.test-suite }}
+      GITHUB_PAT: ${{ secrets.PAT_GITHUB }}
+      GH_ACTION: "ENABLED"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Start Selenium Docker
+        run: docker run -d --network="host" selenium/standalone-firefox-debug:2.53.0
+      - name: install and update texlive
+        run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt update -y -qq
+      - run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt install texlive texlive-fonts-extra -y
+      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with: 
+          extra-packages: digest, RJSONIO, gtable, plyr, reshape2, scales, knitr
+
+
+      - name: install package
+        run: R CMD INSTALL .
+      
+      - name: run tests
+        run: if [ "$TEST_SUITE" == "CRAN" ];then bash build.sh;else Rscript -e "source('tests/testthat.R', chdir = TRUE)";fi
