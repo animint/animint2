@@ -1,6 +1,6 @@
 animint2 provides an animated, interactive grammar of graphics
 
-[[https://travis-ci.org/tdhock/animint2][https://travis-ci.org/tdhock/animint2.png?branch=master]]
+[[https://github.com/tdhock/animint2/actions/workflows/tests.yaml][https://github.com/tdhock/animint2/actions/workflows/tests.yaml/badge.svg]]
 
 ** Introduction
 
