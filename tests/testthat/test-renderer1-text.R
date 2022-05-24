@@ -45,7 +45,7 @@ plot.vec <- data.table(
 viz.aes.angle <- list(scatter = scatter.plot <- ggplot() +
   geom_text(
     data=plot.vec,
-    aes(x=x, y=y, label=labs, angle=angle),
+    aes(x = x, y = y, label = labs, angle = angle),
     clickSelects = "x",
     size = 30
   ))
@@ -63,8 +63,9 @@ test_that("text rotation applies to <text transform> when applied in aes", {
 
 viz.geom.angle <- list(scatter = scatter.plot <- ggplot() +
   geom_text(
-    data=plot.vec,
-    aes(x=x, y=y, label=labs, angle=angle),
+    data = plot.vec,
+    aes(x = x, y = y, label = labs),
+    angle = 90,
     clickSelects = "x",
     size = 30
   ))
