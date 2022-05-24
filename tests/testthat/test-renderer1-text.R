@@ -32,10 +32,9 @@ test_that("text may contain commas and parentheses", {
 })
 
 ### Test text rotation option
-library(data.table)
 labs <- sapply(0:8, function (x) paste("rot", x, sep=""))
 angle <- sapply(0:8, function(x) x * 45)
-plot.vec <- data.table(
+plot.vec <- data.frame(
   x = 0:8,
   y = 0:8,
   labs,
@@ -55,7 +54,7 @@ test_that("text rotation applies to <text transform> when applied in aes", {
   # can't use expect_attrs because the exact x and y coordinates in the
   # transform are not known to in advance
   geom <- getNodeSet(info$html, '//text[@class="geom"]')
-  transform <- data.table(t(sapply(geom, xmlAttrs)))$transform
+  transform <- data.frame(t(sapply(geom, xmlAttrs)))$transform
   expect_true(any(grepl("-45", transform)))
   expect_true(any(grepl("-90", transform)))
   expect_true(any(grepl("0", transform)))
@@ -76,6 +75,6 @@ test_that("text rotation applies to <text transform> when used in geom", {
   # can't use expect_attrs because the exact x and y coordinates in the
   # transform are not known to in advance
   geom <- getNodeSet(info$html, '//text[@class="geom"]')
-  transform <- data.table(t(sapply(geom, xmlAttrs)))$transform
+  transform <- data.frame(t(sapply(geom, xmlAttrs)))$transform
   expect_true(any(grepl("-90", transform)))
 })
