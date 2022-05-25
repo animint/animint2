@@ -1087,6 +1087,23 @@ var animint = function (to_select, json_file) {
     };
     var colour = "black";
     var fill = "black";
+    let angle = 0;
+    if (g_info.params.hasOwnProperty("angle")) {
+      angle = g_info.params["angle"];
+    }
+    const get_angle = function(d) {
+      // x and y are the coordinates to rotate around, we choose the center 
+      // point of the text because otherwise it will rotate around (0,0) of its 
+      // coordinate system, which is the top left of the plot
+      x = scales["x"](d["x"]);
+      y = scales["y"](d["y"]);
+      if (d.hasOwnProperty("angle")) {
+        angle = d["angle"];
+      }
+      // ggplot expects angles to be in degrees CCW, SVG uses degrees CW, so 
+      // we negate the angle.
+      return `rotate(${-angle}, ${x}, ${y})`;
+    };
     var get_colour = function (d) {
       if (d.hasOwnProperty("colour")) {
         return d["colour"]
@@ -1384,6 +1401,7 @@ var animint = function (to_select, json_file) {
           .style("fill", get_colour)
           .attr("font-size", get_size)
           .style("text-anchor", get_text_anchor)
+          .attr("transform", get_angle)
           .text(function (d) {
             return d.label;
           });

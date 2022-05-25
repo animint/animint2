@@ -16,9 +16,15 @@ the selector called "arclength" with the value in column
 allow configurable text size via
 theme(axis.title=element_text(size=20)) etc.
 
+
+2022.5.25
+
+Add ability to rotate geom_text labels, following ggplot2's semantics of rotation direction. 
+
 2022.5.24 
 
 Fixed small test regression and set up Github Actions. Neither of these is user facing.
+
 
 2022.2.2
 
