@@ -16,6 +16,10 @@ the selector called "arclength" with the value in column
 allow configurable text size via
 theme(axis.title=element_text(size=20)) etc.
 
+2022.5.25
+
+Add ability to rotate geom_text labels, following ggplot2's semantics of rotation direction. 
+
 2022.2.2
 
 Default x/y axis text size increased to 16px from 11px in animint.js.
