@@ -1,6 +1,6 @@
 animint2 provides an animated, interactive grammar of graphics
 
-[[https://travis-ci.org/tdhock/animint2][https://travis-ci.org/tdhock/animint2.png?branch=master]]
+[[https://github.com/tdhock/animint2/actions/workflows/tests.yaml][https://github.com/tdhock/animint2/actions/workflows/tests.yaml/badge.svg]]
 
 ** Introduction
 
@@ -45,7 +45,13 @@ R packages [[https://github.com/tdhock/gganim][gganim]], [[https://cloud.r-proje
 
 *** shiny+plotly web applications
 
-Typical shiny web applications provide interactive graphics with indirect manipulation (via menus/buttons/etc) but the emphasis in animint2 is direct manipulation (via mouse clicks on lines/points/etc). Direct manipulation in shiny apps can also be achieved using the excellent [[https://plotly-r.com/introduction-1.html][plotly]] package, in which interactivity can be specified using events; in contrast animint2 uses the clickSelects/showSelected keywords to specify interactivity.
+Typical shiny web applications provide interactive graphics with
+indirect manipulation (via menus/buttons/etc) but the emphasis in
+animint2 is direct manipulation (via mouse clicks on
+lines/points/etc). Direct manipulation in shiny apps can also be
+achieved using the excellent [[https://plotly-r.com/client-side-linking.html][plotly]] package, in which interactivity
+can be specified using events; in contrast animint2 uses the
+clickSelects/showSelected keywords to specify interactivity.
 
 *** loon exploratory graphics
 
