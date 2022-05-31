@@ -21,14 +21,17 @@ viz <-
        scale_size_animint(breaks=10^(5:9))+
        geom_rect(aes(xmin=45, xmax=70,
                      ymin=8, ymax=10,
-                     tooltip=paste(countries, "not NA in", year)),
+                     tooltip=paste(countries, "not NA in", year),
+                     key=year),
                  showSelected="year",
                  data=years, color="yellow")+
        geom_rect(aes(xmin=35, xmax=40,
-                     ymin=2, ymax=2.5),
+                     ymin=2, ymax=2.5,
+                     key=year),
                  showSelected="year",
                  data=years, color="orange")+
-       geom_text(aes(55, 9, label=paste("year =", year)),
+       geom_text(aes(55, 9, label=paste("year =", year),
+                     key=year),
                  showSelected="year",
                  data=years),
 
@@ -40,7 +43,7 @@ viz <-
 
        bar=ggplot()+
        theme_animint(height=2400)+
-       geom_bar(aes(country, life.expectancy, fill=region),
+       geom_bar(aes(country, life.expectancy, fill=region, key=year),
                 showSelected="year", clickSelects="country",
                 data=WorldBank, stat="identity", position="identity")+
        coord_flip(),

@@ -156,7 +156,7 @@ test_that("1 <line> rendered for Bayes error", {
   expect_equal(length(before$Bayes), 1)
 })
 test_that("Bayes error <line> inside of border_rect", {
-  expect_less_than(before$Bayes.x2, before$border.right)
+  expect_lt(before$Bayes.x2, before$border.right)
 })
 test_that("6 <path> rendered for KNN boundary", {
   expect_equal(length(before$boundary.KNN), 6)
