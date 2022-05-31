@@ -19,7 +19,7 @@ test_that("error for stat=bin and showSelected", {
   gg <- ggplot() +
     theme_bw()+
     theme(panel.margin=grid::unit(0, "lines"))+
-    geom_bar(
+    geom_histogram(
       aes(count, group=stack, fill=stack),
       showSelected="facet",
       binwidth=1,
@@ -40,7 +40,7 @@ test_that("no warning for stat=bin without showSelected", {
   gg <- ggplot() +
     theme_bw()+
     theme(panel.margin=grid::unit(0, "lines"))+
-    geom_bar(
+    geom_histogram(
       aes(count, group=stack, fill=stack),
       binwidth=1,
       data = df,

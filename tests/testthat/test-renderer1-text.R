@@ -26,9 +26,9 @@ test_that("text may contain commas and parentheses", {
   info <- animint2HTML(viz)
   geom <- getNodeSet(info$html, '//text[@class="geom"]')
   txt <- sapply(geom, xmlValue)
-  expect_that(any(grepl("\\.", txt)), is_true())
-  expect_that(any(grepl("\\(", txt)), is_true())
-  expect_that(any(grepl(",", txt)), is_true())
+  expect_true(any(grepl("\\.", txt)))
+  expect_true(any(grepl("\\(", txt)))
+  expect_true(any(grepl(",", txt)))
 })
 
 ### Test text rotation option
