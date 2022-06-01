@@ -32,7 +32,7 @@ test_that("some horizontal space between panels", {
     second <- xmlAttrs(rect.list[[2]])
     second.left <- as.numeric(second[["x"]])
     second.right <- second.left+as.numeric(second[["width"]])
-    expect_less_than(first.right, second.left)
+    expect_lt(first.right, second.left)
     ## Also make sure the xtitle is placed in the middle of the
     ## plotting region.
     xpath <- sprintf('//svg[@id="plot_%s"]//text[@class="xtitle"]', plot.name)
@@ -124,7 +124,7 @@ test_that("some vertical space between panels", {
     second <- xmlAttrs(rect.list[[2]])
     second.top <- as.numeric(second[["y"]])
     second.bottom <- second.top+as.numeric(second[["height"]])
-    expect_less_than(first.bottom, second.top)
+    expect_lt(first.bottom, second.top)
     ## Also check that ytitle is placed in the middle of the plotting
     ## region.
     xpath <- sprintf('//svg[@id="plot_%s"]//text[@class="ytitle"]', plot.name)

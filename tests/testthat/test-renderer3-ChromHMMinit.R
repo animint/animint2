@@ -81,5 +81,5 @@ test_that("animation starts by default", {
   updated.fill.vec <- getFill()
   expect_equal(length(updated.fill.vec), 225)
   n.different <- sum(initial.fill.vec != updated.fill.vec)
-  expect_more_than(n.different, 0)
+  expect_gt(n.different, 0)
 })
