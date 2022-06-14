@@ -1033,9 +1033,12 @@ var animint = function (to_select, json_file) {
     var panel_g_element = layer_g_element.select("g.PANEL" + PANEL);
     var elements = panel_g_element.selectAll(".geom");
     // TODO: standardize this code across aes/styles.
-    var base_opacity = 1;
+    let base_opacity;
+    let off_opacity;
     if (g_info.params.alpha) {
       base_opacity = g_info.params.alpha;
+    } else {
+      base_opacity = 1;
     }
     if (g_info.params.alpha_off) {
       off_opacity = g_info.params.alpha_off;
