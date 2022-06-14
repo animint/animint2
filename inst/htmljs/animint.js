@@ -1037,6 +1037,9 @@ var animint = function (to_select, json_file) {
     if (g_info.params.alpha) {
       base_opacity = g_info.params.alpha;
     }
+    if (g_info.params.alpha_off) {
+      off_opacity = g_info.params.alpha_off;
+    }
     //alert(g_info.classed+" "+base_opacity);
     var get_alpha = function (d) {
       var a;
@@ -1052,7 +1055,7 @@ var animint = function (to_select, json_file) {
       if (aes.hasOwnProperty("alpha_off") && d.hasOwnProperty("alpha_off")) {
         a = d["alpha_off"];
       } else {
-        a = base_opacity;
+        a = off_opacity;
       }
       return a;
     };
