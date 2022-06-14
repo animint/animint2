@@ -1047,6 +1047,15 @@ var animint = function (to_select, json_file) {
       }
       return a;
     };
+    const get_alpha_off = function (d) {
+      let a;
+      if (aes.hasOwnProperty("alpha_off") && d.hasOwnProperty("alpha_off")) {
+        a = d["alpha_off"];
+      } else {
+        a = base_opacity;
+      }
+      return a;
+    };
     var size = 2;
     if(g_info.geom == "text"){
       size = 12;
@@ -1570,7 +1579,9 @@ var animint = function (to_select, json_file) {
 	"opacity":{
 	  "mouseout":function (d) {
 	    var alpha_on = get_alpha(d);
-	    var alpha_off = get_alpha(d) - 0.5;
+      // 
+      let alpha_off = get_alpha_off(d);
+	    // var alpha_off = get_alpha(d) - 0.5;
 	    if(has_clickSelects){
               return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects,
 				    alpha_on, alpha_off);
