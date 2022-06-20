@@ -73,7 +73,7 @@ viz.chunk.none <-
                    validate_params = FALSE)+
          scale_size_animint(breaks=10^(5:9))+
          facet_grid(side ~ top, scales="free")+
-         geom_text(aes(5, 85, label=paste0("year = ", year)),
+         geom_text(aes(5, 85, label=paste0("year = ", year), key=year),
                        showSelected="year",
                    data=SCATTER(years)),
        time=list(variable="year",ms=3000),
