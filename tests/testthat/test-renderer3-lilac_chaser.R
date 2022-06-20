@@ -50,7 +50,7 @@ vi_lilac_chaser <- function(np = 10,
 }
 
 plots <- vi_lilac_chaser()
-info <- animint2HTML(plots)
+suppressWarnings(info <- animint2HTML(plots))
 
 test_that("axes hidden", {
     # info <- animint2HTML(viz)

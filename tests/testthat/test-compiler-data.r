@@ -9,7 +9,7 @@ test_that("stringsAsFactors doesn't affect results", {
     base <- ggplot(mapping = aes(x, y)) + geom_point()
     xlabels <- function(x) x$panel$ranges[[1]]$x.labels
 
-    options(stringsAsFactors = TRUE)
+    suppressWarnings(options(stringsAsFactors = TRUE))
     char_true <- ggplot_build(base %+% dat.character)
     factor_true <- ggplot_build(base %+% dat.factor)
 

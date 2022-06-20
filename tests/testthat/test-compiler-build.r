@@ -32,13 +32,13 @@ test_that("position aesthetics coerced to correct type", {
 test_that("non-position aesthetics are mapped", {
   l1 <- ggplot(df, aes(x, y, fill = z, colour = z, shape = z, size = z)) +
     geom_point()
-  d1 <- layer_data(l1, 1)
+  suppressWarnings(d1 <- layer_data(l1, 1))
 
   expect_equal(sort(names(d1)), sort(c("x", "y", "fill", "group",
     "colour", "shape", "size", "PANEL", "alpha", "stroke")))
 
   l2 <- l1 + scale_colour_manual(values = c("blue", "red", "yellow"))
-  d2 <- layer_data(l2, 1)
+  suppressWarnings(d2 <- layer_data(l2, 1))
   expect_equal(d2$colour, c("blue", "red", "yellow"))
 })
 
