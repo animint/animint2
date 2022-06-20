@@ -760,19 +760,17 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   ## Remove columns with all NA values
   ## so that common.not.na is not empty
   ## due to the plot's alpha, stroke or other columns
-  all.nas <- sapply(built, function(x){all(is.na(x))})
-  built <- built[, !all.nas]
+  built <- data.table::setDT(built)
+  built <- built[,lapply(.SD, function(x) {if(all(is.na(x))) {NULL} else {x}} )]
 
   ## Treat factors as characters, to avoid having them be coerced to
   ## integer later.
-  for(col.name in names(built)){
-    if(is.factor(built[, col.name])){
-      built[, col.name] <- paste(built[, col.name])
-    }
-  }
+  changeCols <- names(Filter(is.factor, built))
+  built <- built[, (changeCols) := lapply(.SD, as.character), .SDcols = changeCols]
 
   ## If there is only one chunk, then there is no point of making a
   ## common data file.
+  built <- as.data.frame(built)
   chunk.rows.tab <- table(built[, chunk.vars])
   if(length(chunk.rows.tab) == 1) return(NULL)
 
@@ -781,8 +779,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   if(! "group" %in% names(built)){
     chunk.rows <- chunk.rows.tab[1]
     same.size <- chunk.rows == chunk.rows.tab
-    order.args <- lapply(chunk.vars, function(order.col)built[[order.col]])
-    built <- built[do.call(order, order.args),]
+    built <- data.table::setorderv(built, chunk.vars)
     if(all(same.size)){
       built$group <- 1:chunk.rows
     }else{
