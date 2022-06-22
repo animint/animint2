@@ -747,6 +747,7 @@ getLegend <- function(mb){
 ##' @return a list of common and varied data to save, or NULL if there is
 ##' no common data.
 ##' @importFrom stats na.omit
+##' @import data.table
 getCommonChunk <- function(built, chunk.vars, aes.list){
   if(length(chunk.vars) == 0){
     return(NULL)
