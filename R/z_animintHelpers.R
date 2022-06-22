@@ -767,7 +767,9 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   ## Treat factors as characters, to avoid having them be coerced to
   ## integer later.
   changeCols <- names(Filter(is.factor, built))
-  built <- built[, (changeCols) := lapply(.SD, as.character), .SDcols = changeCols]
+  if(length(changeCols)){
+    built <- built[, (changeCols) := lapply(.SD, as.character), .SDcols = changeCols]
+  }
 
   ## If there is only one chunk, then there is no point of making a
   ## common data file.
