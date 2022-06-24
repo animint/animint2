@@ -39,7 +39,7 @@ data(WorldBank, package = "animint2")
 motion <-
   list(scatter=ggplot()+
          geom_point(aes(life.expectancy, fertility.rate,
-                        colour=region, size=population),
+                        colour=region, size=population, key=year),
                         clickSelects="country",
                         showSelected="year",
                   data=WorldBank)+

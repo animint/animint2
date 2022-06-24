@@ -7,7 +7,7 @@ not.na[not.na$country=="Kuwait", "population"] <- 1700000
 viz <-
   list(scatter=ggplot()+
          geom_point(aes(life.expectancy, fertility.rate,
-                        colour=region, size=population),
+                        colour=region, size=population, key=year),
                     clickSelects="country",
                     showSelected="year",
                     data=not.na)+
