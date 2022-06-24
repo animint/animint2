@@ -761,7 +761,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   ## Remove columns with all NA values
   ## so that common.not.na is not empty
   ## due to the plot's alpha, stroke or other columns
-  built <- data.table::setDT(built)
+  built <- as.data.table(built)
   built <- built[,lapply(.SD, function(x) {if(all(is.na(x))) {NULL} else {x}} )]
 
   ## Treat factors as characters, to avoid having them be coerced to
@@ -773,7 +773,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
 
   ## If there is only one chunk, then there is no point of making a
   ## common data file.
-  built <- as.data.frame(built)
+  setDF(built)
   chunk.rows.tab <- table(built[, chunk.vars])
   if(length(chunk.rows.tab) == 1) return(NULL)
 
