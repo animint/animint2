@@ -145,9 +145,17 @@ parsePlot <- function(meta, plot, plot.name){
     # theme settings are shared across panels
     axis.text <- theme.pars[[s("axis.text.%s")]]
     ## TODO: also look at axis.text! (and text?)
+    size <- if(is.numeric(axis.text$size)){
+      axis.text$size # defined in pts
+    } else if(is.rel(axis.text$size)){
+      axis.text$size * 11 # reletive size = scale number * default size
+    }
     anchor <- hjust2anchor(axis.text$hjust)
     angle <- if(is.numeric(axis.text$angle)){
       -axis.text$angle
+    }
+    if(is.null(size)){
+      size <- 11
     }
     if(is.null(angle)){
       angle <- 0
@@ -159,6 +167,7 @@ parsePlot <- function(meta, plot, plot.name){
         "end"
       }
     }
+    plot.info[[s("%ssize")]] <- as.numeric(size)
     plot.info[[s("%sanchor")]] <- as.character(anchor)
     plot.info[[s("%sangle")]] <- as.numeric(angle)
     # translate panel specific axis info
