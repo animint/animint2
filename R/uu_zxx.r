@@ -1,5 +1,7 @@
 # Default scales -------------------------------------------------------------
 
+# Colours for selected properties
+
 #' @export
 #' @rdname scale_hue
 #' @usage NULL
@@ -48,6 +50,55 @@ scale_fill_date <- function() {
   scale_fill_continuous(trans = "date")
 }
 
+# Colours for deselected properties
+
+#' @export
+#' @rdname scale_hue
+#' @usage NULL
+scale_colour_off_discrete <- scale_colour_off_hue
+
+#' @export
+#' @rdname scale_gradient
+#' @usage NULL
+scale_colour_off_continuous <- scale_colour_off_gradient
+
+#' @export
+#' @rdname scale_gradient
+#' @usage NULL
+scale_colour_off_datetime <- function() {
+  scale_colour_off_continuous(trans = "time")
+}
+
+#' @export
+#' @rdname scale_gradient
+#' @usage NULL
+scale_colour_off_date <- function() {
+  scale_colour_off_continuous(trans = "date")
+}
+
+#' @export
+#' @rdname scale_hue
+#' @usage NULL
+scale_fill_off_discrete <- scale_fill_off_hue
+
+#' @export
+#' @rdname scale_gradient
+#' @usage NULL
+scale_fill_off_continuous <- scale_fill_off_gradient
+
+#' @export
+#' @rdname scale_gradient
+#' @usage NULL
+scale_fill_off_datetime <- function() {
+  scale_fill_off_continuous(trans = "time")
+}
+
+#' @export
+#' @rdname scale_gradient
+#' @usage NULL
+scale_fill_off_date <- function() {
+  scale_fill_off_continuous(trans = "date")
+}
 
 # British to American spellings ----------------------------------------------
 

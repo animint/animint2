@@ -1,5 +1,6 @@
 #' Qualitative colour scale with evenly spaced hues.
 #'
+#' @param aesthetic Name of the aesthetic column to put the value into
 #' @param na.value Colour to use for missing values
 #' @param ... Other arguments passed on to \code{\link{discrete_scale}}
 #'   to control name, limits, breaks, labels and so forth.
@@ -44,16 +45,34 @@
 #' ggplot(mtcars, aes(mpg, wt)) + geom_point(aes(colour = miss))
 #' ggplot(mtcars, aes(mpg, wt)) +
 #'   geom_point(aes(colour = miss)) +
-#'   scale_colour_hue(na.value = "black")
+#'   scale_hue("colour", na.value = "black")
 #' }
-scale_colour_hue <- function(..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 0, direction = 1, na.value = "grey50") {
-  discrete_scale("colour", "hue", hue_pal(h, c, l, h.start, direction),
+scale_hue <- function(aesthetic, ..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 0, direction = 1, na.value = "grey50") {
+  discrete_scale(aesthetic, "hue", hue_pal(h, c, l, h.start, direction),
     na.value = na.value, ...)
+}
+
+
+#' @rdname scale_hue
+#' @export
+scale_colour_hue <- function(...) {
+  scale_hue("colour", ...)
 }
 
 #' @rdname scale_hue
 #' @export
-scale_fill_hue <- function(..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 0, direction = 1, na.value = "grey50") {
-  discrete_scale("fill", "hue", hue_pal(h, c, l, h.start, direction),
-    na.value = na.value, ...)
+scale_colour_off_hue <- function(...) {
+  scale_hue("colour_off", ...)
+}
+
+#' @rdname scale_hue
+#' @export
+scale_fill_hue <- function(...) {
+  scale_hue("fill", ...)
+}
+
+#' @rdname scale_hue
+#' @export
+scale_fill_off_hue <- function(...) {
+  scale_hue("fill_off", ...)
 }

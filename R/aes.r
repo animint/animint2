@@ -10,6 +10,7 @@ NULL
 .base_to_ggplot <- c(
   "col"   = "colour",
   "color" = "colour",
+  "color_off" = "colour_off",
   "pch"   = "shape",
   "cex"   = "size",
   "lty"   = "linetype",
