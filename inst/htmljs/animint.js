@@ -310,14 +310,14 @@ var animint = function (to_select, json_file) {
       axispaddingy += Math.max.apply(null, p_info.ylabs.map(function(entry){
 	// + 5 to give a little extra space to avoid bad axis labels
 	// in shiny.
-	return measureText(entry, 11).width + 5;
+	return measureText(entry, p_info.ysize).width + 5;
       }));
     }
     var axispaddingx = 10 + 20;
     if(p_info.hasOwnProperty("xlabs") && p_info.xlabs.length){
       // TODO: throw warning if text height is large portion of plot height?
       axispaddingx += Math.max.apply(null, p_info.xlabs.map(function(entry){
-	     return measureText(entry, 11, p_info.xangle).height;
+	     return measureText(entry, p_info.xsize, p_info.xangle).height;
       }));
       // TODO: carefully calculating this gets complicated with rotating xlabs
       //margin.right += 5;
