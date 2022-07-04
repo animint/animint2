@@ -145,10 +145,17 @@ parsePlot <- function(meta, plot, plot.name){
     # theme settings are shared across panels
     axis.text <- theme.pars[[s("axis.text.%s")]]
     ## TODO: also look at axis.text! (and text?)
+    axis.parent.text <- theme.pars[["axis.text"]]
+    axis.parent.text.size <- if(is.numeric(axis.parent.text$size)){
+      axis.text$size # defined in pts
+    }
+    if(is.null(axis.parent.text)){
+      axis.parent.text.size <- 11 # default font size(px) in JS
+    }
     size <- if(is.numeric(axis.text$size)){
       axis.text$size # defined in pts
     } else if(is.rel(axis.text$size)){
-      axis.text$size * 11 # reletive size = scale number * default size
+      axis.text$size * axis.parent.text.size # reletive size = scale number * parent size
     }
     anchor <- hjust2anchor(axis.text$hjust)
     angle <- if(is.numeric(axis.text$angle)){
@@ -675,6 +682,8 @@ getLegendList <- function(plistextra){
   default_mapping <- plot$mapping
   theme <- plot_theme(plot)
   position <- theme$legend.position
+  text <- theme$legend.text
+  title <- theme$legend.title
   # by default, guide boxes are vertically aligned
   if(is.null(theme$legend.box)) theme$legend.box <- "vertical" else theme$legend.box
 
@@ -733,6 +742,8 @@ getLegendList <- function(plistextra){
     discrete.vec <- sapply(scale.list, inherits, "ScaleDiscrete")
     is.discrete <- all(discrete.vec)
     gdefs[[leg]]$is.discrete <- is.discrete
+    gdefs[[leg]]$text_size <- text$size
+    gdefs[[leg]]$title_size <- title$size
     ## get the name of the legend/selection variable.
     var.list <- list()
     for(layer.i in seq_along(plot$layers)) {
