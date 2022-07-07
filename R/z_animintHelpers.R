@@ -168,12 +168,16 @@ setUpdateAxes <- function(theme, options_list){
 #' @param theme.pars theme settings
 #' @return size
 axesTextSize <- function(xy.size, theme.pars){
-  text.size <- theme.pars[["text"]]$size
-  axis.text.size <- if(theme.pars[["axis.text"]]$size==rel(0.8)){11}else{theme.pars[["axis.text"]]$size}
+  text.size <- if(is.null(theme.pars[["text"]]$size)){11}else{theme.pars[["text"]]$size}
+  axis.text.size <- if(is.null(theme.pars[["axis.text"]]$size)||theme.pars[["axis.text"]]$size==rel(0.8)){
+    11
+  }else{
+  theme.pars[["axis.text"]]$size
+  }
   axis.text.xy.size <- xy.size
   # if none of these text size are defined, return NULL
   if(text.size==11 && axis.text.size==11 && is.null(axis.text.xy.size))return(NULL)
-  
+
   # if defined in rel(), convert to number by calculating with the parent size
   size.l <- I(list(text.size, axis.text.size, axis.text.xy.size))
   for(i in seq_along(size.l)){
