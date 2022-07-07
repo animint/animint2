@@ -162,6 +162,29 @@ setUpdateAxes <- function(theme, options_list){
 }
 
 
+#' Get x/y axes font size from params text, axis.text and axis.text.x/y via theme()
+#'
+#' @param xy.size size params defined in axis.text.x or axis.text.y
+#' @param theme.pars theme settings
+#' @return size
+axesTextSize <- function(xy.size, theme.pars){
+  text.size <- theme.pars[["text"]]$size
+  axis.text.size <- if(theme.pars[["axis.text"]]$size==rel(0.8)){11}else{theme.pars[["axis.text"]]$size}
+  axis.text.xy.size <- xy.size
+  # if none of these text size are defined, return NULL
+  if(text.size==11 && axis.text.size==11 && is.null(axis.text.xy.size))return(NULL)
+  
+  # if defined in rel(), convert to number by calculating with the parent size
+  size.l <- I(list(text.size, axis.text.size, axis.text.xy.size))
+  for(i in seq_along(size.l)){
+    if(is.rel(size.l[[i]]) && i>1){
+      size.l[[i]] <- size.l[[i]] * size.l[[i-1]]
+    }
+  }
+  tail(unlist(size.l), 1)
+}
+
+
 hjust2anchor <- function(hjust){
   if(is.null(hjust))return(NULL)
   stopifnot(is.numeric(hjust))

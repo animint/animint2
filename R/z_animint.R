@@ -145,18 +145,7 @@ parsePlot <- function(meta, plot, plot.name){
     # theme settings are shared across panels
     axis.text <- theme.pars[[s("axis.text.%s")]]
     ## TODO: also look at axis.text! (and text?)
-    # axis.parent.text <- theme.pars[["axis.text"]]
-    # axis.parent.text.size <- if(is.numeric(axis.parent.text$size)){
-    #   axis.parent.text$size
-    # }
-    # if(is.null(axis.parent.text)){
-    #   axis.parent.text.size <- 11 # default font size(px) in JS
-    # }
-    size <- if(is.rel(axis.text$size)){
-      axis.text$size * 11 # reletive size = scale number * parent size
-    } else if(is.numeric(axis.text$size)){
-      axis.text$size
-    }
+    size <- axesTextSize(axis.text$size, theme.pars)
     anchor <- hjust2anchor(axis.text$hjust)
     angle <- if(is.numeric(axis.text$angle)){
       -axis.text$angle
@@ -742,8 +731,16 @@ getLegendList <- function(plistextra){
     discrete.vec <- sapply(scale.list, inherits, "ScaleDiscrete")
     is.discrete <- all(discrete.vec)
     gdefs[[leg]]$is.discrete <- is.discrete
-    gdefs[[leg]]$text_size <- text$size
-    gdefs[[leg]]$title_size <- title$size
+    gdefs[[leg]]$text_size <- if(is.numeric(text$size) & !is.rel(text$size)){
+      text$size
+    }else {
+      16
+    }
+    gdefs[[leg]]$title_size <- if(is.numeric(title$size) & !is.rel(title$size)){
+      title$size
+    }else{
+      16
+    }
     ## get the name of the legend/selection variable.
     var.list <- list()
     for(layer.i in seq_along(plot$layers)) {
