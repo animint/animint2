@@ -29,6 +29,7 @@ test_that("specified axis text size with rel()", {
   axis.y.style.value <-
     getStyleValue(info1$html, '//g[@class="yaxis axis yaxis_1"]//g[@class="tick major"]//text', 
                   "font-size")
+  # default size for 'text' is 11, so rel(3) * 11 = 33
   expect_match(axis.x.style.value, "33px")
   expect_match(axis.y.style.value, "33px")
 })
@@ -51,18 +52,15 @@ test_that("if more than 1 element text size are defined, take the children node"
 })
 
 # legend text size -------------
-test_that("unspecified legend title text size default to 16px", {
-  style.value <-
+test_that("unspecified legend title and label text size default to 16px", {
+  title.size <-
     getStyleValue(info$html, '//table[@class="legend"]//tr//th', 
                   "font-size")
-  expect_match(style.value, "16px")
-})
-
-test_that("unspecified legend label text size default to 16px", {
-  style.value <-
+  label.size <-
     getStyleValue(info$html, '//table[@class="legend"]//tr[@id="plot_scatterFacet_region_variable_East_Asia_&_Pacific_(all_income_levels)"]//td[@class="legend_entry_label"]', 
                   "font-size")
-  expect_match(style.value, "16px")
+  expect_match(title.size, "16px")
+  expect_match(label.size, "16px")
 })
 
 test_that("defined legend title text size", {
@@ -87,4 +85,23 @@ test_that("defined legend label text size", {
     getStyleValue(info1$html, '//table[@class="legend"]//tr[@id="plot_one_region_variable_Europe_&_Central_Asia_(all_income_levels)"]//td[@id="plot_one_region_variable_Europe_&_Central_Asia_(all_income_levels)_label"]', 
                   "font-size")
   expect_match(style.value, "10px")
+})
+
+test_that("specified legend title and label text size with rel()", {
+  s1 <- scatterFacet + 
+        theme(legend.text = element_text(size=rel(2)),
+              legend.title = element_text(size=rel(2.5)))
+  viz1 <- list()
+  viz1$one <- s1
+  info1 <- animint2HTML(viz1)
+  legend.text.size <-
+    getStyleValue(info1$html, '//table[@class="legend"]//tr[@id="plot_one_region_variable_Europe_&_Central_Asia_(all_income_levels)"]//td[@id="plot_one_region_variable_Europe_&_Central_Asia_(all_income_levels)_label"]', 
+                  "font-size")
+  legend.title.size <-
+    getStyleValue(info1$html, '//table[@class="legend"]//tr//th', 
+                  "font-size")
+  # parent text size for 'legend.text' is 11, so rel(2) * 11 = 22
+  expect_match(legend.text.size, "22px")
+  # rel(2.5) * 16 = 24
+  expect_match(legend.title.size, "27.5px")
 })
