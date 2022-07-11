@@ -145,7 +145,7 @@ parsePlot <- function(meta, plot, plot.name){
     # theme settings are shared across panels
     axis.text <- theme.pars[[s("axis.text.%s")]]
     ## TODO: also look at axis.text! (and text?)
-    size <- axesTextSize(axis.text$size, theme.pars)
+    size <- calc_element(s("axis.text.%s"), theme.pars)$size
     anchor <- hjust2anchor(axis.text$hjust)
     angle <- if(is.numeric(axis.text$angle)){
       -axis.text$angle
@@ -731,16 +731,8 @@ getLegendList <- function(plistextra){
     discrete.vec <- sapply(scale.list, inherits, "ScaleDiscrete")
     is.discrete <- all(discrete.vec)
     gdefs[[leg]]$is.discrete <- is.discrete
-    gdefs[[leg]]$text_size <- if(is.numeric(text$size) & !is.rel(text$size)){
-      text$size
-    }else {
-      16
-    }
-    gdefs[[leg]]$title_size <- if(is.numeric(title$size) & !is.rel(title$size)){
-      title$size
-    }else{
-      16
-    }
+    gdefs[[leg]]$text_size <- calc_element("legend.text", theme)$size
+    gdefs[[leg]]$title_size <- calc_element("legend.title", theme)$size
     ## get the name of the legend/selection variable.
     var.list <- list()
     for(layer.i in seq_along(plot$layers)) {
