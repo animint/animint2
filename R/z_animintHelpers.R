@@ -762,7 +762,14 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   ## so that common.not.na is not empty
   ## due to the plot's alpha, stroke or other columns
   built <- as.data.table(built)
-  built <- built[,lapply(.SD, function(x) {if(all(is.na(x))) {NULL} else {x}} )]
+  ## convert 'built' from df to dt to improve speed
+  built <- built[, lapply(.SD, function(x) {
+    if (all(is.na(x))) {
+      NULL
+      } else {
+        x
+        }
+  })]
 
   ## Treat factors as characters, to avoid having them be coerced to
   ## integer later.
@@ -773,24 +780,24 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
 
   ## If there is only one chunk, then there is no point of making a
   ## common data file.
-  setDF(built)
-  chunk.rows.tab <- table(built[, chunk.vars])
-  if(length(chunk.rows.tab) == 1) return(NULL)
+  chunk.rows.tab <- built[, .N, by = chunk.vars]
+  if(nrow(chunk.rows.tab) == 1) return(NULL)
 
   ## If there is no group column, and all the chunks are the same
   ## size, then add one based on the row number.
   if(! "group" %in% names(built)){
-    chunk.rows <- chunk.rows.tab[1]
-    same.size <- chunk.rows == chunk.rows.tab
+    chunk.rows <- chunk.rows.tab[1]$N
+    same.size <- chunk.rows == chunk.rows.tab$N
     built <- data.table::setorderv(built, chunk.vars)
     if(all(same.size)){
-      built$group <- 1:chunk.rows
+      built <- built[, group := rep(1:chunk.rows, length.out = .N)]
     }else{
       ## do not save a common chunk file.
       return(NULL)
     }
   }
 
+  setDF(built)
   built.by.group <- split(built, built$group)
   group.tab <- table(built[, c("group", chunk.vars)])
   each.group.same.size <- apply(group.tab, 1, function(group.size.vec){
