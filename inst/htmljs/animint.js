@@ -187,7 +187,11 @@ var animint = function (to_select, json_file) {
        g_info.geom == "rect" &&
        g_info.aes.hasOwnProperty("clickSelects")){
       g_info.select_style = "stroke";
-    }else{
+    } else if(g_info.params.hasOwnProperty("colour_off") &&
+    g_info.aes.hasOwnProperty("clickSelects")){
+      g_info.select_style = "fill";
+    }
+    else{
       g_info.select_style = "opacity";
     }
     // Determine if data will be an object or an array.
@@ -1087,6 +1091,7 @@ var animint = function (to_select, json_file) {
     };
     var colour = "black";
     var fill = "black";
+    var base_colour_off = "grey";
     let angle = 0;
     if (g_info.params.hasOwnProperty("angle")) {
       angle = g_info.params["angle"];
@@ -1411,12 +1416,19 @@ var animint = function (to_select, json_file) {
     if (g_info.geom == "point") {
       elements = elements.data(data, key_fun);
       eActions = function (e) {
-        e.attr("cx", toXY("x", "x"))
+        if (g_info.params.hasOwnProperty("colour_off")){
+          e.attr("cx", toXY("x", "x"))
+          .attr("cy", toXY("y", "y"))
+          .attr("r", get_size)
+          .style("stroke-width", get_stroke_width);
+        } else{
+          e.attr("cx", toXY("x", "x"))
           .attr("cy", toXY("y", "y"))
           .attr("r", get_size)
           .style("fill", get_fill)
           .style("stroke", get_colour)
           .style("stroke-width", get_stroke_width);
+        }
       };
       eAppend = "circle";
     }
@@ -1600,7 +1612,21 @@ var animint = function (to_select, json_file) {
 	  "mouseover":function(d){
 	    return "black";
 	  }
-	}
+	},
+  "fill":{
+    "mouseout":function(d){
+      var colour_on = get_colour(d);
+      var colour_off = g_info.params.colour_off;
+      if(has_clickSelects){
+        return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects, colour_on, colour_off);
+      }else if (has_clickSelects_variable){
+        return ifSelectedElse(d["clickSelects.value"], d["clickSelects.variable"], colour_on, colour_off);
+      }
+    },
+    "mouseover":function(d) {
+      return get_colour(d);
+    }
+  }
       }; //selected_funs.
       // My original design for clicking/interactivity/transparency:
       // Basically I wanted a really simple way to show which element
