@@ -2096,7 +2096,7 @@ var animint = function (to_select, json_file) {
 	        .attr("y", 14)
           .style("fill", function(d){return d["textcolour"]||1;})
 	        .style("text-anchor", "middle")
-          .attr("font-size", function(d){return d["textsize"]||1;})
+          	.attr("font-size", function(d){return d["textsize"]||1;})
 	        .text("a");
       }
       if(l_info.geoms.indexOf("path")>-1){
