@@ -766,9 +766,9 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   built <- built[, lapply(.SD, function(x) {
     if (all(is.na(x))) {
       NULL
-      } else {
+    } else {
         x
-        }
+    }
   })]
 
   ## Treat factors as characters, to avoid having them be coerced to
@@ -885,18 +885,18 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
 ##' @param df.or.list a data.frame or a list of data.frame.
 ##' @param cols cols that each data.frame would keep.
 ##' @return list of data.frame.
-varied.chunk <- function(df.or.list, cols){
-  if(is.data.frame(df.or.list)){
-    df <- df.or.list[, cols, drop = FALSE]
-    u.df <- unique(df)
-    group.counts <- table(u.df$group)
-    if(all(group.counts == 1)){
-      u.df
+varied.chunk <- function(dt.or.list, cols){
+  if(is.data.frame(dt.or.list)){
+    dt <- dt.or.list[, ..cols, drop = FALSE]
+    u.dt <- unique(dt)
+    group.counts <- u.dt[, .N, by = group]
+    if(all(group.counts$N == 1)){
+      setDF(u.dt)
     }else{
-      df
+      setDF(dt)
     }
   } else{
-    lapply(df.or.list, varied.chunk, cols)
+    lapply(dt.or.list, varied.chunk, cols)
   }
 }
 
@@ -912,18 +912,24 @@ split.x <- function(x, vars){
     ## Remove columns with all NA values
     ## so that x is not empty due to
     ## the plot's alpha, stroke or other columns
-    all.nas <- sapply(x, function(col.m){all(is.na(col.m))})
-    x <- x[, !all.nas]
+    x <- as.data.table(x)
+    x <- x[, lapply(.SD, function(x) {
+      if (all(is.na(x))) {
+        NULL
+      } else {
+        x
+      }
+    })]
 
     # rows with NA should not be saved
     x <- na.omit(x)
     if(length(vars) == 1){
-      split(x[names(x) != vars], x[vars], drop = TRUE)
+      split(x, by = vars, keep.by = FALSE, drop = TRUE)
     }else{
       use <- vars[1]
       rest <- vars[-1]
-      df.list <- split(x[names(x) != use], x[use], drop = TRUE)
-      split.x(df.list, rest)
+      dt.list <- split(x, by = use, keep.by = FALSE, drop = TRUE)
+      split.x(dt.list, rest)
     }
   }else if(is.list(x)){
     lapply(x, split.x, vars)
@@ -943,8 +949,7 @@ saveChunks <- function(x, meta){
   if(is.data.frame(x)){
     this.i <- meta$chunk.i
     csv.name <- sprintf("%s_chunk%d.tsv", meta$g$classed, this.i)
-    write.table(x, file.path(meta$out.dir, csv.name), quote=FALSE,
-                row.names=FALSE, sep="\t")
+    data.table::fwrite(x, file.path(meta$out.dir, csv.name))
     meta$chunk.i <- meta$chunk.i + 1L
     this.i
   }else if(is.list(x)){
