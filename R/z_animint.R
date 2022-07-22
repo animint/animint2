@@ -798,8 +798,6 @@ getLegendList <- function(plistextra){
   if(1 < length(legend.list)){
     is.color <- sapply(legend.list, function(L)"colour" %in% L$legend_type)
     is.fill <- sapply(legend.list, function(L)"fill" %in% L$legend_type)
-    is.color.off <- sapply(legend.list, function(L)"colour_off" %in% L$legend_type)
-    is.fill.off <- sapply(legend.list, function(L)"fill_off" %in% L$legend_type)
     is.point <- sapply(legend.list, function(L)"point" %in% L$geoms)
     has.both <- 2 == sum(is.point & (is.color | is.fill))
     if(has.both){

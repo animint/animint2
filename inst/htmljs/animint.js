@@ -187,9 +187,10 @@ var animint = function (to_select, json_file) {
        g_info.geom == "rect" &&
        g_info.aes.hasOwnProperty("clickSelects")){
       g_info.select_style = "stroke";
-    } else if(g_info.params.hasOwnProperty("colour_off") &&
-    g_info.aes.hasOwnProperty("clickSelects")){
-      g_info.select_style = "fill";
+    } else if(g_info.params.hasOwnProperty("clickSelects_color") && 
+      g_info.geom == "line" &&
+      g_info.aes.hasOwnProperty("clickSelects")){
+      g_info.select_style = "line-fill";
     }
     else{
       g_info.select_style = "opacity";
@@ -1091,7 +1092,6 @@ var animint = function (to_select, json_file) {
     };
     var colour = "black";
     var fill = "black";
-    var base_colour_off = "grey";
     let angle = 0;
     if (g_info.params.hasOwnProperty("angle")) {
       angle = g_info.params["angle"];
@@ -1416,7 +1416,7 @@ var animint = function (to_select, json_file) {
     if (g_info.geom == "point") {
       elements = elements.data(data, key_fun);
       eActions = function (e) {
-        if (g_info.params.hasOwnProperty("colour_off")){
+        if (g_info.params.hasOwnProperty("clickSelects_color")){
           e.attr("cx", toXY("x", "x"))
           .attr("cy", toXY("y", "y"))
           .attr("r", get_size)
@@ -1613,18 +1613,18 @@ var animint = function (to_select, json_file) {
 	    return "black";
 	  }
 	},
-  "fill":{
+  "line-fill":{
     "mouseout":function(d){
-      var colour_on = get_colour(d);
-      var colour_off = g_info.params.colour_off;
+      var fill_on = g_info.params.clickSelects_color;
+      var fill_off = get_colour(d);
       if(has_clickSelects){
-        return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects, colour_on, colour_off);
+        return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects, fill_on, fill_off);
       }else if (has_clickSelects_variable){
-        return ifSelectedElse(d["clickSelects.value"], d["clickSelects.variable"], colour_on, colour_off);
+        return ifSelectedElse(d["clickSelects.value"], d["clickSelects.variable"], fill_on, fill_off);
       }
     },
     "mouseover":function(d) {
-      return get_colour(d);
+      return g_info.params.clickSelects_color;
     }
   }
       }; //selected_funs.
@@ -1664,10 +1664,22 @@ var animint = function (to_select, json_file) {
 
       var style_funs = selected_funs[g_info.select_style];
       var over_fun = function(e){
-        e.style(g_info.select_style, style_funs["mouseover"]);
+        if(g_info.select_style == "line-fill"){
+          var style_opacity = selected_funs["opacity"];
+          e.style("stroke", style_funs["mouseover"])
+          .style("opacity", style_opacity["mouseover"]);
+        }else{
+          e.style(g_info.select_style, style_funs["mouseover"]);
+        }
       };
       var out_fun = function(e){
-        e.style(g_info.select_style, style_funs["mouseout"]);
+        if(g_info.select_style == "line-fill"){
+          var style_opacity = selected_funs["opacity"];
+          e.style("stroke", style_funs["mouseout"])
+          .style("opacity", style_opacity["mouseout"]);
+        }else{
+          e.style(g_info.select_style, style_funs["mouseout"]);
+        }
       };
       elements.call(out_fun)
         .on("mouseover", function (d) {
