@@ -187,7 +187,11 @@ var animint = function (to_select, json_file) {
        g_info.geom == "rect" &&
        g_info.aes.hasOwnProperty("clickSelects")){
       g_info.select_style = "stroke";
-    }else{
+    } else if(g_info.params.hasOwnProperty("clickSelects_color") && 
+    g_info.geom != "rect" &&
+    g_info.aes.hasOwnProperty("clickSelects")){
+    g_info.select_style = "stroke";
+    } else{
       g_info.select_style = "opacity";
     }
     // Determine if data will be an object or an array.
@@ -1301,6 +1305,14 @@ var animint = function (to_select, json_file) {
             var one_group = keyed_data[group_info.value];
             var one_row = one_group[0];
   	        // take color for first value in the group
+            // workaround for line/path selected.color
+            if (has_clickSelects || has_clickSelects_variable){
+              const v_name = g_info.aes.hasOwnProperty("clickSelects.variable");
+              const s_info = Selectors[v_name];
+              if(s_info.selected == one_row.clickSelects){
+                return g_info.clickSelects_color;
+              };
+            };
             return get_colour(one_row);
           })
           .style("stroke-dasharray", function (group_info) {
@@ -1340,8 +1352,10 @@ var animint = function (to_select, json_file) {
             return scales.y(d["yend"]);
           })
           .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("stroke", get_colour);
+          .style("stroke-width", get_size);
+        if(g_info.select_style != "stroke"){
+          e.style("stroke", get_colour);
+        }
       };
       eAppend = "line";
     }
@@ -1361,8 +1375,10 @@ var animint = function (to_select, json_file) {
             return scales.y(d["ymin"]);
           })
           .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("stroke", get_colour);
+          .style("stroke-width", get_size);
+        if(g_info.select_style != "stroke"){
+          e.style("stroke", get_colour);
+        }
       };
       eAppend = "line";
     }
@@ -1418,8 +1434,10 @@ var animint = function (to_select, json_file) {
           .attr("cy", toXY("y", "y"))
           .attr("r", get_size)
           .style("fill", get_fill)
-          .style("stroke", get_colour)
           .style("stroke-width", get_stroke_width);
+        if(g_info.select_style != "stroke"){
+          e.style("stroke", get_colour);
+        }
       };
       eAppend = "circle";
     }
@@ -1434,8 +1452,10 @@ var animint = function (to_select, json_file) {
           .attr("height", scales.y.range()[0] - scales.y.range()[1])
           .style("fill", get_fill)
           .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("stroke", get_colour);
+          .style("stroke-width", get_size);
+        if(g_info.select_style != "stroke"){
+          e.style("stroke", get_colour);
+        }
       };
       eAppend = "rect";
     }
@@ -1450,8 +1470,10 @@ var animint = function (to_select, json_file) {
           .attr("width", scales.x.range()[1] - scales.x.range()[0])
           .style("fill", get_fill)
           .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("stroke", get_colour);
+          .style("stroke-width", get_size);
+        if(g_info.select_style != "stroke"){
+          e.style("stroke", get_colour);
+        }
       };
       eAppend = "rect";
     }
@@ -1469,7 +1491,7 @@ var animint = function (to_select, json_file) {
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size)
           .style("fill", get_fill);
-	      if(g_info.select_style != "stroke"){
+	      if(g_info.select_style != "stroke"){ // how to assign clickSelects_color to geom_rect?
           e.style("stroke", get_colour);
         }
       };
@@ -1589,8 +1611,15 @@ var animint = function (to_select, json_file) {
 	},
 	"stroke":{
 	  "mouseout":function(d){
-	    var stroke_on = "black";
-	    var stroke_off = "transparent";
+      var stroke_on, stroke_off;
+      if(g_info.geom == "rect"){
+        stroke_on = "black";
+        stroke_off = "transparent";  
+      } else{
+        stroke_on = g_info.params.clickSelects_color;
+        stroke_off = get_colour(d);
+      }
+	    
 	    if(has_clickSelects){
 	      return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects,
 				    stroke_on, stroke_off);
@@ -1601,7 +1630,11 @@ var animint = function (to_select, json_file) {
 	    }
 	  },
 	  "mouseover":function(d){
-	    return "black";
+      if(g_info.geom == "rect"){
+        return "black";
+      } else{
+        return g_info.params.clickSelects_color;
+      }
 	  }
 	}
       }; //selected_funs.
@@ -1640,11 +1673,22 @@ var animint = function (to_select, json_file) {
       // TODO: user-configurable selection styles.
 
       var style_funs = selected_funs[g_info.select_style];
+      var style_opacity = selected_funs["opacity"];
       var over_fun = function(e){
-        e.style(g_info.select_style, style_funs["mouseover"]);
+        if(g_info.geom == "rect"){ // exception for rect
+          e.style(g_info.select_style, style_funs["mouseover"]);
+        } else{
+          e.style(g_info.select_style, style_funs["mouseover"])
+          .style("opacity", style_opacity["mouseover"]);
+        }
       };
       var out_fun = function(e){
-        e.style(g_info.select_style, style_funs["mouseout"]);
+        if(g_info.geom == "rect"){
+          e.style(g_info.select_style, style_funs["mouseout"]);
+        } else{
+          e.style(g_info.select_style, style_funs["mouseout"])
+          .style("opacity", style_opacity["mouseout"]);
+        }
       };
       elements.call(out_fun)
         .on("mouseover", function (d) {
