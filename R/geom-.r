@@ -307,7 +307,7 @@ Geom <- gganimintproto("Geom",
     g.data <- processed_values$g.data
 
     ## Check g.data for color/fill - convert to hexadecimal so JS can parse correctly.
-    for(color.var in c("colour", "color", "fill")){
+    for(color.var in c("colour", "color", "fill", "colour_off", "color_off")){
       if(color.var %in% names(g.data)){
         g.data[,color.var] <- toRGB(g.data[,color.var])
       }

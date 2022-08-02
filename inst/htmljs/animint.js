@@ -183,17 +183,25 @@ var animint = function (to_select, json_file) {
     // Determine what style to use to show the selection for this
     // geom. This is a hack and should be removed when we implement
     // the selected.color, selected.size, etc aesthetics.
-    if(g_info.aes.hasOwnProperty("fill") &&
-       g_info.geom == "rect" &&
-       g_info.aes.hasOwnProperty("clickSelects")){
-      g_info.select_style = "stroke";
-    } else if(g_info.params.hasOwnProperty("colour_off") &&
-    g_info.aes.hasOwnProperty("clickSelects")){
-      g_info.select_style = "fill";
+    //
+    // 2022.08.01 update: get rid of the hack of "rect stroke" to 
+    // implement a general function for alpha_off, color_off. 
+    // In order to have multiple styles functioning together
+    // so here use array to store the styles.   
+    // Default using alpha/opacity style.
+    let select_styles = [];
+    let has_colour_off = g_info.params.hasOwnProperty("colour_off") || g_info.aes.hasOwnProperty("colour_off");
+    let has_alpha_off = g_info.params.hasOwnProperty("alpha_off") || g_info.aes.hasOwnProperty("alpha_off");
+    if(has_colour_off){
+      select_styles.push("stroke");
+    } 
+    if (has_alpha_off){
+      select_styles.push("opacity");
+    } 
+    if (!has_colour_off && !has_alpha_off){
+      select_styles = ["opacity"];
     }
-    else{
-      g_info.select_style = "opacity";
-    }
+    g_info.select_style = select_styles;
     // Determine if data will be an object or an array.
     if(g_info.geom in data_object_geoms){
       g_info.data_is_object = true;
@@ -1091,7 +1099,6 @@ var animint = function (to_select, json_file) {
     };
     var colour = "black";
     var fill = "black";
-    var base_colour_off = "grey";
     let angle = 0;
     if (g_info.params.hasOwnProperty("angle")) {
       angle = g_info.params["angle"];
@@ -1115,6 +1122,19 @@ var animint = function (to_select, json_file) {
       }
       return colour;
     };
+    
+    // Only "colour_off" params appears would call this function,
+    // so no default off_colour value
+    const get_colour_off = function (d) {
+      let off_colour;
+      if (aes.hasOwnProperty("colour_off") && d.hasOwnProperty("colour_off")) {
+        off_colour = d["colour_off"];
+      } else if(g_info.params.hasOwnProperty("colour_off")){
+        off_colour = g_info.params.colour_off;
+      }
+      return off_colour;
+    };
+
     var get_fill = function (d) {
       if (d.hasOwnProperty("fill")) {
         return d["fill"];
@@ -1156,6 +1176,16 @@ var animint = function (to_select, json_file) {
         return d.key;
       };
     }
+    
+    // Apply user-configurable selection style into each geom later.
+    var select_style_fun = function(g_info, e){
+      if(!g_info.select_style.includes("stroke")){
+        e.style("stroke", get_colour);
+      }
+      if(!g_info.select_style.includes("opacity")){
+        e.style("opacity", get_alpha);
+      }
+    };
     if(g_info.data_is_object) {
 
       // Lines, paths, polygons, and ribbons are a bit special. For
@@ -1303,6 +1333,18 @@ var animint = function (to_select, json_file) {
             var one_group = keyed_data[group_info.value];
             var one_row = one_group[0];
   	        // take color for first value in the group
+            // Since line/path geom are using group to draw, 
+            // so it is different from other geom 
+            // and cannot call select_style_fun function here
+            if ((has_clickSelects || has_clickSelects_variable) && g_info.select_style.includes("stroke")){
+              const v_name = g_info.aes['clickSelects.variable'] || g_info.aes['clickSelects'];
+              const s_info = Selectors[v_name];
+              if(s_info.selected == one_row.clickSelects){
+                return get_colour(one_row);
+              } else{
+                return get_colour_off(one_row);
+              };
+            };
             return get_colour(one_row);
           })
           .style("stroke-dasharray", function (group_info) {
@@ -1317,6 +1359,14 @@ var animint = function (to_select, json_file) {
   	        // take line size for first value in the group
             return get_size(one_row);
           });
+        if(!g_info.select_style.includes("opacity")){
+          e.style("opacity", function (group_info) {
+            var one_group = keyed_data[group_info.value];
+            var one_row = one_group[0];
+            // take line size for first value in the group
+            return get_alpha(one_row);
+          })
+        }
       };
       eAppend = "path";
     }else{
@@ -1342,8 +1392,8 @@ var animint = function (to_select, json_file) {
             return scales.y(d["yend"]);
           })
           .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("stroke", get_colour);
+          .style("stroke-width", get_size);
+          select_style_fun(g_info, e);
       };
       eAppend = "line";
     }
@@ -1363,8 +1413,8 @@ var animint = function (to_select, json_file) {
             return scales.y(d["ymin"]);
           })
           .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("stroke", get_colour);
+          .style("stroke-width", get_size);
+          select_style_fun(g_info, e);
       };
       eAppend = "line";
     }
@@ -1376,8 +1426,8 @@ var animint = function (to_select, json_file) {
           .attr("y1", scales.y.range()[0])
           .attr("y2", scales.y.range()[1])
           .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("stroke", get_colour);
+          .style("stroke-width", get_size);
+          select_style_fun(g_info, e);
       };
       eAppend = "line";
     }
@@ -1390,8 +1440,8 @@ var animint = function (to_select, json_file) {
           .attr("x1", scales.x.range()[0])
           .attr("x2", scales.x.range()[1])
           .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("stroke", get_colour);
+          .style("stroke-width", get_size);
+          select_style_fun(g_info, e);
       };
       eAppend = "line";
     }
@@ -1416,19 +1466,12 @@ var animint = function (to_select, json_file) {
     if (g_info.geom == "point") {
       elements = elements.data(data, key_fun);
       eActions = function (e) {
-        if (g_info.params.hasOwnProperty("colour_off")){
-          e.attr("cx", toXY("x", "x"))
-          .attr("cy", toXY("y", "y"))
-          .attr("r", get_size)
-          .style("stroke-width", get_stroke_width);
-        } else{
-          e.attr("cx", toXY("x", "x"))
-          .attr("cy", toXY("y", "y"))
-          .attr("r", get_size)
-          .style("fill", get_fill)
-          .style("stroke", get_colour)
-          .style("stroke-width", get_stroke_width);
-        }
+        e.attr("cx", toXY("x", "x"))
+        .attr("cy", toXY("y", "y"))
+        .attr("r", get_size)
+        .style("fill", get_fill)
+        .style("stroke-width", get_stroke_width);
+      select_style_fun(g_info, e);
       };
       eAppend = "circle";
     }
@@ -1443,8 +1486,8 @@ var animint = function (to_select, json_file) {
           .attr("height", scales.y.range()[0] - scales.y.range()[1])
           .style("fill", get_fill)
           .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("stroke", get_colour);
+          .style("stroke-width", get_size);
+          select_style_fun(g_info, e);
       };
       eAppend = "rect";
     }
@@ -1459,8 +1502,8 @@ var animint = function (to_select, json_file) {
           .attr("width", scales.x.range()[1] - scales.x.range()[0])
           .style("fill", get_fill)
           .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("stroke", get_colour);
+          .style("stroke-width", get_size);
+          select_style_fun(g_info, e);
       };
       eAppend = "rect";
     }
@@ -1512,8 +1555,8 @@ var animint = function (to_select, json_file) {
             return scales.y(d["lower"]);
           })
           .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("stroke", get_colour);
+          .style("stroke-width", get_size);
+          select_style_fun(g_info, e);
         e.append("line")
           .attr("x1", function (d) {
             return scales.x(d["x"]);
@@ -1528,8 +1571,8 @@ var animint = function (to_select, json_file) {
             return scales.y(d["ymax"]);
           })
           .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("stroke", get_colour);
+          .style("stroke-width", get_size);
+          select_style_fun(g_info, e);
         e.append("rect")
           .attr("x", function (d) {
             return scales.x(d["xmin"]);
@@ -1545,8 +1588,8 @@ var animint = function (to_select, json_file) {
           })
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size)
-          .style("stroke", get_colour)
           .style("fill", get_fill);
+          select_style_fun(g_info, e);
         e.append("line")
           .attr("x1", function (d) {
             return scales.x(d["xmin"]);
@@ -1561,8 +1604,8 @@ var animint = function (to_select, json_file) {
             return scales.y(d["middle"]);
           })
           .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("stroke", get_colour);
+          .style("stroke-width", get_size);
+          select_style_fun(g_info, e);
       };
     }
     elements.exit().remove();
@@ -1578,55 +1621,35 @@ var animint = function (to_select, json_file) {
     var has_clickSelects_variable =
       g_info.aes.hasOwnProperty("clickSelects.variable");
     if (has_clickSelects || has_clickSelects_variable) {
-      var selected_funs = {
-	"opacity":{
-	  "mouseout":function (d) {
-	    var alpha_on = get_alpha(d);
-	    var alpha_off = get_alpha(d) - 0.5;
-	    if(has_clickSelects){
-              return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects,
-				    alpha_on, alpha_off);
-	    }else if(has_clickSelects_variable){
-	      return ifSelectedElse(d["clickSelects.value"],
-				    d["clickSelects.variable"],
-				    alpha_on, alpha_off);
-	    }
-	  },
-	  "mouseover":function (d) {
-            return get_alpha(d);
-	  }
-	},
-	"stroke":{
-	  "mouseout":function(d){
-	    var stroke_on = "black";
-	    var stroke_off = "transparent";
-	    if(has_clickSelects){
-	      return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects,
-				    stroke_on, stroke_off);
-	    }else{
-	      return ifSelectedElse(d["clickSelects.value"],
-				    d["clickSelects.variable"],
-				    stroke_on, stroke_off);
-	    }
-	  },
-	  "mouseover":function(d){
-	    return "black";
-	  }
-	},
-  "fill":{
-    "mouseout":function(d){
-      var colour_on = get_colour(d);
-      var colour_off = g_info.params.colour_off;
-      if(has_clickSelects){
-        return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects, colour_on, colour_off);
-      }else if (has_clickSelects_variable){
-        return ifSelectedElse(d["clickSelects.value"], d["clickSelects.variable"], colour_on, colour_off);
-      }
-    },
-    "mouseover":function(d) {
-      return get_colour(d);
-    }
-  }
+      var selected_funs = function(style_name, select_fun){
+        style_on_funs = {
+          "opacity": get_alpha,
+          "stroke": get_colour
+        };
+        style_off_funs = {
+          "opacity": function(d) {
+            return get_alpha(d) - 0.5;
+          }, // should be replaced by get_alpha_off
+          "stroke": get_colour_off
+        };
+        if(select_fun == "mouseout"){
+          return function (d) {
+            var select_on = style_on_funs[style_name](d);
+            var select_off = style_off_funs[style_name](d);
+            if(has_clickSelects){
+                    return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects,
+                      select_on, select_off);
+            }else if(has_clickSelects_variable){
+              return ifSelectedElse(d["clickSelects.value"],
+                  d["clickSelects.variable"],
+                  select_on, select_off);
+            }
+          }
+        } else if(select_fun == "mouseover"){
+          return function (d) {
+            return style_on_funs[style_name](d);
+          }
+        };
       }; //selected_funs.
       // My original design for clicking/interactivity/transparency:
       // Basically I wanted a really simple way to show which element
@@ -1662,12 +1685,15 @@ var animint = function (to_select, json_file) {
 
       // TODO: user-configurable selection styles.
 
-      var style_funs = selected_funs[g_info.select_style];
       var over_fun = function(e){
-        e.style(g_info.select_style, style_funs["mouseover"]);
+        g_info.select_style.forEach(function(s){
+          e.style(s, selected_funs(s, "mouseover"));
+        })
       };
       var out_fun = function(e){
-        e.style(g_info.select_style, style_funs["mouseout"]);
+        g_info.select_style.forEach(function(s){
+          e.style(s, selected_funs(s, "mouseout"));
+        })
       };
       elements.call(out_fun)
         .on("mouseover", function (d) {
@@ -1693,7 +1719,8 @@ var animint = function (to_select, json_file) {
 	});
       }
     }else{//has neither clickSelects nor clickSelects.variable.
-      elements.style("opacity", get_alpha);
+      elements.style("opacity", get_alpha)
+      .style("stroke", get_colour);
     }
     var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
     if(has_clickSelects || has_tooltip || has_clickSelects_variable){
