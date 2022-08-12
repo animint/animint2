@@ -731,8 +731,16 @@ getLegendList <- function(plistextra){
     discrete.vec <- sapply(scale.list, inherits, "ScaleDiscrete")
     is.discrete <- all(discrete.vec)
     gdefs[[leg]]$is.discrete <- is.discrete
-    gdefs[[leg]]$text_size <- calc_element("legend.text", theme)$size
-    gdefs[[leg]]$title_size <- calc_element("legend.title", theme)$size
+    gdefs[[leg]]$text_size <- if(!is.null(plot$theme$legend.text$size)) {
+      calc_element("legend.text", theme)$size
+    } else{
+      16
+    }
+    gdefs[[leg]]$title_size <- if(!is.null(theme$legend.title$size)) {
+      calc_element("legend.title", theme)$size
+    } else{
+      16
+    }
     ## get the name of the legend/selection variable.
     var.list <- list()
     for(layer.i in seq_along(plot$layers)) {
