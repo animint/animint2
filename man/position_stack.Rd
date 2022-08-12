@@ -52,10 +52,11 @@ ggplot(data.set, aes(Time, Value)) +
 See \code{\link{geom_bar}} and \code{\link{geom_area}} for
   more examples.
 
-Other position adjustments: \code{\link{position_dodge}},
-  \code{\link{position_identity}},
-  \code{\link{position_jitterdodge}},
-  \code{\link{position_jitter}},
-  \code{\link{position_nudge}}
+Other position adjustments: 
+\code{\link{position_dodge}()},
+\code{\link{position_identity}()},
+\code{\link{position_jitterdodge}()},
+\code{\link{position_jitter}()},
+\code{\link{position_nudge}()}
 }
 \concept{position adjustments}

@@ -5,13 +5,30 @@
 \alias{stat_count}
 \title{Bars, rectangles with bases on x-axis}
 \usage{
-geom_bar(mapping = NULL, data = NULL, stat = "count",
-  position = "stack", ..., width = NULL, binwidth = NULL,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+geom_bar(
+  mapping = NULL,
+  data = NULL,
+  stat = "count",
+  position = "stack",
+  ...,
+  width = NULL,
+  binwidth = NULL,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 
-stat_count(mapping = NULL, data = NULL, geom = "bar",
-  position = "stack", ..., width = NULL, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+stat_count(
+  mapping = NULL,
+  data = NULL,
+  geom = "bar",
+  position = "stack",
+  ...,
+  width = NULL,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -72,10 +89,7 @@ heights of the bars to represent values in the data, use
 }
 \details{
 A bar chart maps the height of the bar to a variable, and so the base of the
-bar must always be shown to produce a valid visual comparison. Naomi Robbins
-has a nice
-\href{http://www.b-eye-network.com/view/index.php?cid=2468}{article on this
-topic}. This is why it doesn't make sense to use a log-scaled y axis with a
+bar must always be shown to produce a valid visual comparison. This is why it doesn't make sense to use a log-scaled y axis with a
 bar chart.
 
 By default, multiple x's occurring in the same place will be stacked atop one

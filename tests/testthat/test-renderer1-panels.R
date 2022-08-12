@@ -1,13 +1,13 @@
 acontext("Panel background")
 p2 <- ggplot() +
   geom_point(aes(Petal.Length, Petal.Width,
-                 colour = Species, size = Species), data = iris) +
+                 colour = Species), data = iris) +
   ggtitle("Petal Data") +
   theme_bw()
 viz <- list(
   sepal=ggplot() +
     geom_point(aes(Sepal.Length, Sepal.Width,
-                   colour = Species, size = Species), data = iris) +
+                   colour = Species), data = iris) +
     theme_grey() + 
     theme(panel.background = element_rect(fill = "lightblue"),
           panel.border = element_rect(fill = NA,

@@ -4,8 +4,14 @@
 \alias{coord_trans}
 \title{Transformed cartesian coordinate system.}
 \usage{
-coord_trans(x = "identity", y = "identity", limx = NULL,
-  limy = NULL, xtrans, ytrans)
+coord_trans(
+  x = "identity",
+  y = "identity",
+  limx = NULL,
+  limy = NULL,
+  xtrans,
+  ytrans
+)
 }
 \arguments{
 \item{x, y}{transformers for x and y axes}
@@ -27,8 +33,6 @@ how to create your own.
 }
 \examples{
 \donttest{
-# See ?geom_boxplot for other examples
-
 # Three ways of doing transformation in ggplot:
 #  * by transforming the data
 ggplot(diamonds, aes(log10(carat), log10(price))) +

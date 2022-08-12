@@ -13,6 +13,55 @@ is no column named arclength in the data -- this would mean to update
 the selector called "arclength" with the value in column
 "arclength.click" -- less disk space, and faster compiling.
 
+allow configurable text size via
+theme(axis.title=element_text(size=20)) etc.
+
+
+2022.5.25
+
+Add ability to rotate geom_text labels, following ggplot2's semantics of rotation direction. 
+
+2022.5.24 
+
+Fixed small test regression and set up Github Actions. Neither of these is user facing.
+
+
+2022.2.2
+
+Default x/y axis text size increased to 16px from 11px in animint.js.
+
+Suggest RColorBrewer to avoid CRAN NOTE
+"Undeclared package RColorBrewer in Rd xrefs".
+
+2022.1.25
+
+Remove geom/stat_boxplot/quantile due to errors from CRAN check.
+
+2020.9.18
+
+update moved mcmaster URL in docs.
+
+2020.8.19
+
+Move geom-specific code from saveLayer/if-else to Geom$export_animint
+and pre_process methods in Geom sub-classes.
+
+2020.7.9
+
+Using RSelenium Version 1.7.4.
+
+Removed Defunct and Redundant code/examples.
+
+User can test using docker to avoid incompatibility issues.
+
+imports knitr as knit_print imported in namespace.
+
+Use new grid::unitType() to determine unit type of margin in pt/points to line conversion.
+
+2020.3.2
+
+data.frame(stringsAsFactors=TRUE) in tests.
+
 2019.7.12
 
 Added three authors which are mentioned in Rd/R files.

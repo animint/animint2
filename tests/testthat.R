@@ -30,15 +30,20 @@ source("helper-plot-data.r")
 ## 08:13:17.907 INFO - v2.47.0, with Core v2.47.0. Built from revision 0e4837e
 
 filter <- Sys.getenv("TEST_SUITE")
+# If we're running in github actions then use Firefox, since we can
+# use the Selenium docker image instead of relying on PhantomJS.
+gh.action <- Sys.getenv("GH_ACTION")
 dont.need.browser <- grepl("compiler", filter)
 use.browser <- !dont.need.browser
 if(filter == ""){
   filter <- NULL
 }
-if(interactive()){
+message(gh.action)
+if(interactive() | (gh.action == "ENABLED")) {
   tests_init("firefox")
+} else {
+  tests_init()
 }
 
-if(use.browser)tests_init()
 tests_run(filter=filter)
-if(use.browser)tests_exit()
+tests_exit()

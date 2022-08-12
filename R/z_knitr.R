@@ -2,6 +2,7 @@
 #' @param x named list of ggplots and option lists to pass to \code{animint2dir}.
 #' @param options knitr options.
 #' @param ... placeholder.
+#' @importFrom knitr knit_print
 #' @references https://github.com/yihui/knitr/blob/master/vignettes/knit_print.Rmd
 #' @author Carson Sievert
 #' @export

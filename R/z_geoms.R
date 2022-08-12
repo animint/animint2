@@ -294,6 +294,6 @@ make_text <- function(data, x, y, label.var, format=NULL){
   }
   stopifnot(is.function(format))
   data$label <- format(data$label)
-  a <- aes_string(x="x",y="y",label="label")
+  a <- aes_string(x="x",y="y",label="label",key="label")
   geom_text(a, showSelected=label.var, data)
 }

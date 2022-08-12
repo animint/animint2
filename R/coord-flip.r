@@ -7,13 +7,6 @@
 #' @export
 #' @inheritParams coord_cartesian
 #' @examples
-#' # Very useful for creating boxplots, and other interval
-#' # geoms in the horizontal instead of vertical position.
-#'
-#' ggplot(diamonds, aes(cut, price)) +
-#'   geom_boxplot() +
-#'   coord_flip()
-#'
 #' h <- ggplot(diamonds, aes(carat)) +
 #'   geom_histogram()
 #' h

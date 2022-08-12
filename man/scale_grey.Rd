@@ -14,9 +14,9 @@ scale_fill_grey(..., start = 0.2, end = 0.8, na.value = "red")
 \item{...}{Other arguments passed on to \code{\link{discrete_scale}}
 to control name, limits, breaks, labels and so forth.}
 
-\item{start}{gray value at low end of palette}
+\item{start}{grey value at low end of palette}
 
-\item{end}{gray value at high end of palette}
+\item{end}{grey value at high end of palette}
 
 \item{na.value}{Colour to use for missing values}
 }

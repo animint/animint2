@@ -13,16 +13,25 @@ vi_lilac_chaser <- function(np = 10,
     # Get data in a data-frame to pass to ggplot
     df <- data.frame()
     for (i in 1:np) {
-        df <- rbind(df, cbind(sin(x[-i]), cos(x[-i]), ptn = i))}
-    colnames(df) <- c("sinv", "cosv", "ptn")
+      df <- rbind(df, cbind(sin(x), cos(x), ptn = 1:np, grp = i))
+    }
+    colnames(df) <- c("sinv", "cosv", "ptn", "grp")
+    
+    # For each group, one point coordinate should be set to NA to disappear
+    for (i in 1:np) {
+      df <- within(df, {
+        sinv[grp == i & ptn == i] <- NA
+        cosv[grp == i & ptn == i] <- NA
+      })
+    }
 
 
     # Plot to display the points and the '+' mark in the middle
     p1 <- ggplot(data = df) +
         # Display the points
         geom_point(data = df,
-                   aes(x = sinv, y = cosv),
-                   showSelected = "ptn",
+                   aes(x = sinv, y = cosv, key = ptn), # key aesthetic for animated transitions!
+                   showSelected = "grp",
                    col = col,
                    size = p.size) +
         # Display the '+' mark
@@ -44,8 +53,8 @@ vi_lilac_chaser <- function(np = 10,
 
     # Automate using animint taking point number 'ptn' as variable
     plots <- list(plot1 = p1)
-    plots$time <- list(variable = "ptn", ms = 150)
-    plots$duration <- list(ptn=0)
+    plots$time <- list(variable = "grp", ms = 150)
+    plots$duration <- list(grp=0)
     return(plots)
 }
 

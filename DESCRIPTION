@@ -1,6 +1,6 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2019.7.3
+Version: 2022.5.25
 URL: https://github.com/tdhock/animint2
 BugReports: https://github.com/tdhock/animint2/issues
 Authors@R: c(
@@ -35,7 +35,7 @@ Authors@R: c(
     person("Kevin", "Ferris",
      role="aut",
      comment="Animint GSOC 2015"),
-    person("Tony", "Tsai",
+    person("Jun", "Cai",
      role="aut",
      comment="Animint GSOC 2015"),
     person("Faizan", "Khan",
@@ -43,7 +43,10 @@ Authors@R: c(
      comment="Animint GSOC 2016-2017"),
     person("Vivek", "Kumar",
      role="aut",
-     comment="Animint GSOC 2018"))
+     comment="Animint GSOC 2018"),
+    person("Himanshu", "Singh",
+     role="aut",
+     comment="Animint2 GSoC 2020"))
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
  on a web page. The 2018 Journal of Computational and 
@@ -62,13 +65,12 @@ Imports:
     reshape2,
     scales (>= 0.4.1),
     stats,
-    tibble,
-    lazyeval
+    knitr (>= 1.5.33)
 Suggests:
-    knitr (>= 1.5.33),
     servr,
     gistr (>= 0.2),
     shiny,
+    RColorBrewer,
     htmltools,
     rmarkdown,
     testthat,
@@ -84,11 +86,10 @@ Suggests:
     maptools,
     mgcv,
     nlme,
-    quantreg,
     rpart,
     svglite
 Enhances: sp
-Remotes: ropensci/RSelenium@22f06b9f2a675015d0daa3318319044e4e60d2fa
+Remotes: ropensci/RSelenium@v1.7.4
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -143,7 +144,6 @@ Collate:
     'geom-bar.r'
     'geom-bin2d.r'
     'geom-blank.r'
-    'geom-boxplot.r'
     'geom-path.r'
     'geom-contour.r'
     'geom-count.r'
@@ -166,7 +166,6 @@ Collate:
     'geom-linerange.r'
     'geom-point.r'
     'geom-pointrange.r'
-    'geom-quantile.r'
     'geom-rug.r'
     'geom-smooth.r'
     'geom-spoke.r'
@@ -226,7 +225,6 @@ Collate:
     'stat-bin2d.r'
     'stat-bindot.r'
     'stat-binhex.r'
-    'stat-boxplot.r'
     'stat-contour.r'
     'stat-count.r'
     'stat-density-2d.r'
@@ -236,7 +234,6 @@ Collate:
     'stat-function.r'
     'stat-identity.r'
     'stat-qq.r'
-    'stat-quantile.r'
     'stat-smooth-methods.r'
     'stat-smooth.r'
     'stat-sum.r'
@@ -271,4 +268,4 @@ Collate:
     'z_scales.R'
     'z_theme_animint.R'
     'z_transformShape.R'
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.2

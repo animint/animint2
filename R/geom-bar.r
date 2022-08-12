@@ -8,10 +8,7 @@
 #' \code{stat="identity"} and map a variable to the \code{y} aesthetic.
 #'
 #' A bar chart maps the height of the bar to a variable, and so the base of the
-#' bar must always be shown to produce a valid visual comparison. Naomi Robbins
-#' has a nice
-#' \href{http://www.b-eye-network.com/view/index.php?cid=2468}{article on this
-#' topic}. This is why it doesn't make sense to use a log-scaled y axis with a
+#' bar must always be shown to produce a valid visual comparison. This is why it doesn't make sense to use a log-scaled y axis with a
 #' bar chart.
 #'
 #' By default, multiple x's occurring in the same place will be stacked atop one
@@ -127,5 +124,11 @@ GeomBar <- gganimintproto("GeomBar", GeomRect,
   draw_panel = function(self, data, panel_scales, coord, width = NULL) {
     # Hack to ensure that width is detected as a parameter
     gganimintproto_parent(GeomRect, self)$draw_panel(data, panel_scales, coord)
+  },
+  pre_process = function(g, g.data, ...) {
+    is.xy <- names(g.data) %in% c("x", "y")
+    g.data <- g.data[!is.xy]
+    g$geom <- "rect"
+    return(list(g = g, g.data = g.data))
   }
 )

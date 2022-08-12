@@ -8,7 +8,7 @@
 #' more saturated colours which do not look as good). However, the original
 #' colour schemes (particularly the qualitative ones) were not intended for this
 #' and the perceptual result is left to the appreciation of the user.
-#' See \url{http://colorbrewer2.org} for more information.
+#' See \url{https://colorbrewer2.org} for more information.
 #'
 #' @section Palettes:
 #' The following palettes are available for use with these scales:
@@ -93,9 +93,3 @@ scale_fill_distiller <- function(..., type = "seq", palette = 1, direction = -1,
   continuous_scale("fill", "distiller",
     gradient_n_pal(brewer_pal(type, palette, direction)(6), values, space), na.value = na.value, guide = guide, ...)
 }
-
-# icon.brewer <- function() {
-#   rectGrob(c(0.1, 0.3, 0.5, 0.7, 0.9), width = 0.21,
-#     gp = gpar(fill = RColorBrewer::brewer.pal(5, "PuOr"), col = NA)
-#   )
-# }

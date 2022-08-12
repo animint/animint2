@@ -8,25 +8,53 @@
 \alias{scale_y_datetime}
 \title{Position scale, date & date times}
 \usage{
-scale_x_date(name = waiver(), breaks = waiver(),
-  date_breaks = waiver(), labels = waiver(), date_labels = waiver(),
-  minor_breaks = waiver(), date_minor_breaks = waiver(),
-  limits = NULL, expand = waiver())
+scale_x_date(
+  name = waiver(),
+  breaks = waiver(),
+  date_breaks = waiver(),
+  labels = waiver(),
+  date_labels = waiver(),
+  minor_breaks = waiver(),
+  date_minor_breaks = waiver(),
+  limits = NULL,
+  expand = waiver()
+)
 
-scale_y_date(name = waiver(), breaks = waiver(),
-  date_breaks = waiver(), labels = waiver(), date_labels = waiver(),
-  minor_breaks = waiver(), date_minor_breaks = waiver(),
-  limits = NULL, expand = waiver())
+scale_y_date(
+  name = waiver(),
+  breaks = waiver(),
+  date_breaks = waiver(),
+  labels = waiver(),
+  date_labels = waiver(),
+  minor_breaks = waiver(),
+  date_minor_breaks = waiver(),
+  limits = NULL,
+  expand = waiver()
+)
 
-scale_x_datetime(name = waiver(), breaks = waiver(),
-  date_breaks = waiver(), labels = waiver(), date_labels = waiver(),
-  minor_breaks = waiver(), date_minor_breaks = waiver(),
-  limits = NULL, expand = waiver())
+scale_x_datetime(
+  name = waiver(),
+  breaks = waiver(),
+  date_breaks = waiver(),
+  labels = waiver(),
+  date_labels = waiver(),
+  minor_breaks = waiver(),
+  date_minor_breaks = waiver(),
+  limits = NULL,
+  expand = waiver()
+)
 
-scale_y_datetime(name = waiver(), breaks = waiver(),
-  date_breaks = waiver(), labels = waiver(), date_labels = waiver(),
-  minor_breaks = waiver(), date_minor_breaks = waiver(),
-  limits = NULL, expand = waiver())
+scale_y_datetime(
+  name = waiver(),
+  breaks = waiver(),
+  date_breaks = waiver(),
+  labels = waiver(),
+  date_labels = waiver(),
+  minor_breaks = waiver(),
+  date_minor_breaks = waiver(),
+  limits = NULL,
+  expand = waiver()
+)
 }
 \arguments{
 \item{name}{The name of the scale. Used as axis or legend title. If

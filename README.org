@@ -1,6 +1,6 @@
 animint2 provides an animated, interactive grammar of graphics
 
-[[https://travis-ci.org/tdhock/animint2][https://travis-ci.org/tdhock/animint2.png?branch=master]]
+[[https://github.com/tdhock/animint2/actions/workflows/tests.yaml][https://github.com/tdhock/animint2/actions/workflows/tests.yaml/badge.svg]]
 
 ** Introduction
 
@@ -13,19 +13,20 @@ renders to the web using [[http://d3js.org/][D3]]. For example, this multi-layer
 facetted interactive animation of WorldBank data was defined using
 only [[inst/examples/WorldBank-facets.R][about 60 lines of R code]].
 
-[[http://cbio.ensmp.fr/~thocking/WorldBank-facets/][https://raw.githubusercontent.com/tdhock/animint/master/screencast-WorldBank.gif]]
+[[https://rcdata.nau.edu/genomic-ml/WorldBank-facets/][https://raw.githubusercontent.com/tdhock/animint/master/screencast-WorldBank.gif]]
 
 ** Installation
 
-Now available on CRAN:
-
 #+BEGIN_SRC R
-install.packages("animint2")
+install.packages("animint2")#from CRAN (stable).
+##OR from GitHub (development).
+if(!require("remotes"))install.packages("remotes")
+remotes:install_github("tdhock/animint2")
 #+END_SRC
 
 ** Usage
 
-The best reference for learning is the [[http://members.cbio.mines-paristech.fr/~thocking/animint2-manual/Ch02-ggplot2.html][Animint2 Designer Manual]], which
+The best reference for learning is the [[https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch02-ggplot2.html][Animint2 Designer Manual]], which
 provides several examples and exercises to get you started using
 animint2.
 
@@ -34,9 +35,31 @@ be created, see [[https://github.com/tdhock/animint/wiki/Gallery][the animint ga
 
 For additional usage examples, see our extensive set of [[file:tests/testthat][test cases]].
 
-** Differences with old animint
+** Differences with other packages
 
-This package is a redesign of [[https://github.com/tdhock/animint][animint]] with:
+[[https://amstat.tandfonline.com/doi/abs/10.1080/10618600.2018.1513367?journalCode=ucgs20][Our JCGS paper]] provides a detailed comparison (an executive summary is below).
+
+*** R packages for animated graphics
+
+R packages [[https://github.com/tdhock/gganim][gganim]], [[https://cloud.r-project.org/web/packages/animation/][animation]] and [[https://github.com/thomasp85/gganimate][gganimate]] can generate animated graphics, in which the only interaction is going forward or backward in time. In contrast animint2 provides animation and also interaction with other variables (not only time).
+
+*** shiny+plotly web applications
+
+Typical shiny web applications provide interactive graphics with
+indirect manipulation (via menus/buttons/etc) but the emphasis in
+animint2 is direct manipulation (via mouse clicks on
+lines/points/etc). Direct manipulation in shiny apps can also be
+achieved using the excellent [[https://plotly-r.com/client-side-linking.html][plotly]] package, in which interactivity
+can be specified using events; in contrast animint2 uses the
+clickSelects/showSelected keywords to specify interactivity.
+
+*** loon exploratory graphics
+
+[[http://great-northern-diver.github.io/loon/][loon]] is an excellent R package for interactive exploratory graphics; the focus of animint2 is interactive presentation graphics.
+
+*** Old animint
+
+animint2 is a redesign of [[https://github.com/tdhock/animint][animint]] with:
 - Cleaner syntax. In the old animint we had showSelected/clickSelects
   as aesthetics, and in animint2 they are now geom parameters.
 - Easier installation. The old animint depended on ggplot2 but
@@ -44,7 +67,7 @@ This package is a redesign of [[https://github.com/tdhock/animint][animint]] wit
   ggplot2). 
 
 For a concrete example of how the syntax changed, consider the
-following example [[http://members.cbio.mines-paristech.fr/~thocking/data/PeakSegJoint-H3K4me3-test/1/figure-train-errors/][dataviz]], adapted from
+following example [[http://bl.ocks.org/tdhock/raw/cfc5d67636ee76d42be0/][dataviz]], adapted from
 [[file:tests/testthat/test-renderer1-variable-value.R]]. The data set used
 to draw the blue line segments in the bottom plot looks like this:
 

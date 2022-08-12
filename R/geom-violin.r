@@ -154,7 +154,19 @@ GeomViolin <- gganimintproto("GeomViolin", Geom,
   default_aes = aes(weight = 1, colour = "grey20", fill = "white", size = 0.5,
     alpha = NA, linetype = "solid"),
 
-  required_aes = c("x", "y")
+  required_aes = c("x", "y"),
+  pre_process = function(g, g.data, ...) {
+    g.data$xminv <- with(g.data, x - violinwidth * (x - xmin))
+    g.data$xmaxv <- with(g.data, x + violinwidth * (xmax - x))
+    newdata <- plyr::ddply(g.data, "group", function(df){
+                  rbind(plyr::arrange(transform(df, x=xminv), y),
+                        plyr::arrange(transform(df, x=xmaxv), -y))
+                })
+    newdata <- plyr::ddply(newdata, "group", function(df) rbind(df, df[1,]))
+    g.data <- newdata
+    g$geom <- "polygon"
+    return(list(g = g, g.data = g.data))
+  }
 )
 
 # Returns a data.frame with info needed to draw quantile segments.

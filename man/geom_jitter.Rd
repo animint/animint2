@@ -4,9 +4,18 @@
 \alias{geom_jitter}
 \title{Points, jittered to reduce overplotting.}
 \usage{
-geom_jitter(mapping = NULL, data = NULL, stat = "identity",
-  position = "jitter", ..., width = NULL, height = NULL,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+geom_jitter(
+  mapping = NULL,
+  data = NULL,
+  stat = "identity",
+  position = "jitter",
+  ...,
+  width = NULL,
+  height = NULL,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -96,7 +105,5 @@ ggplot(mpg, aes(cty, hwy)) + geom_jitter()
 ggplot(mpg, aes(cty, hwy)) + geom_jitter(width = 0.5, height = 0.5)
 }
 \seealso{
-\code{\link{geom_point}} for regular, unjittered points,
- \code{\link{geom_boxplot}} for another way of looking at the conditional
-    distribution of a variable
+\code{\link{geom_point}} for regular, unjittered points.
 }

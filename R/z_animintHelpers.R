@@ -734,6 +734,8 @@ getLegend <- function(mb){
          selector = mb$selector,
          is_discrete= mb$is.discrete,
          legend_type = mb$legend_type,
+         text_size = mb$text_size,
+         title_size = mb$title_size,
          entries = data)
   }
 }

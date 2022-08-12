@@ -34,6 +34,7 @@ test_that("no error for time option with clickSelects", {
     time=list(variable="Species", ms=3000)
   )
   info <- animint2dir(viz, open.browser=FALSE)
+  expect_identical(info[["time"]][["ms"]], 3000)
 })
 
 test_that("no error for time option with showSelected", {
@@ -45,6 +46,7 @@ test_that("no error for time option with showSelected", {
     time=list(variable="Species", ms=3000)
   )
   info <- animint2dir(viz, open.browser=FALSE)
+  expect_identical(info[["time"]][["ms"]], 3000)
 })
 
 test_that("no error for time option with color", {
@@ -55,6 +57,7 @@ test_that("no error for time option with color", {
     time=list(variable="Species", ms=3000)
   )
   info <- animint2dir(viz, open.browser=FALSE)
+  expect_identical(info[["time"]][["ms"]], 3000)
 })
 
 data("WorldBank", package="animint2")

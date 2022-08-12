@@ -6,6 +6,8 @@
 // Constructor for animint Object.
 var animint = function (to_select, json_file) {
 
+  var default_axis_px = 16;
+
    function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
@@ -247,8 +249,8 @@ var animint = function (to_select, json_file) {
     var npanels = Math.max.apply(null, panel_names);
 
     // Note axis names are "shared" across panels (just like the title)
-    var xtitlepadding = 5 + measureText(p_info["xtitle"], 11).height;
-    var ytitlepadding = 5 + measureText(p_info["ytitle"], 11).height;
+    var xtitlepadding = 5 + measureText(p_info["xtitle"], default_axis_px).height;
+    var ytitlepadding = 5 + measureText(p_info["ytitle"], default_axis_px).height;
 
     // 'margins' are fixed across panels and do not
     // include title/axis/label padding (since these are not
@@ -308,14 +310,14 @@ var animint = function (to_select, json_file) {
       axispaddingy += Math.max.apply(null, p_info.ylabs.map(function(entry){
 	// + 5 to give a little extra space to avoid bad axis labels
 	// in shiny.
-	return measureText(entry, 11).width + 5;
+	return measureText(entry, p_info.ysize).width + 5;
       }));
     }
     var axispaddingx = 10 + 20;
     if(p_info.hasOwnProperty("xlabs") && p_info.xlabs.length){
       // TODO: throw warning if text height is large portion of plot height?
       axispaddingx += Math.max.apply(null, p_info.xlabs.map(function(entry){
-	     return measureText(entry, 11, p_info.xangle).height;
+	     return measureText(entry, p_info.xsize, p_info.xangle).height;
       }));
       // TODO: carefully calculating this gets complicated with rotating xlabs
       //margin.right += 5;
@@ -601,6 +603,7 @@ var animint = function (to_select, json_file) {
 	}
 	xaxis_g.selectAll("text")
 	  .style("text-anchor", p_info.xanchor)
+    .style("font-size", p_info.xsize + "px")
 	  .attr("transform", "rotate(" + p_info.xangle + " 0 9)");
       }
       if(draw_y){
@@ -620,6 +623,8 @@ var animint = function (to_select, json_file) {
 	  var axis_path = yaxis_g.select("path.domain");
 	  axis_path.remove();
 	}
+  yaxis_g.selectAll(".tick text")
+    .style("font-size", p_info.ysize + "px");
       }
 
       if(!axis.xline) {
@@ -718,7 +723,7 @@ var animint = function (to_select, json_file) {
 	.text(p_info["ytitle"])
 	.attr("class", "ytitle")
 	.style("text-anchor", "middle")
-	.style("font-size", "11px")
+	.style("font-size", default_axis_px + "px")
 	.attr("transform", "translate(" + 
 	      ytitle_x +
 	      "," +
@@ -731,7 +736,7 @@ var animint = function (to_select, json_file) {
 	.text(p_info["xtitle"])
 	.attr("class", "xtitle")
 	.style("text-anchor", "middle")
-	.style("font-size", "11px")
+	.style("font-size", default_axis_px + "px")
 	.attr("transform", "translate(" + 
 	      (xtitle_left + xtitle_right)/2 +
 	      "," + 
@@ -1085,6 +1090,23 @@ var animint = function (to_select, json_file) {
     };
     var colour = "black";
     var fill = "black";
+    let angle = 0;
+    if (g_info.params.hasOwnProperty("angle")) {
+      angle = g_info.params["angle"];
+    }
+    const get_angle = function(d) {
+      // x and y are the coordinates to rotate around, we choose the center 
+      // point of the text because otherwise it will rotate around (0,0) of its 
+      // coordinate system, which is the top left of the plot
+      x = scales["x"](d["x"]);
+      y = scales["y"](d["y"]);
+      if (d.hasOwnProperty("angle")) {
+        angle = d["angle"];
+      }
+      // ggplot expects angles to be in degrees CCW, SVG uses degrees CW, so 
+      // we negate the angle.
+      return `rotate(${-angle}, ${x}, ${y})`;
+    };
     var get_colour = function (d) {
       if (d.hasOwnProperty("colour")) {
         return d["colour"]
@@ -1382,6 +1404,7 @@ var animint = function (to_select, json_file) {
           .style("fill", get_colour)
           .attr("font-size", get_size)
           .style("text-anchor", get_text_anchor)
+          .attr("transform", get_angle)
           .text(function (d) {
             return d.label;
           });
@@ -2009,6 +2032,7 @@ var animint = function (to_select, json_file) {
 	entry.variable = l_info.selector;
 	entry.value = entry.label;
 	entry.id = safe_name(legend_id + "_" + entry["label"]);
+  entry.text_size = l_info.text_size;
       }
       var legend_rows = legend_table.selectAll("tr")
         .data(l_info.entries)
@@ -2037,6 +2061,7 @@ var animint = function (to_select, json_file) {
 	.attr("colspan", 2)
         .text(l_info.title)
         .attr("class", legend_class)
+        .style("font-size", l_info.title_size + "px")
       ;
       var legend_svgs = legend_rows.append("td")
         .append("svg")
@@ -2071,7 +2096,7 @@ var animint = function (to_select, json_file) {
 	        .attr("y", 14)
           .style("fill", function(d){return d["textcolour"]||1;})
 	        .style("text-anchor", "middle")
-	        .attr("font-size", function(d){return d["textsize"]||1;})
+	        .attr("font-size", function(d){return d["textsize"]||16;})
 	        .text("a");
       }
       if(l_info.geoms.indexOf("path")>-1){
@@ -2103,6 +2128,7 @@ var animint = function (to_select, json_file) {
 	.attr("align", "left") // TODO: right for numbers?
 	.attr("class", "legend_entry_label")
 	.attr("id", function(d){ return d["id"]+"_label"; })
+  .style("font-size", function(d){ return d["text_size"]+"px"})
 	.text(function(d){ return d["label"];});
     }
   }

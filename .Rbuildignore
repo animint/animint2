@@ -1,3 +1,4 @@
+.github
 ^.*\.Rproj$
 ^\.Rproj\.user$
 build.sh
@@ -8,9 +9,6 @@ inst/examples
 README.org
 tableau-notes.org
 .*~
-.travis.yml
-travis-tool.sh
-pids.txt
 intreg-selection
 animint-htmltest
 ANIMINT_TEST_FOO

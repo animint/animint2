@@ -4,9 +4,16 @@
 \alias{geom_point}
 \title{Points, as for a scatterplot}
 \usage{
-geom_point(mapping = NULL, data = NULL, stat = "identity",
-  position = "identity", ..., na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+geom_point(
+  mapping = NULL,
+  data = NULL,
+  stat = "identity",
+  position = "identity",
+  ...,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -69,9 +76,8 @@ you have more than a few points, points may be plotted on top of one
 another. This can severely distort the visual appearance of the plot.
 There is no one solution to this problem, but there are some techniques
 that can help.  You can add additional information with
-\code{\link{geom_smooth}}, \code{\link{geom_quantile}} or
-\code{\link{geom_density_2d}}.  If you have few unique x values,
-\code{\link{geom_boxplot}} may also be useful.  Alternatively, you can
+\code{\link{geom_smooth}} or
+\code{\link{geom_density_2d}}.    Alternatively, you can
 summarise the number of points at each location and display that in some
 way, using \code{\link{stat_sum}}. Another technique is to use transparent
 points, e.g. \code{geom_point(alpha = 0.05)}.

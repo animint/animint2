@@ -16,10 +16,22 @@ geom_freqpoly <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomPath,
+    geom = GeomFreqpoly,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = params
   )
 }
+
+#' @rdname animint2-gganimintproto
+#' @format NULL
+#' @usage NULL
+#' @export
+GeomFreqpoly <- gganimintproto("GeomFreqpoly", GeomPath,
+  pre_process = function(g, g.data, ...) {
+    g$geom <- "line"
+    g.data <- g.data[order(g.data$x), ]
+    return(list(g = g, g.data = g.data))
+  }
+)

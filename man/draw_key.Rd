@@ -7,7 +7,6 @@
 \alias{draw_key_rect}
 \alias{draw_key_polygon}
 \alias{draw_key_blank}
-\alias{draw_key_boxplot}
 \alias{draw_key_crossbar}
 \alias{draw_key_path}
 \alias{draw_key_vpath}
@@ -28,8 +27,6 @@ draw_key_rect(data, params, size)
 draw_key_polygon(data, params, size)
 
 draw_key_blank(data, params, size)
-
-draw_key_boxplot(data, params, size)
 
 draw_key_crossbar(data, params, size)
 

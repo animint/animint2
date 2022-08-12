@@ -5,20 +5,19 @@
 \alias{economics}
 \alias{economics_long}
 \title{US economic time series.}
-\format{A data frame with 478 rows and 6 variables
+\format{
+A data frame with 478 rows and 6 variables
 \itemize{
   \item date.  Month of data collection
   \item psavert, personal savings rate,
-    \url{http://research.stlouisfed.org/fred2/series/PSAVERT/}
   \item pce, personal consumption expenditures, in billions of dollars,
-    \url{http://research.stlouisfed.org/fred2/series/PCE}
   \item unemploy, number of unemployed in thousands,
-    \url{http://research.stlouisfed.org/fred2/series/UNEMPLOY}
   \item uempmed, median duration of unemployment, in week,
-    \url{http://research.stlouisfed.org/fred2/series/UEMPMED}
   \item pop, total population, in thousands,
-   \url{http://research.stlouisfed.org/fred2/series/POP}
-}}
+}
+
+An object of class \code{grouped_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 2870 rows and 4 columns.
+}
 \usage{
 economics
 
@@ -26,7 +25,7 @@ economics_long
 }
 \description{
 This dataset was produced from US economic time series data available from
-\url{http://research.stlouisfed.org/fred2}. \code{economics} is in "wide"
+\url{https://fred.stlouisfed.org/}. \code{economics} is in "wide"
 format, \code{economics_long} is in "long" format.
 }
 \keyword{datasets}

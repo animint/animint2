@@ -28,10 +28,11 @@ ggplot(df, aes(x, y)) +
   geom_text(aes(label = y), position = position_nudge(y = -0.1))
 }
 \seealso{
-Other position adjustments: \code{\link{position_dodge}},
-  \code{\link{position_fill}},
-  \code{\link{position_identity}},
-  \code{\link{position_jitterdodge}},
-  \code{\link{position_jitter}}
+Other position adjustments: 
+\code{\link{position_dodge}()},
+\code{\link{position_fill}()},
+\code{\link{position_identity}()},
+\code{\link{position_jitterdodge}()},
+\code{\link{position_jitter}()}
 }
 \concept{position adjustments}

@@ -13,7 +13,9 @@
 #' margin(4, 2)
 #' margin(4, 3, 2, 1)
 margin <- function(t = 0, r = 0, b = 0, l = 0, unit = "pt") {
-  structure(unit(c(t, r, b, l), unit), class = c("margin", "unit"))
+  u <- unit(c(t, r, b, l), unit)
+  class(u) <- c("margin", class(u))
+  u
 }
 
 

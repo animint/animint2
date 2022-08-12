@@ -6,8 +6,16 @@
 tiles the x or y range. This function is used internally by
 make_tallrect or make_widerect, which are more user-friendly.}
 \usage{
-make_tallrect_or_widerect(aes.prefix, geom_xrect, data, var.name,
-  even = FALSE, alpha = 0.5, ..., data.fun = identity)
+make_tallrect_or_widerect(
+  aes.prefix,
+  geom_xrect,
+  data,
+  var.name,
+  even = FALSE,
+  alpha = 0.5,
+  ...,
+  data.fun = identity
+)
 }
 \arguments{
 \item{aes.prefix}{"x" or "y"}

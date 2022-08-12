@@ -89,5 +89,15 @@ GeomRaster <- gganimintproto("GeomRaster", Geom,
       default.units = "native", interpolate = interpolate
     )
   },
-  draw_key = draw_key_rect
+  draw_key = draw_key_rect,
+  pre_process = function(g, g.data, ...) {
+    # Color set to match ggplot2 default of tile with no outside border.
+      if(!"colour"%in%names(g.data) & "fill"%in%names(g.data)){
+        g.data[["colour"]] <- g.data[["fill"]]
+        # Make outer border of 0 size if size isn't already specified.
+        if(!"size"%in%names(g.data)) g.data[["size"]] <- 0
+      }
+      g$geom <- "rect"
+      return(list(g = g, g.data = g.data))
+  }
 )

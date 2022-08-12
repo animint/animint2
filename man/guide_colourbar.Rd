@@ -5,21 +5,55 @@
 \alias{guide_colorbar}
 \title{Continuous colour bar guide.}
 \usage{
-guide_colourbar(title = waiver(), title.position = NULL,
-  title.theme = NULL, title.hjust = NULL, title.vjust = NULL,
-  label = TRUE, label.position = NULL, label.theme = NULL,
-  label.hjust = NULL, label.vjust = NULL, barwidth = NULL,
-  barheight = NULL, nbin = 20, raster = TRUE, ticks = TRUE,
-  draw.ulim = TRUE, draw.llim = TRUE, direction = NULL,
-  default.unit = "line", reverse = FALSE, order = 0, ...)
+guide_colourbar(
+  title = waiver(),
+  title.position = NULL,
+  title.theme = NULL,
+  title.hjust = NULL,
+  title.vjust = NULL,
+  label = TRUE,
+  label.position = NULL,
+  label.theme = NULL,
+  label.hjust = NULL,
+  label.vjust = NULL,
+  barwidth = NULL,
+  barheight = NULL,
+  nbin = 20,
+  raster = TRUE,
+  ticks = TRUE,
+  draw.ulim = TRUE,
+  draw.llim = TRUE,
+  direction = NULL,
+  default.unit = "line",
+  reverse = FALSE,
+  order = 0,
+  ...
+)
 
-guide_colorbar(title = waiver(), title.position = NULL,
-  title.theme = NULL, title.hjust = NULL, title.vjust = NULL,
-  label = TRUE, label.position = NULL, label.theme = NULL,
-  label.hjust = NULL, label.vjust = NULL, barwidth = NULL,
-  barheight = NULL, nbin = 20, raster = TRUE, ticks = TRUE,
-  draw.ulim = TRUE, draw.llim = TRUE, direction = NULL,
-  default.unit = "line", reverse = FALSE, order = 0, ...)
+guide_colorbar(
+  title = waiver(),
+  title.position = NULL,
+  title.theme = NULL,
+  title.hjust = NULL,
+  title.vjust = NULL,
+  label = TRUE,
+  label.position = NULL,
+  label.theme = NULL,
+  label.hjust = NULL,
+  label.vjust = NULL,
+  barwidth = NULL,
+  barheight = NULL,
+  nbin = 20,
+  raster = TRUE,
+  ticks = TRUE,
+  draw.ulim = TRUE,
+  draw.llim = TRUE,
+  direction = NULL,
+  default.unit = "line",
+  reverse = FALSE,
+  order = 0,
+  ...
+)
 }
 \arguments{
 \item{title}{A character string or expression indicating a title of guide.
@@ -164,7 +198,8 @@ p2 +
   scale_size(guide = guide_legend(direction = "vertical"))
 }
 \seealso{
-Other guides: \code{\link{guide_legend}},
-  \code{\link{guides}}
+Other guides: 
+\code{\link{guide_legend}()},
+\code{\link{guides}()}
 }
 \concept{guides}

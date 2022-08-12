@@ -13,13 +13,27 @@ scale_colour_brewer(..., type = "seq", palette = 1, direction = 1)
 
 scale_fill_brewer(..., type = "seq", palette = 1, direction = 1)
 
-scale_colour_distiller(..., type = "seq", palette = 1,
-  direction = -1, values = NULL, space = "Lab",
-  na.value = "grey50", guide = "colourbar")
+scale_colour_distiller(
+  ...,
+  type = "seq",
+  palette = 1,
+  direction = -1,
+  values = NULL,
+  space = "Lab",
+  na.value = "grey50",
+  guide = "colourbar"
+)
 
-scale_fill_distiller(..., type = "seq", palette = 1, direction = -1,
-  values = NULL, space = "Lab", na.value = "grey50",
-  guide = "colourbar")
+scale_fill_distiller(
+  ...,
+  type = "seq",
+  palette = 1,
+  direction = -1,
+  values = NULL,
+  space = "Lab",
+  na.value = "grey50",
+  guide = "colourbar"
+)
 }
 \arguments{
 \item{...}{Other arguments passed on to \code{\link{discrete_scale}}
@@ -30,13 +44,13 @@ to control name, limits, breaks, labels and so forth.}
 \item{palette}{If a string, will use that named palette.  If a number, will
 index into the list of palettes of appropriate \code{type}}
 
-\item{direction}{Sets the order of colors in the scale. If 1, the default,
-colors are as output by \code{\link[RColorBrewer]{brewer.pal}}. If -1, the
-order of colors is reversed.}
+\item{direction}{Sets the order of colours in the scale. If 1, the default,
+colours are as output by \code{\link[RColorBrewer:ColorBrewer]{RColorBrewer::brewer.pal()}}. If -1, the
+order of colours is reversed.}
 
 \item{values}{if colours should not be evenly positioned along the gradient
 this vector gives the position (between 0 and 1) for each colour in the
-\code{colours} vector. See \code{\link{rescale}} for a convience function
+\code{colours} vector. See \code{\link[scales:rescale]{rescale()}} for a convenience function
 to map an arbitrary range to between 0 and 1.}
 
 \item{space}{colour space in which to calculate gradient. Must be "Lab" -
@@ -56,7 +70,7 @@ continuous scale (6 colours per palette gives nice gradients; more results in
 more saturated colours which do not look as good). However, the original
 colour schemes (particularly the qualitative ones) were not intended for this
 and the perceptual result is left to the appreciation of the user.
-See \url{http://colorbrewer2.org} for more information.
+See \url{https://colorbrewer2.org} for more information.
 }
 \section{Palettes}{
 
@@ -76,7 +90,7 @@ dsamp <- diamonds[sample(nrow(diamonds), 1000), ]
 
 # Change scale label
 d + scale_colour_brewer()
-d + scale_colour_brewer("Diamond\\nclarity")
+d + scale_colour_brewer("Diamond\nclarity")
 
 # Select brewer palette to use, see ?scales::brewer_pal for more details
 d + scale_colour_brewer(palette = "Greens")

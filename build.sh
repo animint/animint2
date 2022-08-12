@@ -1,5 +1,6 @@
 #!/bin/bash
 set -o errexit
+R -e 'devtools::document()'
 cd ..
 rm -rf animint2-release
 cp -r animint2 animint2-release

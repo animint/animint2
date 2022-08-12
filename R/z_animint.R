@@ -145,9 +145,13 @@ parsePlot <- function(meta, plot, plot.name){
     # theme settings are shared across panels
     axis.text <- theme.pars[[s("axis.text.%s")]]
     ## TODO: also look at axis.text! (and text?)
+    size <- calc_element(s("axis.text.%s"), theme.pars)$size
     anchor <- hjust2anchor(axis.text$hjust)
     angle <- if(is.numeric(axis.text$angle)){
       -axis.text$angle
+    }
+    if(is.null(size)){
+      size <- 11
     }
     if(is.null(angle)){
       angle <- 0
@@ -159,6 +163,7 @@ parsePlot <- function(meta, plot, plot.name){
         "end"
       }
     }
+    plot.info[[s("%ssize")]] <- as.numeric(size)
     plot.info[[s("%sanchor")]] <- as.character(anchor)
     plot.info[[s("%sangle")]] <- as.numeric(angle)
     # translate panel specific axis info
@@ -810,7 +815,6 @@ saveLayer <- function(l, d, meta, layer_name, ggplot, built, AnimationInfo){
   list(g=g, g.data.varied=g.data.varied, timeValues=AnimationInfo$timeValues)
 }
 
-
 #' Compile and render an animint in a local directory.
 #'
 #' This function converts an animint plot.list into a directory of
@@ -935,12 +939,6 @@ animint2dir <- function(plot.list, out.dir = NULL,
     for(layer.i in seq_along(ggplot.info$ggplot$layers)){
       L <- ggplot.info$ggplot$layers[[layer.i]]
       df <- ggplot.info$built$data[[layer.i]]
-
-      ## cat(sprintf(
-      ##   "saving layer %4d / %4d of ggplot %s\n",
-      ##   layer.i, length(ggplot.info$built$data),
-      ##   p.name))
-
       ## Data now contains columns with fill, alpha, colour etc.
       ## Remove from data if they have a single unique value and
       ## are NOT used in mapping to reduce tsv file size
@@ -959,9 +957,12 @@ animint2dir <- function(plot.list, out.dir = NULL,
       }
       geom_num <- geom_num + 1
       layer_name <- getLayerName(L, geom_num, p.name)
-      gl <- saveLayer(L, df, meta, layer_name,
-                      ggplot.info$ggplot, ggplot.info$built, AnimationInfo)
-
+      if(nrow(df)==0){
+        stop("no data in ", layer_name)
+      }
+      gl <- Geom$export_animint(
+        L, df, meta, layer_name,
+        ggplot.info$ggplot, ggplot.info$built, AnimationInfo)
       ## Save Animation Info separately
       AnimationInfo$timeValues <- gl$timeValues
       gl$timeValues <- NULL
@@ -1271,6 +1272,8 @@ getLegendList <- function(plistextra){
   default_mapping <- plot$mapping
   theme <- plot_theme(plot)
   position <- theme$legend.position
+  text <- theme$legend.text
+  title <- theme$legend.title
   # by default, guide boxes are vertically aligned
   if(is.null(theme$legend.box)) theme$legend.box <- "vertical" else theme$legend.box
 
@@ -1329,6 +1332,8 @@ getLegendList <- function(plistextra){
     discrete.vec <- sapply(scale.list, inherits, "ScaleDiscrete")
     is.discrete <- all(discrete.vec)
     gdefs[[leg]]$is.discrete <- is.discrete
+    gdefs[[leg]]$text_size <- calc_element("legend.text", theme)$size
+    gdefs[[leg]]$title_size <- calc_element("legend.title", theme)$size
     ## get the name of the legend/selection variable.
     var.list <- list()
     for(layer.i in seq_along(plot$layers)) {
