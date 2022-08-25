@@ -65,7 +65,8 @@ Imports:
     reshape2,
     scales (>= 0.4.1),
     stats,
-    knitr (>= 1.5.33)
+    knitr (>= 1.5.33),
+    data.table (>= 1.9.8)
 Suggests:
     servr,
     gistr (>= 0.2),
@@ -87,7 +88,8 @@ Suggests:
     mgcv,
     nlme,
     rpart,
-    svglite
+    svglite,
+    ggplot2
 Enhances: sp
 Remotes: ropensci/RSelenium@v1.7.4
 License: GPL-3

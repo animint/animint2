@@ -169,11 +169,11 @@ Layer <- gganimintproto("Layer", NULL,
       self$data
     }
   },
-
   compute_aesthetics = function(self, data, plot) {
+    defaults.l <- function(x, y) c(x, y[setdiff(names(y), names(x))])
     # For annotation geoms, it is useful to be able to ignore the default aes
     if (self$inherit.aes) {
-      aesthetics <- defaults(self$mapping, plot$mapping)
+      aesthetics <- defaults.l(self$mapping, plot$mapping)
     } else {
       aesthetics <- self$mapping
     }
@@ -235,12 +235,13 @@ Layer <- gganimintproto("Layer", NULL,
   map_statistic = function(self, data, plot) {
     if (empty(data)) return(data.frame())
 
+    defaults.l <- function(x, y) c(x, y[setdiff(names(y), names(x))])
     # Assemble aesthetics from layer, plot and stat mappings
     aesthetics <- self$mapping
     if (self$inherit.aes) {
-      aesthetics <- defaults(aesthetics, plot$mapping)
+      aesthetics <- defaults.l(aesthetics, plot$mapping)
     }
-    aesthetics <- defaults(aesthetics, self$stat$default_aes)
+    aesthetics <- defaults.l(aesthetics, self$stat$default_aes)
     aesthetics <- compact(aesthetics)
 
     new <- strip_dots(aesthetics[is_calculated_aes(aesthetics)])

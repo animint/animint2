@@ -24,6 +24,10 @@ if(!require("remotes"))install.packages("remotes")
 remotes:install_github("tdhock/animint2")
 #+END_SRC
 
+** FAQ
+
+If you have problems rendering animints (such as a blank web page) then please see our [[https://github.com/tdhock/animint2/wiki/FAQ#web-browser-on-local-indexhtml-file-is-blank][FAQ wiki page]].
+
 ** Usage
 
 The best reference for learning is the [[https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch02-ggplot2.html][Animint2 Designer Manual]], which
