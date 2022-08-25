@@ -1036,9 +1036,18 @@ var animint = function (to_select, json_file) {
     var panel_g_element = layer_g_element.select("g.PANEL" + PANEL);
     var elements = panel_g_element.selectAll(".geom");
     // TODO: standardize this code across aes/styles.
-    var base_opacity = 1;
-    if (g_info.params.alpha) {
+    let base_opacity;
+    let off_opacity;
+    // Explicitly check if it has the property, allows 0 as valid value
+    if (g_info.params.hasOwnProperty("alpha")) {
       base_opacity = g_info.params.alpha;
+    } else {
+      base_opacity = 1;
+    }
+    if (g_info.params.hasOwnProperty("alpha_off")) {
+      off_opacity = g_info.params.alpha_off;
+    } else {
+      off_opacity = base_opacity - 0.5;
     }
     //alert(g_info.classed+" "+base_opacity);
     var get_alpha = function (d) {
@@ -1047,6 +1056,19 @@ var animint = function (to_select, json_file) {
         a = d["alpha"];
       } else {
         a = base_opacity;
+      }
+      return a;
+    };
+    const get_alpha_off = function (d) {
+      let a;
+      if (aes.hasOwnProperty("alpha_off") && d.hasOwnProperty("alpha_off")) {
+        a = d["alpha_off"];
+      } else if (g_info.params.hasOwnProperty("alpha_off")) {
+        a = g_info.params.alpha_off;
+      } else if (aes.hasOwnProperty("alpha") && d.hasOwnProperty("alpha")) {
+        a = d["alpha"] - 0.5;
+      } else {
+        a = off_opacity;
       }
       return a;
     };
@@ -1573,7 +1595,9 @@ var animint = function (to_select, json_file) {
 	"opacity":{
 	  "mouseout":function (d) {
 	    var alpha_on = get_alpha(d);
-	    var alpha_off = get_alpha(d) - 0.5;
+      // 
+      let alpha_off = get_alpha_off(d);
+	    // var alpha_off = get_alpha(d) - 0.5;
 	    if(has_clickSelects){
               return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects,
 				    alpha_on, alpha_off);
