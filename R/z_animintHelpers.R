@@ -900,11 +900,11 @@ varied.chunk <- function(dt.or.list, cols){
     dt <- dt.or.list[, cols, with=FALSE, drop=FALSE]
     u.dt <- unique(dt)
     group.counts <- u.dt[, .N, by = group]
-    if(all(group.counts$N == 1)){
-      setDF(u.dt)
+    setDF(if(all(group.counts$N == 1)){
+      u.dt
     }else{
-      setDF(dt)
-    }
+      dt
+    })
   } else{
     lapply(dt.or.list, varied.chunk, cols)
   }
