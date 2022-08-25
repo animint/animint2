@@ -4,10 +4,10 @@
 \alias{varied.chunk}
 \title{Extract subset for each data.frame in a list of data.frame}
 \usage{
-varied.chunk(df.or.list, cols)
+varied.chunk(dt.or.list, cols)
 }
 \arguments{
-\item{df.or.list}{a data.frame or a list of data.frame.}
+\item{dt.or.list}{a data.table or a list of data.table.}
 
 \item{cols}{cols that each data.frame would keep.}
 }
