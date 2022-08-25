@@ -16,7 +16,7 @@ addShowSelectedForLegend <- function(meta, legend, L){
     if(is.variable.name && layer.has.variable) {
       ## if the data is data.table, convert it into data.frame
       if(is.data.table(L$data)){
-        setDF(L$data)
+        L$data <- as.data.frame(L$data)
       }
       ## grabbing the variable from the data
       var <- L$data[, s.name]
