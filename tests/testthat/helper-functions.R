@@ -173,16 +173,22 @@ expect_styles <- function(html, styles.expected){
 }
 
 expect_color <- function(computed, expected){
+  if(length(expected)==1){
+    expected <- rep(expected, length(computed))
+  }else if(length(expected) != length(computed)){
+    stop("expected must be scalar or same length as computed")
+  }
   if(grepl("rgb", computed[1])){
     ## On firefox, grey50 is "rgb(127, 127, 127)"
     expected.mat <- col2rgb(expected)
-    expected.regex <- apply(expected.mat, 2, paste, collapse=", *")
-    expect_match(computed, expected.regex)
+    expected.vec <- apply(expected.mat, 2, paste, collapse=",")
+    computed.vec <- gsub("[rgb() ]", "", computed)
   }else{
     ## On phantomjs, grey50 is "#7f7f7f"
-    expected.rgb <- toRGB(rep(expected, length(computed)))
-    expect_identical(toupper(computed), toupper(expected.rgb))
+    expected.vec <- toupper(toRGB(expected))
+    computed.vec <- toupper(computed)
   }
+  expect_identical(computed.vec, expected.vec)
 }
 
 getTextValue <- function(tick)xmlValue(getNodeSet(tick, "text")[[1]])
