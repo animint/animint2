@@ -183,5 +183,5 @@ test_that("warning for _off param without clickSelects", {
     data = mtcars))
   expect_warning({
     animint2dir(viz.point1, open.browser = FALSE)
-  }, "geom_point has alpha_off, colour_off which is not used because this geom has no clickSelects; please specify clickSelects or remove alpha_off, colour_off")
+  }, "geom1_point_pointone has alpha_off, colour_off which is not used because this geom has no clickSelects; please specify clickSelects or remove alpha_off, colour_off")
 })

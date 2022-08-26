@@ -322,13 +322,13 @@ Geom <- gganimintproto("Geom",
       warning(sprintf("geom_%s with size=0 will be invisible",g$geom))
     }
 
-    ## raise warning for using _off params without clickSelects
+    ## raise warning for using *_off params without clickSelects
     has.off <- any(names(g$params) %like% "_off")
     has.no.cs <- !any(is.cs)
     if(has.no.cs && has.off){
       off.vec <- grep( "_off$", names(g$params), value = TRUE)
-      warning(sprintf("geom_%s has %s which is not used because this geom has no clickSelects; please specify clickSelects or remove %s",
-      g$geom, paste(off.vec, collapse=", "), paste(off.vec, collapse=", ")))
+      warning(sprintf("%s has %s which is not used because this geom has no clickSelects; please specify clickSelects or remove %s",
+      g$classed, paste(off.vec, collapse=", "), paste(off.vec, collapse=", ")))
     }
     ## TODO: coord_transform maybe won't work for
     ## geom_dotplot|rect|segment and polar/log transformations, which
