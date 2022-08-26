@@ -1147,6 +1147,9 @@ var animint = function (to_select, json_file) {
       }
       return colour;
     };
+    if (g_info.params.colour) {
+      colour = g_info.params.colour;
+    }
     
     // Only "colour_off" params appears would call this function,
     // so no default off_colour value
@@ -1166,9 +1169,6 @@ var animint = function (to_select, json_file) {
       }
       return fill;
     };
-    if (g_info.params.colour) {
-      colour = g_info.params.colour;
-    }
     if (g_info.params.fill) {
       fill = g_info.params.fill;
     }else if(g_info.params.colour){
