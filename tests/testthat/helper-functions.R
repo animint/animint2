@@ -180,13 +180,13 @@ expect_color <- function(computed, expected){
   }
   if(grepl("rgb", computed[1])){
     ## On firefox, grey50 is "rgb(127, 127, 127)"
+    computed.vec <- gsub("[rgb() ]", "", computed)
     expected.mat <- col2rgb(expected)
     expected.vec <- apply(expected.mat, 2, paste, collapse=",")
-    computed.vec <- gsub("[rgb() ]", "", computed)
   }else{
     ## On phantomjs, grey50 is "#7f7f7f"
+    computed.vec <- toupper(toRGB(computed))
     expected.vec <- toupper(toRGB(expected))
-    computed.vec <- toupper(computed)
   }
   expect_identical(computed.vec, expected.vec)
 }
