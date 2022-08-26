@@ -188,7 +188,7 @@ expect_color <- function(computed, expected){
     computed.vec <- toupper(toRGB(computed))
     expected.vec <- toupper(toRGB(expected))
   }
-  expect_identical(computed.vec, expected.vec)
+  expect_identical(unname(computed.vec), unname(expected.vec))
 }
 
 getTextValue <- function(tick)xmlValue(getNodeSet(tick, "text")[[1]])
