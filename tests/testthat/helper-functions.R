@@ -118,12 +118,6 @@ stopifnot(ensure_rgba("rgba(0, 0, 0, 0.0)") == ensure_rgba("rgba(0, 0, 0, 0)"))
 stopifnot(ensure_rgba("rgba(0, 0, 0, 0.1)") != ensure_rgba("rgba(0, 0, 0, 0)"))
 stopifnot(ensure_rgba("rgb(0, 0, 0)") == ensure_rgba("rgba(0, 0, 0, 1)"))
 
-expect_color <- function(computed.vec, expected.vec) {
-  computed.rgb <- ensure_rgba(computed.vec)
-  expected.rgb <- ensure_rgba(expected.vec)
-  expect_identical(computed.rgb, expected.rgb)
-}
-
 expect_transform <- function(actual, expected, context = "translate", tolerance = 5) {
   # supports multiple contexts
   nocontext <- gsub(paste(context, collapse = "||"), "", actual)
@@ -179,11 +173,10 @@ expect_styles <- function(html, styles.expected){
 }
 
 expect_color <- function(computed, expected){
-  stopifnot(length(expected)==1)
   if(grepl("rgb", computed[1])){
     ## On firefox, grey50 is "rgb(127, 127, 127)"
     expected.mat <- col2rgb(expected)
-    expected.regex <- paste(expected.mat, collapse=", *")
+    expected.regex <- apply(expected.mat, 2, paste, collapse=", *")
     expect_match(computed, expected.regex)
   }else{
     ## On phantomjs, grey50 is "#7f7f7f"
