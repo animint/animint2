@@ -14,6 +14,10 @@ addShowSelectedForLegend <- function(meta, legend, L){
     layer.has.variable <- s.name %in% names(L$data)
 
     if(is.variable.name && layer.has.variable) {
+      ## if the data is data.table, convert it into data.frame
+      if(is.data.table(L$data)){
+        L$data <- as.data.frame(L$data)
+      }
       ## grabbing the variable from the data
       var <- L$data[, s.name]
       is.interactive.aes <-
@@ -751,6 +755,8 @@ getLegend <- function(mb){
 ##' @importFrom stats na.omit
 ##' @import data.table
 getCommonChunk <- function(built, chunk.vars, aes.list){
+  group <- NULL
+  ## Above to avoid CRAN NOTE.
   if(length(chunk.vars) == 0){
     return(NULL)
   }
@@ -884,19 +890,21 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
 
 
 ##' Extract subset for each data.frame in a list of data.frame
-##' @param df.or.list a data.frame or a list of data.frame.
+##' @param dt.or.list a data.table or a list of data.table.
 ##' @param cols cols that each data.frame would keep.
 ##' @return list of data.frame.
 varied.chunk <- function(dt.or.list, cols){
-  if(is.data.frame(dt.or.list)){
-    dt <- dt.or.list[, ..cols, drop = FALSE]
+  group <- NULL
+  ## Above to avoid CRAN NOTE.
+  if(is.data.table(dt.or.list)){
+    dt <- dt.or.list[, cols, with=FALSE, drop=FALSE]
     u.dt <- unique(dt)
     group.counts <- u.dt[, .N, by = group]
-    if(all(group.counts$N == 1)){
-      setDF(u.dt)
+    setDF(if(all(group.counts$N == 1)){
+      u.dt
     }else{
-      setDF(dt)
-    }
+      dt
+    })
   } else{
     lapply(dt.or.list, varied.chunk, cols)
   }
