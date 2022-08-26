@@ -178,6 +178,20 @@ expect_styles <- function(html, styles.expected){
   }
 }
 
+expect_color <- function(computed, expected){
+  stopifnot(length(expected)==1)
+  if(grepl("rgb", computed[1])){
+    ## On firefox, grey50 is "rgb(127, 127, 127)"
+    expected.mat <- col2rgb(expected)
+    expected.regex <- paste(expected.mat, collapse=", *")
+    expect_match(computed, expected.regex)
+  }else{
+    ## On phantomjs, grey50 is "#7f7f7f"
+    expected.rgb <- toRGB(rep(expected, length(computed)))
+    expect_identical(toupper(computed), toupper(expected.rgb))
+  }
+}
+
 getTextValue <- function(tick)xmlValue(getNodeSet(tick, "text")[[1]])
 
 getStyleValue <- function(html, xpath, style.name) {

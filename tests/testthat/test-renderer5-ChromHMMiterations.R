@@ -67,5 +67,5 @@ test_that("fill not constant in probability legend and circles", {
 test_that("tile stroke is black", {
   stroke.vec <- getStyleValue(
     info$html, '//g[@class="geom1_tile_parameters"]//rect', "stroke")
-  expect_true(all(stroke.vec=="black"))
+  expect_color(stroke.vec, "black")
 })  

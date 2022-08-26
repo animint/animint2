@@ -32,8 +32,8 @@ test_that("color is converted to RGB colour", {
 
   expect_equal(length(info$geoms), 1)
   g <- info$geoms[[1]]
-  expected.colour <- as.character(toRGB("grey50"))
-  expect_identical(g$params$colour, expected.colour)
+  expected.colour <- "grey50"
+  expect_identical(g$params$colour, toRGB(expected.colour))
   
   node.list <- getNodeSet(info$html, '//g[@class="geom1_step_step"]//path')
   expect_equal(length(node.list), 1)
@@ -45,12 +45,5 @@ test_that("color is converted to RGB colour", {
   expect_identical(style.vec[["fill"]], "none")
   expect_match(style.vec[["stroke-width"]], "3")
   stroke <- style.vec[["stroke"]]
-  if(grepl("rgb", stroke)){
-    expected.regex <- paste(col2rgb(expected.colour), collapse=", *")
-    expect_match(stroke, expected.regex)
-    ## On firefox, stroke is "rgb(127, 127, 127)"
-  }else{
-    expect_identical(toupper(stroke), toupper(expected.colour))
-    ## On phantomjs, stroke is "#7f7f7f"
-  }
+  expect_color(stroke, expected.colour)
 })
