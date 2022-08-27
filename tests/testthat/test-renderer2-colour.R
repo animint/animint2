@@ -154,3 +154,26 @@ test_that("fill and color are not same", {
   circle.fill <- getStyleValue(info2$html, point.xpath, "fill")
   expect_false(isTRUE(all.equal(circle.color, circle.fill)))
 })
+
+row.vec <- paste("row", c(1:3))
+col.vec <- paste("col", c(1:3))
+heat.data <- data.table(row.name = row.vec,
+  col.name = rep(col.vec, each=length(row.vec)),
+  value = c(2,8,-5,-7,15,3,-1,6,-7.5))
+viz.tile <- list(
+  vt = ggplot() +
+  geom_tile(data=heat.data,
+  aes(x = row.name, y = col.name, fill = value,
+  id=paste0("value", value)),
+  clickSelects = "value"))
+
+info3 <- animint2HTML(viz.tile)
+
+test_that("if colour is null and has clickSelects, after clicking, selection colour/stroke should be black", {
+  clickID('value2')
+  html <- getHTML()
+  stroke.col <- getStyleValue(
+  info3$html, '//g[@class="geom1_tile_vt"]//rect[@id="value2"]', "stroke")
+  expect.stroke.col <- "black"
+  expect_color(stroke.col, expect.stroke.col)
+})

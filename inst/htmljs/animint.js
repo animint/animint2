@@ -199,7 +199,7 @@ var animint = function (to_select, json_file) {
     if (has_alpha_off){
       select_styles.push("opacity");
     } 
-    if (!has_colour_off && !has_alpha_off){
+    if (!has_colour_off && !has_alpha_off && !select_styles.length){
       select_styles = ["opacity"];
     }
     g_info.select_style = select_styles;
@@ -964,6 +964,9 @@ var animint = function (to_select, json_file) {
     var p_name = g_names[g_names.length - 1];
     var scales = Plots[p_name].scales[PANEL];
     var selected_arrays = [ [] ]; //double array necessary.
+    var has_clickSelects = g_info.aes.hasOwnProperty("clickSelects");
+    var has_clickSelects_variable =
+      g_info.aes.hasOwnProperty("clickSelects.variable");
     g_info.subset_order.forEach(function (aes_name) {
       var selected, values;
       var new_arrays = [];
@@ -1148,7 +1151,7 @@ var animint = function (to_select, json_file) {
       }
       return colour;
     };
-    if (g_info.params.colour && !g_info.geom == "rect") {
+    if ((g_info.params.colour && g_info.geom != "rect") || (g_info.geom == "rect" && !has_clickSelects)) {
       colour = g_info.params.colour;
     }
     
@@ -1533,6 +1536,12 @@ var animint = function (to_select, json_file) {
       };
       eAppend = "rect";
     }
+    // geom_rect/geom_tile selection style logic:
+    // 1. in geom-tile.R we specify if the colour parameter, not aes, is null
+    //  - it shall be transparent when there is no clickSelects
+    //  - it is black when clickSelects is specified, and no params colour
+    // 2. When colour param is not null, whether it has clickSelects or not
+    //    the colour/stroke is the RGB value of colour params
     if (g_info.geom == "rect") {
       elements = elements.data(data, key_fun);
       eActions = function (e) {
