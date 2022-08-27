@@ -1650,9 +1650,6 @@ var animint = function (to_select, json_file) {
       enter = enter.append(eAppend)
 	      .attr("class", "geom");
     }
-    var has_clickSelects = g_info.aes.hasOwnProperty("clickSelects");
-    var has_clickSelects_variable =
-      g_info.aes.hasOwnProperty("clickSelects.variable");
     if (has_clickSelects || has_clickSelects_variable) {
       var selected_funs = function(style_name, select_fun){
         style_on_funs = {
