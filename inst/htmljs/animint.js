@@ -195,9 +195,11 @@ var animint = function (to_select, json_file) {
     let has_alpha_off = g_info.params.hasOwnProperty("alpha_off") || g_info.aes.hasOwnProperty("alpha_off");
     if(has_colour_off || g_info.geom == "rect"){
       select_styles.push("stroke");
-    } else if (has_alpha_off){
+    } 
+    if (has_alpha_off){
       select_styles.push("opacity");
-    } else {
+    } 
+    if (!has_colour_off && !has_alpha_off){
       select_styles = ["opacity"];
     }
     g_info.select_style = select_styles;
