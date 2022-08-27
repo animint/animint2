@@ -188,17 +188,16 @@ var animint = function (to_select, json_file) {
     // implement a general function for alpha_off, color_off. 
     // In order to have multiple styles functioning together
     // so here use array to store the styles.   
-    // Default using alpha/opacity style.
+    // Default using alpha/opacity style, execpt rect/tile geom
+    // rect/tile geom default using stroke style
     let select_styles = [];
     let has_colour_off = g_info.params.hasOwnProperty("colour_off") || g_info.aes.hasOwnProperty("colour_off");
     let has_alpha_off = g_info.params.hasOwnProperty("alpha_off") || g_info.aes.hasOwnProperty("alpha_off");
-    if(has_colour_off){
+    if(has_colour_off || g_info.geom == "rect"){
       select_styles.push("stroke");
-    } 
-    if (has_alpha_off){
+    } else if (has_alpha_off){
       select_styles.push("opacity");
-    } 
-    if (!has_colour_off && !has_alpha_off){
+    } else {
       select_styles = ["opacity"];
     }
     g_info.select_style = select_styles;
@@ -1147,7 +1146,7 @@ var animint = function (to_select, json_file) {
       }
       return colour;
     };
-    if (g_info.params.colour) {
+    if (g_info.params.colour && !g_info.geom == "rect") {
       colour = g_info.params.colour;
     }
     
@@ -1546,9 +1545,7 @@ var animint = function (to_select, json_file) {
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size)
           .style("fill", get_fill);
-	      if(g_info.select_style != "stroke"){
-          e.style("stroke", get_colour);
-        }
+          select_style_fun(g_info, e);
       };
       eAppend = "rect";
     }
