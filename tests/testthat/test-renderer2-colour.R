@@ -1,5 +1,8 @@
 acontext("colour_off, color_off")
 
+#
+# test geom without fill style
+#
 g1 <- ggplot()+
 geom_line(data=economics_long, 
   aes(x=date, y=value01, group = variable),
@@ -100,6 +103,9 @@ test_that("using both alpha_off and colour_off, opacity and stroke change simult
   expect_equal(length(nonclicked.list), 4)
 })
 
+#
+# test geom with both fill and colour styles
+#
 viz.point <- list(pointone = ggplot() + geom_point(
   data = mtcars,
   size = 10,
@@ -155,25 +161,115 @@ test_that("fill and color are not same", {
   expect_false(isTRUE(all.equal(circle.color, circle.fill)))
 })
 
+#
+# tests for g$geom="rect", originally only support 'stroke' as selection style
+#
 row.vec <- paste("row", c(1:3))
 col.vec <- paste("col", c(1:3))
 heat.data <- data.table(row.name = row.vec,
   col.name = rep(col.vec, each=length(row.vec)),
   value = c(2,8,-5,-7,15,3,-1,6,-7.5))
-viz.tile <- list(
-  vt = ggplot() +
+no.col <- ggplot() +
   geom_tile(data=heat.data,
   aes(x = row.name, y = col.name, fill = value,
-  id=paste0("value", value)),
-  clickSelects = "value"))
+  id=paste0("no_col_", value)),
+  clickSelects = "value")
+has.col.no.off <- ggplot() +
+  geom_tile(data=heat.data,
+  aes(x = row.name, y = col.name, fill = value,
+  id=paste0("col_", value)),
+  colour="red",
+  clickSelects = "value")
+has.col.and.off <- ggplot() +
+  geom_tile(data=heat.data,
+  aes(x = row.name, y = col.name, fill = value,
+  id=paste0("col_off_", value)),
+  colour="red",
+  colour_off="grey50",
+  clickSelects = "value")
+viz.tile <- list(
+  nocol=no.col,
+  colnooff=has.col.no.off,
+  colandoff=has.col.and.off)
 
-info3 <- animint2HTML(viz.tile)
+info <- animint2HTML(viz.tile)
 
-test_that("if colour is null and has clickSelects, after clicking, selection colour/stroke should be black", {
-  clickID('value2')
+test_that("if has clickSelects but no colour/colour_off, selection colour/stroke should be black, and transparent for not selected (no stroke)", {
+  clickID('no_col_2')
   html <- getHTML()
   stroke.col <- getStyleValue(
-  info3$html, '//g[@class="geom1_tile_vt"]//rect[@id="value2"]', "stroke")
+  info$html, '//g[@class="geom1_tile_nocol"]//rect[@id="no_col_2"]', "stroke")
   expect.stroke.col <- "black"
   expect_color(stroke.col, expect.stroke.col)
+  # not selected, stroke=transparent(no stroke style)
+  node.set <- getNodeSet(info$html, '//g[@class="geom1_tile_nocol"]//rect[@id="no_col_8"]')
+  style.strs <- as.character(sapply(node.set, function(x) xmlAttrs(x)["style"]))
+  pattern <-
+    paste0("(?<name>\\S+?)",
+           ": *",
+           "(?<value>.+?)",
+           ";")
+  style.matrices <- str_match_all_perl(style.strs, pattern)
+  # in firefox, if stroke="transparent", it would automatically not appear in style attribute
+  expect_false("stroke" %in% names(style.matrices))
+})
+
+test_that("geom_tile has specified colour(selected=colour value), but no colour_off(not selected=transparent)",{
+  clickID('col_2')
+  html <- getHTML()
+
+  stroke.col <- getStyleValue(
+  info$html, '//g[@class="geom2_tile_colnooff"]//rect[@id="col_2"]', "stroke")
+  expect.stroke.col <- "red"
+  expect_color(stroke.col, expect.stroke.col)
+
+  # not selected, stroke=transparent(no stroke style)
+  node.set <- getNodeSet(info$html, '//g[@class="geom2_tile_colnooff"]//rect[@id="col_8"]')
+  style.strs <- as.character(sapply(node.set, function(x) xmlAttrs(x)["style"]))
+  pattern <-
+    paste0("(?<name>\\S+?)",
+           ": *",
+           "(?<value>.+?)",
+           ";")
+  style.matrices <- str_match_all_perl(style.strs, pattern)
+  expect_false("stroke" %in% names(style.matrices))
+})
+
+test_that("geom_tile has specified colour(selected=colour value), and colour_off(not selected=colour_off value)",{
+  clickID('col_off_2')
+  html <- getHTML()
+
+  stroke.col <- getStyleValue(
+  info$html, '//g[@class="geom3_tile_colandoff"]//rect[@id="col_off_2"]', "stroke")
+  expect.stroke.col <- "red"
+  expect_color(stroke.col, expect.stroke.col)
+
+  stroke.color.off <- getStyleValue(
+  info$html, '//g[@class="geom3_tile_colandoff"]//rect[@id="col_off_8"]', "stroke")
+  expect.stroke.col.off <- "grey50"
+  expect_color(stroke.color.off, expect.stroke.col.off)
+})
+
+#
+# tests for color_off parameter
+#
+test_that("color_off = colour_off",{
+  has.col.and.off <- ggplot() +
+    geom_tile(data=heat.data,
+    aes(x = row.name, y = col.name, fill = value,
+    id=paste0("col_off_", value)),
+    colour="red",
+    color_off="grey50", # use color_off here
+    clickSelects = "value")
+  viz.tile <- list(
+    colandoff=has.col.and.off)
+  info <- animint2HTML(viz.tile)
+
+  clickID('col_off_2')
+  html <- getHTML()
+
+  stroke.color.off <- getStyleValue(
+  info$html, '//g[@class="geom1_tile_colandoff"]//rect[@id="col_off_8"]', "stroke")
+  expect.stroke.col.off <- "grey50"
+  expect_color(stroke.color.off, expect.stroke.col.off)
 })

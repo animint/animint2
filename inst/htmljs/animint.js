@@ -1151,7 +1151,9 @@ var animint = function (to_select, json_file) {
       }
       return colour;
     };
-    if ((g_info.params.colour && g_info.geom != "rect") || (g_info.geom == "rect" && !has_clickSelects)) {
+    if (g_info.geom == "rect" && has_clickSelects && g_info.params.colour == "transparent"){
+      colour = "black";
+    } else if(g_info.params.colour){
       colour = g_info.params.colour;
     }
     
