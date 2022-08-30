@@ -172,6 +172,18 @@ expect_styles <- function(html, styles.expected){
   }
 }
 
+expect_no_style <- function(node.set, no.style.name){
+  style.strs <- as.character(sapply(node.set, function(x) xmlAttrs(x)["style"]))
+  pattern <-
+    paste0("(?<name>\\S+?)",
+           ": *",
+           "(?<value>.+?)",
+           ";")
+  style.matrices <- str_match_all_perl(style.strs, pattern)
+  # in firefox, if stroke="transparent", it would automatically not appear in style attribute
+  expect_false(no.style.name %in% names(style.matrices))
+}
+
 expect_color <- function(computed, expected){
   if(length(expected)==1){
     expected <- rep(expected, length(computed))

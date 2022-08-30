@@ -173,12 +173,14 @@ no.col <- ggplot() +
   geom_tile(data=heat.data,
   aes(x = row.name, y = col.name, fill = value,
   id=paste0("no_col_", value)),
+  size = 5,
   clickSelects = "value")
 has.col.no.off <- ggplot() +
   geom_tile(data=heat.data,
   aes(x = row.name, y = col.name, fill = value,
   id=paste0("col_", value)),
   colour="red",
+  size = 5,
   clickSelects = "value")
 has.col.and.off <- ggplot() +
   geom_tile(data=heat.data,
@@ -186,6 +188,7 @@ has.col.and.off <- ggplot() +
   id=paste0("col_off_", value)),
   colour="red",
   colour_off="grey50",
+  size = 5,
   clickSelects = "value")
 viz.tile <- list(
   nocol=no.col,
@@ -203,15 +206,7 @@ test_that("if has clickSelects but no colour/colour_off, selection colour/stroke
   expect_color(stroke.col, expect.stroke.col)
   # not selected, stroke=transparent(no stroke style)
   node.set <- getNodeSet(info$html, '//g[@class="geom1_tile_nocol"]//rect[@id="no_col_8"]')
-  style.strs <- as.character(sapply(node.set, function(x) xmlAttrs(x)["style"]))
-  pattern <-
-    paste0("(?<name>\\S+?)",
-           ": *",
-           "(?<value>.+?)",
-           ";")
-  style.matrices <- str_match_all_perl(style.strs, pattern)
-  # in firefox, if stroke="transparent", it would automatically not appear in style attribute
-  expect_false("stroke" %in% names(style.matrices))
+  expect_no_style(node.set, "stroke")
 })
 
 test_that("geom_tile has specified colour(selected=colour value), but no colour_off(not selected=transparent)",{
@@ -225,14 +220,7 @@ test_that("geom_tile has specified colour(selected=colour value), but no colour_
 
   # not selected, stroke=transparent(no stroke style)
   node.set <- getNodeSet(info$html, '//g[@class="geom2_tile_colnooff"]//rect[@id="col_8"]')
-  style.strs <- as.character(sapply(node.set, function(x) xmlAttrs(x)["style"]))
-  pattern <-
-    paste0("(?<name>\\S+?)",
-           ": *",
-           "(?<value>.+?)",
-           ";")
-  style.matrices <- str_match_all_perl(style.strs, pattern)
-  expect_false("stroke" %in% names(style.matrices))
+  expect_no_style(node.set, "stroke")
 })
 
 test_that("geom_tile has specified colour(selected=colour value), and colour_off(not selected=colour_off value)",{
