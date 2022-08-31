@@ -179,9 +179,9 @@ expect_no_style <- function(node.set, no.style.name){
            ": *",
            "(?<value>.+?)",
            ";")
-  style.matrices <- str_match_all_perl(style.strs, pattern)
-  # in firefox, if stroke="transparent", it would automatically not appear in style attribute
-  expect_false(no.style.name %in% names(style.matrices))
+  style.matrices <- str_match_all_perl(style.strs, pattern)[[1]]
+  # in firefox, if stroke="transparent", not appear in style attribute?
+  expect_false(no.style.name %in% style.matrices[, "name"])
 }
 
 expect_color <- function(computed, expected){

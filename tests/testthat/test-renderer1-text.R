@@ -13,13 +13,19 @@ wb <- subset(wb2010, !is.na(population) &
     !is.na(fertility.rate) & !is.na(life.expectancy))
 viz <- list(scatter=ggplot()+
   geom_text(aes(y=fertility.rate, x=life.expectancy,
-                label=country, size=population, colour=population),
+                label=country, size=population, colour=population, id=country),
             data=wb)+
   scale_size_continuous(range=c(10,20)))
 
 test_that("text size range translates to <text font-size>", {
   info <- animint2HTML(viz)
   expect_attrs(info$html, 'text[@class="geom"]', "font-size", c("10", "20"))
+})
+
+test_that("text do not have stroke style", {
+  info <- animint2HTML(viz)
+  node.set <- getNodeSet(info$html, '//g[@class="geom1_text_scatter"]//text[@id="Vietnam"]')
+  expect_no_style(node.set, "stroke")
 })
               
 test_that("text may contain commas and parentheses", {
