@@ -1750,7 +1750,9 @@ var animint = function (to_select, json_file) {
       }
     }else{//has neither clickSelects nor clickSelects.variable.
       elements.style("opacity", get_alpha)
-      .style("stroke", get_colour);
+      if(g_info.geom != "text"){
+        elements.style("stroke", get_colour);
+      }
     }
     var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
     if(has_clickSelects || has_tooltip || has_clickSelects_variable){
