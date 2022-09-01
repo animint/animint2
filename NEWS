@@ -18,7 +18,7 @@ theme(axis.title=element_text(size=20)) etc.
 
 2022.8.25
 
-suggest data.table, use for faster compilation.
+import data.table, for faster compilation.
 
 2022.5.25
 
