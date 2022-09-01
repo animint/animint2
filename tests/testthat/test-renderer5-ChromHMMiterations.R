@@ -11,6 +11,7 @@ viz <- list(
     scale_fill_gradient(low="white", high="blue")+
     geom_tile(aes(state, experiment, fill=frequency,
                   key=paste(state, experiment)),
+              color="black",
               showSelected="iteration",
               data=emission)+
     scale_color_gradient(low="white", high="red")+
@@ -62,3 +63,9 @@ test_that("fill not constant in probability legend and circles", {
     info$html, '//tr[@class="probability_variable"]//circle', "fill")
   expect_true(1 < length(table(fill.vec)))
 })
+
+test_that("tile stroke is black", {
+  stroke.vec <- getStyleValue(
+    info$html, '//g[@class="geom1_tile_parameters"]//rect', "stroke")
+  expect_color(stroke.vec, "black")
+})  

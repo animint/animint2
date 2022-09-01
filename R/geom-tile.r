@@ -103,13 +103,10 @@ GeomTile <- gganimintproto("GeomTile", GeomRect,
   draw_key = draw_key_polygon,
 
   pre_process = function(g, g.data, ...) {
-    # Color set to match ggplot2 default of tile with no outside border.
-    if(!"colour"%in%names(g.data) & "fill"%in%names(g.data)){
-        g.data[["colour"]] <- g.data[["fill"]]
-        # Make outer border of 0 size if size isn't already specified.
-        if(!"size"%in%names(g.data)) g.data[["size"]] <- 0
-      }
     g$geom <- "rect"
+    if(is.null(g$params$colour)){
+      g$params$colour <- "transparent"
+    }
     return(list(g = g, g.data = g.data))
   }
 )

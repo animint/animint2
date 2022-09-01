@@ -118,12 +118,6 @@ stopifnot(ensure_rgba("rgba(0, 0, 0, 0.0)") == ensure_rgba("rgba(0, 0, 0, 0)"))
 stopifnot(ensure_rgba("rgba(0, 0, 0, 0.1)") != ensure_rgba("rgba(0, 0, 0, 0)"))
 stopifnot(ensure_rgba("rgb(0, 0, 0)") == ensure_rgba("rgba(0, 0, 0, 1)"))
 
-expect_color <- function(computed.vec, expected.vec) {
-  computed.rgb <- ensure_rgba(computed.vec)
-  expected.rgb <- ensure_rgba(expected.vec)
-  expect_identical(computed.rgb, expected.rgb)
-}
-
 expect_transform <- function(actual, expected, context = "translate", tolerance = 5) {
   # supports multiple contexts
   nocontext <- gsub(paste(context, collapse = "||"), "", actual)
@@ -176,6 +170,37 @@ expect_styles <- function(html, styles.expected){
       expect_match(style.values, expected.regexp, all=FALSE)
     }
   }
+}
+
+expect_no_style <- function(node.set, no.style.name){
+  style.strs <- as.character(sapply(node.set, function(x) xmlAttrs(x)["style"]))
+  pattern <-
+    paste0("(?<name>\\S+?)",
+           ": *",
+           "(?<value>.+?)",
+           ";")
+  style.matrices <- str_match_all_perl(style.strs, pattern)[[1]]
+  # in firefox, if stroke="transparent", not appear in style attribute?
+  expect_false(no.style.name %in% style.matrices[, "name"])
+}
+
+expect_color <- function(computed, expected){
+  if(length(expected)==1){
+    expected <- rep(expected, length(computed))
+  }else if(length(expected) != length(computed)){
+    stop("expected must be scalar or same length as computed")
+  }
+  if(grepl("rgb", computed[1])){
+    ## On firefox, grey50 is "rgb(127, 127, 127)"
+    computed.vec <- gsub("[rgb() ]", "", computed)
+    expected.mat <- col2rgb(expected)
+    expected.vec <- apply(expected.mat, 2, paste, collapse=",")
+  }else{
+    ## On phantomjs, grey50 is "#7f7f7f"
+    computed.vec <- toupper(toRGB(computed))
+    expected.vec <- toupper(toRGB(expected))
+  }
+  expect_identical(unname(computed.vec), unname(expected.vec))
 }
 
 getTextValue <- function(tick)xmlValue(getNodeSet(tick, "text")[[1]])

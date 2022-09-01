@@ -172,3 +172,16 @@ test_that("no warning for position=stack without showSelected", {
   })
 })
 
+test_that("warning for _off param without clickSelects", {
+  viz.point1 <- list(
+    pointone = ggplot()+
+    geom_point(aes(x = wt, y = mpg, colour = disp),
+    size = 10,
+    colour="red",
+    alpha_off=0.6,
+    colour_off="transparent",
+    data = mtcars))
+  expect_warning({
+    animint2dir(viz.point1, open.browser = FALSE)
+  }, "geom1_point_pointone has alpha_off, colour_off which is not used because this geom has no clickSelects; please specify clickSelects or remove alpha_off, colour_off")
+})

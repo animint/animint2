@@ -43,7 +43,8 @@ no.time <-
 bar.attributes <- function(html){
   node.set <-
     getNodeSet(info$html, '//g[@class="geom6_bar_bar"]//rect')
-  sapply(node.set, xmlAttrs)
+  node.set.l <- lapply(node.set, xmlAttrs)
+  sapply(node.set.l, function(x) x[c("x", "width", "y", "height")])
 }
 
 info <- animint2HTML(no.time)
