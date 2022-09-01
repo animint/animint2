@@ -16,6 +16,10 @@ the selector called "arclength" with the value in column
 allow configurable text size via
 theme(axis.title=element_text(size=20)) etc.
 
+2022.8.31
+
+User-configurable selection styles, alpha_off and colour_off.
+
 2022.8.25
 
 suggest data.table, use for faster compilation.
