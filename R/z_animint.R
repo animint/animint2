@@ -731,12 +731,13 @@ getLegendList <- function(plistextra){
     discrete.vec <- sapply(scale.list, inherits, "ScaleDiscrete")
     is.discrete <- all(discrete.vec)
     gdefs[[leg]]$is.discrete <- is.discrete
-    gdefs[[leg]]$text_size <- if(!is.null(plot$theme$legend.text$size)) {
+    is.complete.theme <- attr(plot$theme, "complete")
+    gdefs[[leg]]$text_size <- if(!is.null(plot$theme$legend.text$size) && !is.complete.theme) {
       calc_element("legend.text", theme)$size
     } else{
       16
     }
-    gdefs[[leg]]$title_size <- if(!is.null(theme$legend.title$size)) {
+    gdefs[[leg]]$title_size <- if(!is.null(plot$theme$legend.title$size) && !is.complete.theme) {
       calc_element("legend.title", theme)$size
     } else{
       16
