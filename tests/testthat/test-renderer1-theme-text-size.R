@@ -105,3 +105,32 @@ test_that("specified legend title and label text size with rel()", {
   # rel(2.5) * 16 = 24
   expect_match(legend.title.size, "27.5px")
 })
+
+## TDH default theme test, 1 Sep 2022.
+y <- 1:2
+df <- data.frame(y, text=paste("category", y))
+viz <- animint(
+  default=ggplot()+
+    ggtitle("No theme specified")+
+    geom_text(aes(
+      0,y,label=text,color=text),
+      data=df),
+  theme=ggplot()+
+    ggtitle("theme_grey()")+
+    theme_grey()+
+    geom_text(aes(
+      0,y,label=text,color=text),
+      data=df))
+info <- animint2HTML(viz)
+test_that("theme_grey legend entry text size is 16px", {
+  size.list <- list()
+  for(plot.name in names(viz)){
+    selector <- sprintf(
+      '//td[@id="plot_%s_text_variable_category_1_label"]', 
+      plot.name)
+    size.list[[plot.name]] <- getStyleValue(
+      info$html, selector, "font-size")
+  }
+  expect_match(size.list$default, "16px")
+  expect_match(size.list$theme, "16px")
+})
