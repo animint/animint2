@@ -120,6 +120,13 @@ viz <- animint(
     theme_grey()+
     geom_text(aes(
       0,y,label=text,color=text),
+      data=df),
+  size=ggplot()+
+    ggtitle("theme_grey()+theme(legend.text)")+
+    theme_grey()+
+    theme(legend.text=element_text(size=30))+
+    geom_text(aes(
+      0,y,label=text,color=text),
       data=df))
 info <- animint2HTML(viz)
 test_that("theme_grey legend entry text size is 16px", {
@@ -133,4 +140,5 @@ test_that("theme_grey legend entry text size is 16px", {
   }
   expect_match(size.list$default, "16px")
   expect_match(size.list$theme, "16px")
+  expect_match(size.list$size, "30px")
 })
