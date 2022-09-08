@@ -9,12 +9,21 @@ viz <- list()
 viz$scatterFacet <- scatterFacet
 info <- animint2HTML(viz)
 
+get_axes_style <- function(html){
+  axis.style.list <- list()
+  for(xy in c("x","y")){
+    xpath <- sprintf(
+      '//g[@class="%saxis axis %saxis_1"]//g[@class="tick major"]//text',
+      xy, xy)
+    axis.style.list[[xy]] <- getStyleValue(html, xpath, "font-size")
+  }
+  axis.style.list
+}
+
 # Axes text size -------------
 test_that("unspecified axis text size default to 11px", {
-  style.value <-
-    getStyleValue(info$html, '//g[@class="xaxis axis xaxis_1"]//g[@class="tick major"]//text', 
-                  "font-size")
-  expect_match(style.value, "11pt")
+  axis.style.list <- get_axes_style(info)
+  expect_match(axis.style.list$x, "11pt")
 })
 
 # rel() only works for axis.text, axis.text.x, axis.text.y
@@ -23,15 +32,10 @@ test_that("specified axis text size with rel()", {
   viz1 <- list()
   viz1$one <- s1
   info1 <- animint2HTML(viz1)
-  axis.x.style.value <-
-    getStyleValue(info1$html, '//g[@class="xaxis axis xaxis_1"]//g[@class="tick major"]//text', 
-                  "font-size")
-  axis.y.style.value <-
-    getStyleValue(info1$html, '//g[@class="yaxis axis yaxis_1"]//g[@class="tick major"]//text', 
-                  "font-size")
+  axis.style.list <- get_axes_style(info1$html)
   # default size for 'text' is 11, so rel(3) * 11 = 33
-  expect_match(axis.x.style.value, "33pt")
-  expect_match(axis.y.style.value, "33pt")
+  expect_match(axis.style.list$x, "33pt")
+  expect_match(axis.style.list$y, "33pt")
 })
 
 test_that("if more than 1 element text size are defined, take the children node", {
@@ -41,14 +45,9 @@ test_that("if more than 1 element text size are defined, take the children node"
   viz2 <- list()
   viz2$one <- s2
   info1 <- animint2HTML(viz2)
-  axis.x.style.value <-
-    getStyleValue(info1$html, '//g[@class="xaxis axis xaxis_1"]//g[@class="tick major"]//text', 
-                  "font-size")
-  axis.y.style.value <-
-    getStyleValue(info1$html, '//g[@class="yaxis axis yaxis_1"]//g[@class="tick major"]//text', 
-                  "font-size")
-  expect_match(axis.x.style.value, "20pt")
-  expect_match(axis.y.style.value, "12pt")
+  axis.style.list <- get_axes_style(info1$html)
+  expect_match(axis.style.list$x, "20pt")
+  expect_match(axis.style.list$y, "12pt")
 })
 
 # legend text size -------------
