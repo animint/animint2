@@ -21,87 +21,86 @@ get_axes_style <- function(html){
 }
 
 # Axes text size -------------
-test_that("unspecified axis text size default to 11px", {
-  axis.style.list <- get_axes_style(info)
+test_that("unspecified axis text size default to 11pt", {
+  axis.style.list <- get_axes_style(info$html)
   expect_match(axis.style.list$x, "11pt")
 })
 
 # rel() only works for axis.text, axis.text.x, axis.text.y
 test_that("specified axis text size with rel()", {
-  s1 <- scatterFacet + theme(axis.text = element_text(size = rel(3)))
-  viz1 <- list()
-  viz1$one <- s1
-  info1 <- animint2HTML(viz1)
-  axis.style.list <- get_axes_style(info1$html)
+  s <- scatterFacet + theme(axis.text = element_text(size = rel(3)))
+  viz <- list()
+  viz$one <- s
+  info <- animint2HTML(viz)
+  axis.style.list <- get_axes_style(info$html)
   # default size for 'text' is 11, so rel(3) * 11 = 33
   expect_match(axis.style.list$x, "33pt")
   expect_match(axis.style.list$y, "33pt")
 })
 
 test_that("if more than 1 element text size are defined, take the children node", {
-  s2 <- scatterFacet + 
+  s <- scatterFacet + 
         theme(axis.text = element_text(size = 12),
               axis.text.x = element_text(size = 20))
-  viz2 <- list()
-  viz2$one <- s2
-  info1 <- animint2HTML(viz2)
-  axis.style.list <- get_axes_style(info1$html)
+  viz <- list()
+  viz$one <- s
+  info <- animint2HTML(viz)
+  axis.style.list <- get_axes_style(info$html)
   expect_match(axis.style.list$x, "20pt")
   expect_match(axis.style.list$y, "12pt")
 })
 
 # legend text size -------------
-test_that("unspecified legend title and label text size default to 16px", {
+test_that("unspecified legend title default to 11pt, and label text size 8.8pt", {
   title.size <-
     getStyleValue(info$html, '//table[@class="legend"]//tr//th', 
                   "font-size")
   label.size <-
     getStyleValue(info$html, '//table[@class="legend"]//tr[@id="plot_scatterFacet_region_variable_East_Asia_&_Pacific_(all_income_levels)"]//td[@class="legend_entry_label"]', 
                   "font-size")
-  expect_match(title.size, "16pt")
-  expect_match(label.size, "16pt")
+  expect_match(title.size, "11pt")
+  expect_match(label.size, "8.8pt")
 })
 
 test_that("defined legend title text size", {
-  l1 <- scatterFacet + 
+  l <- scatterFacet + 
         theme(legend.title = element_text(size=30))
-  viz1 <- list()
-  viz1$one <- l1
-  info1 <- animint2HTML(viz1)
+  viz <- list()
+  viz$one <- l
+  info <- animint2HTML(viz)
   style.value <-
-    getStyleValue(info1$html, '//table[@class="legend"]//tr//th', 
+    getStyleValue(info$html, '//table[@class="legend"]//tr//th', 
                   "font-size")
   expect_match(style.value, "30pt")
 })
 
 test_that("defined legend label text size", {
-  l1 <- scatterFacet + 
+  l <- scatterFacet + 
         theme(legend.text = element_text(size=10))
-  viz1 <- list()
-  viz1$one <- l1
-  info1 <- animint2HTML(viz1)
+  viz <- list()
+  viz$one <- l
+  info <- animint2HTML(viz)
   style.value <-
-    getStyleValue(info1$html, '//table[@class="legend"]//tr[@id="plot_one_region_variable_Europe_&_Central_Asia_(all_income_levels)"]//td[@id="plot_one_region_variable_Europe_&_Central_Asia_(all_income_levels)_label"]', 
+    getStyleValue(info$html, '//table[@class="legend"]//tr[@id="plot_one_region_variable_Europe_&_Central_Asia_(all_income_levels)"]//td[@id="plot_one_region_variable_Europe_&_Central_Asia_(all_income_levels)_label"]', 
                   "font-size")
   expect_match(style.value, "10pt")
 })
 
 test_that("specified legend title and label text size with rel()", {
-  s1 <- scatterFacet + 
+  s <- scatterFacet + 
         theme(legend.text = element_text(size=rel(2)),
               legend.title = element_text(size=rel(2.5)))
-  viz1 <- list()
-  viz1$one <- s1
-  info1 <- animint2HTML(viz1)
+  viz <- list()
+  viz$one <- s
+  info <- animint2HTML(viz)
   legend.text.size <-
-    getStyleValue(info1$html, '//table[@class="legend"]//tr[@id="plot_one_region_variable_Europe_&_Central_Asia_(all_income_levels)"]//td[@id="plot_one_region_variable_Europe_&_Central_Asia_(all_income_levels)_label"]', 
+    getStyleValue(info$html, '//table[@class="legend"]//tr[@id="plot_one_region_variable_Europe_&_Central_Asia_(all_income_levels)"]//td[@id="plot_one_region_variable_Europe_&_Central_Asia_(all_income_levels)_label"]', 
                   "font-size")
   legend.title.size <-
-    getStyleValue(info1$html, '//table[@class="legend"]//tr//th', 
+    getStyleValue(info$html, '//table[@class="legend"]//tr//th', 
                   "font-size")
   # parent text size for 'legend.text' is 11, so rel(2) * 11 = 22
   expect_match(legend.text.size, "22pt")
-  # rel(2.5) * 16 = 24
   expect_match(legend.title.size, "27.5pt")
 })
 
@@ -126,7 +125,7 @@ viz <- animint(
     theme(legend.text=element_text(size=16))+
     geom_text(aes(
       0,y,label=text,color=text),
-      data=df)+
+      data=df),
   sizePx=ggplot()+
     ggtitle("theme_grey()+theme(legend.text)")+
     theme_grey()+
@@ -148,4 +147,10 @@ test_that("theme_grey legend entry text size is 16px", {
   expect_match(size.list$theme, "8.8pt")
   expect_match(size.list$sizeNum, "16pt")
   expect_match(size.list$sizePx, "16px")
+})
+
+test_that("Warning for invalid character/string input ", {
+  viz <- list(
+    s=scatterFacet + theme(axis.text.x = element_text(size = "12p")))
+  expect_warning(animint2HTML(viz), "axis.text.x is not numeric nor character ending with \'pt\' or \'px\', will be default 11pt")
 })

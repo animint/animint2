@@ -145,13 +145,10 @@ parsePlot <- function(meta, plot, plot.name){
     # theme settings are shared across panels
     axis.text <- theme.pars[[s("axis.text.%s")]]
     ## TODO: also look at axis.text! (and text?)
-    size <- calc_element(s("axis.text.%s"), theme.pars)$size
+    size <- getTextSize(s("axis.text.%s"), theme.pars)
     anchor <- hjust2anchor(axis.text$hjust)
     angle <- if(is.numeric(axis.text$angle)){
       -axis.text$angle
-    }
-    if(is.null(size)){
-      size <- 11
     }
     if(is.null(angle)){
       angle <- 0
@@ -163,7 +160,7 @@ parsePlot <- function(meta, plot, plot.name){
         "end"
       }
     }
-    plot.info[[s("%ssize")]] <- as.numeric(size)
+    plot.info[[s("%ssize")]] <- size
     plot.info[[s("%sanchor")]] <- as.character(anchor)
     plot.info[[s("%sangle")]] <- as.numeric(angle)
     # translate panel specific axis info
@@ -731,17 +728,8 @@ getLegendList <- function(plistextra){
     discrete.vec <- sapply(scale.list, inherits, "ScaleDiscrete")
     is.discrete <- all(discrete.vec)
     gdefs[[leg]]$is.discrete <- is.discrete
-    is.complete.theme <- attr(plot$theme, "complete")
-    gdefs[[leg]]$text_size <- if(!is.null(plot$theme$legend.text$size) && !is.complete.theme) {
-      calc_element("legend.text", theme)$size
-    } else{
-      16
-    }
-    gdefs[[leg]]$title_size <- if(!is.null(plot$theme$legend.title$size) && !is.complete.theme) {
-      calc_element("legend.title", theme)$size
-    } else{
-      16
-    }
+    gdefs[[leg]]$text_size <- getTextSize("legend.text", theme)
+    gdefs[[leg]]$title_size <- getTextSize("legend.title", theme)
     ## get the name of the legend/selection variable.
     var.list <- list()
     for(layer.i in seq_along(plot$layers)) {
