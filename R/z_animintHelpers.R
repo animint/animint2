@@ -745,6 +745,23 @@ getLegend <- function(mb){
 }
 
 
+#' Function to process text size with different types of unit
+#' @param element.name The name of the theme element
+#' @param theme combined theme from plot_theme()
+#' @return character of text size, with unit pt/px
+getTextSize <- function(element.name, theme){
+  input.size <- calc_element(element.name, theme)$size
+  if(is.character(input.size)){
+    if(!grepl('^[0-9]+(px|pt)$', input.size)){
+      default.size <- calc_element(element.name, theme_gray())$size
+      warning(sprintf("%s is not numeric nor character ending with \'pt\' or \'px\', will be default %dpt", element.name, default.size))
+      return(paste(default.size, "pt", sep=""))
+    }
+    return(input.size)
+  }
+  paste(input.size, "pt", sep="")
+}
+
 ##' Save the common columns for each tsv to one chunk
 ##' @param built data.frame of built data.
 ##' @param chunk.vars which variables to chunk on.

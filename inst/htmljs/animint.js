@@ -616,7 +616,7 @@ var animint = function (to_select, json_file) {
 	}
 	xaxis_g.selectAll("text")
 	  .style("text-anchor", p_info.xanchor)
-	  .style("font-size", p_info.xsize + "px")
+	  .style("font-size", p_info.xsize)
 	  .attr("transform", "rotate(" + p_info.xangle + " 0 9)");
       }
       if(draw_y){
@@ -637,7 +637,7 @@ var animint = function (to_select, json_file) {
 	  axis_path.remove();
 	}
   yaxis_g.selectAll(".tick text")
-    .style("font-size", p_info.ysize + "px");
+    .style("font-size", p_info.ysize);
       }
 
       if(!axis.xline) {
@@ -2143,7 +2143,7 @@ var animint = function (to_select, json_file) {
 	.attr("colspan", 2)
         .text(l_info.title)
         .attr("class", legend_class)
-        .style("font-size", l_info.title_size + "px")
+        .style("font-size", l_info.title_size)
       ;
       var legend_svgs = legend_rows.append("td")
         .append("svg")
@@ -2210,7 +2210,7 @@ var animint = function (to_select, json_file) {
 	.attr("align", "left") // TODO: right for numbers?
 	.attr("class", "legend_entry_label")
 	.attr("id", function(d){ return d["id"]+"_label"; })
-  	.style("font-size", function(d){ return d["text_size"]+"px"})
+  	.style("font-size", function(d){ return d["text_size"]})
 	.text(function(d){ return d["label"];});
     }
   }
