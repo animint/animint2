@@ -5,7 +5,7 @@
 #'
 #' @format A data frame with 53940 rows and 10 variables:
 #' \itemize{
-#'   \item price: price in US dollars (\$326--\$18,823)
+#'   \item price: price in US dollars ($326--$18,823)
 #'   \item carat: weight of the diamond (0.2--5.01)
 #'   \item cut: quality of the cut (Fair, Good, Very Good, Premium, Ideal)
 #'   \item color: diamond colour, from J (worst) to D (best)
@@ -121,9 +121,9 @@
 #'   \item vore. carnivore, omnivore or herbivore?
 #'   \item order.
 #'   \item conservation. the conservation status of the animal
-#'   \item sleep\_total. total amount of sleep, in hours
-#'   \item sleep\_rem. rem sleep, in hours
-#'   \item sleep\_cycle. length of sleep cycle, in hours
+#'   \item sleep_total. total amount of sleep, in hours
+#'   \item sleep_rem. rem sleep, in hours
+#'   \item sleep_cycle. length of sleep cycle, in hours
 #'   \item awake. amount of time spent awake, in hours
 #'   \item brainwt. brain weight in kilograms
 #'   \item bodywt. body weight in kilograms
