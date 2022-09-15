@@ -17,7 +17,6 @@ Changes in version 2022.5.25
 Changes in version 2022.5.24
 
 - Fixed small test regression and set up Github Actions. Neither of these is user facing.
--  
 
 Changes in version 2022.2.2
 
