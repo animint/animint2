@@ -52,9 +52,11 @@ R packages [[https://github.com/tdhock/gganim][gganim]], [[https://cloud.r-proje
 Typical shiny web applications provide interactive graphics with
 indirect manipulation (via menus/buttons/etc) but the emphasis in
 animint2 is direct manipulation (via mouse clicks on
-lines/points/etc). Direct manipulation in shiny apps can also be
-achieved using the excellent [[https://plotly-r.com/client-side-linking.html][plotly]] package, in which interactivity
-can be specified using events; in contrast animint2 uses the
+lines/points/etc). Direct manipulation in shiny apps can also be achieved using
+[[https://plotly-r.com/client-side-linking.html][plotly]] 
+or 
+[[https://dash.plotly.com/r/interactive-graphing][dash]], 
+in which interactivity can be specified using events; in contrast animint2 uses the
 clickSelects/showSelected keywords to specify interactivity.
 
 *** loon exploratory graphics
