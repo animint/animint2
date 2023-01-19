@@ -57,7 +57,9 @@ lines/points/etc). Direct manipulation in shiny apps can also be achieved using
 or 
 [[https://dash.plotly.com/r/interactive-graphing][dash]], 
 in which interactivity can be specified using events; in contrast animint2 uses the
-clickSelects/showSelected keywords to specify interactivity.
+clickSelects/showSelected keywords to specify interactivity,
+and makes it easy to design multi-layer graphics 
+(which are more difficult in plotly/dash, for which the emphasis is on pre-defined chart types).
 
 *** loon exploratory graphics
 
