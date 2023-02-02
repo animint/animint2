@@ -193,8 +193,8 @@ test_that("strip and title text size ok", {
   expect_match(size.list[["global title"]], "10pt")
   expect_match(size.list[["global top"]], "40pt")
   expect_match(size.list[["global right"]], "40pt")
-  expect_match(size.list[["default title"]], "11pt")
+  expect_match(size.list[["default title"]], "13.2pt")
   expect_match(size.list[["default top"]], "11pt")
-  expect_match(size.list[["default right"]], "13.2pt")
+  expect_match(size.list[["default right"]], "11pt")
 })
 

@@ -23,7 +23,7 @@ test_that("facet_grid() strip labels are placed correctly", {
   styles <- as.character(sapply(attrs, "[[", "style"))
   # remove leading and trailing white-space
   styles <- sub("^\\s+|\\s+$", "", styles)
-  expect_equal(styles, rep("text-anchor: middle; font-size: 11px;", 2))
+  expect_equal(styles, rep("text-anchor: middle; font-size: 11pt;", 2))
   transforms <- as.character(sapply(attrs, "[[", "transform"))
   # there should one be one 'right_strip' group (their children contain the vital info)
   right <- getNodeSet(info$html, "//g[@class='rightStrip']")
@@ -34,7 +34,7 @@ test_that("facet_grid() strip labels are placed correctly", {
   styles <- as.character(sapply(attrs, "[[", "style"))
   # remove leading and trailing white-space
   styles <- sub("^\\s+|\\s+$", "", styles)
-  expect_equal(styles, rep("text-anchor: middle; font-size: 11px;", 3))
+  expect_equal(styles, rep("text-anchor: middle; font-size: 11pt;", 3))
   transforms <- as.character(sapply(attrs, "[[", "transform"))
 })
 
