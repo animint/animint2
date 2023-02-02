@@ -142,6 +142,9 @@ parsePlot <- function(meta, plot, plot.name){
         lab.or.null
       }
     }
+    ## panel text size.
+    plot.info[[s("strip_text_%ssize")]] <- getTextSize(
+      s("strip.text.%s"), theme.pars)
     ## axis text.
     axis.text <- theme.pars[[s("axis.text.%s")]]
     ## axis text size.
@@ -189,6 +192,7 @@ parsePlot <- function(meta, plot, plot.name){
   }else{
     plot$labels$title
   }
+  plot.info$title_size <- getTextSize("plot.title", theme.pars)
 
   ## Set plot width and height from animint.* options if they are
   ## present.
