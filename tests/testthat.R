@@ -39,7 +39,9 @@ if(filter == ""){
   filter <- NULL
 }
 message(gh.action)
-if(interactive() | (gh.action == "ENABLED")) {
+if(FALSE){
+  tests_init("chrome")
+}else if(interactive() | (gh.action == "ENABLED")) {
   tests_init("firefox")
 } else {
   tests_init()
