@@ -203,6 +203,18 @@ expect_color <- function(computed, expected){
   expect_identical(unname(computed.vec), unname(expected.vec))
 }
 
+getPropertyValue <- function(html, xpath, prop.name) {
+  node.set <- getNodeSet(html, xpath)
+  sapply(node.set, function(node){
+    prop.vec <- xmlAttrs(node)
+    if(prop.name %in% names(prop.vec)){
+      prop.vec[[prop.name]]
+    }else{
+      NA
+    }
+  })
+}
+
 getTextValue <- function(tick)xmlValue(getNodeSet(tick, "text")[[1]])
 
 getStyleValue <- function(html, xpath, style.name) {

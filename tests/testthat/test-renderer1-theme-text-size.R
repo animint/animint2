@@ -179,12 +179,15 @@ test_that("strip and title text size ok", {
     plot.selector <- sprintf('//svg[@id="plot_%s"]', plot.name)
     selector.list <- list(title='//text[@class="plottitle"]')
     for(side in c("top", "right")){
-      selector.list[[side]] <- sprintf('//g[@class="%sStrip"]', side)
+      selector.list[[side]] <- sprintf('//g[@class="%sStrip"]//text', side)
     }
     for(selector.name in names(selector.list)){
       selector <- paste0(plot.selector, selector.list[[selector.name]])
-      size.list[[paste(plot.name, selector.name)]] <- getStyleValue(
-        info$html, selector, "font-size")
+      if (selector.name == "title"){
+        size.list[[paste(plot.name, selector.name)]] <- getPropertyValue(info$html, selector, "font-size")
+      } else{
+        size.list[[paste(plot.name, selector.name)]] <- getStyleValue(info$html, selector, "font-size")
+      }
     }
   }
   expect_match(size.list[["each title"]], "10px")
