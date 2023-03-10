@@ -39,13 +39,14 @@ scale_fill_distiller(
 \item{...}{Other arguments passed on to \code{\link{discrete_scale}}
 to control name, limits, breaks, labels and so forth.}
 
-\item{type}{One of seq (sequential), div (diverging) or qual (qualitative)}
+\item{type}{One of "seq" (sequential), "div" (diverging) or "qual"
+(qualitative)}
 
-\item{palette}{If a string, will use that named palette.  If a number, will
+\item{palette}{If a string, will use that named palette. If a number, will
 index into the list of palettes of appropriate \code{type}}
 
 \item{direction}{Sets the order of colours in the scale. If 1, the default,
-colours are as output by \code{\link[RColorBrewer:brewer.pal]{RColorBrewer::brewer.pal()}}. If -1, the
+colours are as output by \code{\link[RColorBrewer:ColorBrewer]{RColorBrewer::brewer.pal()}}. If -1, the
 order of colours is reversed.}
 
 \item{values}{if colours should not be evenly positioned along the gradient

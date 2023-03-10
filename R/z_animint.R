@@ -5,6 +5,7 @@
 #' @return nothing, info is stored in meta.
 #' @export
 #' @import plyr
+#' @importFrom methods is
 parsePlot <- function(meta, plot, plot.name){
   ## adding data and mapping to each layer from base plot, if necessary
   for(layer.i in seq_along(plot$layers)) {

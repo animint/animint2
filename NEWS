@@ -1,3 +1,8 @@
+Changes in version 2023.3.10
+
+- Changes to satisfy CRAN (import is, consistent function args).
+- facet and plot title text size configurable via theme(strip.text, axis.text).
+
 Changes in version 2022.9.14
 
 - Include Yufan Fei as contributor in DESCRIPTION.

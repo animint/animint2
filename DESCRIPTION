@@ -69,7 +69,8 @@ Imports:
     scales (>= 0.4.1),
     stats,
     knitr (>= 1.5.33),
-    data.table (>= 1.9.8)
+    data.table (>= 1.9.8),
+    methods
 Suggests:
     servr,
     gistr (>= 0.2),
@@ -273,4 +274,4 @@ Collate:
     'z_scales.R'
     'z_theme_animint.R'
     'z_transformShape.R'
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
