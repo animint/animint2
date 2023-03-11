@@ -284,10 +284,10 @@ guides_build <- function(ggrobs, theme) {
 
 # S3 dispatches
 
-guide_train <- function(...) UseMethod("guide_train")
+guide_train <- function(guide, scale) UseMethod("guide_train")
 
-guide_merge <- function(...) UseMethod("guide_merge")
+guide_merge <- function(guide, new_guide) UseMethod("guide_merge")
 
-guide_geom <- function(...) UseMethod("guide_geom")
+guide_geom <- function(guide, layers, default_mapping) UseMethod("guide_geom")
 
-guide_gengrob <- function(...) UseMethod("guide_gengrob")
+guide_gengrob <- function(guide, theme) UseMethod("guide_gengrob")
