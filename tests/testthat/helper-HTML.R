@@ -50,49 +50,48 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
   if(OS == "Windows" || OS == "Darwin") {
     animint_server <- "host.docker.internal"
   }
-  if(browserName == "chrome"){
-    chrome.session <- chromote::ChromoteSession$new()
-    chrome.session$view()
-    chrome.session$refresh <- function()chrome.session$Page$reload()
-    chrome.session$navigate <- function(u){
-      chrome.session$Page$navigate(u)
-    }
-    chrome.session$getPageSource <- function(){
-      doc <- chrome.session$DOM$getDocument()
-      chrome.session$DOM$getOuterHTML(doc$root$nodeId)$outerHTML
-    }
-    remDr <<- chrome.session
-  }else{
-    if (browserName == "phantomjs") {
-      message("Starting phantomjs binary. To shut it down, run: \n pJS$stop()")
-      pJS <<- wdman::phantomjs(
-        port = remotePort,
-        phantomver = "latest"
+  if(browserName == "chrome") {
+    # Set Chrome driver options
+    chrome_options <- list(
+      chromeOptions = list(
+        args = c("--headless", "--disable-gpu", "--window-size=1280,800")
       )
-      ## Give time for phantomjs binary to start
-      animint_server <- "localhost"
-      Sys.sleep(8)  
-    } else if(browserName=="firefox"){
-      ## If using firefox, you'll need to run selenium-firefox docker image in order to make it work correctly.
-      ## We're using docker to avoid version incompatibility issues.
-      message("You need to run selenium docker image(selenium/standalone-firefox:2.53.0) as specified in docs(https://github.com/tdhock/animint2/wiki/Testing). \nNote: Ignore if already running.")
-    }else stop("unrecognized browser name")
-    remDr <<- RSelenium::remoteDriver(
+    )
+    chrome <<- wdman::chrome(
       port = remotePort,
-      browser = browserName,
-      )
-    ## wait for the remote driver to start-up
-    Sys.sleep(6)
-    remDr$open(silent = TRUE)
-    ## some tests don't run reliably with phantomjs (see tests-widerect.R)
-    Sys.setenv("ANIMINT_BROWSER" = browserName)
-    ## wait a maximum of 30 seconds when searchinsg for elements.
-    remDr$setTimeout(type = "implicit", milliseconds = 30000)
-    ## wait a maximum of 30 seconds for a particular type of operation to execute
-    remDr$setTimeout(type = "page load", milliseconds = 30000)
-    ## if we navigate to localhost:%s/htmltest directly, some browsers will
-    ## redirect to www.htmltest.com. A 'safer' approach is to navigate, then click.
+      chromever = "latest"
+    )
+    animint_server <- "localhost"
+    Sys.sleep(8)  
+  }else if(browserName=="firefox"){
+    ## If using firefox, you'll need to run selenium-firefox docker image in order to make it work correctly.
+    ## We're using docker to avoid version incompatibility issues.
+    message("You need to run selenium docker image(selenium/standalone-firefox:2.53.0) as specified in docs(https://github.com/tdhock/animint2/wiki/Testing). \nNote: Ignore if already running.")
+  }else stop("unrecognized browser name")
+  if (exists("chrome_options")){
+    remDr <<- RSelenium::remoteDriver(
+    port = remotePort,
+    browser = browserName,
+    extraCapabilities = chrome_options
+    )
+  } else{
+    remDr <<- RSelenium::remoteDriver(
+    port = remotePort,
+    browser = browserName,
+    )
   }
+  
+  ## wait for the remote driver to start-up
+  Sys.sleep(6)
+  remDr$open(silent = TRUE)
+  ## some tests don't run reliably with phantomjs (see tests-widerect.R)
+  Sys.setenv("ANIMINT_BROWSER" = browserName)
+  ## wait a maximum of 30 seconds when searchinsg for elements.
+  remDr$setTimeout(type = "implicit", milliseconds = 30000)
+  ## wait a maximum of 30 seconds for a particular type of operation to execute
+  remDr$setTimeout(type = "page load", milliseconds = 30000)
+  ## if we navigate to localhost:%s/htmltest directly, some browsers will
+  ## redirect to www.htmltest.com. A 'safer' approach is to navigate, then click.
   remDr$navigate(sprintf("http://%s:%s/animint-htmltest/", animint_server, port))
   ## Why not just navigate to the right URL to begin with?
   ## e <- remDr$findElement("xpath", "//a[@href='animint-htmltest/']")
