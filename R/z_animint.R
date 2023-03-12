@@ -5,6 +5,7 @@
 #' @return nothing, info is stored in meta.
 #' @export
 #' @import plyr
+#' @importFrom methods is
 parsePlot <- function(meta, plot, plot.name){
   ## adding data and mapping to each layer from base plot, if necessary
   for(layer.i in seq_along(plot$layers)) {
@@ -142,17 +143,23 @@ parsePlot <- function(meta, plot, plot.name){
         lab.or.null
       }
     }
-    # theme settings are shared across panels
+    ## panel text size.
+    plot.info[[s("strip_text_%ssize")]] <- getTextSize(
+      s("strip.text.%s"), theme.pars)
+    ## axis text.
     axis.text <- theme.pars[[s("axis.text.%s")]]
-    ## TODO: also look at axis.text! (and text?)
-    size <- getTextSize(s("axis.text.%s"), theme.pars)
-    anchor <- hjust2anchor(axis.text$hjust)
+    ## axis text size.
+    plot.info[[s("%ssize")]] <- getTextSize(s("axis.text.%s"), theme.pars)
+    ## axis text angle.
     angle <- if(is.numeric(axis.text$angle)){
       -axis.text$angle
     }
     if(is.null(angle)){
       angle <- 0
     }
+    plot.info[[s("%sangle")]] <- as.numeric(angle)
+    ## axis text hjust->anchor.
+    anchor <- hjust2anchor(axis.text$hjust)
     if(is.null(anchor)){
       anchor <- if(angle == 0){
         "middle"
@@ -160,9 +167,7 @@ parsePlot <- function(meta, plot, plot.name){
         "end"
       }
     }
-    plot.info[[s("%ssize")]] <- size
     plot.info[[s("%sanchor")]] <- as.character(anchor)
-    plot.info[[s("%sangle")]] <- as.numeric(angle)
     # translate panel specific axis info
     ctr <- 0
     for (axis in names(axes)) {
@@ -183,8 +188,12 @@ parsePlot <- function(meta, plot, plot.name){
   plot.info <- getUniqueAxisLabels(plot.info)
 
   # grab plot title if present
-  plot.info$title <- getPlotTitle(theme.pars$plot.tiltle,
-                                  plot$labels$title)
+  plot.info$title <- if(is(theme.pars$plot.title, "blank")){
+    ""
+  }else{
+    plot$labels$title
+  }
+  plot.info$title_size <- getTextSize("plot.title", theme.pars)
 
   ## Set plot width and height from animint.* options if they are
   ## present.

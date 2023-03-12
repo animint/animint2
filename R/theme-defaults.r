@@ -117,7 +117,7 @@ theme_grey <- function(base_size = 11, base_family = "") {
     panel.ontop    =     FALSE,
 
     strip.background =   element_rect(fill = "grey85", colour = NA),
-    strip.text =         element_text(colour = "grey10", size = rel(0.8)),
+    strip.text =         element_text(colour = "grey10"),
     strip.text.x =       element_text(margin = margin(t = half_line, b = half_line)),
     strip.text.y =       element_text(angle = -90, margin = margin(l = half_line, r = half_line)),
     strip.switch.pad.grid = unit(0.1, "cm"),
@@ -154,7 +154,6 @@ theme_bw <- function(base_size = 12, base_family = "") {
   # Starts with theme_grey and then modify some parts
   theme_grey(base_size = base_size, base_family = base_family) %+replace%
     theme(
-      axis.text         = element_text(size = rel(0.8)),
       axis.ticks        = element_line(colour = "black"),
       legend.key        = element_rect(colour = "grey80"),
       panel.background  = element_rect(fill = "white", colour = NA),

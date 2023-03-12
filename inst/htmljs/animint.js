@@ -303,16 +303,16 @@ var animint = function (to_select, json_file) {
     };
 
     // Draw the title
-    var titlepadding = measureText(p_info.title, 20).height + 10;
+    var titlepadding = measureText(p_info.title, p_info.title_size).height;
     // why are we giving the title padding if it is undefined?
     if (p_info.title === undefined) titlepadding = 0;
     plotdim.title.x = p_info.options.width / 2;
-    plotdim.title.y = titlepadding / 2;
+    plotdim.title.y = titlepadding;
     svg.append("text")
       .text(p_info.title)
       .attr("class", "plottitle")
       .attr("font-family", "sans-serif")
-      .attr("font-size", "20px")
+      .attr("font-size", p_info.title_size)
       .attr("transform", "translate(" + plotdim.title.x + "," + 
         plotdim.title.y + ")")
       .style("text-anchor", "middle");
@@ -338,10 +338,10 @@ var animint = function (to_select, json_file) {
     plotdim.margin = margin;
     
     var strip_heights = p_info.strips.top.map(function(entry){ 
-      return measureText(entry, 11).height;
+      return measureText(entry, p_info.strip_text_xsize).height;
     });
     var strip_widths = p_info.strips.right.map(function(entry){ 
-      return measureText(entry, 11).height; 
+      return measureText(entry, p_info.strip_text_ysize).height; 
     });
 
     // compute the number of x/y axes, max strip height per row, and
@@ -555,27 +555,30 @@ var animint = function (to_select, json_file) {
         if (strip == "") {
           return(null);
         }
-        var x, y, rotate, stripElement;
+        var x, y, rotate, stripElement, strip_text_xy;
         if (side == "right") {
-          x = plotdim.xend + strip_widths[layout_i] / 2 - 2;
+          x = plotdim.xend;
           y = (plotdim.ystart + plotdim.yend) / 2;
           rotate = 90;
 	  stripElement = rightStrip;
+          strip_text_xy = "y";
         }else{ //top
 	  x = (plotdim.xstart + plotdim.xend) / 2;
-          y = plotdim.ystart - strip_heights[layout_i] / 2 + 3;
+          y = plotdim.ystart;
 	  rotate = 0;
 	  stripElement = topStrip;
+          strip_text_xy = "x";
 	}
 	var trans_text = "translate(" + x + "," + y + ")";
 	var rot_text = "rotate(" + rotate + ")";
+        var strip_text_size = "strip_text_"+strip_text_xy+"size";
 	stripElement
           .selectAll("." + side + "Strips")
           .data(strip)
           .enter()
           .append("text")
           .style("text-anchor", "middle")
-          .style("font-size", "11px")
+          .style("font-size", p_info[strip_text_size])
           .text(function(d) { return d; })
         // NOTE: there could be multiple strips per panel
         // TODO: is there a better way to manage spacing?

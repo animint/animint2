@@ -32,7 +32,7 @@ facet_train_layout <- function(facet, data)
 facet_map_layout <- function(facet, data, layout)
   UseMethod("facet_map_layout")
 
-facet_render <- function(facet, panels_grob, coord, theme, geom_grobs)
+facet_render <- function(facet, panel, coord, theme, geom_grobs)
   UseMethod("facet_render")
 
 facet_strips <- function(facet, panel, theme)

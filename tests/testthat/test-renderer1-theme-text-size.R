@@ -154,3 +154,50 @@ test_that("Warning for invalid character/string input ", {
     s=scatterFacet + theme(axis.text.x = element_text(size = "12p")))
   expect_warning(animint2HTML(viz), "axis.text.x is not numeric nor character ending with \'pt\' or \'px\', will be default 11pt")
 })
+
+gg <- ggplot()+geom_point(aes(
+  x,y),
+  data=data.frame(x=1,y=1,xp="foo",yp="bar"))+
+  facet_grid(yp~xp)
+viz <- animint(
+  each=gg+
+    ggtitle("title=10px, top=100px, right=100pt")+
+    theme(
+      plot.title=element_text(size="10px"),
+      strip.text.x = element_text(size="100px"), 
+      strip.text.y = element_text(size="100pt")), 
+  global=gg+
+    ggtitle("title size=10, strip size=40")+
+    theme(
+      plot.title=element_text(size=10),
+      strip.text = element_text(size=40)), 
+  default=gg+ggtitle("defaults"))
+info <- animint2HTML(viz)
+test_that("strip and title text size ok", {
+  size.list <- list()
+  for(plot.name in names(viz)){
+    plot.selector <- sprintf('//svg[@id="plot_%s"]', plot.name)
+    selector.list <- list(title='//text[@class="plottitle"]')
+    for(side in c("top", "right")){
+      selector.list[[side]] <- sprintf('//g[@class="%sStrip"]//text', side)
+    }
+    for(selector.name in names(selector.list)){
+      selector <- paste0(plot.selector, selector.list[[selector.name]])
+      if (selector.name == "title"){
+        size.list[[paste(plot.name, selector.name)]] <- getPropertyValue(info$html, selector, "font-size")
+      } else{
+        size.list[[paste(plot.name, selector.name)]] <- getStyleValue(info$html, selector, "font-size")
+      }
+    }
+  }
+  expect_match(size.list[["each title"]], "10px")
+  expect_match(size.list[["each top"]], "100px")
+  expect_match(size.list[["each right"]], "100pt")
+  expect_match(size.list[["global title"]], "10pt")
+  expect_match(size.list[["global top"]], "40pt")
+  expect_match(size.list[["global right"]], "40pt")
+  expect_match(size.list[["default title"]], "13.2pt")
+  expect_match(size.list[["default top"]], "11pt")
+  expect_match(size.list[["default right"]], "11pt")
+})
+

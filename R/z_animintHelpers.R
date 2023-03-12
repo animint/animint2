@@ -134,15 +134,6 @@ getUniqueAxisLabels <- function(plot.meta){
 }
 
 
-getPlotTitle <- function(plot.title, meta.title){
-  if("element_blank"%in%attr(plot.title, "class")){
-    return("")
-  } else {
-    return(meta.title)
-  }
-}
-
-
 getWidthAndHeight <- function(theme){
   options_list <- list()
   for(wh in c("width", "height")){
