@@ -1,6 +1,6 @@
-Changes in version 2023.3.10
+Changes in version 2023.3.14
 
-- Changes to satisfy CRAN (import is, consistent function args).
+- Changes to satisfy CRAN (import is, consistent function args, graphical-units.Rd, rm Fox book URL in stat_ellipse.Rd).
 - facet and plot title text size configurable via theme(strip.text, axis.text).
 
 Changes in version 2022.9.14

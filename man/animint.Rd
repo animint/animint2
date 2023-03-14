@@ -15,7 +15,7 @@ list of class animint
 \description{
 Create an animated, interactive data visualization. The easiest
 way to get started is by reading the Animint2 Manual,
-http://members.cbio.mines-paristech.fr/~thocking/animint2-manual/Ch02-ggplot2.html
+https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch02-ggplot2.html
 }
 \details{
 This function creates a list with the items in ... and

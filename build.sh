@@ -16,6 +16,7 @@ for data in diamonds economics faithfuld luv_colours midwest mpg msleep presiden
 done
 cp animint2/data/economics_long.rda animint2-release/data
 cp animint2/man/animint2-gganimintproto.Rd animint2-release/man
+cp animint2/man/graphical-units.Rd animint2-release/man
 grep -v RSelenium animint2/DESCRIPTION > animint2-release/DESCRIPTION
 rm animint2-release/tests/testthat/helper-HTML.R
 rm animint2-release/tests/testthat/test-compiler-chunk-vars.R

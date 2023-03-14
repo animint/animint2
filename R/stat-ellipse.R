@@ -4,8 +4,7 @@
 #' \code{car::ellipse} (Fox and Weisberg, 2011)
 #'
 #' @references John Fox and Sanford Weisberg (2011). An {R} Companion to
-#'   Applied Regression, Second Edition. Thousand Oaks CA: Sage. URL:
-#'   \url{https://socialsciences.mcmaster.ca/jfox/Books/Companion/}
+#'   Applied Regression, Second Edition. Thousand Oaks CA: Sage. 
 #' @param level The confidence level at which to draw an ellipse (default is 0.95),
 #'   or, if \code{type="euclid"}, the radius of the circle to be drawn.
 #' @param type The type of ellipse.
