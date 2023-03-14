@@ -2,7 +2,7 @@ animint2 provides an animated, interactive grammar of graphics
 
 [[https://github.com/tdhock/animint2/actions/workflows/tests.yaml][https://github.com/tdhock/animint2/actions/workflows/tests.yaml/badge.svg]]
 
-** Introduction
+** Introduction to Animint2: animated, interactive grammar of graphics
 
 Animint2 is an advanced data visualization system 
 that makes it easy for people who work with big data to create multi-layer, multi-plot,
