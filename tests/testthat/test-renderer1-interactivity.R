@@ -116,7 +116,8 @@ test_that("clickSelects 300 makes 300 <circle> elements", {
 })
 
 test_that("clickSelects 1 changes to 1 <line> element", {
-  html <- clickHTML(id=paste0("segments", 1))
+  clickID(paste0("segments", 1))
+  html <- getHTML()
   nodes <- getNodeSet(html, '//g[@class="geom3_segment_signal"]//line')
   expect_equal(length(nodes), 1)
 })
@@ -148,7 +149,8 @@ test_that("clickSelects 300 makes 300 <circle> elements", {
 })
 
 test_that("clickSelects 1 adds 1 <line> and 4 <circle>", {
-  html <- clickHTML(id=paste0("segments", 1))
+  clickID(paste0("segments", 1))
+  html <- getHTML()
   nodes <- getNodeSet(html, '//g[@class="geom3_segment_signal"]//line')
   expect_equal(length(nodes), 5)
   nodes <- getNodeSet(html, '//g[@class="geom5_point_points"]//circle')
@@ -156,7 +158,8 @@ test_that("clickSelects 1 adds 1 <line> and 4 <circle>", {
 })
 
 test_that("clickSelects 4 removes 4 <line> elements and 4 <circle>", {
-  html <- clickHTML(id=paste0("segments", 4))
+  clickID(paste0("segments", 4))
+  html <- getHTML()
   nodes <- getNodeSet(html, '//g[@class="geom3_segment_signal"]//line')
   expect_equal(length(nodes), 1)
   nodes <- getNodeSet(html, '//g[@class="geom5_point_points"]//circle')
@@ -164,7 +167,8 @@ test_that("clickSelects 4 removes 4 <line> elements and 4 <circle>", {
 })
 
 test_that("clickSelects 1 removes all <line> elements and all <circle>", {
-  html <- clickHTML(id=paste0("segments", 1))
+  clickID(paste0("segments", 1))
+  html <- getHTML()
   nodes <- getNodeSet(html, '//g[@class="geom3_segment_signal"]//line')
   expect_equal(length(nodes), 0)
   nodes <- getNodeSet(html, '//g[@class="geom5_point_points"]//circle')
