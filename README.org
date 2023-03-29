@@ -18,7 +18,7 @@ just [[inst/examples/WorldBank-facets.R][10 geoms and ~60 lines of R code]].
 
 More examples of advanced data visualizations that are possible/easy to create with animint can be found in the [[https://rcdata.nau.edu/genomic-ml/animint-gallery/][animint-gallery]].
 
-[[https://rcdata.nau.edu/genomic-ml/animint-gallery/][https://user-images.githubusercontent.com/932850/228421946-2c68bbc8-b11c-4312-a6d0-85a960acd0c1.png]].
+[[https://rcdata.nau.edu/genomic-ml/animint-gallery/][https://user-images.githubusercontent.com/932850/228421946-2c68bbc8-b11c-4312-a6d0-85a960acd0c1.png]]
 
 ** Installation
 
