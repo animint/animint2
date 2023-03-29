@@ -16,6 +16,8 @@ just [[inst/examples/WorldBank-facets.R][10 geoms and ~60 lines of R code]].
 
 [[https://rcdata.nau.edu/genomic-ml/WorldBank-facets/][https://raw.githubusercontent.com/tdhock/animint/master/screencast-WorldBank.gif]]
 
+More examples can be found in the [[https://rcdata.nau.edu/genomic-ml/animint-gallery/][animint-gallery]].
+
 ** Installation
 
 #+BEGIN_SRC R
