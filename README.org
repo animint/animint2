@@ -5,7 +5,7 @@ animint2 provides an animated, interactive grammar of graphics
 ** Animint2: animated, interactive grammar of graphics
 
 Animint2 is an advanced data visualization system 
-that makes it easy for people who work with big data to create multi-layer, multi-plot,
+that makes it easy for people who work with big data to create multi-layer, multi-plot, multi-panel (facetted),
 interactive, and possibly animated graphics, in order to understand their big data sets.
 Animint2 is fork of [[https://github.com/hadley/ggplot2][ggplot2]] that adds the clickSelects and showSelected
 interactive keywords to the grammar of graphics, and
