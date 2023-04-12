@@ -81,6 +81,18 @@ print.animint <- function(x, ...){
 ##'     scale_size_animint(pixel.range=c(2,20), breaks=10^(4:9)))
 animint <- function(...){
   L <- list(...)
+
+  # no options
+  if(length(L) == 0) {
+    stop("animint() must have one ggplot as argument. No arguments were specified.")
+  }
+
+  # check for options specified multiple times
+  duplicated_options = which(table(names(L)) > 1)
+  if(length(duplicated_options) > 0) {
+    stop("animint() options must only be specified once. problem: ", paste0(unlist(names(duplicated_options)), collapse=", "))
+  }
+
   default.name.vec <- plot.num.vec <- paste0("plot", seq_along(L))
   match.name.list <- lapply(match.call()[-1], paste)
   first.name.vec <- sapply(match.name.list, "[", 1)
@@ -88,6 +100,8 @@ animint <- function(...){
   name.ok <- grepl("^[a-zA-Z][a-zA-Z0-9]*$", sub.name.vec)
   use.name <- sapply(match.name.list, length)==1 & name.ok
   default.name.vec[use.name] <- sub.name.vec[use.name]
+
+
   if(is.null(names(L))){
     names(L) <- default.name.vec
   }
