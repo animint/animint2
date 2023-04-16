@@ -84,13 +84,20 @@ animint <- function(...){
 
   # no options
   if(length(L) == 0) {
-    stop("animint() must have one ggplot as argument. No arguments were specified.")
+    stop("animint() must have at least one ggplot as argument. No arguments were specified.")
   }
 
-  # check for options specified multiple times
-  duplicated_options = which(table(names(L)) > 1)
+  # check for non-ggplot options specified multiple times
+  # ggplots show up as "" in the list
+  duplicated_options = which(table(names(L)[names(L) != ""]) > 1)
   if(length(duplicated_options) > 0) {
     stop("animint() options must only be specified once. problem: ", paste0(unlist(names(duplicated_options)), collapse=", "))
+  }
+
+  # no ggplot supplied
+  # ggplots show up as "" in the list
+  if(length(which(names(L) == "")) == 0) {
+    stop("A ggplot must be supplied.")
   }
 
   default.name.vec <- plot.num.vec <- paste0("plot", seq_along(L))
@@ -100,7 +107,6 @@ animint <- function(...){
   name.ok <- grepl("^[a-zA-Z][a-zA-Z0-9]*$", sub.name.vec)
   use.name <- sapply(match.name.list, length)==1 & name.ok
   default.name.vec[use.name] <- sub.name.vec[use.name]
-
 
   if(is.null(names(L))){
     names(L) <- default.name.vec
