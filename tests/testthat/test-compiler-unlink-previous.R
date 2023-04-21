@@ -3,6 +3,7 @@ acontext("compiler unlink previous")
 data(WorldBank)
 
 out.dir <- file.path(tempdir(), "animint2-wb")
+unlink(out.dir, recursive=TRUE)
 viz <- list(
   scatter=ggplot()+
     geom_point(aes(
