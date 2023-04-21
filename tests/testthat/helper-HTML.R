@@ -40,7 +40,6 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
   testDir <- file.path(testPath, "animint-htmltest")
   # if the htmltest directory exists, wipe clean, then create an empty folder
   unlink(testDir, recursive = TRUE)
-  dir.create(testDir)
   # start-up remote driver
   remotePort <- 4444L
   OS <- Sys.info()[['sysname']]
