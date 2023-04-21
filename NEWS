@@ -1,3 +1,9 @@
+Changes in version 2023.4.21
+
+- Before creating a new out.dir, do not remove old out.dir, and
+  instead stop with an error, if out.dir already exists, but
+  animint.js does not.
+
 Changes in version 2023.3.14
 
 - Changes to satisfy CRAN (import is, consistent function args, graphical-units.Rd, rm Fox book URL in stat_ellipse.Rd).

@@ -41,3 +41,4 @@ test_that("error if dir exists and no animint.js inside", {
     animint2dir(viz2, out.dir, open.browser=FALSE)
   }, "animint.js does not exist, so not removing out.dir. If you really want to save your animint in out.dir, then please remove that directory entirely")
 })
+
