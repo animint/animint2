@@ -33,3 +33,11 @@ test_that("only two geom.tsv files in out.dir", {
     "geom2_point_scatter_chunk1.tsv")
   expect_identical(geom.tsv.vec, expected.tsv.vec)
 })
+
+test_that("error if dir exists and no animint.js inside", {
+  animint.js <- file.path(out.dir, "animint.js")
+  unlink(animint.js)
+  expect_error({
+    animint2dir(viz2, out.dir, open.browser=FALSE)
+  }, "animint.js does not exist, so not removing out.dir. If you really want to save your animint in out.dir, then please remove that directory entirely")
+})
