@@ -1,0 +1,39 @@
+# Website Setup
+
+This documents how I set up the `animint2` documentation website with `pkgdown`. It is also the code for setting up the website.
+
+See [this webpage for more information on using `pkgdown`](https://pkgdown.r-lib.org/articles/pkgdown.html).
+
+
+## Build the Site
+
+First, we use `usethis` to get `animint2` ready to become a website. The code only needs to be run once, and I've run it already:
+
+```{r, eval=FALSE}
+usethis::use_pkgdown()
+```
+
+This does three things:
+
+- Creates the `_pkgdown.yml` file, which we'll need to edit later.
+- Adds the following regular expressions to the `.Rbuildignore` file: `^_pkgdown\\.yml$`, `^docs$`, and `^pkgdown$`. When the `animint2` package is built, it'll ignore the website stuff.
+- Adds the `docs/` directory to the `.gitignore` file.
+
+The last bullet point may be surprising. Why are we telling git to ignore our nicely-rendered website? Because we're using Github, and there's another function that will make sure our website appears on Github Pages.
+
+Next, we need to convert `README.org` into `README.md`. `pkgdown` doesn't understand Org and requires a README to generate the website's homepage. I used `pandoc`, but I guess you could also convert it by hand.
+
+```
+pandoc -s README.org -o README.md
+```
+
+Then we generate the website:
+
+```{r}
+pkgdown::build_site()
+```
+
+
+## Making Changes to the Website
+
+The website works, but it's disordered. The site is mostly a mix of the Github README and the official `animint2` documentation on CRAN.
