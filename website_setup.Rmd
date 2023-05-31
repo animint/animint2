@@ -11,6 +11,7 @@ First, we use `usethis` to get `animint2` ready to become a website. The code on
 
 ```{r, eval=FALSE}
 usethis::use_pkgdown()
+usethis::use_pkgdown_github_pages()
 ```
 
 This does three things:
@@ -33,7 +34,21 @@ Then we generate the website:
 pkgdown::build_site()
 ```
 
+Finally, we 
+
 
 ## Making Changes to the Website
 
-The website works, but it's disordered. The site is mostly a mix of the Github README and the official `animint2` documentation on CRAN.
+The website works, but it's disordered. The site is mostly a mix of the Github README and the official `animint2` documentation on CRAN. It could be better.
+
+
+
+
+
+
+
+
+
+
+
+
