@@ -1,3 +1,9 @@
+Changes in version 2023.6.6
+
+- Removed maptools and sp dependency by removing fortify.r and the fortify-foo.r files.
+- Due to the removal of the aforementioned files, the following files were also removed: fortify.Rd, fortify.foo.Rd, borders.Rd, and map_data.Rd.
+- Removed maptools in the DESCRIPTION suggests.
+
 Changes in version 2023.3.14
 
 - Changes to satisfy CRAN (import is, consistent function args, graphical-units.Rd, rm Fox book URL in stat_ellipse.Rd).
