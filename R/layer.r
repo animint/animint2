@@ -32,7 +32,7 @@
 #' @param inherit.aes If \code{FALSE}, overrides the default aesthetics,
 #'   rather than combining with them. This is most useful for helper functions
 #'   that define both data and aesthetics and shouldn't inherit behaviour from
-#'   the default plot specification, e.g. \code{\link{borders}}.
+#'   the default plot specification.
 #' @param params Additional parameters to the \code{geom} and \code{stat}.
 #' @param subset DEPRECATED. An older way of subsetting the dataset used in a
 #'   layer.

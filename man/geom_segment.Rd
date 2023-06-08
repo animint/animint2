@@ -78,7 +78,7 @@ a warning.  If \code{TRUE} silently removes missing values.}
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
-the default plot specification, e.g. \code{\link{borders}}.}
+the default plot specification.}
 
 \item{curvature}{A numeric value giving the amount of curvature.
     Negative values produce left-hand curves, positive values
