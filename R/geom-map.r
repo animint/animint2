@@ -9,8 +9,7 @@ NULL
 #' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "map")}
 #'
 #' @export
-#' @param map Data frame that contains the map coordinates.  This will
-#'   typically be created using \code{\link{fortify}} on a spatial object.
+#' @param map Data frame that contains the map coordinates. 
 #'   It must contain columns \code{x} or \code{long}, \code{y} or
 #'   \code{lat}, and \code{region} or \code{id}.
 #' @inheritParams layer

@@ -61,8 +61,7 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
    data as specified in the call to \code{\link{ggplot}}.
 
    A \code{data.frame}, or other object, will override the plot
-   data. All objects will be fortified to produce a data frame. See
-   \code{\link{fortify}} for which variables will be created.
+   data.
 
    A \code{function} will be called with a single argument,
    the plot data. The return value must be a \code{data.frame.}, and

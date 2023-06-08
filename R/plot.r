@@ -31,9 +31,8 @@
 #' multiple data frames are used to produce different layers, as
 #' is often the case in complex graphics.
 #'
-#' @param data Default dataset to use for plot. If not already a data.frame,
-#'   will be converted to one by \code{\link{fortify}}. If not specified,
-#'   must be suppled in each layer added to the plot.
+#' @param data Default dataset to use for plot. Must be a dataframe.
+#'   If not specified, must be suppled in each layer added to the plot.
 #' @param mapping Default list of aesthetic mappings to use for plot.
 #'   If not specified, must be suppled in each layer added to the plot.
 #' @param ... Other arguments passed on to methods. Not currently used.
@@ -81,7 +80,7 @@ ggplot <- function(data = NULL, mapping = aes(), ...,
 #' @usage NULL
 ggplot.default <- function(data = NULL, mapping = aes(), ...,
                            environment = parent.frame()) {
-  ggplot.data.frame(fortify(data, ...), mapping, environment = environment)
+  ggplot.data.frame(data, ..., mapping, environment = environment)
 }
 
 #' @export

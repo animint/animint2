@@ -9,9 +9,8 @@
 ggplot(data = NULL, mapping = aes(), ..., environment = parent.frame())
 }
 \arguments{
-\item{data}{Default dataset to use for plot. If not already a data.frame,
-will be converted to one by \code{\link{fortify}}. If not specified,
-must be suppled in each layer added to the plot.}
+\item{data}{Default dataset to use for plot. Must be a dataframe.
+If not specified, must be suppled in each layer added to the plot.}
 
 \item{mapping}{Default list of aesthetic mappings to use for plot.
 If not specified, must be suppled in each layer added to the plot.}
