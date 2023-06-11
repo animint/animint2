@@ -73,6 +73,7 @@ Imports:
     methods
 Suggests:
     servr,
+    sf,
     gistr (>= 0.2),
     shiny,
     RColorBrewer,

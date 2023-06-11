@@ -28,9 +28,8 @@ fortify.SpatialPolygonsDataFrame <- function(model, data, region = NULL, ...) {
     message("Regions defined for each Polygons")
   } else {
     cp <- sp::polygons(model)
-
     # Union together all polygons that make up a region
-    unioned <- maptools::unionSpatialPolygons(cp, attr[, region])
+    unioned <- sf::st_union(cp, attr[, region])
     coords <- fortify(unioned)
     coords$order <- 1:nrow(coords)
   }
