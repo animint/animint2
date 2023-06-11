@@ -8,13 +8,6 @@
 #' @param region name of variable used to split up regions
 #' @param ... not used by this method
 #' @name fortify.sp
-#' @examples
-#' if (require("maptools")) {
-#'  sids <- system.file("shapes/sids.shp", package="maptools")
-#'  nc1 <- readShapePoly(sids,
-#'    proj4string = CRS("+proj=longlat +datum=NAD27"))
-#'  nc1_df <- fortify(nc1)
-#' }
 NULL
 
 #' @rdname fortify.sp

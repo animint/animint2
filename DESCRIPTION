@@ -89,7 +89,6 @@ Suggests:
     Hmisc,
     lattice,
     mapproj,
-    maptools,
     mgcv,
     nlme,
     rpart,
