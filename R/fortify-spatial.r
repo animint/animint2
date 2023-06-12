@@ -5,27 +5,23 @@
 #'
 #' @param model \code{SpatialPolygonsDataFrame} to convert into a dataframe.
 #' @param data not used by this method
-#' @param region name of variable used to split up regions
 #' @param ... not used by this method
 #' @name fortify.sp
+#' @examples
+#' if (require("sp") && require("sf")) {
+#'  sids <- system.file("shape/nc.shp", package="sf")
+#'  nc1 <- as(st_read(sids, quiet=TRUE), "Spatial")
+#'  nc1_df <- fortify(nc1)
+#' }
 NULL
 
 #' @rdname fortify.sp
 #' @export
 #' @method fortify SpatialPolygonsDataFrame
-fortify.SpatialPolygonsDataFrame <- function(model, data, region = NULL, ...) {
+fortify.SpatialPolygonsDataFrame <- function(model, data, ...) {
   attr <- as.data.frame(model)
-  # If not specified, split into regions based on polygons
-  if (is.null(region)) {
-    coords <- plyr::ldply(model@polygons,fortify)
-    message("Regions defined for each Polygons")
-  } else {
-    cp <- sp::polygons(model)
-    # Union together all polygons that make up a region
-    unioned <- sf::st_union(cp, attr[, region])
-    coords <- fortify(unioned)
-    coords$order <- 1:nrow(coords)
-  }
+  coords <- plyr::ldply(model@polygons,fortify)
+  message("Regions defined for each Polygons")
   coords
 }
 
