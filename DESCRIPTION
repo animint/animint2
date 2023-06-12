@@ -1,6 +1,6 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2023.3.14
+Version: 2023.6.11
 URL: https://github.com/tdhock/animint2
 BugReports: https://github.com/tdhock/animint2/issues
 Authors@R: c(
@@ -74,6 +74,7 @@ Imports:
 Suggests:
     servr,
     sf,
+    sp,
     gistr (>= 0.2),
     shiny,
     RColorBrewer,
