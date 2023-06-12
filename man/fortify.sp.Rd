@@ -36,10 +36,3 @@
 To figure out the correct variable name for region, inspect
 \code{as.data.frame(model)}.
 }
-\examples{
-if (require("sp") && require("sf")) {
- sids <- system.file("shape/nc.shp", package="sf")
- nc1 <- as(st_read(sids, quiet=TRUE), "Spatial")
- nc1_df <- fortify(nc1)
-}
-}
