@@ -73,7 +73,6 @@ Imports:
     methods
 Suggests:
     servr,
-    sf,
     sp,
     gistr (>= 0.2),
     shiny,
