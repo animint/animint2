@@ -32,6 +32,7 @@ print.animint <- function(x, ...){
 ##' @return list of class animint
 ##' @author Toby Dylan Hocking
 ##' @examples
+##' if(require('data.table'))setDTthreads(1)#for CRAN.
 ##' library(animint2)
 ##' data(WorldBank, package="animint2")
 ##' years <- unique(WorldBank[, "year", drop=FALSE])
