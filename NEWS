@@ -2,6 +2,7 @@ Changes in version 2023.6.11
 
 - Remove maptools dependency.
 - split.x -> split_recursive to silence new CRAN check.
+- setDTthreads(1) in examples for CRAN.
 
 Changes in version 2023.3.14
 
