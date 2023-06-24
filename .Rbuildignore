@@ -14,7 +14,3 @@ animint-htmltest
 ANIMINT_TEST_FOO
 test-compiler-gist.R
 .httr-oauth
-^_pkgdown\.yml$
-^docs$
-^pkgdown$
-^\.github$
