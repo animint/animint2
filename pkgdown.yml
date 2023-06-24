@@ -1,0 +1,9 @@
+pandoc: 2.19.2
+pkgdown: 2.0.7
+pkgdown_sha: ~
+articles: {}
+last_built: 2023-06-23T23:56Z
+urls:
+  reference: https://ampurr.github.io/animint2/reference
+  article: https://ampurr.github.io/animint2/articles
+
