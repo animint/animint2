@@ -16,7 +16,7 @@ A data frame with 478 rows and 6 variables
   \item pop, total population, in thousands,
 }
 
-An object of class \code{grouped_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 2870 rows and 4 columns.
+An object of class \code{data.frame} with 2870 rows and 4 columns.
 }
 \usage{
 economics

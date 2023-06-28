@@ -30,6 +30,7 @@ This function creates a list with the items in ... and
   data for the currently selected year.
 }
 \examples{
+if(require('data.table'))setDTthreads(1)#for CRAN.
 library(animint2)
 data(WorldBank, package="animint2")
 years <- unique(WorldBank[, "year", drop=FALSE])

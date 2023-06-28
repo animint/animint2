@@ -888,7 +888,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     }else{
       group.info.common
     }
-    varied.df.list <- split.x(na.omit(built), chunk.vars)
+    varied.df.list <- split_recursive(na.omit(built), chunk.vars)
     varied.cols <- c("group", names(is.common)[!is.common])
     varied.data <- varied.chunk(varied.df.list, varied.cols)
     return(list(common=na.omit(common.data),
@@ -923,7 +923,7 @@ varied.chunk <- function(dt.or.list, cols){
 ##' @param x data.frame.
 ##' @param vars character vector of variable names to split on.
 ##' @return recursive list of data.frame.
-split.x <- function(x, vars){
+split_recursive <- function(x, vars){
   if(length(vars)==0)return(x)
   if(is.data.frame(x)){
 
@@ -947,10 +947,10 @@ split.x <- function(x, vars){
       use <- vars[1]
       rest <- vars[-1]
       dt.list <- split(x, by = use, keep.by = FALSE, drop = TRUE)
-      split.x(dt.list, rest)
+      split_recursive(dt.list, rest)
     }
   }else if(is.list(x)){
-    lapply(x, split.x, vars)
+    lapply(x, split_recursive, vars)
   }else{
     str(x)
     stop("unknown object")
