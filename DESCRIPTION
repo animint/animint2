@@ -73,6 +73,7 @@ Imports:
     methods
 Suggests:
     servr,
+    sp,
     gistr (>= 0.2),
     shiny,
     RColorBrewer,
@@ -88,13 +89,11 @@ Suggests:
     Hmisc,
     lattice,
     mapproj,
-    maptools,
     mgcv,
     nlme,
     rpart,
     svglite,
     ggplot2
-Enhances: sp
 Remotes: ropensci/RSelenium@v1.7.4
 License: GPL-3
 Encoding: UTF-8

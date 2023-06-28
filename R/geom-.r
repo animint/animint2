@@ -595,7 +595,7 @@ Geom <- gganimintproto("Geom",
     ## separately to reduce disk usage.
     data.or.null <- getCommonChunk(g.data, chunk.cols, g$aes)
     g.data.varied <- if(is.null(data.or.null)){
-      split.x(na.omit(g.data), chunk.cols)
+      split_recursive(na.omit(g.data), chunk.cols)
     }else{
       g$columns$common <- as.list(names(data.or.null$common))
       tsv.name <- sprintf("%s_chunk_common.tsv", g$classed)
