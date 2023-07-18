@@ -1,0 +1,87 @@
+# Website Setup
+
+This documents how I set up the `animint2` documentation website with the `pkgdown` R package. It also contains all the necessary code for setting up the website. I've tried to make this document as clear and near-algorithmic as I reasonably can. Inevitably, some of this may seem condescending. Sorry if it is.
+
+If any part of this document is unclear, please let me (ampurr) know. I wrote it, so I'm responsible for it. Ta.
+
+
+## Get Ready
+
+This section assumes that you're starting from nothing. For whatever reason, the website is gone or has stopped working for some mysterious reason. You need to reset. Here's what to do.
+
+First, set your working directory to the `animint2` repository. You can do `cd whatever/your/path/is/animint/animint2` or use RStudio's GUI.
+
+Next, create a `README.md` document if it doesn't exist. Toby already has a `README.org` document, but `pkgdown` doesn't understand Org. I used `pandoc`, a document converter, but you can also do it by hand:
+
+```
+pandoc -s README.org -o README.md
+```
+
+Then generate a GitHub token. It's like a more secure password and is necessary to access GitHub's API, which we need to set up the website:
+
+```{r, eval=FALSE}
+usethis::create_github_token()
+```
+
+This function will open a GitHub webpage. Log in and generate the token. The token will be a series of characters. Save that somewhere, at least temporarily.
+
+Run the following and enter the token when asked:
+
+```{r, eval=FALSE}
+gitcreds::gitcreds_set()
+```
+
+Finally, configure the repository to use `pkgdown`:
+
+```{r, eval=FALSE}
+usethis::use_pkgdown()
+```
+
+That's it. Now we can build the site.
+
+
+## Build the Site
+
+This section assumes that everything in the previous section has already happened, but that you need to build the website again.
+
+We build the site, then get it ready for GitHub Pages:
+
+```{r, eval=FALSE}
+pkgdown::build_site()
+usethis::use_pkgdown_github_pages()
+```
+
+`pkgdown::build_site()` is the most important, and generates all the HTML files for our website. `usethis::use_pkgdown_github_pages()` creates or modifies the `_pkgdown.yml` file, which influences how the site looks. If the `_pkgdown.yml` file is already how you like it, just say no when `usethis` offers to modify it.
+
+And you're done with site building.
+
+
+## Modify the Site
+
+This section assumes that everything in the previous two sections has already happened. You're reading the section to figure out how to make changes to the website. By default, the home page is just a mirror image of what's on the `animint2` repository, and the references are in alphabetical order. We can make it more useful.
+
+
+
+
+## Make the Site Appear on GitHub Pages
+
+x
+
+
+## See Also
+
+Some documentation that may be useful:
+
+- [`pkgdown` Documentation](https://pkgdown.r-lib.org/index.html).
+- [Information on `usethis::use_pkgdown`](https://usethis.r-lib.org/reference/use_pkgdown.html).
+- [Managing GitHub Credentials](https://usethis.r-lib.org/articles/git-credentials.html).
+- [pandoc Home Page](https://pandoc.org/).
+
+
+
+
+
+
+
+
+
