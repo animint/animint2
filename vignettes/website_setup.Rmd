@@ -1,15 +1,16 @@
-# Website Setup
+---
+title: "How was this Website Set Up?"
+date: First written 2023-06-28. Last revised 2023-07-20.
+---
 
-This documents how I set up the `animint2` documentation website with the `pkgdown` R package. It also contains all the necessary code for setting up the website. I've tried to make this document as clear and near-algorithmic as I reasonably can. Inevitably, some of this may seem condescending. Sorry if it is.
+This is an internal document intended for `animint2` contributors. It documents how I set up the reference website, as well as the code I ran to do so. It may be useful for debugging. It should also be useful if, for whatever reason, you need to set up the website again.
 
-If any part of this document is unclear, please let me (ampurr) know. I wrote it, so I'm responsible for it. Ta.
+I've tried to make this document and the website-generating procedures clear and near-algorithmic as I reasonably can. Inevitably, some of this may seem condescending. Sorry if it is.
 
 
 ## Get Ready
 
-This section assumes that you're starting from nothing. For whatever reason, the website is gone or has stopped working for some mysterious reason. You need to reset. Here's what to do.
-
-First, set your working directory to the `animint2` repository. You can do `cd whatever/your/path/is/animint/animint2` or use RStudio's GUI.
+First, set your working directory to the `animint2` repository. If you're using an command line terminal, type in `cd whatever/your/path/is/animint/animint2`. If you're using RStudio, you can instead use the <kbd>CTRL</kbd><kbd>SHIFT</kbd><kbd>H</kbd> keyboard shortcut and select the `animint2` repository from there.
 
 Next, create a `README.md` document if it doesn't exist. Toby already has a `README.org` document, but `pkgdown` doesn't understand Org. I used `pandoc`, a document converter, but you can also do it by hand:
 
