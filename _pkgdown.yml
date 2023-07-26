@@ -6,14 +6,18 @@
 # details, look at the website_setup.Rmd file. Thanks. :>
 
 
+
 url: https://animint.github.io/animint2/
+
 template:
   bootstrap: 5
 
 
 reference:
 - title: "Basics"
-  desc: All the necessities you need to render animints or static data visualizations.
+  desc: > 
+    All the necessities you need to render animints or static data
+    visualizations.
 - contents:
   - ggplot
   - animint
@@ -25,38 +29,44 @@ reference:
 
 - title: "Layers"
 - subtitle: "Geoms"
-  desc: Geoms partly determine how your data are displayed.
+  desc: >
+    Geoms partly determine how your data are displayed.
 - contents:
   - starts_with("geom_")
   - update_defaults
 
 - subtitle: "Stats"
-  desc: Stats partly determine how your data are displayed. They differ from geoms only in that they tend to summarize or transform the data in some way.
+  desc: >
+    Stats partly determine how your data are displayed. They differ from geoms only in that they tend to summarize or transform the data in some way.
 - contents:
   - starts_with("stat_")
   - update_defaults
 
 - subtitle: "Position Adjustments"
-  desc: If your geoms are overlapping and you don't want them to be, these functions might help.
+  desc: > 
+    If your geoms are overlapping and you don't want them to be, these functions might help.
 - contents:
   - starts_with("position_")
 
 - subtitle: "Annotations"
-  desc: Annotations are kinda like drawing on top of a plot to denote important features. They don't inherit settings from the animint or static data visualization.
+  desc: >
+    Annotations are kinda like drawing on top of a plot to denote important features. They don't inherit settings from the animint or static data visualization.
 - contents:
   - geom_abline
   - starts_with("annotat")
   - borders
 
 
--title: "Adjustments"
+- title: "Adjustments"
 - subtitle: "Aesthetics Adjustments"
-  desc: empty
+  desc: > 
+    empty
 - contents:
   - starts_with("aes_")
 
 - subtitle: "Scales"
-  desc: These functions allow you to control and tweak axes, legends, and other aspects of how the plot looks.
+  desc: > 
+    These functions allow you to control and tweak axes, legends, and other aspects of how the plot looks.
 - contents:
   - labs
   - lims
@@ -64,30 +74,35 @@ reference:
   - starts_with("scale_")
 
 - subtitle: "Guides"
-  desc: Adjust so people understand...
+  desc: > 
+    Adjust so people understand
 - contents:
   - starts_with("guide")
 
 
 - title: "Facetting"
-  desc: Generate many small graphs for static data visualizations. These don't work for animints.
+  desc: > 
+    Generate many small graphs for static data visualizations. These don't work for animints.
 - contents:
   - starts_with("facet_")
 
 - subtitles: Labels
-  desc: Adjust facet labels.
+  desc: > 
+    Adjust facet labels.
 - contents:
   - starts_with("label")
 
 
 - title: Coordinates
-  desc: empty
+  desc: > 
+    empty
 - contents:
   - starts_with("coord_")
 
 
 - title: Themes
-  desc: empty
+  desc: > 
+    empty
 - contents:
   - starts_with("theme")
   - starts_with("element_")
@@ -95,7 +110,8 @@ reference:
 
 
 - title: Programming with and Extending Animint2
-  desc: empty
+  desc: > 
+    empty
 - contents:
   - aes_
   - matches("print")
@@ -103,7 +119,8 @@ reference:
 
 
 - title: Vector Helpers
-  desc: empty
+  desc: > 
+    empty
 - contents:
   - cut_interval
   - hmisc
@@ -112,7 +129,8 @@ reference:
 
 
 - title: Autoplot and Fortify
-  desc: empty
+  desc: > 
+    empty
 - contents:
   - autoplot
   - starts_with("fortify")
@@ -120,7 +138,8 @@ reference:
 
 
 - title: "Datasets"
-  desc: `animint2` comes with a wide range of datasets. They're especially useful when learning how to make animints.
+  desc: > 
+    animint2 comes with a wide range of datasets. They're especially useful when learning how to make animints.
 - contents:
   - breakpoints
   - change
