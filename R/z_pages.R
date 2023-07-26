@@ -1,6 +1,5 @@
 animint2pages <- function(plot.list, github_repo, commit_message = "Commit from animint2pages", ...) {
   res <- animint2dir(plot.list, open.browser = FALSE, ...)
-  # Ensure required packages are installed.
   if (!requireNamespace("git2r")) {
     stop(
       "Please run \n",
@@ -15,8 +14,8 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
       "before using this function"
     )
   }
+
   # The below are copied from `animint2gist`
-  # but we don't need a flat file structure now
   ## Figure out which files to post.
   all.files <- Sys.glob(file.path(res$out.dir, "*"))
   all.file.info <- file.info(all.files)
@@ -26,21 +25,23 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   to.post <- all.files[!is.ignored]
 
   tmp_dir <- tempfile()
+  
   # check if the repo already exists on GH
-  gh_repos <- "/" + user_name + "/" + github_repo
-  repo_exists <- any(sapply(github_repo, function(x) x$name) == github_repo)
+  gh_repos <- gh::gh("/user/repos")
+  repo_exists <- any(sapply(gh_repos, function(x) x$name) == github_repo)
   if(!repo_exists){
-    gh("POST /user/repos", name = github_repo)
+    gh::gh("POST /user/repos", name = github_repo)
   }
-  repo <- git2r::repository(tmp_dir)
+  
+  repo <- git2r::clone(github_repo, tmp_dir, branch="gh-pages", credentials = git2r::cred_token())
+  
+  file.copy(to.post, tmp_dir, recursive = TRUE)
 
   # TODO: Take a screenshot and save as Capture.PNG.
   # Commit the changes
   lapply(to.post, function(file) git2r::add(repo, file))
   git2r::commit(repo, commit_message)
-
-  # Push the changes to the remote repository, replace 'credentials' with your GitHub credentials
-  git2r::push(repo, credentials = git2r::cred_user_pass("username", "password"))
-
+  git2r::push(repo, "origin", "gh-pages", credentials = git2r::cred_token())
+  
   repo
 }
