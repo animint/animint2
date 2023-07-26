@@ -267,6 +267,7 @@ Collate:
     'z_facets.R'
     'z_geoms.R'
     'z_gist.R'
+    'z_pages.R'
     'z_helperFunctions.R'
     'z_knitr.R'
     'z_print.R'
