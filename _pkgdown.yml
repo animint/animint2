@@ -22,7 +22,7 @@ reference:
   - ggplot
   - animint
   - aes
-  - gg-add
+  - +.gganimint
   - ggsave
   - qplot
 
@@ -33,14 +33,14 @@ reference:
     Geoms partly determine how your data are displayed.
 - contents:
   - starts_with("geom_")
-  - update_defaults
+  - update_geom_defaults
 
 - subtitle: "Stats"
   desc: >
     Stats partly determine how your data are displayed. They differ from geoms only in that they tend to summarize or transform the data in some way.
 - contents:
   - starts_with("stat_")
-  - update_defaults
+  - update_stat_defaults
 
 - subtitle: "Position Adjustments"
   desc: > 
