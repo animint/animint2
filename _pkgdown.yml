@@ -28,6 +28,11 @@ reference:
 
 
 - title: "Layers"
+  desc: >
+    empty
+- contents:
+  - layer
+
 - subtitle: "Geoms"
   desc: >
     Geoms partly determine how your data are displayed.
@@ -57,12 +62,48 @@ reference:
   - borders
 
 
+- title: "Animint & Animint Helpers"
+  desc: >
+    empty
+- contents:
+  - starts_with("animint")
+  - addShowSelectedForLegend
+  - addSSandCSasAesthetics
+  - starts_with("check")
+  - colsNotToCopy
+  - starts_with("get")
+  - issueSelectorWarnings
+  - make_bar
+  - make_tallrect
+  - make_widerect
+  - make_text
+  - merge_recurse
+  - newEnvironment
+  - parsePlot
+  - pt.to.lines
+  - renderAnimint
+  - saveChunks
+  - selectSSandCS
+  - setPlotSizes
+  - split_recursive
+  - switch_axes
+  - varied.chunk
+
+- title: "Helper Functions"
+  desc: >
+    empty
+- contents:
+  - toRGB    
+
+
+
 - title: "Adjustments"
 - subtitle: "Aesthetics Adjustments"
   desc: > 
     empty
 - contents:
   - starts_with("aes_")
+  - update_labels
 
 - subtitle: "Scales"
   desc: > 
@@ -91,6 +132,7 @@ reference:
     Adjust facet labels.
 - contents:
   - starts_with("label")
+  - as_labeller
 
 
 - title: Coordinates
@@ -107,6 +149,9 @@ reference:
   - starts_with("theme")
   - starts_with("element_")
   - margin
+  - add_theme
+  - calc_element
+  - rel
 
 
 - title: Programming with and Extending Animint2
@@ -174,3 +219,21 @@ reference:
   - vervet
   - WorldBank
   - worldPop
+
+
+- title: "Testing"
+  desc: >
+    empty
+- contents:
+  - starts_with("is.")
+
+
+- title: internal
+- contents:
+  - graphical-units
+  - last_plot
+  - make_tallrect_or_widerect
+  - transform_shape
+  - translate_qplot_ggplot   # confirm if it should be here later
+  - translate_qplot_lattice  # confirm if it should be here later
+  
