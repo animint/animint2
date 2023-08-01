@@ -26,21 +26,24 @@ animint2pages <- function(plot.list, user_name, github_repo, commit_message = "C
     gh::gh("POST /user/repos", name = github_repo)
     repo <- git2r::init(tmp_dir)
     git2r::config(repo, user.name = user_name)
-    # have a initial commit to avoid error
-    # `Error in 'git2r_branch_create': 'commit' must be an S3 class git_commit`
-    readme_file_path <- file.path(tmp_dir, "README.md")
-    writeLines("## New Repo", readme_file_path)
-    git2r::add(repo, "README.md")
-    git2r::commit(repo, "Initial commit")
   } else {
     github_url <- paste0("https://github.com/", user_name, "/", github_repo, ".git")
     repo <- git2r::clone(github_url, tmp_dir, credentials = git2r::cred_token())
   }
 
-  # Check if the 'gh-pages' branch exists
+  # Check if there are any commits in the repo
+  # have a initial commit to avoid error
+  if (length(git2r::commits(repo)) == 0) {
+    # Perform initial commit
+    readme_file_path <- file.path(tmp_dir, "README.md")
+    writeLines("## New Repo", readme_file_path)
+    git2r::add(repo, "README.md")
+    git2r::commit(repo, "Initial commit")
+  }
+
+  # Check if the 'gh-pages' branch exists, if not, create it
   branches <- git2r::branches(repo)
   if (!"gh-pages" %in% names(branches)) {
-    # If 'gh-pages' branch doesn't exist, create it
     git2r::branch_create(repo, "gh-pages")
   }
 
