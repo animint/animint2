@@ -1,23 +1,39 @@
 # Hello! If you're here, you're probably an animint2 contributor who
-# wants to make adjustments to this file. Part of this file was generated
-# automatically. But most of this file was modified by hand. If
-# usethis::use_pkgdown_github_pages() offers to modify this file, you
-# should probably say no unless you know what you're doing. For more
-# details, look at the website_setup.Rmd file. Thanks. :>
+# wants to make adjustments to this file. _pkgdown.yml controls a lot of
+# things re: the website, most prominently its appearance.
+
+# Part of this file was generated automatically. But most of this file
+# was modified by hand. If usethis::use_pkgdown_github_pages() offers to 
+# modify this file, you should probably say no unless you know what 
+# you're doing. For more details, look at the website_setup.Rmd file. 
+# Thanks. :>
 
 
-
-url: https://animint.github.io/animint2/
+# This needs to be here to tell the website what Bootstrap version it
+# should use. This is automatically generated and should generally be
+# left alone.
 
 template:
   bootstrap: 5
 
 
+# Change this if the URL ever changes.
+
+url: https://animint.github.io/animint2/
+
+
+# This controls the reference page and how the functions are organized.
+# If you've developed a new function, you need to add it somewhere here.
+# Look at the titles and subtitles and read the description, then decide
+# where the new function belongs. My guess is that it belongs somewhere
+# in the Interactivity section, but you'd know best.
+
 reference:
 - title: "Basics"
   desc: > 
     All the necessities you need to render animints or static data
-    visualizations.
+    visualizations. You begin with `ggplot()` and your data. Add geoms, aesthetics, and other components with `+`. Then make your plot
+    interactive with `animint()`.
 - contents:
   - ggplot
   - animint
@@ -26,88 +42,123 @@ reference:
   - ggsave
   - qplot
 
-
 - title: "Layers"
   desc: >
-    empty
+    Layers determine how a graph looks and consist of the data; either
+    a geom, a statistical transformation, or both; aesthetics, and
+    possible position adjustments. Graphs may have more than one layer.
+    It's possible to use `layer()` to generate layers, but many people
+    find it to be prolix. It's convention to instead use a geom or stat 
+    function.
 - contents:
   - layer
 
 - subtitle: "Geoms"
   desc: >
-    Geoms partly determine how your data are displayed.
+    Geoms are geometric objects used to determine the kind of data
+    visualization you'll be generating. For example, you'd select
+    `geom_point()` for a scatterplot and `geom_line()` for a line
+    plot.
 - contents:
   - starts_with("geom_")
   - update_geom_defaults
 
 - subtitle: "Stats"
   desc: >
-    Stats partly determine how your data are displayed. They differ from geoms only in that they tend to summarize or transform the data in some way.
+    Stats are similar to geoms. They differ only in that they summarize 
+    or transform the data in some way.
 - contents:
   - starts_with("stat_")
   - update_stat_defaults
 
 - subtitle: "Position Adjustments"
   desc: > 
-    If your geoms are overlapping and you don't want them to be, these functions might help.
+    Position adjustments are used to stop overlapping geoms from
+    overlapping.
 - contents:
   - starts_with("position_")
 
 - subtitle: "Annotations"
   desc: >
-    Annotations are kinda like drawing on top of a plot to denote important features. They don't inherit settings from the animint or static data visualization.
+    Annotations denote reference points or important features in a data 
+    visualization. They don't inherit settings from the animint or 
+    static data visualization.
 - contents:
   - geom_abline
   - starts_with("annotat")
   - borders
 
-
-- title: "Animint & Animint Helpers"
+- title: "Interactivity"
   desc: >
-    empty
+    Generate animints by first using `ggplot()` and creating a layer.
+    Then place the resulting ggplot into `animint()`, which will
+    automatically render the plot interactive.
 - contents:
   - starts_with("animint")
+  - renderAnimint
+
+- subtitle: "Animint Helpers"
+  desc: >
+    These functions give you more control over your animint or make
+    doing things with animints a little more convenient.
+- contents:
   - addShowSelectedForLegend
   - addSSandCSasAesthetics
-  - starts_with("check")
+  - starts_with("make")
+  - setPlotSizes
+  - switch_axes
+
+- subtitle: "Data Manipulation"
+  desc: >
+    Animints take data, but they also output it. These functions give
+    you control over both the data inputted and outputted.
+- contents:
   - colsNotToCopy
   - starts_with("get")
   - issueSelectorWarnings
-  - make_bar
-  - make_tallrect
-  - make_widerect
-  - make_text
   - merge_recurse
   - newEnvironment
   - parsePlot
-  - pt.to.lines
-  - renderAnimint
   - saveChunks
   - selectSSandCS
-  - setPlotSizes
   - split_recursive
-  - switch_axes
   - varied.chunk
 
-- title: "Helper Functions"
-  desc: >
-    empty
-- contents:
-  - toRGB    
-
-
-
-- title: "Adjustments"
-- subtitle: "Aesthetics Adjustments"
+- title: Coordinates
   desc: > 
-    empty
+    By default, animint2 uses a Cartesian coordinate system. These
+    functions allow you to tweak or change the coordinate system your
+    data visualization uses.
+- contents:
+  - starts_with("coord_")
+
+- title: Themes
+  desc: > 
+    Themes give you broad control over the appearance of everything in 
+    the data visualization orthogonal to the data. `theme()` gives you
+    control over a single data visualization, while `theme_set()`
+    modifies all future visualizations.
+- contents:
+  - starts_with("theme")
+  - starts_with("element_")
+  - margin
+  - add_theme
+  - calc_element
+  - rel
+
+- title: "Aesthetics"
+  desc: > 
+    Aesthetics control how the data are connected to visual aspects of
+    a data visualizations. You can use `aes()` to control color, 
+    transparency, size, shape, and more.
 - contents:
   - starts_with("aes_")
   - update_labels
 
 - subtitle: "Scales"
   desc: > 
-    These functions allow you to control and tweak axes, legends, and other aspects of how the plot looks.
+    Scales are a subset of aesthetics. These functions control axes, 
+    legends, and the like.
 - contents:
   - labs
   - lims
@@ -116,10 +167,10 @@ reference:
 
 - subtitle: "Guides"
   desc: > 
-    Adjust so people understand
+    Guides are a subset of scales. These functions give you finer
+    control over scales.
 - contents:
   - starts_with("guide")
-
 
 - title: "Facetting"
   desc: > 
@@ -134,57 +185,51 @@ reference:
   - starts_with("label")
   - as_labeller
 
+- title: "Helpers"
+  desc: >
+    Some additional functions that aren't at the core of animint2. Most
+    of them are used for convenience or automation.
 
-- title: Coordinates
+- subtitle: "Automation"
   desc: > 
-    empty
-- contents:
-  - starts_with("coord_")
-
-
-- title: Themes
-  desc: > 
-    empty
-- contents:
-  - starts_with("theme")
-  - starts_with("element_")
-  - margin
-  - add_theme
-  - calc_element
-  - rel
-
-
-- title: Programming with and Extending Animint2
-  desc: > 
-    empty
-- contents:
-  - aes_
-  - matches("print")
-  - matches("proto")
-
-
-- title: Vector Helpers
-  desc: > 
-    empty
-- contents:
-  - cut_interval
-  - hmisc
-  - mean_se
-  - resolution
-
-
-- title: Autoplot and Fortify
-  desc: > 
-    empty
+    `autoplot()` is used to automate plot production, while the `fortify` 
+    functions are used to automate tidying dataframes.
 - contents:
   - autoplot
   - starts_with("fortify")
   - map_data
 
+- subtitle: "Extending Animint2"
+  desc: > 
+    You don't need to stick with just the functions animint2 gives you.
+    Use these functions to make your own geoms, stats, and scales.
+- contents:
+  - matches("print")
+  - matches("proto")
+
+- subtitle: "Programming with Animint2"
+  desc: > 
+    These functions help you program with animint2.
+- contents:
+  - aes_
+  - matches("print")
+
+- subtitle: "Helping Functions"
+  desc: > 
+    These are convenience functions that may be helpful when making
+    data visualizations.
+- contents:
+  - cut_interval
+  - hmisc
+  - mean_se
+  - pt.to.lines
+  - resolution
+  - toRGB
 
 - title: "Datasets"
   desc: > 
-    animint2 comes with a wide range of datasets. They're especially useful when learning how to make animints.
+    animint2 comes with a wide range of datasets. Use them to experiment
+    with plot-building and animints.
 - contents:
   - breakpoints
   - change
@@ -220,19 +265,21 @@ reference:
   - WorldBank
   - worldPop
 
-
 - title: "Testing"
   desc: >
-    empty
+    Some functions that may be useful for debugging.
 - contents:
+  - starts_with("check")
   - starts_with("is.")
 
 
+# Any functions filed under internal are not displayed on the website.
+# Place all non-public-facing functions here.
+
 - title: internal
-- contents:
+  contents:
   - graphical-units
   - last_plot
-  - make_tallrect_or_widerect
   - transform_shape
   - translate_qplot_ggplot   # confirm if it should be here later
   - translate_qplot_lattice  # confirm if it should be here later
