@@ -281,5 +281,5 @@ reference:
   - graphical-units
   - last_plot
   - transform_shape
-  - translate_qplot_ggplot   # confirm if it should be here later
-  - translate_qplot_lattice  # confirm if it should be here later
+  - translate_qplot_ggplot
+  - translate_qplot_lattice
