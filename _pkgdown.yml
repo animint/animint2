@@ -283,4 +283,3 @@ reference:
   - transform_shape
   - translate_qplot_ggplot   # confirm if it should be here later
   - translate_qplot_lattice  # confirm if it should be here later
-  
