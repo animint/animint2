@@ -45,7 +45,7 @@ reference:
 - title: "Layers"
   desc: >
     Layers determine how a graph looks and consist of the data; either
-    a geom, a statistical transformation, or both; aesthetics, and
+    a geom, a statistical transformation, or both; aesthetics; and
     possible position adjustments. Graphs may have more than one layer.
     It's possible to use `layer()` to generate layers, but many people
     find it to be prolix. It's convention to instead use a geom or stat 
