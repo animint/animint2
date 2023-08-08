@@ -3,7 +3,9 @@ title: "How was this Website Set Up?"
 date: First written 2023-06-28. Last revised 2023-07-21.
 ---
 
-This is an internal document intended for `animint2` contributors. It documents how I set up the reference website, as well as the code I ran to do so. It may be useful for debugging. It should also be useful if, for whatever reason, you need to set up the website again.
+This is an internal document intended for `animint2` contributors. It documents how I set up the reference website, as well as the code I ran to do so. There is also a section on maintaining the website, should it become necessary.
+
+It may be useful for debugging. It should also be useful if, for whatever reason, you need to set up the website again.
 
 I've tried to make this document and the website-generating procedures clear and near-algorithmic as I reasonably can. Inevitably, some of this may seem condescending. Sorry if it is.
 
@@ -75,6 +77,8 @@ You can [rearrange the reference pages](https://pkgdown.r-lib.org/reference/buil
 - Use `data()` to pull up all the datasets that `animint2` has. (Thirty-three!) Then just copy/paste the list into a Dataset section in `_pkgdown.yaml`.
 - Use [`ggplot2`'s YAML file](https://github.com/tidyverse/ggplot2/blob/main/_pkgdown.yml) as a reference. `animint2` is a fork of `ggplot2`, so there's lots of similarities. Don't mindlessly copy/paste, though.
 
+Watch out for typos. Whitespace is relevant in YAML.
+
 ### Change the Look
 
 empty
@@ -83,6 +87,11 @@ empty
 ## Make the Site Appear on GitHub Pages
 
 empty
+
+
+## Maintaining the Website
+
+This is probably the most important section for most readers.
 
 
 ## See Also
