@@ -193,10 +193,14 @@ var animint = function (to_select, json_file) {
     let select_styles = [];
     let has_colour_off = g_info.params.hasOwnProperty("colour_off") || g_info.aes.hasOwnProperty("colour_off");
     let has_alpha_off = g_info.params.hasOwnProperty("alpha_off") || g_info.aes.hasOwnProperty("alpha_off");
+    let has_fill_off = g_info.params.hasOwnProperty("fill_off") || g_info.aes.hasOwnProperty("fill_off");
     if(has_colour_off || g_info.geom == "rect"){
       select_styles.push("stroke");
     } 
     if (has_alpha_off){
+      select_styles.push("opacity");
+    }
+    if (has_fill_off){
       select_styles.push("opacity");
     } 
     if (!has_colour_off && !has_alpha_off && !select_styles.length){
@@ -1184,6 +1188,16 @@ var animint = function (to_select, json_file) {
       fill = g_info.params.colour;
     }
 
+    const get_fill_off = function (d) {
+      let off_fill;
+      if (aes.hasOwnProperty("fill_off") && d.hasOwnProperty("fill_off")) {
+        off_fill = d["fill_off"];
+      } else if (g_info.params.hasOwnProperty("fill_off")) {
+        off_fill = g_info.params.fill_off;
+      }
+      return off_fill;
+    };
+
     // For aes(hjust) the compiler should make an "anchor" column.
     var text_anchor = "middle";
     if(g_info.params.hasOwnProperty("anchor")){
@@ -1218,6 +1232,9 @@ var animint = function (to_select, json_file) {
       }
       if(!g_info.select_style.includes("opacity")){
         e.style("opacity", get_alpha);
+      }
+      if(!g_info.select_style.includes("fill")){
+        e.style("fill", get_fill);
       }
     };
     if(g_info.data_is_object) {
@@ -1487,7 +1504,6 @@ var animint = function (to_select, json_file) {
       eActions = function (e) {
         e.attr("x", toXY("x", "x"))
           .attr("y", toXY("y", "y"))
-          .style("fill", get_colour)
           .attr("font-size", get_size)
           .style("text-anchor", get_text_anchor)
           .attr("transform", get_angle)
@@ -1503,7 +1519,6 @@ var animint = function (to_select, json_file) {
         e.attr("cx", toXY("x", "x"))
         .attr("cy", toXY("y", "y"))
         .attr("r", get_size)
-        .style("fill", get_fill)
         .style("stroke-width", get_stroke_width);
       select_style_fun(g_info, e);
       };
@@ -1518,7 +1533,6 @@ var animint = function (to_select, json_file) {
           })
           .attr("y", scales.y.range()[1])
           .attr("height", scales.y.range()[0] - scales.y.range()[1])
-          .style("fill", get_fill)
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size);
           select_style_fun(g_info, e);
@@ -1534,7 +1548,6 @@ var animint = function (to_select, json_file) {
           })
           .attr("x", scales.x.range()[0])
           .attr("width", scales.x.range()[1] - scales.x.range()[0])
-          .style("fill", get_fill)
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size);
           select_style_fun(g_info, e);
@@ -1560,7 +1573,6 @@ var animint = function (to_select, json_file) {
           })
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size)
-          .style("fill", get_fill);
           select_style_fun(g_info, e);
       };
       eAppend = "rect";
@@ -1626,7 +1638,6 @@ var animint = function (to_select, json_file) {
           })
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size)
-          .style("fill", get_fill);
           select_style_fun(g_info, e);
         e.append("line")
           .attr("x1", function (d) {
@@ -1659,11 +1670,13 @@ var animint = function (to_select, json_file) {
       var selected_funs = function(style_name, select_fun){
         style_on_funs = {
           "opacity": get_alpha,
-          "stroke": get_colour
+          "stroke": get_colour,
+          "fill": get_fill
         };
         style_off_funs = {
           "opacity": get_alpha_off,
-          "stroke": get_colour_off
+          "stroke": get_colour_off,
+          "fill": get_fill_off
         };
         if(select_fun == "mouseout"){
           return function (d) {
@@ -1752,8 +1765,13 @@ var animint = function (to_select, json_file) {
 	});
       }
     }else{//has neither clickSelects nor clickSelects.variable.
-      elements.style("opacity", get_alpha)
-      if(g_info.geom != "text"){
+      elements.style("opacity", get_alpha);
+      // geom_segment/linerange/hline/vline no `stroke` with no clickSelects
+      const excludedGeoms = ["segment", "linerange", "hline", "vline"];
+      if (!excludedGeoms.includes(g_info.geom)) {
+          elements.style("fill", get_fill);
+      }
+      if(g_info.geom != "text"){ // geom_text no `stroke` with no clickSelects
         elements.style("stroke", get_colour);
       }
     }
