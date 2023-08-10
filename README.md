@@ -9,7 +9,7 @@ Play around with this interactive data visualization of [data from the World Ban
 
 To learn how to generate your own interactive data visualizations, go to the official [Animint2 Manual](https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html). If you encounter problems, please see the [animint2 wiki](https://github.com/animint/animint2/wiki) or [report them](https://github.com/animint/animint2/issues).
 
-![An interactive data visualization. It uses fertility data from the World Bank. The user uses the selection menu and clicks on the legend, which causes changes in a couple of line graphs.](world_bank_screencast.gif)
+![A screencast of an interactive data visualization displaying fertility data from the World Bank. The user types in the selection menu and clicks on the legend, which causes changes in the visualization. GIF.](world_bank_screencast.gif)
 
 
 ## Installation
