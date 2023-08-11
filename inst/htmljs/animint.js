@@ -184,29 +184,35 @@ var animint = function (to_select, json_file) {
     // geom. This is a hack and should be removed when we implement
     // the selected.color, selected.size, etc aesthetics.
     //
-    // 2022.08.01 update: get rid of the hack of "rect stroke" to 
-    // implement a general function for alpha_off, color_off. 
+    // 2022.08.01 update: get rid of the hack of "rect stroke" to
+    // implement a general function for alpha_off, color_off.
     // In order to have multiple styles functioning together
-    // so here use array to store the styles.   
+    // so here use array to store the styles.
     // Default using alpha/opacity style, execpt rect/tile geom
     // rect/tile geom default using stroke style
+    const checkProperty = (prop) =>
+      g_info.params.hasOwnProperty(prop) || g_info.aes.hasOwnProperty(prop);
+
     let select_styles = [];
-    let has_colour_off = g_info.params.hasOwnProperty("colour_off") || g_info.aes.hasOwnProperty("colour_off");
-    let has_alpha_off = g_info.params.hasOwnProperty("alpha_off") || g_info.aes.hasOwnProperty("alpha_off");
-    let has_fill_off = g_info.params.hasOwnProperty("fill_off") || g_info.aes.hasOwnProperty("fill_off");
-    if(has_colour_off || g_info.geom == "rect"){
-      select_styles.push("stroke");
-    } 
-    if (has_alpha_off){
-      select_styles.push("opacity");
+    const has_colour_off = checkProperty('colour_off');
+    const has_alpha_off = checkProperty('alpha_off');
+    const has_fill_off = checkProperty('fill_off');
+
+    if (has_colour_off || g_info.geom === 'rect') {
+      select_styles.push('stroke');
     }
-    if (has_fill_off){
-      select_styles.push("opacity");
-    } 
-    if (!has_colour_off && !has_alpha_off && !select_styles.length){
-      select_styles = ["opacity"];
+    if (has_alpha_off) {
+      select_styles.push('opacity');
     }
+    if (has_fill_off) {
+      select_styles.push('fill');
+    }
+    if (!select_styles.length) {
+      select_styles = ['opacity'];
+    }
+
     g_info.select_style = select_styles;
+
     // Determine if data will be an object or an array.
     if(g_info.geom in data_object_geoms){
       g_info.data_is_object = true;
@@ -232,8 +238,8 @@ var animint = function (to_select, json_file) {
       g_info.common_tsv = common_tsv;
       var common_path = getTSVpath(common_tsv);
       d3.tsv(common_path, function (error, response) {
-	var converted = convert_R_types(response, g_info.types);
-	g_info.data[common_tsv] = nest_by_group.map(converted);
+        var converted = convert_R_types(response, g_info.types);
+        g_info.data[common_tsv] = nest_by_group.map(converted);
       });
     } else {
       g_info.common_tsv = null;
