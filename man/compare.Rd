@@ -15,6 +15,8 @@ level curves of the learned functions.
 }
 \usage{data(compare)}
 \format{
+TODO add codebook
+
 List of 4 data.frames: error contains the test error of the learned
 models, bayes contains the Bayes classification error of the latent
 ranking function applied to the test data, rank contains the ranking

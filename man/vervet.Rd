@@ -15,6 +15,8 @@ bacterium.
 }
 \usage{data(vervet)}
 \format{
+  TODO add codebook
+  
   The format is a named list of data.frames: samples contains 64 rows
   with sample-specific info, counts contains 1190208 rows with counts of
   55mers observed in each sample, and monkeys contains 23 rows with
