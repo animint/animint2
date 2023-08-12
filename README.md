@@ -1,5 +1,12 @@
 # Animint2
 
+<a href="https://github.com/tdhock/animint2/actions/workflows/tests.yaml">
+	<img src="https://github.com/tdhock/animint2/actions/workflows/tests.yaml/badge.svg" 
+	     alt="A badge verifying if this package has passed all its tests.">
+</a>
+<!-- Feel free to change the HTML block above this comment into Markdown. It's just in HTML cuz I couldn't be arsed to figure out how to correctly combine an image and a link in Github-flavored Markdown. -->
+
+
 
 ## About
 
