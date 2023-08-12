@@ -1,6 +1,10 @@
 /* This CSS file controls small parts of how the website looks.
 The _pkgdown.yml file controls most of it. */
 
+body {
+	font-size: 1.2rem;  /* increase readability */
+}
+
 h2 {
 	margin-top: 2.5rem; /* for more spacing between sections */
 }
