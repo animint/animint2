@@ -9,7 +9,8 @@ h2 {
 	margin-top: 2.5rem; /* for more spacing between sections */
 }
 
-a:not(.sourceCode) {
-	color: #B509AC;     /* to match the link color on Toby's website 
-	                       unless the link is in a codeblock */
+a:not(.sourceCode, .navbar-brand, .nav-link) {
+  color: #B509AC;       /* to match the link color on Toby's website 
+                           unless the link is in a codeblock, code, 
+                           or the navigation bar */
 }
