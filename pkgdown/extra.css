@@ -1,8 +1,9 @@
 /* This CSS file controls small parts of how the website looks.
 The _pkgdown.yml file controls most of it. */
 
-body {
-	font-size: 1.2rem;  /* increase readability */
+body:not(.sourceCode) {
+	font-size: 1.2rem;  /* increase readability but keep
+                           codeblock font size the same */
 }
 
 h2 {
