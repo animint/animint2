@@ -1,8 +1,9 @@
 /* This CSS file controls small parts of how the website looks.
 The _pkgdown.yml file controls most of it. */
 
-body {
-	font-size: 1.2rem;  /* increase readability */
+body:not(.sourceCode) {
+	font-size: 1.2rem;  /* increase readability but keep
+                           codeblock font size the same */
 }
 
 h2 {
@@ -10,7 +11,7 @@ h2 {
 }
 
 a:not(.sourceCode, .navbar-brand, .nav-link) {
-  color: #B509AC;       /* to match the link color on Toby's website 
+    color: #B509AC;     /* to match the link color on Toby's website 
                            unless the link is in a codeblock or the 
                            navigation bar */
 }
