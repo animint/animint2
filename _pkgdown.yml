@@ -10,11 +10,15 @@
 
 
 # This needs to be here to tell the website what Bootstrap version it
-# should use. This is automatically generated and should generally be
-# left alone.
+# should use. This also controls the typefaces (fonts) that appear
+# on the website.
 
 template:
   bootstrap: 5
+  bslib:
+    base_font: {google: "Roboto Condensed"}
+    heading_font: {google: "Roboto"}
+    code_font: {google: "Roboto Mono"}
 
 
 # Change this if the URL ever changes.
