@@ -11,6 +11,6 @@ h2 {
 
 a:not(.sourceCode, .navbar-brand, .nav-link) {
   color: #B509AC;       /* to match the link color on Toby's website 
-                           unless the link is in a codeblock, code, 
-                           or the navigation bar */
+                           unless the link is in a codeblock or the 
+                           navigation bar */
 }
