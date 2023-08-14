@@ -32,8 +32,9 @@ reference:
 - title: "Basics"
   desc: > 
     All the necessities you need to render animints or static data
-    visualizations. You begin with `ggplot()` and your data. Add geoms, aesthetics, and other components with `+`. Then make your plot
-    interactive with `animint()`.
+    visualizations. You begin with `ggplot()` and your data. Add 
+    geoms, aesthetics, and other components with `+`. Then make 
+    your plot interactive with `animint()`.
 - contents:
   - ggplot
   - animint
@@ -174,7 +175,8 @@ reference:
 
 - title: "Facetting"
   desc: > 
-    Generate many small graphs for static data visualizations. These don't work for animints.
+    Generate many small graphs for static data visualizations. 
+    These don't work for animints.
 - contents:
   - starts_with("facet_")
 
