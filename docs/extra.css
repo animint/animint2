@@ -10,8 +10,14 @@ h2 {
 	margin-top: 2.5rem; /* for more spacing between sections */
 }
 
+aside.col-md-3 > div > h2 {
+	font-size: 1.1rem;
+	font-weight: 600;   /* to make the side column's headings
+	                       just a tiny bit prettier */
+}
+
 a:not(.sourceCode, .navbar-brand, .nav-link) {
-    color: #B509AC;     /* to match the link color on Toby's website 
-                           unless the link is in a codeblock or the 
-                           navigation bar */
+    color: #B509AC;     /* to match the link color on Toby's 
+	                       website unless the link is in a 
+						   codeblock or the navigation bar */
 }

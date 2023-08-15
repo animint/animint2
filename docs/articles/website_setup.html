@@ -9,7 +9,9 @@
 <title>How was this Website Set Up? • animint2</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><link href="../deps/Roboto_Condensed-0.4.4/font.css" rel="stylesheet">
+<link href="../deps/Roboto_Mono-0.4.4/font.css" rel="stylesheet">
+<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="How was this Website Set Up?">
@@ -73,7 +75,7 @@
       <img src="" class="logo" alt=""><h1>How was this Website Set Up?</h1>
             
             <h4 data-toc-skip class="date">First written 2023-06-28.
-Last revised 2023-07-21.</h4>
+Last revised 2023-08-14.</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/animint/animint2/blob/HEAD/vignettes/website_setup.Rmd" class="external-link"><code>vignettes/website_setup.Rmd</code></a></small>
       <div class="d-none name"><code>website_setup.Rmd</code></div>
@@ -84,9 +86,7 @@ Last revised 2023-07-21.</h4>
 <p>This is an internal document intended for <code>animint2</code>
 contributors. It documents how I set up the reference website, as well
 as the code I ran to do so. There is also a section on maintaining the
-website, should it become necessary.</p>
-<p>It may be useful for debugging. It should also be useful if, for
-whatever reason, you need to set up the website again.</p>
+website.</p>
 <p>I’ve tried to make this document and the website-generating
 procedures clear and near-algorithmic as I reasonably can. Inevitably,
 some of this may seem condescending. Sorry if it is.</p>
@@ -145,19 +145,16 @@ just say no when <code>usethis</code> offers to modify it.</p>
 <p>And you’re done with site building.</p>
 </div>
 <div class="section level2">
-<h2 id="modify-the-site">Modify the Site<a class="anchor" aria-label="anchor" href="#modify-the-site"></a>
+<h2 id="organizing-the-site">Organizing the Site<a class="anchor" aria-label="anchor" href="#organizing-the-site"></a>
 </h2>
 <p>By default, the home page is just a mirror image of what’s on the
 <code>animint2</code> repository, and the references are in alphabetical
 order. Not great. We can make it better.</p>
-<div class="section level3">
-<h3 id="rearranging-the-reference-pages">Rearranging the Reference Pages<a class="anchor" aria-label="anchor" href="#rearranging-the-reference-pages"></a>
-</h3>
-<p>You can <a href="https://pkgdown.r-lib.org/reference/build_reference.html" class="external-link">rearrange
+<p>We can <a href="https://pkgdown.r-lib.org/reference/build_reference.html" class="external-link">rearrange
 the reference pages</a> by adding a <code>reference</code> section to
 the <code>_pkgdown.yml</code>. I’ve linked to the <code>pkgdown</code>
 documentation, which describes the syntax in detail. It’s gonna take a
-while to build, in part due to the sheer number of functions
+while to manually construct, partly due to the sheer number of functions
 <code>animint2</code> has. Two tricks that helped me:</p>
 <ul>
 <li>Use <code><a href="https://rdrr.io/r/utils/data.html" class="external-link">data()</a></code> to pull up all the datasets that
@@ -170,16 +167,29 @@ copy/paste, though.</li>
 </ul>
 <p>Watch out for typos. Whitespace is relevant in YAML.</p>
 </div>
-<div class="section level3">
-<h3 id="change-the-look">Change the Look<a class="anchor" aria-label="anchor" href="#change-the-look"></a>
-</h3>
-<p>empty</p>
-</div>
+<div class="section level2">
+<h2 id="changing-appearances">Changing Appearances<a class="anchor" aria-label="anchor" href="#changing-appearances"></a>
+</h2>
+<p>There are <a href="https://pkgdown.r-lib.org/articles/customise.html" class="external-link">lots of ways to
+customize</a> the website. I edited the typefaces (fonts) in the
+<code>_pkgdown.yml</code> file via <code>template &gt; bslib</code>. To
+make finer and subtler modifications, I created an
+<code>extra.css</code> file in <code>pkgdown/</code> and edited the
+appearance of the site that way.</p>
 </div>
 <div class="section level2">
 <h2 id="make-the-site-appear-on-github-pages">Make the Site Appear on GitHub Pages<a class="anchor" aria-label="anchor" href="#make-the-site-appear-on-github-pages"></a>
 </h2>
-<p>empty</p>
+<p>There are two ways to make this happen:</p>
+<ol style="list-style-type: decimal">
+<li>Upload the <code>docs/</code> directory to the GitHub
+repository.</li>
+<li>Get a GitHub Actions workflow going that re-generates the website
+every time you push a commit.</li>
+</ol>
+<p>I don’t know how to do the second thing, so I did the first.
+<code>pkgdown</code> adds <code>docs/</code> to <code>.gitignore</code>
+by default. Delete it or comment it out. Then push your commits.</p>
 </div>
 <div class="section level2">
 <h2 id="maintaining-the-website">Maintaining the Website<a class="anchor" aria-label="anchor" href="#maintaining-the-website"></a>
@@ -191,18 +201,14 @@ copy/paste, though.</li>
 </h2>
 <p>Some documentation that may be useful:</p>
 <ul>
-<li>
-<a href="https://usethis.r-lib.org/articles/git-credentials.html" class="external-link">Managing
-GitHub Credentials</a>.</li>
-<li>
-<a href="https://pkgdown.r-lib.org/index.html" class="external-link"><code>pkgdown</code>
-Documentation</a>.</li>
-<li>
-<a href="https://usethis.r-lib.org/reference/use_pkgdown.html" class="external-link">Information
-on <code>usethis::use_pkgdown</code></a>.</li>
-<li>
-<a href="https://github.github.com/gfm/" class="external-link">GitHub-flavored Markdown
-Specification</a>/</li>
+<li><a href="https://usethis.r-lib.org/articles/git-credentials.html" class="external-link">Managing
+GitHub Credentials</a></li>
+<li><a href="https://pkgdown.r-lib.org/index.html" class="external-link"><code>pkgdown</code>
+Documentation</a></li>
+<li><a href="https://usethis.r-lib.org/reference/use_pkgdown.html" class="external-link">Information
+on <code>usethis::use_pkgdown</code></a></li>
+<li><a href="https://github.github.com/gfm/" class="external-link">GitHub-flavored Markdown
+Specification</a></li>
 </ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
