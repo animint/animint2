@@ -17,7 +17,7 @@ template:
   bootstrap: 5
   bslib:
     base_font: {google: "Roboto Condensed"}
-    heading_font: {google: "Roboto"}
+    heading_font: {google: "Roboto Condensed"}
     code_font: {google: "Roboto Mono"}
 
 
