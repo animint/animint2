@@ -21,3 +21,12 @@ a:not(.sourceCode, .navbar-brand, .nav-link) {
 	                       website unless the link is in a 
 						   codeblock or the navigation bar */
 }
+
+div#unnamedchunk6,
+div#unnamedchunk7,
+div#unnamedchunk8,
+div#unnamedchunk6 {
+	margin-bottom: 1rem; /* so there's a lil more space
+	                        between the animints and
+							paragraphs */
+}
