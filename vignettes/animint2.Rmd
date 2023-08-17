@@ -45,11 +45,11 @@ As an example, let's load `animint2` and look at a static graph it produces. It'
 ```{r}
 library(animint2)
 
-cute_1 <- meowtrics |>
-  ggplot() +
-  geom_point() +
-  aes(x = Day, y = Cuteness, group = Cat, color = Cat) +
-  labs(title = "Cat Cuteness Ratings Over Time")
+cute_1 <- meowtrics |>                                    #1
+  ggplot() +                                              #2
+  geom_point() +                                          #3
+  aes(x = Day, y = Cuteness, group = Cat, color = Cat) +  #4
+  labs(title = "Cat Cuteness Ratings Over Time")          #5
 cute_1
 ```
 
@@ -129,7 +129,8 @@ Next, let's see that same animint with the `time` and `duration` option applied:
 ```{r}
 animated_associations <- animint(associations, 
                                  duration = list(Day = 1000),
-                                 time = list(variable = "Day", ms = 1000))
+                                 time = list(variable = "Day", 
+                                             ms = 1000))
 animated_associations
 ```
 
