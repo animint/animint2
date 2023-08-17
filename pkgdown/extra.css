@@ -1,6 +1,9 @@
 /* This CSS file controls small parts of how the website looks.
 The _pkgdown.yml file controls most of it. */
 
+
+/* The code below affects the whole website. */
+
 body:not(.sourceCode) {
 	font-size: 1.2rem;   /* increase readability but keep
                             codeblock font size the same */
@@ -10,17 +13,23 @@ h2 {
 	margin-top: 2.5rem;  /* for more spacing between sections */
 }
 
+a:not(.sourceCode, .navbar-brand, .nav-link) {
+    color: #B509AC;      /* to match the link color on Toby's 
+	                        website unless the link is in a 
+						    codeblock or the navigation bar */
+}
+
+
+/* The code below affects only the homepage. */
+
 aside.col-md-3 > div > h2 {
 	font-size: 1.1rem;
 	font-weight: 600;    /* to make the side column's headings
 	                        just a tiny bit prettier */
 }
 
-a:not(.sourceCode, .navbar-brand, .nav-link) {
-    color: #B509AC;      /* to match the link color on Toby's 
-	                        website unless the link is in a 
-						    codeblock or the navigation bar */
-}
+
+/* The code below affects only the quick start guide. */
 
 div#unnamedchunk6,
 div#unnamedchunk7,
@@ -30,3 +39,65 @@ div#unnamedchunk9 {
 	                        between the animints and
 							paragraphs */
 }
+
+#cb3 > pre > code > span.co {
+	border: 1.4px solid #212529;
+	border-radius: 200px;
+	padding: 0.05rem 0.5rem;
+	color: #212529 !important;
+	font-size: 0.9rem;   /* see EXPLANATION FOR THIS MESS */
+}
+
+
+/* EXPLANATION FOR THIS MESS
+   
+   You might be thinking: What is up with this garbage code? 
+   What does it do, and how does it work? I can explain.
+   
+   
+   1. What Does it Do?
+   
+   This code emulates Quarto's code annotation feature:
+   https://quarto.org/docs/authoring/code-annotation.
+   It manipulates comments in a specific codeblock in
+   the quick start guide and transforms them into
+   annotations.
+   
+   
+   2. What is Up with this Garbage Code?
+   
+   R Markdown doesn't have the same feature, and I can't
+   just write the HTML for it cuz I don't have direct
+   access to it -- pkgdown generates it from codeblock I
+   provide it. So I've had to hack it together.
+   
+   
+   3. How Does it Work?
+   
+   I'm gonna assume you know CSS already. 
+   
+   #cb3 targets a specific codeblock, and span.co
+   targets the comments in that codeblock. The comments
+   are in a <pre> and <code> as well, hence their 
+   inclusion in the chain.
+   
+   Most of the CSS is sensible. The two parts that may 
+   not make a lot of sense are the border-radius 
+   and color.
+   
+   The border-radius is like that because it lets the
+   border take the shape of a capsule (or stadium):
+   https://stackoverflow.com/a/18795153.
+   
+   color has !important cuz otherwise the default grey
+   comment color will take over. I want the text in
+   the annotation to be the same color as the text
+   in the paragraphs.
+   
+   
+   4. The End
+   
+   Hope this helps! If it doesn't, it shouldn't be
+   too much work to reverse-engineer the few lines
+   of CSS I've written here. Good luck!
+/*
