@@ -64,9 +64,9 @@ What's happening with the code here?
 		<dd>I declare that it's a scatterplot using `geom_point()`.
 	<dt>#4
 		<dd>I draw the axes of the graph with `aes()`. I place the time category in the x-axis and the cuteness ratings in the y-axis (the `x = Day` and `y = Cuteness` arguments, respectively). Using the `group` and `color` arguments, I also group the data together by the cat and color-code them.
-	<dt>$5
+	<dt>#5
 		<dd>I give the graph a title using `labs()` and its `title` argument.
-</dl>
+</dl> <!-- Yup! A <dl>. You don't see these often. This is-->
 
 Notice how the data visualization consists of parts---data, axes, points, title, a legend---that are held together using the addition symbol (`+`). All those parts can be manipulated, added, and removed. Different functions and arguments can create different visualizations. Here's how the data would look if it were visualized as a smoothed line graph instead:
 
