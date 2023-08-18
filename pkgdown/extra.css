@@ -48,6 +48,13 @@ div#unnamedchunk9 {
 	font-size: 0.9rem;   /* see EXPLANATION FOR THIS MESS */
 }
 
+dl.annotated > dd {
+	border: 1.4px solid #212529;
+	border-radius: 200px;
+	padding: 0.05rem 0.5rem;
+	font-size: 0.9rem;   /* for consistency with code annotations */
+}
+
 
 /* EXPLANATION FOR THIS MESS
    
