@@ -40,7 +40,7 @@ div#unnamedchunk9 {
 							paragraphs */
 }
 
-#cb3 > pre > code > span.co {
+#cb3 span.co {
 	border: 1.4px solid #212529;
 	border-radius: 200px;
 	padding: 0.05rem 0.5rem;
@@ -84,9 +84,7 @@ dl.annotated > dt {
    I'm gonna assume you know CSS already. 
    
    #cb3 targets a specific codeblock, and span.co
-   targets the comments in that codeblock. The comments
-   are in a <pre> and <code> as well, hence their 
-   inclusion in the chain.
+   targets the comments in that codeblock.
    
    Most of the CSS is sensible. The two parts that may 
    not make a lot of sense are the border-radius 
