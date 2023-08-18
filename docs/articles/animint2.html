@@ -137,46 +137,34 @@ uses data from 10 different housecats.</p>
 <span><span class="va">cute_1</span></span></code></pre></div>
 <p><img src="animint2_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <p>What’s happening with the code here?</p>
-<dl class="annotated">
-<dt>
-#1
-</dt>
-<dd>
-I begin with the dataset, called <code>meowtrics</code>.
-</dd>
-<dt>
-#2
-</dt>
-<dd>
-I pipe it into <code><a href="../reference/ggplot.html">ggplot()</a></code>, which tells <code>animint2</code>
-that I’m creating a data visualization.
-</dd>
-<dt>
-#3
-</dt>
-<dd>
-I declare that it’s a scatterplot using <code><a href="../reference/geom_point.html">geom_point()</a></code>.
-</dd>
-<dt>
-#4
-</dt>
-<dd>
-I draw the axes of the graph with <code><a href="../reference/aes.html">aes()</a></code>. I place the time
-category in the x-axis and the cuteness ratings in the y-axis (the
-<code>x = Day</code> and <code>y = Cuteness</code> arguments,
-respectively). Using the <code>group</code> and <code>color</code>
-arguments, I also group the data together by the cat and color-code
-them.
-</dd>
-<dt>
-#5
-</dt>
-<dd>
-I give the graph a title using <code><a href="../reference/labs.html">labs()</a></code> and its
-<code>title</code> argument.
-</dd>
-</dl>
-<!-- Yup! A <dl>. You don't see these often. This is--><p>Notice how the data visualization consists of parts—data, axes,
+<ol class="annotated">
+<li>
+<span class="explanation">I begin with the dataset, called
+<code>meowtrics</code>.</span>
+</li>
+<li>
+<span class="explanation">I pipe it into <code><a href="../reference/ggplot.html">ggplot()</a></code>, which
+tells <code>animint2</code> that I’m creating a data
+visualization.</span>
+</li>
+<li>
+<span class="explanation">I declare that it’s a scatterplot using
+<code><a href="../reference/geom_point.html">geom_point()</a></code>.</span>
+</li>
+<li>
+<span class="explanation">I draw the axes of the graph with
+<code><a href="../reference/aes.html">aes()</a></code>. I place the time category in the x-axis and the
+cuteness ratings in the y-axis (the <code>x = Day</code> and
+<code>y = Cuteness</code> arguments, respectively). Using the
+<code>group</code> and <code>color</code> arguments, I also group the
+data together by the cat and color-code them.</span>
+</li>
+<li>
+<span class="explanation">I give the graph a title using
+<code><a href="../reference/labs.html">labs()</a></code> and its <code>title</code> argument.</span>
+</li>
+</ol>
+<!-- Why use HTML instead of Markdown's syntax for ordered lists? I need to control the appearance of this specific ordered list. With Markdown, it's impossible. If you can figure out a way to do that, feel free to change the syntax. :> --><p>Notice how the data visualization consists of parts—data, axes,
 points, title, a legend—that are held together using the addition symbol
 (<code>+</code>). All those parts can be manipulated, added, and
 removed. Different functions and arguments can create different

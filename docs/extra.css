@@ -48,11 +48,25 @@ div#unnamedchunk9 {
 	font-size: 0.9rem;   /* see EXPLANATION FOR THIS MESS */
 }
 
-dl.annotated > dt {
-	border: 1.4px solid #212529;
+ol.annotated > li {
+	list-style: none;    /* reset style to allow me to style
+	                        the numbers in the ordered list */
+}
+
+ol.annotated > li::before {
+	content: "#"counter(list-item);
+	border: 1.4px solid;
 	border-radius: 200px;
 	padding: 0.05rem 0.5rem;
-	font-size: 0.9rem;   /* for consistency with code annotations */
+	font-size: 0.9rem;   /* for consistency with code annotations;
+                            the content and counter stuff lets me
+                            mimic how the code annotation looks */
+}
+
+span.explanation {
+	position: relative;
+	left: 5px;           /* to control spacing between the code
+	                        annotation number and the explanation */
 }
 
 
