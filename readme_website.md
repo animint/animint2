@@ -45,7 +45,7 @@ but you'd know best. Next, slot it under `- contents:`. Then run the code in the
 
 ## Refreshing the GitHub Access Token
 
-If you're getting errors about GitHub access tokens or PATs, that means that they have either expired, changed, or been destroyed. Run
+If you're getting errors about GitHub access tokens or PATs, that means that they have either expired, changed, or been destroyed, run
 
 ``` r
 cd whatever/your/path/is/animint/animint2
