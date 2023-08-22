@@ -1,106 +1,99 @@
----
-title: "How was this Website Set Up?"
-date: First written 2023-06-28. Last revised 2023-08-14.
----
+# Maintaining & Debugging the Animint2 Website
 
-This is an internal document intended for `animint2` contributors. It documents how I set up the reference website, as well as the code I ran to do so. There is also a section on maintaining the website.
+## About
 
-I've tried to make this document and the website-generating procedures clear and near-algorithmic as I reasonably can. Inevitably, some of this may seem condescending. Sorry if it is.
+First written 2023-06-28. Last revised 2023-08-22.
 
+This is an internal document intended for `animint2` contributors. It explains how to maintain and debug the `animint2` reference website and gives some reasons why you might need to. Feel free to add to and edit this document.
 
-## Get Ready
+Maintaining the site is neither hard nor annoying, but it's also not automatic. Most of the time, you can leave the website alone. But there are some circumstances when you would need to maintain or update the website:
 
-First, set your working directory to the `animint2` repository. If you're using an command line terminal, type in `cd whatever/your/path/is/animint/animint2`. If you're using RStudio, you can instead use the <kbd>CTRL</kbd><kbd>SHIFT</kbd><kbd>H</kbd> keyboard shortcut and select the `animint2` repository from there.
+- You added a new function to `animint2`.
+- You're getting errors about the GitHub access token or the PAT.
+- You made changes to the quick start guide.
+- You wanna change the reference website's URL.
+- You wanna change the reference website's typeface or font.
+- The website is messed up or has stopped working in some way.
+- You made changes to some file in the `animint2` repository and it should have some effect on the website. Examples include `NEWS.md`, `_pkgdown.yml`, or `pkgdown/extra.css`.
 
-A `README.md` document should already exist. If it doesn't, create one. Remember to use [GitHub-flavored Markdown](https://github.github.com/gfm/). The `README` should have, at minimum:
+## Have You Tried Re-Building It?
 
-1. A section that briefly summarizes what the package is about,
-2. A section that teaches the reader how to install both the CRAN and development versions of the package, and
-3. A section that briefly demonstrates how to do basic things with the package or links to another page that does.
+You can solve a lot of maintenance problems by running the following:
 
-In my `README`, I included About section with a GIF of someone using `animint2`, an Installation section, a Use section that linked to a quick start guide, a Similar Packages section about other packages that created interactive data visualizations, and a Problems? section asking users to report bugs if they find any.
-
-Next, generate a GitHub token. It's like a more secure password. We use it to access GitHub's API, which we need to set up the website:
-
-```{r, eval = FALSE}
-usethis::create_github_token()
-```
-
-This function will open a GitHub webpage. Log in and generate the token. The token will be a series of characters. Save that somewhere, at least temporarily.
-
-Run the following and enter the token when asked:
-
-```{r, eval = FALSE}
-gitcreds::gitcreds_set()
-```
-
-Finally, configure the repository to use `pkgdown`:
-
-```{r, eval = FALSE}
-usethis::use_pkgdown()
-```
-
-That's it. Now we can build the site.
-
-
-## Build the Site
-
-We can build the whole site with just a single line of code:
-
-```{r, eval = FALSE}
+``` r
+cd whatever/your/path/is/animint/animint2
 pkgdown::build_site()
 ```
 
-This generates HTML files from our `.Rd` files.
+This takes a few minutes and re-builds the site. Then push the changes to the `animint2` repository.
 
-With another line of code, we create and edit the `_pkgdown.yml` file, which influences how the site looks:
+For a lot of problems, that's it. But if (substantial) changes aren't showing up when they should, or if this doesn't fix the bug, you'll need to read on.
 
-```{r, eval = FALSE}
-usethis::use_pkgdown_github_pages()
+## Adding a Function
+
+You added a new function to the `animint2` package. Congratulations! It was probably a lot of work. But now you need it to show up on the website. The process is straightforward.
+
+First, do everything in the "Have You Tried Re-Building It?" section. If your new function starts with "animint," "make," or "get," your new function will appear on the website. No further work needed.
+
+If it doesn't, probably because it doesn't start with any of those prefixes, you'll have to do more work. First, open `_pkgdown.yml`, scroll down to `references:`, and find the section where your new function should be categorized. My guess is that it'd fall under
+
+``` yaml
+- subtitle: "Animint Helpers"
 ```
 
-If there's already a `_pkgdown.yml` file properly set up, just say no when `usethis` offers to modify it.
+but you'd know best. Next, slot it under `- contents:`. Then run the code in the "Have You Tried Re-Building It?" section again and push the changes to the `animint2` repo.
 
-And you're done with site building.
+## Refreshing the GitHub Access Token
 
+If you're getting errors about GitHub access tokens or PATs, that means that they have either expired, changed, or been destroyed. Run
 
-## Organizing the Site
+``` r
+cd whatever/your/path/is/animint/animint2
+usethis::create_github_token()
+gitcreds::gitcreds_set()
+```
 
-By default, the home page is just a mirror image of what's on the `animint2` repository, and the references are in alphabetical order. Not great. We can make it better.
+and follow the instructions.
 
-We can [rearrange the reference pages](https://pkgdown.r-lib.org/reference/build_reference.html) by adding a `reference` section to the `_pkgdown.yml`. I've linked to the `pkgdown` documentation, which describes the syntax in detail. It's gonna take a while to manually construct, partly due to the sheer number of functions `animint2` has. Two tricks that helped me:
+## Changes to the Quick Start Guide
 
-- Use `data()` to pull up all the datasets that `animint2` has. (Thirty-three!) Then just copy/paste the list into a Dataset section in `_pkgdown.yaml`.
-- Use [`ggplot2`'s YAML file](https://github.com/tidyverse/ggplot2/blob/main/_pkgdown.yml) as a reference. `animint2` is a fork of `ggplot2`, so there's lots of similarities. Don't mindlessly copy/paste, though.
+First, do everything in the "Have You Tried Re-Building It?" section. If your new content hasn't been added, it's probably because you used `animint2`, which renders animints in `vignettes/` instead of `docs/`. You'll need to cut/paste the rendered directories and drop them in `docs/articles/`. Then run the code in the "Have You Tried Re-Building It?" section again and push the changes to the `animint2` repo.
 
-Watch out for typos. Whitespace is relevant in YAML.
+It might be possible to use `animint2::animint2dir()` to automate this. Unfortunately, I haven't figured out a way to use it in a way that's more elegant and maintainable than the cut/paste solution. If you figure it out, feel free to implement it.
 
+## Changes to the URL
 
-## Changing Appearances
+If you wanna change the URL: go to `_pkgdown.yml`, edit the `url:` or add another, and then do everything in the "Have You Tried Re-Building It?" section.
 
-There are [lots of ways to customize](https://pkgdown.r-lib.org/articles/customise.html) the website. I edited the typefaces (fonts) in the `_pkgdown.yml` file via `template > bslib`. To make finer and subtler modifications, I created an `extra.css` file in `pkgdown/` and edited the appearance of the site that way.
+## Changes to the Typeface or Font
 
+If you wanna change the typeface (often referred to as the font): go to `_pkgdown.yml`, then `bslib:`. You'll see:
 
-## Make the Site Appear on GitHub Pages
+- `base_font`, which controls the default typeface,
+- `heading_font`, which controls the typeface for titles and headings, and
+- `code_font`, which controls the font in the codeblocks and in in-line code.
 
-There are two ways to make this happen:
+Swap out the current font with ones of your choice, and then do everything in the "Have You Tried Re-Building It?" section.
 
-1. Upload the `docs/` directory to the GitHub repository.
-2. Get a GitHub Actions workflow going that re-generates the website every time you push a commit.
+## The Website is Messed Up
 
-I don't know how to do the second thing, so I did the first. `pkgdown` adds `docs/` to `.gitignore` by default. Delete it or comment it out. Then push your commits.
+Is the website messed up after you pushed some commits to the `animint2` repository? Revert your commits with `git revert $SHA` or something. Then debug to find out what happened.
 
+If the website is messed up cuz of changes you made via the GitHub API or via the GitHub website, you'll need to figure out exactly what you changed and how that's affect the website. Good luck.
 
-## Maintaining the Website
+## Changes to Other Animint2 Files
 
-This is probably the most important section for most readers.
+If a change to the repository is meant to affect `animint2`'s CRAN page, then you'll also need to update the website, too. Do everything in the "Have You Tried Re-Building It?" section.
 
+Some changes to the repository are only meant to affect `animint2`'s reference website. If that's the case, do everything in the "Have You Tried Re-Building It?" section.
 
+## Why Don't You Just Use GitHub Actions?
 
+Using GitHub Actions would automate many parts of maintaining the site, though it'd leave some parts untouched (e.g. refreshing the access token). The main reason I haven't done it is cuz I dunno how! Feel free to set up the site via GitHub Actions. That'd be great.
 
 ## See Also
 
-Some documentation that may be useful:
+Documentation that may be helpful:
 
 - [Managing GitHub Credentials](https://usethis.r-lib.org/articles/git-credentials.html)
 - [`pkgdown` Documentation](https://pkgdown.r-lib.org/index.html)
