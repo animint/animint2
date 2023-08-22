@@ -21,6 +21,13 @@ template:
     code_font: {google: "Roboto Mono"}
 
 
+# Since each new version of animint2 is the date, the CRAN dates
+# are redundant and have been removed.
+
+news:
+  cran_dates: false
+
+
 # Change this if the URL ever changes.
 
 url: https://animint.github.io/animint2/
