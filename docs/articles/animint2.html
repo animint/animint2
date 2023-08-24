@@ -126,23 +126,19 @@ uses data from 10 different housecats.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://animint.github.io/animint2/">animint2</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">cute_1</span> <span class="op">&lt;-</span> <span class="va">meowtrics</span> <span class="op">|&gt;</span>                                    <span class="co">#1</span></span>
-<span>  <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>                                              <span class="co">#2</span></span>
-<span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>                                          <span class="co">#3</span></span>
-<span>  <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Day</span>, y <span class="op">=</span> <span class="va">Cuteness</span>, group <span class="op">=</span> <span class="va">Cat</span>, color <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span> <span class="op">+</span>  <span class="co">#4</span></span>
-<span>  <span class="fu"><a href="../reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Cat Cuteness Ratings Over Time"</span><span class="op">)</span>          <span class="co">#5</span></span>
+<span><span class="va">cute_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">meowtrics</span><span class="op">)</span> <span class="op">+</span>                             <span class="co">#1</span></span>
+<span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>                                          <span class="co">#2</span></span>
+<span>  <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Day</span>, y <span class="op">=</span> <span class="va">Cuteness</span>, group <span class="op">=</span> <span class="va">Cat</span>, color <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span> <span class="op">+</span>  <span class="co">#3</span></span>
+<span>  <span class="fu"><a href="../reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Cat Cuteness Ratings Over Time"</span><span class="op">)</span>          <span class="co">#4</span></span>
 <span><span class="va">cute_1</span></span></code></pre></div>
-<p><img src="animint2_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p><img src="animint2_files/figure-html/unnamed-chunk-3-1.png" alt="A scatterplot titled Cat Cutness Ratings Over Time. The x-axis are the days, and the y-axis the cuteness ratings. There is a lot of variance in the data, but in general cat cuteness ratings rise over time." width="700"></p>
 <p>What’s happening with the code here?</p>
 <ol class="annotated">
 <li>
 <span class="explanation">I begin with the dataset, called
-<code>meowtrics</code>.</span>
-</li>
-<li>
-<span class="explanation">I pipe it into <code><a href="../reference/ggplot.html">ggplot()</a></code>, which
-tells <code>animint2</code> that I’m creating a data
-visualization.</span>
+<code>meowtrics</code>, and use it as an argument for
+<code><a href="../reference/ggplot.html">ggplot()</a></code>. This tells <code>animint2</code> that I’m
+creating a data visualization using this specific dataset.</span>
 </li>
 <li>
 <span class="explanation">I declare that it’s a scatterplot using
@@ -165,33 +161,20 @@ data together by the cat and color-code them.</span>
 points, title, a legend—that are held together using the addition symbol
 (<code>+</code>). All those parts can be manipulated, added, and
 removed. Different functions and arguments can create different
-visualizations. Here’s how the data would look if it were visualized as
-a smoothed line graph instead:</p>
+visualizations.</p>
+<p>You can also place the dataset and the aesthetics in geoms:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cute_2</span> <span class="op">&lt;-</span> <span class="va">meowtrics</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Day</span>, y <span class="op">=</span> <span class="va">Cuteness</span>, color <span class="op">=</span> <span class="va">Cat</span>, group <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Cat Cuteness Ratings Over Time"</span><span class="op">)</span></span>
-<span><span class="va">cute_2</span></span></code></pre></div>
-<p><img src="animint2_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
-<p>The sole difference is that we’ve replaced the points with smoothed
-lines. (By default, <code><a href="../reference/geom_smooth.html">geom_smooth()</a></code> uses
-<code><a href="https://rdrr.io/r/stats/loess.html" class="external-link">loess()</a></code>.) For stylistic reasons, I’ve also used the
-<code>se = FALSE</code> argument to remove the confidence internals
-around the lines.</p>
-<p>It’s also possible to have both the points and smoothed lines in one
-graph. Just use both the <code><a href="../reference/geom_point.html">geom_point()</a></code> abd
-<code><a href="../reference/geom_smooth.html">geom_smooth()</a></code> arguments in the same data visualization:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cute_3</span> <span class="op">&lt;-</span> <span class="va">meowtrics</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="../reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Day</span>, y <span class="op">=</span> <span class="va">Cuteness</span>, color <span class="op">=</span> <span class="va">Cat</span>, group <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Cat Cuteness Ratings Over Time"</span><span class="op">)</span></span>
-<span><span class="va">cute_3</span></span></code></pre></div>
-<p><img src="animint2_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<code class="sourceCode R"><span><span class="va">cute_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">meowtrics</span>, </span>
+<span>    <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Day</span>, y <span class="op">=</span> <span class="va">Cuteness</span>, group <span class="op">=</span> <span class="va">Cat</span>, color <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Notice that <code><a href="../reference/geom_point.html">geom_point()</a></code> now contains the
+<code>meowtrics</code> dataset and all the aesthetics as arguments.
+While this can make reading the code more difficult, this way of writing
+is useful in animints because different layers tend to use different
+datasets and aesthetics.</p>
+<p>From this point onward, the dataset and aesthetics will be located in
+the geoms.</p>
 </div>
 <div class="section level2">
 <h2 id="how-to-make-an-animint">How to Make an Animint<a class="anchor" aria-label="anchor" href="#how-to-make-an-animint"></a>
@@ -201,15 +184,15 @@ graph. Just use both the <code><a href="../reference/geom_point.html">geom_point
 data visualizations. It’s easy to render a static graph interactive.
 Just use the <code><a href="../reference/animint.html">animint()</a></code> function with the previous plot as
 the argument:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">cute_1</span><span class="op">)</span></span></code></pre></div>
-<script type="text/javascript" src="unnamedchunk6/vendor/d3.v3.js"></script><script type="text/javascript" src="unnamedchunk6/animint.js"></script><script type="text/javascript" src="unnamedchunk6/vendor/jquery-1.11.3.min.js"></script><script type="text/javascript" src="unnamedchunk6/vendor/selectize.min.js"></script><link rel="stylesheet" type="text/css" href="unnamedchunk6/vendor/selectize.css">
+<script type="text/javascript" src="unnamedchunk5/vendor/d3.v3.js"></script><script type="text/javascript" src="unnamedchunk5/animint.js"></script><script type="text/javascript" src="unnamedchunk5/vendor/jquery-1.11.3.min.js"></script><script type="text/javascript" src="unnamedchunk5/vendor/selectize.min.js"></script><link rel="stylesheet" type="text/css" href="unnamedchunk5/vendor/selectize.css">
 <p>
 </p>
-<div id="unnamedchunk6">
+<div id="unnamedchunk5">
 
 </div>
-<script>var unnamedchunk6 = new animint("#unnamedchunk6", "unnamedchunk6/plot.json");</script><p>This is an animint of our first static data visualization. By
+<script>var unnamedchunk5 = new animint("#unnamedchunk5", "unnamedchunk5/plot.json");</script><p>This is an animint of our first static data visualization. By
 clicking on the legend or by using the selection menu, you can control
 which subjects have their data graphed, as well as how many. This allows
 you to explore your data without needing to facet all possible cat
@@ -219,16 +202,12 @@ be all you need.</p>
 Archibald and Muffin’s cuteness ratings over time. In
 <code>animint2</code>, you would use the <code>first</code> argument and
 specify which cats to present:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cute_present</span> <span class="op">&lt;-</span> <span class="va">cute_1</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span>first <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Archibald"</span>, <span class="st">"Muffin"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">cute_present</span></span></code></pre></div>
-<p>
-</p>
-<div id="unnamedchunk7">
-
-</div>
-<script>var unnamedchunk7 = new animint("#unnamedchunk7", "unnamedchunk7/plot.json");</script><p>This is most useful for situations where you’re showcasing or
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cute_present</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span></span>
+<span>  <span class="va">cute_1</span>, </span>
+<span>  first <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    Cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Archibald"</span>, <span class="st">"Muffin"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>This is most useful for situations where you’re showcasing or
 presenting your animint. Pay attention to the syntax: when you use
 <code>first</code>, you must use a <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>.</p>
 <p>Our current animints show three variables: Day, Cuteness, and Cat.
@@ -242,37 +221,36 @@ graphs or the addition of an unwieldy third dimension.</p>
 variables interact day-by-day.</p>
 <p>First, let’s look at an animint with the <code>showSelected</code>
 variable:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">associations</span> <span class="op">&lt;-</span> <span class="va">meowtrics</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span>showSelected <span class="op">=</span> <span class="st">"Day"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Coolness</span>, y <span class="op">=</span> <span class="va">Cuteness</span>, color <span class="op">=</span> <span class="va">Cat</span>, group <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">associations</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">meowtrics</span>,</span>
+<span>    showSelected <span class="op">=</span> <span class="st">"Day"</span>,</span>
+<span>    <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Coolness</span>, y <span class="op">=</span> <span class="va">Cuteness</span>, </span>
+<span>        color <span class="op">=</span> <span class="va">Cat</span>, group <span class="op">=</span> <span class="va">Cat</span>, key <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="../reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Associations Between Cuteness and Coolness"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">associations</span><span class="op">)</span></span></code></pre></div>
 <p>
 </p>
-<div id="unnamedchunk8">
+<div id="unnamedchunk7">
 
 </div>
-<script>var unnamedchunk8 = new animint("#unnamedchunk8", "unnamedchunk8/plot.json");</script><p>You can use the selection menu to see the different associations
+<script>var unnamedchunk7 = new animint("#unnamedchunk7", "unnamedchunk7/plot.json");</script><p>You can use the selection menu to see the different associations
 between cuteness and coolness ratings per day.</p>
 <p>Next, let’s see that same animint with the <code>time</code> and
 <code>duration</code> option applied:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">animated_associations</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">associations</span>, </span>
 <span>                                 duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Day <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>,</span>
 <span>                                 time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>variable <span class="op">=</span> <span class="st">"Day"</span>, </span>
 <span>                                             ms <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">animated_associations</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in issueSelectorWarnings(meta$geoms, meta$selector.aes, meta$duration):</span></span>
-<span><span class="co">## to ensure that smooth transitions are interpretable, aes(key) should be specifed</span></span>
-<span><span class="co">## for geoms with showSelected=Day, problem: geom1_point_associations</span></span></code></pre>
 <p>
 </p>
-<div id="unnamedchunk9">
+<div id="unnamedchunk8">
 
 </div>
-<script>var unnamedchunk9 = new animint("#unnamedchunk9", "unnamedchunk9/plot.json");</script><p><code>duration</code> specifies how quickly the points move from
+<script>var unnamedchunk8 = new animint("#unnamedchunk8", "unnamedchunk8/plot.json");</script><p><code>duration</code> specifies how quickly the points move from
 their old location to their new location. The shorter the duration, the
 quicker the movement. In contrast, <code>time</code> specifies how long
 the points stay in place. In fact, the <code>duration</code> argument is
