@@ -77,9 +77,10 @@ This is an animint of our first static data visualization. By clicking on the le
 In some cases, you may want more control. Say you want to emphasize Archibald and Muffin's cuteness ratings over time. In `animint2`, you would use the `first` argument and specify which cats to present:
 
 ```{r}
-cute_present <- cute_1 |> 
-  animint(first = list(Cat = c("Archibald", "Muffin")))
-cute_present
+cute_present <- animint(
+  cute_1, 
+  first = list(
+    Cat = c("Archibald", "Muffin")))
 ```
 
 This is most useful for situations where you're showcasing or presenting your animint. Pay attention to the syntax: when you use `first`, you must use a `list()`.
@@ -91,8 +92,7 @@ Luckily, animints are not subject to the same restrictions. In `animint()`, we c
 First, let's look at an animint with the `showSelected` variable:
 
 ```{r}
-associations <- meowtrics |>
-  ggplot() +
+associations <- ggplot(meowtrics) +
   geom_point(showSelected = "Day") +
   aes(x = Coolness, y = Cuteness, color = Cat, group = Cat) +
   labs(title = "Associations Between Cuteness and Coolness")
