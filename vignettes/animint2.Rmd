@@ -63,30 +63,7 @@ What's happening with the code here?
 	<li><span class="explanation">I give the graph a title using `labs()` and its `title` argument.</span>
 </ol> <!-- Why use HTML instead of Markdown's syntax for ordered lists? I need to control the appearance of this specific ordered list. With Markdown, it's impossible. If you can figure out a way to do that, feel free to change the syntax. :> -->
 
-Notice how the data visualization consists of parts---data, axes, points, title, a legend---that are held together using the addition symbol (`+`). All those parts can be manipulated, added, and removed. Different functions and arguments can create different visualizations. Here's how the data would look if it were visualized as a smoothed line graph instead:
-
-```{r}
-cute_2 <- meowtrics |>
-  ggplot() +
-  geom_smooth(se = FALSE) +
-  aes(x = Day, y = Cuteness, color = Cat, group = Cat) +
-  labs(title = "Cat Cuteness Ratings Over Time")
-cute_2
-```
-
-The sole difference is that we've replaced the points with smoothed lines. (By default, `geom_smooth()` uses `loess()`.) For stylistic reasons, I've also used the `se = FALSE` argument to remove the confidence internals around the lines.
-
-It's also possible to have both the points and smoothed lines in one graph. Just use both the `geom_point()` abd `geom_smooth()` arguments in the same data visualization:
-
-```{r}
-cute_3 <- meowtrics |>
-  ggplot() +
-  geom_point() + 
-  geom_smooth(se = FALSE) +
-  aes(x = Day, y = Cuteness, color = Cat, group = Cat) +
-  labs(title = "Cat Cuteness Ratings Over Time")
-cute_3
-```
+Notice how the data visualization consists of parts---data, axes, points, title, a legend---that are held together using the addition symbol (`+`). All those parts can be manipulated, added, and removed. Different functions and arguments can create different visualizations. 
 
 
 ## How to Make an Animint
