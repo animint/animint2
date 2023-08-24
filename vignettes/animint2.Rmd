@@ -105,9 +105,11 @@ Luckily, animints are not subject to the same restrictions. In `animint()`, we c
 First, let's look at an animint with the `showSelected` variable:
 
 ```{r}
-associations <- ggplot(meowtrics) +
-  geom_point(showSelected = "Day") +
-  aes(x = Coolness, y = Cuteness, color = Cat, group = Cat) +
+associations <- ggplot() +
+  geom_point(
+    data = meowtrics,
+    showSelected = "Day",
+    aes(x = Coolness, y = Cuteness, color = Cat, group = Cat)) + 
   labs(title = "Associations Between Cuteness and Coolness")
 animint(associations)
 ```
