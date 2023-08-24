@@ -42,7 +42,7 @@ A data visualization is composed of parts arranged in a certain way. This is oft
 
 As an example, let's load `animint2` and look at a static graph it produces. It's about perceptions of cat cuteness over time and uses data from 10 different housecats.
 
-```{r}
+```{r, fig.alt = "A scatterplot titled Cat Cutness Ratings Over Time. The x-axis are the days, and the y-axis the cuteness ratings. There is a lot of variance in the data, but in general cat cuteness ratings rise over time."}
 library(animint2)
 
 cute_1 <- ggplot(meowtrics) +                             #1
