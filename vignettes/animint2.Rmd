@@ -109,6 +109,7 @@ associations <- ggplot() +
   geom_point(
     data = meowtrics,
     showSelected = "Day",
+    key = Cat,
     aes(x = Coolness, y = Cuteness, color = Cat, group = Cat)) + 
   labs(title = "Associations Between Cuteness and Coolness")
 animint(associations)
