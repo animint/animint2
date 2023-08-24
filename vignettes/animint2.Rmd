@@ -45,19 +45,17 @@ As an example, let's load `animint2` and look at a static graph it produces. It'
 ```{r}
 library(animint2)
 
-cute_1 <- meowtrics |>                                    #1
-  ggplot() +                                              #2
-  geom_point() +                                          #3
-  aes(x = Day, y = Cuteness, group = Cat, color = Cat) +  #4
-  labs(title = "Cat Cuteness Ratings Over Time")          #5
+cute_1 <- ggplot(meowtrics) +                             #1
+  geom_point() +                                          #2
+  aes(x = Day, y = Cuteness, group = Cat, color = Cat) +  #3
+  labs(title = "Cat Cuteness Ratings Over Time")          #4
 cute_1
 ```
 
 What's happening with the code here?
 
 <ol class="annotated">
-	<li><span class="explanation">I begin with the dataset, called `meowtrics`.</span>
-	<li><span class="explanation">I pipe it into `ggplot()`, which tells `animint2` that I'm creating a data visualization.</span>
+	<li><span class="explanation">I begin with the dataset, called `meowtrics`, and use it as an argument for `ggplot()`. This tells `animint2` that I'm creating a data visualization using this specific dataset.</span>
 	<li><span class="explanation">I declare that it's a scatterplot using `geom_point()`.</span>
 	<li><span class="explanation">I draw the axes of the graph with `aes()`. I place the time category in the x-axis and the cuteness ratings in the y-axis (the `x = Day` and `y = Cuteness` arguments, respectively). Using the `group` and `color` arguments, I also group the data together by the cat and color-code them.</span>
 	<li><span class="explanation">I give the graph a title using `labs()` and its `title` argument.</span>
