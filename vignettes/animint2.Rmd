@@ -63,6 +63,19 @@ What's happening with the code here?
 
 Notice how the data visualization consists of parts---data, axes, points, title, a legend---that are held together using the addition symbol (`+`). All those parts can be manipulated, added, and removed. Different functions and arguments can create different visualizations. 
 
+You can also place the dataset and the aesthetics in geoms:
+
+```{r, eval=FALSE}
+cute_1 <- ggplot() +
+  geom_point(
+    data = meowtrics, 
+    aes(x = Day, y = Cuteness, group = Cat, color = Cat))
+```
+
+Notice that `geom_point()` now contains the `meowtrics` dataset and all the aesthetics as arguments. While this can make reading the code more difficult, this way of writing is useful in animints because different layers tend to use different datasets and aesthetics.
+
+From this point onward, the dataset and aesthetics will be located in the geoms.
+
 
 ## How to Make an Animint
 
