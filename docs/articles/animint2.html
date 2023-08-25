@@ -83,24 +83,34 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This quick start guide introduces you to <code>animint2</code> in a
-way that I hope is both brief and friendly. It assumes nothing except
-some basic knowledge of R and some familiarity with data visualizations
-and statistics. Some familiarity with <code>ggplot2</code> is helpful
-but unnecessary. After reading this, you’ll have a general understanding
-of how <code>animint2</code> works. You’ll also know how to generate
-basic interactive data visualizations, sometimes referred to as
-“animints.” Depending on how sophisticated you want your animints to be,
-this Quick Start Guide may be all you need.</p>
-<p>This guide includes examples of relatively simple animints.
-<code>animint2</code> is also capable of generating larger and more
-complex data visualizations. For examples, take a look at chapters 8
-through 18 of the <a href="https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html" class="external-link">animint2
-Manual</a> or at the <a href="https://rcdata.nau.edu/genomic-ml/animint-gallery/" class="external-link">animint
-gallery</a>.</p>
-<p>The data used in this guide are simulated, which is a fancy way of
-saying that I forced a computer to make them up. The data are about
-cats. Here’s a glimpse:</p>
+<p>Welcome to the quick start guide. My goal is to introduce you to
+<code>animint2</code> in a way that is both brief and easy to
+understand. I assume nothing except some basic familiarity with R, data
+visualizations, and a little bit of statistics. Some familiarity with
+the <code>ggplot2</code> package is helpful but unnecessary.</p>
+<p>After reading this, you’ll leave with a sense of how
+<code>animint2</code> works. You’ll also know how to make interactive
+data visualizations, sometimes referred to as animints. For basic
+animints, this quick start guide is all you’ll need. To learn how to
+make more sophisticated animints, take a look at the <a href="https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html" class="external-link">animint2
+Manual</a>. You may also want to take a look at the <a href="https://rcdata.nau.edu/genomic-ml/animint-gallery/" class="external-link">animint
+gallery</a>, which showcases how sophisticated and powerful animints can
+be.</p>
+</div>
+<div class="section level2">
+<h2 id="datasets">Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a>
+</h2>
+<p>Some readers may want to follow along interactively. Both
+<code>animint2</code> and R have datasets that you may use. Access the
+dataset list with <code><a href="https://rdrr.io/r/utils/data.html" class="external-link">data()</a></code>. Alternatively, you may already
+have a dataset you’d like to use to experiment with
+<code>animint2</code>.</p>
+<p>I use a custom dataset in this guide, which I’ve named
+<code>meowtrics</code>. The data in the dataset are simulated, which is
+a fancy way of saying that I forced a computer to make them up. The data
+are about ten different housecats and how they’re perceived over time.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Fun science fact: Cats are objectively the best
+animal.&lt;/p&gt;"><sup>1</sup></a> Here’s a
+glimpse:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">meowtrics</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   Day        Cat Coolness Cuteness</span></span>
@@ -114,162 +124,245 @@ cats. Here’s a glimpse:</p>
 <div class="section level2">
 <h2 id="anatomy-of-a-data-visualization">Anatomy of a Data Visualization<a class="anchor" aria-label="anchor" href="#anatomy-of-a-data-visualization"></a>
 </h2>
-<p>A data visualization is composed of parts arranged in a certain way.
-This is often referred to as the grammar of graphics. This quick start
-guide won’t teach you the grammar, and you don’t need to know it to get
-started with <code>animint2</code>. What you do need to know is that
-<code>animint2</code>’s (and <code>ggplot</code>’s) syntax is modeled on
-the grammar.</p>
-<p>As an example, let’s load <code>animint2</code> and look at a static
-graph it produces. It’s about perceptions of cat cuteness over time and
-uses data from 10 different housecats.</p>
+<p>Data visualizations are commonplace, and for good reason. Large
+tables of data are difficult to parse. A good data visualization can
+illuminate patterns that would have otherwise hard to spot. In contrast,
+a poor (or deliberately misleading) data visualization can obscure even
+obvious patterns. How do we design good data visualizations while
+avoiding bad ones?</p>
+<p>We start by understanding what data visualizations are made of and
+how they’re arranged. This arrangement is often called the grammar of
+graphics. This quick start guide won’t teach you the grammar, and you
+don’t need to know it to get started with <code>animint2</code>.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;If you’re interested in learning about the grammar and
+want to get right to the source, see Leland Wilkinson’s &lt;em&gt;The Grammar
+of Graphics&lt;/em&gt;.&lt;/p&gt;"><sup>2</sup></a> But you
+should know that the syntax of <code>animint2</code>—that is, the way
+the code is written—is modelled on the grammar.</p>
+<p>Let’s see an example. Say I want to visualize how people rate cat
+cuteness over time. I want the y-axis to depict the cuteness ratings,
+and the x-axis the days. I also want it to be a scatterplot. What should
+I do?</p>
+<p>First, if I haven’t already, I need to install
+<code>animint2</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://animint.github.io/animint2/">animint2</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">cute_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">meowtrics</span><span class="op">)</span> <span class="op">+</span>                             <span class="co">#1</span></span>
-<span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>                                          <span class="co">#2</span></span>
-<span>  <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Day</span>, y <span class="op">=</span> <span class="va">Cuteness</span>, group <span class="op">=</span> <span class="va">Cat</span>, color <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span> <span class="op">+</span>  <span class="co">#3</span></span>
-<span>  <span class="fu"><a href="../reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Cat Cuteness Ratings Over Time"</span><span class="op">)</span>          <span class="co">#4</span></span>
-<span><span class="va">cute_1</span></span></code></pre></div>
-<p><img src="animint2_files/figure-html/unnamed-chunk-3-1.png" alt="A scatterplot titled Cat Cutness Ratings Over Time. The x-axis are the days, and the y-axis the cuteness ratings. There is a lot of variance in the data, but in general cat cuteness ratings rise over time." width="700"></p>
-<p>What’s happening with the code here?</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"animint2"</span><span class="op">)</span></span></code></pre></div>
+<p>I load <code>animint2</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://animint.github.io/animint2/">animint2</a></span><span class="op">)</span></span></code></pre></div>
+<p>Next, I search for the functions that I’ll need and put them
+together. First, I need <code><a href="../reference/ggplot.html">ggplot()</a></code>, which is the blank sheet
+of paper (or computer screen) the code draws on to make the graph.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;All data visualizations use &lt;code&gt;&lt;a href="../reference/ggplot.html"&gt;ggplot()&lt;/a&gt;&lt;/code&gt;.&lt;/p&gt;'><sup>3</sup></a> I’m making
+a scatterplot, so I’ll want something like <code><a href="../reference/geom_point.html">geom_point()</a></code> or
+<code><a href="../reference/geom_jitter.html">geom_jitter()</a></code>. Finally, for the axes, I’ll need
+<code><a href="../reference/aes.html">aes()</a></code>.</p>
+<p>Then I name the graph and put it all together:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cute_plot</span> <span class="op">&lt;-</span>                    <span class="co">#1</span></span>
+<span>  <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>                    <span class="co">#2</span></span>
+<span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span>                   <span class="co">#3</span></span>
+<span>    data <span class="op">=</span> <span class="va">meowtrics</span>,           <span class="co">#4</span></span>
+<span>    <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Day</span>, y <span class="op">=</span> <span class="va">Cuteness</span><span class="op">)</span><span class="op">)</span> <span class="co">#5</span></span>
+<span><span class="va">cute_plot</span>                       <span class="co">#6</span></span></code></pre></div>
+<p><img src="animint2_files/figure-html/anatomy-cute-plot-1.png" alt="A scatterplot about cat cuteness ratings over time. The x-axis are the days, and the y-axis the cuteness ratings. There is a lot of variance in the data, but in general cat cuteness ratings rise over time." width="700"></p>
+<p>If you’re unfamiliar with the syntax, the code can get confusing.
+Let’s go over this code block line by line:<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Notice also that the &lt;code&gt;&lt;a href="../reference/ggplot.html"&gt;ggplot()&lt;/a&gt;&lt;/code&gt; and
+&lt;code&gt;&lt;a href="../reference/geom_point.html"&gt;geom_point()&lt;/a&gt;&lt;/code&gt; functions are held together by the
+&lt;code&gt;+&lt;/code&gt; symbol. In other words: You begin with a blank data
+visualization and then add a scatterplot atop it. All functions in
+&lt;code&gt;animint2&lt;/code&gt; are held together with &lt;code&gt;+&lt;/code&gt;. You’ll be
+using it a lot.&lt;/p&gt;'><sup>4</sup></a></p>
 <ol class="annotated">
 <li>
-<span class="explanation">I begin with the dataset, called
-<code>meowtrics</code>, and use it as an argument for
-<code><a href="../reference/ggplot.html">ggplot()</a></code>. This tells <code>animint2</code> that I’m
-creating a data visualization using this specific dataset.</span>
+<span class="explanation">I name the data visualization. Since it’s a
+scatterplot about cat cuteness, I name it <code>cute_plot</code>. You
+can name data visualizations whatever you like, but it’s best if you
+name it something that will make sense to other programmers. Trust
+me—your future self will thank you.</span>
 </li>
 <li>
-<span class="explanation">I declare that it’s a scatterplot using
-<code><a href="../reference/geom_point.html">geom_point()</a></code>.</span>
+<span class="explanation">Next, I call the <code><a href="../reference/ggplot.html">ggplot()</a></code>
+function, since I’m making a data visualization.</span>
 </li>
 <li>
-<span class="explanation">I draw the axes of the graph with
-<code><a href="../reference/aes.html">aes()</a></code>. I place the time category in the x-axis and the
-cuteness ratings in the y-axis (the <code>x = Day</code> and
-<code>y = Cuteness</code> arguments, respectively). Using the
-<code>group</code> and <code>color</code> arguments, I also group the
-data together by the cat and color-code them.</span>
+<span class="explanation">Then I call <code><a href="../reference/geom_point.html">geom_point()</a></code>, because
+I’m making a scatterplot.</span>
 </li>
 <li>
-<span class="explanation">I give the graph a title using
-<code><a href="../reference/labs.html">labs()</a></code> and its <code>title</code> argument.</span>
+<span class="explanation">I want to use my <code>meowtrics</code>
+dataset to draw the points in my scatterplot, so I set
+<code>data = meowtrics</code>.</span>
+</li>
+<li>
+<span class="explanation"><code><a href="../reference/aes.html">aes()</a></code> controls the aesthetics of
+the data visualization, including axes. I place it inside
+<code><a href="../reference/geom_point.html">geom_point()</a></code> and tell my ptogram that the Day and Cuteness
+variables are on the x- and y-axes, respectively.</span>
+</li>
+<li>
+<p><span class="explanation">Finally, I repeat the name of my data
+visualization, which tells the program to display my graph.</span></p>
+<!-- Why use HTML instead of Markdown's syntax for ordered lists? I need to control the appearance of this specific ordered list. With Markdown, it's impossible. If you can figure out a way to do that, feel free to change the syntax. :> -->
+<p>Our code has produced a useful graph. We can see that while there’s a
+lot of variance in the data, there seems to be an upward trend in cat
+cuteness ratings. But this graph could be better. And
+<code>animint2</code> gives us the tools to improve it.</p>
+<p>Take a look at this slightly modified data visualization:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cute_plot_2</span> <span class="op">&lt;-</span>                                   <span class="co">#1</span></span>
+<span>  <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">meowtrics</span>,</span>
+<span>    <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Day</span>, y <span class="op">=</span> <span class="va">Cuteness</span>,</span>
+<span>        group <span class="op">=</span> <span class="va">Cat</span>, color <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>             <span class="co">#2</span></span>
+<span>  <span class="fu"><a href="../reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Cat Cuteness Ratings Over Time"</span><span class="op">)</span> <span class="co">#3</span></span>
+<span><span class="va">cute_plot_2</span></span></code></pre></div>
+<p><img src="animint2_files/figure-html/anatomy-cute-plot-2-1.png" alt="A scatterplot titled Cat Cutness Ratings Over Time. It looks exactly the same as the previous graph, except all the data points are differentiated by color. There is also a legend that maps each color to a cat." width="700"></p>
+<p>Each cat is differentiated from one another by color. I’ve also added
+a color, and there’s now a legend. Codewise, what’s changed?</p>
+<ol class="annotated&gt;
+  &lt;li&gt;&lt;span class=" explanation>This data visualization has a different name. Make sure all your names are different---if they aren't, later visualizations will override the former ones.
+  <li>
+<span class="explanation">I've added new arguments to `aes()`: I've grouped the points in the scatterplot by cat. I've also differentiated the cats' data points by color.^[It's possible to diffentiate the data points in a different manner. For example, instead of different colors, I could have used different shapes.]</span>
+  </li>
+<li>
+<span class="explanation">Using `labs()`, I've given the graph a title.</span>
 </li>
 </ol>
-<!-- Why use HTML instead of Markdown's syntax for ordered lists? I need to control the appearance of this specific ordered list. With Markdown, it's impossible. If you can figure out a way to do that, feel free to change the syntax. :> --><p>Notice how the data visualization consists of parts—data, axes,
-points, title, a legend—that are held together using the addition symbol
-(<code>+</code>). All those parts can be manipulated, added, and
-removed. Different functions and arguments can create different
-visualizations.</p>
-<p>You can also place the dataset and the aesthetics in geoms:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cute_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">meowtrics</span>, </span>
-<span>    <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Day</span>, y <span class="op">=</span> <span class="va">Cuteness</span>, group <span class="op">=</span> <span class="va">Cat</span>, color <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Notice that <code><a href="../reference/geom_point.html">geom_point()</a></code> now contains the
-<code>meowtrics</code> dataset and all the aesthetics as arguments.
-While this can make reading the code more difficult, this way of writing
-is useful in animints because different layers tend to use different
-datasets and aesthetics.</p>
-<p>From this point onward, the dataset and aesthetics will be located in
-the geoms.</p>
+<!-- See the comment above this one. :> --><p>While this new graph adds more information, it’s difficult to use
+some of it. There’s just a lot more being communicated. What if we could
+move some of the data out of the way? Or compare a subset of cat
+cuteness ratings instead of seeing everything at once? Reader, I have
+good news.</p>
+</li>
+</ol>
 </div>
 <div class="section level2">
-<h2 id="how-to-make-an-animint">How to Make an Animint<a class="anchor" aria-label="anchor" href="#how-to-make-an-animint"></a>
+<h2 id="making-animints">Making Animints<a class="anchor" aria-label="anchor" href="#making-animints"></a>
 </h2>
-<p>The reason why you want to use <code>animint2</code> (versus
-<code>ggplot2</code>) is because of the former’s support for interactive
-data visualizations. It’s easy to render a static graph interactive.
-Just use the <code><a href="../reference/animint.html">animint()</a></code> function with the previous plot as
-the argument:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">cute_1</span><span class="op">)</span></span></code></pre></div>
-<script type="text/javascript" src="unnamedchunk5/vendor/d3.v3.js"></script><script type="text/javascript" src="unnamedchunk5/animint.js"></script><script type="text/javascript" src="unnamedchunk5/vendor/jquery-1.11.3.min.js"></script><script type="text/javascript" src="unnamedchunk5/vendor/selectize.min.js"></script><link rel="stylesheet" type="text/css" href="unnamedchunk5/vendor/selectize.css">
+<p>The good news is this: <code>animint2</code> makes it easy to render
+a static data visualization interactive. Just use the
+<code><a href="../reference/animint.html">animint()</a></code> function with the previous plot as the
+argument:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">cute_plot_2</span><span class="op">)</span></span></code></pre></div>
+<script type="text/javascript" src="animintscuteplot2/vendor/d3.v3.js"></script><script type="text/javascript" src="animintscuteplot2/animint.js"></script><script type="text/javascript" src="animintscuteplot2/vendor/jquery-1.11.3.min.js"></script><script type="text/javascript" src="animintscuteplot2/vendor/selectize.min.js"></script><link rel="stylesheet" type="text/css" href="animintscuteplot2/vendor/selectize.css">
 <p>
 </p>
-<div id="unnamedchunk5">
+<div id="animintscuteplot2">
 
 </div>
-<script>var unnamedchunk5 = new animint("#unnamedchunk5", "unnamedchunk5/plot.json");</script><p>This is an animint of our first static data visualization. By
+<script>var animintscuteplot2 = new animint("#animintscuteplot2", "animintscuteplot2/plot.json");</script><p>This is an animint of our second static data visualization. By
 clicking on the legend or by using the selection menu, you can control
-which subjects have their data graphed, as well as how many. This allows
-you to explore your data without needing to facet all possible cat
-combinations. For exploratory data analysis, this level of control may
-be all you need.</p>
+which subjects have their data graphed, as well as how many.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Play around with the animint. See what you can and can’t
+interact with.&lt;/p&gt;"><sup>5</sup></a> This
+allows you to explore your data without needing to facet all possible
+cat combinations. For exploratory data analysis, this level of control
+may be all you need.</p>
 <p>In some cases, you may want more control. Say you want to emphasize
 Archibald and Muffin’s cuteness ratings over time. In
 <code>animint2</code>, you would use the <code>first</code> argument and
 specify which cats to present:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cute_present</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span></span>
-<span>  <span class="va">cute_1</span>, </span>
-<span>  first <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    Cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Archibald"</span>, <span class="st">"Muffin"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cute_present</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">cute_plot_2</span>, </span>
+<span>          first <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span> <span class="co">#1</span></span>
+<span>            Cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>    <span class="co">#2</span></span>
+<span>              <span class="st">"Archibald"</span>, <span class="st">"Muffin"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>This is most useful for situations where you’re showcasing or
-presenting your animint. Pay attention to the syntax: when you use
-<code>first</code>, you must use a <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>.</p>
-<p>Our current animints show three variables: Day, Cuteness, and Cat.
-What if you want to explore or present a fourth? (Recall that our
-<code>meowtrics</code> dataset has a Coolness variable we haven’t looked
-at yet.) In a static data visualization, this would require multiple
-graphs or the addition of an unwieldy third dimension.</p>
+presenting your animint. Pay attention to the syntax:</p>
+<ol class="annotated&gt;
+  &lt;li&gt;&lt;span class=" explanation>The `first` argument only accepts `list()`s.
+  <li>
+<span class="explanation">The specific cats must also be in a list. That's why they're in a `c()` function.</span>
+</li>
+</ol>
+<!-- See the comment above this one. :> --><div class="section level3">
+<h3 id="using-showselected">Using showSelected<a class="anchor" aria-label="anchor" href="#using-showselected"></a>
+</h3>
+<p>Our current animints use three variables: Day, Cuteness, and Cat.
+What if you want to explore or present a fourth?<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Recall that our &lt;code&gt;meowtrics&lt;/code&gt; dataset has a
+Coolness variable we haven’t looked at yet.&lt;/p&gt;"><sup>6</sup></a> In a static data
+visualization, this would require multiple graphs or the addition of an
+unwieldy third dimension.</p>
 <p>Luckily, animints are not subject to the same restrictions. In
 <code><a href="../reference/animint.html">animint()</a></code>, we can use the <code>showSelected</code> and
 <code>time</code> arguments to show how the Coolness and Cuteness
 variables interact day-by-day.</p>
 <p>First, let’s look at an animint with the <code>showSelected</code>
 variable:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">associations</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">associations</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">meowtrics</span>,</span>
-<span>    showSelected <span class="op">=</span> <span class="st">"Day"</span>,</span>
+<span>    showSelected <span class="op">=</span> <span class="st">"Day"</span>,           <span class="co">#1</span></span>
 <span>    <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Coolness</span>, y <span class="op">=</span> <span class="va">Cuteness</span>, </span>
-<span>        color <span class="op">=</span> <span class="va">Cat</span>, group <span class="op">=</span> <span class="va">Cat</span>, key <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>        color <span class="op">=</span> <span class="va">Cat</span>, group <span class="op">=</span> <span class="va">Cat</span>, </span>
+<span>        key <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>               <span class="co">#2</span></span>
 <span>  <span class="fu"><a href="../reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Associations Between Cuteness and Coolness"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">associations</span><span class="op">)</span></span></code></pre></div>
 <p>
 </p>
-<div id="unnamedchunk7">
+<div id="showselectedassociations">
 
 </div>
-<script>var unnamedchunk7 = new animint("#unnamedchunk7", "unnamedchunk7/plot.json");</script><p>You can use the selection menu to see the different associations
-between cuteness and coolness ratings per day.</p>
+<script>var showselectedassociations = new animint("#showselectedassociations", "showselectedassociations/plot.json");</script><ol class="annotated&gt;
+  &lt;li&gt;&lt;span class=" explanation>`showSelected` lets you adjust the day in the selection menu. It takes a variable with quotations.
+  <li>
+<span class="explanation">Most real-world datasets have missing values. Here, `key` accounts for that when transitioning between different days. It takes a variable without quotations.</span>
+</li>
+</ol>
+<!-- See the comment above this one. :> --><p>You can use the selection menu to see the different associations
+between cuteness and coolness ratings per day.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Play around with it and see what you can do.&lt;/p&gt;"><sup>7</sup></a></p>
 <p>Next, let’s see that same animint with the <code>time</code> and
 <code>duration</code> option applied:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">animated_associations</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">associations</span>, </span>
-<span>                                 duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Day <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>,</span>
-<span>                                 time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>variable <span class="op">=</span> <span class="st">"Day"</span>, </span>
-<span>                                             ms <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">animated_associations</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">associations</span>, </span>
+<span>          duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Day <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>, <span class="co">#1</span></span>
+<span>          time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>                 <span class="co">#2</span></span>
+<span>            variable <span class="op">=</span> <span class="st">"Day"</span>, </span>
+<span>            ms <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span>                <span class="co">#3</span></span>
 <span><span class="va">animated_associations</span></span></code></pre></div>
 <p>
 </p>
-<div id="unnamedchunk8">
+<div id="showselectedanimatedassociations">
 
 </div>
-<script>var unnamedchunk8 = new animint("#unnamedchunk8", "unnamedchunk8/plot.json");</script><p><code>duration</code> specifies how quickly the points move from
-their old location to their new location. The shorter the duration, the
-quicker the movement. In contrast, <code>time</code> specifies how long
-the points stay in place. In fact, the <code>duration</code> argument is
-optional. If you decide not to use <code>duration</code> or set it to 0
-milliseconds, the points teleport from one location to another. Click
-the “Show animation controls” button and play around with it.</p>
-<p>Notice how <code>duration</code> and <code>time</code> also need to
-take lists. They use milliseconds as their unit of measurement.</p>
+<script>var showselectedanimatedassociations = new animint("#showselectedanimatedassociations", "showselectedanimatedassociations/plot.json");</script><ol class="annotated&gt;
+  &lt;li&gt;&lt;span class=" explanation>`duration` specifies how quickly the points move from their old location to their new location.^[Fun fact: The `duration` argument is optional. If you decide not to use `duration` or set it to 0 milliseconds, the points teleport from one location to another.] The shorter the duration, the quicker the movement. It takes a list and uses milliseconds as its unit of measurement.
+  <li>
+<span class="explanation">`time` also takes a list.</span>
+  </li>
+<li>
+<span class="explanation">In contrast to `duration`, `time = list(ms)` specifies how long the points stay in place. It also uses milliseconds as its unit of measurement.</span>
+  </li>
+<li>
+<span class="explanation"></span>
+</li>
+</ol>
+<!-- See the comment above this one. :> --><p>You can also click the “Show animation controls” button and manually
+adjust both the <code>time</code> and <code>duration</code> Try it
+out.</p>
+</div>
+<div class="section level3">
+<h3 id="using-clickselects">Using clickSelects<a class="anchor" aria-label="anchor" href="#using-clickselects"></a>
+</h3>
+<p>empty for now</p>
+</div>
 </div>
 <div class="section level2">
-<h2 id="the-end">The End<a class="anchor" aria-label="anchor" href="#the-end"></a>
+<h2 id="goodbye">Goodbye<a class="anchor" aria-label="anchor" href="#goodbye"></a>
 </h2>
-<p>And that’s it! You’re now a competent <code>animint2</code> user.
-Your invisible and intangible certification of completion will arrive by
-post within seven business days.</p>
-<p>If this quick start guide doesn’t satisfy your thirst for animint
-knowledge, consult the <a href="https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html" class="external-link">Animint2
-Manual</a>. Feel free to post any questions to our <a href="https://github.com/animint/animint2/issues" class="external-link">GitHub issues</a>.</p>
+<p>And that’s it. You’re now a competent <code>animint2</code> user.
+Your certificate of completion will arrive by post within four to five
+business days.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;The certificate of completion is both invisible and
+intangible. Some philosophers posit that this certificate may not exist
+at all.&lt;/p&gt;"><sup>8</sup></a></p>
+<p>Feel free to post any questions to our <a href="https://github.com/animint/animint2/issues" class="external-link">GitHub issues</a>.
+Thanks for reading.</p>
 </div>
+
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>
