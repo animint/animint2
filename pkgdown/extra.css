@@ -31,10 +31,9 @@ aside.col-md-3 > div > h2 {
 
 /* The code below affects only the quick start guide. */
 
-div#unnamedchunk6,
-div#unnamedchunk7,
-div#unnamedchunk8,
-div#unnamedchunk9 {
+div#animintscuteplot2,
+div#showselectedanimatedassociations,
+div#showselectedassociations {
 	margin-bottom: 1rem; /* so there's a lil more space
 	                        between the animints and
 							paragraphs */
