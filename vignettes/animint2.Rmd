@@ -9,7 +9,12 @@ Welcome to the quick start guide. My goal is to introduce you to `animint2` in a
 
 After reading this, you'll leave with a sense of how `animint2` works. You'll also know how to make interactive data visualizations, sometimes referred to as animints. For basic animints, this quick start guide is all you'll need. To learn how to make more sophisticated animints, take a look at the [animint2 Manual](https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html). You may also want to take a look at the [animint gallery](https://rcdata.nau.edu/genomic-ml/animint-gallery/), which showcases how sophisticated and powerful animints can be.
 
-The data used in this guide are simulated, which is a fancy way of saying that I forced a computer to make them up. The data are about cats. Here's a glimpse:
+
+## Datasets
+
+Some readers may want to follow along interactively. Both `animint2` and R have datasets that you may use. Access the dataset list with `data()`. Alternatively, you may already have a dataset you'd like to use to experiment with `animint2`.
+
+I use a custom dataset in this guide, which I've named `meowtrics`. The data in the dataset are simulated, which is a fancy way of saying that I forced a computer to make them up. The data are about cats and how they're perceived over time. Here's a glimpse:
 
 ```{r, include = FALSE}
 # Reproducible random numbers.
