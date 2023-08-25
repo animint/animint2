@@ -14,7 +14,9 @@ After reading this, you'll leave with a sense of how `animint2` works. You'll al
 
 Some readers may want to follow along interactively. Both `animint2` and R have datasets that you may use. Access the dataset list with `data()`. Alternatively, you may already have a dataset you'd like to use to experiment with `animint2`.
 
-I use a custom dataset in this guide, which I've named `meowtrics`. The data in the dataset are simulated, which is a fancy way of saying that I forced a computer to make them up. The data are about ten different housecats and how they're perceived over time.^[Fun science fact: Cats are objectively the best animal.] Here's a glimpse:
+I use a custom dataset in this guide, which I've named `meowtrics`. The data in the dataset are simulated, which is a fancy way of saying that I forced a computer to make them up. The data are about ten different housecats and how they're perceived over time.[^cat] Here's a glimpse:
+
+[^cat]: Fun science fact: Cats are objectively the best animal.
 
 ```{r datasets-make-meowtrics, include = FALSE}
 # Reproducible random numbers.
@@ -46,7 +48,9 @@ head(meowtrics)
 
 Data visualizations are commonplace, and for good reason. Large tables of data are difficult to parse. A good data visualization can illuminate patterns that would have otherwise hard to spot. In contrast, a poor (or deliberately misleading) data visualization can obscure even obvious patterns. How do we design good data visualizations while avoiding bad ones?
 
-We start by understanding what data visualizations are made of and how they're arranged. This arrangement is often called the grammar of graphics. This quick start guide won't teach you the grammar, and you don't need to know it to get started with `animint2`.^[If you're interested in learning about the grammar and want to get right to the source, see Leland Wilkinson's _The Grammar of Graphics_.] But you should know that the syntax of `animint2`---that is, the way the code is written---is modelled on the grammar.
+We start by understanding what data visualizations are made of and how they're arranged. This arrangement is often called the grammar of graphics. This quick start guide won't teach you the grammar, and you don't need to know it to get started with `animint2`.[^1] But you should know that the syntax of `animint2`---that is, the way the code is written---is modelled on the grammar.
+
+[^1]: If you're interested in learning about the grammar and want to get right to the source, see Leland Wilkinson's _The Grammar of Graphics_.]
 
 Let's see an example. Say I want to visualize how people rate cat cuteness over time. I want the y-axis to depict the cuteness ratings, and the x-axis the days. I also want it to be a scatterplot. What should I do?
 
@@ -62,7 +66,9 @@ I load `animint2`:
 library(animint2)
 ```
 
-Next, I search for the functions that I'll need and put them together. First, I need `ggplot()`, which is the blank sheet of paper (or computer screen) the code draws on to make the graph.^[All data visualizations use `ggplot()`.] I'm making a scatterplot, so I'll want something like `geom_point()` or `geom_jitter()`. Finally, for the axes, I'll need `aes()`.
+Next, I search for the functions that I'll need and put them together. First, I need `ggplot()`, which is the blank sheet of paper (or computer screen) the code draws on to make the graph.[^2] I'm making a scatterplot, so I'll want something like `geom_point()` or `geom_jitter()`. Finally, for the axes, I'll need `aes()`.
+
+[^2]: All data visualizations use `ggplot()`.
 
 Then I name the graph and put it all together:
 
@@ -75,7 +81,9 @@ cute_plot <-                    #1
 cute_plot                       #6
 ```
 
-If you're unfamiliar with the syntax, the code can get confusing. Let's go over this code block line by line:^[Notice also that the `ggplot()` and `geom_point()` functions are held together by the `+` symbol. In other words: You begin with a blank data visualization and then add a scatterplot atop it. All functions in `animint2` are held together with `+`. You'll be using it a lot.]
+If you're unfamiliar with the syntax, the code can get confusing.[^3] Let's go over this code block line by line:
+
+[^3]: Notice also that the `ggplot()` and `geom_point()` functions are held together by the `+` symbol. In other words: You begin with a blank data visualization and then add a scatterplot atop it. All functions in `animint2` are held together with `+`. You'll be using it a lot.
 
 <ol class="annotated">
 	<li><span class="explanation">I name the data visualization. Since it's a scatterplot about cat cuteness, I name it `cute_plot`. You can name data visualizations whatever you like, but it's best if you name it something that will make sense to other programmers. Trust me---your future self will thank you.</span>
@@ -106,11 +114,13 @@ Each cat is differentiated from one another by color. I've also added a color, a
 
 <ol class="annotated">
   <li><span class="explanation">This data visualization has a different name. Make sure all your names are different---if they aren't, later visualizations will override the former ones.</span>
-  <li><span class="explanation">I've added new arguments to `aes()`: I've grouped the points in the scatterplot by cat. I've also differentiated the cats' data points by color.^[It's possible to diffentiate the data points in a different manner. For example, instead of different colors, I could have used different shapes.]</span>
+  <li><span class="explanation">I've added new arguments to `aes()`: I've grouped the points in the scatterplot by cat. I've also differentiated the cats' data points by color.[^4]</span>
   <li><span class="explanation">Using `labs()`, I've given the graph a title.</span>
 </ol>
 
 <!-- See the comment above this one. :> -->
+
+[^4]: It's possible to diffentiate the data points in a different manner. For example, instead of different colors, I could have used different shapes.
 
 While this new graph adds more information, it's difficult to use some of it. There's just a lot more being communicated. What if we could move some of the data out of the way? Or compare a subset of cat cuteness ratings instead of seeing everything at once? Reader, I have good news.
 
@@ -123,7 +133,9 @@ The good news is this: `animint2` makes it easy to render a static data visualiz
 animint(cute_plot_2)
 ```
 
-This is an animint of our second static data visualization. By clicking on the legend or by using the selection menu, you can control which subjects have their data graphed, as well as how many.^[Play around with the animint. See what you can and can't interact with.] This allows you to explore your data without needing to facet all possible cat combinations. For exploratory data analysis, this level of control may be all you need.
+This is an animint of our second static data visualization. By clicking on the legend or by using the selection menu, you can control which subjects have their data graphed, as well as how many.[^5] This allows you to explore your data without needing to facet all possible cat combinations. For exploratory data analysis, this level of control may be all you need.
+
+[^5]: Play around with the animint. See what you can and can't interact with.
 
 In some cases, you may want more control. Say you want to emphasize Archibald and Muffin's cuteness ratings over time. In `animint2`, you would use the `first` argument and specify which cats to present:
 
@@ -148,7 +160,9 @@ This is most useful for situations where you're showcasing or presenting your an
 
 ### Using showSelected
 
-Our current animints use three variables: Day, Cuteness, and Cat. What if you want to explore or present a fourth?^[Recall that our `meowtrics` dataset has a Coolness variable we haven't looked at yet.] In a static data visualization, this would require multiple graphs or the addition of an unwieldy third dimension.
+Our current animints use three variables: Day, Cuteness, and Cat. What if you want to explore or present a fourth?[^6] In a static data visualization, this would require multiple graphs or the addition of an unwieldy third dimension.
+
+[^6]: Recall that our `meowtrics` dataset has a Coolness variable we haven't looked at yet.
 
 Luckily, animints are not subject to the same restrictions. In `animint()`, we can use the `showSelected` and `time` arguments to show how the Coolness and Cuteness variables interact day-by-day.
 
@@ -174,7 +188,9 @@ animint(associations)
 
 <!-- See the comment above this one. :> -->
 
-You can use the selection menu to see the different associations between cuteness and coolness ratings per day.^[Play around with it and see what you can do.]
+You can use the selection menu to see the different associations between cuteness and coolness ratings per day.[^7]
+
+[^7]: Play around with it and see what you can do.
 
 Next, let's see that same animint with the `time` and `duration` option applied:
 
@@ -189,13 +205,15 @@ animated_associations
 ```
 
 <ol class="annotated">
-  <li><span class="explanation">`duration` specifies how quickly the points move from their old location to their new location.^[Fun fact: The `duration` argument is optional. If you decide not to use `duration` or set it to 0 milliseconds, the points teleport from one location to another.] The shorter the duration, the quicker the movement. It takes a list and uses milliseconds as its unit of measurement.</span>
+  <li><span class="explanation">`duration` specifies how quickly the points move from their old location to their new location.[^8] The shorter the duration, the quicker the movement. It takes a list and uses milliseconds as its unit of measurement.</span>
   <li><span class="explanation">`time` also takes a list.</span>
   <li><span class="explanation">In contrast to `duration`, `time = list(ms)` specifies how long the points stay in place. It also uses milliseconds as its unit of measurement.</span>
   <li><span class="explanation"></span>
 </ol>
 
 <!-- See the comment above this one. :> -->
+
+[^8]: Fun fact: The `duration` argument is optional. If you decide not to use `duration` or set it to 0 milliseconds, the points teleport from one location to another.
 
 You can also click the "Show animation controls" button and manually adjust both the `time` and `duration`. Try it out.
 
@@ -207,6 +225,8 @@ empty for now
 
 ## Goodbye
 
-And that's it. You're now a reasonably competent `animint2` user. Your certificate of completion will arrive by post within four to five business days.^[The certificate of completion is both invisible and intangible. Some philosophers posit that this certificate may not exist at all.]
+And that's it. You're now a reasonably competent `animint2` user. Your certificate of completion will arrive by post within four to five business days.[^coc]
+
+[^coc]: The certificate of completion is both invisible and intangible. Some philosophers posit that this certificate may not exist at all.
 
 Feel free to post any questions to our [GitHub issues](https://github.com/animint/animint2/issues). Thanks for reading.
