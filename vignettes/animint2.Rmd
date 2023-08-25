@@ -92,6 +92,7 @@ If you're unfamiliar with the syntax, the code can get confusing.[^3] Let's go o
 	<li><span class="explanation">I want to use my `meowtrics` dataset to draw the points in my scatterplot, so I set `data = meowtrics`.</span>
 	<li><span class="explanation">`aes()` controls the aesthetics of the data visualization, including axes. I place it inside `geom_point()` and tell my ptogram that the Day and Cuteness variables are on the x- and y-axes, respectively.</span>
 	<li><span class="explanation">I repeat the name of my data visualization, which tells the program to display my graph.</span>
+</ol>
 
 <!-- Why use HTML instead of Markdown's syntax for ordered lists? I need to control the appearance of this specific ordered list. With Markdown, it's impossible. If you can figure out a way to do that, feel free to change the syntax. :> -->
 
@@ -120,10 +121,9 @@ Each cat is differentiated from one another by color. I've also added a color, a
 
 <!-- See the comment above this one. :> -->
 
-[^4]: It's possible to diffentiate the data points in a different manner. For example, instead of different colors, I could have used different shapes.
-
 While this new graph adds more information, it's difficult to use some of it. There's just a lot more being communicated. What if we could move some of the data out of the way? Or compare a subset of cat cuteness ratings instead of seeing everything at once? Reader, I have good news.
 
+[^4]: It's possible to differentiate the data points in a different manner. For example, instead of different colors, I could have used different shapes.
 
 ## Making Animints
 
@@ -208,7 +208,6 @@ animated_associations
   <li><span class="explanation">`duration` specifies how quickly the points move from their old location to their new location.[^8] The shorter the duration, the quicker the movement. It takes a list and uses milliseconds as its unit of measurement.</span>
   <li><span class="explanation">`time` also takes a list.</span>
   <li><span class="explanation">In contrast to `duration`, `time = list(ms)` specifies how long the points stay in place. It also uses milliseconds as its unit of measurement.</span>
-  <li><span class="explanation"></span>
 </ol>
 
 <!-- See the comment above this one. :> -->
