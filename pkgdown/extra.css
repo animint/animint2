@@ -33,7 +33,8 @@ aside.col-md-3 > div > h2 {
 
 div#animintscuteplot2,
 div#showselectedanimatedassociations,
-div#showselectedassociations {
+div#showselectedassociations,
+animintscutepresent {
 	margin-bottom: 1rem; /* so there's a lil more space
 	                        between the animints and
 							paragraphs */
