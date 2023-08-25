@@ -133,6 +133,7 @@ cute_present <-
           first = list( #1
             Cat = c(    #2
               "Archibald", "Muffin")))
+cute_present
 ```
 
 This is most useful for situations where you're showcasing or presenting your animint. Pay attention to the syntax:
@@ -196,7 +197,7 @@ animated_associations
 
 <!-- See the comment above this one. :> -->
 
-You can also click the "Show animation controls" button and manually adjust both the `time` and `duration` Try it out.
+You can also click the "Show animation controls" button and manually adjust both the `time` and `duration`. Try it out.
 
 
 ### Using clickSelects
@@ -206,6 +207,6 @@ empty for now
 
 ## Goodbye
 
-And that's it. You're now a competent `animint2` user. Your certificate of completion will arrive by post within four to five business days.^[The certificate of completion is both invisible and intangible. Some philosophers posit that this certificate may not exist at all.]
+And that's it. You're now a reasonably competent `animint2` user. Your certificate of completion will arrive by post within four to five business days.^[The certificate of completion is both invisible and intangible. Some philosophers posit that this certificate may not exist at all.]
 
 Feel free to post any questions to our [GitHub issues](https://github.com/animint/animint2/issues). Thanks for reading.
