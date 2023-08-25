@@ -31,16 +31,20 @@ aside.col-md-3 > div > h2 {
 
 /* The code below affects only the quick start guide. */
 
-div#unnamedchunk6,
-div#unnamedchunk7,
-div#unnamedchunk8,
-div#unnamedchunk9 {
+div#animintscuteplot2,
+div#showselectedanimatedassociations,
+div#showselectedassociations,
+div#animintscutepresent {
 	margin-bottom: 1rem; /* so there's a lil more space
 	                        between the animints and
 							paragraphs */
 }
 
-#cb3 span.co {
+#cb5 span.co,
+#cb6 span.co,
+#cb8 span.co,
+#cb9 span.co,
+#cb10 span.co {
 	border: 1.4px solid #212529;
 	border-radius: 200px;
 	padding: 0.05rem 0.5rem;
