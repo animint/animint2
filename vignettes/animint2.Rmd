@@ -83,7 +83,7 @@ If you're unfamiliar with the syntax, the code can get confusing. Let's go over 
 	<li><span class="explanation">Then I call `geom_point()`, because I'm making a scatterplot.</span>
 	<li><span class="explanation">I want to use my `meowtrics` dataset to draw the points in my scatterplot, so I set `data = meowtrics`.</span>
 	<li><span class="explanation">`aes()` controls the aesthetics of the data visualization, including axes. I place it inside `geom_point()` and tell my ptogram that the Day and Cuteness variables are on the x- and y-axes, respectively.</span>
-	<li><span class="explanation">Finally, I repeat the name of my data visualization, which tells the program to display my graph.</span>
+	<li><span class="explanation">I repeat the name of my data visualization, which tells the program to display my graph.</span>
 
 <!-- Why use HTML instead of Markdown's syntax for ordered lists? I need to control the appearance of this specific ordered list. With Markdown, it's impossible. If you can figure out a way to do that, feel free to change the syntax. :> -->
 
@@ -104,7 +104,7 @@ cute_plot_2
 
 Each cat is differentiated from one another by color. I've also added a color, and there's now a legend. Codewise, what's changed?
 
-<ol class="annotated>
+<ol class="annotated">
   <li><span class="explanation">This data visualization has a different name. Make sure all your names are different---if they aren't, later visualizations will override the former ones.</span>
   <li><span class="explanation">I've added new arguments to `aes()`: I've grouped the points in the scatterplot by cat. I've also differentiated the cats' data points by color.^[It's possible to diffentiate the data points in a different manner. For example, instead of different colors, I could have used different shapes.]</span>
   <li><span class="explanation">Using `labs()`, I've given the graph a title.</span>
@@ -138,7 +138,7 @@ cute_present
 
 This is most useful for situations where you're showcasing or presenting your animint. Pay attention to the syntax:
 
-<ol class="annotated>
+<ol class="annotated">
   <li><span class="explanation">The `first` argument only accepts `list()`s.</span>
   <li><span class="explanation">The specific cats must also be in a list. That's why they're in a `c()` function.</span>
 </ol>
@@ -167,7 +167,7 @@ associations <-
 animint(associations)
 ```
 
-<ol class="annotated>
+<ol class="annotated">
   <li><span class="explanation">`showSelected` lets you adjust the day in the selection menu. It takes a variable with quotations.</span>
   <li><span class="explanation">Most real-world datasets have missing values. Here, `key` accounts for that when transitioning between different days. It takes a variable without quotations.</span>
 </ol>
@@ -188,7 +188,7 @@ animated_associations <-
 animated_associations
 ```
 
-<ol class="annotated>
+<ol class="annotated">
   <li><span class="explanation">`duration` specifies how quickly the points move from their old location to their new location.^[Fun fact: The `duration` argument is optional. If you decide not to use `duration` or set it to 0 milliseconds, the points teleport from one location to another.] The shorter the duration, the quicker the movement. It takes a list and uses milliseconds as its unit of measurement.</span>
   <li><span class="explanation">`time` also takes a list.</span>
   <li><span class="explanation">In contrast to `duration`, `time = list(ms)` specifies how long the points stay in place. It also uses milliseconds as its unit of measurement.</span>
