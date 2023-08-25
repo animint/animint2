@@ -5,9 +5,9 @@ title: "Animint2 Quick Start Guide"
 
 ## Introduction
 
-This quick start guide introduces you to `animint2` in a way that I hope is both brief and friendly. It assumes nothing except some basic knowledge of R and some familiarity with data visualizations and statistics. Some familiarity with `ggplot2` is helpful but unnecessary. After reading this, you'll have a general understanding of how `animint2` works. You'll also know how to generate basic interactive data visualizations, sometimes referred to as "animints." Depending on how sophisticated you want your animints to be, this Quick Start Guide may be all you need.
+Welcome to the quick start guide. My goal is to introduce you to `animint2` in a way that is both brief and easy to understand. I assume nothing except some basic familiarity with R, data visualizations, and a little bit of statistics. Some familiarity with the `ggplot2` package is helpful but unnecessary.
 
-This guide includes examples of relatively simple animints. `animint2` is also capable of generating larger and more complex data visualizations. For examples, take a look at chapters 8 through 18 of the [animint2 Manual](https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html) or at the [animint gallery](https://rcdata.nau.edu/genomic-ml/animint-gallery/).
+After reading this, you'll leave with a sense of how `animint2` works. You'll also know how to make interactive data visualizations, sometimes referred to as animints. For basic animints, this quick start guide is all you'll need. To learn how to make more sophisticated animints, take a look at the [animint2 Manual](https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html). You may also want to take a look at the [animint gallery](https://rcdata.nau.edu/genomic-ml/animint-gallery/), which showcases how sophisticated and powerful animints can be.
 
 The data used in this guide are simulated, which is a fancy way of saying that I forced a computer to make them up. The data are about cats. Here's a glimpse:
 
