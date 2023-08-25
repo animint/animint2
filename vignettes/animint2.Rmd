@@ -91,7 +91,7 @@ Our code has produced a useful graph. We can see that while there's a lot of var
 
 Take a look at this slightly modified data visualization:
 
-```{r anatomy-cute-plot-2, fig.alt = "A scatterplot titled Cat Cutness Ratings Over Time. It looks exactly the same as the previous graph, except all the data points are differentiated by color. There's also a legend that maps each color to a cat.}
+```{r anatomy-cute-plot-2, fig.alt = "A scatterplot titled Cat Cutness Ratings Over Time. It looks exactly the same as the previous graph, except all the data points are differentiated by color. There is also a legend that maps each color to a cat."}
 cute_plot_2 <-                                   #1
   ggplot() +
   geom_point(
@@ -127,11 +127,11 @@ This is an animint of our second static data visualization. By clicking on the l
 
 In some cases, you may want more control. Say you want to emphasize Archibald and Muffin's cuteness ratings over time. In `animint2`, you would use the `first` argument and specify which cats to present:
 
-```{r}
+```{r animints-cute-present}
 cute_present <- 
   animint(cute_plot_2, 
-          first = list(                #1
-            Cat = c(                   #2
+          first = list( #1
+            Cat = c(    #2
               "Archibald", "Muffin")))
 ```
 
@@ -142,45 +142,70 @@ This is most useful for situations where you're showcasing or presenting your an
   <li><span class="explanation">The specific cats must also be in a list. That's why they're in a `c()` function.</span>
 </ol>
 
+<!-- See the comment above this one. :> -->
 
-## Making More Complex Animints
 
-Our current animints use three variables: Day, Cuteness, and Cat. What if you want to explore or present a fourth? (Recall that our `meowtrics` dataset has a Coolness variable we haven't looked at yet.) In a static data visualization, this would require multiple graphs or the addition of an unwieldy third dimension.
+### Using showSelected
+
+Our current animints use three variables: Day, Cuteness, and Cat. What if you want to explore or present a fourth?^[Recall that our `meowtrics` dataset has a Coolness variable we haven't looked at yet.] In a static data visualization, this would require multiple graphs or the addition of an unwieldy third dimension.
 
 Luckily, animints are not subject to the same restrictions. In `animint()`, we can use the `showSelected` and `time` arguments to show how the Coolness and Cuteness variables interact day-by-day.
 
 First, let's look at an animint with the `showSelected` variable:
 
-```{r}
-associations <- ggplot() +
+```{r showselected-associations}
+associations <- 
+  ggplot() +
   geom_point(
     data = meowtrics,
-    showSelected = "Day",
+    showSelected = "Day",           #1
     aes(x = Coolness, y = Cuteness, 
-        color = Cat, group = Cat, key = Cat)) + 
+        color = Cat, group = Cat, 
+        key = Cat)) +               #2
   labs(title = "Associations Between Cuteness and Coolness")
 animint(associations)
 ```
 
-You can use the selection menu to see the different associations between cuteness and coolness ratings per day.
+<ol class="annotated>
+  <li><span class="explanation">`showSelected` lets you adjust the day in the selection menu. It takes a variable with quotations.</span>
+  <li><span class="explanation">Most real-world datasets have missing values. Here, `key` accounts for that when transitioning between different days. It takes a variable without quotations.</span>
+</ol>
+
+<!-- See the comment above this one. :> -->
+
+You can use the selection menu to see the different associations between cuteness and coolness ratings per day.^[Play around with it and see what you can do.]
 
 Next, let's see that same animint with the `time` and `duration` option applied:
 
-```{r}
-animated_associations <- animint(associations, 
-                                 duration = list(Day = 1000),
-                                 time = list(variable = "Day", 
-                                             ms = 1000))
+```{r showselected-animated-associations}
+animated_associations <- 
+  animint(associations, 
+          duration = list(Day = 1000), #1
+          time = list(                 #2
+            variable = "Day", 
+            ms = 1000))                #3
 animated_associations
 ```
 
-`duration` specifies how quickly the points move from their old location to their new location. The shorter the duration, the quicker the movement. In contrast, `time` specifies how long the points stay in place. In fact, the `duration` argument is optional. If you decide not to use `duration` or set it to 0 milliseconds, the points teleport from one location to another. Click the "Show animation controls" button and play around with it.
+<ol class="annotated>
+  <li><span class="explanation">`duration` specifies how quickly the points move from their old location to their new location.^[Fun fact: The `duration` argument is optional. If you decide not to use `duration` or set it to 0 milliseconds, the points teleport from one location to another.] The shorter the duration, the quicker the movement. It takes a list and uses milliseconds as its unit of measurement.</span>
+  <li><span class="explanation">`time` also takes a list.</span>
+  <li><span class="explanation">In contrast to `duration`, `time = list(ms)` specifies how long the points stay in place. It also uses milliseconds as its unit of measurement.</span>
+  <li><span class="explanation"></span>
+</ol>
 
-Notice how `duration` and `time` also need to take lists. They use milliseconds as their unit of measurement.
+<!-- See the comment above this one. :> -->
+
+You can also click the "Show animation controls" button and manually adjust both the `time` and `duration` Try it out.
 
 
-## The End
+### Using clickSelects
 
-And that's it! You're now a competent `animint2` user. Your certificate of completion will arrive by post within four to five business days.^[The certificate of completion is both invisible and intangible. Some philosophers posit that this certificate may not exist at all.]
+empty for now
+
+
+## Goodbye
+
+And that's it. You're now a competent `animint2` user. Your certificate of completion will arrive by post within four to five business days.^[The certificate of completion is both invisible and intangible. Some philosophers posit that this certificate may not exist at all.]
 
 Feel free to post any questions to our [GitHub issues](https://github.com/animint/animint2/issues). Thanks for reading.
