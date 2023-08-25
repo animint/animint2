@@ -14,9 +14,9 @@ After reading this, you'll leave with a sense of how `animint2` works. You'll al
 
 Some readers may want to follow along interactively. Both `animint2` and R have datasets that you may use. Access the dataset list with `data()`. Alternatively, you may already have a dataset you'd like to use to experiment with `animint2`.
 
-I use a custom dataset in this guide, which I've named `meowtrics`. The data in the dataset are simulated, which is a fancy way of saying that I forced a computer to make them up. The data are about cats and how they're perceived over time. Here's a glimpse:
+I use a custom dataset in this guide, which I've named `meowtrics`. The data in the dataset are simulated, which is a fancy way of saying that I forced a computer to make them up. The data are about ten different housecats and how they're perceived over time.^[Fun science fact: Cats are objectively the best animal.] Here's a glimpse:
 
-```{r, include = FALSE}
+```{r datasets-make-meowtrics, include = FALSE}
 # Reproducible random numbers.
 set.seed(100)
 
@@ -27,70 +27,103 @@ z <- rnorm(n = 100, mean = 5, sd = 1.5) |> sort()
 xyz <- rbind(x, y, z) |> c()
 
 
-# simulate data
+# Simulate data.
 Day <- rep(x = 1:30, each = 10)
 Cat <- rep(x = c("Clifford", "Junebug", "Muffin", "Teddy Bear", "Diana", "Bello", "Jellybean", "Archibald", "Saturday", "Wilbur"), times = 30)
 Cuteness <- xyz |> signif(digits = 2)
 Coolness <- xyz |> sort() |> signif(digits = 2)
 
-# concatenate into dataframe
+# Concatenate into dataframe.
 meowtrics <- data.frame(Day, Cat, Coolness, Cuteness)
 ```
 
-```{r}
+```{r datasets-show-meowtrics}
 head(meowtrics)
 ```
 
+
 ## Anatomy of a Data Visualization
 
-A data visualization is composed of parts arranged in a certain way. This is often referred to as the grammar of graphics. This quick start guide won't teach you the grammar, and you don't need to know it to get started with `animint2`. What you do need to know is that `animint2`'s (and `ggplot`'s) syntax is modeled on the grammar.
+Data visualizations are commonplace, and for good reason. Large tables of data are difficult to parse. A good data visualization can illuminate patterns that would have otherwise hard to spot. In contrast, a poor (or deliberately misleading) data visualization can obscure even obvious patterns. How do we design good data visualizations while avoiding bad ones?
 
-As an example, let's load `animint2` and look at a static graph it produces. It's about perceptions of cat cuteness over time and uses data from 10 different housecats.
+We start by understanding what data visualizations are made of and how they're arranged. This arrangement is often called the grammar of graphics. This quick start guide won't teach you the grammar, and you don't need to know it to get started with `animint2`.^[If you're interested in learning about the grammar and want to get right to the source, see Leland Wilkinson's _The Grammar of Graphics_.] But you should know that the syntax of `animint2`---that is, the way the code is written---is modelled on the grammar.
 
-```{r, fig.alt = "A scatterplot titled Cat Cutness Ratings Over Time. The x-axis are the days, and the y-axis the cuteness ratings. There is a lot of variance in the data, but in general cat cuteness ratings rise over time."}
-library(animint2)
+Let's see an example. Say I want to visualize how people rate cat cuteness over time. I want the y-axis to depict the cuteness ratings, and the x-axis the days. I also want it to be a scatterplot. What should I do?
 
-cute_1 <- ggplot(meowtrics) +                             #1
-  geom_point() +                                          #2
-  aes(x = Day, y = Cuteness, group = Cat, color = Cat) +  #3
-  labs(title = "Cat Cuteness Ratings Over Time")          #4
-cute_1
+First, if I haven't already, I need to install `animint2`:
+
+```{r anatomy-installation, eval=FALSE}
+install.packages("animint2")
 ```
 
-What's happening with the code here?
+I load `animint2`:
+
+```{r anatomy-load-animint2}
+library(animint2)
+```
+
+Next, I search for the functions that I'll need and put them together. First, I need `ggplot()`, which is the blank sheet of paper (or computer screen) the code draws on to make the graph.^[All data visualizations use `ggplot()`.] I'm making a scatterplot, so I'll want something like `geom_point()` or `geom_jitter()`. Finally, for the axes, I'll need `aes()`.
+
+Then I name the graph and put it all together:
+
+```{r anatomy-cute-plot, fig.alt = "A scatterplot about cat cuteness ratings over time. The x-axis are the days, and the y-axis the cuteness ratings. There is a lot of variance in the data, but in general cat cuteness ratings rise over time."}
+cute_plot <-                    #1
+  ggplot() +                    #2
+  geom_point(                   #3
+    data = meowtrics,           #4
+    aes(x = Day, y = Cuteness)) #5
+cute_plot                       #6
+```
+
+If you're unfamiliar with the syntax, the code can get confusing. Let's go over this code block line by line:^[Notice also that the `ggplot()` and `geom_point()` functions are held together by the `+` symbol. In other words: You begin with a blank data visualization and then add a scatterplot atop it. All functions in `animint2` are held together with `+`. You'll be using it a lot.]
 
 <ol class="annotated">
-	<li><span class="explanation">I begin with the dataset, called `meowtrics`, and use it as an argument for `ggplot()`. This tells `animint2` that I'm creating a data visualization using this specific dataset.</span>
-	<li><span class="explanation">I declare that it's a scatterplot using `geom_point()`.</span>
-	<li><span class="explanation">I draw the axes of the graph with `aes()`. I place the time category in the x-axis and the cuteness ratings in the y-axis (the `x = Day` and `y = Cuteness` arguments, respectively). Using the `group` and `color` arguments, I also group the data together by the cat and color-code them.</span>
-	<li><span class="explanation">I give the graph a title using `labs()` and its `title` argument.</span>
-</ol> <!-- Why use HTML instead of Markdown's syntax for ordered lists? I need to control the appearance of this specific ordered list. With Markdown, it's impossible. If you can figure out a way to do that, feel free to change the syntax. :> -->
+	<li><span class="explanation">I name the data visualization. Since it's a scatterplot about cat cuteness, I name it `cute_plot`. You can name data visualizations whatever you like, but it's best if you name it something that will make sense to other programmers. Trust me---your future self will thank you.</span>
+	<li><span class="explanation">Next, I call the `ggplot()` function, since I'm making a data visualization.</span>
+	<li><span class="explanation">Then I call `geom_point()`, because I'm making a scatterplot.</span>
+	<li><span class="explanation">I want to use my `meowtrics` dataset to draw the points in my scatterplot, so I set `data = meowtrics`.</span>
+	<li><span class="explanation">`aes()` controls the aesthetics of the data visualization, including axes. I place it inside `geom_point()` and tell my ptogram that the Day and Cuteness variables are on the x- and y-axes, respectively.</span>
+	<li><span class="explanation">Finally, I repeat the name of my data visualization, which tells the program to display my graph.</span>
 
-Notice how the data visualization consists of parts---data, axes, points, title, a legend---that are held together using the addition symbol (`+`). All those parts can be manipulated, added, and removed. Different functions and arguments can create different visualizations. 
+<!-- Why use HTML instead of Markdown's syntax for ordered lists? I need to control the appearance of this specific ordered list. With Markdown, it's impossible. If you can figure out a way to do that, feel free to change the syntax. :> -->
 
-You can also place the dataset and the aesthetics in geoms:
+Our code has produced a useful graph. We can see that while there's a lot of variance in the data, there seems to be an upward trend in cat cuteness ratings. But this graph could be better. And `animint2` gives us the tools to improve it.
 
-```{r, eval=FALSE}
-cute_1 <- ggplot() +
+Take a look at this slightly modified data visualization:
+
+```{r anatomy-cute-plot-2, fig.alt = "A scatterplot titled Cat Cutness Ratings Over Time. It looks exactly the same as the previous graph, except all the data points are differentiated by color. There's also a legend that maps each color to a cat.}
+cute_plot_2 <-                                   #1
+  ggplot() +
   geom_point(
-    data = meowtrics, 
-    aes(x = Day, y = Cuteness, group = Cat, color = Cat))
+    data = meowtrics,
+    aes(x = Day, y = Cuteness,
+        group = Cat, color = Cat)) +             #2
+  labs(title = "Cat Cuteness Ratings Over Time") #3
+cute_plot_2
 ```
 
-Notice that `geom_point()` now contains the `meowtrics` dataset and all the aesthetics as arguments. While this can make reading the code more difficult, this way of writing is useful in animints because different layers tend to use different datasets and aesthetics.
+Each cat is differentiated from one another by color. I've also added a color, and there's now a legend. Codewise, what's changed?
 
-From this point onward, the dataset and aesthetics will be located in the geoms.
+<ol class="annotated>
+  <li><span class="explanation">This data visualization has a different name. Make sure all your names are different---if they aren't, later visualizations will override the former ones.</span>
+  <li><span class="explanation">I've added new arguments to `aes()`: I've grouped the points in the scatterplot by cat. I've also differentiated the cats' data points by color.^[It's possible to diffentiate the data points in a different manner. For example, instead of different colors, I could have used different shapes.]</span>
+  <li><span class="explanation">Using `labs()`, I've given the graph a title.</span>
+</ol>
+
+<!-- See the comment above this one. :> -->
+
+While this new graph adds more information, it's difficult to use some of it. There's just a lot more being communicated. What if we could move some of the data out of the way? Or compare a subset of cat cuteness ratings instead of seeing everything at once? Reader, I have good news.
 
 
-## How to Make an Animint
+## Making Animints
 
-The reason why you want to use `animint2` (versus `ggplot2`) is because of the former's support for interactive data visualizations. It's easy to render a static graph interactive. Just use the `animint()` function with the previous plot as the argument:
+The good news is this: `animint2` makes it easy to render a static data visualization interactive. Just use the `animint()` function with the previous plot as the argument:
 
-```{r}
-animint(cute_1)
+```{r animints-cute-plot-2}
+animint(cute_plot_2)
 ```
 
-This is an animint of our first static data visualization. By clicking on the legend or by using the selection menu, you can control which subjects have their data graphed, as well as how many. This allows you to explore your data without needing to facet all possible cat combinations. For exploratory data analysis, this level of control may be all you need.
+This is an animint of our second static data visualization. By clicking on the legend or by using the selection menu, you can control which subjects have their data graphed, as well as how many. This allows you to explore your data without needing to facet all possible cat combinations. For exploratory data analysis, this level of control may be all you need.
 
 In some cases, you may want more control. Say you want to emphasize Archibald and Muffin's cuteness ratings over time. In `animint2`, you would use the `first` argument and specify which cats to present:
 
