@@ -123,20 +123,29 @@ The good news is this: `animint2` makes it easy to render a static data visualiz
 animint(cute_plot_2)
 ```
 
-This is an animint of our second static data visualization. By clicking on the legend or by using the selection menu, you can control which subjects have their data graphed, as well as how many. This allows you to explore your data without needing to facet all possible cat combinations. For exploratory data analysis, this level of control may be all you need.
+This is an animint of our second static data visualization. By clicking on the legend or by using the selection menu, you can control which subjects have their data graphed, as well as how many.^[Play around with the animint. See what you can and can't interact with.] This allows you to explore your data without needing to facet all possible cat combinations. For exploratory data analysis, this level of control may be all you need.
 
 In some cases, you may want more control. Say you want to emphasize Archibald and Muffin's cuteness ratings over time. In `animint2`, you would use the `first` argument and specify which cats to present:
 
 ```{r}
-cute_present <- animint(
-  cute_1, 
-  first = list(
-    Cat = c("Archibald", "Muffin")))
+cute_present <- 
+  animint(cute_plot_2, 
+          first = list(                #1
+            Cat = c(                   #2
+              "Archibald", "Muffin")))
 ```
 
-This is most useful for situations where you're showcasing or presenting your animint. Pay attention to the syntax: when you use `first`, you must use a `list()`.
+This is most useful for situations where you're showcasing or presenting your animint. Pay attention to the syntax:
 
-Our current animints show three variables: Day, Cuteness, and Cat. What if you want to explore or present a fourth? (Recall that our `meowtrics` dataset has a Coolness variable we haven't looked at yet.) In a static data visualization, this would require multiple graphs or the addition of an unwieldy third dimension.
+<ol class="annotated>
+  <li><span class="explanation">The `first` argument only accepts `list()`s.</span>
+  <li><span class="explanation">The specific cats must also be in a list. That's why they're in a `c()` function.</span>
+</ol>
+
+
+## Making More Complex Animints
+
+Our current animints use three variables: Day, Cuteness, and Cat. What if you want to explore or present a fourth? (Recall that our `meowtrics` dataset has a Coolness variable we haven't looked at yet.) In a static data visualization, this would require multiple graphs or the addition of an unwieldy third dimension.
 
 Luckily, animints are not subject to the same restrictions. In `animint()`, we can use the `showSelected` and `time` arguments to show how the Coolness and Cuteness variables interact day-by-day.
 
@@ -172,6 +181,6 @@ Notice how `duration` and `time` also need to take lists. They use milliseconds 
 
 ## The End
 
-And that's it! You're now a competent `animint2` user. Your invisible and intangible certification of completion will arrive by post within seven business days.
+And that's it! You're now a competent `animint2` user. Your certificate of completion will arrive by post within four to five business days.^[The certificate of completion is both invisible and intangible. Some philosophers posit that this certificate may not exist at all.]
 
-If this quick start guide doesn't satisfy your thirst for animint knowledge, consult the [Animint2 Manual](https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html). Feel free to post any questions to our [GitHub issues](https://github.com/animint/animint2/issues).
+Feel free to post any questions to our [GitHub issues](https://github.com/animint/animint2/issues). Thanks for reading.
