@@ -111,7 +111,7 @@ cute_plot_2 <-                                   #1
 cute_plot_2
 ```
 
-Each cat is differentiated from one another by color. I've also added a color, and there's now a legend. Codewise, what's changed?
+Each cat is differentiated from one another by color, and there's now a legend. Codewise, what's changed?
 
 <ol class="annotated">
   <li><span class="explanation">This data visualization has a different name. Make sure all your names are different---if they aren't, later visualizations will override the former ones.</span>
