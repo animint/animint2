@@ -2,10 +2,6 @@
 title: "Animint2 Quick Start Guide"
 ---
 
-```{r setup, echo=FALSE}
-knitr::opts_chunk$set(fig.path="docs/articles/animints-etc")
-```
-
 
 ## Introduction
 
