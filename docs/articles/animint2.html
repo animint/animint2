@@ -80,7 +80,10 @@
 
     
     
-<div class="section level2">
+<script src="https://unpkg.com/@popperjs/core@2"></script><script>var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+  return new bootstrap.Popover(popoverTriggerEl)
+})</script><!-- This loads Popper, a js package that lets footnotes work in pkgdown. Yeah, I know. I also dislike it. --><div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Welcome to the quick start guide. My goal is to introduce you to
