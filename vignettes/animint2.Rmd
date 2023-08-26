@@ -32,11 +32,12 @@ xyz <- rbind(x, y, z) |> c()
 # Simulate data.
 Day <- rep(x = 1:30, each = 10)
 Cat <- rep(x = c("Clifford", "Junebug", "Muffin", "Teddy Bear", "Diana", "Bello", "Jellybean", "Archibald", "Saturday", "Wilbur"), times = 30)
+Kind <- rep(x = c("Domestic Shorthair", "Domestic Longhair", "Cornish Rex", "Domestic Shorthair", "Domestic Shorthair", "Domestic Shorthair", "Siamese", "Maine Coon", "Domestic Longhair", "Domestic Shorthair"), times = 30)
 Cuteness <- xyz |> signif(digits = 2)
 Coolness <- xyz |> sort() |> signif(digits = 2)
 
 # Concatenate into dataframe.
-meowtrics <- data.frame(Day, Cat, Coolness, Cuteness)
+meowtrics <- data.frame(Day, Cat, Coolness, Cuteness, Kind)
 ```
 
 ```{r datasets-show-meowtrics}
@@ -119,17 +120,17 @@ Each cat is differentiated from one another by color, and there's now a legend. 
   <li><span class="explanation">Using `labs()`, I've given the graph a title.</span>
 </ol>
 
-<!-- See the comment above this one. :> -->
-
 While this new graph adds more information, it's difficult to use some of it. There's just a lot more being communicated. What if we could move some of the data out of the way? Or compare a subset of cat cuteness ratings instead of seeing everything at once? Reader, I have good news.
 
 [^4]: It's possible to differentiate the data points in a different manner. For example, instead of different colors, I could have used different shapes.
 
 ## Making Animints
 
+### The Basics
+
 The good news is this: `animint2` makes it easy to render a static data visualization interactive. Just use the `animint()` function with the previous plot as the argument:
 
-```{r animints-cute-plot-2}
+```{r basics-cute-plot-2}
 animint(cute_plot_2)
 ```
 
@@ -139,7 +140,7 @@ This is an animint of our second static data visualization. By clicking on the l
 
 In some cases, you may want more control. Say you want to emphasize Archibald and Muffin's cuteness ratings over time. In `animint2`, you would use the `first` argument and specify which cats to present:
 
-```{r animints-cute-present}
+```{r basics-cute-present}
 cute_present <- 
   animint(cute_plot_2, 
           first = list( #1
@@ -152,10 +153,8 @@ This is most useful for situations where you're showcasing or presenting your an
 
 <ol class="annotated">
   <li><span class="explanation">The `first` argument only accepts `list()`s.</span>
-  <li><span class="explanation">The specific cats must also be in a list. That's why they're in a `c()` function.</span>
+  <li><span class="explanation">The specific cats must also be in a character vector. That's why they're in a `c()` function.</span>
 </ol>
-
-<!-- See the comment above this one. :> -->
 
 
 ### Using showSelected
@@ -186,8 +185,6 @@ animint(associations)
   <li><span class="explanation">Most real-world datasets have missing values. Here, `key` accounts for that when transitioning between different days. It takes a variable without quotations.</span>
 </ol>
 
-<!-- See the comment above this one. :> -->
-
 You can use the selection menu to see the different associations between cuteness and coolness ratings per day.[^7]
 
 [^7]: Play around with it and see what you can do.
@@ -210,8 +207,6 @@ animated_associations
   <li><span class="explanation">In contrast to `duration`, `time = list(ms)` specifies how long the points stay in place. It also uses milliseconds as its unit of measurement.</span>
 </ol>
 
-<!-- See the comment above this one. :> -->
-
 [^8]: Fun fact: The `duration` argument is optional. If you decide not to use `duration` or set it to 0 milliseconds, the points teleport from one location to another.
 
 You can also click the "Show animation controls" button and manually adjust both the `time` and `duration`. Try it out.
@@ -219,10 +214,112 @@ You can also click the "Show animation controls" button and manually adjust both
 
 ### Using clickSelects
 
-empty for now
+So far, we've been interacting with animints by clicking the legend and using the selection menus and animation controls. What if we could interact with the animint directly? Using `clickSelects`, we can do just that. Let's return to our data visualization depicting data visualization over time, this time as an animint:
+
+```{r clickselects-cute-plot-3}
+cute_plot_3 <-
+  ggplot() +
+  geom_point(
+    data = meowtrics,
+    clickSelects = "Cat", #1
+    aes(x = Day, y = Cuteness,
+        group = Cat, color = Cat)) +
+  labs(title = "Cat Cuteness Ratings Over Time")
+animint(cute_plot_3)
+```
+
+<ol class="annotated">
+  <li><span class="explanation">`clickSelects` takes a variable with quotations. The variable in `clickSelects` and `group` are the same: they're both Cat.</span>
+</ol>
+
+If you click on the data points, you'll notice that it has the same effect as clicking on the legend: It removes the data from the animint.
+
+Now, let's interact with a very similar animint:
+
+```{r clickselects-cute-plot-4}
+cute_plot_4 <-
+  ggplot() +
+  geom_point(
+    data = meowtrics,
+    clickSelects = "Kind", #1
+    aes(x = Day, y = Cuteness,
+        group = Cat, color = Cat)) +
+  labs(title = "Cat Cuteness Ratings Over Time")
+animint(cute_plot_4)
+```
+
+<ol class="annotated">
+  <li><span class="explanation">I've swapped out Cat for Kind. Now the variables in `clickSelects` and `group` are different. This is a useful way of adding another variable to your data visualizations.</span>
+</ol>
+
+When you interact with this animint, you'll notice three differences:
+
+1. Hover over the animints. In both, you'll notice a hover box appear. In the first animint, the hover box repeats the cat's name. In the second, the hover box describes what kind of cat they are.
+2. In the second animint, there is an additional variable in the selection menu. You can use it to highlight the data points depicting a certain kind of cat.
+3. When you click on a data point, it doesn't disappear. Instead, like the selection menu, it highlights data points depicting certain kinds of cats.
 
 
-## Goodbye
+## Advanced: Linked Plots
+
+`animint2` also allows us to link multiple plots together into one animint. When two plots are linked, a change in one plot can cause changes in another.
+
+Let's return to two interactive data visualizations we've already looked at: associations between coolness and cuteness, and cuteness ratings over time.
+
+Here's the first data visualization again, lightly altered:
+
+```{r linked-associations}
+associations_2 <-
+  ggplot() +
+  geom_point(
+    data = meowtrics,
+    showSelected = "Day",
+    clickSelects = "Kind",
+    aes(x = Coolness, y = Cuteness,
+        color = Cat, group = Cat,
+        key = Cat))
+```
+
+I want to link it to my plot about cuteness ratings over time. That way, I can see how coolness ratings change over time, too. The linking process is a little more involved than usual:
+
+```{r linked-plots}
+md <- data.frame(Day = unique(meowtrics$Day))  #1
+
+linked <- animint(associations_2,              #2
+                  duration = list(Day = 1000)) #3
+
+linked$overtime <-                             #4
+  ggplot() + 
+  geom_tallrect(                               #5
+    data = md,                                 #6
+    aes(xmin = Day-0.5, xmax = Day+0.5),       #7
+    clickSelects = "Day",                      #8
+    alpha = 0.5                                #9
+    ) +                                        #10
+  geom_point(
+    data = meowtrics,                          #11
+    clickSelects = "Cat",
+    aes(x = Day, y = Cuteness, 
+        group = Cat, color = Cat))
+linked                                         #12
+```
+
+<ol class="annotated">
+  <li><span class="explanation">I'm taking the Day column from `meowtrics` (`meowtrics$Day`), stripping redundant days from it (`unique()`), renaming it, and then making it a `data.frame()`. Now I have a dataframe of all 30 days in `meowtrics`. This is for `geom_tallrect()`, which I'll use later.</span>
+  <li><span class="explanation">I take `associations_2` and make it an animint.</span>
+  <li><span class="explanation">`duration` controls how long it takes data points to move from one part of the animint to another. As mentioned, it's optional.</span>
+  <li><span class="explanation">I take the previously-created animint, and attach new animints to it. I name the list of animint `overtime`.</span>
+  <li><span class="explanation">This is the `geom_tallrect()` function. It creates a vertical bar that allows you to manipulate time variables by clicking on the plot.</span>
+  <li><span class="explanation">`geom_tallrect()` requires a new dataset that contains only the time variable. It's using the dataset that I constructed earlier.</span>
+  <li><span class="explanation">`xmin` and `xmax` control how wide the tallrect is, which affects the appearance of the selected time variable. In this case, it controls how much a day takes up on the plot.</span>
+  <li><span class="explanation">`clickSelects` is necessary here, since we need to be able to select the day from the plot.</span>
+  <li><span class="explanation">`alpha` controls the transparency of the tallrect. Lower numbers cause greater transparency.</span>
+  <li><span class="explanation">Using `+`, I attach the tallrect to the plot about cuteness ratings over time.</span>
+  <li><span class="explanation">We're back to using `meowtrics` as our dataset.</span>
+  <li><span class="explanation">Finally, we intitate the animint.</span>
+</ol>
+
+
+## Conclusion
 
 And that's it. You're now a reasonably competent `animint2` user. Your certificate of completion will arrive by post within four to five business days.[^coc]
 
