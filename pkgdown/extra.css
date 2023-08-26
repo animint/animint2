@@ -31,20 +31,26 @@ aside.col-md-3 > div > h2 {
 
 /* The code below affects only the quick start guide. */
 
-div#animintscuteplot2,
+div#basicscuteplot2,
+div#basicscutepresent,
+div#clickselectscuteplot3,
+div#clickselectscuteplot4,
+div#linkedplots,
 div#showselectedanimatedassociations,
-div#showselectedassociations,
-div#animintscutepresent {
+div#showselectedassociations {
 	margin-bottom: 1rem; /* so there's a lil more space
 	                        between the animints and
 							paragraphs */
 }
 
-#cb5 span.co,
 #cb6 span.co,
-#cb8 span.co,
+#cb7 span.co,
 #cb9 span.co,
-#cb10 span.co {
+#cb10 span.co,
+#cb11 span.co,
+#cb12 span.co,
+#cb13 span.co,
+#cb15 span.co {
 	border: 1.4px solid #212529;
 	border-radius: 200px;
 	padding: 0.05rem 0.5rem;
