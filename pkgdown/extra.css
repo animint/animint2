@@ -104,7 +104,7 @@ span.explanation {
    
    This code emulates Quarto's code annotation feature:
    https://quarto.org/docs/authoring/code-annotation.
-   It manipulates comments in a specific codeblock in
+   It manipulates comments in specific codeblocks in
    the quick start guide and transforms them into
    annotations.
    
@@ -121,7 +121,7 @@ span.explanation {
    
    I'm gonna assume you know CSS already. 
    
-   #cb3 targets a specific codeblock, and span.co
+   #cb_ targets a specific codeblock, and span.co
    targets the comments in that codeblock.
    
    Most of the CSS is sensible. The two parts that may 
