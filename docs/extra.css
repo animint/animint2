@@ -5,18 +5,19 @@ The _pkgdown.yml file controls most of it. */
 /* The code below affects the whole website. */
 
 body:not(.sourceCode) {
-	font-size: 1.2rem;   /* increase readability but keep
-                            codeblock font size the same */
+	font-size: 1.2rem;            /* increase readability but keep
+                                     codeblock font size the same */
 }
 
 h2 {
-	margin-top: 2.5rem;  /* for more spacing between sections */
+	margin-top: 2.5rem;           /* for more spacing 
+	                                 between sections */
 }
 
 a:not(.sourceCode, .navbar-brand, .nav-link) {
-    color: #B509AC;      /* to match the link color on Toby's 
-	                        website unless the link is in a 
-						    codeblock or the navigation bar */
+    color: #B509AC;               /* to match the link color on Toby's 
+	                                 website unless the link is in a 
+						             codeblock or the navigation bar */
 }
 
 
@@ -24,8 +25,9 @@ a:not(.sourceCode, .navbar-brand, .nav-link) {
 
 aside.col-md-3 > div > h2 {
 	font-size: 1.1rem;
-	font-weight: 600;    /* to make the side column's headings
-	                        just a tiny bit prettier */
+	font-weight: 600;             /* to make the side column's 
+	                                 headings just a tiny bit 
+									 prettier */
 }
 
 
@@ -38,9 +40,19 @@ div#clickselectscuteplot4,
 div#linkedplots,
 div#showselectedanimatedassociations,
 div#showselectedassociations {
-	margin-bottom: 1rem; /* so there's a lil more space
-	                        between the animints and
-							paragraphs */
+	margin-bottom: 1rem;          /* so there's a lil more space
+	                                 between the animints and
+							         paragraphs */
+}
+
+ol.footnotes {
+	list-style-type: lower-roman; /* change list of footnotes from
+	                                 arabic to roman numbers */
+}
+
+sup > a {
+	text-decoration: none;        /* remove underline from
+	                                 footnote links */
 }
 
 #cb5 span.co,
@@ -55,12 +67,12 @@ div#showselectedassociations {
 	border-radius: 200px;
 	padding: 0.05rem 0.5rem;
 	color: #212529 !important;
-	font-size: 0.9rem;   /* see EXPLANATION FOR THIS MESS */
+	font-size: 0.9rem;            /* see EXPLANATION FOR THIS MESS */
 }
 
 ol.annotated > li {
-	list-style: none;    /* reset style to allow me to style
-	                        the numbers in the ordered list */
+	list-style: none;             /* reset style to allow me to style
+	                                 the numbers in the ordered list */
 }
 
 ol.annotated > li::before {
@@ -68,15 +80,17 @@ ol.annotated > li::before {
 	border: 1.4px solid;
 	border-radius: 200px;
 	padding: 0.05rem 0.5rem;
-	font-size: 0.9rem;   /* for consistency with code annotations;
-                            the content and counter stuff lets me
-                            mimic how the code annotation looks */
+	font-size: 0.9rem;            /* for consistency with code 
+	                                 annotations; the content and 
+									 counter stuff lets me mimic 
+									 how the code annotation looks */
 }
 
 span.explanation {
 	position: relative;
-	left: 5px;           /* to control spacing between the code
-	                        annotation number and the explanation */
+	left: 5px;                    /* to control spacing between the
+	                                 code annotation number and the 
+									 explanation */
 }
 
 
@@ -90,7 +104,7 @@ span.explanation {
    
    This code emulates Quarto's code annotation feature:
    https://quarto.org/docs/authoring/code-annotation.
-   It manipulates comments in a specific codeblock in
+   It manipulates comments in specific codeblocks in
    the quick start guide and transforms them into
    annotations.
    
@@ -107,7 +121,7 @@ span.explanation {
    
    I'm gonna assume you know CSS already. 
    
-   #cb3 targets a specific codeblock, and span.co
+   #cb_ targets a specific codeblock, and span.co
    targets the comments in that codeblock.
    
    Most of the CSS is sensible. The two parts that may 
