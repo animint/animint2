@@ -131,11 +131,11 @@ obvious patterns. How do we design good data visualizations while
 avoiding bad ones?</p>
 <p>We start by understanding what data visualizations are made of and
 how they’re arranged. This arrangement is often called the grammar of
-graphics. This quick start guide won’t teach you the grammar, and you
-don’t need to know it to get started with
-<code>animint2</code>.<sup><a href="#fn-2">ii</a></sup> But you should
-know that the syntax of <code>animint2</code>—that is, the way the code
-is written—is modelled on the grammar.</p>
+graphics.<sup><a href="#fn-2">ii</a></sup> This quick start guide won’t
+teach you the grammar, and you don’t need to know it to get started with
+<code>animint2</code>. But you should know that the syntax of
+<code>animint2</code>—that is, the way the code is written—is modelled
+on the grammar.</p>
 <p>Let’s see an example. Say I want to visualize how people rate cat
 cuteness over time. I want the y-axis to depict the cuteness ratings,
 and the x-axis the days. I also want it to be a scatterplot. What should
@@ -148,12 +148,11 @@ I do?</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://animint.github.io/animint2/">animint2</a></span><span class="op">)</span></span></code></pre></div>
 <p>Next, I search for the functions that I’ll need and put them
-together. First, I need <code><a href="../reference/ggplot.html">ggplot()</a></code>, which is the blank sheet
-of paper (or computer screen) the code draws on to make the
-graph.<sup><a href="#fn-3">iii</a></sup> I’m making a scatterplot, so
-I’ll want something like <code><a href="../reference/geom_point.html">geom_point()</a></code> or
-<code><a href="../reference/geom_jitter.html">geom_jitter()</a></code>. Finally, for the axes, I’ll need
-<code><a href="../reference/aes.html">aes()</a></code>.</p>
+together. First, I need <code><a href="../reference/ggplot.html">ggplot()</a></code>, which is like the blank
+sheet of paper (or computer screen) the program draws on to make the
+graph.<sup><a href="#fn-3">iii</a></sup> To make a scatterplot, I’ll use
+either <code><a href="../reference/geom_point.html">geom_point()</a></code> or <code><a href="../reference/geom_jitter.html">geom_jitter()</a></code>. Finally,
+for the axes, I’ll need <code><a href="../reference/aes.html">aes()</a></code>.</p>
 <p>Then I name the graph and put it all together:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cute_plot</span> <span class="op">&lt;-</span>                    <span class="co">#1</span></span>
@@ -171,8 +170,7 @@ block line by line:</p>
 <span class="explanation">I name the data visualization. Since it’s a
 scatterplot about cat cuteness, I name it <code>cute_plot</code>. You
 can name data visualizations whatever you like, but it’s best if you
-name it something that will make sense to other programmers. Trust
-me—your future self will thank you.</span>
+name it something that will make sense to your future self.</span>
 </li>
 <li>
 <span class="explanation">Next, I call the <code><a href="../reference/ggplot.html">ggplot()</a></code>
@@ -190,7 +188,7 @@ dataset to draw the points in my scatterplot, so I set
 <li>
 <span class="explanation"><code><a href="../reference/aes.html">aes()</a></code> controls the aesthetics of
 the data visualization, including axes. I place it inside
-<code><a href="../reference/geom_point.html">geom_point()</a></code> and tell my ptogram that the Day and Cuteness
+<code><a href="../reference/geom_point.html">geom_point()</a></code> and tell my program that the Day and Cuteness
 variables are on the x- and y-axes, respectively.</span>
 </li>
 <li>
@@ -198,10 +196,10 @@ variables are on the x- and y-axes, respectively.</span>
 which tells the program to display my graph.</span>
 </li>
 </ol>
-<!-- Why use HTML instead of Markdown's syntax for ordered lists? I need to control the appearance of this specific ordered list. With Markdown, it's impossible. If you can figure out a way to do that, feel free to change the syntax. :> --><p>Our code has produced a useful graph. We can see that while there’s a
-lot of variance in the data, there seems to be an upward trend in cat
-cuteness ratings. But this graph could be better. And
-<code>animint2</code> gives us the tools to improve it.</p>
+<!-- Why use HTML instead of Markdown's syntax for ordered lists? I need to control the appearance of this specific ordered list. With Markdown, it's impossible. If you can figure out a way to do that, feel free to change the syntax. :> --><p>Look at the plot. We can see that while there’s a lot of variance in
+the data, there seems to be an upward trend in cat cuteness ratings. But
+this graph could be better. And <code>animint2</code> gives us the tools
+to improve it.</p>
 <p>Take a look at this slightly modified data visualization:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cute_plot_2</span> <span class="op">&lt;-</span>                                   <span class="co">#1</span></span>
@@ -218,13 +216,12 @@ a legend. Codewise, what’s changed?</p>
 <ol class="annotated">
 <li>
 <span class="explanation">This data visualization has a different name.
-Make sure all your names are different—if they aren’t, later
-visualizations will override the former ones.</span>
+If two plots have the same name, one will override the other.</span>
 </li>
 <li>
 <span class="explanation">I’ve added new arguments to
-<code><a href="../reference/aes.html">aes()</a></code>: I’ve grouped the points in the scatterplot by cat.
-I’ve also differentiated the cats’ data points by
+<code><a href="../reference/aes.html">aes()</a></code>: I’ve grouped the points in the scatterplot by cat,
+and I’ve also differentiated the cats’ data points by
 color.<sup><a href="#fn-5">v</a></sup></span>
 </li>
 <li>
@@ -232,18 +229,14 @@ color.<sup><a href="#fn-5">v</a></sup></span>
 graph a title.</span>
 </li>
 </ol>
-<p>While this new graph adds more information, it’s difficult to use
-some of it. There’s just a lot more being communicated. What if we could
-move some of the data out of the way? Or compare a subset of cat
-cuteness ratings instead of seeing everything at once? Reader, I have
-good news.</p>
+<p>While this new graph communicates more information, it’s also
+somewhat overwhelming. What if we could move some of the data out of the
+way? Or compare a subset of cat cuteness ratings instead of seeing
+everything at once? Reader, I have good news.</p>
 </div>
 <div class="section level2">
 <h2 id="making-animints">Making Animints<a class="anchor" aria-label="anchor" href="#making-animints"></a>
 </h2>
-<div class="section level3">
-<h3 id="the-basics">The Basics<a class="anchor" aria-label="anchor" href="#the-basics"></a>
-</h3>
 <p>The good news is this: <code>animint2</code> makes it easy to render
 a static data visualization interactive. Just use the
 <code><a href="../reference/animint.html">animint()</a></code> function with the previous plot as the
@@ -287,17 +280,17 @@ presenting your animint. Pay attention to the syntax:</p>
 <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>s.</span>
 </li>
 <li>
-<span class="explanation">The specific cats must also be in a character
+<span class="explanation">The specified cats must be in a character
 vector. That’s why they’re in a <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> function.</span>
 </li>
 </ol>
 </div>
-<div class="section level3">
-<h3 id="using-showselected">Using showSelected<a class="anchor" aria-label="anchor" href="#using-showselected"></a>
-</h3>
+<div class="section level2">
+<h2 id="using-showselected">Using showSelected<a class="anchor" aria-label="anchor" href="#using-showselected"></a>
+</h2>
 <p>Our current animints use three variables: Day, Cuteness, and Cat.
 What if you want to explore or present a
-fourth?.<sup><a href="#fn-7">vii</a></sup> In a static data
+fourth?<sup><a href="#fn-7">vii</a></sup> In a static data
 visualization, this would require multiple graphs or the addition of an
 unwieldy third dimension.</p>
 <p>Luckily, animints are not subject to the same restrictions. In
@@ -324,20 +317,20 @@ variable:</p>
 </div>
 <script>var showselectedassociations = new animint("#showselectedassociations", "showselectedassociations/plot.json");</script><ol class="annotated">
 <li>
-<span class="explanation"><code>showSelected</code> lets you adjust the
-day in the selection menu. It takes a variable with quotations.</span>
+<span class="explanation"><code>showSelected = "Day"</code> lets you
+adjust the day in the selection menu.</span>
 </li>
 <li>
 <span class="explanation">Most real-world datasets have missing values.
-Here, <code>key</code> accounts for that when transitioning between
-different days. It takes a variable without quotations.</span>
+<code>key</code> accounts for that when transitioning between different
+days.</span>
 </li>
 </ol>
 <p>You can use the selection menu to see the different associations
 between cuteness and coolness ratings per
 day.<sup><a href="#fn-8">viii</a></sup></p>
 <p>Next, let’s see that same animint with the <code>time</code> and
-<code>duration</code> option applied:</p>
+<code>duration</code> options applied:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">animated_associations</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">associations</span>, </span>
@@ -355,9 +348,9 @@ day.<sup><a href="#fn-8">viii</a></sup></p>
 <li>
 <span class="explanation"><code>duration</code> specifies how quickly
 the points move from their old location to their new
-location..<sup><a href="#fn-9">ix</a></sup> The shorter the duration,
-the quicker the movement. It takes a list and uses milliseconds as its
-unit of measurement.</span>
+location.<sup><a href="#fn-9">ix</a></sup> The shorter the duration, the
+quicker the movement. It takes a list and uses milliseconds as its unit
+of measurement.</span>
 </li>
 <li>
 <span class="explanation"><code>time</code> also takes a list.</span>
@@ -372,14 +365,14 @@ place. It also uses milliseconds as its unit of measurement.</span>
 adjust both the <code>time</code> and <code>duration</code>. Try it
 out.</p>
 </div>
-<div class="section level3">
-<h3 id="using-clickselects">Using clickSelects<a class="anchor" aria-label="anchor" href="#using-clickselects"></a>
-</h3>
+<div class="section level2">
+<h2 id="using-clickselects">Using clickSelects<a class="anchor" aria-label="anchor" href="#using-clickselects"></a>
+</h2>
 <p>So far, we’ve been interacting with animints by clicking the legend
 and using the selection menus and animation controls. What if we could
 interact with the animint directly? Using <code>clickSelects</code>, we
-can do just that. Let’s return to our data visualization depicting data
-visualization over time, this time as an animint:</p>
+can do just that. Let’s return to our data visualization depicting
+cuteness ratings over time, this time as an animint:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cute_plot_3</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -400,8 +393,8 @@ visualization over time, this time as an animint:</p>
 with quotations. The variable in <code>clickSelects</code> and
 <code>group</code> are the same: they’re both Cat.</span>
 </li></ol>
-<p>If you click on the data points, you’ll notice that it has the same
-effect as clicking on the legend: It removes the data from the
+<p>Hover over and click on the data points. You’ll notice that it has
+the same effect as clicking on the legend: It removes the data from the
 animint.</p>
 <p>Now, let’s interact with a very similar animint:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -438,7 +431,6 @@ certain kind of cat.</li>
 the selection menu, it highlights data points depicting certain kinds of
 cats.</li>
 </ol>
-</div>
 </div>
 <div class="section level2">
 <h2 id="advanced-linked-plots">Advanced: Linked Plots<a class="anchor" aria-label="anchor" href="#advanced-linked-plots"></a>
@@ -492,7 +484,7 @@ process is a little more involved than usual:</p>
 <li>
 <span class="explanation">I’m taking the Day column from
 <code>meowtrics</code> (<code>meowtrics$Day</code>), stripping redundant
-days from it (<code><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique()</a></code>), renaming it, and then making it a
+days from it via<code><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique()</a></code>, renaming it, and then making it a
 <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame()</a></code>. Now I have a dataframe of all 30 days in
 <code>meowtrics</code>. This is for <code><a href="../reference/geom_tallrect.html">geom_tallrect()</a></code>, which
 I’ll use later.</span>
@@ -507,7 +499,7 @@ takes data points to move from one part of the animint to another. As
 mentioned, it’s optional.</span>
 </li>
 <li>
-<span class="explanation">I take the previously-created animint, and
+<span class="explanation">I take the previously-created animint and
 attach new animints to it. I name the list of animint
 <code>overtime</code>.</span>
 </li>
@@ -525,7 +517,7 @@ that I constructed earlier.</span>
 <span class="explanation"><code>xmin</code> and <code>xmax</code>
 control how wide the tallrect is, which affects the appearance of the
 selected time variable. In this case, it controls how much a day takes
-up on the plot.</span>
+up on the tallrect.</span>
 </li>
 <li>
 <span class="explanation"><code>clickSelects</code> is necessary here,
@@ -533,7 +525,7 @@ since we need to be able to select the day from the plot.</span>
 </li>
 <li>
 <span class="explanation"><code>alpha</code> controls the transparency
-of the tallrect. Lower numbers cause greater transparency.</span>
+of the tallrect. Lower numbers increase transparency.</span>
 </li>
 <li>
 <span class="explanation">Using <code>+</code>, I attach the tallrect to
@@ -547,16 +539,18 @@ our dataset.</span>
 <span class="explanation">Finally, we intitate the animint.</span>
 </li>
 </ol>
+<p>Try it out. When you adjust the day on the bottom plot, the top plot
+also readjusts. When you click on the legend on the top plot, the bottom
+plot is also affected. These linked plots can get much complex. For
+examples, see the <a href="https://rcdata.nau.edu/genomic-ml/animint-gallery/" class="external-link">animint
+gallery</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
 <p>And that’s it. You’re now a reasonably competent
-<code>animint2</code> user. Your certificate of completion will arrive
-by post within four to five business
-days.<sup><a href="#fn-10">x</a></sup></p>
-<p>Feel free to post any questions to our <a href="https://github.com/animint/animint2/issues" class="external-link">GitHub issues</a>.
-Thanks for reading.</p>
+<code>animint2</code> user. Feel free to post any questions to our <a href="https://github.com/animint/animint2/issues" class="external-link">GitHub issues</a>, and
+thanks for reading!</p>
 </div>
 <div class="section level2">
 <h2 id="footnotes">Footnotes<a class="anchor" aria-label="anchor" href="#footnotes"></a>
@@ -567,7 +561,8 @@ Fun science fact: Cats are objectively the best animal.
 </li>
 <li id="fn-2">
 If you’re interested in learning about the grammar and want to get right
-to the source, see Leland Wilkinson’s <em>The Grammar of Graphics</em>.
+to the primary source, see Leland Wilkinson’s <em>The Grammar of
+Graphics</em>.
 </li>
 <li id="fn-3">
 All data visualizations use <code><a href="../reference/ggplot.html">ggplot()</a></code>.
@@ -598,10 +593,6 @@ Play around with it and see what you can do.
 Fun fact: The <code>duration</code> argument is optional. If you decide
 not to use <code>duration</code> or set it to 0 milliseconds, the points
 teleport from one location to another.
-</li>
-<li id="fn-10">
-The certificate of completion is both invisible and intangible. Some
-philosophers posit that this certificate may not exist at all.
 </li>
 </ol>
 </div>
