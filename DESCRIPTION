@@ -52,7 +52,7 @@ Authors@R: c(
      comment="Animint2 GSoC 2022"),
 	person("Jocelyne", "Chen",
 	 role="aut",
-	 comment="Animint2 GSoC 2023))
+	 comment="Animint2 GSoC 2023"))
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
  on a web page. The 2018 Journal of Computational and 
