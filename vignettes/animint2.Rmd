@@ -316,7 +316,9 @@ Try it out. When you adjust the day on the bottom plot, the top plot also readju
 
 ## Conclusion
 
-And that's it. You're now a reasonably competent `animint2` user. Feel free to post any questions to our [GitHub issues](https://github.com/animint/animint2/issues), and thanks for reading!
+And that's it. You're now a reasonably competent `animint2` user. If you would like to learn more, please read the [animint2 Manual](https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html)---especially chapters 1 to 4, which go over the same material in greater depth.
+
+Feel free to post any questions to our [GitHub issues](https://github.com/animint/animint2/issues). Thanks for reading!
 
 
 ## Footnotes
