@@ -21,9 +21,12 @@ a:not(.sourceCode, .navbar-brand, .nav-link) {
 }
 
 aside {
-	padding: 1rem;
-	border: 2px solid;
-	/*border-radius: .375rem;*/
+	margin: 1.5rem 2rem 1.5rem 1rem;
+	padding: 1rem 2rem;
+	border: 1.5px solid;
+	box-shadow: inset 1rem 0rem #dac9d6;
+	background-color: #ffeaf7;    /* make the aside stand out so
+	                                 ppl won't miss it */
 }
 
 /* The code below affects only the footnotes. */
