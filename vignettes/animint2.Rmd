@@ -147,12 +147,12 @@ This is most useful for situations where you're showcasing or presenting your an
 ## Using showSelected
 
 <aside class="quick-guide">
-Are you a Firefox user? Then this message is for you. Also, congrats on using the best browser.
+### To Firefox Users
 
-`animint2` and Firefox [interact strangely](https://github.com/animint/animint2/issues/90). Some animints seem to cause the webpage to scroll up by itself. Two practical solutions are:
+`animint2` and Firefox [interact strangely](https://github.com/animint/animint2/issues/90). Some animints seem to cause the webpage to scroll up by itself. To get around this, either:
 
-1. To click the "Hide selection menus" button if you see it present; or
-2. To click the "Show animation control" button and hit pause.
+1. Click the "Hide selection menus" button if you see it present; or
+2. Click the "Show animation control" button and hit pause.
 
 Thanks! Sorry about the bother.
 </aside>
