@@ -23,6 +23,7 @@ a:not(.sourceCode, .navbar-brand, .nav-link) {
 aside {
 	padding: 1rem;
 	border: 2px solid;
+	/*border-radius: .375rem;*/
 }
 
 /* The code below affects only the footnotes. */
