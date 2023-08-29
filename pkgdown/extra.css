@@ -52,8 +52,12 @@ aside.col-md-3 > div > h2 {
 }
 
 
-/* The code below affects only the quick start guide
-   in general. */
+/* The code below affects only the quick start guide. */
+
+h3.ffbug::before {
+	content: "🦊 ";               /* adds a fox emoji to the aside
+	                                 for firefox users */
+}
 
 div#basicscuteplot2,
 div#basicscutepresent,

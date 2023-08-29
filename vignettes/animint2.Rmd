@@ -147,7 +147,7 @@ This is most useful for situations where you're showcasing or presenting your an
 ## Using showSelected
 
 <aside class="quick-guide">
-### To Firefox Users
+<h3 class="ffbug">To Firefox Users</h3>
 
 `animint2` and Firefox [interact strangely](https://github.com/animint/animint2/issues/90). Some animints seem to cause the webpage to scroll up by itself. To get around this, either:
 
