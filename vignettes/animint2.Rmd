@@ -93,8 +93,8 @@ Look at the plot. We can see that while there's a lot of variance in the data, t
 
 Take a look at this slightly modified data visualization:
 
-```{r anatomy-cute-plot-2, fig.alt = "A scatterplot titled Cat Cutness Ratings Over Time. It looks exactly the same as the previous graph, except all the data points are differentiated by color. There is also a legend that maps each color to a cat."}
-cute_plot_2 <-                                   #1
+```{r anatomy-cute-plot-colored, fig.alt = "A scatterplot titled Cat Cutness Ratings Over Time. It looks exactly the same as the previous graph, except all the data points are differentiated by color. There is also a legend that maps each color to a cat."}
+cute_plot_colored <-                             #1
   ggplot() +
   geom_point(
     data = meowtrics,
@@ -119,8 +119,8 @@ While this new graph communicates more information, it's also somewhat overwhelm
 
 The good news is this: `animint2` makes it easy to render a static data visualization interactive. Just use the `animint()` function with the previous plot as the argument:
 
-```{r basics-cute-plot-2}
-animint(cute_plot_2)
+```{r basics-cute-plot-colored}
+animint(cute_plot_colored)
 ```
 
 This is an animint of our second static data visualization. By clicking on the legend or by using the selection menu, you can control which subjects have their data graphed, as well as how many.<sup><a href="#fn-6">vi</a></sup> This allows you to explore your data without needing to facet all possible cat combinations. For exploratory data analysis, this level of control may be all you need. 
@@ -129,7 +129,7 @@ In some cases, you may want more control. Say you want to emphasize Archibald an
 
 ```{r basics-cute-present}
 cute_present <- 
-  animint(cute_plot_2, 
+  animint(cute_plot_colored, 
           first = list( #1
             Cat = c(    #2
               "Archibald", "Muffin")))
@@ -208,8 +208,8 @@ You can also click the "Show animation controls" button and manually adjust both
 
 So far, we've been interacting with animints by clicking the legend and using the selection menus and animation controls. What if we could interact with the animint directly? Using `clickSelects`, we can do just that. Let's return to our data visualization depicting cuteness ratings over time, this time as an animint:
 
-```{r clickselects-cute-plot-3}
-cute_plot_3 <-
+```{r clickselects-cute-colored-again}
+cute_colored_again <-
   ggplot() +
   geom_point(
     data = meowtrics,
@@ -217,7 +217,7 @@ cute_plot_3 <-
     aes(x = Day, y = Cuteness,
         group = Cat, color = Cat)) +
   labs(title = "Cat Cuteness Ratings Over Time")
-animint(cute_plot_3)
+animint(cute_colored_again)
 ```
 
 <ol class="annotated">
@@ -228,8 +228,9 @@ Hover over and click on the data points. You'll notice that it has the same effe
 
 Now, let's interact with a very similar animint:
 
-```{r clickselects-cute-plot-4}
-cute_plot_4 <-
+<!-- this is cute_plot_4 DELETE LATER after updating this -->
+```{r clickselects-cute-plot-kind}
+cute_plot_kind <-
   ggplot() +
   geom_point(
     data = meowtrics,
@@ -237,7 +238,7 @@ cute_plot_4 <-
     aes(x = Day, y = Cuteness,
         group = Cat, color = Cat)) +
   labs(title = "Cat Cuteness Ratings Over Time")
-animint(cute_plot_4)
+animint(cute_plot_kind)
 ```
 
 <ol class="annotated">
@@ -260,7 +261,7 @@ Let's return to two interactive data visualizations we've already looked at: ass
 Here's the first data visualization again, lightly altered:
 
 ```{r linked-associations}
-associations_2 <-
+associations_again <-
   ggplot() +
   geom_point(
     data = meowtrics,
@@ -276,7 +277,7 @@ I want to link it to my plot about cuteness ratings over time. That way, I can s
 ```{r linked-plots}
 md <- data.frame(Day = unique(meowtrics$Day))  #1
 
-linked <- animint(associations_2,              #2
+linked <- animint(associations_again,          #2
                   duration = list(Day = 1000)) #3
 
 linked$overtime <-                             #4
