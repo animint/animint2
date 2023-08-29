@@ -251,7 +251,7 @@ When you interact with this animint, you'll notice three differences:
 3. When you click on a data point, it doesn't disappear. Instead, like the selection menu, it highlights data points depicting certain kinds of cats.
 
 
-## Advanced: Linked Plots
+## Linked Plots
 
 `animint2` also allows us to link multiple plots together into one animint. When two plots are linked, a change in one plot can cause changes in another.
 
