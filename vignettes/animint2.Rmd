@@ -146,6 +146,17 @@ This is most useful for situations where you're showcasing or presenting your an
 
 ## Using showSelected
 
+<aside class="quick-guide">
+Are you a Firefox user? Then this message is for you. Also, congrats on using the best browser.
+
+`animint2` and Firefox [interact strangely](https://github.com/animint/animint2/issues/90). Some animints seem to cause the webpage to scroll up by itself. Two practical solutions are:
+
+1. To click the "Hide selection menus" button if you see it present; or
+2. To click the "Show animation control" button and hit pause.
+
+Thanks! Sorry about the bother.
+</aside>
+
 Our current animints use three variables: Day, Cuteness, and Cat. What if you want to explore or present a fourth?<sup><a href="#fn-7">vii</a></sup> In a static data visualization, this would require multiple graphs or the addition of an unwieldy third dimension.
 
 Luckily, animints are not subject to the same restrictions. In `animint()`, we can use the `showSelected` and `time` arguments to show how the Coolness and Cuteness variables interact day-by-day.
