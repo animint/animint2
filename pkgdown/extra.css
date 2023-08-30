@@ -20,7 +20,7 @@ a:not(.sourceCode, .navbar-brand, .nav-link) {
 						             codeblock or the navigation bar */
 }
 
-aside {
+aside.quick-guide {
 	margin: 1.5rem 2rem 1.5rem 1rem;
 	padding: 1rem 2rem;
 	border: 1.5px solid;
