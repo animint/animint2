@@ -101,7 +101,7 @@ cute_plot_colored <-                             #1
     aes(x = Day, y = Cuteness,
         group = Cat, color = Cat)) +             #2
   labs(title = "Cat Cuteness Ratings Over Time") #3
-cute_plot_2
+cute_plot_colored
 ```
 
 Each cat is differentiated from one another by color, and there's now a legend. Codewise, what's changed?
@@ -215,8 +215,7 @@ cute_colored_again <-
     data = meowtrics,
     clickSelects = "Cat", #1
     aes(x = Day, y = Cuteness,
-        group = Cat, color = Cat)) +
-  labs(title = "Cat Cuteness Ratings Over Time")
+        group = Cat, color = Cat))
 animint(cute_colored_again)
 ```
 
@@ -236,8 +235,7 @@ cute_plot_kind <-
     data = meowtrics,
     clickSelects = "Kind", #1
     aes(x = Day, y = Cuteness,
-        group = Cat, color = Cat)) +
-  labs(title = "Cat Cuteness Ratings Over Time")
+        group = Cat, color = Cat))
 animint(cute_plot_kind)
 ```
 
