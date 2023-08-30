@@ -137,31 +137,29 @@ or left edges of bins are included in the bin.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">cut_number</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [0.00104,0.0815]   (0.0815,0.185]     (0.185,0.28]     (0.28,0.365] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              100              100              100              100 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    (0.365,0.496]    (0.496,0.592]    (0.592,0.684]    (0.684,0.787] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              100              100              100              100 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    (0.787,0.897]    (0.897,0.998] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              100              100 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [0.00225,0.11]   (0.11,0.203]  (0.203,0.309]  (0.309,0.411]  (0.411,0.495] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            100            100            100            100            100 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  (0.495,0.588]   (0.588,0.71]     (0.71,0.8]    (0.8,0.903]  (0.903,0.998] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            100            100            100            100            100 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">cut_width</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [-0.05,0.05]  (0.05,0.15]  (0.15,0.25]  (0.25,0.35]  (0.35,0.45]  (0.45,0.55] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           56           98           93          115           85          106 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           62           97          100           93           96          110 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  (0.55,0.65]  (0.65,0.75]  (0.75,0.85]  (0.85,0.95]  (0.95,1.05] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          104           94          110           91           48 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           97          118           95           98           34 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">cut_width</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>, <span class="fl">0.1</span>, boundary <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [0,0.1] (0.1,0.2] (0.2,0.3] (0.3,0.4] (0.4,0.5] (0.5,0.6] (0.6,0.7] (0.7,0.8] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       102       111        86        94        93       100       106        92 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        93        94        94        99       101       115       109       102 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (0.8,0.9]   (0.9,1] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       109       107 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        85       108 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">cut_width</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>, <span class="fl">0.1</span>, center <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [-0.05,0.05]  (0.05,0.15]  (0.15,0.25]  (0.25,0.35]  (0.35,0.45]  (0.45,0.55] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           48          104          102          109           81          108 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           52           93           84          101           89          117 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  (0.55,0.65]  (0.65,0.75]  (0.75,0.85]  (0.85,0.95]  (0.95,1.05] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           98          103           91          103           53 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          114           93          117           99           41 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -169,7 +167,7 @@ or left edges of bins are included in the bin.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Toby Hocking, Hadley Wickham, Winston Chang, Nicholas Lewin-Koh, Martin Maechler, Randall Prium, Susan VanderPlas, Carson Sievert, Kevin Ferris, Jun Cai, Faizan Khan, Vivek Kumar, Himanshu Singh, Yufan Fei.</p>
+  <p></p><p>Developed by Toby Hocking, Hadley Wickham, Winston Chang, Nicholas Lewin-Koh, Martin Maechler, Randall Prium, Susan VanderPlas, Carson Sievert, Kevin Ferris, Jun Cai, Faizan Khan, Vivek Kumar, Himanshu Singh, Yufan Fei, Jocelyne Chen.</p>
 </div>
 
 <div class="pkgdown-footer-right">

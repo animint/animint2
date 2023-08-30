@@ -1,8 +1,8 @@
 {
  "geoms": {
- "geom1_point_associations2": {
+ "geom1_point_associationsagain": {
  "geom": "point",
-"classed": "geom1_point_associations2",
+"classed": "geom1_point_associationsagain",
 "aes": {
  "x": "Coolness",
 "y": "Cuteness",
@@ -120,7 +120,7 @@
 "selected": [ "Clifford", "Junebug", "Muffin", "Teddy Bear", "Diana", "Bello", "Jellybean", "Archibald", "Saturday", "Wilbur" ],
 "levels": [ "Clifford", "Junebug", "Muffin", "Teddy Bear", "Diana", "Bello", "Jellybean", "Archibald", "Saturday", "Wilbur" ],
 "update": [
- "geom1_point_associations2",
+ "geom1_point_associationsagain",
 "geom3_point_overtime" 
 ] 
 },
@@ -131,7 +131,7 @@
 "selected": "Domestic Shorthair",
 "levels": [ "Domestic Shorthair", "Domestic Longhair", "Cornish Rex", "Siamese", "Maine Coon" ],
 "update": [
- "geom1_point_associations2" 
+ "geom1_point_associationsagain" 
 ] 
 },
 "Day": {
@@ -142,14 +142,14 @@
 "selected": "1",
 "levels": [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" ],
 "update": [
- "geom1_point_associations2",
+ "geom1_point_associationsagain",
 "geom2_tallrect_overtime" 
 ],
 "duration":     1000 
 } 
 },
 "plots": {
- "associations2": {
+ "associationsagain": {
  "panel_margin_lines":     0.25,
 "legend": {
  "Cat": {
@@ -393,7 +393,7 @@
 "height":      400 
 },
 "geoms": [
- "geom1_point_associations2" 
+ "geom1_point_associationsagain" 
 ] 
 },
 "overtime": {

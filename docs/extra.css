@@ -1,5 +1,5 @@
-/* This CSS file controls small parts of how the website looks.
-The _pkgdown.yml file controls most of it. */
+/* Along with the _pkgdown.yml file, this CSS file
+   controls how the website looks. */
 
 
 /* The code below affects the whole website. */
@@ -20,6 +20,27 @@ a:not(.sourceCode, .navbar-brand, .nav-link) {
 						             codeblock or the navigation bar */
 }
 
+aside {
+	margin: 1.5rem 2rem 1.5rem 1rem;
+	padding: 1rem 2rem;
+	border: 1.5px solid;
+	box-shadow: inset 1rem 0rem #dac9d6;
+	background-color: #ffeaf7;    /* make the aside stand out so
+	                                 ppl won't miss it */
+}
+
+/* The code below affects only the footnotes. */
+
+ol.footnotes {
+	list-style-type: lower-roman; /* change list of footnotes from
+	                                 arabic to roman numbers */
+}
+
+sup > a {
+	text-decoration: none;        /* remove underline from
+	                                 footnote links */
+}
+
 
 /* The code below affects only the homepage. */
 
@@ -33,6 +54,11 @@ aside.col-md-3 > div > h2 {
 
 /* The code below affects only the quick start guide. */
 
+h3.ffbug::before {
+	content: "🦊 ";               /* adds a fox emoji to the aside
+	                                 for firefox users */
+}
+
 div#basicscuteplot2,
 div#basicscutepresent,
 div#clickselectscuteplot3,
@@ -45,15 +71,11 @@ div#showselectedassociations {
 							         paragraphs */
 }
 
-ol.footnotes {
-	list-style-type: lower-roman; /* change list of footnotes from
-	                                 arabic to roman numbers */
-}
 
-sup > a {
-	text-decoration: none;        /* remove underline from
-	                                 footnote links */
-}
+/* The code below affects only the quick start guide's
+   code annotations. Since the code annotations are
+   refashioned comments, the code here might seem a 
+   bit messy. */
 
 #cb5 span.co,
 #cb6 span.co,

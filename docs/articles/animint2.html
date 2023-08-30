@@ -202,15 +202,15 @@ this graph could be better. And <code>animint2</code> gives us the tools
 to improve it.</p>
 <p>Take a look at this slightly modified data visualization:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cute_plot_2</span> <span class="op">&lt;-</span>                                   <span class="co">#1</span></span>
+<code class="sourceCode R"><span><span class="va">cute_plot_colored</span> <span class="op">&lt;-</span>                             <span class="co">#1</span></span>
 <span>  <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">meowtrics</span>,</span>
 <span>    <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Day</span>, y <span class="op">=</span> <span class="va">Cuteness</span>,</span>
 <span>        group <span class="op">=</span> <span class="va">Cat</span>, color <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>             <span class="co">#2</span></span>
 <span>  <span class="fu"><a href="../reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Cat Cuteness Ratings Over Time"</span><span class="op">)</span> <span class="co">#3</span></span>
-<span><span class="va">cute_plot_2</span></span></code></pre></div>
-<p><img src="animint2_files/figure-html/anatomy-cute-plot-2-1.png" alt="A scatterplot titled Cat Cutness Ratings Over Time. It looks exactly the same as the previous graph, except all the data points are differentiated by color. There is also a legend that maps each color to a cat." width="700"></p>
+<span><span class="va">cute_plot_colored</span></span></code></pre></div>
+<p><img src="animint2_files/figure-html/anatomy-cute-plot-colored-1.png" alt="A scatterplot titled Cat Cutness Ratings Over Time. It looks exactly the same as the previous graph, except all the data points are differentiated by color. There is also a legend that maps each color to a cat." width="700"></p>
 <p>Each cat is differentiated from one another by color, and there’s now
 a legend. Codewise, what’s changed?</p>
 <ol class="annotated">
@@ -242,14 +242,14 @@ a static data visualization interactive. Just use the
 <code><a href="../reference/animint.html">animint()</a></code> function with the previous plot as the
 argument:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">cute_plot_2</span><span class="op">)</span></span></code></pre></div>
-<script type="text/javascript" src="basicscuteplot2/vendor/d3.v3.js"></script><script type="text/javascript" src="basicscuteplot2/animint.js"></script><script type="text/javascript" src="basicscuteplot2/vendor/jquery-1.11.3.min.js"></script><script type="text/javascript" src="basicscuteplot2/vendor/selectize.min.js"></script><link rel="stylesheet" type="text/css" href="basicscuteplot2/vendor/selectize.css">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">cute_plot_colored</span><span class="op">)</span></span></code></pre></div>
+<script type="text/javascript" src="basicscuteplotcolored/vendor/d3.v3.js"></script><script type="text/javascript" src="basicscuteplotcolored/animint.js"></script><script type="text/javascript" src="basicscuteplotcolored/vendor/jquery-1.11.3.min.js"></script><script type="text/javascript" src="basicscuteplotcolored/vendor/selectize.min.js"></script><link rel="stylesheet" type="text/css" href="basicscuteplotcolored/vendor/selectize.css">
 <p>
 </p>
-<div id="basicscuteplot2">
+<div id="basicscuteplotcolored">
 
 </div>
-<script>var basicscuteplot2 = new animint("#basicscuteplot2", "basicscuteplot2/plot.json");</script><p>This is an animint of our second static data visualization. By
+<script>var basicscuteplotcolored = new animint("#basicscuteplotcolored", "basicscuteplotcolored/plot.json");</script><p>This is an animint of our second static data visualization. By
 clicking on the legend or by using the selection menu, you can control
 which subjects have their data graphed, as well as how
 many.<sup><a href="#fn-6">vi</a></sup> This allows you to explore your
@@ -262,7 +262,7 @@ Archibald and Muffin’s cuteness ratings over time. In
 specify which cats to present:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cute_present</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">cute_plot_2</span>, </span>
+<span>  <span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">cute_plot_colored</span>, </span>
 <span>          first <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span> <span class="co">#1</span></span>
 <span>            Cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>    <span class="co">#2</span></span>
 <span>              <span class="st">"Archibald"</span>, <span class="st">"Muffin"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -288,7 +288,19 @@ vector. That’s why they’re in a <code><a href="https://rdrr.io/r/base/c.html
 <div class="section level2">
 <h2 id="using-showselected">Using showSelected<a class="anchor" aria-label="anchor" href="#using-showselected"></a>
 </h2>
-<p>Our current animints use three variables: Day, Cuteness, and Cat.
+<aside class="quick-guide"><h3 class="ffbug">
+To Firefox Users
+</h3>
+<p><code>animint2</code> and Firefox <a href="https://github.com/animint/animint2/issues/90" class="external-link">interact
+strangely</a>. Some animints seem to cause the webpage to scroll up by
+itself. To get around this, either:</p>
+<ol style="list-style-type: decimal">
+<li>Click the “Hide selection menus” button if you see it present;
+or</li>
+<li>Click the “Show animation control” button and hit pause.</li>
+</ol>
+Thanks! Sorry about the bother.
+</aside><p>Our current animints use three variables: Day, Cuteness, and Cat.
 What if you want to explore or present a
 fourth?<sup><a href="#fn-7">vii</a></sup> In a static data
 visualization, this would require multiple graphs or the addition of an
@@ -374,21 +386,20 @@ interact with the animint directly? Using <code>clickSelects</code>, we
 can do just that. Let’s return to our data visualization depicting
 cuteness ratings over time, this time as an animint:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cute_plot_3</span> <span class="op">&lt;-</span></span>
+<code class="sourceCode R"><span><span class="va">cute_colored_again</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">meowtrics</span>,</span>
 <span>    clickSelects <span class="op">=</span> <span class="st">"Cat"</span>, <span class="co">#1</span></span>
 <span>    <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Day</span>, y <span class="op">=</span> <span class="va">Cuteness</span>,</span>
-<span>        group <span class="op">=</span> <span class="va">Cat</span>, color <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Cat Cuteness Ratings Over Time"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">cute_plot_3</span><span class="op">)</span></span></code></pre></div>
+<span>        group <span class="op">=</span> <span class="va">Cat</span>, color <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">cute_colored_again</span><span class="op">)</span></span></code></pre></div>
 <p>
 </p>
-<div id="clickselectscuteplot3">
+<div id="clickselectscutecoloredagain">
 
 </div>
-<script>var clickselectscuteplot3 = new animint("#clickselectscuteplot3", "clickselectscuteplot3/plot.json");</script><ol class="annotated"><li>
+<script>var clickselectscutecoloredagain = new animint("#clickselectscutecoloredagain", "clickselectscutecoloredagain/plot.json");</script><ol class="annotated"><li>
 <span class="explanation"><code>clickSelects</code> takes a variable
 with quotations. The variable in <code>clickSelects</code> and
 <code>group</code> are the same: they’re both Cat.</span>
@@ -397,22 +408,22 @@ with quotations. The variable in <code>clickSelects</code> and
 the same effect as clicking on the legend: It removes the data from the
 animint.</p>
 <p>Now, let’s interact with a very similar animint:</p>
+<!-- this is cute_plot_4 DELETE LATER after updating this -->
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cute_plot_4</span> <span class="op">&lt;-</span></span>
+<code class="sourceCode R"><span><span class="va">cute_plot_kind</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">meowtrics</span>,</span>
 <span>    clickSelects <span class="op">=</span> <span class="st">"Kind"</span>, <span class="co">#1</span></span>
 <span>    <span class="fu"><a href="../reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Day</span>, y <span class="op">=</span> <span class="va">Cuteness</span>,</span>
-<span>        group <span class="op">=</span> <span class="va">Cat</span>, color <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Cat Cuteness Ratings Over Time"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">cute_plot_4</span><span class="op">)</span></span></code></pre></div>
+<span>        group <span class="op">=</span> <span class="va">Cat</span>, color <span class="op">=</span> <span class="va">Cat</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">cute_plot_kind</span><span class="op">)</span></span></code></pre></div>
 <p>
 </p>
-<div id="clickselectscuteplot4">
+<div id="clickselectscuteplotkind">
 
 </div>
-<script>var clickselectscuteplot4 = new animint("#clickselectscuteplot4", "clickselectscuteplot4/plot.json");</script><ol class="annotated"><li>
+<script>var clickselectscuteplotkind = new animint("#clickselectscuteplotkind", "clickselectscuteplotkind/plot.json");</script><ol class="annotated"><li>
 <span class="explanation">I’ve swapped out Cat for Kind. Now the
 variables in <code>clickSelects</code> and <code>group</code> are
 different. This is a useful way of adding another variable to your data
@@ -433,7 +444,7 @@ cats.</li>
 </ol>
 </div>
 <div class="section level2">
-<h2 id="advanced-linked-plots">Advanced: Linked Plots<a class="anchor" aria-label="anchor" href="#advanced-linked-plots"></a>
+<h2 id="linked-plots">Linked Plots<a class="anchor" aria-label="anchor" href="#linked-plots"></a>
 </h2>
 <p><code>animint2</code> also allows us to link multiple plots together
 into one animint. When two plots are linked, a change in one plot can
@@ -443,7 +454,7 @@ looked at: associations between coolness and cuteness, and cuteness
 ratings over time.</p>
 <p>Here’s the first data visualization again, lightly altered:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">associations_2</span> <span class="op">&lt;-</span></span>
+<code class="sourceCode R"><span><span class="va">associations_again</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">meowtrics</span>,</span>
@@ -458,7 +469,7 @@ process is a little more involved than usual:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">md</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Day <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">meowtrics</span><span class="op">$</span><span class="va">Day</span><span class="op">)</span><span class="op">)</span>  <span class="co">#1</span></span>
 <span></span>
-<span><span class="va">linked</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">associations_2</span>,              <span class="co">#2</span></span>
+<span><span class="va">linked</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/animint.html">animint</a></span><span class="op">(</span><span class="va">associations_again</span>,          <span class="co">#2</span></span>
 <span>                  duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Day <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span> <span class="co">#3</span></span>
 <span></span>
 <span><span class="va">linked</span><span class="op">$</span><span class="va">overtime</span> <span class="op">&lt;-</span>                             <span class="co">#4</span></span>
@@ -549,8 +560,12 @@ gallery</a>.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
 <p>And that’s it. You’re now a reasonably competent
-<code>animint2</code> user. Feel free to post any questions to our <a href="https://github.com/animint/animint2/issues" class="external-link">GitHub issues</a>, and
-thanks for reading!</p>
+<code>animint2</code> user. If you would like to learn more, please read
+the <a href="https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html" class="external-link">animint2
+Manual</a>—especially chapters 1 to 4, which go over the same material
+in greater depth.</p>
+<p>Feel free to post any questions to our <a href="https://github.com/animint/animint2/issues" class="external-link">GitHub issues</a>.
+Thanks for reading!</p>
 </div>
 <div class="section level2">
 <h2 id="footnotes">Footnotes<a class="anchor" aria-label="anchor" href="#footnotes"></a>
@@ -604,7 +619,7 @@ teleport from one location to another.
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Toby Hocking, Hadley Wickham, Winston Chang, Nicholas Lewin-Koh, Martin Maechler, Randall Prium, Susan VanderPlas, Carson Sievert, Kevin Ferris, Jun Cai, Faizan Khan, Vivek Kumar, Himanshu Singh, Yufan Fei.</p>
+<p>Developed by Toby Hocking, Hadley Wickham, Winston Chang, Nicholas Lewin-Koh, Martin Maechler, Randall Prium, Susan VanderPlas, Carson Sievert, Kevin Ferris, Jun Cai, Faizan Khan, Vivek Kumar, Himanshu Singh, Yufan Fei, Jocelyne Chen.</p>
 </div>
 
 <div class="pkgdown-footer-right">

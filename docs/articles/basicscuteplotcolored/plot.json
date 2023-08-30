@@ -1,27 +1,24 @@
 {
  "geoms": {
- "geom1_point_cuteplot4": {
+ "geom1_point_cuteplotcolored": {
  "geom": "point",
-"classed": "geom1_point_cuteplot4",
+"classed": "geom1_point_cuteplotcolored",
 "aes": {
  "x": "Day",
 "y": "Cuteness",
 "group": "Cat",
 "colour": "Cat",
-"showSelectedlegendcolour": "Cat",
-"clickSelects": "Kind" 
+"showSelectedlegendcolour": "Cat" 
 },
 "params": {
  "na.rm": false,
-"na.rm": false,
-"clickSelects": "Kind" 
+"na.rm": false 
 },
 "types": {
  "colour": "rgb",
 "x": "numeric",
 "y": "numeric",
 "showSelectedlegendcolour": "character",
-"clickSelects": "character",
 "PANEL": "integer",
 "fill": "rgb",
 "group": "character" 
@@ -46,22 +43,12 @@
 "selected": [ "Clifford", "Junebug", "Muffin", "Teddy Bear", "Diana", "Bello", "Jellybean", "Archibald", "Saturday", "Wilbur" ],
 "levels": [ "Clifford", "Junebug", "Muffin", "Teddy Bear", "Diana", "Bello", "Jellybean", "Archibald", "Saturday", "Wilbur" ],
 "update": [
- "geom1_point_cuteplot4" 
-] 
-},
-"Kind": {
- "is.variable.value": false,
-"type": "single",
-"clickSelects": true,
-"selected": "Domestic Shorthair",
-"levels": [ "Domestic Shorthair", "Domestic Longhair", "Cornish Rex", "Siamese", "Maine Coon" ],
-"update": [
- "geom1_point_cuteplot4" 
+ "geom1_point_cuteplotcolored" 
 ] 
 } 
 },
 "plots": {
- "cuteplot4": {
+ "cuteplotcolored": {
  "panel_margin_lines":     0.25,
 "legend": {
  "Cat": {
@@ -300,7 +287,7 @@
 "height":      400 
 },
 "geoms": [
- "geom1_point_cuteplot4" 
+ "geom1_point_cuteplotcolored" 
 ] 
 } 
 } 
