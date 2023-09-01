@@ -1,60 +1,75 @@
-animint2pages <- function(plot.list, user_name, github_repo, commit_message = "Commit from animint2pages", ...) {
+animint2pages <- function(plot.list, github_repo, commit_message = "Commit from animint2pages", private = FALSE, ...) {
+  # Check for required packages
+  if (!requireNamespace("gert")) {
+    stop("Please run `install.packages('gert')` before using this function")
+  }
+  
+  # Generate plot files
   res <- animint2dir(plot.list, open.browser = FALSE, ...)
-  if (!requireNamespace("git2r")) {
-    stop(
-      "Please run \n",
-      "`install.packages('git2r')` ",
-      "before using this function"
-    )
-  }
 
-  # The below are copied from `animint2gist`
-  ## Figure out which files to post.
-  all.files <- Sys.glob(file.path(res$out.dir, "*"))
-  all.file.info <- file.info(all.files)
-  is.empty <- all.file.info$size == 0
-  is.tilde <- grepl("~$", all.files)
-  is.ignored <- all.file.info$isdir | is.empty | is.tilde
-  to.post <- all.files[!is.ignored]
-
+  # Select non-ignored files to post
+  all_files <- Sys.glob(file.path(res$out.dir, "*"))
+  file_info <- file.info(all_files)
+  to_post <- all_files[!(file_info$size == 0 | grepl("~$", all_files))]
+  
   tmp_dir <- tempfile()
-
-  # check if the repo already exists on GH
-  gh_repos <- gh::gh("/user/repos")
-  repo_exists <- any(sapply(gh_repos, function(x) x$name) == github_repo)
-  if (!repo_exists) {
-    gh::gh("POST /user/repos", name = github_repo)
-    repo <- git2r::init(tmp_dir)
-    git2r::config(repo, user.name = user_name)
+  
+  # Get GitHub user info
+  whoami <- suppressMessages(gh::gh_whoami())
+  if (is.null(whoami)) {
+    stop("A GitHub token is required to create and push to a new repo.")
+  }
+  
+  # Check for existing repository
+  owner <- whoami$login
+  if (!check_no_github_repo(owner, github_repo)) {
+    create <- gh::gh("POST /user/repos", name = github_repo, private = private)
+    origin_url <- create$clone_url
+    repo <- gert::git_init(path = tmp_dir)
+    gert::git_remote_add(name = "origin", url = origin_url, repo = repo)
   } else {
-    github_url <- paste0("https://github.com/", user_name, "/", github_repo, ".git")
-    repo <- git2r::clone(github_url, tmp_dir, credentials = git2r::cred_token())
+    origin_url <- paste0("https://github.com/", owner, "/", github_repo, ".git")
+    repo <- gert::git_clone(origin_url, tmp_dir)
   }
-
-  # Check if there are any commits in the repo
-  # have a initial commit to avoid error
+  
   if (length(git2r::commits(repo)) == 0) {
-    # Perform initial commit
-    readme_file_path <- file.path(tmp_dir, "README.md")
-    writeLines("## New Repo", readme_file_path)
-    git2r::add(repo, "README.md")
-    git2r::commit(repo, "Initial commit")
+    initial_commit(tmp_dir, repo)
   }
-
-  # Check if the 'gh-pages' branch exists, if not, create it
-  branches <- git2r::branches(repo)
-  if (!"gh-pages" %in% names(branches)) {
-    git2r::branch_create(repo, "gh-pages")
-  }
-
-  git2r::checkout(repo, "gh-pages")
-  file.copy(to.post, tmp_dir, recursive = TRUE)
-
-  # TODO: Take a screenshot and save as Capture.PNG.
-  # Commit the changes
-  lapply(to.post, function(file) git2r::add(repo, file))
-  git2r::commit(repo, commit_message)
-  git2r::push(repo, "origin", "gh-pages", credentials = git2r::cred_token())
-
+  
+  # Handle gh-pages branch
+  manage_gh_pages(repo, to_post, tmp_dir, commit_message)
+  message("Visualization will be available at https://", whoami$login, ".github.io/", github_repo, 
+          "\nDeployment via GitHub Pages may take a few minutes...")
+  
   repo
+}
+
+initial_commit <- function(tmp_dir, repo) {
+  readme_file_path <- file.path(tmp_dir, "README.md")
+  writeLines("## New animint visualization", readme_file_path)
+    gert::git_add("README.md", repo = repo)
+    gert::git_commit("Initial commit", repo = repo)
+    gert::git_branch_move(branch = "master", new_branch = "main", repo = repo)
+    gert::git_push(repo = repo, remote = "origin", set_upstream = TRUE)
+}
+
+manage_gh_pages <- function(repo, to_post, tmp_dir, commit_message) {
+  branches <- gert::git_branch_list(local = TRUE, repo = repo)
+  
+  if (!"gh-pages" %in% branches$name) {
+    gert::git_branch_create(repo = repo, branch = "gh-pages")
+  }
+  
+  gert::git_branch_checkout("gh-pages", repo = repo)
+  file.copy(to_post, tmp_dir, recursive = TRUE)
+    gert::git_add(files = ".", repo = repo)
+    gert::git_commit(message = commit_message, repo = repo)
+    gert::git_push(remote = "origin", set_upstream = TRUE, repo = repo, force = TRUE)
+}
+
+check_no_github_repo <- function(owner, repo) {
+  tryCatch({
+    gh::gh("/repos/{owner}/{repo}", owner = owner, repo = repo)
+    TRUE
+  }, "http_error_404" = function(err) FALSE)
 }
