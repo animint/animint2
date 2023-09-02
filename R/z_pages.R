@@ -1,3 +1,28 @@
+#' Publish a list of ggplots as interactive visualizations on a GitHub repository
+#'
+#' This function takes a named list of ggplots, generates interactive animations,
+#' and pushes the generated files to a specified GitHub repository. You can 
+#' choose to keep the repository private or public.
+#' Before using this function set your appropriate git 'user.username' and 'user.email'
+#' 
+#' @param plot.list A named list of ggplots and option lists.
+#' @param github_repo The name of the GitHub repository to which the files will be pushed.
+#' @param commit_message A string specifying the commit message for the pushed files.
+#' @param private A logical flag indicating whether the GitHub repository should be private or not.
+#' @param ... Additional options passed onto \code{animint2dir}.
+#'
+#' @return The function returns the initialized GitHub repository object.
+#' 
+#' @examples
+#' \dontrun{
+#' library(animint2)
+#' p1 <- ggplot(mtcars, aes(x = mpg, y = wt)) + geom_point()
+#' p2 <- ggplot(mtcars, aes(x = hp, y = wt)) + geom_point()
+#' viz <- list(plot1 = p1, plot2 = p2)
+#' animint2pages(viz, github_repo = "my_animint2_plots", commit_message = "New animint", private = TRUE)
+#' }
+#'
+#' @export
 animint2pages <- function(plot.list, github_repo, commit_message = "Commit from animint2pages", private = FALSE, ...) {
   # Check for required packages
   if (!requireNamespace("gert")) {
