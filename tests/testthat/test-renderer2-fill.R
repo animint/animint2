@@ -38,6 +38,7 @@ test_that("fill_off only changes fill when clicked, colour does not change", {
   circle.list <- getNodeSet(info2$html, point.xpath)
   before.click.color <- getStyleValue(info2$html, point.xpath, "stroke")
   before.click.fill <- getStyleValue(info2$html, point.xpath, "fill")
+  before.click.color <- as.character(toRGB(before.click.color))
   
   clickID('pointthree_disp275.8gear3wt3.73')
   html <- getHTML()
