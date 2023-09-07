@@ -45,7 +45,7 @@ test_that("fill_off only changes fill when clicked, colour does not change", {
   after.click.fill <- getStyleValue(html, point.xpath, "fill")
   
   expect_false(isTRUE(all.equal(before.click.fill, after.click.fill)))
-  expect_color(before.click.color, after.click.color)
+  expect_color(after.click.color, before.click.color)
 })
 
 test_that("fill and color are not same", {
