@@ -12,9 +12,6 @@ Changes in version 2023.3.14
 Changes in version 2022.9.14
 
 - Include Yufan Fei as contributor in DESCRIPTION.
-
-Changes in version 2022.9.14
-
 - Allow configurable legend/axis text size via theme.
 
 Changes in version 2022.8.31
