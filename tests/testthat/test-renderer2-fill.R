@@ -40,3 +40,38 @@ test_that("fill and color are not the same", {
   circle_fill <- getStyleValue(viz_info$html, point_xpath, "fill")
   expect_false(isTRUE(all.equal(circle_color, circle_fill)))
 })
+
+rect.data <- data.frame(
+  xmin = c(1, 3, 5),
+  xmax = c(2, 4, 6),
+  ymin = c(1, 2, 3),
+  ymax = c(2, 3, 4),
+  category = c("A", "B", "C")
+)
+
+viz.rect <- ggplot() +
+  geom_rect(rect.data, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+            color="black", fill="blue", fill_off = "transparent", clickSelects="category") +
+  coord_cartesian(xlim = c(0, 7), ylim = c(0, 5))
+
+viz_info <- animint2HTML(viz.rect)
+
+test_that("In geom_rect, fill_off only changes fill when clicked, colour does not change", {
+  rect_xpath <- '//svg[@id="plot_with_fill_off"]//rect[@id="fill_off_categoryA"]'
+  
+  rect_list <- getNodeSet(viz_info$html, rect_xpath)
+
+  before_click_color <- getStyleValue(viz_info$html, rect_xpath, "stroke")
+  before_click_fill <- getStyleValue(viz_info$html, rect_xpath, "fill")
+  
+  clickID('fill_off_categoryA')
+  
+  html <- getHTML()
+  
+  after_click_color <- getStyleValue(html, rect_xpath, "stroke")
+  after_click_fill <- getStyleValue(html, rect_xpath, "fill")
+  
+  expect_false(isTRUE(all.equal(before_click_fill, after_click_fill)))
+  
+  expect_equal(after_click_color, before_click_color)
+})
