@@ -33,7 +33,7 @@ devtools::install_github("animint/animint2")
 
 ## Use
 
-Animint2 uses the same implementation of `ggplot2`’s grammar of graphics—with a few additions. If you’re familiar with `ggplot2`, using `animint2` will be easy. If you’re not, no worries. To get started, see the brief [Animint2 Quick Start Guide](vignettes/starter-kit.html) or read the first few chapters of the [Animint2 Manual](https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html).
+Animint2 uses the same implementation of `ggplot2`’s grammar of graphics—with a few additions. If you’re familiar with `ggplot2`, using `animint2` will be easy. If you’re not, no worries. To get started, see the brief [Animint2 Quick Start Guide](https://animint.github.io/animint2/articles/animint2.html) or read the first few chapters of the [Animint2 Manual](https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html).
 
 `animint2` renders and animates data visualizations. It can neither manipulate the datasets you give it nor generate its own data.
 
