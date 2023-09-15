@@ -87,7 +87,7 @@ viz.rect <- list(rectFillOff = ggplot() +
 
 viz_info <- animint2HTML(viz.rect)
 
-test_that("In geom_rect, fill_off only changes fill when clicked, colour does not change", {
+test_that("with fill_off, fill changes when clicked", {
   rect_xpath <- '//svg[@id="plot_rectFillOff"]//rect[@id="rectFillOff_A"]'
 
   rect_list <- getNodeSet(viz_info$html, rect_xpath)
@@ -102,6 +102,46 @@ test_that("In geom_rect, fill_off only changes fill when clicked, colour does no
   after_click_color <- getStyleValue(html, rect_xpath, "stroke")
   after_click_fill <- getStyleValue(html, rect_xpath, "fill")
   expect_false(isTRUE(all.equal(before_click_fill, after_click_fill)))
+})
 
+vline.data <- data.frame(
+  xintercept = c(1, 2, 3),
+  category = c("A", "B", "C")
+)
+
+viz.vline <- list(
+  v = ggplot() +
+    geom_vline(
+      data = vline.data, aes(xintercept = xintercept, key = category,
+      id = paste0("v_", category)),
+      fill = "blue", fill_off = "grey", clickSelects = "category"
+    ) +
+    ggtitle("Click to Select a Vertical Line")
+)
+
+test_that("Warning message shows up when using fill_off parameter with geom_vline", {
+  expect_warning(
+    animint2HTML(viz.vline),
+    "geom1_vline_v has fill_off which is not supported."
+  )
+})
+
+test_that("When using fill_off and clickSelects parameter with geom_vline, use default(alpha) selection style", {
+  viz_info <- animint2HTML(viz.vline)
+  
+  vline_xpath <- '//svg[@id="plot_v"]//line[@id="v_A"]'
+  
+  before_click_color <- getStyleValue(viz_info$html, vline_xpath, "stroke")
+  before_click_opacity <- getStyleValue(viz_info$html, vline_xpath, "opacity")
+  
+  clickID("v_B")
+  
+  html <- getHTML()
+  after_click_color <- getStyleValue(html, vline_xpath, "stroke")
+  after_click_opacity <- getStyleValue(viz_info$html, vline_xpath, "opacity")
+  
+  expect_color(before_click_color, "black")
   expect_equal(after_click_color, before_click_color)
+  expect_equal(before_click_opacity, 1)
+  expect_equal(after_click_opacity, 0.5)
 })
