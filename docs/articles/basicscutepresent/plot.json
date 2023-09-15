@@ -1,0 +1,294 @@
+{
+ "geoms": {
+ "geom1_point_cuteplotcolored": {
+ "geom": "point",
+"classed": "geom1_point_cuteplotcolored",
+"aes": {
+ "x": "Day",
+"y": "Cuteness",
+"group": "Cat",
+"colour": "Cat",
+"showSelectedlegendcolour": "Cat" 
+},
+"params": {
+ "na.rm": false,
+"na.rm": false 
+},
+"types": {
+ "colour": "rgb",
+"x": "numeric",
+"y": "numeric",
+"showSelectedlegendcolour": "character",
+"PANEL": "integer",
+"fill": "rgb",
+"group": "character" 
+},
+"chunk_order": [],
+"nest_order": [
+ "showSelectedlegendcolour" 
+],
+"subset_order": [
+ "showSelectedlegendcolour" 
+],
+"chunks": 1,
+"total": 1 
+} 
+},
+"selectors": {
+ "Cat": {
+ "type": "multiple",
+"legend": true,
+"is.variable.value": false,
+"showSelected": true,
+"selected": [ "Archibald", "Muffin" ],
+"levels": [ "Clifford", "Junebug", "Muffin", "Teddy Bear", "Diana", "Bello", "Jellybean", "Archibald", "Saturday", "Wilbur" ],
+"update": [
+ "geom1_point_cuteplotcolored" 
+] 
+} 
+},
+"plots": {
+ "cuteplotcolored": {
+ "panel_margin_lines":     0.25,
+"legend": {
+ "Cat": {
+ "guide": "legend",
+"geoms": "point",
+"title": "Cat",
+"class": "Cat",
+"selector": "Cat",
+"is_discrete": true,
+"legend_type": "colour",
+"text_size": "8.8pt",
+"title_size": "11pt",
+"entries": [
+ {
+ "pointcolour": "#F8766D",
+"pointshape":       19,
+"pointsize":      1.5,
+"pointstroke":      0.5,
+"label": "Archibald" 
+},
+{
+ "pointcolour": "#D89000",
+"pointshape":       19,
+"pointsize":      1.5,
+"pointstroke":      0.5,
+"label": "Bello" 
+},
+{
+ "pointcolour": "#A3A500",
+"pointshape":       19,
+"pointsize":      1.5,
+"pointstroke":      0.5,
+"label": "Clifford" 
+},
+{
+ "pointcolour": "#39B600",
+"pointshape":       19,
+"pointsize":      1.5,
+"pointstroke":      0.5,
+"label": "Diana" 
+},
+{
+ "pointcolour": "#00BF7D",
+"pointshape":       19,
+"pointsize":      1.5,
+"pointstroke":      0.5,
+"label": "Jellybean" 
+},
+{
+ "pointcolour": "#00BFC4",
+"pointshape":       19,
+"pointsize":      1.5,
+"pointstroke":      0.5,
+"label": "Junebug" 
+},
+{
+ "pointcolour": "#00B0F6",
+"pointshape":       19,
+"pointsize":      1.5,
+"pointstroke":      0.5,
+"label": "Muffin" 
+},
+{
+ "pointcolour": "#9590FF",
+"pointshape":       19,
+"pointsize":      1.5,
+"pointstroke":      0.5,
+"label": "Saturday" 
+},
+{
+ "pointcolour": "#E76BF3",
+"pointshape":       19,
+"pointsize":      1.5,
+"pointstroke":      0.5,
+"label": "Teddy Bear" 
+},
+{
+ "pointcolour": "#FF62BC",
+"pointshape":       19,
+"pointsize":      1.5,
+"pointstroke":      0.5,
+"label": "Wilbur" 
+} 
+] 
+} 
+},
+"strips": {
+ "top": [
+ "" 
+],
+"right": [
+ "" 
+],
+"n": {
+ "top":        0,
+"right":        0 
+} 
+},
+"layout": {
+ "PANEL": [ 1 ],
+"ROW": [ 1 ],
+"COL": [ 1 ],
+"SCALE_X": [ 1 ],
+"SCALE_Y": [ 1 ],
+"AXIS_X": [ true ],
+"AXIS_Y": [ true ],
+"coord_fixed": [ false ],
+"width_proportion": [        1 ],
+"height_proportion": [        1 ] 
+},
+"panel_background": {
+ "fill": "#EBEBEB",
+"colour": "transparent",
+"size":      0.5,
+"linetype":        1 
+},
+"panel_border": [],
+"grid_major": {
+ "colour": "#FFFFFF",
+"size":      0.5,
+"linetype":        1,
+"lineend": "butt",
+"loc": {
+ "x": [
+ [
+        0,
+      10,
+      20,
+      30 
+] 
+],
+"y": [
+ [
+        0,
+     2.5,
+       5,
+     7.5,
+      10 
+] 
+] 
+} 
+},
+"grid_minor": {
+ "colour": "#FFFFFF",
+"size":     0.25,
+"linetype":        1,
+"lineend": "butt",
+"loc": {
+ "x": [
+ [
+        0,
+       5,
+      10,
+      15,
+      20,
+      25,
+      30 
+] 
+],
+"y": [
+ [
+        0,
+    1.25,
+     2.5,
+    3.75,
+       5,
+    6.25,
+     7.5,
+    8.75,
+      10 
+] 
+] 
+} 
+},
+"axis1": {
+ "x": [
+        0,
+      10,
+      20,
+      30 
+],
+"xlab": [
+ "0",
+"10",
+"20",
+"30" 
+],
+"xrange": [    -0.45,    31.45 ],
+"xline": true,
+"xticks": true,
+"y": [
+        0,
+     2.5,
+       5,
+     7.5,
+      10 
+],
+"ylab": [
+ "0.0",
+"2.5",
+"5.0",
+"7.5",
+"10.0" 
+],
+"yrange": [   -0.312,   10.072 ],
+"yline": true,
+"yticks": true 
+},
+"xtitle": "Day",
+"strip_text_xsize": "11pt",
+"xsize": "11pt",
+"xangle":        0,
+"xanchor": "middle",
+"ytitle": "Cuteness",
+"strip_text_ysize": "11pt",
+"ysize": "11pt",
+"yangle":        0,
+"yanchor": "end",
+"xlabs": [
+ "0",
+"10",
+"20",
+"30" 
+],
+"ylabs": [
+ "0.0",
+"2.5",
+"5.0",
+"7.5",
+"10.0" 
+],
+"title": "Cat Cuteness Ratings Over Time",
+"title_size": "13.2pt",
+"options": {
+ "width":      400,
+"height":      400 
+},
+"geoms": [
+ "geom1_point_cuteplotcolored" 
+] 
+} 
+} 
+}

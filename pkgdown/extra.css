@@ -1,0 +1,168 @@
+/* Along with the _pkgdown.yml file, this CSS file
+   controls how the website looks. */
+
+
+/* The code below affects the whole website. */
+
+body:not(.sourceCode) {
+	font-size: 1.2rem;            /* increase readability but keep
+                                     codeblock font size the same */
+}
+
+h2 {
+	margin-top: 2.5rem;           /* for more spacing 
+	                                 between sections */
+}
+
+a:not(.sourceCode, .navbar-brand, .nav-link) {
+    color: #B509AC;               /* to match the link color on Toby's 
+	                                 website unless the link is in a 
+						             codeblock or the navigation bar */
+}
+
+aside.quick-guide {
+	margin: 1.5rem 2rem 1.5rem 1rem;
+	padding: 1rem 2rem;
+	border: 1.5px solid;
+	box-shadow: inset 1rem 0rem #dac9d6;
+	background-color: #ffeaf7;    /* make the aside stand out so
+	                                 ppl won't miss it */
+}
+
+/* The code below affects only the footnotes. */
+
+ol.footnotes {
+	list-style-type: lower-roman; /* change list of footnotes from
+	                                 arabic to roman numbers */
+}
+
+sup > a {
+	text-decoration: none;        /* remove underline from
+	                                 footnote links */
+}
+
+
+/* The code below affects only the homepage. */
+
+aside.col-md-3 > div > h2 {
+	font-size: 1.1rem;
+	font-weight: 600;             /* to make the side column's 
+	                                 headings just a tiny bit 
+									 prettier */
+}
+
+
+/* The code below affects only the quick start guide. */
+
+h3.ffbug::before {
+	content: "🦊 ";               /* adds a fox emoji to the aside
+	                                 for firefox users */
+}
+
+div#basicscuteplot2,
+div#basicscutepresent,
+div#clickselectscuteplot3,
+div#clickselectscuteplot4,
+div#linkedplots,
+div#showselectedanimatedassociations,
+div#showselectedassociations {
+	margin-bottom: 1rem;          /* so there's a lil more space
+	                                 between the animints and
+							         paragraphs */
+}
+
+
+/* The code below affects only the quick start guide's
+   code annotations. Since the code annotations are
+   refashioned comments, the code here might seem a 
+   bit messy. */
+
+#cb5 span.co,
+#cb6 span.co,
+#cb8 span.co,
+#cb9 span.co,
+#cb10 span.co,
+#cb11 span.co,
+#cb12 span.co,
+#cb14 span.co {
+	border: 1.4px solid #212529;
+	border-radius: 200px;
+	padding: 0.05rem 0.5rem;
+	color: #212529 !important;
+	font-size: 0.9rem;            /* see EXPLANATION FOR THIS MESS */
+}
+
+ol.annotated > li {
+	list-style: none;             /* reset style to allow me to style
+	                                 the numbers in the ordered list */
+}
+
+ol.annotated > li::before {
+	content: "#"counter(list-item);
+	border: 1.4px solid;
+	border-radius: 200px;
+	padding: 0.05rem 0.5rem;
+	font-size: 0.9rem;            /* for consistency with code 
+	                                 annotations; the content and 
+									 counter stuff lets me mimic 
+									 how the code annotation looks */
+}
+
+span.explanation {
+	position: relative;
+	left: 5px;                    /* to control spacing between the
+	                                 code annotation number and the 
+									 explanation */
+}
+
+
+/* EXPLANATION FOR THIS MESS
+   
+   You might be thinking: What is up with this garbage code? 
+   What does it do, and how does it work? I can explain.
+   
+   
+   1. What Does it Do?
+   
+   This code emulates Quarto's code annotation feature:
+   https://quarto.org/docs/authoring/code-annotation.
+   It manipulates comments in specific codeblocks in
+   the quick start guide and transforms them into
+   annotations.
+   
+   
+   2. What is Up with this Garbage Code?
+   
+   R Markdown doesn't have the same feature, and I can't
+   just write the HTML for it cuz I don't have direct
+   access to it -- pkgdown generates it from codeblock I
+   provide it. So I've had to hack it together.
+   
+   
+   3. How Does it Work?
+   
+   I'm gonna assume you know CSS already. 
+   
+   #cb_ targets a specific codeblock, and span.co
+   targets the comments in that codeblock.
+   
+   Most of the CSS is sensible. The two parts that may 
+   not make a lot of sense are the border-radius 
+   and color.
+   
+   The border-radius is like that because it lets the
+   border take the shape of a capsule (or stadium):
+   https://stackoverflow.com/a/18795153.
+   
+   color has !important cuz otherwise the default grey
+   comment color will take over. I want the text in
+   the annotation to be the same color as the text
+   in the paragraphs.
+   
+   
+   4. The End
+   
+   Hope this helps! If it doesn't, it shouldn't be
+   too much work to reverse-engineer the few lines
+   of CSS I've written here. Good luck!
+/*
