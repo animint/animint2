@@ -1,8 +1,8 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
 Version: 2023.6.11
-URL: https://github.com/tdhock/animint2
-BugReports: https://github.com/tdhock/animint2/issues
+URL: https://animint.github.io/animint2/
+BugReports: https://github.com/animint/animint2/issues
 Authors@R: c(
     person("Toby", "Hocking",
      email="toby.hocking@r-project.org",
@@ -49,7 +49,10 @@ Authors@R: c(
      comment="Animint2 GSoC 2020"),
     person("Yufan", "Fei",
      role="aut",
-     comment="Animint2 GSoC 2022"))
+     comment="Animint2 GSoC 2022"),
+	person("Jocelyne", "Chen",
+	 role="aut",
+	 comment="Animint2 GSoC 2023"))
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
  on a web page. The 2018 Journal of Computational and 
@@ -274,3 +277,4 @@ Collate:
     'z_theme_animint.R'
     'z_transformShape.R'
 RoxygenNote: 7.2.3
+Config/Needs/website: tidyverse/tidytemplate
