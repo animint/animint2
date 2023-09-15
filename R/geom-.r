@@ -330,6 +330,14 @@ Geom <- gganimintproto("Geom",
       warning(sprintf("%s has %s which is not used because this geom has no clickSelects; please specify clickSelects or remove %s",
       g$classed, paste(off.vec, collapse=", "), paste(off.vec, collapse=", ")))
     }
+
+    ## raise warning for geoms does not support fill
+    has.fill.off <- any(names(g$params) == "fill_off")
+    no.fill.geom <- c("path", "line", "segment", "linerange", "hline", "vline")
+    if (g$geom %in% no.fill.geom && has.fill.off) {
+      g$params <- g$params[!names(g$params) %in% "fill_off"]
+      warning(sprintf("%s has fill_off which is not supported.", g$classed))
+    }
     ## TODO: coord_transform maybe won't work for
     ## geom_dotplot|rect|segment and polar/log transformations, which
     ## could result in something nonlinear. For the time being it is
