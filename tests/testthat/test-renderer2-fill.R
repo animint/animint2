@@ -129,7 +129,7 @@ test_that("Warning message shows up when using fill_off parameter with geom_vlin
 test_that("When using fill_off and clickSelects parameter with geom_vline, use default(alpha) selection style", {
   viz_info <- animint2HTML(viz.vline)
   
-  vline_xpath <- '//svg[@id="plot_v"]//line[@id="v_A"]'
+  vline_xpath <- '//g[@class="geom1_vline_v"]//line[@id="v_A"]'
   
   before_click_color <- getStyleValue(viz_info$html, vline_xpath, "stroke")
   before_click_opacity <- getStyleValue(viz_info$html, vline_xpath, "opacity")
@@ -138,10 +138,11 @@ test_that("When using fill_off and clickSelects parameter with geom_vline, use d
   
   html <- getHTML()
   after_click_color <- getStyleValue(html, vline_xpath, "stroke")
-  after_click_opacity <- getStyleValue(viz_info$html, vline_xpath, "opacity")
-  
+  after_click_opacity <- getStyleValue(html, vline_xpath, "opacity")
+ 
   expect_color(before_click_color, "black")
-  expect_equal(after_click_color, before_click_color)
-  expect_equal(before_click_opacity, 1)
-  expect_equal(after_click_opacity, 0.5)
+  expect_color(after_click_color, before_click_color)
+
+  expect_equal(before_click_opacity, "1")
+  expect_equal(after_click_opacity, "0.5")
 })
