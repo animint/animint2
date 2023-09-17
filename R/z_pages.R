@@ -48,7 +48,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
 
   tryCatch(
     {
-      whoami <- suppressMessages(gh::gh_whoami())
+      creds <- gitcreds::gitcreds_get()
     },
     error = function(e) {
       stop(
@@ -68,6 +68,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   )
 
   # Check for existing repository
+  whoami <- suppressMessages(gh::gh_whoami())
   owner <- whoami$login
   if (!check_no_github_repo(owner, github_repo)) {
     create <- gh::gh("POST /user/repos", name = github_repo, private = private)
