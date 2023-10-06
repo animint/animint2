@@ -1,3 +1,7 @@
+# Changes in 2023.10.6
+
+- User-configurable selection style - fill_off.
+
 # Changes in 2023.6.11
 
 - Remove maptools dependency.
