@@ -1,3 +1,7 @@
+# Changes in 2023.10.6
+
+- User-configurable selection style - fill_off.
+
 # Changes in 2023.6.11
 
 - Remove maptools dependency.
@@ -12,9 +16,6 @@
 # Changes in 2022.9.14
 
 - Include Yufan Fei as contributor in DESCRIPTION.
-
-# Changes in 2022.9.14
-
 - Allow configurable legend/axis text size via theme.
 
 # Changes in 2022.8.31
