@@ -1840,54 +1840,285 @@ var animint = function (to_select, json_file) {
     }
   };
   
-  
-  
-  var value_tostring = function(selected_values) {
-      //function that is helpful to change the format of the string
-      var selector_url="#"
-      for (var selc_var in selected_values){
-          if(selected_values.hasOwnProperty(selc_var)){
-              var values_str=selected_values[selc_var].join();
-              var sub_url=selc_var.concat("=","{",values_str,"}");
-              selector_url=selector_url.concat(sub_url);
+  // Refactor geom based on OOP, more specific geom can be extended from
+  // the basic Geom class
+  class Geom {
+    constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
+      this.g_info = g_info;
+      this.chunk = chunk;
+      this.selector_name = selector_name;
+      this.PANEL = PANEL;
+      this.scales = {};
+
+      this.g_info.tr.select('td.status').text('displayed');
+
+      // SVG and scales
+      this.svg = SVGs[this.g_info.classsed];
+      const g_names = this.g_info.classed.split('_');
+      const p_name = g_names[g_names.length - 1];
+      this.scales = Plots[p_name].scales[this.PANEL];
+
+      this.layer_g_element = this.svg.select('g.' + g_info.classed);
+      this.panel_g_element = this.layer_g_element.select('g.PANEL' + PANEL);
+      this.elements = this.panel_g_element.selectAll('.geom');
+
+      // selection features
+      this.has_clickSelects = this.g_info.aes.hasOwnProperty('clickSelects');
+      this.has_clickSelects_variable = this.g_info.aes.hasOwnProperty(
+        'clickSelects.variable'
+      );
+
+      this.selected_arrays = [[]];
+      this.handle_subset_order();
+      this.prepare_data();
+      this.Selectors = Selectors;
+
+      this.init_styles(g_info);
+      this.init_key_id(g_info);
+      this.init_select_style();
+    }
+
+    // Method to handle subset_order and selected_arrays
+    handle_subset_order() {
+      this.g_info.subset_order.forEach((aes_name) => {
+        let selected, values;
+        let new_arrays = [];
+        if (0 < aes_name.indexOf('.variable')) {
+          this.selected_arrays.forEach((old_array) => {
+            let some_data = this.chunk;
+            old_array.forEach((value) => {
+              if (some_data.hasOwnProperty(value)) {
+                some_data = some_data[value];
+              } else {
+                some_data = {};
+              }
+            });
+            values = d3.keys(some_data);
+            values.forEach((s_name) => {
+              selected = this.Selectors[s_name].selected;
+              let new_array = old_array.concat(s_name).concat(selected);
+              new_arrays.push(new_array);
+            });
+          });
+        } else {
+          if (aes_name === 'PANEL') {
+            selected = this.PANEL;
+          } else {
+            const s_name = this.g_info.aes[aes_name];
+            selected = this.Selectors[s_name].selected;
           }
+          values = Array.isArray(selected) ? selected : [selected];
+          values.forEach((value) => {
+            this.selected_arrays.forEach((old_array) => {
+              let new_array = old_array.concat(value);
+              new_arrays.push(new_array);
+            });
+          });
+        }
+        this.selected_arrays = new_arrays;
+      });
+    }
+
+    // Method to prepare data for data-binding
+    prepare_data() {
+      let data;
+      if (this.g_info.data_is_object) {
+        data = {};
+      } else {
+        data = [];
       }
-      var url_nohash=window.location.href.match(/(^[^#]*)/)[0];
-      selector_url=url_nohash.concat(selector_url);
-      return  selector_url;
- };
-  
-  var get_values=function(){
-      // function that is useful to get the selected values
-      var selected_values={}
-      for(var s_name in Selectors){
-          var s_info=Selectors[s_name];
-          var initial_selections = [];
-          if(s_info.type==="single"){
-              initial_selections=[s_info.selected];
+      this.selected_arrays.forEach((value_array) => {
+        let some_data = this.chunk;
+        value_array.forEach((value) => {
+          if (some_data.hasOwnProperty(value)) {
+            some_data = some_data[value];
+          } else {
+            if (this.g_info.data_is_object) {
+              some_data = {};
+            } else {
+              some_data = [];
+            }
           }
-          else{
-          for(var i in s_info.selected) {
-            initial_selections[i] =  s_info.selected[i];
+        });
+        if (this.g_info.data_is_object) {
+          if (Array.isArray(some_data) && some_data.length) {
+            data['0'] = some_data;
+          } else {
+            for (let k in some_data) {
+              data[k] = some_data[k];
+            }
           }
-          }
-          selected_values[s_name]=initial_selections;    
+        } else {
+          data = data.concat(some_data);
+        }
+      });
+      return data;
+    }
+
+    // Initialize styles from g_info params
+    init_styles(g_info) {
+      this.base_opacity = g_info.params.hasOwnProperty('alpha')
+        ? g_info.params.alpha
+        : 1;
+      this.off_opacity = g_info.params.hasOwnProperty('alpha_off')
+        ? g_info.params.alpha_off
+        : this.base_opacity - 0.5;
+
+      this.size = g_info.geom === 'text' ? 12 : 2;
+      this.size = g_info.params.hasOwnProperty('size')
+        ? g_info.params.size
+        : size;
+
+      // stroke_width for geom_point
+      this.stroke_width = g_info.params.hasOwnProperty('stroke')
+        ? g_info.params.stroke
+        : 1; // by default ggplot2 has 0.5, animint has 1
+      this.linetype = g_info.params.linetype || 'solid';
+      this.colour =
+        g_info.geom === 'rect' &&
+        has_clickSelects &&
+        g_info.params.colour === 'transparent'
+          ? 'black'
+          : g_info.params.colour || 'black';
+      this.fill = g_info.params.fill
+        ? g_info.params.fill
+        : g_info.params.colour || this.colour;
+      this.angle = g_info.params.hasOwnProperty('angle')
+        ? g_info.params['angle']
+        : 0;
+      this.text_anchor = g_info.params.hasOwnProperty('anchor')
+        ? g_info.params['anchor']
+        : 'middle';
+    }
+
+    get_alpha(d) {
+      return this.aes.hasOwnProperty('alpha') && d.hasOwnProperty('alpha')
+        ? d['alpha']
+        : this.base_opacity;
+    }
+
+    get_alpha_off(d) {
+      let a;
+      if (
+        this.aes.hasOwnProperty('alpha_off') &&
+        d.hasOwnProperty('alpha_off')
+      ) {
+        a = d['alpha_off'];
+      } else if (this.g_info.params.hasOwnProperty('alpha_off')) {
+        a = this.g_info.params.alpha_off;
+      } else if (
+        this.aes.hasOwnProperty('alpha') &&
+        d.hasOwnProperty('alpha')
+      ) {
+        a = d['alpha'] - 0.5;
+      } else {
+        a = this.off_opacity;
       }
-      return selected_values;
-  };
-  
-  // var counter=-1;    
-  // var update_selector_url = function() {
-  //     var selected_values=get_values();
-  //     var url=value_tostring(selected_values);
-  //     if(counter===-1){
-  //     $(".table_selector_widgets").after("<table style='display:none' class='urltable'><tr class='selectorurl'></tr></table>");
-  //     $(".selectorurl").append("<p>Current URL</p>");
-  //     $(".selectorurl").append("<a href=''></a>");
-  //     counter++;
-  //     }
-  //     $(".selectorurl a").attr("href",url).text(url);
-  // };
+      return a;
+    }
+
+    get_size(d) {
+      return this.aes.hasOwnProperty('size') && d.hasOwnProperty('size')
+        ? d['size']
+        : this.size;
+    }
+
+    get_stroke_width(d) {
+      return this.aes.hasOwnProperty('stroke') && d.hasOwnProperty('stroke')
+        ? d['stroke']
+        : this.stroke_width;
+    }
+
+    get_dasharray(d) {
+      let lt = this.linetype;
+      if (this.aes.hasOwnProperty('linetype') && d.hasOwnProperty('linetype')) {
+        lt = d['linetype'];
+      }
+      return this.linetypesize2dasharray(lt, this.get_size(d));
+    }
+
+    get_angle(d) {
+      let x = this.scales['x'](d['x']);
+      let y = this.scales['y'](d['y']);
+      let angle = d.hasOwnProperty('angle') ? d['angle'] : this.angle;
+      return `rotate(${-angle}, ${x}, ${y})`;
+    }
+
+    get_colour(d) {
+      return d.hasOwnProperty('colour') ? d['colour'] : this.colour;
+    }
+
+    get_colour_off(d) {
+      if (
+        this.aes.hasOwnProperty('colour_off') &&
+        d.hasOwnProperty('colour_off')
+      ) {
+        return d['colour_off'];
+      } else if (this.g_info.params.hasOwnProperty('colour_off')) {
+        return this.g_info.params.colour_off;
+      }
+      return null; // No default `colour_off` value
+    }
+
+    get_fill(d) {
+      return d.hasOwnProperty('fill') ? d['fill'] : this.fill;
+    }
+
+    get_fill_off(d) {
+      if (this.aes.hasOwnProperty('fill_off') && d.hasOwnProperty('fill_off')) {
+        return d['fill_off'];
+      } else if (this.g_info.params.hasOwnProperty('fill_off')) {
+        return this.g_info.params.fill_off;
+      }
+      return null; // No default `fill_off` value
+    }
+
+    get_text_anchor(d) {
+      if (this.text_anchor) {
+        return this.text_anchor;
+      } else if (d.hasOwnProperty('anchor')) {
+        return d['anchor'];
+      }
+      return 'middle';
+    }
+
+    // initialize key and id functions based on g_info
+    init_key_id(g_info) {
+      this.id_fun = (d) => {
+        return d.id;
+      };
+
+      if (g_info.aes.hasOwnProperty('key')) {
+        this.key_fun = (d) => {
+          return d.key;
+        };
+      } else {
+        this.key_fun = null;
+      }
+    }
+
+    // Initialize the selection style function
+    init_select_style() {
+      this.select_style_fun = (g_info, e) => {
+        if (!g_info.select_style.includes('stroke')) {
+          e.style('stroke', this.get_colour);
+        }
+        if (!g_info.select_style.includes('opacity')) {
+          e.style('opacity', this.get_alpha);
+        }
+        if (!g_info.select_style.includes('fill')) {
+          e.style('fill', this.get_fill);
+        }
+      };
+    }
+
+    // Utility function to return scale-aesthetic function
+    toXY(xy, a) {
+      return (d) => {
+        return this.scales[xy](d[a]);
+      };
+    }
+  }
 
   // update scales for the plots that have update_axes option in
   // theme_animint
