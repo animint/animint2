@@ -2123,7 +2123,10 @@ var animint = function (to_select, json_file) {
     }
 
     prepare_special_data() {
-      let keyed_data = {}, one_group, group_id, k;
+      let keyed_data = {},
+        one_group,
+        group_id,
+        k;
       for (group_id in this.data) {
         one_group = this.data[group_id];
         one_row = one_group[0];
@@ -2139,18 +2142,20 @@ var animint = function (to_select, json_file) {
       this.kv = kv_array.map(function (d) {
         d.clickSelects = keyed_data[d.value][0].clickSelects;
         return d;
-      })
+      });
     }
 
     // TODO: Move this to a geom_ribbon subclass method later.
     define_line_type() {
       if (this.g_info.geom === 'ribbon') {
-        this.lineThing = d3.svg.area()
+        this.lineThing = d3.svg
+          .area()
           .x(this.toXY('x', 'x'))
           .y(this.toXY('y', 'ymax'))
           .y0(this.toXY('y', 'ymin'));
       } else {
-        this.lineThing = d3.svg.line()
+        this.lineThing = d3.svg
+          .line()
           .x(this.toXY('x', 'x'))
           .y(this.toXY('y', 'y'));
       }
@@ -2158,17 +2163,65 @@ var animint = function (to_select, json_file) {
 
     // set up the D3 data binding by defining the key_fun and id_fun, and then binding the data kv to the elements.
     setup_data_binding() {
-      this.key_fun = function(group_info) {
+      this.key_fun = function (group_info) {
         return group_info.value;
       };
-    
-      this.id_fun = function(group_info) {
+
+      this.id_fun = function (group_info) {
         var one_group = this.keyed_data[group_info.value];
         var one_row = one_group[0];
         return one_row.id;
       }.bind(this);
-    
+
       this.elements = this.elements.data(this.kv, this.key_fun);
+    }
+
+    // update each individual graphical element('e')
+    define_element_actions() {
+      this.eActions = (e) => {
+        const getGroupAndRow = (group_info) => {
+          const one_group = this.keyed_data[group_info.value];
+          const one_row = one_group[0];
+          return { one_group, one_row };
+        };
+
+        e.attr('d', (d) => {
+          const { one_group } = getGroupAndRow(d);
+          const no_na = one_group.filter((d) => {
+            if (this.g_info.geom === 'ribbon') {
+              return !isNaN(d.x) && !isNaN(d.ymin) && !isNaN(d.ymax);
+            }
+            return !isNaN(d.x) && !isNaN(d.y);
+          });
+          return this.lineThing(no_na);
+        });
+
+        const styleSetter = (group_info) => {
+          const { one_row } = getGroupAndRow(group_info);
+          return {
+            fill: this.g_info.geom === 'line' || this.g_info.geom === 'path' ? 'none' : this.get_fill(one_row),
+            strokeWidth: this.get_size(one_row),
+            stroke: this.get_colour(one_row),
+            strokeDasharray: this.get_dasharray(one_row),
+          };
+        };
+
+        e.each(function (group_info) {
+          const styles = styleSetter(group_info);
+          d3.select(this)
+            .style('fill', styles.fill)
+            .style('stroke-width', styles.strokeWidth)
+            .style('stroke', styles.stroke)
+            .style('stroke-dasharray', styles.strokeDasharray);
+        });
+
+        if (!this.g_info.select_style.includes('opacity')) {
+          e.style('opacity', (group_info) => {
+            const { one_row } = getGroupAndRow(group_info);
+            return this.get_alpha(one_row);
+          });
+        }
+      };
     }
 
     // Utility function to return scale-aesthetic function
