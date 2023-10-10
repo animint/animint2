@@ -2224,6 +2224,30 @@ var animint = function (to_select, json_file) {
       };
     }
 
+    define_link_actions() {
+      this.linkActions = (a_elements) => {
+        a_elements
+          .attr('xlink:href', (group_info) => {
+            const one_group = this.keyed_data[group_info.value];
+            const one_row = one_group[0];
+            return one_row.href;
+          })
+          .attr('target', '_blank')
+          .attr('class', 'geom');
+      };
+    }
+
+    define_simple_link_actions() {
+      this.linkActions = (a_elements) => {
+        a_elements
+          .attr('xlink:href', (d) => {
+            return d.href;
+          })
+          .attr('target', '_blank')
+          .attr('class', 'geom');
+      };
+    }
+
     // Utility function to return scale-aesthetic function
     toXY(xy, a) {
       return (d) => {
