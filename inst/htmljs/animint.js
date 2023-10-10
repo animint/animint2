@@ -2141,6 +2141,19 @@ var animint = function (to_select, json_file) {
       })
     }
 
+    define_line_type() {
+      if (this.g_info.geom === 'ribbon') {
+        this.lineThing = d3.svg.area()
+          .x(this.toXY('x', 'x'))
+          .y(this.toXY('y', 'ymax'))
+          .y0(this.toXY('y', 'ymin'));
+      } else {
+        this.lineThing = d3.svg.line()
+          .x(this.toXY('x', 'x'))
+          .y(this.toXY('y', 'y'));
+      }
+    }
+
     // Utility function to return scale-aesthetic function
     toXY(xy, a) {
       return (d) => {
