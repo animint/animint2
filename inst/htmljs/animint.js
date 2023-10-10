@@ -1880,6 +1880,7 @@ var animint = function (to_select, json_file) {
       if (this.g_info.data_is_object) {
         this.prepare_special_data();
         this.define_line_type();
+        this.setup_data_binding();
         this.define_element_actions();
         this.define_link_actions();
       } else {
@@ -2141,6 +2142,7 @@ var animint = function (to_select, json_file) {
       })
     }
 
+    // TODO: Move this to a geom_ribbon subclass method later.
     define_line_type() {
       if (this.g_info.geom === 'ribbon') {
         this.lineThing = d3.svg.area()
@@ -2152,6 +2154,21 @@ var animint = function (to_select, json_file) {
           .x(this.toXY('x', 'x'))
           .y(this.toXY('y', 'y'));
       }
+    }
+
+    // set up the D3 data binding by defining the key_fun and id_fun, and then binding the data kv to the elements.
+    setup_data_binding() {
+      this.key_fun = function(group_info) {
+        return group_info.value;
+      };
+    
+      this.id_fun = function(group_info) {
+        var one_group = this.keyed_data[group_info.value];
+        var one_row = one_group[0];
+        return one_row.id;
+      }.bind(this);
+    
+      this.elements = this.elements.data(this.kv, this.key_fun);
     }
 
     // Utility function to return scale-aesthetic function
