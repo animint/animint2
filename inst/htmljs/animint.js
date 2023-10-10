@@ -1870,12 +1870,21 @@ var animint = function (to_select, json_file) {
 
       this.selected_arrays = [[]];
       this.handle_subset_order();
-      this.prepare_data();
+      this.data = this.prepare_data();
       this.Selectors = Selectors;
 
       this.init_styles(g_info);
       this.init_key_id(g_info);
       this.init_select_style();
+
+      if (this.g_info.data_is_object) {
+        this.prepare_special_data();
+        this.define_line_type();
+        this.define_element_actions();
+        this.define_link_actions();
+      } else {
+        this.define_simple_link_actions();
+      }
     }
 
     // Method to handle subset_order and selected_arrays
@@ -2110,6 +2119,26 @@ var animint = function (to_select, json_file) {
           e.style('fill', this.get_fill);
         }
       };
+    }
+
+    prepare_special_data() {
+      let keyed_data = {}, one_group, group_id, k;
+      for (group_id in this.data) {
+        one_group = this.data[group_id];
+        one_row = one_group[0];
+        if (one_row.hasOwnProperty('key')) {
+          k = one_row.key;
+        } else {
+          k = group_id;
+        }
+        keyed_data[k] = one_group;
+      }
+
+      let kv_array = d3.entries(d3.keys(keyed_data));
+      this.kv = kv_array.map(function (d) {
+        d.clickSelects = keyed_data[d.value][0].clickSelects;
+        return d;
+      })
     }
 
     // Utility function to return scale-aesthetic function
