@@ -100,14 +100,16 @@ initial_commit <- function(tmp_dir, repo) {
   gert::git_add("README.md", repo = repo)
   gert::git_commit("Initial commit", repo = repo)
   all_branches <- gert::git_branch(repo)
-  print(all_branches)
+  # check if it is a data frame or an atomic vector
   if (is.data.frame(all_branches)) {
     current_master <- all_branches$name[all_branches$active]
   } else {
     current_master <- all_branches
   }
-  print(current_master)
-  gert::git_branch_move(branch = current_master, new_branch = "main", repo = repo)
+  # do not attempt to rename a branch to "main" when a branch with that name already exists
+  if (current_master != "main" && !"main" %in% all_branches$name) {
+    gert::git_branch_move(branch = current_master, new_branch = "main", repo = repo)
+  }
   gert::git_push(repo = repo, remote = "origin", set_upstream = TRUE)
 }
 
