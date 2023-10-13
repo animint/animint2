@@ -99,7 +99,15 @@ initial_commit <- function(tmp_dir, repo) {
   writeLines("## New animint visualization", readme_file_path)
   gert::git_add("README.md", repo = repo)
   gert::git_commit("Initial commit", repo = repo)
-  gert::git_branch_move(branch = "master", new_branch = "main", repo = repo)
+  all_branches <- gert::git_branch(repo)
+  print(all_branches)
+  if (is.data.frame(all_branches)) {
+    current_master <- all_branches$name[all_branches$active]
+  } else {
+    current_master <- all_branches
+  }
+  print(current_master)
+  gert::git_branch_move(branch = current_master, new_branch = "main", repo = repo)
   gert::git_push(repo = repo, remote = "origin", set_upstream = TRUE)
 }
 
