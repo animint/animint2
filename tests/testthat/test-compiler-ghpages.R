@@ -2,7 +2,7 @@ acontext("GitHub Pages")
 
 Sys.setenv(GITHUB_PAT = Sys.getenv("GITHUB_PAT"))
 
-plot <- ggplot(data.frame(x = 1:10), aes(x)) +
+plot <- ggplot(data.frame(x = 1:10, y = 1:10), aes(x, y)) +
   geom_point()
 
 test_that("animint2pages() returns an object of class 'git_repository'", {
