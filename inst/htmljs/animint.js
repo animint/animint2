@@ -895,7 +895,7 @@ var animint = function (to_select, json_file) {
     var p_name = g_names[g_names.length - 1];
     var panels = Plots[p_name].layout.PANEL;
     panels.forEach(function(panel) {
-      draw_geom(g_info, chunk, selector_name, panel);
+      var geomInstance = new Geom(g_info, chunk, selector_name, panel, SVGs, Plots, Selectors);
     });
   };
 
@@ -1003,16 +1003,6 @@ var animint = function (to_select, json_file) {
       this.init_styles(g_info);
       this.init_key_id(g_info);
       this.init_select_style();
-
-      if (this.g_info.data_is_object) {
-        this.prepare_special_data();
-        this.define_line_type();
-        this.setup_data_binding();
-        this.define_element_actions();
-        this.define_link_actions();
-      } else {
-        this.define_simple_link_actions();
-      }
     }
 
     // Method to handle subset_order and selected_arrays
