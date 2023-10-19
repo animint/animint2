@@ -997,7 +997,6 @@ var animint = function (to_select, json_file) {
 
       this.selected_arrays = [[]];
       this.handle_subset_order();
-      this.data = this.prepare_data();
       this.Selectors = Selectors;
 
       this.init_styles(g_info);
@@ -1047,40 +1046,41 @@ var animint = function (to_select, json_file) {
     }
 
     // Method to prepare data for data-binding
-    prepare_data() {
-      let data;
-      if (this.g_info.data_is_object) {
-        data = {};
-      } else {
-        data = [];
-      }
-      this.selected_arrays.forEach((value_array) => {
-        let some_data = this.chunk;
-        value_array.forEach((value) => {
-          if (some_data.hasOwnProperty(value)) {
-            some_data = some_data[value];
-          } else {
-            if (this.g_info.data_is_object) {
-              some_data = {};
-            } else {
-              some_data = [];
-            }
-          }
-        });
-        if (this.g_info.data_is_object) {
-          if (Array.isArray(some_data) && some_data.length) {
-            data['0'] = some_data;
-          } else {
-            for (let k in some_data) {
-              data[k] = some_data[k];
-            }
-          }
-        } else {
-          data = data.concat(some_data);
-        }
-      });
-      return data;
-    }
+    // TODO: this method should be in GroupGeom/UngroupGeom subclass
+    //prepare_data() {
+    //  let data;
+    //  if (this.g_info.data_is_object) {
+    //    data = {};
+    //  } else {
+    //    data = [];
+    //  }
+    //  this.selected_arrays.forEach((value_array) => {
+    //    let some_data = this.chunk;
+    //    value_array.forEach((value) => {
+    //      if (some_data.hasOwnProperty(value)) {
+    //        some_data = some_data[value];
+    //      } else {
+    //        if (this.g_info.data_is_object) {
+    //          some_data = {};
+    //        } else {
+    //          some_data = [];
+    //        }
+    //      }
+    //    });
+    //    if (this.g_info.data_is_object) {
+    //      if (Array.isArray(some_data) && some_data.length) {
+    //        data['0'] = some_data;
+    //      } else {
+    //        for (let k in some_data) {
+    //          data[k] = some_data[k];
+    //        }
+    //      }
+    //    } else {
+    //      data = data.concat(some_data);
+    //    }
+    //  });
+    //  return data;
+    //}
 
     // Initialize styles from g_info params
     init_styles(g_info) {
@@ -1294,6 +1294,7 @@ var animint = function (to_select, json_file) {
     }
 
     // update each individual graphical element('e')
+    // TODO: move styleSetter group geom into specific subclass
     define_element_actions() {
       this.eActions = (e) => {
         const getGroupAndRow = (group_info) => {
@@ -1372,6 +1373,53 @@ var animint = function (to_select, json_file) {
       };
     }
   }
+
+    class GroupGeom extends Geom {
+        constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
+            super(g_info, chunk, Selector_name, PANEL, SVGs, Plots, Selectors);
+            this.data = this.prepare_data();
+        }
+
+        // this.g_info.data_is_object == true, line/path/ribbon/polygon
+        prepare_data() {
+            let data = {};
+
+            this.selected_arrays.forEach((value_array) => {
+                let some_data = this.chunk;
+                for (const value of value_array) {
+                    some_data = some_data.hasOwnProperty(value) ? some_data[value] : {};
+                }
+
+                if (Array.isArray(some_data) && some_data.length) {
+                    data['0'] = some_data; // If some_data is an array and not empty, assign to key '0'
+                } else {
+                    data = { ...data, ...some_data }; // merge keys and values into the data object
+                }
+
+            });
+            return data;
+        }
+    }
+
+    class UngroupGeom extends Geom {
+        constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
+            super(g_info, chunk, Selector_name, PANEL, SVGs, Plots, Selectors);
+            this.data = this.prepare_data();
+        }
+
+        // this.g_info.data_is_object == false
+        prepare_data() {
+            let data = [];
+            this.selected_arrays.forEach((value_array) => {
+                let some_data = this.chunk;
+                for (const value of value_array) {
+                    some_data = some_data.hasOwnProperty(value) ? some_data[value] : [];
+                }
+                data = data.concat(some_data);
+            });
+            return data;
+        }
+    }
 
   // update scales for the plots that have update_axes option in
   // theme_animint
