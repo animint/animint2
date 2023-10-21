@@ -1384,6 +1384,15 @@ var animint = function (to_select, json_file) {
         constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
             super(g_info, chunk, Selector_name, PANEL, SVGs, Plots, Selectors);
             this.data = this.prepare_data();
+            this.keyed_data = this.prepare_keyed_data();
+
+            this.kv = d3.entries(d3.keys(this.keyed_data)).map(d => {
+                d.clickSelects = this.keyed_data[d.value][0].clickSelects;
+                return d;
+            });
+
+            // TODO: g_info.geom == 'ribbon' logic should be moved to GeomRibbon subclass
+            this.lineThing = d3.svg.line().x(toXY('x', 'x')).y(toXY('y', 'y'));
         }
 
         // this.g_info.data_is_object == true, line/path/ribbon/polygon
@@ -1405,6 +1414,21 @@ var animint = function (to_select, json_file) {
             });
             return data;
         }
+
+        prepare_keyed_data() {
+            let keyed_data = {};
+
+            for (let group_id in this.data) {
+                const one_group = this.data[group_id];
+                const one_row = one_group[0];
+                let k = one_row.hasOwnProperty('key') ? one_row.key : group_id;
+                keyed_data[k] = one_group;
+            }
+            return keyed_data;
+        }
+
+        // select the correct group before returning anything.
+        // TODO: move the `setup_data_binding()` in the superclass to here
     }
 
     class UngroupGeom extends Geom {
