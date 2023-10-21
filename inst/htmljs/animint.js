@@ -985,9 +985,12 @@ var animint = function (to_select, json_file) {
       const p_name = g_names[g_names.length - 1];
       this.scales = Plots[p_name].scales[this.PANEL];
 
-      this.layer_g_element = this.svg.select('g.' + g_info.classed);
-      this.panel_g_element = this.layer_g_element.select('g.PANEL' + PANEL);
-      this.elements = this.panel_g_element.selectAll('.geom');
+      this.elements = this.svg.select('g.' + this.g_info.classed)
+            .select('g.PANEL' + this.PANEL)
+            .selectAll('.geom');
+
+      // aesthetic
+      this.aes = this.g_info.aes;
 
       // selection features
       this.has_clickSelects = this.g_info.aes.hasOwnProperty('clickSelects');
@@ -1090,7 +1093,8 @@ var animint = function (to_select, json_file) {
       this.off_opacity = g_info.params.hasOwnProperty('alpha_off')
         ? g_info.params.alpha_off
         : this.base_opacity - 0.5;
-
+      
+      // TODO: the below should be moved to GeomText subclass
       this.size = g_info.geom === 'text' ? 12 : 2;
       this.size = g_info.params.hasOwnProperty('size')
         ? g_info.params.size
@@ -1101,6 +1105,8 @@ var animint = function (to_select, json_file) {
         ? g_info.params.stroke
         : 1; // by default ggplot2 has 0.5, animint has 1
       this.linetype = g_info.params.linetype || 'solid';
+      
+      // TODO: the below should be moved to GeomRect subclass
       this.colour =
         g_info.geom === 'rect' &&
         has_clickSelects &&
