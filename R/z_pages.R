@@ -99,15 +99,17 @@ initial_commit <- function(tmp_dir, repo) {
   writeLines("## New animint visualization", readme_file_path)
   gert::git_add("README.md", repo = repo)
   gert::git_commit("Initial commit", repo = repo)
-  all_branches <- gert::git_branch(repo)
+  df_or_vec <- gert::git_branch(repo)
   # check if it is a data frame or an atomic vector
-  if (is.data.frame(all_branches)) {
-    current_master <- all_branches$name[all_branches$active]
+  if (is.data.frame(df_or_vec)) {
+    all_branches <- df_or_vec[["name"]]
+    current_master <- all_branches[df_or_vec$active]
   } else {
-    current_master <- all_branches
+    all_branches <- df_or_vec
+    current_master <- df_or_vec
   }
   # do not attempt to rename a branch to "main" when a branch with that name already exists
-  if (current_master != "main" && !"main" %in% all_branches$name) {
+  if (current_master != "main" && !"main" %in% all_branches) {
     gert::git_branch_move(branch = current_master, new_branch = "main", repo = repo)
   }
   gert::git_push(repo = repo, remote = "origin", set_upstream = TRUE)
