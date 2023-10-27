@@ -2258,7 +2258,12 @@ var animint = function (to_select, json_file) {
     // Widgets at bottom of page
     ////////////////////////////////////////////
     element.append("br");
-      
+    if(response.hasOwnProperty("source")){
+      element.append("a")
+	.attr("id","a_source_href")
+	.attr("href", response.source)
+	.text("source");
+    }
     // loading table.
     var show_hide_table = element.append("button")
       .text("Show download status table");
