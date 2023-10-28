@@ -1,3 +1,12 @@
+# Changes in 2023.10.27
+
+- New function `animint2pages(viz,"new_github_repo")` for
+  publishing/sharing animints, replacement for animint2gist, which
+  stopped working recently.
+- New option `animint(source="http://path.to/source.R")` which should
+  be the URL of data viz source code, used to display a link at the
+  below the rendered viz.
+
 # Changes in 2023.6.11
 
 - Remove maptools dependency.
