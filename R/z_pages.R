@@ -67,9 +67,15 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
     }
   )
 
+  # Raise error if github_repo contains '/'
+  if (grepl("/", github_repo)) {
+    stop("The github_repo argument should not contain '/'.")
+  }
+  
   # Check for existing repository
   whoami <- suppressMessages(gh::gh_whoami())
   owner <- whoami$login
+  
   if (!check_no_github_repo(owner, github_repo)) {
     create <- gh::gh("POST /user/repos", name = github_repo, private = private)
     origin_url <- create$clone_url
