@@ -41,7 +41,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   # Check for required packages
   for(pkg in c("gert", "gh")){
     if (!requireNamespace(pkg)) {
-      stop(sprinft("Please run `install.packages('%s')` before using this function", pkg))
+      stop(sprintf("Please run `install.packages('%s')` before using this function", pkg))
     }
   }
 
