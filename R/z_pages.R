@@ -80,23 +80,28 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
     repo <- gert::git_clone(origin_url, tmp_dir)
   }
 
+  viz_url <- paste0("https://", whoami$login, ".github.io/", github_repo)
   if (length(git2r::commits(repo)) == 0) {
-    initial_commit(tmp_dir, repo)
+    initial_commit(tmp_dir, repo, viz_url)
   }
 
   # Handle gh-pages branch
   manage_gh_pages(repo, to_post, tmp_dir, commit_message)
   message(
-    "Visualization will be available at https://", whoami$login, ".github.io/", github_repo,
+    "Visualization will be available at ", viz_url,
     "\nDeployment via GitHub Pages may take a few minutes..."
   )
 
   repo
 }
 
-initial_commit <- function(tmp_dir, repo) {
+initial_commit <- function(tmp_dir, repo, viz_url) {
   readme_file_path <- file.path(tmp_dir, "README.md")
-  writeLines("## New animint visualization", readme_file_path)
+  header <- "## New animint visualization\n"
+  url_hyperlink <- sprintf("[%s](%s)\n", viz_url, viz_url)
+  full_content <- paste0(header, url_hyperlink)
+  writeLines(full_content, readme_file_path)
+
   gert::git_add("README.md", repo = repo)
   gert::git_commit("Initial commit", repo = repo)
   df_or_vec <- gert::git_branch(repo)
