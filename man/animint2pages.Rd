@@ -9,6 +9,7 @@ animint2pages(
   github_repo,
   commit_message = "Commit from animint2pages",
   private = FALSE,
+  required_opts = c("title", "source"),
   ...
 )
 }
@@ -20,6 +21,8 @@ animint2pages(
 \item{commit_message}{A string specifying the commit message for the pushed files.}
 
 \item{private}{A logical flag indicating whether the GitHub repository should be private or not.}
+
+\item{required_opts}{Character vector of plot.list element names which are checked (stop with an error if not present). Use required_opts=NULL to skip check.}
 
 \item{...}{Additional options passed onto \code{animint2dir}.}
 }
@@ -40,7 +43,11 @@ p1 <- ggplot(mtcars, aes(x = mpg, y = wt)) +
 p2 <- ggplot(mtcars, aes(x = hp, y = wt)) +
   geom_point()
 viz <- list(plot1 = p1, plot2 = p2)
-animint2pages(viz, github_repo = "my_animint2_plots", commit_message = "New animint", private = TRUE)
+animint2pages(
+  viz,
+  github_repo = "my_animint2_plots",
+  commit_message = "New animint",
+  private = TRUE)
 }
 
 }

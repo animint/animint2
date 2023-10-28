@@ -9,6 +9,7 @@
 #' @param github_repo The name of the GitHub repository to which the files will be pushed.
 #' @param commit_message A string specifying the commit message for the pushed files.
 #' @param private A logical flag indicating whether the GitHub repository should be private or not.
+#' @param required_opts Character vector of plot.list element names which are checked (stop with an error if not present). Use required_opts=NULL to skip check.
 #' @param ... Additional options passed onto \code{animint2dir}.
 #'
 #' @return The function returns the initialized GitHub repository object.
@@ -21,19 +22,27 @@
 #' p2 <- ggplot(mtcars, aes(x = hp, y = wt)) +
 #'   geom_point()
 #' viz <- list(plot1 = p1, plot2 = p2)
-#' animint2pages(viz, github_repo = "my_animint2_plots", commit_message = "New animint", private = TRUE)
+#' animint2pages(
+#'   viz,
+#'   github_repo = "my_animint2_plots",
+#'   commit_message = "New animint",
+#'   private = TRUE)
 #' }
 #'
 #' @export
-animint2pages <- function(plot.list, github_repo, commit_message = "Commit from animint2pages", private = FALSE, ...) {
+animint2pages <- function(plot.list, github_repo, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), ...) {
 
-  # Check for required packages
-  if (!requireNamespace("gert")) {
-    stop("Please run `install.packages('gert')` before using this function")
+  for(opt in required_opts){
+    if(!opt %in% names(plot.list)){
+      stop(sprintf("plot.list does not contain option named %s, which is required by animint2pages", opt))
+    }
   }
 
-  if (!requireNamespace("gh")) {
-    stop("Please run `install.packages('gh')` before using this function")
+  # Check for required packages
+  for(pkg in c("gert", "gh")){
+    if (!requireNamespace(pkg)) {
+      stop(sprinft("Please run `install.packages('%s')` before using this function", pkg))
+    }
   }
 
   # Generate plot files
