@@ -3,6 +3,7 @@ acontext("colour_off, color_off")
 #
 # test geom without fill style
 #
+economics_long <- dplyr::ungroup(economics_long)
 g1 <- ggplot()+
 geom_line(data=economics_long, 
   aes(x=date, y=value01, group = variable),
