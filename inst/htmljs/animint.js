@@ -989,14 +989,15 @@ var animint = function (to_select, json_file) {
             .select('g.PANEL' + this.PANEL)
             .selectAll('.geom');
 
-      // aesthetic
-      this.aes = this.g_info.aes;
 
       // selection features
       this.has_clickSelects = this.g_info.aes.hasOwnProperty('clickSelects');
       this.has_clickSelects_variable = this.g_info.aes.hasOwnProperty(
         'clickSelects.variable'
-      );
+        );
+
+      // aesthetic
+        this.aes = this.g_info.aes;
 
       this.selected_arrays = [[]];
       this.handle_subset_order();
@@ -1049,41 +1050,7 @@ var animint = function (to_select, json_file) {
     }
 
     // Method to prepare data for data-binding
-    // TODO: this method should be in GroupGeom/UngroupGeom subclass
-    //prepare_data() {
-    //  let data;
-    //  if (this.g_info.data_is_object) {
-    //    data = {};
-    //  } else {
-    //    data = [];
-    //  }
-    //  this.selected_arrays.forEach((value_array) => {
-    //    let some_data = this.chunk;
-    //    value_array.forEach((value) => {
-    //      if (some_data.hasOwnProperty(value)) {
-    //        some_data = some_data[value];
-    //      } else {
-    //        if (this.g_info.data_is_object) {
-    //          some_data = {};
-    //        } else {
-    //          some_data = [];
-    //        }
-    //      }
-    //    });
-    //    if (this.g_info.data_is_object) {
-    //      if (Array.isArray(some_data) && some_data.length) {
-    //        data['0'] = some_data;
-    //      } else {
-    //        for (let k in some_data) {
-    //          data[k] = some_data[k];
-    //        }
-    //      }
-    //    } else {
-    //      data = data.concat(some_data);
-    //    }
-    //  });
-    //  return data;
-    //}
+    // TODO: this method should be in GroupGeom/UngroupGeom subclass (done)
 
     // Initialize styles from g_info params
     init_styles(g_info) {
@@ -1093,8 +1060,8 @@ var animint = function (to_select, json_file) {
       this.off_opacity = g_info.params.hasOwnProperty('alpha_off')
         ? g_info.params.alpha_off
         : this.base_opacity - 0.5;
-      
-      // TODO: the below should be moved to GeomText subclass
+
+        // TODO: the below line should be moved to GeomText subclass
       this.size = g_info.geom === 'text' ? 12 : 2;
       this.size = g_info.params.hasOwnProperty('size')
         ? g_info.params.size
@@ -1104,8 +1071,8 @@ var animint = function (to_select, json_file) {
       this.stroke_width = g_info.params.hasOwnProperty('stroke')
         ? g_info.params.stroke
         : 1; // by default ggplot2 has 0.5, animint has 1
-      this.linetype = g_info.params.linetype || 'solid';
-      
+        this.linetype = g_info.params.linetype || 'solid';
+
       // TODO: the below should be moved to GeomRect subclass
       this.colour =
         g_info.geom === 'rect' &&
@@ -1284,21 +1251,6 @@ var animint = function (to_select, json_file) {
       }
     }
 
-    // set up the D3 data binding by defining the key_fun and id_fun, and then binding the data kv to the elements.
-    setup_data_binding() {
-      this.key_fun = function (group_info) {
-        return group_info.value;
-      };
-
-      this.id_fun = function (group_info) {
-        var one_group = this.keyed_data[group_info.value];
-        var one_row = one_group[0];
-        return one_row.id;
-      }.bind(this);
-
-      this.elements = this.elements.data(this.kv, this.key_fun);
-    }
-
     // update each individual graphical element('e')
     // TODO: move styleSetter group geom into specific subclass
     define_element_actions() {
@@ -1391,8 +1343,9 @@ var animint = function (to_select, json_file) {
                 return d;
             });
 
-            // TODO: g_info.geom == 'ribbon' logic should be moved to GeomRibbon subclass
+            // TODO: g_info.geom == 'ribbon' logic should be moved to GeomRibbon subclass (done)
             this.lineThing = d3.svg.line().x(toXY('x', 'x')).y(toXY('y', 'y'));
+
         }
 
         // this.g_info.data_is_object == true, line/path/ribbon/polygon
@@ -1428,7 +1381,104 @@ var animint = function (to_select, json_file) {
         }
 
         // select the correct group before returning anything.
-        // TODO: move the `setup_data_binding()` in the superclass to here
+        // TODO: move the `setup_data_binding()` in the superclass to here (done)
+        // set up the D3 data binding by defining the key_fun and id_fun, and then binding the data kv to the elements.
+        setup_data_binding() {
+            this.key_fun = function (group_info) {
+                return group_info.value;
+            };
+
+            this.id_fun = function (group_info) {
+                var one_group = this.keyed_data[group_info.value];
+                var one_row = one_group[0];
+                return one_row.id;
+            }.bind(this);
+
+            this.elements = this.elements.data(this.kv, this.key_fun);
+            this.linkActions = function (a_elements) {
+                a_elements
+                    .attr('xlink:href', function (group_info) {
+                        var one_group = keyed_data[group_info.value];
+                        var one_row = one_group[0];
+                        return one_row.href;
+                    })
+                    .attr('target', '_blank')
+                    .attr('class', 'geom');
+            };
+            this.eActions = function (e) {
+                e.attr('d', function (d) {
+                    var one_group = keyed_data[d.value];
+                    // filter NaN since they make the whole line disappear!
+                    var no_na = one_group.filter(function (d) {
+                        if (g_info.geom == 'ribbon') {
+                            return !isNaN(d.x) && !isNaN(d.ymin) && !isNaN(d.ymax);
+                        } else {
+                            return !isNaN(d.x) && !isNaN(d.y);
+                        }
+                    });
+                    return this.lineThing(no_na);
+                })
+                    .style('fill', function (group_info) {
+                        if (g_info.geom == 'line' || g_info.geom == 'path') {
+                            return 'none';
+                        }
+                        var one_group = keyed_data[group_info.value];
+                        var one_row = one_group[0];
+                        // take color for first value in the group
+                        return this.get_fill(one_row);
+                    })
+                    .style('stroke-width', function (group_info) {
+                        var one_group = keyed_data[group_info.value];
+                        var one_row = one_group[0];
+                        // take size for first value in the group
+                        return this.get_size(one_row);
+                    })
+                    .style('stroke', function (group_info) {
+                        var one_group = keyed_data[group_info.value];
+                        var one_row = one_group[0];
+                        // take color for first value in the group
+                        // Since line/path geom are using group to draw,
+                        // so it is different from other geom
+                        // and cannot call select_style_fun function here
+                        if (
+                            (has_clickSelects || has_clickSelects_variable) &&
+                            g_info.select_style.includes('stroke')
+                        ) {
+                            const v_name =
+                                g_info.aes['clickSelects.variable'] ||
+                                g_info.aes['clickSelects'];
+                            const s_info = Selectors[v_name];
+                            if (s_info.selected == one_row.clickSelects) {
+                                return get_colour(one_row);
+                            } else {
+                                return get_colour_off(one_row);
+                            }
+                        }
+                        return this.get_colour(one_row);
+                    })
+                    .style('stroke-dasharray', function (group_info) {
+                        var one_group = keyed_data[group_info.value];
+                        var one_row = one_group[0];
+                        // take linetype for first value in the group
+                        return this.get_dasharray(one_row);
+                    })
+                    .style('stroke-width', function (group_info) {
+                        var one_group = keyed_data[group_info.value];
+                        var one_row = one_group[0];
+                        // take line size for first value in the group
+                        return this.get_size(one_row);
+                    });
+                if (!g_info.select_style.includes('opacity')) {
+                    e.style('opacity', function (group_info) {
+                        var one_group = keyed_data[group_info.value];
+                        var one_row = one_group[0];
+                        // take line size for first value in the group
+                        return this.get_alpha(one_row);
+                    });
+                }
+            };
+            this.eAppend = 'path';
+        }
     }
 
     class UngroupGeom extends Geom {
@@ -1448,6 +1498,18 @@ var animint = function (to_select, json_file) {
                 data = data.concat(some_data);
             });
             return data;
+        }
+    }
+
+    class GeomRibbon extends GroupGeom {
+        constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
+            super(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors);
+
+            this.lineThing = d3.svg
+                .area()
+                .x(toXY('x', 'x'))
+                .y(toXY('y', 'ymax'))
+                .y0(toXY('y', 'ymin'));
         }
     }
 
