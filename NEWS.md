@@ -6,6 +6,12 @@
 - New option `animint(source="http://path.to/source.R")` which should
   be the URL of data viz source code, used to display a link at the
   below the rendered viz.
+- New function `update_gallery("path/to/gallery_repo")` for updating
+  galleries such as https://animint.github.io/gallery/
+  
+# Changes in 2023.10.6
+
+- User-configurable selection style - fill_off.
 
 # Changes in 2023.6.11
 
@@ -21,9 +27,6 @@
 # Changes in 2022.9.14
 
 - Include Yufan Fei as contributor in DESCRIPTION.
-
-# Changes in 2022.9.14
-
 - Allow configurable legend/axis text size via theme.
 
 # Changes in 2022.8.31

@@ -307,7 +307,7 @@ Geom <- gganimintproto("Geom",
     g.data <- processed_values$g.data
 
     ## Check g.data for color/fill - convert to hexadecimal so JS can parse correctly.
-    for(color.var in c("colour", "color", "fill", "colour_off", "color_off")){
+    for(color.var in c("colour", "color", "fill", "colour_off", "color_off", "fill_off")){
       if(color.var %in% names(g.data)){
         g.data[,color.var] <- toRGB(g.data[,color.var])
       }
@@ -329,6 +329,14 @@ Geom <- gganimintproto("Geom",
       off.vec <- grep( "_off$", names(g$params), value = TRUE)
       warning(sprintf("%s has %s which is not used because this geom has no clickSelects; please specify clickSelects or remove %s",
       g$classed, paste(off.vec, collapse=", "), paste(off.vec, collapse=", ")))
+    }
+
+    ## raise warning for geoms does not support fill
+    has.fill.off <- any(names(g$params) == "fill_off")
+    no.fill.geom <- c("path", "line", "segment", "linerange", "hline", "vline")
+    if (g$geom %in% no.fill.geom && has.fill.off) {
+      g$params <- g$params[!names(g$params) %in% "fill_off"]
+      warning(sprintf("%s has fill_off which is not supported.", g$classed))
     }
     ## TODO: coord_transform maybe won't work for
     ## geom_dotplot|rect|segment and polar/log transformations, which
