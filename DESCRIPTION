@@ -270,7 +270,6 @@ Collate:
     'z_animintHelpers.R'
     'z_facets.R'
     'z_geoms.R'
-    'z_gist.R'
     'z_helperFunctions.R'
     'z_knitr.R'
     'z_pages.R'
