@@ -207,7 +207,7 @@ update_gallery <- function(gallery_path="~/R/gallery"){
   add.POSIXct <- Sys.time()
   for(viz_user_repo in todo.meta[["viz_user_repo"]]){
     tryCatch({
-      meta.row <- data.table(add.POSIXct, get_repo_row(viz_user_repo))
+      meta.row <- data.table(add.POSIXct, get_pages_info(viz_user_repo))
       meta.dt.list[[viz_user_repo]] <- meta.row
       Capture.PNG <- meta.row[["Capture.PNG"]]
       repo.png <- file.path(
