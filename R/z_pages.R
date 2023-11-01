@@ -96,7 +96,17 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   }
 
   viz_url <- paste0("https://", whoami$login, ".github.io/", github_repo)
-  if (length(git2r::commits(repo)) == 0) {
+  # check if repo has commit, if not, give it first commit, this can avoid error
+  has_commits <- FALSE
+  try(
+    {
+      if (nrow(gert::git_log(repo = repo)) > 0) {
+        has_commits <- TRUE
+      }
+    },
+    silent = TRUE
+  )
+  if (!has_commits) {
     initial_commit(tmp_dir, repo, viz_url)
   }
 
