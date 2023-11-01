@@ -141,3 +141,83 @@ check_no_github_repo <- function(owner, repo) {
     "http_error_404" = function(err) FALSE
   )
 }
+
+get_pages_info <- function(viz_user_repo){
+  viz_dir <- tempfile()
+  origin_url <- paste0("https://github.com/", viz_user_repo, ".git")
+  gert::git_clone(origin_url, viz_dir)
+  gert::git_branch_checkout("gh-pages", repo=viz_dir)
+  Capture.PNG <- file.path(viz_dir, "Capture.PNG")
+  if(!file.exists(Capture.PNG)){
+    stop(sprintf("gh-pages branch of %s should contain file named Capture.PNG (screenshot of data viz)", viz_user_repo))
+  }
+  plot.json <- file.path(viz_dir, "plot.json")
+  jlist <- RJSONIO::fromJSON(plot.json)
+  commit.row <- gert::git_log(max=1, repo=viz_dir)
+  repo.row <- data.table(
+    viz_user_repo, Capture.PNG, commit.POSIXct=commit.row$time)
+  to.check <- c(
+    source="URL of data viz source code",
+    title="string describing the data viz")
+  for(attr.name in names(to.check)){
+    attr.value <- jlist[[attr.name]]
+    if(
+      is.character(attr.value)
+      && length(attr.value)==1
+      && !is.na(attr.value)
+      && nchar(attr.value)>0
+    ){
+      set(repo.row, j=attr.name, value=attr.value)
+    }else{
+      stop(sprintf("plot.json file in gh-pages branch of %s should have element named %s which should be %s", viz_user_repo, attr.name, to.check[[attr.name]]))
+    }
+  }
+  repo.row
+}
+
+##' A gallery is a collection of animints that have been published to
+##' github pages. First repos.txt is read, then we clone each repo
+##' which is not already present in meta.csv, and parse meta-data
+##' (title, source, Capture.PNG) from the gh-pages branch, and
+##' write/commit the data, re-render index.Rmd in gallery, and push
+##' gallery to origin.
+##' @title Update gallery
+##' @param gallery_path path to local github repo with gh-pages active.
+##' @return named list of data tables (meta and error).
+##' @author Toby Dylan Hocking
+##' @export
+update_gallery <- function(gallery_path="~/R/gallery"){
+  repos.txt <- file.path(gallery_path, "repos.txt")
+  repos.dt <- fread(repos.txt,header=FALSE,col.names="viz_user_repo")
+  meta.csv <- file.path(gallery_path, "meta.csv")
+  old.meta <- fread(meta.csv)
+  todo.meta <- repos.dt[!old.meta, on="viz_user_repo"]
+  meta.dt.list <- list(old.meta)
+  error.dt.list <- list()
+  add.POSIXct <- Sys.time()
+  for(viz_user_repo in todo.meta[["viz_user_repo"]]){
+    tryCatch({
+      meta.row <- data.table(add.POSIXct, get_repo_row(viz_user_repo))
+      meta.dt.list[[viz_user_repo]] <- meta.row
+      Capture.PNG <- meta.row[["Capture.PNG"]]
+      repo.png <- file.path(
+        gallery_path, "repos", paste0(viz_user_repo, ".png"))
+      user.dir <- dirname(repo.png)
+      dir.create(user.dir, showWarnings = FALSE, recursive = TRUE)
+      file.copy(Capture.PNG, repo.png, overwrite = TRUE)
+    }, error=function(e){
+      error.dt.list[[viz_user_repo]] <<- data.table(
+        add.POSIXct, viz_user_repo, error=e$message)
+    })
+  }
+  (meta.dt <- rbindlist(meta.dt.list))
+  (error.dt <- rbindlist(error.dt.list))
+  fwrite(meta.dt, meta.csv)
+  fwrite(error.dt, file.path(gallery_path, "error.csv"))
+  rmarkdown::render(file.path(gallery_path, "index.Rmd"))
+  to_add <- c("*.csv", file.path("repos","*","*.png"), "index.html")
+  gert::git_add(to_add, repo=gallery_path)
+  gert::git_commit(paste("update", add.POSIXct), repo=gallery_path)
+  gert::git_push("origin", repo=gallery_path)
+  list(meta=meta.dt, error=error.dt)
+}
