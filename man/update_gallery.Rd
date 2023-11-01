@@ -7,7 +7,8 @@
 update_gallery(gallery_path = "~/R/gallery")
 }
 \arguments{
-\item{gallery_path}{path to local github repo with gh-pages active.}
+\item{gallery_path}{path to local github repo with gh-pages
+active.}
 }
 \value{
 named list of data tables (meta and error).
@@ -18,7 +19,9 @@ github pages. First repos.txt is read, then we clone each repo
 which is not already present in meta.csv, and parse meta-data
 (title, source, Capture.PNG) from the gh-pages branch, and
 write/commit the data, re-render index.Rmd in gallery, and push
-gallery to origin.
+gallery to origin. See
+\url{https://github.com/animint/gallery/tree/gh-pages} which is
+the main gallery which is updated using this function.
 }
 \author{
 Toby Dylan Hocking

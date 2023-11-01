@@ -190,9 +190,12 @@ get_pages_info <- function(viz_user_repo){
 ##' which is not already present in meta.csv, and parse meta-data
 ##' (title, source, Capture.PNG) from the gh-pages branch, and
 ##' write/commit the data, re-render index.Rmd in gallery, and push
-##' gallery to origin.
+##' gallery to origin. See
+##' \url{https://github.com/animint/gallery/tree/gh-pages} which is
+##' the main gallery which is updated using this function.
 ##' @title Update gallery
-##' @param gallery_path path to local github repo with gh-pages active.
+##' @param gallery_path path to local github repo with gh-pages
+##'   active.
 ##' @return named list of data tables (meta and error).
 ##' @author Toby Dylan Hocking
 ##' @export
@@ -225,7 +228,8 @@ update_gallery <- function(gallery_path="~/R/gallery"){
   fwrite(meta.dt, meta.csv)
   fwrite(error.dt, file.path(gallery_path, "error.csv"))
   rmarkdown::render(file.path(gallery_path, "index.Rmd"))
-  to_add <- c("*.csv", file.path("repos","*","*.png"), "index.html")
+  to_add <- c(
+    "*.csv", file.path("repos","*","*.png"), "index.html", "index.Rmd")
   gert::git_add(to_add, repo=gallery_path)
   gert::git_commit(paste("update", add.POSIXct), repo=gallery_path)
   gert::git_push("origin", repo=gallery_path)
