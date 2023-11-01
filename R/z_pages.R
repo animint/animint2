@@ -55,26 +55,9 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
 
   tmp_dir <- tempfile()
 
-  tryCatch(
-    {
-      creds <- gitcreds::gitcreds_get()
-    },
-    error = function(e) {
-      stop(
-        "A GitHub token is required to create and push to a new repository. \n",
-        "To create a GitHub token, follow these steps:\n",
-        "1. Go to https://github.com/settings/tokens/new?scopes=repo&description=animint2pages\n",
-        "2. Confirm your password if prompted.\n",
-        "3. Ensure that the 'repo' scope is checked.\n",
-        "4. Click 'Generate token' at the bottom of the page.\n",
-        "5. Copy the generated token.\n",
-        "After creating the token, you can set it up in your R environment by running: \n",
-        "Sys.setenv(GITHUB_PAT=\"yourGithubPAT\") \n",
-        "gert::git_config_global_set(\"user.name\", \"yourUserName\") \n",
-        "gert::git_config_global_set(\"user.email\", \"yourEmail\") \n"
-      )
-    }
-  )
+  tryCatch({
+    creds <- gitcreds::gitcreds_get()
+  }, error = function(e) stop("A GitHub token is required to create and push to a new repository. \nTo create a GitHub token, follow these steps:\n1. Go to https://github.com/settings/tokens/new?scopes=repo&description=animint2pages\n2. Confirm your password if prompted.\n3. Ensure that the 'repo' scope is checked.\n4. Click 'Generate token' at the bottom of the page.\n5. Copy the generated token.\nAfter creating the token, you can set it up in your R environment by running: \nSys.setenv(GITHUB_PAT=\"yourGithubPAT\") \ngert::git_config_global_set(\"user.name\", \"yourUserName\") \ngert::git_config_global_set(\"user.email\", \"yourEmail\") \n"))
 
   # Raise error if github_repo contains '/'
   if (grepl("/", github_repo)) {
