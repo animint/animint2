@@ -20,7 +20,7 @@ cp animint2/man/graphical-units.Rd animint2-release/man
 grep -v RSelenium animint2/DESCRIPTION > animint2-release/DESCRIPTION
 rm animint2-release/tests/testthat/helper-HTML.R
 rm animint2-release/tests/testthat/test-compiler-chunk-vars.R
-rm animint2-release/tests/testthat/test-compiler-gist.R
+rm animint2-release/tests/testthat/test-compiler-ghpages.R
 cat <<EOF > animint2-release/tests/testthat.R 
 library(testthat)
 test_check("animint2", filter="compiler")
