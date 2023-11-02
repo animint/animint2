@@ -26,5 +26,6 @@ library(testthat)
 test_check("animint2", filter="compiler")
 EOF
 PKG_TGZ=$(R CMD build animint2-release|grep building|sed "s/.*\(animint2.*.tar.gz\).*/\1/")
+echo built $PKG_TGZ so now we INSTALL 
 R CMD INSTALL $PKG_TGZ
 R CMD check --as-cran $PKG_TGZ
