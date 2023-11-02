@@ -21,6 +21,7 @@ grep -v RSelenium animint2/DESCRIPTION > animint2-release/DESCRIPTION
 rm animint2-release/tests/testthat/helper-HTML.R
 rm animint2-release/tests/testthat/test-compiler-chunk-vars.R
 rm animint2-release/tests/testthat/test-compiler-ghpages.R
+rm animint2-release/vignettes/animint2.Rmd #to save disk space
 cat <<EOF > animint2-release/tests/testthat.R 
 library(testthat)
 test_check("animint2", filter="compiler")
