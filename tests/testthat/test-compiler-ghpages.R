@@ -22,8 +22,8 @@ test_that("error for viz with no source", {
   }, "plot.list does not contain option named source, which is required by animint2pages")
 })
 
-viz_owner_repo <- animint2pages(viz, github_repo = "animint2pages_test_repo")
 test_that("animint2pages() returns owner/repo string", {
+  viz_owner_repo <- animint2pages(viz, github_repo = "animint2pages_test_repo")
   expect_is(viz_owner_repo, "character")
 })
 
