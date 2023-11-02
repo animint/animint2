@@ -16,13 +16,18 @@ animint2pages(
 \arguments{
 \item{plot.list}{A named list of ggplots and option lists.}
 
-\item{github_repo}{The name of the GitHub repository to which the files will be pushed.}
+\item{github_repo}{The name of the GitHub repository to which the
+files will be pushed.}
 
-\item{commit_message}{A string specifying the commit message for the pushed files.}
+\item{commit_message}{A string specifying the commit message for
+the pushed files.}
 
-\item{private}{A logical flag indicating whether the GitHub repository should be private or not.}
+\item{private}{A logical flag indicating whether the GitHub
+repository should be private or not (default FALSE).}
 
-\item{required_opts}{Character vector of plot.list element names which are checked (stop with an error if not present). Use required_opts=NULL to skip check.}
+\item{required_opts}{Character vector of plot.list element names
+which are checked (stop with an error if not present). Use
+required_opts=NULL to skip check.}
 
 \item{...}{Additional options passed onto \code{animint2dir}.}
 }
