@@ -985,26 +985,26 @@ var animint = function (to_select, json_file) {
       const p_name = g_names[g_names.length - 1];
       this.scales = Plots[p_name].scales[this.PANEL];
 
-      this.elements = this.svg.select('g.' + this.g_info.classed)
-            .select('g.PANEL' + this.PANEL)
-            .selectAll('.geom');
-
+      this.elements = this.svg
+        .select('g.' + this.g_info.classed)
+        .select('g.PANEL' + this.PANEL)
+        .selectAll('.geom');
 
       // selection features
       this.has_clickSelects = this.g_info.aes.hasOwnProperty('clickSelects');
       this.has_clickSelects_variable = this.g_info.aes.hasOwnProperty(
         'clickSelects.variable'
-        );
+      );
 
       // aesthetic
-        this.aes = this.g_info.aes;
+      this.aes = this.g_info.aes;
 
       this.selected_arrays = [[]];
       this.handle_subset_order();
       this.Selectors = Selectors;
 
-      this.init_styles(g_info);
-      this.init_key_id(g_info);
+      this.init_styles();
+      this.init_key_id();
       this.init_select_style();
     }
 
@@ -1053,41 +1053,41 @@ var animint = function (to_select, json_file) {
     // TODO: this method should be in GroupGeom/UngroupGeom subclass (done)
 
     // Initialize styles from g_info params
-    init_styles(g_info) {
-      this.base_opacity = g_info.params.hasOwnProperty('alpha')
-        ? g_info.params.alpha
+    init_styles() {
+      this.base_opacity = this.g_info.params.hasOwnProperty('alpha')
+        ? this.g_info.params.alpha
         : 1;
-      this.off_opacity = g_info.params.hasOwnProperty('alpha_off')
-        ? g_info.params.alpha_off
+      this.off_opacity = this.g_info.params.hasOwnProperty('alpha_off')
+        ? this.g_info.params.alpha_off
         : this.base_opacity - 0.5;
 
-        // TODO: the below line should be moved to GeomText subclass
-      this.size = g_info.geom === 'text' ? 12 : 2;
-      this.size = g_info.params.hasOwnProperty('size')
-        ? g_info.params.size
+      // TODO: the below line should be moved to GeomText subclass
+      this.size = this.g_info.geom === 'text' ? 12 : 2;
+      this.size = this.g_info.params.hasOwnProperty('size')
+        ? this.g_info.params.size
         : size;
 
       // stroke_width for geom_point
-      this.stroke_width = g_info.params.hasOwnProperty('stroke')
-        ? g_info.params.stroke
+      this.stroke_width = this.g_info.params.hasOwnProperty('stroke')
+        ? this.g_info.params.stroke
         : 1; // by default ggplot2 has 0.5, animint has 1
-        this.linetype = g_info.params.linetype || 'solid';
+      this.linetype = this.g_info.params.linetype || 'solid';
 
       // TODO: the below should be moved to GeomRect subclass
       this.colour =
-        g_info.geom === 'rect' &&
+        this.g_info.geom === 'rect' &&
         has_clickSelects &&
-        g_info.params.colour === 'transparent'
+        this.g_info.params.colour === 'transparent'
           ? 'black'
-          : g_info.params.colour || 'black';
-      this.fill = g_info.params.fill
-        ? g_info.params.fill
-        : g_info.params.colour || this.colour;
-      this.angle = g_info.params.hasOwnProperty('angle')
-        ? g_info.params['angle']
+          : this.g_info.params.colour || 'black';
+      this.fill = this.g_info.params.fill
+        ? this.g_info.params.fill
+        : this.g_info.params.colour || this.colour;
+      this.angle = this.g_info.params.hasOwnProperty('angle')
+        ? this.g_info.params['angle']
         : 0;
-      this.text_anchor = g_info.params.hasOwnProperty('anchor')
-        ? g_info.params['anchor']
+      this.text_anchor = this.g_info.params.hasOwnProperty('anchor')
+        ? this.g_info.params['anchor']
         : 'middle';
     }
 
@@ -1183,12 +1183,12 @@ var animint = function (to_select, json_file) {
     }
 
     // initialize key and id functions based on g_info
-    init_key_id(g_info) {
+    init_key_id() {
       this.id_fun = (d) => {
         return d.id;
       };
 
-      if (g_info.aes.hasOwnProperty('key')) {
+      if (this.g_info.aes.hasOwnProperty('key')) {
         this.key_fun = (d) => {
           return d.key;
         };
@@ -1275,7 +1275,10 @@ var animint = function (to_select, json_file) {
         const styleSetter = (group_info) => {
           const { one_row } = getGroupAndRow(group_info);
           return {
-            fill: this.g_info.geom === 'line' || this.g_info.geom === 'path' ? 'none' : this.get_fill(one_row),
+            fill:
+              this.g_info.geom === 'line' || this.g_info.geom === 'path'
+                ? 'none'
+                : this.get_fill(one_row),
             strokeWidth: this.get_size(one_row),
             stroke: this.get_colour(one_row),
             strokeDasharray: this.get_dasharray(one_row),
@@ -1383,16 +1386,18 @@ var animint = function (to_select, json_file) {
         // select the correct group before returning anything.
         // TODO: move the `setup_data_binding()` in the superclass to here (done)
         // set up the D3 data binding by defining the key_fun and id_fun, and then binding the data kv to the elements.
-        setup_data_binding() {
-            this.key_fun = function (group_info) {
-                return group_info.value;
-            };
+        // TODO: should this method renamed to `init_key_id`? the Geom base class has the method
+        //     would it be inherited from base Geom class?
+        init_key_id() {
+            this.key_fun = (group_info) => {
+              return group_info.value;
+            }
 
-            this.id_fun = function (group_info) {
-                var one_group = this.keyed_data[group_info.value];
-                var one_row = one_group[0];
-                return one_row.id;
-            }.bind(this);
+            this.id_fun = (group_info) => {
+              var one_group = keyed_data[group_info.value];
+              var one_row = one_group[0];
+              return one_row.id;
+            };
 
             this.elements = this.elements.data(this.kv, this.key_fun);
             this.linkActions = function (a_elements) {
