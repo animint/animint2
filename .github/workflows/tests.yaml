@@ -17,7 +17,7 @@ jobs:
     name: Test Suite ${{ matrix.test-suite }}
     env: 
       TEST_SUITE: ${{ matrix.test-suite }}
-      GITHUB_PAT: ${{ secrets.PAT_GITHUB_TEST }}
+      GITHUB_PAT: ${{ secrets.PAT_GITHUB }}
       GH_ACTION: "ENABLED"
     steps:
       - uses: actions/checkout@v3
