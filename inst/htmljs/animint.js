@@ -1336,154 +1336,153 @@ var animint = function (to_select, json_file) {
   }
 
     class GroupGeom extends Geom {
-        constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
-            super(g_info, chunk, Selector_name, PANEL, SVGs, Plots, Selectors);
-            this.data = this.prepare_data();
-            this.keyed_data = this.prepare_keyed_data();
+      constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
+        super(g_info, chunk, Selector_name, PANEL, SVGs, Plots, Selectors);
+        this.data = this.prepare_data();
+        this.keyed_data = this.prepare_keyed_data();
 
-            this.kv = d3.entries(d3.keys(this.keyed_data)).map(d => {
-                d.clickSelects = this.keyed_data[d.value][0].clickSelects;
-                return d;
-            });
+        this.kv = d3.entries(d3.keys(this.keyed_data)).map((d) => {
+          d.clickSelects = this.keyed_data[d.value][0].clickSelects;
+          return d;
+        });
 
-            // TODO: g_info.geom == 'ribbon' logic should be moved to GeomRibbon subclass (done)
-            this.lineThing = d3.svg.line().x(toXY('x', 'x')).y(toXY('y', 'y'));
+        // TODO: g_info.geom == 'ribbon' logic should be moved to GeomRibbon subclass (done)
+        this.lineThing = d3.svg.line().x(toXY('x', 'x')).y(toXY('y', 'y'));
+      }
 
+      // this.g_info.data_is_object == true, line/path/ribbon/polygon
+      prepare_data() {
+        let data = {};
+
+        this.selected_arrays.forEach((value_array) => {
+          let some_data = this.chunk;
+          for (const value of value_array) {
+            some_data = some_data.hasOwnProperty(value) ? some_data[value] : {};
+          }
+
+          if (Array.isArray(some_data) && some_data.length) {
+            data['0'] = some_data; // If some_data is an array and not empty, assign to key '0'
+          } else {
+            data = { ...data, ...some_data }; // merge keys and values into the data object
+          }
+        });
+        return data;
+      }
+
+      prepare_keyed_data() {
+        let keyed_data = {};
+
+        for (let group_id in this.data) {
+          const one_group = this.data[group_id];
+          const one_row = one_group[0];
+          let k = one_row.hasOwnProperty('key') ? one_row.key : group_id;
+          keyed_data[k] = one_group;
         }
+        return keyed_data;
+      }
 
-        // this.g_info.data_is_object == true, line/path/ribbon/polygon
-        prepare_data() {
-            let data = {};
+      // select the correct group before returning anything.
+      // TODO: move the `setup_data_binding()` in the superclass to here (done)
+      // set up the D3 data binding by defining the key_fun and id_fun, and then binding the data kv to the elements.
+      // TODO: should this method renamed to `init_key_id`? the Geom base class has the method
+      //     would it be inherited from base Geom class?
+      init_key_id() {
+        this.key_fun = (group_info) => {
+          return group_info.value;
+        };
 
-            this.selected_arrays.forEach((value_array) => {
-                let some_data = this.chunk;
-                for (const value of value_array) {
-                    some_data = some_data.hasOwnProperty(value) ? some_data[value] : {};
-                }
+        this.id_fun = (group_info) => {
+          var one_group = this.keyed_data[group_info.value];
+          var one_row = one_group[0];
+          return one_row.id;
+        };
+      }
 
-                if (Array.isArray(some_data) && some_data.length) {
-                    data['0'] = some_data; // If some_data is an array and not empty, assign to key '0'
+      setup_linkActions() {
+        this.elements = this.elements.data(this.kv, this.key_fun);
+        this.linkActions = (a_elements) => {
+          const hrefs = a_elements.data().map(group_info => {
+            const one_group = this.keyed_data[group_info.value];
+            return one_group[0].href;
+          });
+          a_elements
+          .attr('xlink:href', (d, i) => hrefs[i])
+          .attr('target', '_blank')
+          .attr('class', 'geom');
+        };  
+      }
+
+      setup_eActions() {
+        this.eActions =  (e) => {
+          const get_data_for_row = (d) => {
+            const group = this.keyed_data[d.value];
+            return group && group[0];
+          }
+          e.attr('d', (d) => {
+            const one_row = get_data_for_row(d);
+            if (!one_row) return;
+            // filter NaN since they make the whole line disappear!
+            const valid_data = one_row.filter((d) => {
+              return !isNaN(d.x) && !isNaN(d.y);
+            })
+            return this.lineThing(valid_data);
+          })
+            .style('fill', (group_info) => {
+              // TODO: move to GeomLine and GeomPath
+              // if (g_info.geom == 'line' || g_info.geom == 'path') {
+              //   return 'none';
+              // }
+              const one_row = get_data_for_row(group_info);
+              // take color for first value in the group
+              return this.get_fill(one_row);
+            })
+            .style('stroke-width',  (group_info) => {
+              const one_row = get_data_for_row(group_info);
+              // take size for first value in the group
+              return this.get_size(one_row);
+            })
+            .style('stroke',  (group_info) =>  {
+              const one_row = get_data_for_row(group_info);
+              // take color for first value in the group
+              // Since line/path geom are using group to draw,
+              // so it is different from other geom
+              // and cannot call select_style_fun function here
+              if (
+                // has_clickSelects may not be found inside the class
+                // need to set the variables into global?
+                (has_clickSelects || has_clickSelects_variable) && this.g_info.select_style.includes('stroke')
+              ) {
+                const v_name =
+                  this.g_info.aes['clickSelects.variable'] || this.g_info.aes['clickSelects'];
+                const s_info = Selectors[v_name];
+                if (s_info.selected == one_row.clickSelects) {
+                  return this.get_colour(one_row);
                 } else {
-                    data = { ...data, ...some_data }; // merge keys and values into the data object
+                  return this.get_colour_off(one_row);
                 }
-
+              }
+              return this.get_colour(one_row);
+            })
+            .style('stroke-dasharray',  (group_info) =>  {
+              const one_row = get_data_for_row(group_info);
+              // take linetype for first value in the group
+              return this.get_dasharray(one_row);
+            })
+            .style('stroke-width', (group_info) => {
+              const one_row = get_data_for_row(group_info);
+              // take line size for first value in the group
+              return this.get_size(one_row);
             });
-            return data;
-        }
-
-        prepare_keyed_data() {
-            let keyed_data = {};
-
-            for (let group_id in this.data) {
-                const one_group = this.data[group_id];
-                const one_row = one_group[0];
-                let k = one_row.hasOwnProperty('key') ? one_row.key : group_id;
-                keyed_data[k] = one_group;
-            }
-            return keyed_data;
-        }
-
-        // select the correct group before returning anything.
-        // TODO: move the `setup_data_binding()` in the superclass to here (done)
-        // set up the D3 data binding by defining the key_fun and id_fun, and then binding the data kv to the elements.
-        // TODO: should this method renamed to `init_key_id`? the Geom base class has the method
-        //     would it be inherited from base Geom class?
-        init_key_id() {
-            this.key_fun = (group_info) => {
-              return group_info.value;
-            }
-
-            this.id_fun = (group_info) => {
-              var one_group = keyed_data[group_info.value];
-              var one_row = one_group[0];
-              return one_row.id;
-            };
-
-            this.elements = this.elements.data(this.kv, this.key_fun);
-            this.linkActions = function (a_elements) {
-                a_elements
-                    .attr('xlink:href', function (group_info) {
-                        var one_group = keyed_data[group_info.value];
-                        var one_row = one_group[0];
-                        return one_row.href;
-                    })
-                    .attr('target', '_blank')
-                    .attr('class', 'geom');
-            };
-            this.eActions = function (e) {
-                e.attr('d', function (d) {
-                    var one_group = keyed_data[d.value];
-                    // filter NaN since they make the whole line disappear!
-                    var no_na = one_group.filter(function (d) {
-                        if (g_info.geom == 'ribbon') {
-                            return !isNaN(d.x) && !isNaN(d.ymin) && !isNaN(d.ymax);
-                        } else {
-                            return !isNaN(d.x) && !isNaN(d.y);
-                        }
-                    });
-                    return this.lineThing(no_na);
-                })
-                    .style('fill', function (group_info) {
-                        if (g_info.geom == 'line' || g_info.geom == 'path') {
-                            return 'none';
-                        }
-                        var one_group = keyed_data[group_info.value];
-                        var one_row = one_group[0];
-                        // take color for first value in the group
-                        return this.get_fill(one_row);
-                    })
-                    .style('stroke-width', function (group_info) {
-                        var one_group = keyed_data[group_info.value];
-                        var one_row = one_group[0];
-                        // take size for first value in the group
-                        return this.get_size(one_row);
-                    })
-                    .style('stroke', function (group_info) {
-                        var one_group = keyed_data[group_info.value];
-                        var one_row = one_group[0];
-                        // take color for first value in the group
-                        // Since line/path geom are using group to draw,
-                        // so it is different from other geom
-                        // and cannot call select_style_fun function here
-                        if (
-                            (has_clickSelects || has_clickSelects_variable) &&
-                            g_info.select_style.includes('stroke')
-                        ) {
-                            const v_name =
-                                g_info.aes['clickSelects.variable'] ||
-                                g_info.aes['clickSelects'];
-                            const s_info = Selectors[v_name];
-                            if (s_info.selected == one_row.clickSelects) {
-                                return get_colour(one_row);
-                            } else {
-                                return get_colour_off(one_row);
-                            }
-                        }
-                        return this.get_colour(one_row);
-                    })
-                    .style('stroke-dasharray', function (group_info) {
-                        var one_group = keyed_data[group_info.value];
-                        var one_row = one_group[0];
-                        // take linetype for first value in the group
-                        return this.get_dasharray(one_row);
-                    })
-                    .style('stroke-width', function (group_info) {
-                        var one_group = keyed_data[group_info.value];
-                        var one_row = one_group[0];
-                        // take line size for first value in the group
-                        return this.get_size(one_row);
-                    });
-                if (!g_info.select_style.includes('opacity')) {
-                    e.style('opacity', function (group_info) {
-                        var one_group = keyed_data[group_info.value];
-                        var one_row = one_group[0];
-                        // take line size for first value in the group
-                        return this.get_alpha(one_row);
-                    });
-                }
-            };
-            this.eAppend = 'path';
-        }
+          if (!this.g_info.select_style.includes('opacity')) {
+            e.style('opacity', (group_info) => {
+              const one_row = get_data_for_row(group_info);
+              // take line size for first value in the group
+              return this.get_alpha(one_row);
+            });
+          }
+        };
+        this.eAppend = 'path';
+      }
     }
 
     class UngroupGeom extends Geom {
@@ -1515,6 +1514,25 @@ var animint = function (to_select, json_file) {
                 .x(toXY('x', 'x'))
                 .y(toXY('y', 'ymax'))
                 .y0(toXY('y', 'ymin'));
+        }
+
+        setup_eActions() {
+          this.eActions =  (e) => {
+            const get_data_for_row = (d) => {
+              const group = this.keyed_data[d.value];
+              return group && group[0];
+            }
+            e.attr('d', function (d) {
+              const one_row = get_data_for_row(d);
+              if (!one_row) return;
+              // filter NaN since they make the whole line disappear!
+              const valid_data = one_row.filter((d) => {
+                return !isNaN(d.x) && !isNaN(d.ymin) && !isNaN(d.ymax);
+              })
+              return this.lineThing(valid_data);
+            })
+          };
+          this.eAppend = 'path';
         }
     }
 
