@@ -1503,6 +1503,17 @@ var animint = function (to_select, json_file) {
             });
             return data;
         }
+
+        setup_linkActions() {
+          this.linkActions = (a_elements) => {
+            a_elements
+              .attr('xlink:href', (d) => {
+                return d.href;
+              })
+              .attr('target', '_blank')
+              .attr('class', 'geom');
+          };
+        }
     }
 
     class GeomRibbon extends GroupGeom {
@@ -1534,6 +1545,33 @@ var animint = function (to_select, json_file) {
           };
           this.eAppend = 'path';
         }
+    }
+
+    class GeomSegment extends UngroupGeom {
+      constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
+        super(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors);
+      }
+      setup_eActions() {
+        this.elements = this.elements.data(this.data, this.key_fun);
+        this.eActions = (e) => {
+          e.attr('x1', (d) => {
+            return this.scales.x(d['x']);
+          })
+            .attr('x2', (d) => {
+              return this.scales.x(d['xend']);
+            })
+            .attr('y1', (d) => {
+              return this.scales.y(d['y']);
+            })
+            .attr('y2', (d) => {
+              return this.scales.y(d['yend']);
+            })
+            .style('stroke-dasharray', this.get_dasharray)
+            .style('stroke-width', this.get_size);
+          this.select_style_fun(this.g_info, e);
+        };
+        this.eAppend = 'line';
+      }
     }
 
   // update scales for the plots that have update_axes option in
