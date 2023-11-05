@@ -1574,6 +1574,52 @@ var animint = function (to_select, json_file) {
       }
     }
 
+    class GeomLinerange extends UngroupGeom {
+      constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
+        super(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors);
+      }
+      setup_eActions() {
+        this.elements = this.elements.data(this.data, this.key_fun);
+        this.eActions = (e) => {
+          e.attr('x1', (d) => {
+            return this.scales.x(d['x']);
+          })
+            .attr('x2', (d) => {
+              return this.scales.x(d['x']);
+            })
+            .attr('y1', (d) => {
+              return this.scales.y(d['ymax']);
+            })
+            .attr('y2', (d) => {
+              return this.scales.y(d['ymin']);
+            })
+            .style('stroke-dasharray', this.get_dasharray)
+            .style('stroke-width', this.get_size);
+          this.select_style_fun(this.g_info, e);
+        };
+        this.eAppend = 'line';
+      }
+    }
+
+    class GeomVline extends UngroupGeom {
+      constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
+        super(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors);
+      }
+      setup_eActions() {
+        this.elements = this.elements.data(this.data, this.key_fun);
+        this.eActions = (e) => {
+          e.attr('x1', this.toXY('x', 'xintercept'))
+            .attr('x2', this.toXY('x', 'xintercept'))
+            .attr('y1', this.scales.y.range()[0])
+            .attr('y2', this.scales.y.range()[1])
+            .style('stroke-dasharray', this.get_dasharray)
+            .style('stroke-width', this.get_size);
+          this.select_style_fun(this.g_info, e);
+        };
+        this.eAppend = 'line';
+      }
+    }
+
   // update scales for the plots that have update_axes option in
   // theme_animint
   function update_scales(p_name, axes, v_name, value){
