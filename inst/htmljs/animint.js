@@ -204,7 +204,7 @@ var animint = function (to_select, json_file) {
     if (has_alpha_off) {
       select_styles.push('opacity');
     }
-    if (has_fill_off) {
+    if (has_fill_off || has_colour_off) {
       select_styles.push('fill');
     }
     if (!select_styles.length) {
@@ -1090,9 +1090,7 @@ var animint = function (to_select, json_file) {
     };
     const get_alpha_off = function (d) {
       let a;
-      if (aes.hasOwnProperty("alpha_off") && d.hasOwnProperty("alpha_off")) {
-        a = d["alpha_off"];
-      } else if (g_info.params.hasOwnProperty("alpha_off")) {
+      if (g_info.params.hasOwnProperty("alpha_off")) {
         a = g_info.params.alpha_off;
       } else if (aes.hasOwnProperty("alpha") && d.hasOwnProperty("alpha")) {
         a = d["alpha"] - 0.5;
@@ -1158,12 +1156,19 @@ var animint = function (to_select, json_file) {
       // we negate the angle.
       return `rotate(${-angle}, ${x}, ${y})`;
     };
-    var get_colour = function (d) {
-      if (d.hasOwnProperty("colour")) {
-        return d["colour"]
-      }
-      return colour;
-    };
+    var get_colour;
+    if (g_info.geom == "text") {
+      get_colour = function(d){
+	return null;
+      };
+    } else {
+      get_colour = function (d) {
+	if (d.hasOwnProperty("colour")) {
+          return d["colour"]
+	}
+	return colour;
+      };
+    }
     if (g_info.geom == "rect" && has_clickSelects && g_info.params.colour == "transparent"){
       colour = "black";
     } else if(g_info.params.colour){
@@ -1172,34 +1177,40 @@ var animint = function (to_select, json_file) {
     
     // Only "colour_off" params appears would call this function,
     // so no default off_colour value
-    const get_colour_off = function (d) {
-      let off_colour;
-      if (aes.hasOwnProperty("colour_off") && d.hasOwnProperty("colour_off")) {
-        off_colour = d["colour_off"];
-      } else if(g_info.params.hasOwnProperty("colour_off")){
-        off_colour = g_info.params.colour_off;
-      }
-      return off_colour;
-    };
+    var get_colour_off;
+    if (g_info.geom == "text") {
+      get_colour_off = function(d) {
+	return null;
+      };
+    } else {
+      get_colour_off = function (d) {
+	let off_colour;
+	if (g_info.params.hasOwnProperty("colour_off")){
+          off_colour = g_info.params.colour_off;
+	}
+	return off_colour;
+      };
+    }
 
     var get_fill = function (d) {
       if (d.hasOwnProperty("fill")) {
         return d["fill"];
+      } else if(d.hasOwnProperty("colour")) {
+	return d["colour"];
       }
       return fill;
     };
-    if (g_info.params.fill) {
+    if (g_info.params.hasOwnProperty("fill")) {
       fill = g_info.params.fill;
-    }else if(g_info.params.colour){
+    }else if (g_info.params.hasOwnProperty("colour")){
       fill = g_info.params.colour;
     }
-
-    const get_fill_off = function (d) {
+    var get_fill_off = function (d) {
       let off_fill;
-      if (aes.hasOwnProperty("fill_off") && d.hasOwnProperty("fill_off")) {
-        off_fill = d["fill_off"];
-      } else if (g_info.params.hasOwnProperty("fill_off")) {
+      if (g_info.params.hasOwnProperty("fill_off")) {
         off_fill = g_info.params.fill_off;
+      } else if (g_info.params.hasOwnProperty("colour_off")) {
+	off_fill = g_info.params.colour_off;
       }
       return off_fill;
     };
@@ -1450,7 +1461,7 @@ var animint = function (to_select, json_file) {
           })
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
+        select_style_fun(g_info, e);
       };
       eAppend = "line";
     }
@@ -1471,7 +1482,7 @@ var animint = function (to_select, json_file) {
           })
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
+        select_style_fun(g_info, e);
       };
       eAppend = "line";
     }
@@ -1484,7 +1495,7 @@ var animint = function (to_select, json_file) {
           .attr("y2", scales.y.range()[1])
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
+        select_style_fun(g_info, e);
       };
       eAppend = "line";
     }
@@ -1498,7 +1509,7 @@ var animint = function (to_select, json_file) {
           .attr("x2", scales.x.range()[1])
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
+        select_style_fun(g_info, e);
       };
       eAppend = "line";
     }
@@ -1516,6 +1527,7 @@ var animint = function (to_select, json_file) {
           .text(function (d) {
             return d.label;
           });
+	select_style_fun(g_info, e);
       };
       eAppend = "text";
     }
@@ -1523,10 +1535,10 @@ var animint = function (to_select, json_file) {
       elements = elements.data(data, key_fun);
       eActions = function (e) {
         e.attr("cx", toXY("x", "x"))
-        .attr("cy", toXY("y", "y"))
-        .attr("r", get_size)
-        .style("stroke-width", get_stroke_width);
-      select_style_fun(g_info, e);
+          .attr("cy", toXY("y", "y"))
+          .attr("r", get_size)
+          .style("stroke-width", get_stroke_width);
+	select_style_fun(g_info, e);x
       };
       eAppend = "circle";
     }
@@ -1541,7 +1553,7 @@ var animint = function (to_select, json_file) {
           .attr("height", scales.y.range()[0] - scales.y.range()[1])
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
+        select_style_fun(g_info, e);
       };
       eAppend = "rect";
     }
@@ -1556,7 +1568,7 @@ var animint = function (to_select, json_file) {
           .attr("width", scales.x.range()[1] - scales.x.range()[0])
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
+        select_style_fun(g_info, e);
       };
       eAppend = "rect";
     }
@@ -1579,7 +1591,7 @@ var animint = function (to_select, json_file) {
           })
           .style("stroke-dasharray", get_dasharray)
           .style("stroke-width", get_size)
-          select_style_fun(g_info, e);
+        select_style_fun(g_info, e);
       };
       eAppend = "rect";
     }
@@ -1776,9 +1788,6 @@ var animint = function (to_select, json_file) {
       const excludedGeoms = ["segment", "linerange", "hline", "vline"];
       if (!excludedGeoms.includes(g_info.geom)) {
           elements.style("fill", get_fill);
-      }
-      if(g_info.geom != "text"){ // geom_text no `stroke` with no clickSelects
-        elements.style("stroke", get_colour);
       }
     }
     var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
