@@ -1199,14 +1199,14 @@ var animint = function (to_select, json_file) {
 
     // Initialize the selection style function
     init_select_style() {
-      this.select_style_fun = (g_info, e) => {
-        if (!g_info.select_style.includes('stroke')) {
+      this.select_style_fun = (e) => {
+        if (!this.g_info.select_style.includes('stroke')) {
           e.style('stroke', this.get_colour);
         }
-        if (!g_info.select_style.includes('opacity')) {
+        if (!this.g_info.select_style.includes('opacity')) {
           e.style('opacity', this.get_alpha);
         }
-        if (!g_info.select_style.includes('fill')) {
+        if (!this.g_info.select_style.includes('fill')) {
           e.style('fill', this.get_fill);
         }
       };
@@ -1518,7 +1518,6 @@ var animint = function (to_select, json_file) {
       apply_stroke_styles(e) {
         e.style('stroke-dasharray', this.get_dasharray)
         .style('stroke-width',this.get_size);
-        this.select_style_fun(this.g_info, e);
       }
     }
 
@@ -1573,6 +1572,7 @@ var animint = function (to_select, json_file) {
               return this.scales.y(d['yend']);
             });
           this.apply_stroke_styles(e);
+          this.select_style_fun(e);
         };
         this.eAppend = 'line';
       }
@@ -1598,6 +1598,7 @@ var animint = function (to_select, json_file) {
               return this.scales.y(d['ymin']);
             });
             this.apply_stroke_styles(e);
+            this.select_style_fun(e);
         };
         this.eAppend = 'line';
       }
@@ -1615,6 +1616,7 @@ var animint = function (to_select, json_file) {
             .attr('y1', this.scales.y.range()[0])
             .attr('y2', this.scales.y.range()[1]);
             this.apply_stroke_styles(e);
+            this.select_style_fun(e);
         };
         this.eAppend = 'line';
       }
@@ -1632,6 +1634,7 @@ var animint = function (to_select, json_file) {
             .attr('x1', this.scales.x.range()[0])
             .attr('x2', this.scales.x.range()[1]);
             this.apply_stroke_styles(e);
+            this.select_style_fun(e);
         };
         this.eAppend = 'line';
       }
@@ -1654,6 +1657,23 @@ var animint = function (to_select, json_file) {
             });
         };
         eAppend = 'text';
+      }
+    }
+
+    class GeomPoint extends UngroupGeom {
+      constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
+        super(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors);
+      }
+      setup_eActions() {
+        this.elements = this.elements.data(this.data, this.key_fun);
+        this.eActions = (e) => {
+          e.attr('cx', toXY('x', 'x'))
+            .attr('cy', toXY('y', 'y'))
+            .attr('r', this.get_size)
+            .style('stroke-width', this.get_stroke_width);
+          this.select_style_fun(this.g_info, e);
+        };
+        this.eAppend = 'circle';
       }
     }
 
