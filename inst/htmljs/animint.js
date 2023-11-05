@@ -1515,7 +1515,7 @@ var animint = function (to_select, json_file) {
         };
       }
 
-      apply_styles_selection(e) {
+      apply_stroke_styles(e) {
         e.style('stroke-dasharray', this.get_dasharray)
         .style('stroke-width',this.get_size);
         this.select_style_fun(this.g_info, e);
@@ -1572,7 +1572,7 @@ var animint = function (to_select, json_file) {
             .attr('y2', (d) => {
               return this.scales.y(d['yend']);
             });
-          this.apply_styles_selection(e);
+          this.apply_stroke_styles(e);
         };
         this.eAppend = 'line';
       }
@@ -1597,7 +1597,7 @@ var animint = function (to_select, json_file) {
             .attr('y2', (d) => {
               return this.scales.y(d['ymin']);
             });
-            this.apply_styles_selection(e);
+            this.apply_stroke_styles(e);
         };
         this.eAppend = 'line';
       }
@@ -1614,7 +1614,7 @@ var animint = function (to_select, json_file) {
             .attr('x2', this.toXY('x', 'xintercept'))
             .attr('y1', this.scales.y.range()[0])
             .attr('y2', this.scales.y.range()[1]);
-            this.apply_styles_selection(e);
+            this.apply_stroke_styles(e);
         };
         this.eAppend = 'line';
       }
@@ -1631,9 +1631,29 @@ var animint = function (to_select, json_file) {
             .attr('x2', this.toXY('y', 'yintercept'))
             .attr('x1', this.scales.x.range()[0])
             .attr('x2', this.scales.x.range()[1]);
-            this.apply_styles_selection(e);
+            this.apply_stroke_styles(e);
         };
         this.eAppend = 'line';
+      }
+    }
+
+    class GeomText extends UngroupGeom {
+      constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
+        super(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors);
+      }
+      setup_eActions() {
+        this.elements = this.elements.data(this.data, this.key_fun);
+        this.eActions = (e) => {
+          e.attr('x', this.toXY('x', 'x'))
+            .attr('y', this.toXY('y', 'y'))
+            .attr('font-size', this.get_size)
+            .style('text-anchor', this.get_text_anchor)
+            .attr('transform', this.get_angle)
+            .text((d) => {
+              return d.label;
+            });
+        };
+        eAppend = 'text';
       }
     }
 
