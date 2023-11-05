@@ -1486,34 +1486,40 @@ var animint = function (to_select, json_file) {
     }
 
     class UngroupGeom extends Geom {
-        constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
-            super(g_info, chunk, Selector_name, PANEL, SVGs, Plots, Selectors);
-            this.data = this.prepare_data();
-        }
+      constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
+        super(g_info, chunk, Selector_name, PANEL, SVGs, Plots, Selectors);
+        this.data = this.prepare_data();
+      }
 
-        // this.g_info.data_is_object == false
-        prepare_data() {
-            let data = [];
-            this.selected_arrays.forEach((value_array) => {
-                let some_data = this.chunk;
-                for (const value of value_array) {
-                    some_data = some_data.hasOwnProperty(value) ? some_data[value] : [];
-                }
-                data = data.concat(some_data);
-            });
-            return data;
-        }
+      // this.g_info.data_is_object == false
+      prepare_data() {
+        let data = [];
+        this.selected_arrays.forEach((value_array) => {
+          let some_data = this.chunk;
+          for (const value of value_array) {
+            some_data = some_data.hasOwnProperty(value) ? some_data[value] : [];
+          }
+          data = data.concat(some_data);
+        });
+        return data;
+      }
 
-        setup_linkActions() {
-          this.linkActions = (a_elements) => {
-            a_elements
-              .attr('xlink:href', (d) => {
-                return d.href;
-              })
-              .attr('target', '_blank')
-              .attr('class', 'geom');
-          };
-        }
+      setup_linkActions() {
+        this.linkActions = (a_elements) => {
+          a_elements
+            .attr('xlink:href', (d) => {
+              return d.href;
+            })
+            .attr('target', '_blank')
+            .attr('class', 'geom');
+        };
+      }
+
+      apply_styles_selection(e) {
+        e.style('stroke-dasharray', this.get_dasharray)
+        .style('stroke-width',this.get_size);
+        this.select_style_fun(this.g_info, e);
+      }
     }
 
     class GeomRibbon extends GroupGeom {
@@ -1565,10 +1571,8 @@ var animint = function (to_select, json_file) {
             })
             .attr('y2', (d) => {
               return this.scales.y(d['yend']);
-            })
-            .style('stroke-dasharray', this.get_dasharray)
-            .style('stroke-width', this.get_size);
-          this.select_style_fun(this.g_info, e);
+            });
+          this.apply_styles_selection(e);
         };
         this.eAppend = 'line';
       }
@@ -1592,10 +1596,8 @@ var animint = function (to_select, json_file) {
             })
             .attr('y2', (d) => {
               return this.scales.y(d['ymin']);
-            })
-            .style('stroke-dasharray', this.get_dasharray)
-            .style('stroke-width', this.get_size);
-          this.select_style_fun(this.g_info, e);
+            });
+            this.apply_styles_selection(e);
         };
         this.eAppend = 'line';
       }
@@ -1611,10 +1613,25 @@ var animint = function (to_select, json_file) {
           e.attr('x1', this.toXY('x', 'xintercept'))
             .attr('x2', this.toXY('x', 'xintercept'))
             .attr('y1', this.scales.y.range()[0])
-            .attr('y2', this.scales.y.range()[1])
-            .style('stroke-dasharray', this.get_dasharray)
-            .style('stroke-width', this.get_size);
-          this.select_style_fun(this.g_info, e);
+            .attr('y2', this.scales.y.range()[1]);
+            this.apply_styles_selection(e);
+        };
+        this.eAppend = 'line';
+      }
+    }
+
+    class GeomHline extends UngroupGeom {
+      constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
+        super(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors);
+      }
+      setup_eActions() {
+        this.elements = this.elements.data(this.data, this.key_fun);
+        this.eActions = (e) => {
+          e.attr('x1', this.toXY('y', 'yintercept'))
+            .attr('x2', this.toXY('y', 'yintercept'))
+            .attr('x1', this.scales.x.range()[0])
+            .attr('x2', this.scales.x.range()[1]);
+            this.apply_styles_selection(e);
         };
         this.eAppend = 'line';
       }
