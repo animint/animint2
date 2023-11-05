@@ -200,7 +200,8 @@ update_gallery <- function(gallery_path="~/R/gallery"){
   for(viz_owner_repo in todo.meta[["viz_owner_repo"]]){
     tryCatch({
       meta.row <- data.table(add.POSIXct, get_pages_info(viz_owner_repo))
-      meta.dt.list[[viz_owner_repo]] <- meta.row
+      meta.dt.list[[viz_owner_repo]] <- meta.row[, .(
+        add.POSIXct, viz_owner_repo, commit.POSIXct, source, title)]
       Capture.PNG <- meta.row[["Capture.PNG"]]
       repo.png <- file.path(
         gallery_path, "repos", paste0(viz_owner_repo, ".png"))
