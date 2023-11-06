@@ -190,14 +190,14 @@ var animint = function (to_select, json_file) {
     // so here use array to store the styles.
     // Default using alpha/opacity style, execpt rect/tile geom
     // rect/tile geom default using stroke style
-    const checkProperty = (prop) =>
-      g_info.params.hasOwnProperty(prop) || g_info.aes.hasOwnProperty(prop);
-
+    var checkOff = function(prop){
+      return (!g_info.aes.hasOwnProperty(prop)) && 
+	g_info.params.hasOwnProperty(prop+"_off")
+    };
     let select_styles = [];
-    const has_colour_off = checkProperty('colour_off');
-    const has_alpha_off = checkProperty('alpha_off');
-    const has_fill_off = checkProperty('fill_off');
-
+    const has_colour_off = checkOff('colour');
+    const has_alpha_off = checkOff('alpha');
+    const has_fill_off = checkOff('fill');
     if (has_colour_off || g_info.geom === 'rect') {
       select_styles.push('stroke');
     }
@@ -1207,7 +1207,9 @@ var animint = function (to_select, json_file) {
     }
     var get_fill_off = function (d) {
       let off_fill;
-      if (g_info.params.hasOwnProperty("fill_off")) {
+      if (g_info.aes.hasOwnProperty("fill")) {
+	off_fill = get_fill(d);
+      } else if (g_info.params.hasOwnProperty("fill_off")) {
         off_fill = g_info.params.fill_off;
       } else if (g_info.params.hasOwnProperty("colour_off")) {
 	off_fill = g_info.params.colour_off;
