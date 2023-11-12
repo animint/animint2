@@ -119,6 +119,10 @@ Scale <- gganimintproto("Scale", NULL,
     }
   },
 
+  range_is_zero = function(self, limits) {
+    isTRUE(scales::zero_range(as.numeric(limits)))
+  },
+
   # The physical size of the scale.
   # This always returns a numeric vector of length 2, giving the physical
   # dimensions of a scale.
@@ -206,15 +210,13 @@ ScaleContinuous <- gganimintproto("ScaleContinuous", Scale,
 
   get_breaks = function(self, limits = self$get_limits()) {
     if (self$is_empty()) return(numeric())
-
     # Limits in transformed space need to be converted back to data space
     limits <- self$trans$inverse(limits)
-
     if (is.null(self$breaks)) {
       return(NULL)
     } else if (identical(self$breaks, NA)) {
       stop("Invalid breaks specification. Use NULL, not NA")
-    } else if (zero_range(as.numeric(limits))) {
+    } else if (self$range_is_zero(limits)) {
       breaks <- limits[1]
     } else if (is.waive(self$breaks)) {
       breaks <- self$trans$breaks(limits)
@@ -240,7 +242,7 @@ ScaleContinuous <- gganimintproto("ScaleContinuous", Scale,
   },
 
   get_breaks_minor = function(self, n = 2, b = self$break_positions(), limits = self$get_limits()) {
-    if (zero_range(as.numeric(limits))) {
+    if (self$range_is_zero(limits)) {
       return()
     }
 
