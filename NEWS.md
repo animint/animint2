@@ -8,7 +8,9 @@
   rendered viz.
 - New function `update_gallery("path/to/gallery_repo")` for updating
   galleries such as https://animint.github.io/gallery/
-- Bugfix: geom_text renders color as svg fill style.
+- Bugfix: geom_text renders color as svg fill style (was rendering as
+  stroke style, a regression introduced by the initial implementation
+  of `fill_off`).
   
 # Changes in 2023.10.6
 
