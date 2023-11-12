@@ -1,4 +1,5 @@
 acontext("geom text color")
+library(animint2)
 
 df <- data.frame(x=1,y="foo")
 viz <- animint(
@@ -15,7 +16,7 @@ test_that("geom_text color rendered as fill style", {
   opacity <- getStyleValue(info$html, '//text[@class="geom"]', "opacity")
   expect_identical(opacity, c("1","1","1","1"))
 })
-clickID("plot_text_y_variable_foo_svg")
+clickID("plot_text_y_variable_foo_svg")#or foo_label?
 test_that("geom_text color rendered as fill style", {
   fill <- getStyleValue(info$html, '//text[@class="geom"]', "fill")
   expect_color(fill, c("black", "red","pink"))
