@@ -1,5 +1,5 @@
 acontext("ChromHMMiterations data set")
-
+library(animint2)
 data(ChromHMMiterations, package = "animint2")
 
 emission <- data.frame(ChromHMMiterations$emission, parameters="emission")
