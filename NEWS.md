@@ -4,8 +4,8 @@
   publishing/sharing animints, replacement for animint2gist, which
   stopped working recently.
 - New option `animint(source="http://path.to/source.R")` which should
-  be the URL of data viz source code, used to display a link at the
-  below the rendered viz.
+  be the URL of data viz source code, used to display a link below the
+  rendered viz.
 - New function `update_gallery("path/to/gallery_repo")` for updating
   galleries such as https://animint.github.io/gallery/
 - Bugfix: geom_text renders color as svg fill style.
