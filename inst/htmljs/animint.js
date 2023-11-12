@@ -1540,7 +1540,7 @@ var animint = function (to_select, json_file) {
           .attr("cy", toXY("y", "y"))
           .attr("r", get_size)
           .style("stroke-width", get_stroke_width);
-	select_style_fun(g_info, e);x
+	select_style_fun(g_info, e);
       };
       eAppend = "circle";
     }
