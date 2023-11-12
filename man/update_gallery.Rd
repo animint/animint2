@@ -14,14 +14,18 @@ active.}
 named list of data tables (meta and error).
 }
 \description{
-A gallery is a collection of animints that have been published to
-github pages. First repos.txt is read, then we clone each repo
-which is not already present in meta.csv, and parse meta-data
-(title, source, Capture.PNG) from the gh-pages branch, and
-write/commit the data, re-render index.Rmd in gallery, and push
-gallery to origin. See
-\url{https://github.com/animint/gallery/tree/gh-pages} which is
-the main gallery which is updated using this function.
+A gallery is a collection of meta-data about animints that have
+been published to github pages. A gallery is defined as a github
+repo that should have two source files in the gh-pages branch:
+repos.txt (list of github repositories, one owner/repo per line)
+and index.Rmd (source for web page with links to animints). To
+perform the update, first repos.txt is read, then we clone each
+repo which is not already present in meta.csv, and parse meta-data
+(title, source, Capture.PNG) from the gh-pages branch, and write
+the meta.csv/error.csv/Capture.PNG files, render index.Rmd to
+index.html, commit, and push origin. For an example, see the main
+gallery, \url{https://github.com/animint/gallery/tree/gh-pages}
+which is updated using this function.
 }
 \author{
 Toby Dylan Hocking
