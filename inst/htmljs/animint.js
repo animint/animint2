@@ -1155,14 +1155,17 @@ var animint = function (to_select, json_file) {
       fill_off = fill;
     }
     var get_fill;
+    var get_fill_constant = function (d) {
+      return fill;
+    };
     if(aes.hasOwnProperty("fill")){
       get_fill = get_attr("fill");
+    } else if(g_info.params.hasOwnProperty("fill")){
+      get_fill = get_fill_constant;
     } else if(aes.hasOwnProperty("colour")) {
       get_fill = get_attr("colour");
     } else {
-      get_fill = function (d) {
-	return fill;
-      };
+      get_fill = get_fill_constant;
     };
     var get_fill_off = function (d) {
       return fill_off;
