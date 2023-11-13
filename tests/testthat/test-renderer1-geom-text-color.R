@@ -19,7 +19,9 @@ test_that("geom_text color rendered as fill style", {
 clickID("plot_text_y_variable_foo_svg")#or foo_label?
 test_that("geom_text color rendered as fill style", {
   fill <- getStyleValue(info$html, '//text[@class="geom"]', "fill")
+  print(fill)
   expect_color(fill, c("black", "red","pink"))
   opacity <- getStyleValue(info$html, '//text[@class="geom"]', "opacity")
+  print(opacity)
   expect_identical(opacity, c("0.5","1","1"))
 })

@@ -109,6 +109,7 @@ test_that("4 paths of both colors in second plot", {
     getNodeSet(info$html, '//g[@class="geom4_line_errors"]//path')
   computed.vec <- getStroke(path.list)
   color.counts <- as.numeric(table(computed.vec))
+  print(color.counts)
   expect_equal(color.counts, c(4, 4))
 })
 
