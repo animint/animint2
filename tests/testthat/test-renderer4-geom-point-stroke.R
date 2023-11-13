@@ -2,12 +2,12 @@ acontext("geom_point_stroke")
 
 stroke_in_R <- 5
 viz <- animint(
-  param_stroke=ggplot(mtcars, aes(
+  param=ggplot(mtcars, aes(
     wt, mpg)) +
     geom_point(
       shape = 21, colour = "black", fill = "white",
       size = 5, stroke = stroke_in_R),
-  aes_stroke=ggplot(mtcars, aes(
+  aes=ggplot(mtcars, aes(
     wt, mpg, stroke=cyl)) +
     geom_point(
       shape = 21, colour = "black", fill = "white", size = 5))
@@ -17,7 +17,7 @@ info <- animint2HTML(viz)
 test_that("geom_point stroke param rendered with stroke-width", {
   stroke_vals <- getStyleValue(
     info$html,
-    '//g[@class="geom1_point_param_stroke"]//circle', 
+    '//g[@class="geom1_point_param"]//circle', 
     "stroke-width")
   expect_equal(length(stroke_vals), length(mtcars$wt))
   stroke_vals_unique <- unique(stroke_vals)
@@ -29,7 +29,7 @@ test_that("geom_point stroke param rendered with stroke-width", {
 test_that("aes(stroke) works", {
   stroke_vals_aes <- getStyleValue(
     info$html,
-    '//g[@class="geom2_point_aes_stroke"]//circle',
+    '//g[@class="geom2_point_aes"]//circle',
     "stroke-width")
   expect_equal(length(stroke_vals_aes), length(mtcars$wt))
   stroke_vals_unique_aes <- unique(stroke_vals_aes)
