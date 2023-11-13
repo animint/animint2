@@ -1,5 +1,5 @@
 acontext("Text")
-
+library(animint2)
 data(WorldBank, package = "animint2")
 wb2010 <- subset(WorldBank, year==2010)
 subset(wb2010, population==min(population))
@@ -11,11 +11,13 @@ subset(wb2010, population==min(population))
 ### fact there will be no text element with fontsize=10!
 wb <- subset(wb2010, !is.na(population) &
     !is.na(fertility.rate) & !is.na(life.expectancy))
-viz <- list(scatter=ggplot()+
-  geom_text(aes(y=fertility.rate, x=life.expectancy,
-                label=country, size=population, colour=population, id=country),
-            data=wb)+
-  scale_size_continuous(range=c(10,20)))
+viz <- list(
+  scatter=ggplot()+
+    geom_text(aes(
+      y=fertility.rate, x=life.expectancy,
+      label=country, size=population, colour=population, id=country),
+      data=wb)+
+    scale_size_continuous(range=c(10,20)))
 
 test_that("text size range translates to <text font-size>", {
   info <- animint2HTML(viz)
@@ -47,13 +49,14 @@ plot.vec <- data.frame(
   angle
 )
 
-viz.aes.angle <- list(scatter = scatter.plot <- ggplot() +
-  geom_text(
-    data=plot.vec,
-    aes(x = x, y = y, label = labs, angle = angle),
-    clickSelects = "x",
-    size = 30
-  ))
+viz.aes.angle <- list(
+  scatter = ggplot() +
+    geom_text(
+      data=plot.vec,
+      aes(x = x, y = y, label = labs, angle = angle),
+      clickSelects = "x",
+      size = 30
+    ))
 
 test_that("text rotation applies to <text transform> when applied in aes", {
   info <- animint2HTML(viz.aes.angle)
@@ -66,14 +69,15 @@ test_that("text rotation applies to <text transform> when applied in aes", {
   expect_true(any(grepl("0", transform)))
 })
 
-viz.geom.angle <- list(scatter = scatter.plot <- ggplot() +
-  geom_text(
-    data = plot.vec,
-    aes(x = x, y = y, label = labs),
-    angle = 90,
-    clickSelects = "x",
-    size = 30
-  ))
+viz.geom.angle <- list(
+  scatter = ggplot() +
+    geom_text(
+      data = plot.vec,
+      aes(x = x, y = y, label = labs),
+      angle = 90,
+      clickSelects = "x",
+      size = 30
+    ))
 
 
 test_that("text rotation applies to <text transform> when used in geom", {

@@ -1048,9 +1048,6 @@ var animint = function (to_select, json_file) {
     };
 
     var size = 2;
-    if (g_info.params.hasOwnProperty("size")) {
-      size = g_info.params.size;
-    }
     var get_size;
     if(aes.hasOwnProperty("size")){
       get_size = get_attr("size");
@@ -1180,7 +1177,7 @@ var animint = function (to_select, json_file) {
       get_angle = get_attr("angle");
     }else{
       get_angle = function(d){
-	return 0;
+	return angle;
       };
     }
     var get_rotate = function(d){
@@ -1189,7 +1186,7 @@ var animint = function (to_select, json_file) {
       // coordinate system, which is the top left of the plot
       x = scales["x"](d["x"]);
       y = scales["y"](d["y"]);
-      angle = get_angle(d);
+      var angle = get_angle(d);
       // ggplot expects angles to be in degrees CCW, SVG uses degrees CW, so 
       // we negate the angle.
       return `rotate(${-angle}, ${x}, ${y})`;
@@ -1422,12 +1419,12 @@ var animint = function (to_select, json_file) {
 	eAppend = "line";
       }
       if (g_info.geom == "text") {
-	size = 12;
+	size = 12;//default
 	get_colour = function(d){
-	  return null;
+	  return "none";
 	};
 	get_colour_off = function(d) {
-	  return null;
+	  return "none";
 	};
 	g_info.style_list = [
 	  "opacity","fill"];
@@ -1513,6 +1510,11 @@ var animint = function (to_select, json_file) {
 	}
       }
     }
+    // set param size after geom-specific code, because text has a
+    // different size default.
+    if (g_info.params.hasOwnProperty("size")) {
+      size = g_info.params.size;
+    }
     var styleActions = function(e){
       g_info.style_list.forEach(function(s){
 	e.style(s, function(d) {
@@ -1522,7 +1524,9 @@ var animint = function (to_select, json_file) {
       });
     };
     // TODO cleanup.
-    g_info.select_style = ["opacity","stroke","fill"];
+    var select_style_default = ["opacity","stroke","fill"];
+    g_info.select_style = select_style_default.filter(
+      X => g_info.style_list.includes(X));
     var over_fun = function(e){
       g_info.select_style.forEach(function(s){
         e.style(s, function (d) {
