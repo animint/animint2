@@ -1444,7 +1444,7 @@ var animint = function (to_select, json_file) {
       if (g_info.geom == "point") {
 	g_info.style_list = [
 	  "opacity","stroke","stroke-width","stroke-dasharray","fill"];
-	style_on_funs["stroke-width"] = get_attr("stroke");
+	style_on_funs["stroke-width"] = get_stroke_width;
 	eActions = function (e) {
           e.attr("cx", toXY("x", "x"))
             .attr("cy", toXY("y", "y"))
