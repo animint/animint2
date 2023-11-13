@@ -1084,17 +1084,16 @@ var animint = function (to_select, json_file) {
       };
     }
     var get_dasharray = function(d){
-      lt = get_linetype(d);
+      var lt = get_linetype(d);
       return linetypesize2dasharray(lt, get_size(d));
     };
 
-    var base_opacity;
+    var alpha, alpha_off;
     if(g_info.params.hasOwnProperty("alpha")){
       alpha = g_info.params.alpha;
     }else{
       alpha = 1;
     }
-    var off_opacity;
     if(g_info.params.hasOwnProperty("alpha_off")){
       alpha_off = g_info.params.alpha_off;
     }else{
@@ -1112,7 +1111,7 @@ var animint = function (to_select, json_file) {
       return alpha_off;
     };
     
-    var colour;
+    var colour, colour_off;
     if(g_info.params.hasOwnProperty("colour")){
       colour = g_info.params.colour;
     }else{
@@ -1320,10 +1319,12 @@ var animint = function (to_select, json_file) {
           .y(toXY("y", "ymax"))
           .y0(toXY("y", "ymin"));
       } else {
-	fill = "none";
         var lineThing = d3.svg.line()
           .x(toXY("x", "x"))
           .y(toXY("y", "y"));
+      }
+      if(["line","path"].includes(g_info.geom)){
+	fill = "none";
       }
       // select the correct group before returning anything.
       key_fun = function(group_info){

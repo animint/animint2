@@ -1,5 +1,5 @@
 acontext("interactivity")
-
+library(animint2)
 ## Example: 2 plots, 2 selectors, but only interacting with 1 plot.
 data(breakpoints, package = "animint2")
 only.error <- subset(breakpoints$error,type=="E")
@@ -182,32 +182,37 @@ library(plyr)
 UStornadoCounts <-
   ddply(UStornadoes, .(state, year), summarize, count=length(state))
 seg.color <- "#55B1F7"
-tornado.lines <-
-  list(map=ggplot()+
-       make_text(UStornadoCounts, -100, 50, "year", "Tornadoes in %d")+
-       geom_polygon(aes(x=long, y=lat, group=group,
-                        id=state),
-                    clickSelects="state",
-                    data=USpolygons, fill="black", colour="grey") +
-       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
-                    showSelected="year",
-                    colour=seg.color, data=UStornadoes)+
-       scale_fill_manual(values=c(end=seg.color))+
-       theme_animint(width=750, height=500)+
-       geom_point(aes(endLong, endLat, fill=place),
-                  colour=seg.color, showSelected="year",
-                  data=data.frame(UStornadoes,place="end")),
-       ts=ggplot()+
-       geom_text(aes(year, count, label=state),
-                 hjust=0, showSelected="state",
-                 data=subset(UStornadoCounts, year==max(year)))+
-       make_tallrect(UStornadoCounts, "year")+
-       geom_line(aes(year, count,
-                     group=state),
-                 showSelected="state",
-                data=UStornadoCounts),
-       selector.types=list(state="multiple"),
-       first=list(state=c("CA", "NY"), year=1950))
+tornado.lines <- list(
+  map=ggplot()+
+    make_text(UStornadoCounts, -100, 50, "year", "Tornadoes in %d")+
+    geom_polygon(aes(
+      x=long, y=lat, group=group,
+      id=state),
+      clickSelects="state",
+      data=USpolygons, fill="black", colour="grey") +
+    geom_segment(aes(
+      x=startLong, y=startLat, xend=endLong, yend=endLat),
+      showSelected="year",
+      colour=seg.color, data=UStornadoes)+
+    scale_fill_manual(values=c(end=seg.color))+
+    theme_animint(width=750, height=500)+
+    geom_point(aes(
+      endLong, endLat, fill=place),
+      colour=seg.color, showSelected="year",
+      data=data.frame(UStornadoes,place="end")),
+  ts=ggplot()+
+    geom_text(aes(
+      year, count, label=state),
+      hjust=0, showSelected="state",
+      data=subset(UStornadoCounts, year==max(year)))+
+    make_tallrect(UStornadoCounts, "year")+
+    geom_line(aes(
+      year, count,
+      group=state),
+      showSelected="state",
+      data=UStornadoCounts),
+  selector.types=list(state="multiple"),
+  first=list(state=c("CA", "NY"), year=1950))
 
 test_that("1950 <circle> and <line> elements", {
   ## A warning should be issued when there is showSelected=place and
