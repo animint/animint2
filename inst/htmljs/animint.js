@@ -1037,7 +1037,7 @@ var animint = function (to_select, json_file) {
     // data (not one group), in both cases.
     var get_fun = function(fun){
       return function(input){
-	d = get_one_row(input);
+	var d = get_one_row(input);
 	return fun(d);
       };
     };
