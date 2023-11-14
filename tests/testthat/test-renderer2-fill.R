@@ -119,15 +119,11 @@ viz.vline <- list(
     ggtitle("Click to Select a Vertical Line")
 )
 
-test_that("Warning message shows up when using fill_off parameter with geom_vline", {
+test_that("When using fill_off and clickSelects parameter with geom_vline, use default(alpha) selection style", {
   expect_warning(
-    animint2HTML(viz.vline),
+    viz_info <- animint2HTML(viz.vline),
     "geom1_vline_v has fill_off which is not supported."
   )
-})
-
-test_that("When using fill_off and clickSelects parameter with geom_vline, use default(alpha) selection style", {
-  viz_info <- animint2HTML(viz.vline)
   
   vline_xpath <- '//g[@class="geom1_vline_v"]//line[@id="v_A"]'
   
