@@ -1056,12 +1056,10 @@ var animint = function (to_select, json_file) {
 	return size;
       };
     }
+    var get_style_on_stroke_width = get_size;
     
     // stroke_width for geom_point
     var stroke_width = 1;  // by default ggplot2 has 0.5, animint has 1
-    if (g_info.params.hasOwnProperty("stroke")) {
-      stroke_width = g_info.params.stroke;
-    }
     var get_stroke_width;
     if(aes.hasOwnProperty("stroke")){
       get_stroke_width = get_attr("stroke");
@@ -1072,9 +1070,6 @@ var animint = function (to_select, json_file) {
     }
     
     var linetype = "solid";
-    if (g_info.params.hasOwnProperty("linetype")) {
-      linetype = g_info.params.linetype;
-    }
     var get_linetype;
     if(aes.hasOwnProperty("linetype")){
       get_linetype = get_attr("linetype");
@@ -1089,16 +1084,6 @@ var animint = function (to_select, json_file) {
     };
 
     var alpha, alpha_off;
-    if(g_info.params.hasOwnProperty("alpha")){
-      alpha = g_info.params.alpha;
-    }else{
-      alpha = 1;
-    }
-    if(g_info.params.hasOwnProperty("alpha_off")){
-      alpha_off = g_info.params.alpha_off;
-    }else{
-      alpha_off = alpha - 0.5;
-    }
     var get_alpha;
     if(aes.hasOwnProperty("alpha")){
       get_alpha = get_attr("alpha");
@@ -1112,16 +1097,6 @@ var animint = function (to_select, json_file) {
     };
     
     var colour, colour_off;
-    if(g_info.params.hasOwnProperty("colour")){
-      colour = g_info.params.colour;
-    }else{
-      colour = "black";
-    }
-    if(g_info.params.hasOwnProperty("colour_off")){
-      colour_off = g_info.params.colour_off;
-    }else{
-      colour_off = colour;
-    }
     var get_colour;
     if(aes.hasOwnProperty("colour")){
       get_colour = get_attr("colour");
@@ -1130,47 +1105,20 @@ var animint = function (to_select, json_file) {
 	return colour;
       };
     }
+    var get_colour_off_default = get_colour;
     var get_colour_off = function (d) {
       return colour_off;
     };
 
-    var fill;
-    if (g_info.params.hasOwnProperty("fill")) {
-      fill = g_info.params.fill;
-    }else if (g_info.params.hasOwnProperty("colour")){
-      fill = g_info.params.colour;
-    }else{
-      fill = "black";
-    }
-    var fill_off;
-    if (g_info.params.hasOwnProperty("fill_off")) {
-      fill_off = g_info.params.fill_off;
-    }else if (g_info.params.hasOwnProperty("colour_off")){
-      fill_off = g_info.params.colour_off;
-    }else{
-      fill_off = fill;
-    }
-    var get_fill;
-    var get_fill_constant = function (d) {
+    var fill = "black", fill_off = "black";
+    var get_fill = function (d) {
       return fill;
-    };
-    if(aes.hasOwnProperty("fill")){
-      get_fill = get_attr("fill");
-    } else if(g_info.params.hasOwnProperty("fill")){
-      get_fill = get_fill_constant;
-    } else if(aes.hasOwnProperty("colour")) {
-      get_fill = get_attr("colour");
-    } else {
-      get_fill = get_fill_constant;
     };
     var get_fill_off = function (d) {
       return fill_off;
     };
     
     var angle = 0;
-    if (g_info.params.hasOwnProperty("angle")) {
-      angle = g_info.params["angle"];
-    }
     var get_angle;
     if(aes.hasOwnProperty("angle")){
       get_angle = get_attr("angle");
@@ -1193,9 +1141,6 @@ var animint = function (to_select, json_file) {
     
     // For aes(hjust) the compiler should make an "anchor" column.
     var text_anchor = "middle";
-    if(g_info.params.hasOwnProperty("anchor")){
-      text_anchor = g_info.params["anchor"];
-    }
     var get_text_anchor;
     if(g_info.aes.hasOwnProperty("hjust")) {
       get_text_anchor = function(d){
@@ -1214,20 +1159,13 @@ var animint = function (to_select, json_file) {
         return d.key;
       };
     }
-    var style_on_funs = {
-      "opacity": get_alpha,
-      "stroke": get_colour,
-      "fill": get_fill,
-      "stroke-width": get_size,
-      "stroke-dasharray": get_dasharray
-    };
-    var style_off_funs = {
-      "opacity": get_alpha_off,
-      "stroke": get_colour_off,
-      "fill": get_fill_off
-    };
     var get_one_row;//different for grouped and ungrouped geoms.
     var data_to_bind;
+    g_info.style_list = [
+      "opacity","stroke","stroke-width","stroke-dasharray","fill"];
+    var line_style_list = [
+      "opacity","stroke","stroke-width","stroke-dasharray"];
+    var fill_comes_from="fill", fill_off_comes_from="fill";
     if(g_info.data_is_object) {
 
       // Lines, paths, polygons, and ribbons are a bit special. For
@@ -1311,8 +1249,6 @@ var animint = function (to_select, json_file) {
       // line, path, and polygon use d3.svg.line(),
       // ribbon uses d3.svg.area()
       // we have to define lineThing accordingly.
-      g_info.style_list = [
-	"opacity","fill","stroke","stroke-width","stroke-dasharray"];
       if (g_info.geom == "ribbon") {
         var lineThing = d3.svg.area()
           .x(toXY("x", "x"))
@@ -1325,6 +1261,7 @@ var animint = function (to_select, json_file) {
       }
       if(["line","path"].includes(g_info.geom)){
 	fill = "none";
+	fill_off = "none";
       }
       // select the correct group before returning anything.
       key_fun = function(group_info){
@@ -1357,8 +1294,7 @@ var animint = function (to_select, json_file) {
       }
       data_to_bind = data;
       if (g_info.geom == "segment") {
-	g_info.style_list = [
-	  "opacity","stroke","stroke-width","stroke-dasharray"];
+	g_info.style_list = line_style_list;
 	eActions = function (e) {
           e.attr("x1", function (d) {
             return scales.x(d["x"]);
@@ -1376,8 +1312,7 @@ var animint = function (to_select, json_file) {
 	eAppend = "line";
       }
       if (g_info.geom == "linerange") {
-	g_info.style_list = [
-	  "opacity","stroke","stroke-width","stroke-dasharray"];
+	g_info.style_list = line_style_list;
 	eActions = function (e) {
           e.attr("x1", function (d) {
             return scales.x(d["x"]);
@@ -1396,8 +1331,7 @@ var animint = function (to_select, json_file) {
 	eAppend = "line";
       }
       if (g_info.geom == "vline") {
-	g_info.style_list = [
-	  "opacity","stroke","stroke-width","stroke-dasharray"];
+	g_info.style_list = line_style_list;
 	eActions = function (e) {
           e.attr("x1", toXY("x", "xintercept"))
             .attr("x2", toXY("x", "xintercept"))
@@ -1408,8 +1342,7 @@ var animint = function (to_select, json_file) {
 	eAppend = "line";
       }
       if (g_info.geom == "hline") {
-	g_info.style_list = [
-	  "opacity","stroke","stroke-width","stroke-dasharray"];
+	g_info.style_list = line_style_list;
 	eActions = function (e) {
           e.attr("y1", toXY("y", "yintercept"))
             .attr("y2", toXY("y", "yintercept"))
@@ -1443,9 +1376,18 @@ var animint = function (to_select, json_file) {
 	eAppend = "text";
       }
       if (g_info.geom == "point") {
-	g_info.style_list = [
-	  "opacity","stroke","stroke-width","stroke-dasharray","fill"];
-	style_on_funs["stroke-width"] = get_stroke_width;
+	// point is special because it takes SVG fill from ggplot
+	// colour, if fill is not specified.
+	if(!(
+	  g_info.params.hasOwnProperty("fill") &&
+	    aes.hasOwnProperty("fill")
+	)){
+	  fill_comes_from = "colour";
+	}
+	if(!g_info.params.hasOwnProperty("fill_off")){
+	  fill_off_comes_from = "colour_off";
+	}
+	get_style_on_stroke_width = get_stroke_width;//not size.
 	eActions = function (e) {
           e.attr("cx", toXY("x", "x"))
             .attr("cy", toXY("y", "y"))
@@ -1457,8 +1399,6 @@ var animint = function (to_select, json_file) {
       var rect_geoms = ["tallrect","widerect","rect"];
       if(rect_geoms.includes(g_info.geom)){
 	eAppend = "rect";
-	g_info.style_list = [
-	  "opacity","stroke","stroke-width","stroke-dasharray","fill"];
 	if (g_info.geom == "tallrect") {
 	  eActions = function (e) {
             e.attr("x", toXY("x", "xmin"))
@@ -1482,21 +1422,10 @@ var animint = function (to_select, json_file) {
 	  };
 	}
 	if (g_info.geom == "rect") {
-	  if(g_info.params.hasOwnProperty("alpha_off")){
-	    alpha_off = g_info.params.alpha_off;
-	  }else{
-	    alpha_off = alpha;
-	  }
-	  if(g_info.params.hasOwnProperty("colour")){
-	    colour = g_info.params.colour;
-	  }else{
-	    colour = "black";
-	  }
-	  if(g_info.params.hasOwnProperty("colour_off")){
-	    colour_off = g_info.params.colour_off;
-	  }else{
-	    colour_off = "transparent";
-	  }
+	  alpha_off = alpha;
+	  colour = "black";
+	  colour_off = "transparent";
+	  get_colour_off_default = get_colour_off;
 	  eActions = function (e) {
             e.attr("x", toXY("x", "xmin"))
               .attr("width", function (d) {
@@ -1511,8 +1440,49 @@ var animint = function (to_select, json_file) {
 	}
       }
     }
-    // set param size after geom-specific code, because text has a
-    // different size default.
+    // set params after geom-specific code, because each geom may have
+    // a different default.
+    if (g_info.params.hasOwnProperty("stroke")) {
+      stroke_width = g_info.params.stroke;
+    }
+    if (g_info.params.hasOwnProperty("linetype")) {
+      linetype = g_info.params.linetype;
+    }
+    if(g_info.params.hasOwnProperty("alpha")){
+      alpha = g_info.params.alpha;
+    }else{
+      alpha = 1;
+    }
+    if(g_info.params.hasOwnProperty("alpha_off")){
+      alpha_off = g_info.params.alpha_off;
+    }else{
+      alpha_off = alpha - 0.5;
+    }
+    if(g_info.params.hasOwnProperty("anchor")){
+      text_anchor = g_info.params["anchor"];
+    }
+    if(g_info.params.hasOwnProperty("colour")){
+      colour = g_info.params.colour;
+    }else{
+      colour = "black";
+    }
+    if(g_info.params.hasOwnProperty("colour_off")){
+      colour_off = g_info.params.colour_off;
+    }else{
+      get_colour_off = get_colour_off_default;
+    }
+    if (g_info.params.hasOwnProperty("angle")) {
+      angle = g_info.params["angle"];
+    }
+    if (g_info.params.hasOwnProperty(fill_comes_from)) {
+      fill = g_info.params[fill_comes_from];
+    }
+    if (g_info.params.hasOwnProperty(fill_off_comes_from)) {
+      fill_off = g_info.params[fill_off_comes_from];
+    }
+    if(aes.hasOwnProperty(fill_comes_from)){
+      get_fill = get_attr(fill_comes_from);
+    };
     if (g_info.params.hasOwnProperty("size")) {
       size = g_info.params.size;
     }
@@ -1523,6 +1493,18 @@ var animint = function (to_select, json_file) {
 	  return style_on_fun(d);
 	});
       });
+    };
+    var style_on_funs = {
+      "opacity": get_alpha,
+      "stroke": get_colour,
+      "fill": get_fill,
+      "stroke-width": get_style_on_stroke_width,
+      "stroke-dasharray": get_dasharray
+    };
+    var style_off_funs = {
+      "opacity": get_alpha_off,
+      "stroke": get_colour_off,
+      "fill": get_fill_off
     };
     // TODO cleanup.
     var select_style_default = ["opacity","stroke","fill"];
