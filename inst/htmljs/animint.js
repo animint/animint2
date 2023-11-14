@@ -1360,6 +1360,8 @@ var animint = function (to_select, json_file) {
 	get_colour_off = function(d) {
 	  return "none";
 	};
+	fill_comes_from = "colour";
+	fill_off_comes_from = "colour_off";
 	g_info.style_list = [
 	  "opacity","fill"];
 	eActions = function (e) {
