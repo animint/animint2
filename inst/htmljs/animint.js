@@ -1379,7 +1379,7 @@ var animint = function (to_select, json_file) {
 	// point is special because it takes SVG fill from ggplot
 	// colour, if fill is not specified.
 	if(!(
-	  g_info.params.hasOwnProperty("fill") &&
+	  g_info.params.hasOwnProperty("fill") ||
 	    aes.hasOwnProperty("fill")
 	)){
 	  fill_comes_from = "colour";
