@@ -1,4 +1,4 @@
-# Changes in 2023.10.27
+# Changes in 2023.11.15
 
 - New function `animint2pages(viz,"new_github_repo")` for
   publishing/sharing animints, replacement for animint2gist, which
@@ -11,6 +11,13 @@
 - Bugfix: geom_text renders color as svg fill style (was rendering as
   stroke style, a regression introduced by the initial implementation
   of `fill_off`).
+- re-organization of animint.js in order to reduce duplication /
+  emphasize similarities and differences between geoms.
+- geom rect and tile now default to color="black" instead of
+  transparent, for consistency with other geoms (and for the case of
+  using clickSelects, which defaults to black color for selected, and
+  transparent for not). To get the old behavior, specify
+  color="transparent" (for non-clickSelects).
   
 # Changes in 2023.10.6
 
