@@ -1085,16 +1085,17 @@ var animint = function (to_select, json_file) {
 
     var alpha = 1, alpha_off = 0.5;
     var get_alpha;
+    var get_alpha_off = function (d) {
+      return alpha_off;
+    };
     if(aes.hasOwnProperty("alpha")){
       get_alpha = get_attr("alpha");
+      get_alpha_off = get_attr("alpha");
     } else {
       get_alpha = function(d){
 	return alpha;
       };
     }
-    var get_alpha_off = function (d) {
-      return alpha_off;
-    };
     
     var colour = "black", colour_off;
     var get_colour;
