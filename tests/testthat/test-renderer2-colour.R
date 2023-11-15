@@ -35,7 +35,7 @@ test_that("default clicking line only changes opacity", {
     "opacity")
   opacity.tab <- sort(table(opacity.str))
   expect_equal(as.numeric(opacity.tab), c(1, 4))
-  expect_equal(names(opacity.tab), c("0.5","1"))
+  expect_equal(names(opacity.tab), c("1","0.5"))
   stroke.str <- getStyleValue(
     info$html,
     '//svg[@id="plot_default"]//path[@class="geom"]',
@@ -50,7 +50,7 @@ test_that("setting colour_off makes stroke and opacity change", {
     "opacity")
   opacity.tab <- sort(table(opacity.str))
   expect_equal(as.numeric(opacity.tab), c(1, 4))
-  expect_equal(names(opacity.tab), c("0.5","1"))
+  expect_equal(names(opacity.tab), c("1","0.5"))
   stroke.str <- getStyleValue(
     info$html,
     '//svg[@id="plot_coff"]//path[@class="geom"]',

@@ -17,7 +17,7 @@ test_that("geom_text color rendered as fill style", {
   expect_identical(opacity, c("1","1","1","1"))
 })
 
-clickID("plot_text_y_variable_foo_svg")#or foo_label?
+clickID("plot_text_y_variable_foo_label")#not _svg.
 after.html <- getHTML()
 test_that("geom_text color rendered as fill style", {
   fill <- getStyleValue(after.html, '//text[@class="geom"]', "fill")
