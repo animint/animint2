@@ -93,7 +93,7 @@ viz.point <- list(
       fill = disp),
       data = mtcars,
       colour="red",
-      colour_off="transparent",
+      colour_off="yellow",
       alpha_off=1,
       size = 10,
       clickSelects = "gear")+
@@ -122,7 +122,7 @@ test_that("setting alpha_off and colour_off makes only stroke change", {
     '//svg[@id="plot_acoff"]//circle[@class="geom"]',
     "stroke")
   stroke.tab <- sort(table(stroke.str))
-  expect_color(names(stroke.tab), c("red","transparent"))
+  expect_color(names(stroke.tab), c("red","yellow"))
 })
 
 #

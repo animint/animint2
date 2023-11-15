@@ -3,7 +3,7 @@ library(animint2)
 df <- data.frame(x=1,y="foo")
 viz <- animint(
   text=ggplot()+
-    geom_text(aes(x, 4, label=y), color="black", clickSelects="y", data=df)+
+    geom_text(aes(x, 4, label=y, id="ONETEXT"), color="black", clickSelects="y", data=df)+
     geom_text(aes(x, 3, label=y, color=y), data=df)+
     scale_color_manual(values=c(foo="blue"))+
     geom_text(aes(x, 2, label=y), color="red", data=df)+
@@ -17,7 +17,7 @@ test_that("geom_text color rendered as fill style", {
   expect_identical(opacity, c("1","1","1","1"))
 })
 
-clickID("plot_text_y_variable_foo_label")#not _svg.
+clickID("ONETEXT")
 after.html <- getHTML()
 test_that("geom_text color rendered as fill style", {
   fill <- getStyleValue(after.html, '//text[@class="geom"]', "fill")

@@ -1098,17 +1098,18 @@ var animint = function (to_select, json_file) {
     
     var colour = "black", colour_off;
     var get_colour;
+    var get_colour_off = function (d) {
+      return colour_off;
+    };
     if(aes.hasOwnProperty("colour")){
       get_colour = get_attr("colour");
+      get_colour_off = get_colour;
     }else{
       get_colour = function (d) {
 	return colour;
       };
     }
     var get_colour_off_default = get_colour;
-    var get_colour_off = function (d) {
-      return colour_off;
-    };
 
     var fill = "black", fill_off = "black";
     var get_fill = function (d) {

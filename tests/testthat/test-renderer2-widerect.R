@@ -1,5 +1,5 @@
 acontext("geom_widerect")
-
+library(animint2)
 expect_source <- function(expected){
   a.list <- getNodeSet(info$html, '//a[@id="a_source_href"]')
   computed <- if(length(a.list)==0){
@@ -8,7 +8,7 @@ expect_source <- function(expected){
     at.mat <- sapply(a.list, xmlAttrs)
     at.mat["href",]
   }
-  expect_identical(computed, expected)
+  expect_identical(as.character(computed), as.character(expected))
 }
 
 recommendation <- data.frame(
