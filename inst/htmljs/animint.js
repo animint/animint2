@@ -1083,7 +1083,7 @@ var animint = function (to_select, json_file) {
       return linetypesize2dasharray(lt, get_size(d));
     };
 
-    var alpha, alpha_off;
+    var alpha = 1, alpha_off;
     var get_alpha;
     if(aes.hasOwnProperty("alpha")){
       get_alpha = get_attr("alpha");
@@ -1096,7 +1096,7 @@ var animint = function (to_select, json_file) {
       return alpha_off;
     };
     
-    var colour, colour_off;
+    var colour = "black", colour_off;
     var get_colour;
     if(aes.hasOwnProperty("colour")){
       get_colour = get_attr("colour");
@@ -1165,7 +1165,7 @@ var animint = function (to_select, json_file) {
       "opacity","stroke","stroke-width","stroke-dasharray","fill"];
     var line_style_list = [
       "opacity","stroke","stroke-width","stroke-dasharray"];
-    var fill_comes_from="fill", fill_off_comes_from="fill";
+    var fill_comes_from="fill", fill_off_comes_from="fill_off";
     if(g_info.data_is_object) {
 
       // Lines, paths, polygons, and ribbons are a bit special. For
@@ -1425,7 +1425,6 @@ var animint = function (to_select, json_file) {
 	}
 	if (g_info.geom == "rect") {
 	  alpha_off = alpha;
-	  colour = "black";
 	  colour_off = "transparent";
 	  get_colour_off_default = get_colour_off;
 	  eActions = function (e) {
@@ -1452,21 +1451,16 @@ var animint = function (to_select, json_file) {
     }
     if(g_info.params.hasOwnProperty("alpha")){
       alpha = g_info.params.alpha;
-    }else{
-      alpha = 1;
+      alpha_off = alpha - 0.5
     }
     if(g_info.params.hasOwnProperty("alpha_off")){
       alpha_off = g_info.params.alpha_off;
-    }else{
-      alpha_off = alpha - 0.5;
     }
     if(g_info.params.hasOwnProperty("anchor")){
       text_anchor = g_info.params["anchor"];
     }
     if(g_info.params.hasOwnProperty("colour")){
       colour = g_info.params.colour;
-    }else{
-      colour = "black";
     }
     if(g_info.params.hasOwnProperty("colour_off")){
       colour_off = g_info.params.colour_off;
@@ -1484,6 +1478,7 @@ var animint = function (to_select, json_file) {
     }
     if(aes.hasOwnProperty(fill_comes_from)){
       get_fill = get_attr(fill_comes_from);
+      get_fill_off = get_attr(fill_comes_from);
     };
     if (g_info.params.hasOwnProperty("size")) {
       size = g_info.params.size;

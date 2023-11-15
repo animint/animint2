@@ -95,7 +95,7 @@ GeomTile <- gganimintproto("GeomTile", GeomRect,
     )
   },
 
-  default_aes = aes(fill = "grey20", colour = NA, size = 0.1, linetype = 1,
+  default_aes = aes(fill = "grey20", colour = "black", size = 0.1, linetype = 1,
     alpha = NA),
 
   required_aes = c("x", "y"),
@@ -104,9 +104,6 @@ GeomTile <- gganimintproto("GeomTile", GeomRect,
 
   pre_process = function(g, g.data, ...) {
     g$geom <- "rect"
-    if(is.null(g$params$colour)){
-      g$params$colour <- "transparent"
-    }
     return(list(g = g, g.data = g.data))
   }
 )
