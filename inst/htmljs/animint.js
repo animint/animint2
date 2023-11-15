@@ -1083,7 +1083,7 @@ var animint = function (to_select, json_file) {
       return linetypesize2dasharray(lt, get_size(d));
     };
 
-    var alpha = 1, alpha_off;
+    var alpha = 1, alpha_off = 0.5;
     var get_alpha;
     if(aes.hasOwnProperty("alpha")){
       get_alpha = get_attr("alpha");
