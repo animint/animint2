@@ -6,7 +6,7 @@
 \title{Housing sales in TX.}
 \format{
 A data frame with 8602 observations and 9 variables:
-\itemize{
+\describe{
 \item{city}{Name of MLS area}
 \item{year,month,date}{Date}
 \item{sales}{Number of sales}

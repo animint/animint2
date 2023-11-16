@@ -1,3 +1,4 @@
+readme_website.md
 .github
 ^.*\.Rproj$
 ^\.Rproj\.user$
@@ -6,7 +7,7 @@ data-raw
 IDEAS.html
 IDEAS.org
 inst/examples
-README.org
+README.md
 tableau-notes.org
 .*~
 intreg-selection
@@ -14,3 +15,7 @@ animint-htmltest
 ANIMINT_TEST_FOO
 test-compiler-gist.R
 .httr-oauth
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$

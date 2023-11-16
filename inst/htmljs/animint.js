@@ -180,29 +180,6 @@ var animint = function (to_select, json_file) {
             ".axis text {font-family: sans-serif;font-size: 11px;}"];
 
   var add_geom = function (g_name, g_info) {
-    // Determine what style to use to show the selection for this
-    // geom. This is a hack and should be removed when we implement
-    // the selected.color, selected.size, etc aesthetics.
-    //
-    // 2022.08.01 update: get rid of the hack of "rect stroke" to 
-    // implement a general function for alpha_off, color_off. 
-    // In order to have multiple styles functioning together
-    // so here use array to store the styles.   
-    // Default using alpha/opacity style, execpt rect/tile geom
-    // rect/tile geom default using stroke style
-    let select_styles = [];
-    let has_colour_off = g_info.params.hasOwnProperty("colour_off") || g_info.aes.hasOwnProperty("colour_off");
-    let has_alpha_off = g_info.params.hasOwnProperty("alpha_off") || g_info.aes.hasOwnProperty("alpha_off");
-    if(has_colour_off || g_info.geom == "rect"){
-      select_styles.push("stroke");
-    } 
-    if (has_alpha_off){
-      select_styles.push("opacity");
-    } 
-    if (!has_colour_off && !has_alpha_off && !select_styles.length){
-      select_styles = ["opacity"];
-    }
-    g_info.select_style = select_styles;
     // Determine if data will be an object or an array.
     if(g_info.geom in data_object_geoms){
       g_info.data_is_object = true;
@@ -228,8 +205,8 @@ var animint = function (to_select, json_file) {
       g_info.common_tsv = common_tsv;
       var common_path = getTSVpath(common_tsv);
       d3.tsv(common_path, function (error, response) {
-	var converted = convert_R_types(response, g_info.types);
-	g_info.data[common_tsv] = nest_by_group.map(converted);
+        var converted = convert_R_types(response, g_info.types);
+        g_info.data[common_tsv] = nest_by_group.map(converted);
       });
     } else {
       g_info.common_tsv = null;
@@ -1054,141 +1031,118 @@ var animint = function (to_select, json_file) {
     var layer_g_element = svg.select("g." + g_info.classed);
     var panel_g_element = layer_g_element.select("g.PANEL" + PANEL);
     var elements = panel_g_element.selectAll(".geom");
-    // TODO: standardize this code across aes/styles.
-    let base_opacity;
-    let off_opacity;
-    // Explicitly check if it has the property, allows 0 as valid value
-    if (g_info.params.hasOwnProperty("alpha")) {
-      base_opacity = g_info.params.alpha;
-    } else {
-      base_opacity = 1;
-    }
-    if (g_info.params.hasOwnProperty("alpha_off")) {
-      off_opacity = g_info.params.alpha_off;
-    } else {
-      off_opacity = base_opacity - 0.5;
-    }
-    //alert(g_info.classed+" "+base_opacity);
-    var get_alpha = function (d) {
-      var a;
-      if (aes.hasOwnProperty("alpha") && d.hasOwnProperty("alpha")) {
-        a = d["alpha"];
-      } else {
-        a = base_opacity;
-      }
-      return a;
+
+    // helper functions so we can write code that works for both
+    // grouped and ungrouped geoms. get_one_row returns one row of
+    // data (not one group), in both cases.
+    var get_fun = function(fun){
+      return function(input){
+	var d = get_one_row(input);
+	return fun(d);
+      };
     };
-    const get_alpha_off = function (d) {
-      let a;
-      if (aes.hasOwnProperty("alpha_off") && d.hasOwnProperty("alpha_off")) {
-        a = d["alpha_off"];
-      } else if (g_info.params.hasOwnProperty("alpha_off")) {
-        a = g_info.params.alpha_off;
-      } else if (aes.hasOwnProperty("alpha") && d.hasOwnProperty("alpha")) {
-        a = d["alpha"] - 0.5;
-      } else {
-        a = off_opacity;
-      }
-      return a;
+    var get_attr = function(attr_name){
+      return get_fun(function(d){
+	return d[attr_name];
+      });
     };
+
     var size = 2;
-    if(g_info.geom == "text"){
-      size = 12;
+    var get_size;
+    if(aes.hasOwnProperty("size")){
+      get_size = get_attr("size");
+    }else{
+      get_size = function(d){
+	return size;
+      };
     }
-    if (g_info.params.hasOwnProperty("size")) {
-      size = g_info.params.size;
-    }
-    var get_size = function (d) {
-      if (aes.hasOwnProperty("size") && d.hasOwnProperty("size")) {
-        return d["size"];
-      }
-      return size;
-    };
+    var get_style_on_stroke_width = get_size;
     
     // stroke_width for geom_point
     var stroke_width = 1;  // by default ggplot2 has 0.5, animint has 1
-    if (g_info.params.hasOwnProperty("stroke")) {
-      stroke_width = g_info.params.stroke;
-    }
-    var get_stroke_width = function (d) {
-      if (aes.hasOwnProperty("stroke") && d.hasOwnProperty("stroke")) {
-        return d["stroke"];
-      }
-      return stroke_width;
+    var get_stroke_width;
+    if(aes.hasOwnProperty("stroke")){
+      get_stroke_width = get_attr("stroke");
+    }else{
+      get_stroke_width = function(d){
+	return stroke_width;
+      };
     }
     
     var linetype = "solid";
-    if (g_info.params.linetype) {
-      linetype = g_info.params.linetype;
+    var get_linetype;
+    if(aes.hasOwnProperty("linetype")){
+      get_linetype = get_attr("linetype");
+    }else{
+      get_linetype = function(d){
+	return linetype;
+      };
     }
-
-    var get_dasharray = function (d) {
-      var lt = linetype;
-      if (aes.hasOwnProperty("linetype") && d.hasOwnProperty("linetype")) {
-        lt = d["linetype"];
-      }
+    var get_dasharray = function(d){
+      var lt = get_linetype(d);
       return linetypesize2dasharray(lt, get_size(d));
     };
-    var colour = "black";
-    var fill = "black";
-    let angle = 0;
-    if (g_info.params.hasOwnProperty("angle")) {
-      angle = g_info.params["angle"];
+
+    var alpha = 1, alpha_off = 0.5;
+    var get_alpha;
+    var get_alpha_off = function (d) {
+      return alpha_off;
+    };
+    if(aes.hasOwnProperty("alpha")){
+      get_alpha = get_attr("alpha");
+      get_alpha_off = get_attr("alpha");
+    } else {
+      get_alpha = function(d){
+	return alpha;
+      };
     }
-    const get_angle = function(d) {
+    
+    var colour = "black", colour_off;
+    var get_colour;
+    var get_colour_off = function (d) {
+      return colour_off;
+    };
+    if(aes.hasOwnProperty("colour")){
+      get_colour = get_attr("colour");
+      get_colour_off = get_colour;
+    }else{
+      get_colour = function (d) {
+	return colour;
+      };
+    }
+    var get_colour_off_default = get_colour;
+
+    var fill = "black", fill_off = "black";
+    var get_fill = function (d) {
+      return fill;
+    };
+    var get_fill_off = function (d) {
+      return fill_off;
+    };
+    
+    var angle = 0;
+    var get_angle;
+    if(aes.hasOwnProperty("angle")){
+      get_angle = get_attr("angle");
+    }else{
+      get_angle = function(d){
+	return angle;
+      };
+    }
+    var get_rotate = function(d){
       // x and y are the coordinates to rotate around, we choose the center 
       // point of the text because otherwise it will rotate around (0,0) of its 
       // coordinate system, which is the top left of the plot
       x = scales["x"](d["x"]);
       y = scales["y"](d["y"]);
-      if (d.hasOwnProperty("angle")) {
-        angle = d["angle"];
-      }
+      var angle = get_angle(d);
       // ggplot expects angles to be in degrees CCW, SVG uses degrees CW, so 
       // we negate the angle.
       return `rotate(${-angle}, ${x}, ${y})`;
     };
-    var get_colour = function (d) {
-      if (d.hasOwnProperty("colour")) {
-        return d["colour"]
-      }
-      return colour;
-    };
-    if (g_info.geom == "rect" && has_clickSelects && g_info.params.colour == "transparent"){
-      colour = "black";
-    } else if(g_info.params.colour){
-      colour = g_info.params.colour;
-    }
     
-    // Only "colour_off" params appears would call this function,
-    // so no default off_colour value
-    const get_colour_off = function (d) {
-      let off_colour;
-      if (aes.hasOwnProperty("colour_off") && d.hasOwnProperty("colour_off")) {
-        off_colour = d["colour_off"];
-      } else if(g_info.params.hasOwnProperty("colour_off")){
-        off_colour = g_info.params.colour_off;
-      }
-      return off_colour;
-    };
-
-    var get_fill = function (d) {
-      if (d.hasOwnProperty("fill")) {
-        return d["fill"];
-      }
-      return fill;
-    };
-    if (g_info.params.fill) {
-      fill = g_info.params.fill;
-    }else if(g_info.params.colour){
-      fill = g_info.params.colour;
-    }
-
     // For aes(hjust) the compiler should make an "anchor" column.
     var text_anchor = "middle";
-    if(g_info.params.hasOwnProperty("anchor")){
-      text_anchor = g_info.params["anchor"];
-    }
     var get_text_anchor;
     if(g_info.aes.hasOwnProperty("hjust")) {
       get_text_anchor = function(d){
@@ -1200,26 +1154,20 @@ var animint = function (to_select, json_file) {
       }
     }
 
-    var eActions, eAppend, linkActions;
+    var eActions, eAppend;
     var key_fun = null;
-    var id_fun = function(d){
-      return d.id;
-    };
     if(g_info.aes.hasOwnProperty("key")){
       key_fun = function(d){
         return d.key;
       };
     }
-    
-    // Apply user-configurable selection style into each geom later.
-    var select_style_fun = function(g_info, e){
-      if(!g_info.select_style.includes("stroke")){
-        e.style("stroke", get_colour);
-      }
-      if(!g_info.select_style.includes("opacity")){
-        e.style("opacity", get_alpha);
-      }
-    };
+    var get_one_row;//different for grouped and ungrouped geoms.
+    var data_to_bind;
+    g_info.style_list = [
+      "opacity","stroke","stroke-width","stroke-dasharray","fill"];
+    var line_style_list = [
+      "opacity","stroke","stroke-width","stroke-dasharray"];
+    var fill_comes_from="fill", fill_off_comes_from="fill_off";
     if(g_info.data_is_object) {
 
       // Lines, paths, polygons, and ribbons are a bit special. For
@@ -1313,27 +1261,19 @@ var animint = function (to_select, json_file) {
           .x(toXY("x", "x"))
           .y(toXY("y", "y"));
       }
+      if(["line","path"].includes(g_info.geom)){
+	fill = "none";
+	fill_off = "none";
+      }
       // select the correct group before returning anything.
       key_fun = function(group_info){
 	return group_info.value;
       };
-      id_fun = function(group_info){
+      data_to_bind = kv;
+      get_one_row = function(group_info) {
         var one_group = keyed_data[group_info.value];
         var one_row = one_group[0];
-	      // take key from first value in the group.
-	      return one_row.id;
-      };
-      elements = elements.data(kv, key_fun);
-      linkActions = function(a_elements){
-	a_elements
-	  .attr("xlink:href", function(group_info){
-            var one_group = keyed_data[group_info.value];
-            var one_row = one_group[0];
-	    return one_row.href;
-	  })
-          .attr("target", "_blank")
-          .attr("class", "geom")
-	;
+	return one_row;
       };
       eActions = function (e) {
         e.attr("d", function (d) {
@@ -1348,304 +1288,254 @@ var animint = function (to_select, json_file) {
           });
           return lineThing(no_na);
         })
-          .style("fill", function (group_info) {
-            if (g_info.geom == "line" || g_info.geom == "path") {
-              return "none";
-            }
-            var one_group = keyed_data[group_info.value];
-            var one_row = one_group[0];
-            // take color for first value in the group
-            return get_fill(one_row);
-          })
-          .style("stroke-width", function (group_info) {
-            var one_group = keyed_data[group_info.value];
-            var one_row = one_group[0];
-  	        // take size for first value in the group
-            return get_size(one_row);
-          })
-          .style("stroke", function (group_info) {
-            var one_group = keyed_data[group_info.value];
-            var one_row = one_group[0];
-  	        // take color for first value in the group
-            // Since line/path geom are using group to draw, 
-            // so it is different from other geom 
-            // and cannot call select_style_fun function here
-            if ((has_clickSelects || has_clickSelects_variable) && g_info.select_style.includes("stroke")){
-              const v_name = g_info.aes['clickSelects.variable'] || g_info.aes['clickSelects'];
-              const s_info = Selectors[v_name];
-              if(s_info.selected == one_row.clickSelects){
-                return get_colour(one_row);
-              } else{
-                return get_colour_off(one_row);
-              };
-            };
-            return get_colour(one_row);
-          })
-          .style("stroke-dasharray", function (group_info) {
-            var one_group = keyed_data[group_info.value];
-            var one_row = one_group[0];
-  	        // take linetype for first value in the group
-            return get_dasharray(one_row);
-          })
-          .style("stroke-width", function (group_info) {
-            var one_group = keyed_data[group_info.value];
-            var one_row = one_group[0];
-  	        // take line size for first value in the group
-            return get_size(one_row);
-          });
-        if(!g_info.select_style.includes("opacity")){
-          e.style("opacity", function (group_info) {
-            var one_group = keyed_data[group_info.value];
-            var one_row = one_group[0];
-            // take line size for first value in the group
-            return get_alpha(one_row);
-          })
-        }
       };
       eAppend = "path";
     }else{
-      linkActions = function(a_elements){
-	a_elements.attr("xlink:href", function(d){ return d.href; })
-          .attr("target", "_blank")
-          .attr("class", "geom");
-      };
-    }
-    if (g_info.geom == "segment") {
-      elements = elements.data(data, key_fun);
-      eActions = function (e) {
-        e.attr("x1", function (d) {
-          return scales.x(d["x"]);
-        })
-          .attr("x2", function (d) {
-            return scales.x(d["xend"]);
-          })
-          .attr("y1", function (d) {
-            return scales.y(d["y"]);
-          })
-          .attr("y2", function (d) {
-            return scales.y(d["yend"]);
-          })
-          .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
-      };
-      eAppend = "line";
-    }
-    if (g_info.geom == "linerange") {
-      elements = elements.data(data, key_fun);
-      eActions = function (e) {
-        e.attr("x1", function (d) {
-          return scales.x(d["x"]);
-        })
-          .attr("x2", function (d) {
+      get_one_row = function(d){
+	return d;
+      }
+      data_to_bind = data;
+      if (g_info.geom == "segment") {
+	g_info.style_list = line_style_list;
+	eActions = function (e) {
+          e.attr("x1", function (d) {
             return scales.x(d["x"]);
           })
-          .attr("y1", function (d) {
-            return scales.y(d["ymax"]);
-          })
-          .attr("y2", function (d) {
-            return scales.y(d["ymin"]);
-          })
-          .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
-      };
-      eAppend = "line";
-    }
-    if (g_info.geom == "vline") {
-      elements = elements.data(data, key_fun);
-      eActions = function (e) {
-        e.attr("x1", toXY("x", "xintercept"))
-          .attr("x2", toXY("x", "xintercept"))
-          .attr("y1", scales.y.range()[0])
-          .attr("y2", scales.y.range()[1])
-          .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
-      };
-      eAppend = "line";
-    }
-    if (g_info.geom == "hline") {
-      // pretty much a copy of geom_vline with obvious modifications
-      elements = elements.data(data, key_fun);
-      eActions = function (e) {
-        e.attr("y1", toXY("y", "yintercept"))
-          .attr("y2", toXY("y", "yintercept"))
-          .attr("x1", scales.x.range()[0])
-          .attr("x2", scales.x.range()[1])
-          .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
-      };
-      eAppend = "line";
-    }
-    if (g_info.geom == "text") {
-      elements = elements.data(data, key_fun);
-      // TODO: how to support vjust? firefox doensn't support
-      // baseline-shift... use paths?
-      // http://commons.oreilly.com/wiki/index.php/SVG_Essentials/Text
-      eActions = function (e) {
-        e.attr("x", toXY("x", "x"))
-          .attr("y", toXY("y", "y"))
-          .style("fill", get_colour)
-          .attr("font-size", get_size)
-          .style("text-anchor", get_text_anchor)
-          .attr("transform", get_angle)
-          .text(function (d) {
-            return d.label;
-          });
-      };
-      eAppend = "text";
-    }
-    if (g_info.geom == "point") {
-      elements = elements.data(data, key_fun);
-      eActions = function (e) {
-        e.attr("cx", toXY("x", "x"))
-        .attr("cy", toXY("y", "y"))
-        .attr("r", get_size)
-        .style("fill", get_fill)
-        .style("stroke-width", get_stroke_width);
-      select_style_fun(g_info, e);
-      };
-      eAppend = "circle";
-    }
-    if (g_info.geom == "tallrect") {
-      elements = elements.data(data, key_fun);
-      eActions = function (e) {
-        e.attr("x", toXY("x", "xmin"))
-          .attr("width", function (d) {
-            return scales.x(d["xmax"]) - scales.x(d["xmin"]);
-          })
-          .attr("y", scales.y.range()[1])
-          .attr("height", scales.y.range()[0] - scales.y.range()[1])
-          .style("fill", get_fill)
-          .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
-      };
-      eAppend = "rect";
-    }
-    if (g_info.geom == "widerect") {
-      elements = elements.data(data, key_fun);
-      eActions = function (e) {
-        e.attr("y", toXY("y", "ymax"))
-          .attr("height", function (d) {
-            return scales.y(d["ymin"]) - scales.y(d["ymax"]);
-          })
-          .attr("x", scales.x.range()[0])
-          .attr("width", scales.x.range()[1] - scales.x.range()[0])
-          .style("fill", get_fill)
-          .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
-      };
-      eAppend = "rect";
-    }
-    // geom_rect/geom_tile selection style logic:
-    // 1. in geom-tile.R we specify if the colour parameter, not aes, is null
-    //  - it shall be transparent when there is no clickSelects
-    //  - it is black when clickSelects is specified, and no params colour
-    // 2. When colour param is not null, whether it has clickSelects or not
-    //    the colour/stroke is the RGB value of colour params
-    if (g_info.geom == "rect") {
-      elements = elements.data(data, key_fun);
-      eActions = function (e) {
-        e.attr("x", toXY("x", "xmin"))
-          .attr("width", function (d) {
-            return Math.abs(scales.x(d.xmax) - scales.x(d.xmin));
-          })
-          .attr("y", toXY("y", "ymax"))
-          .attr("height", function (d) {
-            return Math.abs(scales.y(d.ymin) - scales.y(d.ymax));
-          })
-          .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("fill", get_fill);
-          select_style_fun(g_info, e);
-      };
-      eAppend = "rect";
-    }
-    if (g_info.geom == "boxplot") {
-
-      // TODO: currently boxplots are unsupported (we intentionally
-      // stop with an error in the R code). The reason why is that
-      // boxplots are drawn using multiple geoms and it is not
-      // straightforward to deal with that using our current JS
-      // code. After all, a boxplot could be produced by combing 3
-      // other geoms (rects, lines, and points) if you really wanted
-      // it.
-
-      fill = "white";
-
-      elements = elements.data(data);
-      eActions = function (e) {
-        e.append("line")
-          .attr("x1", function (d) {
+            .attr("x2", function (d) {
+              return scales.x(d["xend"]);
+            })
+            .attr("y1", function (d) {
+              return scales.y(d["y"]);
+            })
+            .attr("y2", function (d) {
+              return scales.y(d["yend"]);
+            })
+	};
+	eAppend = "line";
+      }
+      if (g_info.geom == "linerange") {
+	g_info.style_list = line_style_list;
+	eActions = function (e) {
+          e.attr("x1", function (d) {
             return scales.x(d["x"]);
           })
-          .attr("x2", function (d) {
-            return scales.x(d["x"]);
-          })
-          .attr("y1", function (d) {
-            return scales.y(d["ymin"]);
-          })
-          .attr("y2", function (d) {
-            return scales.y(d["lower"]);
-          })
-          .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
-        e.append("line")
-          .attr("x1", function (d) {
-            return scales.x(d["x"]);
-          })
-          .attr("x2", function (d) {
-            return scales.x(d["x"]);
-          })
-          .attr("y1", function (d) {
-            return scales.y(d["upper"]);
-          })
-          .attr("y2", function (d) {
-            return scales.y(d["ymax"]);
-          })
-          .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
-        e.append("rect")
-          .attr("x", function (d) {
-            return scales.x(d["xmin"]);
-          })
-          .attr("width", function (d) {
-            return scales.x(d["xmax"]) - scales.x(d["xmin"]);
-          })
-          .attr("y", function (d) {
-            return scales.y(d["upper"]);
-          })
-          .attr("height", function (d) {
-            return Math.abs(scales.y(d["upper"]) - scales.y(d["lower"]));
-          })
-          .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size)
-          .style("fill", get_fill);
-          select_style_fun(g_info, e);
-        e.append("line")
-          .attr("x1", function (d) {
-            return scales.x(d["xmin"]);
-          })
-          .attr("x2", function (d) {
-            return scales.x(d["xmax"]);
-          })
-          .attr("y1", function (d) {
-            return scales.y(d["middle"]);
-          })
-          .attr("y2", function (d) {
-            return scales.y(d["middle"]);
-          })
-          .style("stroke-dasharray", get_dasharray)
-          .style("stroke-width", get_size);
-          select_style_fun(g_info, e);
-      };
+            .attr("x2", function (d) {
+              return scales.x(d["x"]);
+            })
+            .attr("y1", function (d) {
+              return scales.y(d["ymax"]);
+            })
+            .attr("y2", function (d) {
+              return scales.y(d["ymin"]);
+            })
+	  ;
+	};
+	eAppend = "line";
+      }
+      if (g_info.geom == "vline") {
+	g_info.style_list = line_style_list;
+	eActions = function (e) {
+          e.attr("x1", toXY("x", "xintercept"))
+            .attr("x2", toXY("x", "xintercept"))
+            .attr("y1", scales.y.range()[0])
+            .attr("y2", scales.y.range()[1])
+	  ;
+	};
+	eAppend = "line";
+      }
+      if (g_info.geom == "hline") {
+	g_info.style_list = line_style_list;
+	eActions = function (e) {
+          e.attr("y1", toXY("y", "yintercept"))
+            .attr("y2", toXY("y", "yintercept"))
+            .attr("x1", scales.x.range()[0])
+            .attr("x2", scales.x.range()[1])
+	  ;
+	};
+	eAppend = "line";
+      }
+      if (g_info.geom == "text") {
+	size = 12;//default
+	get_colour = function(d){
+	  return "none";
+	};
+	get_colour_off = function(d) {
+	  return "none";
+	};
+	fill_comes_from = "colour";
+	fill_off_comes_from = "colour_off";
+	g_info.style_list = [
+	  "opacity","fill"];
+	eActions = function (e) {
+          e.attr("x", toXY("x", "x"))
+            .attr("y", toXY("y", "y"))
+            .attr("font-size", get_size)
+            .style("text-anchor", get_text_anchor)
+            .attr("transform", get_rotate)
+            .text(function (d) {
+              return d.label;
+            })
+	  ;
+	};
+	eAppend = "text";
+      }
+      if (g_info.geom == "point") {
+	// point is special because it takes SVG fill from ggplot
+	// colour, if fill is not specified.
+	if(!(
+	  g_info.params.hasOwnProperty("fill") ||
+	    aes.hasOwnProperty("fill")
+	)){
+	  fill_comes_from = "colour";
+	}
+	if(!g_info.params.hasOwnProperty("fill_off")){
+	  fill_off_comes_from = "colour_off";
+	}
+	get_style_on_stroke_width = get_stroke_width;//not size.
+	eActions = function (e) {
+          e.attr("cx", toXY("x", "x"))
+            .attr("cy", toXY("y", "y"))
+            .attr("r", get_size)
+	  ;
+	};
+	eAppend = "circle";
+      }
+      var rect_geoms = ["tallrect","widerect","rect"];
+      if(rect_geoms.includes(g_info.geom)){
+	eAppend = "rect";
+	if (g_info.geom == "tallrect") {
+	  eActions = function (e) {
+            e.attr("x", toXY("x", "xmin"))
+              .attr("width", function (d) {
+		return scales.x(d["xmax"]) - scales.x(d["xmin"]);
+              })
+              .attr("y", scales.y.range()[1])
+              .attr("height", scales.y.range()[0] - scales.y.range()[1])
+	    ;
+	  };
+	}
+	if (g_info.geom == "widerect") {
+	  eActions = function (e) {
+            e.attr("y", toXY("y", "ymax"))
+              .attr("height", function (d) {
+		return scales.y(d["ymin"]) - scales.y(d["ymax"]);
+              })
+              .attr("x", scales.x.range()[0])
+              .attr("width", scales.x.range()[1] - scales.x.range()[0])
+	    ;
+	  };
+	}
+	if (g_info.geom == "rect") {
+	  alpha_off = alpha;
+	  colour_off = "transparent";
+	  get_colour_off_default = get_colour_off;
+	  eActions = function (e) {
+            e.attr("x", toXY("x", "xmin"))
+              .attr("width", function (d) {
+		return Math.abs(scales.x(d.xmax) - scales.x(d.xmin));
+              })
+              .attr("y", toXY("y", "ymax"))
+              .attr("height", function (d) {
+		return Math.abs(scales.y(d.ymin) - scales.y(d.ymax));
+              })
+	    ;
+	  };
+	}
+      }
     }
+    // set params after geom-specific code, because each geom may have
+    // a different default.
+    if (g_info.params.hasOwnProperty("stroke")) {
+      stroke_width = g_info.params.stroke;
+    }
+    if (g_info.params.hasOwnProperty("linetype")) {
+      linetype = g_info.params.linetype;
+    }
+    if(g_info.params.hasOwnProperty("alpha")){
+      alpha = g_info.params.alpha;
+      alpha_off = alpha - 0.5
+    }
+    if(g_info.params.hasOwnProperty("alpha_off")){
+      alpha_off = g_info.params.alpha_off;
+    }
+    if(g_info.params.hasOwnProperty("anchor")){
+      text_anchor = g_info.params["anchor"];
+    }
+    if(g_info.params.hasOwnProperty("colour")){
+      colour = g_info.params.colour;
+    }
+    if(g_info.params.hasOwnProperty("colour_off")){
+      colour_off = g_info.params.colour_off;
+    }else{
+      get_colour_off = get_colour_off_default;
+    }
+    if (g_info.params.hasOwnProperty("angle")) {
+      angle = g_info.params["angle"];
+    }
+    if (g_info.params.hasOwnProperty(fill_comes_from)) {
+      fill = g_info.params[fill_comes_from];
+    }
+    if (g_info.params.hasOwnProperty(fill_off_comes_from)) {
+      fill_off = g_info.params[fill_off_comes_from];
+    }
+    if(aes.hasOwnProperty(fill_comes_from)){
+      get_fill = get_attr(fill_comes_from);
+      get_fill_off = get_attr(fill_comes_from);
+    };
+    if (g_info.params.hasOwnProperty("size")) {
+      size = g_info.params.size;
+    }
+    var styleActions = function(e){
+      g_info.style_list.forEach(function(s){
+	e.style(s, function(d) {
+	  var style_on_fun = style_on_funs[s];
+	  return style_on_fun(d);
+	});
+      });
+    };
+    var style_on_funs = {
+      "opacity": get_alpha,
+      "stroke": get_colour,
+      "fill": get_fill,
+      "stroke-width": get_style_on_stroke_width,
+      "stroke-dasharray": get_dasharray
+    };
+    var style_off_funs = {
+      "opacity": get_alpha_off,
+      "stroke": get_colour_off,
+      "fill": get_fill_off
+    };
+    // TODO cleanup.
+    var select_style_default = ["opacity","stroke","fill"];
+    g_info.select_style = select_style_default.filter(
+      X => g_info.style_list.includes(X));
+    var over_fun = function(e){
+      g_info.select_style.forEach(function(s){
+        e.style(s, function (d) {
+          return style_on_funs[s](d);
+        });
+      });
+    };
+    var out_fun = function(e){
+      g_info.select_style.forEach(function(s){
+        e.style(s, function (d) {
+          var select_on = style_on_funs[s](d);
+          var select_off = style_off_funs[s](d);
+          if(has_clickSelects){
+            return ifSelectedElse(
+	      d.clickSelects,
+	      g_info.aes.clickSelects,
+              select_on, select_off);
+          }else if(has_clickSelects_variable){
+            return ifSelectedElse(
+	      d["clickSelects.value"],
+              d["clickSelects.variable"],
+              select_on, select_off);
+          }
+        });
+      });
+    };
+    elements = elements.data(data_to_bind, key_fun);
     elements.exit().remove();
     var enter = elements.enter();
     if(g_info.aes.hasOwnProperty("href")){
@@ -1653,81 +1543,11 @@ var animint = function (to_select, json_file) {
         .append("svg:"+eAppend);
     }else{
       enter = enter.append(eAppend)
-	      .attr("class", "geom");
+	.attr("class", "geom");
     }
+    var moreActions = function(e){};
     if (has_clickSelects || has_clickSelects_variable) {
-      var selected_funs = function(style_name, select_fun){
-        style_on_funs = {
-          "opacity": get_alpha,
-          "stroke": get_colour
-        };
-        style_off_funs = {
-          "opacity": get_alpha_off,
-          "stroke": get_colour_off
-        };
-        if(select_fun == "mouseout"){
-          return function (d) {
-            var select_on = style_on_funs[style_name](d);
-            var select_off = style_off_funs[style_name](d);
-            if(has_clickSelects){
-                    return ifSelectedElse(d.clickSelects, g_info.aes.clickSelects,
-                      select_on, select_off);
-            }else if(has_clickSelects_variable){
-              return ifSelectedElse(d["clickSelects.value"],
-                  d["clickSelects.variable"],
-                  select_on, select_off);
-            }
-          }
-        } else if(select_fun == "mouseover"){
-          return function (d) {
-            return style_on_funs[style_name](d);
-          }
-        };
-      }; //selected_funs.
-      // My original design for clicking/interactivity/transparency:
-      // Basically I wanted a really simple way to show which element
-      // in a group of clickable geom elements is currently
-      // selected. So I decided that all the non-selected elements
-      // should have alpha transparency 0.5 less than normal, and the
-      // selected element should have normal alpha transparency. Also,
-      // the element currently under the mouse has normal alpha
-      // transparency, to visually indicate that it can be
-      // clicked. Looking at my examples, you will see that I
-      // basically use this in two ways:
-
-      // 1. By specifying
-      // geom_vline(aes(clickSelects=variable),alpha=0.5), which
-      // implies a normal alpha transparency of 0.5. So all the vlines
-      // are hidden (normal alpha 0.5 - 0.5 = 0), except the current
-      // selection and the current element under the mouse pointer are
-      // drawn a bit faded with alpha=0.5.
-
-      // 2. By specifying e.g. geom_point(aes(clickSelects=variable)),
-      // that implies a normal alpha=1. Thus the current selection and
-      // the current element under the mouse pointer are fully drawn
-      // with alpha=1 and the others are shown but a bit faded with
-      // alpha=0.5 (normal alpha 1 - 0.5 = 0.5).
-
-      // Edit 19 March 2014: Now there are two styles to show the
-      // selection, depending on the geom. For most geoms it is as
-      // described above. But for geoms like rects with
-      // aes(fill=numericVariable), using opacity to indicate the
-      // selection results in a misleading decoding of the fill
-      // variable. So in this case we set stroke to "black" for the
-      // current selection.
-
-      // TODO: user-configurable selection styles.
-
-      var over_fun = function(e){
-        g_info.select_style.forEach(function(s){
-          e.style(s, selected_funs(s, "mouseover"));
-        })
-      };
-      var out_fun = function(e){
-        g_info.select_style.forEach(function(s){
-          e.style(s, selected_funs(s, "mouseout"));
-        })
-      };
+      moreActions = out_fun;
       elements.call(out_fun)
         .on("mouseover", function (d) {
           d3.select(this).call(over_fun);
@@ -1738,9 +1558,6 @@ var animint = function (to_select, json_file) {
       ;
       if(has_clickSelects){
 	elements.on("click", function (d) {
-	  // The main idea of how clickSelects works: when we click
-	  // something, we call update_selector with the clicked
-	  // value.
             var s_name = g_info.aes.clickSelects;
             update_selector(s_name, d.clickSelects);
 	});
@@ -1751,25 +1568,19 @@ var animint = function (to_select, json_file) {
 	  update_selector(s_name, s_value);
 	});
       }
-    }else{//has neither clickSelects nor clickSelects.variable.
-      elements.style("opacity", get_alpha)
-      if(g_info.geom != "text"){
-        elements.style("stroke", get_colour);
-      }
     }
+    // Set attributes of only the entering elements. This is needed to
+    // prevent things from flying around from the upper left when they
+    // enter the plot.
+    var doActions = function(e) {
+      eActions(e);
+      styleActions(e);
+      moreActions(e)
+    };
+    doActions(enter);  // DO NOT DELETE!
     var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
     if(has_clickSelects || has_tooltip || has_clickSelects_variable){
-      var text_fun, get_one;
-      if(g_info.data_is_object){
-	get_one = function(d_or_kv){
-          var one_group = keyed_data[d_or_kv.value];
-	  return one_group[0];
-        };
-      }else{
-	get_one = function(d_or_kv){ 
-	  return d_or_kv;
-	};
-      }
+      var text_fun;
       if(has_tooltip){
         text_fun = function(d){
 	  return d.tooltip;
@@ -1787,36 +1598,28 @@ var animint = function (to_select, json_file) {
       // if elements have an existing title, remove it.
       elements.selectAll("title").remove();
       elements.append("svg:title")
-        .text(function(d_or_kv){
-	  var d = get_one(d_or_kv);
-	  return text_fun(d);
-	})
+        .text(get_fun(text_fun))
       ;
     }
-    // Set attributes of only the entering elements. This is needed to
-    // prevent things from flying around from the upper left when they
-    // enter the plot.
-    eActions(enter);  // DO NOT DELETE!
     if(Selectors.hasOwnProperty(selector_name)){
       var milliseconds = Selectors[selector_name].duration;
       elements = elements.transition().duration(milliseconds);
     }
     if(g_info.aes.hasOwnProperty("id")){
-      elements.attr("id", id_fun);
+      elements.attr("id", get_attr("id"));
     }
     if(g_info.aes.hasOwnProperty("href")){
       // elements are <a>, children are e.g. <circle>
       var linked_geoms = elements.select(eAppend);
-      // d3.select(linked_geoms).data(data, key_fun); // WHY did we need this?
-      eActions(linked_geoms);
-      linkActions(elements);
+      doActions(linked_geoms);
+      elements.attr("xlink:href", get_attr("href"))
+        .attr("target", "_blank")
+        .attr("class", "geom");
     }else{
       // elements are e.g. <circle>
-      eActions(elements); // Set the attributes of all elements (enter/exit/stay)
+      doActions(elements); // Set the attributes of all elements (enter/exit/stay)
     }
   };
-  
-  
   
   var value_tostring = function(selected_values) {
       //function that is helpful to change the format of the string
@@ -1852,19 +1655,6 @@ var animint = function (to_select, json_file) {
       return selected_values;
   };
   
-  // var counter=-1;    
-  // var update_selector_url = function() {
-  //     var selected_values=get_values();
-  //     var url=value_tostring(selected_values);
-  //     if(counter===-1){
-  //     $(".table_selector_widgets").after("<table style='display:none' class='urltable'><tr class='selectorurl'></tr></table>");
-  //     $(".selectorurl").append("<p>Current URL</p>");
-  //     $(".selectorurl").append("<a href=''></a>");
-  //     counter++;
-  //     }
-  //     $(".selectorurl a").attr("href",url).text(url);
-  // };
-
   // update scales for the plots that have update_axes option in
   // theme_animint
   function update_scales(p_name, axes, v_name, value){
@@ -2258,7 +2048,12 @@ var animint = function (to_select, json_file) {
     // Widgets at bottom of page
     ////////////////////////////////////////////
     element.append("br");
-      
+    if(response.hasOwnProperty("source")){
+      element.append("a")
+	.attr("id","a_source_href")
+	.attr("href", response.source)
+	.text("source");
+    }
     // loading table.
     var show_hide_table = element.append("button")
       .text("Show download status table");

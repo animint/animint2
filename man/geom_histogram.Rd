@@ -194,10 +194,6 @@ m + geom_histogram(origin = 0) + coord_trans(x = "log10")
 # Use origin = 0, to make sure we don't take sqrt of negative values
 m + geom_histogram(origin = 0) + coord_trans(x = "sqrt")
 
-# You can also transform the y axis.  Remember that the base of the bars
-# has value 0, so log transformations are not appropriate
-m <- ggplot(movies, aes(x = rating))
-m + geom_histogram(binwidth = 0.5) + scale_y_sqrt()
 }
 rm(movies)
 }
