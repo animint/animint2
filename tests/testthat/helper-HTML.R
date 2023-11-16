@@ -2,6 +2,7 @@
 #'
 #' @param plotList A named list of ggplot2 objects
 animint2HTML <- function(plotList) {
+  unlink("animint-htmltest", recursive=TRUE)
   res <- animint2dir(plotList, out.dir = "animint-htmltest",
                      open.browser = FALSE)
   remDr$refresh()
