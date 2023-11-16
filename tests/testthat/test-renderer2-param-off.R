@@ -1,6 +1,5 @@
-acontext("colour_off, color_off")
+acontext("colour_off, fill_off, alpha_off")
 library(animint2)
-
 ## test geom without fill style
 viz.line <- list(
   default = ggplot()+
@@ -97,7 +96,14 @@ viz.point <- list(
       alpha_off=1,
       size = 10,
       clickSelects = "gear")+
-    ggtitle("colour=\"red\", colour_off=\"transparent\" "))
+    ggtitle("colour=\"red\", colour_off=\"transparent\" "),
+  orange=ggplot()+
+    geom_point(aes(
+      wt, mpg),
+      data=mtcars,
+      colour="orange",
+      size=10,
+      clickSelects="gear"))
 
 info.point <- animint2HTML(viz.point)
 
@@ -123,6 +129,27 @@ test_that("setting alpha_off and colour_off makes only stroke change", {
     "stroke")
   stroke.tab <- sort(table(stroke.str))
   expect_color(names(stroke.tab), c("red","yellow"))
+})
+
+test_that("setting colour makes only alpha change, not fill, not stroke", {
+  opacity.str <- getStyleValue(
+    info.point$html,
+    '//svg[@id="plot_orange"]//circle[@class="geom"]',
+    "opacity")
+  opacity.tab <- table(opacity.str)
+  expect_equal(sort(names(opacity.tab)), c("0.5","1"))
+  stroke.str <- getStyleValue(
+    info.point$html,
+    '//svg[@id="plot_orange"]//circle[@class="geom"]',
+    "stroke")
+  stroke.tab <- table(stroke.str)
+  expect_color(names(stroke.tab), "orange")
+  fill.str <- getStyleValue(
+    info.point$html,
+    '//svg[@id="plot_orange"]//circle[@class="geom"]',
+    "fill")
+  fill.tab <- table(fill.str)
+  expect_color(names(fill.tab), "orange")
 })
 
 #

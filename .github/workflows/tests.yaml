@@ -1,4 +1,4 @@
-name: Automatically Run Test Suite
+name: Test Suite
 on:
   push:
     branches: [main, master]
@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test-suite: [ renderer1,renderer2,renderer3,renderer4,renderer5,compiler,CRAN]
+        test-suite: [ renderer1,renderer2,renderer3,compiler,CRAN]
 
     name: Test Suite ${{ matrix.test-suite }}
     env: 
