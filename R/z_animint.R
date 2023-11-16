@@ -263,6 +263,25 @@ animint2dir <- function(plot.list, out.dir = NULL,
   meta$selector.types <- plot.list$selector.types
   dir.create(out.dir,showWarnings=FALSE)
   meta$out.dir <- out.dir
+  ## First, copy html/js/json files to out.dir.
+  src.dir <- system.file("htmljs",package="animint2")
+  to.copy <- Sys.glob(file.path(src.dir, "*"))
+  if(file.exists(paste0(out.dir, "styles.css")) | css.file != "default.file"){
+    to.copy <- to.copy[!grepl("styles.css", to.copy, fixed=TRUE)]
+  }
+  if(css.file!=""){
+    # if css filename is provided, copy that file to the out directory as "styles.css"
+    to.copy <- to.copy[!grepl("styles.css", to.copy, fixed=TRUE)]
+    if(!file.exists(css.file)){
+      stop(paste("css.file", css.file, "does not exist. Please check that the file name and path are specified correctly."))
+    } else {
+      file.copy(css.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
+    }
+  } else {
+    style.file <- system.file("htmljs", "styles.css", package = "animint2")
+    file.copy(style.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
+  }
+  file.copy(to.copy, out.dir, overwrite=TRUE, recursive=TRUE)
 
   ## Store the animation information (time, var, ms) in a separate list
   AnimationInfo <- list()
@@ -620,25 +639,6 @@ animint2dir <- function(plot.list, out.dir = NULL,
   meta$plots <- AllPlotsInfo
   meta$time <- AnimationInfo$time
   meta$timeValues <- AnimationInfo$timeValues
-  ## Finally, copy html/js/json files to out.dir.
-  src.dir <- system.file("htmljs",package="animint2")
-  to.copy <- Sys.glob(file.path(src.dir, "*"))
-  if(file.exists(paste0(out.dir, "styles.css")) | css.file != "default.file"){
-    to.copy <- to.copy[!grepl("styles.css", to.copy, fixed=TRUE)]
-  }
-  if(css.file!=""){
-    # if css filename is provided, copy that file to the out directory as "styles.css"
-    to.copy <- to.copy[!grepl("styles.css", to.copy, fixed=TRUE)]
-    if(!file.exists(css.file)){
-      stop(paste("css.file", css.file, "does not exist. Please check that the file name and path are specified correctly."))
-    } else {
-      file.copy(css.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
-    }
-  } else {
-    style.file <- system.file("htmljs", "styles.css", package = "animint2")
-    file.copy(style.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
-  }
-  file.copy(to.copy, out.dir, overwrite=TRUE, recursive=TRUE)
   export.names <- c(
     "geoms", "time", "duration", "selectors", "plots", "title", "source")
   export.data <- list()
