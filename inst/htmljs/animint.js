@@ -1477,6 +1477,8 @@ var animint = function (to_select, json_file) {
     }
     if (g_info.params.hasOwnProperty(fill_off_comes_from)) {
       fill_off = g_info.params[fill_off_comes_from];
+    }else{
+      fill_off = fill;
     }
     if(aes.hasOwnProperty(fill_comes_from)){
       get_fill = get_attr(fill_comes_from);
