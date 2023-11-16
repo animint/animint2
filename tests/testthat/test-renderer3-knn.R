@@ -1,7 +1,6 @@
 acontext("mixtureKNN data set")
-
+library(animint2)
 data(mixtureKNN)
-
 mixtureKNN$Bayes.error$text.V1.prop <- 0
 mixtureKNN$Bayes.error$text.V2.bottom <- -2
 mixtureKNN$other.error$text.V1.prop <- 0
@@ -18,21 +17,22 @@ set.colors <-
     validation="#4DAF4A",#green
     Bayes="#984EA3",#purple
     train="black")
-
 errorPlot <- ggplot()+
   ggtitle("Select number of neighbors")+
   theme_bw()+
   theme_animint(height=500)+
-  geom_text(aes(min.neighbors, error.prop,
-                color=set, label="Bayes"),
-            showSelected="classifier",
-            hjust=1,
-            data=mixtureKNN$Bayes.segment)+
-  geom_segment(aes(min.neighbors, error.prop, 
-                   xend=max.neighbors, yend=error.prop,
-                   color=set, linetype=classifier),
-               showSelected="classifier",
-               data=mixtureKNN$Bayes.segment)+
+  geom_text(aes(
+    min.neighbors, error.prop,
+    color=set, label="Bayes"),
+    showSelected="classifier",
+    hjust=1,
+    data=mixtureKNN$Bayes.segment)+
+  geom_segment(aes(
+    min.neighbors, error.prop, 
+    xend=max.neighbors, yend=error.prop,
+    color=set, linetype=classifier),
+    showSelected="classifier",
+    data=mixtureKNN$Bayes.segment)+
   scale_color_manual(values=set.colors, breaks=names(set.colors))+
   scale_fill_manual(values=set.colors)+
   guides(fill="none", linetype="none")+
@@ -42,24 +42,28 @@ errorPlot <- ggplot()+
     "Number of Neighbors",
     limits=c(-1, 30),
     breaks=c(1, 10, 20, 29))+
-  geom_ribbon(aes(neighbors, ymin=mean-sd, ymax=mean+sd,
-                  fill=set),
-              showSelected=c("classifier","set"),
-              alpha=0.5,
-              data=mixtureKNN$validation.error)+
-  geom_line(aes(neighbors, mean, color=set, linetype=classifier),
-            showSelected="classifier",
-            data=mixtureKNN$validation.error)+
-  geom_line(aes(neighbors, error.prop, group=set, color=set,
-                linetype=classifier),
-            showSelected="classifier",
-            data=mixtureKNN$other.error)+
-  geom_tallrect(aes(xmin=neighbors-1, xmax=neighbors+1),
-                clickSelects="neighbors",
-                alpha=0.5,
-                data=mixtureKNN$validation.error)
+  geom_ribbon(aes(
+    neighbors, ymin=mean-sd, ymax=mean+sd,
+    fill=set),
+    showSelected=c("classifier","set"),
+    alpha=0.5,
+    color=NA,
+    data=mixtureKNN$validation.error)+
+  geom_line(aes(
+    neighbors, mean, color=set, linetype=classifier),
+    showSelected="classifier",
+    data=mixtureKNN$validation.error)+
+  geom_line(aes(
+    neighbors, error.prop, group=set, color=set,
+    linetype=classifier),
+    showSelected="classifier",
+    data=mixtureKNN$other.error)+
+  geom_tallrect(aes(
+    xmin=neighbors-1, xmax=neighbors+1),
+    clickSelects="neighbors",
+    alpha=0.5,
+    data=mixtureKNN$validation.error)
 errorPlot
-
 scatterPlot <- ggplot()+
   ggtitle("Mis-classification errors in train set")+
   theme_bw()+
@@ -69,56 +73,65 @@ scatterPlot <- ggplot()+
   coord_equal()+
   scale_color_manual(values=label.colors)+
   scale_linetype_manual(values=classifier.linetypes)+
-  geom_point(aes(V1, V2, color=label),
-             showSelected="neighbors",
-             size=0.2,
-             data=mixtureKNN$show.grid)+
-  geom_path(aes(V1, V2, group=path.i, linetype=classifier),
-            showSelected="neighbors",
-            size=1,
-            data=mixtureKNN$pred.boundary)+
-  geom_path(aes(V1, V2, group=path.i, linetype=classifier),
-            color=set.colors[["test"]],
-            size=1,
-            data=mixtureKNN$Bayes.boundary)+
-  geom_point(aes(V1, V2, color=label,
-                 fill=prediction),
-             showSelected="neighbors",
-             size=3,
-             shape=21,
-             data=mixtureKNN$show.points)+
+  geom_point(aes(
+    V1, V2, color=label),
+    showSelected="neighbors",
+    size=0.2,
+    data=mixtureKNN$show.grid)+
+  geom_path(aes(
+    V1, V2, group=path.i, linetype=classifier),
+    showSelected="neighbors",
+    size=1,
+    data=mixtureKNN$pred.boundary)+
+  geom_path(aes(
+    V1, V2, group=path.i, linetype=classifier),
+    color=set.colors[["test"]],
+    size=1,
+    data=mixtureKNN$Bayes.boundary)+
+  geom_point(aes(
+    V1, V2, color=label,
+    fill=prediction),
+    showSelected="neighbors",
+    size=3,
+    shape=21,
+    data=mixtureKNN$show.points)+
   scale_fill_manual(values=c(error="black", correct="transparent"))+
-  geom_text(aes(text.V1.error, text.V2.bottom, label=paste(set, "Error:")),
-            data=mixtureKNN$Bayes.error,
-            hjust=0)+
-  geom_text(aes(text.V1.prop, text.V2.bottom, label=sprintf("%.3f", error.prop)),
-            data=mixtureKNN$Bayes.error,
-            hjust=1)+
-  geom_text(aes(text.V1.error, V2.bottom, label=paste(set, "Error:")),
-            showSelected="neighbors",
-            data=mixtureKNN$other.error,
-            hjust=0)+
-  geom_text(aes(text.V1.prop, V2.bottom, label=sprintf("%.3f", error.prop)),
-            showSelected="neighbors",
-            data=mixtureKNN$other.error,
-            hjust=1)+
-  geom_text(aes(V1, V2,
-                label=paste0(
-                  neighbors,
-                  " nearest neighbor",
-                  ifelse(neighbors==1, "", "s"),
-                  " classifier")),
-            showSelected="neighbors",
-            data=mixtureKNN$show.text)
+  geom_text(aes(
+    text.V1.error, text.V2.bottom, label=paste(set, "Error:")),
+    data=mixtureKNN$Bayes.error,
+    hjust=0)+
+  geom_text(aes(
+    text.V1.prop, text.V2.bottom, label=sprintf("%.3f", error.prop)),
+    data=mixtureKNN$Bayes.error,
+    hjust=1)+
+  geom_text(aes(
+    text.V1.error, V2.bottom, label=paste(set, "Error:")),
+    showSelected="neighbors",
+    data=mixtureKNN$other.error,
+    hjust=0)+
+  geom_text(aes(
+    text.V1.prop, V2.bottom, label=sprintf("%.3f", error.prop)),
+    showSelected="neighbors",
+    data=mixtureKNN$other.error,
+    hjust=1)+
+  geom_text(aes(
+    V1, V2,
+    label=paste0(
+      neighbors,
+      " nearest neighbor",
+      ifelse(neighbors==1, "", "s"),
+      " classifier")),
+    showSelected="neighbors",
+    data=mixtureKNN$show.text)
 scatterPlot+
   facet_wrap("neighbors")+
   theme(panel.margin=grid::unit(0, "lines"))
-
-viz.neighbors <- list(
+viz.neighbors <- animint(
   error=errorPlot,
   data=scatterPlot,
   first=list(neighbors=7)
-  )
+)
+
 info <- animint2HTML(viz.neighbors)
 
 get_nodes <- function(html=getHTML()){
