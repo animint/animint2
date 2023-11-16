@@ -225,7 +225,11 @@ update_gallery <- function(gallery_path="~/R/gallery"){
   fwrite(error.dt, file.path(gallery_path, "error.csv"))
   rmarkdown::render(file.path(gallery_path, "index.Rmd"))
   to_add <- c(
-    "*.csv", file.path("repos","*","*.png"), "index.html", "index.Rmd")
+    "*.csv",
+    "repos.txt",
+    file.path("repos","*","*.png"),
+    "index.html",
+    "index.Rmd")
   gert::git_add(to_add, repo=gallery_path)
   gert::git_commit(paste("update", add.POSIXct), repo=gallery_path)
   gert::git_push("origin", repo=gallery_path)
