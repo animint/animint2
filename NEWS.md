@@ -1,4 +1,10 @@
-# Changes in 2023.11.15
+# Changes in version 2023.11.16 (PR#88)
+
+- Before creating a new out.dir, do not remove old out.dir, and
+  instead stop with an error, if out.dir already exists, but
+  animint.js does not.
+
+# Changes in 2023.11.15 (PR#101)
 
 - New function `animint2pages(viz,"new_github_repo")` for
   publishing/sharing animints, replacement for animint2gist, which

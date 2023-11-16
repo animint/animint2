@@ -249,6 +249,10 @@ animint2dir <- function(plot.list, out.dir = NULL,
   if(is.null(out.dir)){
     out.dir <- tempfile()
   }
+  animint.js <- file.path(out.dir, "animint.js")
+  if(dir.exists(out.dir) && !file.exists(animint.js)){
+    stop(animint.js, " does not exist, so not removing out.dir. If you really want to save your animint in out.dir, then please remove that directory entirely")
+  }
   unlink(out.dir, recursive=TRUE)
   ## Check plot.list for errors
   checkPlotList(plot.list)
