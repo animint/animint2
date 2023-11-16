@@ -1,7 +1,9 @@
----
-title: "Animint2 Quick Start Guide"
----
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Animint2 Quick Start Guide}
+-->
 
+# Animint2 Quick Start Guide
 
 ## Introduction
 

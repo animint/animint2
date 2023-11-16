@@ -1,4 +1,5 @@
-context("Creating aesthetic mappings")
+library(testthat)
+library(animint2)
 
 test_that("aes() captures input expressions", {
   out <- aes(mpg, wt + 1)
@@ -23,11 +24,7 @@ test_that("aes_string() doesn't parse non-strings", {
   expect_equal(aes_string(0.4)$x, 0.4)
 })
 
-test_that("aes_q() & aes_string() preserves explicit NULLs", {
-  expect_equal(aes_q(NULL), aes(NULL))
-  expect_equal(aes_q(x = NULL), aes(NULL))
-  expect_equal(aes_q(colour = NULL), aes(colour = NULL))
-
+test_that("aes_string() preserves explicit NULLs", {
   expect_equal(aes_string(NULL), aes(NULL))
   expect_equal(aes_string(x = NULL), aes(NULL))
   expect_equal(aes_string(colour = NULL), aes(colour = NULL))

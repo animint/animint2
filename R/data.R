@@ -164,7 +164,7 @@
 #' All built-in \code{\link{colors}()} translated into Luv colour space.
 #'
 #' @format A data frame with 657 observations and 4 variables:
-#' \itemize{
+#' \describe{
 #' \item{L,u,v}{Position in Luv colour space}
 #' \item{col}{Colour name}
 #' }
@@ -176,7 +176,7 @@
 #' real estate center, \url{https://www.recenter.tamu.edu/}.
 #'
 #' @format A data frame with 8602 observations and 9 variables:
-#' \itemize{
+#' \describe{
 #' \item{city}{Name of MLS area}
 #' \item{year,month,date}{Date}
 #' \item{sales}{Number of sales}

@@ -305,7 +305,6 @@ Geom <- gganimintproto("Geom",
     processed_values <- l$geom$pre_process(g, g.data, ranges)
     g <- processed_values$g
     g.data <- processed_values$g.data
-
     ## Check g.data for color/fill - convert to hexadecimal so JS can parse correctly.
     for(color.var in c("colour", "color", "fill", "colour_off", "color_off", "fill_off")){
       if(color.var %in% names(g.data)){

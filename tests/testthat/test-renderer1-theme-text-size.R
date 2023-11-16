@@ -107,20 +107,24 @@ test_that("specified legend title and label text size with rel()", {
 ## TDH default theme test, 1 Sep 2022.
 y <- 1:2
 df <- data.frame(y, text=paste("category", y))
+sc <- scale_color_manual(values=c("category 1"="blue", "category 2"="red"))
 viz <- animint(
   default=ggplot()+
     ggtitle("No theme specified")+
+    sc+
     geom_text(aes(
       0,y,label=text,color=text),
       data=df),
   theme=ggplot()+
     ggtitle("theme_grey()")+
+    sc+
     theme_grey()+
     geom_text(aes(
       0,y,label=text,color=text),
       data=df),
   sizeNum=ggplot()+
     ggtitle("theme_grey()+theme(legend.text)")+
+    sc+
     theme_grey()+
     theme(legend.text=element_text(size=16))+
     geom_text(aes(
@@ -128,6 +132,7 @@ viz <- animint(
       data=df),
   sizePx=ggplot()+
     ggtitle("theme_grey()+theme(legend.text)")+
+    sc+
     theme_grey()+
     theme(legend.text=element_text(size="16px"))+
     geom_text(aes(
@@ -147,6 +152,12 @@ test_that("theme_grey legend entry text size is 16px", {
   expect_match(size.list$theme, "8.8pt")
   expect_match(size.list$sizeNum, "16pt")
   expect_match(size.list$sizePx, "16px")
+})
+
+test_that("text colors rendered", {
+  computed.colors <- getStyleValue(
+    info$html, '//svg[@id="plot_default"]//text[@class="geom"]', "fill")
+  expect_color(computed.colors, c("blue", "red"))
 })
 
 test_that("Warning for invalid character/string input ", {

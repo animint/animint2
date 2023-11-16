@@ -285,6 +285,10 @@ animint2dir <- function(plot.list, out.dir = NULL,
   if(!is.null(plot.list$out.dir)){
     plot.list$out.dir <- NULL
   }
+  if(is.character(plot.list[["source"]])){
+    meta$source <- plot.list[["source"]]
+    plot.list$source <- NULL
+  }
 
   ## Extract essential info from ggplots, reality checks.
   for(list.name in names(plot.list)){
@@ -631,8 +635,8 @@ animint2dir <- function(plot.list, out.dir = NULL,
     file.copy(style.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
   }
   file.copy(to.copy, out.dir, overwrite=TRUE, recursive=TRUE)
-  export.names <-
-    c("geoms", "time", "duration", "selectors", "plots", "title")
+  export.names <- c(
+    "geoms", "time", "duration", "selectors", "plots", "title", "source")
   export.data <- list()
   for(export.name in export.names){
     if(export.name %in% ls(meta)){

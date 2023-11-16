@@ -1,6 +1,6 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2023.6.11
+Version: 2023.11.15
 URL: https://animint.github.io/animint2/
 BugReports: https://github.com/animint/animint2/issues
 Authors@R: c(
@@ -76,6 +76,7 @@ Imports:
     methods
 Suggests:
     servr,
+    gert, gitcreds, gh,
     sp,
     gistr (>= 0.2),
     shiny,
@@ -269,12 +270,13 @@ Collate:
     'z_animintHelpers.R'
     'z_facets.R'
     'z_geoms.R'
-    'z_gist.R'
     'z_helperFunctions.R'
     'z_knitr.R'
+    'z_pages.R'
     'z_print.R'
     'z_scales.R'
     'z_theme_animint.R'
     'z_transformShape.R'
 RoxygenNote: 7.2.3
 Config/Needs/website: tidyverse/tidytemplate
+VignetteBuilder: knitr

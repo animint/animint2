@@ -1,3 +1,24 @@
+# Changes in 2023.11.15
+
+- New function `animint2pages(viz,"new_github_repo")` for
+  publishing/sharing animints, replacement for animint2gist, which
+  stopped working recently.
+- New option `animint(source="http://path.to/source.R")` which should
+  be the URL of data viz source code, used to display a link below the
+  rendered viz.
+- New function `update_gallery("path/to/gallery_repo")` for updating
+  galleries such as https://animint.github.io/gallery/
+- Bugfix: geom_text renders color as svg fill style (was rendering as
+  stroke style, a regression introduced by the initial implementation
+  of `fill_off`).
+- re-organization of animint.js in order to reduce duplication /
+  emphasize similarities and differences between geoms.
+- geom rect and tile now default to color="black" instead of
+  transparent, for consistency with other geoms (and for the case of
+  using clickSelects, which defaults to black color for selected, and
+  transparent for not). To get the old behavior, specify
+  color="transparent" (for non-clickSelects).
+  
 # Changes in 2023.10.6
 
 - User-configurable selection style - fill_off.

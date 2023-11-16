@@ -87,5 +87,5 @@ test_that("animation starts by default", {
 test_that("default tile colour/stroke is transparent", {
   stroke.vec <- getStyleValue(
     info$html, '//g[@class="geom1_tile_parameters"]//rect', "stroke")
-  expect_identical(stroke.vec, rep("transparent", 90))
+  expect_color(stroke.vec, "black")
 })

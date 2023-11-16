@@ -17,14 +17,16 @@ done
 cp animint2/data/economics_long.rda animint2-release/data
 cp animint2/man/animint2-gganimintproto.Rd animint2-release/man
 cp animint2/man/graphical-units.Rd animint2-release/man
-grep -v RSelenium animint2/DESCRIPTION > animint2-release/DESCRIPTION
+egrep -v 'VignetteBuilder|RSelenium' animint2/DESCRIPTION > animint2-release/DESCRIPTION
 rm animint2-release/tests/testthat/helper-HTML.R
 rm animint2-release/tests/testthat/test-compiler-chunk-vars.R
-rm animint2-release/tests/testthat/test-compiler-gist.R
+rm animint2-release/tests/testthat/test-compiler-ghpages.R
+rm animint2-release/vignettes/animint2.Rmd #to save disk space
 cat <<EOF > animint2-release/tests/testthat.R 
 library(testthat)
 test_check("animint2", filter="compiler")
 EOF
 PKG_TGZ=$(R CMD build animint2-release|grep building|sed "s/.*\(animint2.*.tar.gz\).*/\1/")
+echo built $PKG_TGZ so now we INSTALL 
 R CMD INSTALL $PKG_TGZ
 R CMD check --as-cran $PKG_TGZ
