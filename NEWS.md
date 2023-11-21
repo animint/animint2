@@ -1,3 +1,8 @@
+# Changes in version 2023.11.21
+
+- setDTthreads(1) in CRAN testthat.R (created from build.sh).
+- use servr by default when open.browser=TRUE.
+
 # Changes in version 2023.11.16 (PR#88)
 
 - Before creating a new out.dir, do not remove old out.dir, and

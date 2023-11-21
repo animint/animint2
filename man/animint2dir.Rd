@@ -22,9 +22,13 @@ directory/files.}
 \item{json.file}{character string that names the JSON file with
 metadata associated with the plot.}
 
-\item{open.browser}{Should R open a browser? If yes, be sure to
-configure your browser to allow access to local files, as some
-browsers block this by default (e.g. chrome).}
+\item{open.browser}{logical (default TRUE if interactive), should R
+open a browser? If TRUE, we look at the animint.browser option to
+determine how. If it is set to "browseURL" then we use a file URL
+(be sure to configure your browser to allow access to local
+files, as some browsers block this by default). Otherwise
+(default) if servr package is installed, we use
+\code{servr::httd(out.dir)}.}
 
 \item{css.file}{character string for non-empty css file to
 include. Provided file will be copied to the output directory as

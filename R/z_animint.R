@@ -231,9 +231,13 @@ storeLayer <- function(meta, g, g.data.varied){
 #'   directory/files.
 #' @param json.file character string that names the JSON file with
 #'   metadata associated with the plot.
-#' @param open.browser Should R open a browser? If yes, be sure to
-#'   configure your browser to allow access to local files, as some
-#'   browsers block this by default (e.g. chrome).
+#' @param open.browser logical (default TRUE if interactive), should R
+#'   open a browser? If TRUE, we look at the animint.browser option to
+#'   determine how. If it is set to "browseURL" then we use a file URL
+#'   (be sure to configure your browser to allow access to local
+#'   files, as some browsers block this by default). Otherwise
+#'   (default) if servr package is installed, we use
+#'   \code{servr::httd(out.dir)}.
 #' @param css.file character string for non-empty css file to
 #'   include. Provided file will be copied to the output directory as
 #'   styles.css
@@ -650,12 +654,16 @@ animint2dir <- function(plot.list, out.dir = NULL,
   json <- RJSONIO::toJSON(export.data)
   cat(json, file = file.path(out.dir, json.file))
   if (open.browser) {
-    message('opening a web browser with a file:// URL; ',
-            'if the web page is blank, try running
-if (!requireNamespace("servr")) install.packages("servr")
-servr::httd("', normalizePath( out.dir,winslash="/" ), '")')
-    u <- normalizePath(file.path(out.dir, "index.html"))
-    browseURL(u)
+    if (identical(getOption("animint.browser"),"browseURL")) {
+      u <- normalizePath(file.path(out.dir, "index.html"))
+      browseURL(u)
+    } else {
+      if (requireNamespace("servr")){
+        servr::httd(normalizePath(out.dir,winslash="/"))
+      } else {
+        warning('open.browser=TRUE but servr package not installed; try install.packages("servr") or options(animint.browser="browseURL")')
+      }
+    }
   }
 
   ## After everything has been done, we restore the original mappings
