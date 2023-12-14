@@ -1,3 +1,7 @@
+# Changes in version 2023.12.14 (PR#112)
+
+- bugfix in compiler height_proportion computation, which occured in ggplots with space=free and both vertical/horizontal panels. Before the vertical panels were always the same size, now they can be different sizes.
+
 # Changes in version 2023.11.21
 
 - setDTthreads(1) in CRAN testthat.R (created from build.sh).
