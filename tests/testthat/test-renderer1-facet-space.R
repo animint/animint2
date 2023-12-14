@@ -3,15 +3,16 @@ acontext('facet_grid(space="free")')
 no.panels <- ggplot(mtcars, aes(mpg, wt)) + 
   geom_point(colour='grey50', size = 4) + 
   geom_point(aes(colour = cyl)) 
-
-viz <-
-  list(freeBoth = no.panels +
-         facet_grid(.~am, space = "free", scales = "free", labeller=label_both),
-       freeScale = no.panels +
-         facet_grid(.~am, scales="free", labeller=label_both),
-       fixed = no.panels +
-         facet_grid(.~am, labeller=label_both))
-
+viz <- animint(
+  freeBoth = no.panels +
+    ggtitle("space=free, scales=free")+
+    facet_grid(.~am, space = "free", scales = "free", labeller=label_both),
+  freeScale = no.panels +
+    ggtitle("space=fixed, scales=free")+
+    facet_grid(.~am, scales="free", labeller=label_both),
+  fixed = no.panels +
+    ggtitle("space=fixed, scales=fixed")+
+    facet_grid(.~am, labeller=label_both))
 info <- animint2HTML(viz)
 
 ## For some reason the "space between panels" tests only work on
