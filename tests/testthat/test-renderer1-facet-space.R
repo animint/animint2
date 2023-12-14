@@ -12,7 +12,13 @@ viz <- animint(
     facet_grid(.~am, scales="free", labeller=label_both),
   fixed = no.panels +
     ggtitle("space=fixed, scales=fixed")+
-    facet_grid(.~am, labeller=label_both))
+    facet_grid(.~am, labeller=label_both),
+  freeBothFlip = ggplot(mtcars, aes(wt, mpg)) + 
+    ggtitle("space=free, scales=free") +
+    scale_x_continuous(breaks=seq(1, 9)) +
+    geom_point(colour='grey50', size = 4) + 
+    geom_point(aes(colour = cyl)) +
+    facet_grid(am ~ vs, space = "free", scales = "free", labeller=label_both))
 info <- animint2HTML(viz)
 
 ## For some reason the "space between panels" tests only work on
@@ -91,6 +97,18 @@ test_that("pixels between 15 and 20 is constant or variable", {
   expect_equal(length(x.axes), 2)
   xdiff <- lapply(x.axes, getTickDiff)
   expect_true(both.equal(xdiff))
+  ## scale="free" and space="free" means the distance between ticks
+  ## should be the same across the horizontal and vertical panels.
+  x.axes <- getNodeSet(
+    info$html, "//svg[@id='plot_freeBothFlip']//g[contains(@class, 'xaxis')]")
+  expect_equal(length(x.axes), 2)
+  xdiff <- lapply(x.axes, getTickDiff, axis="x")
+  expect_true(both.equal(xdiff))
+  y.axes <- getNodeSet(
+    info$html, "//svg[@id='plot_freeBothFlip']//g[contains(@class, 'yaxis')]")
+  expect_equal(length(y.axes), 2)
+  ydiff <- lapply(y.axes, getTickDiff, axis="y")
+  expect_true(both.equal(ydiff))
 })
 
 test_that("width_proportion is constant or variable", {
