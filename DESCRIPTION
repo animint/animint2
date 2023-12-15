@@ -62,6 +62,7 @@ Description: Functions are provided for defining animated,
 Depends:
     R (>= 3.4.0)
 Imports:
+    servr,
     digest,
     RJSONIO,
     grid,
@@ -75,7 +76,6 @@ Imports:
     data.table (>= 1.9.8),
     methods
 Suggests:
-    servr,
     gert, gitcreds, gh,
     sp,
     gistr (>= 0.2),

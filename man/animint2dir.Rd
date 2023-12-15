@@ -27,8 +27,7 @@ open a browser? If TRUE, we look at the animint.browser option to
 determine how. If it is set to "browseURL" then we use a file URL
 (be sure to configure your browser to allow access to local
 files, as some browsers block this by default). Otherwise
-(default) if servr package is installed, we use
-\code{servr::httd(out.dir)}.}
+(default) we use \code{servr::httd(out.dir)}.}
 
 \item{css.file}{character string for non-empty css file to
 include. Provided file will be copied to the output directory as
