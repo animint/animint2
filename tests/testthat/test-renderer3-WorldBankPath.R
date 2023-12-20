@@ -42,6 +42,10 @@ viz.worldbank$first <- list(
 viz.worldbank
 info <- animint2HTML(viz.worldbank)
 
+# Test that all circle and path are rendered for year = 2000
+# The number of circle and path are different because
+# of missing data points in WorldBank data set
+
 test_that("192 <circle> rendered for all countries", {
   countries=getNodeSet(info$html, '//g[@class="geom1_point_scatter"]//circle')
   expect_equal(length(countries), 192)
