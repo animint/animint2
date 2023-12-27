@@ -1633,17 +1633,26 @@ var animint = function (to_select, json_file) {
               selector_url=selector_url.concat(sub_url);
           }
       }
-      setup_eActions() {
-        this.elements = this.elements.data(this.data, this.key_fun);
-        this.eActions = (e) => {
-          e.attr('x1', this.toXY('x', 'xintercept'))
-            .attr('x2', this.toXY('x', 'xintercept'))
-            .attr('y1', this.scales.y.range()[0])
-            .attr('y2', this.scales.y.range()[1]);
-            this.apply_stroke_styles(e);
-            this.select_style_fun(e);
-        };
-        this.eAppend = 'line';
+      var url_nohash=window.location.href.match(/(^[^#]*)/)[0];
+      selector_url=url_nohash.concat(selector_url);
+      return  selector_url;
+ };
+  
+  var get_values=function(){
+      // function that is useful to get the selected values
+      var selected_values={}
+      for(var s_name in Selectors){
+          var s_info=Selectors[s_name];
+          var initial_selections = [];
+          if(s_info.type==="single"){
+              initial_selections=[s_info.selected];
+          }
+          else{
+          for(var i in s_info.selected) {
+            initial_selections[i] =  s_info.selected[i];
+          }
+          }
+          selected_values[s_name]=initial_selections;    
       }
       return selected_values;
   };
