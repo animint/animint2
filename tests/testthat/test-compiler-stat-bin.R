@@ -2,13 +2,8 @@ context("stat_bin/stat_count")
 
 test_that("stat_bin throws error when y aesthetic present", {
   dat <- data.frame(x = c("a", "b", "c"), y = c(1, 5, 10))
-
   expect_error(ggplot_build(ggplot(dat, aes(x, y)) + stat_bin()),
     "must not be used with a y aesthetic.")
-  
-  skip("passes when validate_params=TRUE")
-  expect_error(p <- ggplot_build(ggplot(dat, aes(x)) + stat_bin(y = 5)),
-    "Unknown parameters: y")
 })
 
 test_that("bins specifies the number of bins", {
@@ -97,12 +92,8 @@ test_that("weights are added", {
 
 test_that("stat_count throws error when y aesthetic present", {
   dat <- data.frame(x = c("a", "b", "c"), y = c(1, 5, 10))
-
   expect_error(ggplot_build(ggplot(dat, aes(x, y)) + stat_count()),
     "must not be used with a y aesthetic.")
-  skip("passes when validate_params=TRUE")
-  expect_error(p <- ggplot_build(ggplot(dat, aes(x)) + stat_count(y = 5)),
-    "Unknown parameters: y")
 })
 
 test_that("stat_count preserves x order for continuous and discrete", {

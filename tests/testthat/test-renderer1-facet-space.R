@@ -3,15 +3,16 @@ acontext('facet_grid(space="free")')
 no.panels <- ggplot(mtcars, aes(mpg, wt)) + 
   geom_point(colour='grey50', size = 4) + 
   geom_point(aes(colour = cyl)) 
-
-viz <-
-  list(freeBoth = no.panels +
-         facet_grid(.~am, space = "free", scales = "free", labeller=label_both),
-       freeScale = no.panels +
-         facet_grid(.~am, scales="free", labeller=label_both),
-       fixed = no.panels +
-         facet_grid(.~am, labeller=label_both))
-
+viz <- animint(
+  freeBoth = no.panels +
+    ggtitle("space=free, scales=free")+
+    facet_grid(.~am, space = "free", scales = "free", labeller=label_both),
+  freeScale = no.panels +
+    ggtitle("space=fixed, scales=free")+
+    facet_grid(.~am, scales="free", labeller=label_both),
+  fixed = no.panels +
+    ggtitle("space=fixed, scales=fixed")+
+    facet_grid(.~am, labeller=label_both))
 info <- animint2HTML(viz)
 
 ## For some reason the "space between panels" tests only work on
@@ -96,6 +97,29 @@ test_that("width_proportion is constant or variable", {
   expect_true(both.equal(info$plots$fixed$layout$width_proportion))
   expect_true(both.equal(info$plots$freeScale$layout$width_proportion))
   expect_true(!both.equal(info$plots$freeBoth$layout$width_proportion))
+})
+
+viz <- animint(
+  freeBothFlip = ggplot(mtcars, aes(wt, mpg)) + 
+    ggtitle("space=free, scales=free") +
+    scale_x_continuous(breaks=seq(1, 9)) +
+    geom_point(colour='grey50', size = 4) + 
+    geom_point(aes(colour = cyl)) +
+    facet_grid(am ~ vs, space = "free", scales = "free", labeller=label_both))
+info <- animint2HTML(viz)
+test_that("same spacing for vertical and horizontal ticks", {
+  ## scale="free" and space="free" means the distance between ticks
+  ## should be the same across the horizontal and vertical panels.
+  x.axes <- getNodeSet(
+    info$html, "//svg[@id='plot_freeBothFlip']//g[contains(@class, 'xaxis')]")
+  expect_equal(length(x.axes), 2)
+  xdiff <- lapply(x.axes, getTickDiff, axis="x")
+  expect_true(both.equal(xdiff))
+  y.axes <- getNodeSet(
+    info$html, "//svg[@id='plot_freeBothFlip']//g[contains(@class, 'yaxis')]")
+  expect_equal(length(y.axes), 2)
+  ydiff <- lapply(y.axes, getTickDiff, axis="y")
+  expect_true(both.equal(ydiff))
 })
 
 no.panels <- ggplot(mtcars, aes(wt, mpg)) + 

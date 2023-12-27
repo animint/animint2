@@ -231,9 +231,12 @@ storeLayer <- function(meta, g, g.data.varied){
 #'   directory/files.
 #' @param json.file character string that names the JSON file with
 #'   metadata associated with the plot.
-#' @param open.browser Should R open a browser? If yes, be sure to
-#'   configure your browser to allow access to local files, as some
-#'   browsers block this by default (e.g. chrome).
+#' @param open.browser logical (default TRUE if interactive), should R
+#'   open a browser? If TRUE, we look at the animint.browser option to
+#'   determine how. If it is set to "browseURL" then we use a file URL
+#'   (be sure to configure your browser to allow access to local
+#'   files, as some browsers block this by default). Otherwise
+#'   (default) we use \code{servr::httd(out.dir)}.
 #' @param css.file character string for non-empty css file to
 #'   include. Provided file will be copied to the output directory as
 #'   styles.css
@@ -249,6 +252,10 @@ animint2dir <- function(plot.list, out.dir = NULL,
   if(is.null(out.dir)){
     out.dir <- tempfile()
   }
+  animint.js <- file.path(out.dir, "animint.js")
+  if(dir.exists(out.dir) && !file.exists(animint.js)){
+    stop(animint.js, " does not exist, so not removing out.dir. If you really want to save your animint in out.dir, then please remove that directory entirely")
+  }
   unlink(out.dir, recursive=TRUE)
   ## Check plot.list for errors
   checkPlotList(plot.list)
@@ -259,6 +266,25 @@ animint2dir <- function(plot.list, out.dir = NULL,
   meta$selector.types <- plot.list$selector.types
   dir.create(out.dir,showWarnings=FALSE)
   meta$out.dir <- out.dir
+  ## First, copy html/js/json files to out.dir.
+  src.dir <- system.file("htmljs",package="animint2")
+  to.copy <- Sys.glob(file.path(src.dir, "*"))
+  if(file.exists(paste0(out.dir, "styles.css")) | css.file != "default.file"){
+    to.copy <- to.copy[!grepl("styles.css", to.copy, fixed=TRUE)]
+  }
+  if(css.file!=""){
+    # if css filename is provided, copy that file to the out directory as "styles.css"
+    to.copy <- to.copy[!grepl("styles.css", to.copy, fixed=TRUE)]
+    if(!file.exists(css.file)){
+      stop(paste("css.file", css.file, "does not exist. Please check that the file name and path are specified correctly."))
+    } else {
+      file.copy(css.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
+    }
+  } else {
+    style.file <- system.file("htmljs", "styles.css", package = "animint2")
+    file.copy(style.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
+  }
+  file.copy(to.copy, out.dir, overwrite=TRUE, recursive=TRUE)
 
   ## Store the animation information (time, var, ms) in a separate list
   AnimationInfo <- list()
@@ -284,6 +310,10 @@ animint2dir <- function(plot.list, out.dir = NULL,
   }
   if(!is.null(plot.list$out.dir)){
     plot.list$out.dir <- NULL
+  }
+  if(is.character(plot.list[["source"]])){
+    meta$source <- plot.list[["source"]]
+    plot.list$source <- NULL
   }
 
   ## Extract essential info from ggplots, reality checks.
@@ -612,27 +642,8 @@ animint2dir <- function(plot.list, out.dir = NULL,
   meta$plots <- AllPlotsInfo
   meta$time <- AnimationInfo$time
   meta$timeValues <- AnimationInfo$timeValues
-  ## Finally, copy html/js/json files to out.dir.
-  src.dir <- system.file("htmljs",package="animint2")
-  to.copy <- Sys.glob(file.path(src.dir, "*"))
-  if(file.exists(paste0(out.dir, "styles.css")) | css.file != "default.file"){
-    to.copy <- to.copy[!grepl("styles.css", to.copy, fixed=TRUE)]
-  }
-  if(css.file!=""){
-    # if css filename is provided, copy that file to the out directory as "styles.css"
-    to.copy <- to.copy[!grepl("styles.css", to.copy, fixed=TRUE)]
-    if(!file.exists(css.file)){
-      stop(paste("css.file", css.file, "does not exist. Please check that the file name and path are specified correctly."))
-    } else {
-      file.copy(css.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
-    }
-  } else {
-    style.file <- system.file("htmljs", "styles.css", package = "animint2")
-    file.copy(style.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
-  }
-  file.copy(to.copy, out.dir, overwrite=TRUE, recursive=TRUE)
-  export.names <-
-    c("geoms", "time", "duration", "selectors", "plots", "title")
+  export.names <- c(
+    "geoms", "time", "duration", "selectors", "plots", "title", "source")
   export.data <- list()
   for(export.name in export.names){
     if(export.name %in% ls(meta)){
@@ -642,12 +653,12 @@ animint2dir <- function(plot.list, out.dir = NULL,
   json <- RJSONIO::toJSON(export.data)
   cat(json, file = file.path(out.dir, json.file))
   if (open.browser) {
-    message('opening a web browser with a file:// URL; ',
-            'if the web page is blank, try running
-if (!requireNamespace("servr")) install.packages("servr")
-servr::httd("', normalizePath( out.dir,winslash="/" ), '")')
-    u <- normalizePath(file.path(out.dir, "index.html"))
-    browseURL(u)
+    if (identical(getOption("animint.browser"),"browseURL")) {
+      u <- normalizePath(file.path(out.dir, "index.html"))
+      browseURL(u)
+    } else {
+      servr::httd(normalizePath(out.dir,winslash="/"))
+    }
   }
 
   ## After everything has been done, we restore the original mappings

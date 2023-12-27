@@ -1,3 +1,40 @@
+# Changes in version 2023.12.14 (PR#112)
+
+- move servr from Suggests to Imports, for more user-friendly installation / getting started for newbies (no need for separate install command for servr).
+- bugfix in compiler height_proportion computation, which occured in ggplots with space=free and both vertical/horizontal panels. Before the vertical panels were always the same size, now they can be different sizes.
+
+# Changes in version 2023.11.21
+
+- setDTthreads(1) in CRAN testthat.R (created from build.sh).
+- use servr by default when open.browser=TRUE.
+
+# Changes in version 2023.11.16 (PR#88)
+
+- Before creating a new out.dir, do not remove old out.dir, and
+  instead stop with an error, if out.dir already exists, but
+  animint.js does not.
+
+# Changes in 2023.11.15 (PR#101)
+
+- New function `animint2pages(viz,"new_github_repo")` for
+  publishing/sharing animints, replacement for animint2gist, which
+  stopped working recently.
+- New option `animint(source="http://path.to/source.R")` which should
+  be the URL of data viz source code, used to display a link below the
+  rendered viz.
+- New function `update_gallery("path/to/gallery_repo")` for updating
+  galleries such as https://animint.github.io/gallery/
+- Bugfix: geom_text renders color as svg fill style (was rendering as
+  stroke style, a regression introduced by the initial implementation
+  of `fill_off`).
+- re-organization of animint.js in order to reduce duplication /
+  emphasize similarities and differences between geoms.
+- geom rect and tile now default to color="black" instead of
+  transparent, for consistency with other geoms (and for the case of
+  using clickSelects, which defaults to black color for selected, and
+  transparent for not). To get the old behavior, specify
+  color="transparent" (for non-clickSelects).
+  
 # Changes in 2023.10.6
 
 - User-configurable selection style - fill_off.

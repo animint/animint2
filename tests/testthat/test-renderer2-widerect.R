@@ -1,4 +1,15 @@
 acontext("geom_widerect")
+library(animint2)
+expect_source <- function(expected){
+  a.list <- getNodeSet(info$html, '//a[@id="a_source_href"]')
+  computed <- if(length(a.list)==0){
+    NULL
+  }else{
+    at.mat <- sapply(a.list, xmlAttrs)
+    at.mat["href",]
+  }
+  expect_identical(as.character(computed), as.character(expected))
+}
 
 recommendation <- data.frame(
   min.C=21,
@@ -7,20 +18,22 @@ set.seed(1)
 temp.time <- data.frame(
   time=strptime(paste0("2015-10-", 1:31), "%Y-%m-%d"),
   temp.C=rnorm(31))
-
-viz <- list(
+viz <- animint(
   gg=ggplot()+
     theme_bw()+
     theme_animint(height=200, width=2000)+
-    geom_widerect(aes(ymin=min.C, ymax=max.C),
-                  color=NA,
-                  fill="grey",
-                  data=recommendation)+
-    geom_line(aes(time, temp.C),
-              data=temp.time)
-  )
+    geom_widerect(aes(
+      ymin=min.C, ymax=max.C),
+      color=NA,
+      fill="grey",
+      data=recommendation)+
+    geom_line(aes(
+      time, temp.C),
+      data=temp.time)
+)
 
 info <- animint2HTML(viz)
+expect_source(NULL)
 
 getBounds <- function(geom.class){
   script.txt <- sprintf('return document.getElementsByClassName("%s")[0].getBoundingClientRect()', geom.class)
@@ -35,83 +48,90 @@ test_that("bottom of widerect is above line", {
 
 data(WorldBank, package = "animint2")
 not.na <- subset(WorldBank, !(is.na(life.expectancy) | is.na(fertility.rate)))
-BOTH <- function(df, top, side){
-  data.frame(df,
-             top=factor(top, c("Fertility rate", "Years")),
-             side=factor(side, c("Years", "Life expectancy")))
-}
+BOTH <- function(df, top, side)data.frame(
+  df,
+  top=factor(top, c("Fertility rate", "Years")),
+  side=factor(side, c("Years", "Life expectancy")))
 TS <- function(df)BOTH(df, "Years", "Life expectancy")
 SCATTER <- function(df)BOTH(df, "Fertility rate", "Life expectancy")
 TS2 <- function(df)BOTH(df, "Fertility rate", "Years")
 years <- unique(not.na[, "year", drop=FALSE])
 years$status <- ifelse(years$year %% 2, "odd", "even")
-wb.facets <-
-  list(ts=ggplot()+
-       xlab("")+
-       geom_tallrect(aes(xmin=year-1/2, xmax=year+1/2,
-                         linetype=status),
-                     clickSelects="year",
-                     data=TS(years), alpha=1/2)+
-       theme_bw()+
-       theme_animint(width=1000, height=800)+
-       theme(panel.margin=grid::unit(0, "lines"))+
-       geom_line(aes(year, life.expectancy, group=country, colour=region,
-                     id = country),
-                 clickSelects="country",
-                 data=TS(not.na), size=4, alpha=3/5)+
-       geom_point(aes(year, life.expectancy, color=region, size=population),
-                  clickSelects="country",
-                  showSelected="country",
-                  data=TS(not.na))+
-
-       geom_path(aes(fertility.rate, year, group=country, colour=region),
-                 clickSelects="country",
-                 data=TS2(not.na), size=4, alpha=3/5)+
-       geom_point(aes(fertility.rate, year, color=region, size=population),
-                  showSelected="country", clickSelects="country",
-                  data=TS2(not.na))+
-       geom_widerect(aes(ymin=year-1/2, ymax=year+1/2,
-                         linetype=status,
-                         id=paste0("year", year)),
-                     clickSelects="year",
-                     data=TS2(years), alpha=1/2)+
-
-       geom_point(aes(fertility.rate, life.expectancy,
-                      colour=region, size=population,
-                      key=country), # key aesthetic for animated transitions!
-                  clickSelects="country",
-                  showSelected="year",
-                  data=SCATTER(not.na))+
-       geom_text(aes(fertility.rate, life.expectancy, label=country,
-                     key=country), #also use key here!
-                 showSelected=c("country", "year"),
-                 clickSelects="country",
-                 data=SCATTER(not.na))+
-       scale_size_animint(breaks=10^(5:9))+
-       facet_grid(side ~ top, scales="free")+
-       geom_text(aes(5, 85, label=paste0("year = ", year), 
-                key=year),
-                 showSelected="year",
-                 data=SCATTER(years)),
-
-       bar=ggplot()+
-       theme_animint(height=2400)+
-       geom_bar(aes(country, life.expectancy, fill=region,
-                    key=country, id=gsub(" ", "_", country)),
-                showSelected="year", clickSelects="country",
-                data=not.na, stat="identity", position="identity")+
-       coord_flip(),
-
-       time=list(variable="year", ms=2000),
-       duration=list(year=2000),
-       first=list(year=1975, country=c("United States", "Vietnam")),
-       selector.types=list(country="multiple"),
-       title="World Bank data (multiple selection, facets)")
+wb.facets <- animint(
+  ts=ggplot()+
+    xlab("")+
+    geom_tallrect(aes(
+      xmin=year-1/2, xmax=year+1/2,
+      linetype=status),
+      clickSelects="year",
+      data=TS(years), alpha=1/2)+
+    theme_bw()+
+    theme_animint(width=1000, height=800)+
+    theme(panel.margin=grid::unit(0, "lines"))+
+    geom_line(aes(
+      year, life.expectancy, group=country, colour=region,
+      id = country),
+      clickSelects="country",
+      data=TS(not.na), size=4, alpha=3/5)+
+    geom_point(aes(
+      year, life.expectancy, color=region, size=population),
+      clickSelects="country",
+      showSelected="country",
+      data=TS(not.na))+
+  geom_path(aes(
+    fertility.rate, year, group=country, colour=region),
+    clickSelects="country",
+    data=TS2(not.na), size=4, alpha=3/5)+
+  geom_point(aes(
+    fertility.rate, year, color=region, size=population),
+    showSelected="country", clickSelects="country",
+    data=TS2(not.na))+
+  geom_widerect(aes(
+    ymin=year-1/2, ymax=year+1/2,
+    linetype=status,
+    id=paste0("year", year)),
+    clickSelects="year",
+    data=TS2(years), alpha=1/2)+
+  geom_point(aes(
+    fertility.rate, life.expectancy,
+    colour=region, size=population,
+    key=country), # key aesthetic for animated transitions!
+    clickSelects="country",
+    showSelected="year",
+    data=SCATTER(not.na))+
+  geom_text(aes(
+    fertility.rate, life.expectancy, label=country,
+    key=country), #also use key here!
+    showSelected=c("country", "year"),
+    clickSelects="country",
+    data=SCATTER(not.na))+
+  scale_size_animint(breaks=10^(5:9))+
+  facet_grid(side ~ top, scales="free")+
+  geom_text(aes(
+    5, 85, label=paste0("year = ", year), 
+    key=year),
+    showSelected="year",
+    data=SCATTER(years)),
+  bar=ggplot()+
+    theme_animint(height=2400)+
+    geom_bar(aes(
+      country, life.expectancy, fill=region,
+      key=country, id=gsub(" ", "_", country)),
+      showSelected="year", clickSelects="country",
+      data=not.na, stat="identity", position="identity")+
+    coord_flip(),
+  time=list(variable="year", ms=2000),
+  duration=list(year=2000),
+  first=list(year=1975, country=c("United States", "Vietnam")),
+  selector.types=list(country="multiple"),
+  title="World Bank data (multiple selection, facets)",
+  source="https://github.com/animint/animint2/blob/master/tests/testthat/test-renderer2-widerect.R")
 
 info <- animint2HTML(wb.facets)
+expect_source("https://github.com/animint/animint2/blob/master/tests/testthat/test-renderer2-widerect.R")
 
-rect.list <-
-  getNodeSet(info$html, '//svg[@id="plot_ts"]//rect[@class="border_rect"]')
+rect.list <- getNodeSet(
+  info$html, '//svg[@id="plot_ts"]//rect[@class="border_rect"]')
 expect_equal(length(rect.list), 4)
 at.mat <- sapply(rect.list, xmlAttrs)
 

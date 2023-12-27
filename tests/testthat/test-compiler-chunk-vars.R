@@ -1,25 +1,27 @@
 acontext("chunk vars")
 
 test_that("produce as many chunk files as specified", {
-  viz <- list(iris=ggplot()+
-                geom_point(aes(Petal.Width, Sepal.Length),
-                           showSelected="Species",
-                           data=iris, chunk_vars="Species",
-                           validate_params = FALSE))
+  viz <- list(
+    iris=ggplot()+
+      geom_point(aes(
+        Petal.Width, Sepal.Length),
+        showSelected="Species",
+        data=iris, chunk_vars="Species",
+        validate_params = FALSE))
   tdir <- tempfile()
-  dir.create(tdir)
   tsv.files <- Sys.glob(file.path(tdir, "*.tsv"))
   expect_equal(length(tsv.files), 0)
   animint2dir(viz, tdir, open.browser=FALSE)
   tsv.files <- Sys.glob(file.path(tdir, "*.tsv"))
   expect_equal(length(tsv.files), 3)
-
-  viz <- list(iris=ggplot()+
-                geom_point(aes(Petal.Width, Sepal.Length),
-                           showSelected="Species",
-               data=iris, chunk_vars=character(), validate_params = FALSE))
+  viz <- list(
+    iris=ggplot()+
+      geom_point(aes(
+        Petal.Width, Sepal.Length),
+        showSelected="Species",
+        data=iris,
+        chunk_vars=character(), validate_params = FALSE))
   tdir <- tempfile()
-  dir.create(tdir)
   tsv.files <- Sys.glob(file.path(tdir, "*.tsv"))
   expect_equal(length(tsv.files), 0)
   animint2dir(viz, tdir, open.browser=FALSE)
@@ -103,13 +105,12 @@ for(f in test.paths){
 }
 du.bytes <- bytes.used(test.paths)
 apparent.bytes <- bytes.used(test.paths, apparent.size = TRUE)
-byte.df <- data.frame(du.bytes, apparent.bytes,
-                      file.size=file.size(test.paths),
-                      test.paths)
-
+byte.df <- data.frame(
+  du.bytes, apparent.bytes,
+  file.size=file.size(test.paths),
+  test.paths)
 test_that("default chunks are at least 4KB", {
   tdir <- tempfile()
-  dir.create(tdir)
   tsv.files <- Sys.glob(file.path(tdir, "*.tsv"))
   expect_equal(length(tsv.files), 0)
   expect_no_warning({

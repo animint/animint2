@@ -2,32 +2,27 @@ acontext("update_axes")
 
 # Plots with axis updates
 mtcars$cyl <- as.factor(mtcars$cyl)
-
-no_updates <- ggplot()+geom_point(aes(mpg, disp, 
-                                      colour=cyl), 
-                                  data = mtcars)
-
+no_updates <- ggplot()+geom_point(aes(
+  mpg, disp, 
+  colour=cyl), 
+  data = mtcars)
 update_x <- no_updates+
   theme_animint(update_axes=c("x"))
 update_y <- no_updates+
   theme_animint(update_axes=c("y"))
 update_xy <- no_updates+
   theme_animint(update_axes=c("x","y"))
-
-viz <- (list(neither=no_updates, 
-            x=update_x, 
-            y=update_y, 
-            both=update_xy))
-
-expect_warning(animint2HTML(viz),
-  paste("update_axes specified for X axis on plot x",
-        "but found no geoms with showSelected=singleSelectionVariable,",
-        "so created a plot with no updates for X axis"))
-
-
+viz <- list(
+  neither=no_updates, 
+  x=update_x, 
+  y=update_y, 
+  both=update_xy)
+expect_warning(animint2HTML(viz), paste(
+  "update_axes specified for X axis on plot x",
+  "but found no geoms with showSelected=singleSelectionVariable,",
+  "so created a plot with no updates for X axis"))
 # We only update axes for single selectors
 viz$selector.types = list(cyl="single")
-
 expect_no_warning(info <- animint2HTML(viz))
 
 # We only apply axes updates for numeric data
@@ -35,16 +30,17 @@ expect_no_warning(info <- animint2HTML(viz))
 # and does not produce an error
 d <- mtcars
 d$disp <- as.factor(d$disp)
-non_numeric_updates <- ggplot()+geom_point(aes(mpg, disp, colour=cyl),
-                                           data = d) +
+non_numeric_updates <- ggplot()+geom_point(aes(
+  mpg, disp, colour=cyl),
+  data = d) +
   theme_animint(update_axes = c("x", "y"))
 viz_fac <- list(nonNum = non_numeric_updates)
 viz_fac$selector.types = list(cyl="single")
 # No error for X(mpg) axis, but one for Y(disp) axis
-expect_error(animint2HTML(viz_fac),
-             paste("'update_axes' specified for 'Y' axis on plot",
-                   "'nonNum' but the column 'disp' is non-numeric.",
-                   "Axes updates are only available for numeric data."))
+expect_error(animint2HTML(viz_fac), paste(
+  "'update_axes' specified for 'Y' axis on plot",
+  "'nonNum' but the column 'disp' is non-numeric.",
+  "Axes updates are only available for numeric data."))
 
 # Update selection and get HTML
 clickID(c("plot_neither_cyl_variable_8"))
@@ -61,8 +57,10 @@ info$html_updated2 <- getHTML()
 ## Test for tick updates
 
 rect_path <- "//svg[@id='plot_%s']//g[contains(@class, '%saxis')]"
-all_rect_paths <- lapply(names(viz), sprintf, fmt=rect_path,
-                           c("x","y"))[1:4]
+all_rect_paths <- lapply(
+  names(viz), sprintf, fmt=rect_path,
+  c("x","y")
+)[1:4]
 
 # Take tick diffs for all 4 plots
 rect_nodes1 <- sapply(all_rect_paths, getNodeSet, doc=info$html)
@@ -95,10 +93,8 @@ test_that("axis ticks change when plots are updated",{
 
 ## ------------------------------------------------------------------- ##
 ## Test for grid updates
-
 minor_grid_attr1 <- minor_grid_attr2 <- minor_grid_attr3 <- list()
 major_grid_attr1 <- major_grid_attr2 <- major_grid_attr3 <- list()
-
 p_names <- names(viz)[1:4]
 for(p.name in p_names){
   major_grid_attr1[[p.name]] <- get_grid_lines(info$html, p.name, "major")
@@ -127,7 +123,6 @@ test_that("major grids are updated",{
                       tolerance=0.01))
   expect_true(unequal(major_grid_attr1$both, major_grid_attr1$neither,
                       tolerance=0.01))
-  
   # no_updates
   expect_equal(major_grid_attr2$neither, major_grid_attr1$neither)
   expect_equal(major_grid_attr3$neither, major_grid_attr1$neither)
@@ -141,7 +136,6 @@ test_that("major grids are updated",{
                       major_grid_attr1$x$vert, tolerance=0.01))
   expect_true(unequal(major_grid_attr3$x$vert,
                       major_grid_attr2$x$vert, tolerance=0.01))
-  
   # update_y -> only hor grids are updated
   expect_true(unequal(major_grid_attr2$y$hor,
                       major_grid_attr1$y$hor, tolerance=0.01))
@@ -151,7 +145,6 @@ test_that("major grids are updated",{
                       major_grid_attr2$y$hor, tolerance=0.01))
   expect_equal(major_grid_attr2$y$vert, major_grid_attr1$y$vert)
   expect_equal(major_grid_attr3$y$vert, major_grid_attr1$y$vert)
-  
   # update_xy -> both vert and hor grids updated
   expect_true(unequal(major_grid_attr2$both$hor,
                       major_grid_attr1$both$hor, tolerance=0.01))
@@ -181,11 +174,9 @@ test_that("minor grids are updated",{
                       tolerance=0.01))
   expect_true(unequal(minor_grid_attr1$both, minor_grid_attr1$neither,
                       tolerance=0.01))
-  
   # no_updates
   expect_equal(minor_grid_attr2$neither, minor_grid_attr1$neither)
   expect_equal(minor_grid_attr3$neither, minor_grid_attr1$neither)
-  
   # update_x -> only vert grids are updated
   expect_equal(minor_grid_attr2$x$hor, minor_grid_attr1$x$hor)
   expect_equal(minor_grid_attr3$x$hor, minor_grid_attr1$x$hor)
@@ -195,7 +186,6 @@ test_that("minor grids are updated",{
                       minor_grid_attr1$x$vert, tolerance=0.01))
   expect_true(unequal(minor_grid_attr3$x$vert,
                       minor_grid_attr2$x$vert, tolerance=0.01))
-  
   # update_y -> only hor grids are updated
   expect_true(unequal(minor_grid_attr2$y$hor,
                       minor_grid_attr1$y$hor, tolerance=0.01))
@@ -205,7 +195,6 @@ test_that("minor grids are updated",{
                       minor_grid_attr2$y$hor, tolerance=0.01))
   expect_equal(minor_grid_attr2$y$vert, minor_grid_attr1$y$vert)
   expect_equal(minor_grid_attr3$y$vert, minor_grid_attr1$y$vert)
-  
   # update_xy -> both vert and hor grids updated
   expect_true(unequal(minor_grid_attr2$both$hor,
                       minor_grid_attr1$both$hor, tolerance=0.01))
@@ -223,45 +212,37 @@ test_that("minor grids are updated",{
 
 ## -------------------------------------------------------------------- ##
 ## Test for zooming of geoms
-
 ## Get ranges of geoms
 no_updates_ranges1 <- get_pixel_ranges(info$html_updated1,
                                        "geom1_point_neither")
 no_updates_ranges2 <- get_pixel_ranges(info$html_updated2,
                                        "geom1_point_neither")
-
 x_updates_ranges1 <- get_pixel_ranges(info$html_updated1,
                                        "geom2_point_x")
 x_updates_ranges2 <- get_pixel_ranges(info$html_updated2,
                                        "geom2_point_x")
-
 y_updates_ranges1 <- get_pixel_ranges(info$html_updated1,
                                        "geom3_point_y")
 y_updates_ranges2 <- get_pixel_ranges(info$html_updated2,
                                        "geom3_point_y")
-
 xy_updates_ranges1 <- get_pixel_ranges(info$html_updated1,
                                        "geom4_point_both")
 xy_updates_ranges2 <- get_pixel_ranges(info$html_updated2,
                                        "geom4_point_both")
-
 test_that("geoms get zoomed-in upon changing selection", {
   # no_updates
   expect_true(unequal(no_updates_ranges2$x, no_updates_ranges1$x,
                       tolerance=0.01))
   expect_true(unequal(no_updates_ranges2$y, no_updates_ranges1$y,
                       tolerance=0.01))
-  
   # x_updates
   expect_equal(x_updates_ranges2$x, x_updates_ranges1$x)
   expect_true(unequal(x_updates_ranges2$y, x_updates_ranges1$y,
                       tolerance=0.01))
-  
   # y_updates
   expect_true(unequal(y_updates_ranges2$x, y_updates_ranges1$x,
                       tolerance=0.01))
   expect_equal(y_updates_ranges2$y, y_updates_ranges1$y)
-  
   # xy_updates
   expect_equal(xy_updates_ranges2$x, xy_updates_ranges1$x)
   expect_equal(xy_updates_ranges2$y, xy_updates_ranges1$y)
@@ -280,7 +261,8 @@ ribbondata <- rbind(cbind(ribbondata, group="low"),
 ribbondata[12:22,2:3] <- ribbondata[12:22,2:3]+runif(11, 1, 10)
 ribbondata[23:33,2:3] <- ribbondata[12:22,2:3]+runif(11, 1, 10)
 ribbon <- ggplot() + 
-  geom_ribbon(data=ribbondata, aes(x=x, ymin=ymin, ymax=ymax, group=group, fill=group), alpha=.5) + 
+  geom_ribbon(data=ribbondata, aes(
+    x=x, ymin=ymin, ymax=ymax, group=group, fill=group), alpha=.5) + 
   ggtitle("geom_ribbon") +
   theme_animint(update_axes = c("y"))
 viz <- list(ribbon=ribbon, selector.types=list(group="single"))
@@ -290,10 +272,8 @@ expect_no_warning(info <- animint2HTML(viz))
 clickID(c("plot_ribbon_group_variable_high"))
 Sys.sleep(0.5)
 info$html_updated <- getHTML()
-
 minor_grid_attr1 <- major_grid_attr1 <- minor_grid_attr2 <- 
   major_grid_attr2 <- list()
-
 minor_grid_attr1 <- get_grid_lines(info$html, names(viz)[[1]], "minor")
 minor_grid_attr2 <- get_grid_lines(info$html_updated, names(viz)[[1]], "minor")
 major_grid_attr1 <- get_grid_lines(info$html, names(viz)[[1]], "major")

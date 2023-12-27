@@ -192,7 +192,7 @@ expect_color <- function(computed, expected){
   }
   if(grepl("rgb", computed[1])){
     ## On firefox, grey50 is "rgb(127, 127, 127)"
-    computed.vec <- gsub("[rgb() ]", "", computed)
+    computed.vec <- gsub("[ )]", "", sub("rgb[(]", "", computed))
     expected.mat <- col2rgb(expected)
     expected.vec <- apply(expected.mat, 2, paste, collapse=",")
   }else{

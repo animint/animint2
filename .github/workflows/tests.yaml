@@ -1,4 +1,4 @@
-name: Automatically Run Test Suite
+name: Test Suite
 on:
   push:
     branches: [main, master]
@@ -12,14 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test-suite: [ renderer1,renderer2,renderer3,renderer4,renderer5,compiler,CRAN]
-    
-    # services:
-    #   selenium:
-    #     image: selenium/standalone-firefox-debug:2.53.0
-    #     ports:
-    #       - 5900:5900
-    #       - 4444:4444
+        test-suite: [ renderer1,renderer2,renderer3,compiler,CRAN]
 
     name: Test Suite ${{ matrix.test-suite }}
     env: 
@@ -41,6 +34,12 @@ jobs:
 
       - name: install package
         run: R CMD INSTALL .
+
+      - name: git config user.name 
+        run: git config --global user.name "GitHub Actions"
+
+      - name: git config user.email
+        run: git config --global user.email toby.hocking@r-project.org
       
       - name: run tests
         run: if [ "$TEST_SUITE" == "CRAN" ];then bash build.sh;else Rscript -e "source('tests/testthat.R', chdir = TRUE)";fi
