@@ -951,22 +951,7 @@ var animint = function (to_select, json_file) {
       var selected, values;
       var new_arrays = [];
       if(0 < aes_name.indexOf(".variable")){ 
-	selected_arrays.forEach(function(old_array){
-	  var some_data = chunk;
-	  old_array.forEach(function(value){
-            if(some_data.hasOwnProperty(value)) {
-              some_data = some_data[value];
-            } else {
-              some_data = {};
-            }
-	  })
-	  values = d3.keys(some_data);
-	  values.forEach(function(s_name){
-	    var selected = Selectors[s_name].selected;
-	    var new_array = old_array.concat(s_name).concat(selected);
-	    new_arrays.push(new_array);
-	  })
-	})
+	// Some code for handling .variable aes, put comment here as placeholder for testing
       }else{//not .variable aes:
 	if(aes_name == "PANEL"){
 	  selected = PANEL;
