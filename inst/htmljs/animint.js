@@ -862,7 +862,7 @@ var animint = function (to_select, json_file) {
     var p_name = g_names[g_names.length - 1];
     var panels = Plots[p_name].layout.PANEL;
     panels.forEach(function(panel) {
-      var geomInstance = new Geom(g_info, chunk, selector_name, panel, SVGs, Plots, Selectors);
+      draw_geom(g_info, chunk, selector_name, panel);
     });
   };
 
@@ -934,87 +934,82 @@ var animint = function (to_select, json_file) {
     });
   }//download_chunk.
   
-  // Refactor geom based on OOP, more specific geom can be extended from
-  // the basic Geom class
-  class Geom {
-    constructor(g_info, chunk, selector_name, PANEL, SVGs, Plots, Selectors) {
-      this.g_info = g_info;
-      this.chunk = chunk;
-      this.selector_name = selector_name;
-      this.PANEL = PANEL;
-      this.scales = {};
-
-      this.g_info.tr.select('td.status').text('displayed');
-
-      // SVG and scales
-      this.svg = SVGs[this.g_info.classsed];
-      const g_names = this.g_info.classed.split('_');
-      const p_name = g_names[g_names.length - 1];
-      this.scales = Plots[p_name].scales[this.PANEL];
-
-      this.elements = this.svg
-        .select('g.' + this.g_info.classed)
-        .select('g.PANEL' + this.PANEL)
-        .selectAll('.geom');
-
-      // selection features
-      this.has_clickSelects = this.g_info.aes.hasOwnProperty('clickSelects');
-      this.has_clickSelects_variable = this.g_info.aes.hasOwnProperty(
-        'clickSelects.variable'
-      );
-
-      // aesthetic
-      this.aes = this.g_info.aes;
-
-      this.selected_arrays = [[]];
-      this.handle_subset_order();
-      this.Selectors = Selectors;
-
-      this.init_styles();
-      this.init_key_id();
-      this.init_select_style();
+  // update_geom is responsible for obtaining a chunk of downloaded
+  // data, and then calling draw_geom to actually draw it.
+  var draw_geom = function(g_info, chunk, selector_name, PANEL){
+    g_info.tr.select("td.status").text("displayed");
+    var svg = SVGs[g_info.classed];
+    // derive the plot name from the geometry name
+    var g_names = g_info.classed.split("_");
+    var p_name = g_names[g_names.length - 1];
+    var scales = Plots[p_name].scales[PANEL];
+    var selected_arrays = [ [] ]; //double array necessary.
+    var has_clickSelects = g_info.aes.hasOwnProperty("clickSelects");
+    var has_clickSelects_variable =
+      g_info.aes.hasOwnProperty("clickSelects.variable");
+    g_info.subset_order.forEach(function (aes_name) {
+      var selected, values;
+      var new_arrays = [];
+      if(0 < aes_name.indexOf(".variable")){ 
+	selected_arrays.forEach(function(old_array){
+	  var some_data = chunk;
+	  old_array.forEach(function(value){
+            if(some_data.hasOwnProperty(value)) {
+              some_data = some_data[value];
+            } else {
+              some_data = {};
+            }
+	  })
+	  values = d3.keys(some_data);
+	  values.forEach(function(s_name){
+	    var selected = Selectors[s_name].selected;
+	    var new_array = old_array.concat(s_name).concat(selected);
+	    new_arrays.push(new_array);
+	  })
+	})
+      }else{//not .variable aes:
+	if(aes_name == "PANEL"){
+	  selected = PANEL;
+	}else{
+          var s_name = g_info.aes[aes_name];
+          selected = Selectors[s_name].selected;
+	}
+	if(isArray(selected)){ 
+	  values = selected; //multiple selection.
+	}else{
+	  values = [selected]; //single selection.
+	}
+	values.forEach(function(value){
+	  selected_arrays.forEach(function(old_array){
+	    var new_array = old_array.concat(value);
+	    new_arrays.push(new_array);
+	  })
+	})
+      }
+      selected_arrays = new_arrays;
+    });
+    // data can be either an array[] if it will be directly involved
+    // in a data-bind, or an object{} if it will be involved in a
+    // data-bind by group (e.g. geom_line).
+    var data;
+    if(g_info.data_is_object){
+      data = {};
+    }else{
+      data = [];
     }
-
-    // Method to handle subset_order and selected_arrays
-    handle_subset_order() {
-      this.g_info.subset_order.forEach((aes_name) => {
-        let selected, values;
-        let new_arrays = [];
-        if (0 < aes_name.indexOf('.variable')) {
-          this.selected_arrays.forEach((old_array) => {
-            let some_data = this.chunk;
-            old_array.forEach((value) => {
-              if (some_data.hasOwnProperty(value)) {
-                some_data = some_data[value];
-              } else {
-                some_data = {};
-              }
-            });
-            values = d3.keys(some_data);
-            values.forEach((s_name) => {
-              selected = this.Selectors[s_name].selected;
-              let new_array = old_array.concat(s_name).concat(selected);
-              new_arrays.push(new_array);
-            });
-          });
+    selected_arrays.forEach(function(value_array){
+      var some_data = chunk;
+      value_array.forEach(function(value){
+        if (some_data.hasOwnProperty(value)) {
+          some_data = some_data[value];
         } else {
-          if (aes_name === 'PANEL') {
-            selected = this.PANEL;
-          } else {
-            const s_name = this.g_info.aes[aes_name];
-            selected = this.Selectors[s_name].selected;
-          }
-          values = Array.isArray(selected) ? selected : [selected];
-          values.forEach((value) => {
-            this.selected_arrays.forEach((old_array) => {
-              let new_array = old_array.concat(value);
-              new_arrays.push(new_array);
-            });
-          });
+	  if(g_info.data_is_object){
+	    some_data = {};
+	  }else{
+            some_data = [];
+	  }
         }
-        this.selected_arrays = new_arrays;
       });
-
       if(g_info.data_is_object){
 	if(isArray(some_data) && some_data.length){
 	  data["0"] = some_data;
@@ -1153,18 +1148,11 @@ var animint = function (to_select, json_file) {
       get_text_anchor = function(d){
 	return d["anchor"];
       }
-      return null; // No default `fill_off` value
-    }
-
-    get_text_anchor(d) {
-      if (this.text_anchor) {
-        return this.text_anchor;
-      } else if (d.hasOwnProperty('anchor')) {
-        return d['anchor'];
+    }else{
+      get_text_anchor = function(d){
+	return text_anchor;
       }
-      return 'middle';
     }
-
 
     var eActions, eAppend;
     var key_fun = null;
@@ -1249,29 +1237,30 @@ var animint = function (to_select, json_file) {
 	}
 	keyed_data[k] = one_group;
       }
+      var kv_array = d3.entries(d3.keys(keyed_data));
+      var kv = kv_array.map(function (d) {
+        //d[aes.group] = d.value;
 
-      let kv_array = d3.entries(d3.keys(keyed_data));
-      this.kv = kv_array.map(function (d) {
+        // Need to store the clickSelects value that will
+        // be passed to the selector when we click on this
+        // item.
         d.clickSelects = keyed_data[d.value][0].clickSelects;
         return d;
       });
-    }
 
-    // TODO: Move this to a geom_ribbon subclass method later.
-    define_line_type() {
-      if (this.g_info.geom === 'ribbon') {
-        this.lineThing = d3.svg
-          .area()
-          .x(this.toXY('x', 'x'))
-          .y(this.toXY('y', 'ymax'))
-          .y0(this.toXY('y', 'ymin'));
+      // line, path, and polygon use d3.svg.line(),
+      // ribbon uses d3.svg.area()
+      // we have to define lineThing accordingly.
+      if (g_info.geom == "ribbon") {
+        var lineThing = d3.svg.area()
+          .x(toXY("x", "x"))
+          .y(toXY("y", "ymax"))
+          .y0(toXY("y", "ymin"));
       } else {
-        this.lineThing = d3.svg
-          .line()
-          .x(this.toXY('x', 'x'))
-          .y(this.toXY('y', 'y'));
+        var lineThing = d3.svg.line()
+          .x(toXY("x", "x"))
+          .y(toXY("y", "y"));
       }
-
       if(["line","path"].includes(g_info.geom)){
 	fill = "none";
 	fill_off = "none";
@@ -1293,8 +1282,9 @@ var animint = function (to_select, json_file) {
 	  var no_na = one_group.filter(function(d){
             if(g_info.geom == "ribbon"){
               return !isNaN(d.x) && !isNaN(d.ymin) && !isNaN(d.ymax);
+            }else{
+              return !isNaN(d.x) && !isNaN(d.y);
             }
-            return !isNaN(d.x) && !isNaN(d.y);
           });
           return lineThing(no_na);
         })
