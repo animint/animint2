@@ -10,7 +10,7 @@
 
 ## About
 
-Animint2 is an R package for generating and sharing interactive data visualizations, sometimes referred to as animints. It is a fork of, and uses similar syntax to, [ggplot2](https://ggplot2.tidyverse.org/). Animint2 is especially useful for large datasets, but smaller datasets can be made interactive, too. It is also capable of generating static data visualizations.
+Animint2 is an R package for generating and sharing animated interactive data visualizations, sometimes referred to as animints. It is a fork of, and uses similar syntax to, [ggplot2](https://ggplot2.tidyverse.org/). Animint2 is especially useful for large datasets, but smaller datasets can be made interactive, too. It is also capable of generating static data visualizations.
 
 <a href="https://rcdata.nau.edu/genomic-ml/WorldBank-facets/"><img src="man/figures/world_bank_screencast.gif" alt="A screencast of an interactive data visualization displaying fertility data from the World Bank. The user types in the selection menu and clicks on the legend, which causes changes in the visualization. GIF."></a> <!-- If you're familiar with Markdown, you may be wondering why I've elected to use HTML here instead of using the conventional ![alt text](source). It's cuz R's pkgdown package renders the alt text as both alt text and a fig caption. That's redundant. Using <img> ensures that it comes out the way we want. -->
 
