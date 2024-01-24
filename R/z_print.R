@@ -82,6 +82,13 @@ print.animint <- function(x, ...){
 ##'     scale_size_animint(pixel.range=c(2,20), breaks=10^(4:9)))
 animint <- function(...){
   L <- list(...)
+  
+  duplicate_args <- names(L)[duplicated(names(L))]
+  
+  if (length(duplicate_args) > 0) {
+    stop(paste("Error: Duplicate arguments are passed to animint. Duplicate arguments found :", 
+               paste(duplicate_args, collapse = ", ")))
+  }
   default.name.vec <- plot.num.vec <- paste0("plot", seq_along(L))
   match.name.list <- lapply(match.call()[-1], paste)
   first.name.vec <- sapply(match.name.list, "[", 1)
