@@ -83,6 +83,7 @@ print.animint <- function(x, ...){
 animint <- function(...){
   L <- list(...)
   
+  # Generate a list of duplicate named arguments
   duplicate_args <- names(L)[duplicated(names(L))]
   
   if (length(duplicate_args) > 0) {
