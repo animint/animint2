@@ -190,5 +190,5 @@ test_that("animint(out.dir = 'dir1', out.dir = 'dir2') is an error", {
   
   expect_error({
     animint(out.dir = 'dir1', out.dir = 'dir2')
-  }, "Duplicate arguments are passed to animint. Duplicate arguments found : out.dir")
+  }, "Duplicate arguments are passed to animint. Duplicate arguments found: out.dir")
 })
