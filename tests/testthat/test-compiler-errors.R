@@ -185,3 +185,10 @@ test_that("warning for _off param without clickSelects", {
     animint2dir(viz.point1, open.browser = FALSE)
   }, "geom1_point_pointone has alpha_off, colour_off which is not used because this geom has no clickSelects; please specify clickSelects or remove alpha_off, colour_off")
 })
+
+test_that("animint(out.dir = 'dir1', out.dir = 'dir2') is an error", {
+  
+  expect_error({
+    animint(out.dir = 'dir1', out.dir = 'dir2')
+  }, "Duplicate arguments are passed to animint. Duplicate arguments found: out.dir")
+})
