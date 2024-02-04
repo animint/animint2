@@ -83,6 +83,11 @@ print.animint <- function(x, ...){
 animint <- function(...){
   L <- list(...)
   
+  # Check if argument list is empty
+  if(length(L) == 0) {
+    stop(paste("No arguments passed to animint"))
+  }
+  
   # Generate a list of duplicate named arguments
   duplicate_args <- names(L)[duplicated(names(L))]
   
