@@ -52,7 +52,7 @@ Authors@R: c(
      comment="Animint2 GSoC 2022"),
 	person("Jocelyne", "Chen",
 	 role="aut",
-	 comment="Animint2 GSoC 2023")),
+	 comment="Animint2 GSoC 2023"),
 	 person("Siddhesh", "Deodhar",
 	 role="aut",
 	 comment="Animint2 GSoC 2024"))
