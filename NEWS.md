@@ -1,6 +1,6 @@
 # Changes in version 2024.2.4 (PR#116)
  
-  - Add validation checks for duplicate of missing args passed to animint
+  - Add validation checks for duplicate and missing args passed to animint
 
 # Changes in version 2023.12.14 (PR#112)
 
