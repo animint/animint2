@@ -1,3 +1,7 @@
+# Changes in version 2024.2.4 (PR#116)
+ 
+  - Add validation checks for duplicate of missing args passed to animint
+
 # Changes in version 2023.12.14 (PR#112)
 
 - move servr from Suggests to Imports, for more user-friendly installation / getting started for newbies (no need for separate install command for servr).
