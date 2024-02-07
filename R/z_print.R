@@ -85,7 +85,7 @@ animint <- function(...){
   
   # Check if argument list is empty
   if(length(L) == 0) {
-    stop(paste("No arguments passed to animint"))
+    stop("No arguments passed to animint. Arguments should 1 or more include ggplot and 0 or more options")
   }
   
   # Generate a list of duplicate named arguments
