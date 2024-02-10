@@ -195,5 +195,5 @@ test_that("animint(out.dir = 'dir1', out.dir = 'dir2') is an error", {
 test_that("animint() is an error", {
   expect_error({
     animint()
-  }, "No arguments passed to animint. Arguments should 1 or more include ggplot and 0 or more options")
+  }, "No arguments passed to animint. Arguments should include ggplots\\(1 or more\\) and options\\(0 or more\\)")
 })
