@@ -177,7 +177,6 @@ test_that("warning for _off param without clickSelects", {
     pointone = ggplot()+
     geom_point(aes(x = wt, y = mpg, colour = disp),
     size = 10,
-    colour="red",
     alpha_off=0.6,
     colour_off="transparent",
     data = mtcars))
@@ -196,4 +195,19 @@ test_that("animint() is an error", {
   expect_error({
     animint()
   }, "No arguments passed to animint. Arguments should include ggplots(1 or more) and options(0 or more)", fixed=TRUE)
+})
+
+test_that("Same argument passed to aes and geom is an error", {
+  scatter <- ggplot()+geom_path(aes(
+    x=life.expectancy, 
+    y=fertility.rate, 
+    color=region,
+    group=country, alpha=population),alpha=0.5,
+    data=WorldBank)
+  viz <- list(
+    plot = scatter
+  )
+  expect_error({
+      animint2dir(viz, open.browser=FALSE)
+  }, "Same argument cannot be passed to both aes and geom. Argument passed to both aes and geom: alpha")
 })
