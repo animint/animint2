@@ -177,12 +177,6 @@ Layer <- gganimintproto("Layer", NULL,
     } else {
       aesthetics <- self$mapping
     }
-    
-    duplicate_aes <- intersect(names(aesthetics), names(self$aes_params))
-    if(length(duplicate_aes) > 0) {
-      stop(paste("Same argument cannot be passed to both aes and geom. Argument passed to both aes and geom:", 
-                 paste(duplicate_aes, collapse = ", ")))
-    }
 
     # Drop aesthetics that are set or calculated
     set <- names(aesthetics) %in% names(self$aes_params)

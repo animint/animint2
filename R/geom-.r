@@ -147,6 +147,17 @@ Geom <- gganimintproto("Geom",
   pre_process = function(g, g.data, ranges){
     list(g = g, g.data = g.data)
   },
+  
+  get_off_params = function(input_string) {
+    pattern <- "_off$"
+    # Return parameter name without the _off suffix
+    if (grepl(pattern, input_string)) {
+      result <- sub(pattern, "", input_string)
+      return(result)
+    } else {
+      return("")
+    }
+  },
 
   ## Save a layer to disk, save and return meta-data.
   ## l- one layer of the ggplot object.
@@ -174,6 +185,13 @@ Geom <- gganimintproto("Geom",
     ## e.g. colour.
     ## 'colour', 'size' etc. have been moved to aes_params
     g$params <- getLayerParams(l)
+    geom_params <- c(names(l$aes_params), sapply(names(l$extra_params), l$geom$get_off_params))
+    duplicate_aes <- intersect(geom_params, names(g$aes))
+    
+    if(length(duplicate_aes) > 0) {
+      stop(paste("Same argument cannot be passed to both aes and geom. Argument passed to both aes and geom:", 
+                 paste(duplicate_aes, collapse = ", ")))
+    }
 
     ## Make a list of variables to use for subsetting. subset_order is the
     ## order in which these variables will be accessed in the recursive

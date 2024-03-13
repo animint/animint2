@@ -175,7 +175,7 @@ test_that("no warning for position=stack without showSelected", {
 test_that("warning for _off param without clickSelects", {
   viz.point1 <- list(
     pointone = ggplot()+
-    geom_point(aes(x = wt, y = mpg, colour = disp),
+    geom_point(aes(x = wt, y = mpg),
     size = 10,
     alpha_off=0.6,
     colour_off="transparent",
@@ -209,5 +209,20 @@ test_that("Same argument passed to aes and geom is an error", {
   )
   expect_error({
       animint2dir(viz, open.browser=FALSE)
+  }, "Same argument cannot be passed to both aes and geom. Argument passed to both aes and geom: alpha")
+})
+
+test_that("alpha and alpha_off passed to aes and geom is an error", {
+  scatter <- ggplot()+geom_path(aes(
+    x=life.expectancy, 
+    y=fertility.rate, 
+    color=region,
+    group=country, alpha=population),alpha_off=0.5,
+    data=WorldBank)
+  viz <- list(
+    plot = scatter
+  )
+  expect_error({
+    animint2dir(viz, open.browser=FALSE)
   }, "Same argument cannot be passed to both aes and geom. Argument passed to both aes and geom: alpha")
 })
