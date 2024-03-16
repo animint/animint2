@@ -176,11 +176,16 @@ Geom <- gganimintproto("Geom",
     g$params <- getLayerParams(l)
     off_params <- sub("_off", "", grep("_off", names(l$extra_params), value = TRUE))
     geom_params <- c(names(l$aes_params), off_params)
-    duplicate_aes <- intersect(geom_params, names(g$aes))
+    duplicate_params <- intersect(geom_params, names(g$aes))
     
-    if(length(duplicate_aes) > 0) {
-      stop(paste("Same argument cannot be passed to both aes and geom. Argument passed to both aes and geom:", 
-                 paste(duplicate_aes, collapse = ", ")))
+    
+    if(length(duplicate_params) > 0) {
+      duplicate_on <- intersect(names(l$aes_params), duplicate_params)
+      duplicate_off <- setdiff(paste0(intersect(off_params, duplicate_params),"_off"), "_off")
+      duplicate_geom <- c(duplicate_on, duplicate_off)
+      stop(paste("Same argument cannot be passed to both aes and geom. Argument passed to aes:", 
+                 paste(duplicate_params, collapse = ", "), ". Arguments passed to geom:", paste(duplicate_geom, collapse = ", "),
+                 ". The visual property needs only be defined in one place, so if it should be different for each rendered geom, but not depend on selection state, then it should be defined in aes; but if the property should depend on the selection state then it should be defined in geom"))
     }
 
     ## Make a list of variables to use for subsetting. subset_order is the
