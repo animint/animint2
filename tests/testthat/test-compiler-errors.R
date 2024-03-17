@@ -209,7 +209,7 @@ test_that("Same argument passed to aes and geom is an error", {
   )
   expect_error({
       animint2dir(viz, open.browser=FALSE)
-  }, "Same argument cannot be passed to both aes and geom. Argument passed to aes: alpha . Arguments passed to geom: alpha . The visual property needs only be defined in one place, so if it should be different for each rendered geom, but not depend on selection state, then it should be defined in aes; but if the property should depend on the selection state then it should be defined in geom")
+  }, "Same visual property cannot be defined in both aes and geom. Property defined in aes:alpha. Property defined in geom:alpha. The visual property needs only be defined in one place, so if it should be different for each rendered geom, but not depend on selection state, then it should be defined in aes; but if the property should depend on the selection state then it should be defined in geom")
 })
 
 test_that("alpha and alpha_off passed to aes and geom is an error", {
@@ -224,7 +224,7 @@ test_that("alpha and alpha_off passed to aes and geom is an error", {
   )
   expect_error({
     animint2dir(viz, open.browser=FALSE)
-  }, "Same argument cannot be passed to both aes and geom. Argument passed to aes: alpha . Arguments passed to geom: alpha_off . The visual property needs only be defined in one place, so if it should be different for each rendered geom, but not depend on selection state, then it should be defined in aes; but if the property should depend on the selection state then it should be defined in geom")
+  }, "Same visual property cannot be defined in both aes and geom. Property defined in aes:alpha. Property defined in geom:alpha_off. The visual property needs only be defined in one place, so if it should be different for each rendered geom, but not depend on selection state, then it should be defined in aes; but if the property should depend on the selection state then it should be defined in geom")
 })
 
 test_that("alpha_off without clickSelects is a warning", {

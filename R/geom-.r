@@ -183,8 +183,8 @@ Geom <- gganimintproto("Geom",
       duplicate_on <- intersect(names(l$aes_params), duplicate_params)
       duplicate_off <- setdiff(paste0(intersect(off_params, duplicate_params),"_off"), "_off")
       duplicate_geom <- c(duplicate_on, duplicate_off)
-      stop(paste("Same argument cannot be passed to both aes and geom. Argument passed to aes:", 
-                 paste(duplicate_params, collapse = ", "), ". Arguments passed to geom:", paste(duplicate_geom, collapse = ", "),
+      stop(paste0("Same visual property cannot be defined in both aes and geom. Property defined in aes:", 
+                 paste0(duplicate_params, collapse = ", "), ". Property defined in geom:", paste0(duplicate_geom, collapse = ", "),
                  ". The visual property needs only be defined in one place, so if it should be different for each rendered geom, but not depend on selection state, then it should be defined in aes; but if the property should depend on the selection state then it should be defined in geom"))
     }
 
