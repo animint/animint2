@@ -1,3 +1,7 @@
+# Changes in version 2024.3.12 (PR#119)
+ 
+  - Add validation checks for duplicate args passed geom and aes
+  
 # Changes in version 2024.2.4 (PR#116)
  
   - Add validation checks for duplicate and missing args passed to animint.

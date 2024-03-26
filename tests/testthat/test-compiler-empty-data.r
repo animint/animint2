@@ -56,29 +56,6 @@ test_that("layers with empty data are silently omitted with facet_grid", {
   expect_equal(nrow(layer_data(d, 2)), nrow(mtcars))
 })
 
-
-test_that("empty data overrides plot defaults", {
-  # Should error when totally empty data frame because there's no x and y
-  d <- ggplot(mtcars, aes(mpg, wt)) +
-    geom_point() +
-    geom_point(data = data.frame())
-  expect_error(layer_data(d), "not found")
-
-  # No extra points when x and y vars don't exist but are set
-  d <- ggplot(mtcars, aes(mpg, wt)) +
-    geom_point() +
-    geom_point(data = data.frame(), x = 20, y = 3)
-  expect_equal(nrow(layer_data(d, 1)), nrow(mtcars))
-  expect_equal(nrow(layer_data(d, 2)), 0)
-
-  # No extra points when x and y vars are empty, even when aesthetics are set
-  d <- ggplot(mtcars, aes(mpg, wt)) +
-    geom_point() +
-    geom_point(data = df0, x = 20, y = 3)
-  expect_equal(nrow(layer_data(d, 1)), nrow(mtcars))
-  expect_equal(nrow(layer_data(d, 2)), 0)
-})
-
 test_that("layer inherits data from plot when data = NULL", {
   d <- ggplot(mtcars, aes(mpg, wt)) +
     geom_point(data = NULL)

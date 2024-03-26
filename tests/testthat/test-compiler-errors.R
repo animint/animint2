@@ -175,9 +175,8 @@ test_that("no warning for position=stack without showSelected", {
 test_that("warning for _off param without clickSelects", {
   viz.point1 <- list(
     pointone = ggplot()+
-    geom_point(aes(x = wt, y = mpg, colour = disp),
+    geom_point(aes(x = wt, y = mpg),
     size = 10,
-    colour="red",
     alpha_off=0.6,
     colour_off="transparent",
     data = mtcars))
@@ -196,4 +195,49 @@ test_that("animint() is an error", {
   expect_error({
     animint()
   }, "No arguments passed to animint. Arguments should include ggplots(1 or more) and options(0 or more)", fixed=TRUE)
+})
+
+test_that("Same argument passed to aes and geom is an error", {
+  scatter <- ggplot()+geom_path(aes(
+    x=life.expectancy, 
+    y=fertility.rate, 
+    color=region,
+    group=country, alpha=population),alpha=0.5,
+    data=WorldBank)
+  viz <- list(
+    plot = scatter
+  )
+  expect_error({
+      animint2dir(viz, open.browser=FALSE)
+  }, "Same visual property cannot be defined in both aes and geom. Property defined in aes:alpha. Property defined in geom:alpha. The visual property needs only be defined in one place, so if it should be different for each rendered geom, but not depend on selection state, then it should be defined in aes; but if the property should depend on the selection state then it should be defined in geom")
+})
+
+test_that("alpha and alpha_off passed to aes and geom is an error", {
+  scatter <- ggplot()+geom_path(aes(
+    x=life.expectancy, 
+    y=fertility.rate, 
+    color=region,
+    group=country, alpha=population),clickSelects="country", alpha_off=0.5,
+    data=WorldBank)
+  viz <- list(
+    plot = scatter
+  )
+  expect_error({
+    animint2dir(viz, open.browser=FALSE)
+  }, "Same visual property cannot be defined in both aes and geom. Property defined in aes:alpha. Property defined in geom:alpha_off. The visual property needs only be defined in one place, so if it should be different for each rendered geom, but not depend on selection state, then it should be defined in aes; but if the property should depend on the selection state then it should be defined in geom")
+})
+
+test_that("alpha_off without clickSelects is a warning", {
+  scatter <- ggplot()+geom_path(aes(
+    x=life.expectancy, 
+    y=fertility.rate, 
+    color=region,
+    group=country),alpha_off=0.5,
+    data=WorldBank)
+  viz <- list(
+    plot = scatter
+  )
+  expect_warning({
+    animint2dir(viz, open.browser=FALSE)
+  }, "geom1_path_plot has alpha_off which is not used because this geom has no clickSelects; please specify clickSelects or remove alpha_off")
 })

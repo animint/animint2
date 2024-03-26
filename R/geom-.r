@@ -147,7 +147,7 @@ Geom <- gganimintproto("Geom",
   pre_process = function(g, g.data, ranges){
     list(g = g, g.data = g.data)
   },
-
+  
   ## Save a layer to disk, save and return meta-data.
   ## l- one layer of the ggplot object.
   ## d- one layer of calculated data from ggplot_build(p).
@@ -174,6 +174,19 @@ Geom <- gganimintproto("Geom",
     ## e.g. colour.
     ## 'colour', 'size' etc. have been moved to aes_params
     g$params <- getLayerParams(l)
+    off_params <- sub("_off", "", grep("_off", names(l$extra_params), value = TRUE))
+    geom_params <- c(names(l$aes_params), off_params)
+    duplicate_params <- intersect(geom_params, names(g$aes))
+    
+    
+    if(length(duplicate_params) > 0) {
+      duplicate_on <- intersect(names(l$aes_params), duplicate_params)
+      duplicate_off <- setdiff(paste0(intersect(off_params, duplicate_params),"_off"), "_off")
+      duplicate_geom <- c(duplicate_on, duplicate_off)
+      stop(paste0("Same visual property cannot be defined in both aes and geom. Property defined in aes:", 
+                 paste0(duplicate_params, collapse = ", "), ". Property defined in geom:", paste0(duplicate_geom, collapse = ", "),
+                 ". The visual property needs only be defined in one place, so if it should be different for each rendered geom, but not depend on selection state, then it should be defined in aes; but if the property should depend on the selection state then it should be defined in geom"))
+    }
 
     ## Make a list of variables to use for subsetting. subset_order is the
     ## order in which these variables will be accessed in the recursive
