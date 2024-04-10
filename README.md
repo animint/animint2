@@ -51,3 +51,9 @@ For comparisons between the aforementioned packages and `animint2`, see [the dif
 ## Problems?
 
 The `animint2` package is a work in progress. If you spot any bugs or unexpected behaviors, please let us know by [reporting it as an issue on GitHub](https://github.com/animint/animint2/issues). Thanks! Have a great day.
+
+## Other galleries
+
+[Vatsal-Rajput](https://github.com/Vatsal-Rajput/Vatsal-Animint-Gallery/tree/gh-pages) created a small gallery with a different index.Rmd file.
+
+[nhintruong](https://nhintruong.github.io/gallery_repo/) created a gallery with several example adapted from the animation package, like [the wiki page](https://github.com/tdhock/animint/wiki/Ports-of-animation-examples).
