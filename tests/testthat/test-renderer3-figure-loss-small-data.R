@@ -1,6 +1,7 @@
 acontext("FigureLossSmall")
 library(data.table)
 library(animint2)
+library(jointseg)
 
 loss.small <- readRDS("loss.small.rds")
 
