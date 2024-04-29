@@ -1,4 +1,5 @@
 acontext("FigureLossSmall")
+library(neuroblastoma)
 data("neuroblastoma", package="neuroblastoma")
 library(data.table)
 library(animint2) 
