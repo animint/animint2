@@ -1,7 +1,7 @@
 acontext("FigureLossSmall")
 data("neuroblastoma", package="neuroblastoma")
 library(data.table)
-library(animint2)
+library(animint2) 
 
 nb.dt <- data.table(neuroblastoma$profiles)
 
