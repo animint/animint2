@@ -1,10 +1,21 @@
 acontext("FigureLossSmall")
-library(neuroblastoma)
-data("neuroblastoma", package="neuroblastoma")
 library(data.table)
 library(animint2) 
 
-nb.dt <- data.table(neuroblastoma$profiles)
+library(data.table)
+library(animint2)
+
+set.seed(100)
+numSamples <- 200000
+
+profile_id <- sample(8:182, numSamples, replace = TRUE) 
+
+# Construct a dataset which simulates neuroblastoma dataset
+random_chromosome <- sample(c(1:22, "X", "Y"), size = numSamples, replace = TRUE)
+random_position <- sample(5050:249063592, numSamples, replace = TRUE)
+logRatio <- runif(numSamples , min = -7.675, max = 9.871) 
+
+nb.dt <- data.table(profile.id = profile_id, chromosome = random_chromosome, position = random_position, logratio = logRatio)
 
 count.dt <- nb.dt[, list(
   same=sum(diff(logratio)==0),
@@ -14,7 +25,7 @@ count.dt[order(same, -count)][count<1000]
 count.dt[order(count)]
 ## Third data set, really small.
 ## First profile has some consecutive data points that are the same.
-three <- nb.dt[profile.id=="371"&chromosome=="Y"]
+three <- nb.dt[profile.id=="117"&chromosome=="Y"]
 sum(diff(three$logratio)==0)
 max.segments <- nrow(three)
 fit <- jointseg::Fpsn(three$logratio, max.segments)
@@ -50,9 +61,8 @@ prop.dt <- loss.small[, {
     models=.N)
 }, by=list(profile.id, chromosome)]
 
-set.seed(100)
 (some.props <- prop.dt[
-  sample(1:.N, 5)][, .SD[1], by=list(models, prop.selected)])
+  sample(1:.N, 10)][, .SD[1], by=list(models, prop.selected)])
 
 some.loss <- loss.small[some.props, on=list(profile.id, chromosome)]
 some.nb <- nb.dt[some.props, on=list(profile.id, chromosome)]
@@ -203,14 +213,14 @@ vizWithUpdateAxes <- animint(
 
 infoWithUpdateAxes <- animint2HTML(vizWithUpdateAxes)
 
-test_that("5 <circle> rendered for all data sets (with update axes)", {
+test_that("<circle> rendered for all data sets (with update axes)", {
   dataSets=getNodeSet(infoWithUpdateAxes$html, '//g[@class="geom1_point_selected"]//g//circle')
   expect_equal(length(dataSets), nrow(some.props))
 })
 
-test_that("72 <rect> rendered for selected data set (with update axes)", {
-  nRect=getNodeSet(infoWithUpdateAxes$html, '//g[@class="geom7_tallrect_loss"]//g//rect')
-  expect_equal(length(nRect), nrow(some.loss[some.loss$profile.id==322, ]))
+test_that("<rect> rendered for selected data set (with update axes)", {
+  nRect=getNodeSet(infoWithUpdateAxes$html, '//g[@class="geom4_point_data"]//g//circle')
+  expect_equal(length(nRect), nrow(some.loss[some.loss$profile.id==21, ]))
 })
 
 vizWithoutUpdateAxes <- animint(
@@ -309,13 +319,13 @@ vizWithoutUpdateAxes <- animint(
 
 infoWithoutUpdateAxes <- animint2HTML(vizWithUpdateAxes)
 
-test_that("5 <circle> rendered for all data sets (without update axes)", {
+test_that("<circle> rendered for all data sets (without update axes)", {
   dataSets=getNodeSet(infoWithoutUpdateAxes$html, '//g[@class="geom1_point_selected"]//g//circle')
   expect_equal(length(dataSets), nrow(some.props))
 })
 
-test_that("72 <rect> rendered for selected data set (widhout update axes)", {
-  nRect=getNodeSet(infoWithoutUpdateAxes$html, '//g[@class="geom7_tallrect_loss"]//g//rect')
-  expect_equal(length(nRect), nrow(some.loss[some.loss$profile.id==322, ]))
+test_that("<rect> rendered for selected data set (widhout update axes)", {
+  nRect=getNodeSet(infoWithoutUpdateAxes$html, '//g[@class="geom4_point_data"]//g//circle')
+  expect_equal(length(nRect), nrow(some.loss[some.loss$profile.id==21, ]))
 })
 
