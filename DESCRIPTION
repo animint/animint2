@@ -101,7 +101,8 @@ Suggests:
     rpart,
     svglite,
     ggplot2,
-    jointseg
+    jointseg,
+    penaltyLearning
 Remotes: ropensci/RSelenium@v1.7.4
 License: GPL-3
 Encoding: UTF-8
