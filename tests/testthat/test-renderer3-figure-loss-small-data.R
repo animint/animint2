@@ -1,6 +1,4 @@
 acontext("FigureLossSmall")
-library(data.table)
-library(animint2) 
 
 library(data.table)
 library(animint2)
