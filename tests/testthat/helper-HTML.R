@@ -50,7 +50,7 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
   if(OS == "Windows" || OS == "Darwin") {
     animint_server <- "host.docker.internal"
   }
-  if(browserName == "chrome"){
+  if(browserName == "chromote"){
     chrome.session <- chromote::ChromoteSession$new()
     chrome.session$view()
     chrome.session$refresh <- function()chrome.session$Page$reload()
