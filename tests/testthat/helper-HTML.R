@@ -8,6 +8,7 @@ animint2HTML <- function(plotList) {
   remDr$refresh()
   Sys.sleep(1)
   res$html <- getHTML()
+  print(res)
   ## [ERROR - 2019-06-05T18:30:55.358Z] Session [e7c4e500-871e-11e9-a9b5-8dab1f486f7e] - page.onError - msg: TypeError: 'undefined' is not an object (evaluating 's_info.type')
   ## [ERROR - 2019-06-05T18:30:55.360Z] Session [e7c4e500-871e-11e9-a9b5-8dab1f486f7e] - page.onError - stack:
   ##   (anonymous function) (http://localhost:4848/animint-htmltest/animint.js:2535)
