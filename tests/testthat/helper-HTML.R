@@ -60,6 +60,7 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
     }
     chrome.session$getPageSource <- function(){
       doc <- chrome.session$DOM$getDocument()
+      print(doc)
       chrome.session$DOM$getOuterHTML(doc$root$nodeId)$outerHTML
     }
     remDr <<- chrome.session
