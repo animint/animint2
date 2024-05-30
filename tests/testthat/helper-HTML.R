@@ -63,6 +63,7 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
       print(doc)
       chrome.session$DOM$getOuterHTML(doc$root$nodeId)$outerHTML
     }
+    Sys.sleep(3)
     remDr <<- chrome.session
   }else{
     if (browserName == "phantomjs") {
