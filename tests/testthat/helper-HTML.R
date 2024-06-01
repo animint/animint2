@@ -8,7 +8,6 @@ animint2HTML <- function(plotList) {
   remDr$refresh()
   Sys.sleep(1)
   res$html <- getHTML()
-  print(res)
   ## [ERROR - 2019-06-05T18:30:55.358Z] Session [e7c4e500-871e-11e9-a9b5-8dab1f486f7e] - page.onError - msg: TypeError: 'undefined' is not an object (evaluating 's_info.type')
   ## [ERROR - 2019-06-05T18:30:55.360Z] Session [e7c4e500-871e-11e9-a9b5-8dab1f486f7e] - page.onError - stack:
   ##   (anonymous function) (http://localhost:4848/animint-htmltest/animint.js:2535)
@@ -60,10 +59,8 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
     }
     chrome.session$getPageSource <- function(){
       doc <- chrome.session$DOM$getDocument()
-      print(doc)
       chrome.session$DOM$getOuterHTML(doc$root$nodeId)$outerHTML
     }
-    Sys.sleep(3)
     remDr <<- chrome.session
     remDr$navigate(sprintf("http://localhost:4848/animint-htmltest/"))
   }else{
@@ -98,9 +95,7 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
     ## redirect to www.htmltest.com. A 'safer' approach is to navigate, then click.
     remDr$navigate(sprintf("http://%s:%s/animint-htmltest/", animint_server, port))
   }
-  #print(animint_server)
-  #print(port)
-  #remDr$navigate(sprintf("http://%s:%s/animint-htmltest/", animint_server, port))
+  
   ## Why not just navigate to the right URL to begin with?
   ## e <- remDr$findElement("xpath", "//a[@href='animint-htmltest/']")
   ## e$clickElement()
