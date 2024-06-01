@@ -65,6 +65,7 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
     }
     Sys.sleep(3)
     remDr <<- chrome.session
+    remDr$navigate(sprintf("http://localhost:4848/animint-htmltest/"))
   }else{
     if (browserName == "phantomjs") {
       message("Starting phantomjs binary. To shut it down, run: \n pJS$stop()")
@@ -95,10 +96,11 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
     remDr$setTimeout(type = "page load", milliseconds = 30000)
     ## if we navigate to localhost:%s/htmltest directly, some browsers will
     ## redirect to www.htmltest.com. A 'safer' approach is to navigate, then click.
+    remDr$navigate(sprintf("http://%s:%s/animint-htmltest/", animint_server, port))
   }
-  print(animint_server)
-  print(port)
-  remDr$navigate(sprintf("http://%s:%s/animint-htmltest/", animint_server, port))
+  #print(animint_server)
+  #print(port)
+  #remDr$navigate(sprintf("http://%s:%s/animint-htmltest/", animint_server, port))
   ## Why not just navigate to the right URL to begin with?
   ## e <- remDr$findElement("xpath", "//a[@href='animint-htmltest/']")
   ## e$clickElement()
