@@ -52,6 +52,7 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
   }
   if(browserName == "chromote"){
     chrome.session <- chromote::ChromoteSession$new()
+    
     chrome.session$view()
     chrome.session$refresh <- function()chrome.session$Page$reload()
     chrome.session$navigate <- function(u){
@@ -62,6 +63,7 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
       chrome.session$DOM$getOuterHTML(doc$root$nodeId)$outerHTML
     }
     remDr <<- chrome.session
+    remDr$browserName <-"chromote"
     remDr$navigate(sprintf("http://localhost:4848/animint-htmltest/"))
   }else{
     if (browserName == "phantomjs") {
@@ -93,6 +95,8 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
     remDr$setTimeout(type = "page load", milliseconds = 30000)
     ## if we navigate to localhost:%s/htmltest directly, some browsers will
     ## redirect to www.htmltest.com. A 'safer' approach is to navigate, then click.
+    remDr$browserName <-""
+    
     remDr$navigate(sprintf("http://%s:%s/animint-htmltest/", animint_server, port))
   }
   
