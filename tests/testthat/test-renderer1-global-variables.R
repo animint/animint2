@@ -15,12 +15,13 @@ return myArray;'
 myScript2 <- 'myArray = [];
 for(var b in window) { 
   if(window.hasOwnProperty(b)) {myArray.push(b);} 
-}'
+}
+myArray;'
 
 getVariables <- function(){
   if (remDr$browserName=="chromote"){
     
-    vars <- remDr$Runtime$evaluate(myScript2,returnByValue = FALSE)
+    vars <- remDr$Runtime$evaluate(myScript2,returnByValue = TRUE)$result$value
     print(vars)
   } else {
     vars <- remDr$executeScript(myScript)
