@@ -28,8 +28,14 @@ expect_rotate_anchor <- function(info, rotate, anchor){
   expect_match(rotated["style", ], paste("text-anchor:", anchor), fixed=TRUE)
   expect_match(rotated["transform", ], paste0("rotate(", rotate), fixed=TRUE)
   # http://stackoverflow.com/questions/442404/retrieve-the-position-x-y-of-an-html-element
-  tick_box <- remDr$executeScript('return document.getElementsByClassName("xaxis")[0].firstChild.getBoundingClientRect()')
-  title_box <- remDr$executeScript('return document.getElementsByClassName("xtitle")[0].getBoundingClientRect()')
+  
+  #tick_box <- remDr$executeScript(' return document.getElementsByClassName("xaxis")[0].firstChild.getBoundingClientRect()')
+  #title_box <- remDr$executeScript('return document.getElementsByClassName("xtitle")[0].getBoundingClientRect()')
+  
+  #print(title_box)
+  tick_box <- remDr$Runtime$evaluate('document.getElementsByClassName("xaxis")[0].getBoundingClientRect()',returnByValue = TRUE)
+  title_box <- remDr$Runtime$evaluate('document.getElementsByClassName("xtitle")[0].getBoundingClientRect()',returnByValue = TRUE)
+  print(title_box)
   expect_true(title_box$top >= tick_box$bottom)
 }
 test_that('no axis rotation is fine', {
