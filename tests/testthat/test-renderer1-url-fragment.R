@@ -14,6 +14,7 @@ viz <- list(
 
 info <- animint2HTML(viz)
 
+
 test_that("all species are selected for url with no selection", {
   opacity.str <- getStyleValue(info$html, "//td[@class='legend_entry_label']", "opacity")
   opacity.num <- as.numeric(opacity.str)
@@ -32,11 +33,19 @@ test_that("one observation selected for url with no selection", {
   expect_equal(as.numeric(opacity.str[!is.selected]), rep(0.5, 298))
 })
 
-old_address <- remDr$getCurrentUrl()[[1]]
+if (remDr$browserName == "chromote") {
+  old_address <- remDr$Runtime$evaluate("window.location.href")$result$value
+} else {
+
+  old_address <- remDr$getCurrentUrl()[[1]]
+}
+
+
 new_address <- paste0(old_address, '#Species={setosa}')
+
 remDr$navigate(new_address)
 remDr$refresh()
-Sys.sleep(10)
+Sys.sleep(3)
 html <- getHTML()
 
 test_that("one species is selected for url with selection", {
