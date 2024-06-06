@@ -22,7 +22,7 @@ getVariables <- function(){
   if (remDr$browserName=="chromote"){
     
     vars <- remDr$Runtime$evaluate(myScript2,returnByValue = TRUE)$result$value
-    print(vars)
+    
   } else {
     vars <- remDr$executeScript(myScript)
   }  
@@ -33,30 +33,26 @@ getVariables <- function(){
 }
 
     
-   
-    
-  
-  
-
-
 test_that("animint.js only defines 1 object, called animint", {
   info <- animint2HTML(viz)
   animint.vars <- getVariables()
-  #print(animint.vars)
+  
   index.file <- file.path("animint-htmltest", "index.html")
-  #print(index.file)
+  
   html.lines <- readLines(index.file)
-  #print(html.lines)
+  
   html.without <- html.lines[!grepl("animint.js", html.lines)]
-  #print(html.without)
+  
   cat(html.without, file=index.file, sep="\n")
   # Note: It's OK for the webdriver to spit out 
   # ReferenceError: Can't find variable: animint
   # since we've removed the animint.js script
+   
   remDr$refresh()
+  Sys.sleep(3)
   without.vars <- getVariables()
-  #print(without.vars)
+  
   diff.vars <- animint.vars[!animint.vars %in% without.vars]
-  print(diff.vars)
+
   expect_identical(diff.vars, "animint")
 })
