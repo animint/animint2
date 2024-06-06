@@ -33,20 +33,16 @@ expect_rotate_anchor <- function(info, rotate, anchor){
     tick_box_script <- 'document.getElementsByClassName("xaxis")[0].getBoundingClientRect().bottom;'
     title_box_script <- 'document.getElementsByClassName("xtitle")[0].getBoundingClientRect().top;'
     
-    # Evaluate scripts and get the values
     tick_box <- remDr$Runtime$evaluate(tick_box_script, returnByValue = TRUE)$result$value
     title_box <- remDr$Runtime$evaluate(title_box_script, returnByValue = TRUE)$result$value
-    
-    #cat("tick_bottom:", tick_box, "\n")
-    #cat("title_top:", title_box, "\n")
+    #Added offset of 2.5 in expect_true because different browsers work differently for this and mine passed all test cases with offset 2.5
     expect_true(title_box+2.5>= tick_box)
   }
   else{
     tick_box <- remDr$executeScript(' return document.getElementsByClassName("xaxis")[0].firstChild.getBoundingClientRect()')
     title_box <- remDr$executeScript('return document.getElementsByClassName("xtitle")[0].getBoundingClientRect()')
     expect_true(title_box$top >= tick_box$bottom)
-    cat("tick_bottom:", tick_box$bottom, "\n")
-    cat("title_top:", title_box$top, "\n")
+    
   }
   
   
