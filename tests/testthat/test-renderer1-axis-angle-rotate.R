@@ -33,9 +33,10 @@ expect_rotate_anchor <- function(info, rotate, anchor){
     tick_box_script <- 'document.getElementsByClassName("xaxis")[0].getBoundingClientRect().bottom;'
     title_box_script <- 'document.getElementsByClassName("xtitle")[0].getBoundingClientRect().top;'
     
+    # Evaluate scripts and get the values
     tick_box <- remDr$Runtime$evaluate(tick_box_script, returnByValue = TRUE)$result$value
     title_box <- remDr$Runtime$evaluate(title_box_script, returnByValue = TRUE)$result$value
-    #Added offset of 2.5 in expect_true because different browsers work differently for this and mine passed all test cases with offset 2.5
+    #An offset of 2.5 is added because chromote aligns text with slight differences
     expect_true(title_box+2.5>= tick_box)
   }
   else{
