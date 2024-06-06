@@ -45,7 +45,7 @@ new_address <- paste0(old_address, '#Species={setosa}')
 
 remDr$navigate(new_address)
 remDr$refresh()
-Sys.sleep(3)
+Sys.sleep(10)
 html <- getHTML()
 
 test_that("one species is selected for url with selection", {
