@@ -69,10 +69,10 @@ clickHTML <- function(...){
   stopifnot(length(v) == 1)
   selectorType <- names(v)
   selectorValue <- as.character(v)
-  # Ensure that the selector type is ID for using clickID
+
   if (selectorType == "id") 
     {
-    clickID(selectorValue)  # Use clickID to click the element
+    clickID(selectorValue)  
   } 
   else{
   e <- remDr$findElement(names(v), as.character(v))
@@ -86,15 +86,12 @@ clickID <- function(...){
   v <- c(...)
   stopifnot(length(v) == 1)
   if(remDr$browserName=="chromote"){
-    js_code <- sprintf("document.getElementById('%s').dispatchEvent(new CustomEvent('click'))", as.character(v))
     remDr$Runtime$evaluate(sprintf("document.getElementById('%s').dispatchEvent(new CustomEvent('click'))", as.character(v)))
   }
   else{
     remDr$executeScript(sprintf("document.getElementById('%s').dispatchEvent(new CustomEvent('click'))", as.character(v)))
   }
   
-  # Print the result (if any)
-  #print(result$result$value)
 }
 
 rgba.pattern <- paste0(
