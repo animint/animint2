@@ -52,12 +52,11 @@ custom_delay <- function(milliseconds) {
 
 # Check browser type and set delay or timeout accordingly
 if (remDr$browserName == "chromote") {
-  custom_delay(60) # Delay for 60 milliseconds for Chromote
+  custom_delay(60) 
 } else {
-  remDr$setTimeout(milliseconds = 60 * 1000 * 2) # Set a 2-minute timeout for other browsers
-}
+  remDr$setTimeout(milliseconds = 60 * 1000 * 2)
 
- 
+}
 
 info <- animint2HTML(wb.facets)
 
