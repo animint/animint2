@@ -1,3 +1,7 @@
+# Changes in version 2024.6.6 (PR#126)
+ 
+  - Add chromote as headless browser for testing
+
 # Changes in version 2024.3.12 (PR#119)
  
   - Add validation checks for duplicate args passed geom and aes
