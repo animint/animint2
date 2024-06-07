@@ -187,8 +187,20 @@ test_that("warning for _off param without clickSelects", {
 
 test_that("animint(out.dir = 'dir1', out.dir = 'dir2') is an error", {
   expect_error({
-    animint(out.dir = 'dir1', out.dir = 'dir2')
-  }, "Duplicate arguments are passed to animint. Duplicate arguments found: out.dir")
+    viz <- animint(out.dir = 'dir1', out.dir = 'dir2')
+  }, "Duplicate named arguments are passed to animint. Duplicate argument names found: out.dir")
+})
+
+test_that("animint(plot1, plot2) is ok", {
+  viz <- animint(ggplot(), ggplot())
+  (computed.names <- names(viz))
+  expect_identical(computed.names, c("plot1","plot2"))
+})
+
+test_that("animint(ggplot(), ggplot(), plot1=ggplot()) is ok", {
+  viz <- animint(ggplot(), ggplot(), plot1=ggplot())
+  (computed.names <- names(viz))
+  expect_identical(computed.names, c("plot2","plot3","plot1"))
 })
 
 test_that("animint() is an error", {
@@ -208,7 +220,7 @@ test_that("Same argument passed to aes and geom is an error", {
     plot = scatter
   )
   expect_error({
-      animint2dir(viz, open.browser=FALSE)
+    animint2dir(viz, open.browser=FALSE)
   }, "Same visual property cannot be defined in both aes and geom. Property defined in aes:alpha. Property defined in geom:alpha. The visual property needs only be defined in one place, so if it should be different for each rendered geom, but not depend on selection state, then it should be defined in aes; but if the property should depend on the selection state then it should be defined in geom")
 })
 
