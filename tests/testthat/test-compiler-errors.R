@@ -200,7 +200,7 @@ test_that("animint(plot1, plot2) is ok", {
 test_that("animint(ggplot(), ggplot(), plot1=ggplot()) is ok", {
   viz <- animint(ggplot(), ggplot(), plot1=ggplot())
   (computed.names <- names(viz))
-  expect_identical(computed.names, c("plot2","plot3","plot1))
+  expect_identical(computed.names, c("plot2","plot3","plot1"))
 })
 
 test_that("animint() is an error", {
