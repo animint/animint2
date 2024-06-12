@@ -92,6 +92,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   manage_gh_pages(repo, to_post, local_clone, commit_message)
   message(sprintf(
     "Visualization will be available at %s\nDeployment via GitHub Pages may take a few minutes...", viz_url))
+  chrome.session <- chromote::ChromoteSession$new()
   viz_owner_repo
 }
 
