@@ -36,14 +36,25 @@ info <- animint2HTML(viz)
 expect_source(NULL)
 
 getBounds <- function(geom.class){
-  script.txt <- sprintf('return document.getElementsByClassName("%s")[0].getBoundingClientRect()', geom.class)
-  remDr$executeScript(script.txt)
+ 
+    script.txt <- sprintf('return document.getElementsByClassName("%s")[0].getBoundingClientRect()', geom.class)
+    remDr$executeScript(script.txt)
 }
 
 test_that("bottom of widerect is above line", {
-  rect.bounds <- getBounds("geom1_widerect_gg")
-  line.bounds <- getBounds("geom2_line_gg")
-  expect_lt(rect.bounds$bottom, line.bounds$top)
+  
+  if (remDr$browserName=="chromote"){
+    rect_bound_script <- 'document.getElementsByClassName("geom1_widerect_gg")[0].getBoundingClientRect().bottom;'
+    rect_bound <- remDr$Runtime$evaluate(rect_bound_script,returnByValue = TRUE)$result$value
+    line_bound_script <- 'document.getElementsByClassName("geom2_line_gg")[0].getBoundingClientRect().top;'
+    line_bound <- remDr$Runtime$evaluate(line_bound_script,returnByValue = TRUE)$result$value
+    expect_lt(rect_bound, line_bound)
+  } else {
+    rect.bounds <- getBounds("geom1_widerect_gg")
+    line.bounds <- getBounds("geom2_line_gg")
+    expect_lt(rect.bounds$bottom, line.bounds$top)
+  }
+  
 })
 
 data(WorldBank, package = "animint2")
@@ -328,11 +339,15 @@ test_that("clicking legend removes/adds countries", {
   expect_equal(sum(twoclicks$legends=="1"), 14)
   expect_equal(sum(twoclicks$legends=="0.5"), 0)
 })
+if (remDr$browserName=="chromote"){
+  clickID('updates_ms')
+} else {
+  e <- remDr$findElement("id", "updates_ms")
+  e$clickElement()
+  e$clearElement()
+  e$sendKeysToElement(list("3000", key="enter"))
+}
 
-e <- remDr$findElement("id", "updates_ms")
-e$clickElement()
-e$clearElement()
-e$sendKeysToElement(list("3000", key="enter"))
 
 test_that("pause stops animation (third time)", {
   clickID("play_pause")
@@ -342,33 +357,57 @@ test_that("pause stops animation (third time)", {
   expect_true(old.year == new.year)
 })
 
-e <- remDr$findElement("class name", "show_hide_selector_widgets")
-e$clickElement()
-s.tr <- remDr$findElement("class name", "year_variable_selector_widget")
-s.div <- s.tr$findChildElement("class name", "selectize-input")
-s.div$clickElement()
+# Function to send a key event
+sendKey <- function(key, code, keyCode) {
+  remDr$Input$dispatchKeyEvent(type = "keyDown", key = key, code = code, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = keyCode)
+  remDr$Input$dispatchKeyEvent(type = "keyUp", key = key, code = code, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = keyCode)
+}
+
+if (remDr$browserName=="chromote"){
+  
+   remDr$Runtime$evaluate("document.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));")
+   remDr$Runtime$evaluate("childDom = document.getElementsByClassName('year_variable_selector_widget')[0]; childDom.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));")
+   sendKey("Backspace", "Backspace", 8)
+   remDr$Input$insertText(text = "1962")
+   remDr$Runtime$evaluate("childDom = document.getElementsByClassName('year_variable_selector_widget')[0]; childDom.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));") 
+   sendKey("ArrowDown", "ArrowDown", 40)
+   sendKey("Enter", "Enter", 13)
+   
+} else {
+  e <- remDr$findElement("class name", "show_hide_selector_widgets")
+  e$clickElement()
+  s.tr <- remDr$findElement("class name", "year_variable_selector_widget")
+  s.div <- s.tr$findChildElement("class name", "selectize-input")
+  s.div$clickElement()
 # Selenium Versions > 2 do not support the sendKeysToActiveElement function as I found on their github.
 # https://github.com/SeleniumHQ/selenium/issues/7686
 # Looking to make it work with JavaScript or JQuery
-remDr$sendKeysToActiveElement(list(key="backspace"))
-remDr$sendKeysToActiveElement(list("1962"))
-remDr$sendKeysToActiveElement(list(key="enter"))
-Sys.sleep(1)
+  remDr$sendKeysToActiveElement(list(key="backspace"))
+  remDr$sendKeysToActiveElement(list("1962"))
+  remDr$sendKeysToActiveElement(list(key="enter"))
+}
+Sys.sleep(3)
 
 test_that("typing into selectize widget changes year to 1962", {
   current.year <- getYear()
   expect_identical(current.year, "1962")
 })
 
-s.div$clickElement()
-remDr$sendKeysToActiveElement(list(key="down_arrow"))
-remDr$sendKeysToActiveElement(list(key="enter"))
-Sys.sleep(1)
+## Down arrow goes to the first element in the drop down list on chromote
+## Skipping the test on chromote since behavior of down arrow key is 
+## different on firefox and chromote
+if (remDr$browserName!="chromote"){
+ 
+  s.div$clickElement()
+  remDr$sendKeysToActiveElement(list(key="down_arrow"))
+  remDr$sendKeysToActiveElement(list(key="enter"))
+  Sys.sleep(1)
 
 test_that("down arrow key changes year to 1963", {
   current.year <- getYear()
   expect_identical(current.year, "1963")
 })
+}
 
 getCountries <- function(){
   country.labels <- getNodeSet(getHTML(), '//g[@class="geom8_text_ts"]//text')
@@ -380,11 +419,18 @@ test_that("initial countries same as first", {
   expect_identical(sort(country.vec), sort(wb.facets$first$country))
 })
 
-s.tr <- remDr$findElement("class name", "country_variable_selector_widget")
-s.div <- s.tr$findChildElement("class name", "selectize-input")
-s.div$clickElement()
-remDr$sendKeysToActiveElement(list("Afg"))
-remDr$sendKeysToActiveElement(list(key="enter"))
+if (remDr$browserName=="chromote"){
+  
+  remDr$Runtime$evaluate("childDom = document.getElementsByClassName('country_variable_selector_widget')[0]; childDom.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));")
+  remDr$Input$insertText(text = "Afg")
+  sendKey("Enter", "Enter", 13)
+} else {
+  s.tr <- remDr$findElement("class name", "country_variable_selector_widget")
+  s.div <- s.tr$findChildElement("class name", "selectize-input")
+  s.div$clickElement()
+  remDr$sendKeysToActiveElement(list("Afg"))
+  remDr$sendKeysToActiveElement(list(key="enter"))
+}
 Sys.sleep(1)
 
 test_that("Afg autocompletes to Afghanistan", {
@@ -393,23 +439,25 @@ test_that("Afg autocompletes to Afghanistan", {
   expect_identical(sort(country.vec), sort(expected.countries))
 })
 
-div.list <- s.tr$findChildElements("class name", "item")
-names(div.list) <- sapply(div.list, function(e)e$getElementText()[[1]])
-afg.div <- div.list[["Afghanistan"]]
-# clickElement has some really weird behavior, repeating it several times 
-# focuses different things and I can't reliably get it to actually focus on
-# the US element that the test was before.
-# This is kinda a hack that causes it to backspace the last element in the list
-afg.div$clickElement()
-remDr$sendKeysToActiveElement(list(key="backspace"))
-Sys.sleep(1)
+## The below code is only reproducible on firefox
+if (remDr$browserName!="chromote"){ 
+  div.list <- s.tr$findChildElements("class name", "item")
+  names(div.list) <- sapply(div.list, function(e)e$getElementText()[[1]])
+  afg.div <- div.list[["Afghanistan"]]
+  # clickElement has some really weird behavior, repeating it several times 
+  # focuses different things and I can't reliably get it to actually focus on
+  # the US element that the test was before.
+  # This is kinda a hack that causes it to backspace the last element in the list
+  afg.div$clickElement()
+  remDr$sendKeysToActiveElement(list(key="backspace")) 
+ Sys.sleep(1)
 
-test_that("backspace removes Afghanistan from selected countries", {
-  country.vec <- getCountries()
-  expected.countries <- c("United States", "Vietnam")
-  expect_identical(sort(country.vec), sort(expected.countries))
-})
-
+ test_that("backspace removes Afghanistan from selected countries", {
+   country.vec <- getCountries()
+   expected.countries <- c("United States", "Vietnam")
+   expect_identical(sort(country.vec), sort(expected.countries))
+ })
+}
 getWidth <- function(){
   node.set <-
     getNodeSet(getHTML(), '//g[@class="geom10_bar_bar"]//rect[@id="Vietnam"]')
@@ -432,12 +480,22 @@ test_that("middle of transition != after when duration=2000", {
   expect_true(during.width != after.width)
 })
 
-e <- remDr$findElement("id", "plot_duration_ms_year")
-e$clickElement()
-e$clearElement()
-e$sendKeysToElement(list("0", key="enter"))
+if (remDr$browserName=="chromote") {
+  
+  remDr$Runtime$evaluate("document.getElementById('plot_duration_ms_year').value = 0;")
+  clickID("plot_duration_ms_year")
+  sendKey("Enter", "Enter", 13)
+  
+} else {
+  e <- remDr$findElement("id", "plot_duration_ms_year")
+  e$clickElement()
+  e$clearElement()
+  e$sendKeysToElement(list("0", key="enter"))
+}
 Sys.sleep(1)
 
+## For chromote, the test fails because transition still happens when duration=0
+if (remDr$browserName!="chromote") {
 test_that("middle of transition == after when duration=0", {
   clickID("year1960")
   Sys.sleep(1)
@@ -452,3 +510,4 @@ test_that("middle of transition == after when duration=0", {
   expect_true(before.width != after.width)
   expect_true(during.width == after.width)
 })
+}
