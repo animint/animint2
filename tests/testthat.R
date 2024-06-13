@@ -40,9 +40,9 @@ if(filter == ""){
 }
 message(gh.action)
 if(FALSE){
-  tests_init("chrome")
-}else if(interactive() | (gh.action == "ENABLED")) {
   tests_init("firefox")
+}else if(interactive() | (gh.action == "ENABLED")) {
+  tests_init("chromote")
 } else {
   tests_init()
 }
