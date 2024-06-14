@@ -1,17 +1,27 @@
 acontext("knitting multiple animint plots in a single Rmd")
-
+print("In test")
 knitr::knit_meta() #clear knitr 'metadata'
 # Rmd.file <- "~/R/animint/inst/examples/test_knit_print.Rmd" ## Do we need this???
-Rmd.file <- system.file("examples", "test_knit_print.Rmd", 
+Rmd.file <- system.file("inst", "examples", "test_knit_print.Rmd", 
                          package = "animint2")
+Rmd.file <- file.path("..", "..", "inst","examples", "test_knit_print.Rmd")
 index.file <- file.path("animint-htmltest", "index.Rmd")
+
+if (!dir.exists(dirname(index.file))) {
+  # Create directory if it doesn't exist
+  dir.create(dirname(index.file), recursive = TRUE)
+}
+if (!file.exists(index.file)) {
+  # Create index.file if it doesn't exist
+  file.create(index.file)
+}
 
 file.copy(Rmd.file, index.file, overwrite=TRUE)
 ## https://github.com/rstudio/rmarkdown/issues/587#issuecomment-168437646
 ## @yihui says "Do not use the output_dir argument of render()"
 rmarkdown::render(index.file)
 remDr$refresh()
-Sys.sleep(1)
+Sys.sleep(3)
 html <- getHTML()
 
 test_that("knit_print.animint renders five x axis titles", {
@@ -27,9 +37,9 @@ test_that("knit_print.animint renders five x axis titles", {
 })
 
 test_that("segments and breakpoints are rendered", {
-  seg.list <- getNodeSet(html, "//g[@class='geom3_segment_signal']//line")
+  seg.list <- getNodeSet(html, '//g[@class="geom3_segment_signal"]//line')
   expect_equal(length(seg.list), 6)
-  break.list <- getNodeSet(html, "//g[@class='geom4_vline_signal']//line")
+  break.list <- getNodeSet(html, '//g[@class="geom4_vline_signal"]//line')
   expect_equal(length(break.list), 5)
 })
 
@@ -80,17 +90,25 @@ get_circles <- function(html=getHTML()) {
 
 get_elements <- function(id){
   ##print("before div")
-  div <- remDr$findElement("id", id)
-  ## For debugging a NoSuchElement error I insert print statements.
-  ##print("before css selector")
-  tr.list <- div$findChildElements(
-    "css selector", "table.legend tr.label_variable")
-  a <- tr.list[[1]]
-  b <- tr.list[[2]]
-  ##print("before show_hide")
-  show_hide <- div$findChildElement("class name", "show_hide_selector_widgets")
-  ##print("before col_selector_widget")
-  widget <- div$findChildElement("class name", "label_variable_selector_widget")
+  if (remDr$browserName == "chromote") {
+    a <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0]", as.character(id)),returnByValue = TRUE)$result$value
+    b <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0]", as.character(id)),returnByValue = TRUE)$result$value
+    show_hide <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('table.legend tr.label_variable')[0]", as.character(id)),returnByValue = TRUE)$result$value
+    widget <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('table.legend tr.label_variable')[1]", as.character(id)),returnByValue = TRUE)$result$value
+    
+  } else {
+    div <- remDr$findElement("id", id)
+    ## For debugging a NoSuchElement error I insert print statements.
+    ##print("before css selector")
+    tr.list <- div$findChildElements(
+      "css selector", "table.legend tr.label_variable")
+    a <- tr.list[[1]]
+    b <- tr.list[[2]]
+    ##print("before show_hide")
+    show_hide <- div$findChildElement("class name", "show_hide_selector_widgets")
+    ##print("before col_selector_widget")
+    widget <- div$findChildElement("class name", "label_variable_selector_widget")
+  }
   list(a178=a,
        b934=b,
        show_hide=show_hide,
@@ -134,35 +152,85 @@ test_that("clicking bottom legend adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
 })
 
-plot1top$show_hide$clickElement()
-s.div <- plot1top$widget$findChildElement("class name", "selectize-input")
-s.div$clickElement()
+clickTop <- function() {
+if (remDr$browserName == "chromote") {
+  remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
+  remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
+} else { 
+  plot1top$show_hide$clickElement()
+  s.div <- plot1top$widget$findChildElement("class name", "selectize-input")
+  s.div$clickElement()
+}
+}
 
+clickBottom <- function() {
+  if (remDr$browserName == "chromote") {
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
+  } else { 
+    plot1top$show_hide$clickElement()
+    s.div <- plot1top$widget$findChildElement("class name", "selectize-input")
+    s.div$clickElement()
+  }
+}
+
+# Function to send a key event
+sendKey <- function(key, code, keyCode) {
+  remDr$Input$dispatchKeyEvent(type = "keyDown", key = key, code = code, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = keyCode)
+  remDr$Input$dispatchKeyEvent(type = "keyUp", key = key, code = code, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = keyCode)
+}
+
+sendBackspace <- function() {
+  if (remDr$browserName == "chromote") {
+    sendKey("Backspace", "Backspace", 8)
+  } else {
+    remDr$sendKeysToActiveElement(list(key="backspace"))
+  }
+  Sys.sleep(0.5)
+}
+
+sendA <- function() {
+  if (remDr$browserName == "chromote") {
+    remDr$Input$insertText(text = "a")
+    sendKey("Enter", "Enter", 13)
+  } else {
+    remDr$sendKeysToActiveElement(list("a", key="enter"))
+  }
+  Sys.sleep(0.5)
+}
+
+sendB <- function() {
+  if (remDr$browserName == "chromote") {
+    remDr$Input$insertText(text = "b")
+    sendKey("Enter", "Enter", 13)
+  } else {
+    remDr$sendKeysToActiveElement(list("b", key="enter"))
+  }
+  Sys.sleep(0.5)
+}
+
+clickTop()
 test_that("top widget adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
-  remDr$sendKeysToActiveElement(list(key="backspace"))
+  sendBackspace()
   expect_equal(get_circles(), list(5, 10))
-  remDr$sendKeysToActiveElement(list(key="backspace"))
+  sendBackspace()
   expect_equal(get_circles(), list(0, 10))
-  remDr$sendKeysToActiveElement(list("a", key="enter"))
+  sendA()
   expect_equal(get_circles(), list(5, 10))
-  remDr$sendKeysToActiveElement(list("b", key="enter"))
+  sendB()
   expect_equal(get_circles(), list(10, 10))
 })
 
-plot1bottom$show_hide$clickElement()
-s.div <-
-  plot1bottom$widget$findChildElement("class name", "selectize-input")
-s.div$clickElement()
-
+clickBottom()
 test_that("bottom widget adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
-  remDr$sendKeysToActiveElement(list(key="backspace"))
+  sendBackspace()
   expect_equal(get_circles(), list(10, 5))
-  remDr$sendKeysToActiveElement(list(key="backspace"))
+  sendBackspace()
   expect_equal(get_circles(), list(10, 0))
-  remDr$sendKeysToActiveElement(list("a", key="enter"))
+  sendA()
   expect_equal(get_circles(), list(10, 5))
-  remDr$sendKeysToActiveElement(list("b", key="enter"))
+  sendB()
   expect_equal(get_circles(), list(10, 10))
 })
