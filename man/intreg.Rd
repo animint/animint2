@@ -10,6 +10,10 @@ observed several noisy piecewise constant signals, and we have
 weak labels about how many change-points occur in several regions. Max
 margin interval regression is an algorithm that uses this information to
 learn a penalty function for accurate change-point detection.
+
+TODO need source
+
+TODO need codebook
 }
 \usage{data(intreg)}
 \format{There are 7 related data.frames: signals contains the noisy

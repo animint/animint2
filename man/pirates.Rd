@@ -10,6 +10,8 @@
 }
 \usage{data(pirates)}
 \format{
+  TODO add codebook
+  
   A data frame with 6636 observations on the following 14 variables.
   \describe{
     \item{\code{Reference}}{factor}
