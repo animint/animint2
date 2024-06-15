@@ -206,9 +206,9 @@ test_that("top widget adds/remove points", {
   expect_equal(get_circles(), list(5, 10))
   sendBackspace()
   expect_equal(get_circles(), list(0, 10))
-  sendA()
+  send("a")
   expect_equal(get_circles(), list(5, 10))
-  sendB()
+  send("b")
   expect_equal(get_circles(), list(10, 10))
 })
 
