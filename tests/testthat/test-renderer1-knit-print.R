@@ -189,22 +189,12 @@ sendBackspace <- function() {
   Sys.sleep(0.5)
 }
 
-sendA <- function() {
+send <- function(alphabet) {
   if (remDr$browserName == "chromote") {
-    remDr$Input$insertText(text = "a")
+    remDr$Input$insertText(text = alphabet)
     sendKey("Enter", "Enter", 13)
   } else {
-    remDr$sendKeysToActiveElement(list("a", key="enter"))
-  }
-  Sys.sleep(0.5)
-}
-
-sendB <- function() {
-  if (remDr$browserName == "chromote") {
-    remDr$Input$insertText(text = "b")
-    sendKey("Enter", "Enter", 13)
-  } else {
-    remDr$sendKeysToActiveElement(list("b", key="enter"))
+    remDr$sendKeysToActiveElement(list(alphabet, key="enter"))
   }
   Sys.sleep(0.5)
 }
@@ -229,8 +219,8 @@ test_that("bottom widget adds/remove points", {
   expect_equal(get_circles(), list(10, 5))
   sendBackspace()
   expect_equal(get_circles(), list(10, 0))
-  sendA()
+  send("a")
   expect_equal(get_circles(), list(10, 5))
-  sendB()
+  send("b")
   expect_equal(get_circles(), list(10, 10))
 })
