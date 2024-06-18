@@ -100,7 +100,8 @@ Suggests:
     nlme,
     rpart,
     svglite,
-    ggplot2
+    ggplot2,
+    chromote
 Remotes: ropensci/RSelenium@v1.7.4
 License: GPL-3
 Encoding: UTF-8
