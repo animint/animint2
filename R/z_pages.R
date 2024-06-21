@@ -36,6 +36,7 @@
 #'
 #' @export
 animint2pages <- function(plot.list, github_repo, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), ...) {
+  #print('running animint2pages')
   for(opt in required_opts){
     if(!opt %in% names(plot.list)){
       stop(sprintf("plot.list does not contain option named %s, which is required by animint2pages", opt))
@@ -50,8 +51,14 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   # Generate plot files
   res <- animint2dir(plot.list, open.browser = FALSE, ...)
   chrome.session <- chromote::ChromoteSession$new()
+  url <- paste0("file://", res$out.dir, "/index.html")
+  chrome$Page$navigate(url)
+  chrome$Page$loadEventFired()
+  Sys.sleep(2)  # Wait for the page to load completely
+  
+  screenshot <- chrome$Page$captureScreenshot()
   # Select non-ignored files to post
-  print(res$out.dir)
+  #print(res$out.dir)
   all_files <- Sys.glob(file.path(res$out.dir, "*"))
   file_info <- file.info(all_files)
   to_post <- all_files[!(file_info$size == 0 | grepl("~$", all_files))]
