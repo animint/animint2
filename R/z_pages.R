@@ -52,11 +52,13 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   res <- animint2dir(plot.list, open.browser = FALSE, ...)
   chrome.session <- chromote::ChromoteSession$new()
   url <- paste0("file://", res$out.dir, "/index.html")
-  chrome$Page$navigate(url)
-  chrome$Page$loadEventFired()
+  chrome.session$Page$navigate(url)
+  chrome.session$Page$loadEventFired()
   Sys.sleep(2)  # Wait for the page to load completely
   
-  screenshot <- chrome$Page$captureScreenshot()
+  screenshot <- chrome.session$Page$captureScreenshot()
+  screenshot_path <- file.path(res$out.dir, "screenshot.png")
+  writeBin(jsonlite::base64_dec(screenshot$data), screenshot_path)
   # Select non-ignored files to post
   #print(res$out.dir)
   all_files <- Sys.glob(file.path(res$out.dir, "*"))
