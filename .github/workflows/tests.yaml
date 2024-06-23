@@ -39,7 +39,7 @@ jobs:
         run: git config --global user.name "GitHub Actions"
 
       - name: git config user.email
-        run: git config --global user.email toby.hocking@r-project.org
+        run: git config --global user.email nntruong2601@gmail.com
       
       - name: run tests
         run: if [ "$TEST_SUITE" == "CRAN" ];then bash build.sh;else Rscript -e "source('tests/testthat.R', chdir = TRUE)";fi
