@@ -27,6 +27,18 @@ test_that("animint2pages() returns owner/repo string", {
   expect_is(viz_owner_repo, "character")
 })
 
+test_that("check if animint2pages() successfully uploads screenshot", {
+  #print('checking screenshot')
+  file_exists <- tryCatch({
+    gh("GET /repos/:owner/:repo/contents/:path",
+       owner = "siddhesh195", repo = "animint2pages_test_repo", path = "screenshot.png",ref = "gh-pages")
+    TRUE  # If the call succeeds, the file exists
+  }, error = function(e) {
+    FALSE  # If an error occurs, assume the file does not exist
+  })
+  expect_true(file_exists, info = "The screenshot should exist in the repository.")
+})
+
 test_that("animint2pages raises an error if no GitHub token is present", {
   env.names <- c("GITHUB_PAT", "GITHUB_PAT_GITHUB_COM")
   env.old <- Sys.getenv(env.names)
