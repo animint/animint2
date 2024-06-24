@@ -1,5 +1,5 @@
 acontext("GitHub Pages")
-
+library(gh)
 viz <- animint(
   title="one to ten",
   source="https://github.com/animint/animint2/tree/master/tests/testthat/test-compiler-ghpages.R",
