@@ -54,11 +54,18 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   chrome.session <- chromote::ChromoteSession$new()
   url <- paste0("file://", res$out.dir, "/index.html")
   
+  
+  Sys.sleep(3)
+  
   chrome.session$Page$navigate(url)
-  chrome.session$Page$loadEventFired()
+  #chrome.session$Page$loadEventFired()
   Sys.sleep(3)  
-  chrome.session$screenshot(filename="screenshot.png")
- 
+  
+  screenshot <- chrome.session$Page$captureScreenshot()
+  screenshot_path <- file.path(res$out.dir, "screenshot.png")
+  writeBin(jsonlite::base64_dec(screenshot$data), screenshot_path)
+  
+  Sys.sleep(3)
   
   all_files <- Sys.glob(file.path(res$out.dir, "*"))
   file_info <- file.info(all_files)
@@ -85,6 +92,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
     repo <- gert::git_clone(origin_url, local_clone)
   }
   viz_url <- paste0("https://", owner, ".github.io/", github_repo)
+  print(viz_url)
   # check if repo has commit, if not, give it first commit, this can avoid error
   has_commits <- FALSE
   try(
