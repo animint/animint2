@@ -36,7 +36,7 @@ test_that("check if animint2pages() successfully uploads screenshot", {
   
   file_exists <- tryCatch({
     gh("GET /repos/:owner/:repo/contents/:path",
-       owner = repo_owner, repo = repo_name, path = "",ref ="gh-pages")
+       owner = repo_owner, repo = repo_name, path = "screenshot.png",ref ="gh-pages")
     TRUE  # If the call succeeds, the file exists
   }, error = function(e) {
     FALSE  # If an error occurs, assume the file does not exist
