@@ -28,10 +28,13 @@ test_that("animint2pages() returns owner/repo string", {
 })
 
 test_that("check if animint2pages() successfully uploads screenshot", {
-  #print('checking screenshot')
+
+  viz_owner_repo <- animint2pages(viz, github_repo = "animint2pages_test_repo")
+  split_viz_owner_repo <- strsplit(viz_owner_repo, "/")[[1]]
+  repo_owner <- split_viz_owner_repo[1]
   file_exists <- tryCatch({
     gh("GET /repos/:owner/:repo/contents/:path",
-       owner = "siddhesh195", repo = "animint2pages_test_repo", path = "screenshot.png",ref = "gh-pages")
+       owner = repo_owner, repo = "animint2pages_test_repo", path = "screenshot.png",ref = "gh-pages")
     TRUE  # If the call succeeds, the file exists
   }, error = function(e) {
     FALSE  # If an error occurs, assume the file does not exist
