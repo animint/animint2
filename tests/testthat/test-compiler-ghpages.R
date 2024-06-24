@@ -34,13 +34,11 @@ test_that("check if animint2pages() successfully uploads screenshot", {
   repo_owner <- split_viz_owner_repo[1]
   repo_name <- split_viz_owner_repo[2]
   
-  file_exists <- tryCatch({
+  file_exists <- {
     gh("GET /repos/:owner/:repo/contents/:path",
        owner = repo_owner, repo = repo_name, path = "screenshot.png",ref ="gh-pages")
     TRUE  # If the call succeeds, the file exists
-  }, error = function(e) {
-    FALSE  # If an error occurs, assume the file does not exist
-  })
+  }
   expect_true(file_exists, info = "The screenshot should exist in the repository.")
 })
 
