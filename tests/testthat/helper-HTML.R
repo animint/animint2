@@ -6,7 +6,7 @@ animint2HTML <- function(plotList) {
   res <- animint2dir(plotList, out.dir = "animint-htmltest",
                      open.browser = FALSE)
   remDr$refresh()
-  Sys.sleep(1)
+  Sys.sleep(2)
   res$html <- getHTML()
   ## [ERROR - 2019-06-05T18:30:55.358Z] Session [e7c4e500-871e-11e9-a9b5-8dab1f486f7e] - page.onError - msg: TypeError: 'undefined' is not an object (evaluating 's_info.type')
   ## [ERROR - 2019-06-05T18:30:55.360Z] Session [e7c4e500-871e-11e9-a9b5-8dab1f486f7e] - page.onError - stack:
@@ -54,7 +54,13 @@ tests_init <- function(browserName = "phantomjs", dir = ".", port = 4848, ...) {
     chrome.session <- chromote::ChromoteSession$new()
     
     chrome.session$view()
-    chrome.session$refresh <- function()chrome.session$Page$reload()
+    chrome.session$refresh <- function(){
+      ## from https://github.com/rstudio/chromote?tab=readme-ov-file#loading-a-page-reliably
+      prom <- chrome.session$Page$loadEventFired(wait_ = FALSE)  # Get the promise for the loadEventFired
+      chrome.session$Page$reload()
+      # Block until p resolves
+      chrome.session$wait_for(prom)
+    }
     chrome.session$navigate <- function(u){
       chrome.session$Page$navigate(u)
     }
