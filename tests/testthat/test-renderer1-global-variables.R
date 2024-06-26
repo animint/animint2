@@ -6,26 +6,18 @@ viz <- list(scatter=ggplot()+
                          showSelected="Species",
                          data=iris))
 
-myScript <- 'myArray = [];
-for(var b in window) { 
-  if(window.hasOwnProperty(b)) {myArray.push(b);} 
-}
-return myArray;'
 
-myScript2 <- 'myArray = [];
+myScript <- 'myArray = [];
 for(var b in window) { 
   if(window.hasOwnProperty(b)) {myArray.push(b);} 
 }
 myArray;'
 
 getVariables <- function(){
-  if (remDr$browserName=="chromote"){
     
-    vars <- remDr$Runtime$evaluate(myScript2,returnByValue = TRUE)$result$value
+    vars <- remDr$Runtime$evaluate(myScript,returnByValue = TRUE)$result$value
     
-  } else {
-    vars <- remDr$executeScript(myScript)
-  }  
+  
   # ignore the "plot" variable -- 
   # https://github.com/tdhock/animint/pull/62#issuecomment-100008532
   # also ignore jQuery1238915281937 variable:
