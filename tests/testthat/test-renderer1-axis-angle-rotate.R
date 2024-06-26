@@ -29,22 +29,17 @@ expect_rotate_anchor <- function(info, rotate, anchor){
   expect_match(rotated["transform", ], paste0("rotate(", rotate), fixed=TRUE)
   # http://stackoverflow.com/questions/442404/retrieve-the-position-x-y-of-an-html-element
   
-  if (remDr$browserName=='chromote'){
-    tick_box_script <- 'document.getElementsByClassName("xaxis")[0].getBoundingClientRect().bottom;'
-    title_box_script <- 'document.getElementsByClassName("xtitle")[0].getBoundingClientRect().top;'
+  
+  tick_box_script <- 'document.getElementsByClassName("xaxis")[0].getBoundingClientRect().bottom;'
+  title_box_script <- 'document.getElementsByClassName("xtitle")[0].getBoundingClientRect().top;'
     
-    # Evaluate scripts and get the values
-    tick_box <- remDr$Runtime$evaluate(tick_box_script, returnByValue = TRUE)$result$value
-    title_box <- remDr$Runtime$evaluate(title_box_script, returnByValue = TRUE)$result$value
-    #An offset of 2.5 is added because chromote aligns text with slight differences
-    expect_true(title_box+2.5>= tick_box)
-  }
-  else{
-    tick_box <- remDr$executeScript(' return document.getElementsByClassName("xaxis")[0].firstChild.getBoundingClientRect()')
-    title_box <- remDr$executeScript('return document.getElementsByClassName("xtitle")[0].getBoundingClientRect()')
-    expect_true(title_box$top >= tick_box$bottom)
-    
-  }
+  # Evaluate scripts and get the values
+  tick_box <- remDr$Runtime$evaluate(tick_box_script, returnByValue = TRUE)$result$value
+  title_box <- remDr$Runtime$evaluate(title_box_script, returnByValue = TRUE)$result$value
+  #An offset of 2.5 is added because chromote aligns text with slight differences
+  expect_true(title_box+2.5>= tick_box)
+  
+
   
   
 
