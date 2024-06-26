@@ -33,12 +33,8 @@ test_that("one observation selected for url with no selection", {
   expect_equal(as.numeric(opacity.str[!is.selected]), rep(0.5, 298))
 })
 
-if (remDr$browserName == "chromote") {
-  old_address <- remDr$Runtime$evaluate("window.location.href")$result$value
-} else {
-
-  old_address <- remDr$getCurrentUrl()[[1]]
-}
+old_address <- remDr$Runtime$evaluate("window.location.href")$result$value
+ 
 
 
 new_address <- paste0(old_address, '#Species={setosa}')
