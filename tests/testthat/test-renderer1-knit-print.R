@@ -90,25 +90,12 @@ get_circles <- function(html=getHTML()) {
 
 get_elements <- function(id){
   ##print("before div")
-  if (remDr$browserName == "chromote") {
-    a <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0]", as.character(id)),returnByValue = TRUE)$result$value
-    b <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0]", as.character(id)),returnByValue = TRUE)$result$value
-    show_hide <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('table.legend tr.label_variable')[0]", as.character(id)),returnByValue = TRUE)$result$value
-    widget <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('table.legend tr.label_variable')[1]", as.character(id)),returnByValue = TRUE)$result$value
+  a <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0]", as.character(id)),returnByValue = TRUE)$result$value
+  b <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0]", as.character(id)),returnByValue = TRUE)$result$value
+  show_hide <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('table.legend tr.label_variable')[0]", as.character(id)),returnByValue = TRUE)$result$value
+  widget <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('table.legend tr.label_variable')[1]", as.character(id)),returnByValue = TRUE)$result$value
     
-  } else {
-    div <- remDr$findElement("id", id)
-    ## For debugging a NoSuchElement error I insert print statements.
-    ##print("before css selector")
-    tr.list <- div$findChildElements(
-      "css selector", "table.legend tr.label_variable")
-    a <- tr.list[[1]]
-    b <- tr.list[[2]]
-    ##print("before show_hide")
-    show_hide <- div$findChildElement("class name", "show_hide_selector_widgets")
-    ##print("before col_selector_widget")
-    widget <- div$findChildElement("class name", "label_variable_selector_widget")
-  }
+  
   list(a178=a,
        b934=b,
        show_hide=show_hide,
@@ -153,25 +140,15 @@ test_that("clicking bottom legend adds/remove points", {
 })
 
 clickTop <- function() {
-if (remDr$browserName == "chromote") {
   remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
   remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
-} else { 
-  plot1top$show_hide$clickElement()
-  s.div <- plot1top$widget$findChildElement("class name", "selectize-input")
-  s.div$clickElement()
-}
+
 }
 
 clickBottom <- function() {
-  if (remDr$browserName == "chromote") {
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
-  } else { 
-    plot1top$show_hide$clickElement()
-    s.div <- plot1top$widget$findChildElement("class name", "selectize-input")
-    s.div$clickElement()
-  }
+  remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
+  remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
+  
 }
 
 # Function to send a key event
@@ -181,21 +158,15 @@ sendKey <- function(key, code, keyCode) {
 }
 
 sendBackspace <- function() {
-  if (remDr$browserName == "chromote") {
-    sendKey("Backspace", "Backspace", 8)
-  } else {
-    remDr$sendKeysToActiveElement(list(key="backspace"))
-  }
+  sendKey("Backspace", "Backspace", 8)
+  
   Sys.sleep(0.5)
 }
 
 send <- function(alphabet) {
-  if (remDr$browserName == "chromote") {
-    remDr$Input$insertText(text = alphabet)
-    sendKey("Enter", "Enter", 13)
-  } else {
-    remDr$sendKeysToActiveElement(list(alphabet, key="enter"))
-  }
+  remDr$Input$insertText(text = alphabet)
+  sendKey("Enter", "Enter", 13)
+  
   Sys.sleep(0.5)
 }
 
