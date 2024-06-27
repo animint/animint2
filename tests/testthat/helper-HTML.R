@@ -63,7 +63,6 @@ tests_init <- function(dir = ".", port = 4848, ...) {
   remDr <<- chrome.session
   remDr$navigate(sprintf("http://localhost:4848/animint-htmltest/"))
   
-  
   ## Why not just navigate to the right URL to begin with?
   ## e <- remDr$findElement("xpath", "//a[@href='animint-htmltest/']")
   ## e$clickElement()
