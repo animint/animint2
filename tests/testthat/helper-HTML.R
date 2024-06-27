@@ -30,7 +30,7 @@ getHTML <- function(){
 #' @export
 #' @seealso \link{tests_run}
 #'
-tests_init <- function(browserName = "chromote",dir = ".", port = 4848, ...) {
+tests_init <- function(dir = ".", port = 4848, ...) {
   # try to exit out of previously initated processes
   ex <- tests_exit()
   # start a non-blocking local file server under path/to/animint/tests/testhat
