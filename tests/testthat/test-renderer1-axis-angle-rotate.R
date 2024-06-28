@@ -28,12 +28,25 @@ expect_rotate_anchor <- function(info, rotate, anchor){
   expect_match(rotated["style", ], paste("text-anchor:", anchor), fixed=TRUE)
   expect_match(rotated["transform", ], paste0("rotate(", rotate), fixed=TRUE)
   # http://stackoverflow.com/questions/442404/retrieve-the-position-x-y-of-an-html-element
-  tick_box <- remDr$executeScript('return document.getElementsByClassName("xaxis")[0].firstChild.getBoundingClientRect()')
-  title_box <- remDr$executeScript('return document.getElementsByClassName("xtitle")[0].getBoundingClientRect()')
-  expect_true(title_box$top >= tick_box$bottom)
+  
+  
+  tick_box_script <- 'document.getElementsByClassName("xaxis")[0].getBoundingClientRect().bottom;'
+  title_box_script <- 'document.getElementsByClassName("xtitle")[0].getBoundingClientRect().top;'
+    
+  # Evaluate scripts and get the values
+  tick_box <- remDr$Runtime$evaluate(tick_box_script, returnByValue = TRUE)$result$value
+  title_box <- remDr$Runtime$evaluate(title_box_script, returnByValue = TRUE)$result$value
+  #An offset of 2.5 is added because chromote aligns text with slight differences
+  expect_true(title_box+2.5>= tick_box)
+  
+
+  
+  
+
+  
 }
 test_that('no axis rotation is fine', {
-  map <-
+  map <-      
     list(rotated=fg,
          not=sg)
   info <- animint2HTML(map)
@@ -46,6 +59,7 @@ test_that('axis.text.x=element_text(angle=90) means transform="rotate(-90)"', {
          not=sg)
   info <- animint2HTML(map)
   expect_rotate_anchor(info, "-90", "end")
+  
 })
 
 test_that('axis.text.x=element_text(angle=70) means transform="rotate(-70)"', {
@@ -54,6 +68,7 @@ test_that('axis.text.x=element_text(angle=70) means transform="rotate(-70)"', {
          not=sg)
   info <- animint2HTML(map)
   expect_rotate_anchor(info, "-70", "end")
+  
 })
 
 test_that('and hjust=1 means style="text-anchor: end;"', {
@@ -62,6 +77,7 @@ test_that('and hjust=1 means style="text-anchor: end;"', {
          not=sg)
   info <- animint2HTML(map)
   expect_rotate_anchor(info, "-70", "end")
+  
 })
 
 test_that('and hjust=0 means style="text-anchor: start;"', {
