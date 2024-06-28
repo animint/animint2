@@ -45,3 +45,17 @@ test_that("animint2pages raises an error if no GitHub token is present", {
   do.call(Sys.setenv, as.list(env.old))
   file.copy(config.old, config.file, overwrite = TRUE)
 })
+
+test_that("animint2pages() default branch is gh-pages", {
+  whoami <- suppressMessages(gh::gh_whoami())
+  owner <- whoami[["login"]]
+  test_default_branch <- function(owner, repo_name) {
+    repo_info <- gh::gh(
+      "GET /repos/:owner/:repo",
+      owner = owner,
+      repo = repo_name
+    )
+    repo_info$default_branch == "gh-pages"
+  }
+  expect_true(test_default_branch(owner, "animint2pages_test_repo"))
+})
