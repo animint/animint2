@@ -31,7 +31,7 @@
 #'   viz,
 #'   github_repo = "my_animint2_plots",
 #'   commit_message = "New animint",
-#'   private = TRUE)
+#'   private = FALSE)
 #' }
 #'
 #' @export
@@ -138,10 +138,10 @@ manage_gh_pages <- function(repo, owner, to_post, local_clone, commit_message, g
   )
 }
 
-check_no_github_repo <- function(owner, repo) {
+check_no_github_repo <- function(owner, gh_repo) {
   tryCatch(
     {
-      gh::gh("/repos/{owner}/{repo}", owner = owner, repo = repo)
+      gh::gh("/repos/{owner}/{repo}", owner = owner, repo = gh_repo)
       TRUE
     },
     "http_error_404" = function(err) FALSE
