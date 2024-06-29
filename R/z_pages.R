@@ -35,6 +35,9 @@
 #' }
 #'
 #' @export
+
+
+
 animint2pages <- function(plot.list, github_repo, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), ...) {
   #print('running animint2pages')
   for(opt in required_opts){
@@ -51,19 +54,27 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   }
   # Generate plot files
   res <- animint2dir(plot.list, open.browser = FALSE, ...)
+  run_servr(directory = res$out.dir, port = 8080)
+  Sys.sleep(3)
   chrome.session <- chromote::ChromoteSession$new()
-  url <- paste0("file://", res$out.dir, "/index.html")
+  #url <- paste0("file://", res$out.dir, "/index.html")
+  url <- sprintf("http://localhost:8080")
   
-  
+  #
+  #print("sleeping")
   Sys.sleep(3)
   
-  chrome.session$Page$navigate(url)
-  #chrome.session$Page$loadEventFired()
-  Sys.sleep(3)  
   
-  screenshot <- chrome.session$Page$captureScreenshot()
   screenshot_path <- file.path(res$out.dir, "screenshot.png")
+
+  
+  chrome.session$Page$navigate(url)
+  chrome.session$Page$loadEventFired()
+  Sys.sleep(3)
+  screenshot <- chrome.session$Page$captureScreenshot()
   writeBin(jsonlite::base64_dec(screenshot$data), screenshot_path)
+  print(url)
+  Sys.sleep(15)
   
   Sys.sleep(3)
   
