@@ -102,7 +102,8 @@ Suggests:
     svglite,
     ggplot2,
     chromote,
-    gh
+    gh,
+    magick
 Remotes: ropensci/RSelenium@v1.7.4
 License: GPL-3
 Encoding: UTF-8
