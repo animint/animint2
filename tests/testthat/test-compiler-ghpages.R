@@ -1,5 +1,5 @@
 acontext("GitHub Pages")
-
+library(gh)
 viz <- animint(
   title="one to ten",
   source="https://github.com/animint/animint2/tree/master/tests/testthat/test-compiler-ghpages.R",
@@ -25,6 +25,21 @@ test_that("error for viz with no source", {
 test_that("animint2pages() returns owner/repo string", {
   viz_owner_repo <- animint2pages(viz, github_repo = "animint2pages_test_repo")
   expect_is(viz_owner_repo, "character")
+})
+
+test_that("check if animint2pages() successfully uploads screenshot", {
+
+  viz_owner_repo <- animint2pages(viz, github_repo = "animint2pages_test_repo")
+  split_viz_owner_repo <- strsplit(viz_owner_repo, "/")[[1]]
+  repo_owner <- split_viz_owner_repo[1]
+  repo_name <- split_viz_owner_repo[2]
+  
+  file_exists <- {
+    gh("GET /repos/:owner/:repo/contents/:path",
+       owner = repo_owner, repo = repo_name, path = "screenshot.png",ref ="gh-pages")
+    TRUE  # If the call succeeds, the file exists
+  }
+  expect_true(file_exists, info = "The screenshot should exist in the repository.")
 })
 
 test_that("animint2pages raises an error if no GitHub token is present", {

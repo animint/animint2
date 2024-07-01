@@ -1,3 +1,4 @@
+
 #' Publish a list of ggplots as interactive visualizations on a GitHub repository
 #'
 #' This function takes a named list of ggplots, generates interactive animations,
@@ -35,12 +36,17 @@
 #' }
 #'
 #' @export
+
+
+
 animint2pages <- function(plot.list, github_repo, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), ...) {
+  
   for(opt in required_opts){
     if(!opt %in% names(plot.list)){
       stop(sprintf("plot.list does not contain option named %s, which is required by animint2pages", opt))
     }
   }
+  
   # Check for required packages
   for(pkg in c("gert", "gh")){
     if (!requireNamespace(pkg)) {
@@ -49,7 +55,29 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   }
   # Generate plot files
   res <- animint2dir(plot.list, open.browser = FALSE, ...)
-  # Select non-ignored files to post
+  
+  portNum <- servr::random_port()
+  chrome.session <- chromote::ChromoteSession$new()
+  Sys.sleep(10)
+  
+  # Start servr and navigate to the localhost::port using chromote
+  normDir <- normalizePath(res$out.dir, winslash = "/", mustWork = TRUE)
+  code = sprintf("servr::httd(dir='%s', port=%d)", normDir, portNum)
+  system2("Rscript", c("-e", shQuote(code)), wait = FALSE)
+  Sys.sleep(20)
+  
+  url <- sprintf("http://localhost:%d", portNum)
+  chrome.session$Page$navigate(url)
+  Sys.sleep(20)
+  
+  # Capture screenshot
+  screenshot_path <- file.path(res$out.dir, "screenshot.png")
+  screenshot <- chrome.session$Page$captureScreenshot()
+  writeBin(jsonlite::base64_dec(screenshot$data), screenshot_path)
+  Sys.sleep(10)
+  
+  chrome.session$close()
+  
   all_files <- Sys.glob(file.path(res$out.dir, "*"))
   file_info <- file.info(all_files)
   to_post <- all_files[!(file_info$size == 0 | grepl("~$", all_files))]
@@ -75,6 +103,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
     repo <- gert::git_clone(origin_url, local_clone)
   }
   viz_url <- paste0("https://", owner, ".github.io/", github_repo)
+  
   # check if repo has commit, if not, give it first commit, this can avoid error
   has_commits <- FALSE
   try(
@@ -92,6 +121,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   manage_gh_pages(repo, to_post, local_clone, commit_message)
   message(sprintf(
     "Visualization will be available at %s\nDeployment via GitHub Pages may take a few minutes...", viz_url))
+  
   viz_owner_repo
 }
 
