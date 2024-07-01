@@ -1,3 +1,4 @@
+
 #' Publish a list of ggplots as interactive visualizations on a GitHub repository
 #'
 #' This function takes a named list of ggplots, generates interactive animations,
@@ -39,7 +40,7 @@
 
 
 animint2pages <- function(plot.list, github_repo, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), ...) {
-  #print('running animint2pages')
+  
   for(opt in required_opts){
     if(!opt %in% names(plot.list)){
       stop(sprintf("plot.list does not contain option named %s, which is required by animint2pages", opt))
@@ -54,29 +55,28 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   }
   # Generate plot files
   res <- animint2dir(plot.list, open.browser = FALSE, ...)
-  run_servr(directory = res$out.dir, port = 8080)
-  Sys.sleep(3)
   chrome.session <- chromote::ChromoteSession$new()
-  #url <- paste0("file://", res$out.dir, "/index.html")
-  url <- sprintf("http://localhost:8080")
+  s<-run_servr(directory = res$out.dir, port = 2948)
   
-  #
-  #print("sleeping")
-  Sys.sleep(3)
+  #servr::httd(daemon = TRUE, port = 4321,dir=res$out.dir)
   
-  
+  #print(s$daemon_list())
+  #print(servr::servrEnv$daemon_list = list())
+  url <- sprintf("http://localhost:2948")
+  #Sys.sleep(10)
   screenshot_path <- file.path(res$out.dir, "screenshot.png")
-
-  
-  chrome.session$Page$navigate(url)
+  #print(servr::daemon_list())
   chrome.session$Page$loadEventFired()
   Sys.sleep(3)
+  chrome.session$Page$navigate(url)
+  
   screenshot <- chrome.session$Page$captureScreenshot()
   writeBin(jsonlite::base64_dec(screenshot$data), screenshot_path)
-  print(url)
-  Sys.sleep(15)
   
-  Sys.sleep(3)
+  #img <- image_read(screenshot_path)
+  #img_trimmed <- image_trim(img)
+  #image_write(img_trimmed, screenshot_path)
+  
   
   all_files <- Sys.glob(file.path(res$out.dir, "*"))
   file_info <- file.info(all_files)
@@ -103,7 +103,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
     repo <- gert::git_clone(origin_url, local_clone)
   }
   viz_url <- paste0("https://", owner, ".github.io/", github_repo)
-  print(viz_url)
+  
   # check if repo has commit, if not, give it first commit, this can avoid error
   has_commits <- FALSE
   try(
