@@ -55,28 +55,28 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   }
   # Generate plot files
   res <- animint2dir(plot.list, open.browser = FALSE, ...)
+  
+  portNum <- servr::random_port()
   chrome.session <- chromote::ChromoteSession$new()
-  s<-run_servr(directory = res$out.dir, port = 2948)
+  Sys.sleep(10)
   
-  #servr::httd(daemon = TRUE, port = 4321,dir=res$out.dir)
+  # Start servr and navigate to the localhost::port using chromote
+  normDir <- normalizePath(res$out.dir, winslash = "/", mustWork = TRUE)
+  code = sprintf("servr::httd(dir='%s', port=%d)", normDir, portNum)
+  system2("Rscript", c("-e", shQuote(code)), wait = FALSE)
+  Sys.sleep(20)
   
-  #print(s$daemon_list())
-  #print(servr::servrEnv$daemon_list = list())
-  url <- sprintf("http://localhost:2948")
-  #Sys.sleep(10)
-  screenshot_path <- file.path(res$out.dir, "screenshot.png")
-  #print(servr::daemon_list())
-  chrome.session$Page$loadEventFired()
-  Sys.sleep(3)
+  url <- sprintf("http://localhost:%d", portNum)
   chrome.session$Page$navigate(url)
+  Sys.sleep(20)
   
+  # Capture screenshot
+  screenshot_path <- file.path(res$out.dir, "screenshot.png")
   screenshot <- chrome.session$Page$captureScreenshot()
   writeBin(jsonlite::base64_dec(screenshot$data), screenshot_path)
+  Sys.sleep(10)
   
-  #img <- image_read(screenshot_path)
-  #img_trimmed <- image_trim(img)
-  #image_write(img_trimmed, screenshot_path)
-  
+  chrome.session$close()
   
   all_files <- Sys.glob(file.path(res$out.dir, "*"))
   file_info <- file.info(all_files)
