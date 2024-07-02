@@ -49,13 +49,15 @@ test_that("animint2pages raises an error if no GitHub token is present", {
 test_that("animint2pages() default branch is gh-pages", {
   whoami <- suppressMessages(gh::gh_whoami())
   owner <- whoami[["login"]]
-  test_default_branch <- function(owner, repo_name) {
-    repo_info <- gh::gh(
-      "GET /repos/:owner/:repo",
-      owner = owner,
-      repo = repo_name
-    )
-    repo_info$default_branch == "gh-pages"
+  local_repo_path <- tempfile(pattern = "repo_clone_")
+  gert::git_clone(url = paste0("https://github.com/", owner, "/animint2pages_test_repo.git"), path = local_repo_path)
+  # Check the default branch after clone
+  head_file <- file.path(local_repo_path, ".git", "HEAD")
+  head_content <- readLines(head_file)
+  if (startsWith(head_content, "ref: refs/heads/")) {
+  default_branch <- sub("ref: refs/heads/", "", head_content)
+  } else {
+  default_branch <- NA
   }
-  expect_true(test_default_branch(owner, "animint2pages_test_repo"))
+  expect_equal(default_branch, "gh-pages")
 })
