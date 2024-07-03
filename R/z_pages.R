@@ -58,23 +58,25 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   
   portNum <- servr::random_port()
   chrome.session <- chromote::ChromoteSession$new()
-  Sys.sleep(10)
   
   # Start servr and navigate to the localhost::port using chromote
   normDir <- normalizePath(res$out.dir, winslash = "/", mustWork = TRUE)
   code = sprintf("servr::httd(dir='%s', port=%d)", normDir, portNum)
   system2("Rscript", c("-e", shQuote(code)), wait = FALSE)
-  Sys.sleep(20)
+  
+  Sys.sleep(3)
   
   url <- sprintf("http://localhost:%d", portNum)
   chrome.session$Page$navigate(url)
-  Sys.sleep(20)
+  
+  Sys.sleep(3)
   
   # Capture screenshot
   screenshot_path <- file.path(res$out.dir, "screenshot.png")
   screenshot <- chrome.session$Page$captureScreenshot()
-  writeBin(jsonlite::base64_dec(screenshot$data), screenshot_path)
-  Sys.sleep(10)
+  image_raw <- magick::image_read(jsonlite::base64_dec(screenshot$data))
+  image_trimmed <- magick::image_trim(image_raw)
+  magick::image_write(image_trimmed, screenshot_path)
   
   chrome.session$close()
   
