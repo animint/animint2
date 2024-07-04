@@ -1,6 +1,5 @@
 acontext("GitHub Pages")
 library(gh)
-
 server <- function() {
   out.dir <- tempfile()
   
@@ -14,9 +13,6 @@ server <- function() {
 }
 
 s<-server()
-url <- sprintf("http://localhost:%d",8080)
-
-
 viz <- animint(
   title="one to ten",
   source="https://github.com/animint/animint2/tree/master/tests/testthat/test-compiler-ghpages.R",
@@ -24,7 +20,6 @@ viz <- animint(
     geom_point())
 
 test_that("error for viz with no title", {
-  #browseURL(url)
   viz.no.title <- viz
   viz.no.title$title <- NULL
   expect_error({
@@ -33,7 +28,6 @@ test_that("error for viz with no title", {
 })
 
 test_that("error for viz with no source", {
-  #browseURL(url)
   viz.no.source <- viz
   viz.no.source$source <- NULL
   expect_error({
@@ -42,7 +36,6 @@ test_that("error for viz with no source", {
 })
 
 test_that("animint2pages() returns owner/repo string", {
-  #browseURL(url)
   viz_owner_repo <- animint2pages(viz, github_repo = "animint2pages_test_repo",server=s)
   expect_is(viz_owner_repo, "character")
 })

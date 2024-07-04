@@ -248,15 +248,18 @@ storeLayer <- function(meta, g, g.data.varied){
 #' @example inst/examples/animint2dir.R
 animint2dir <- function(plot.list, out.dir = NULL,
                         json.file = "plot.json", open.browser = interactive(),
-                        css.file = "") {
+                        css.file = "",persistent_server=FALSE, ...) {
   if(is.null(out.dir)){
     out.dir <- tempfile()
   }
   animint.js <- file.path(out.dir, "animint.js")
-  if(dir.exists(out.dir) && !file.exists(animint.js)){
+  if(dir.exists(out.dir) && !file.exists(animint.js) && persistent_server==FALSE){
     stop(animint.js, " does not exist, so not removing out.dir. If you really want to save your animint in out.dir, then please remove that directory entirely")
   }
-  unlink(out.dir, recursive=TRUE)
+  if(persistent_server==FALSE){
+    unlink(out.dir, recursive=TRUE)
+  }
+ 
   ## Check plot.list for errors
   checkPlotList(plot.list)
 
@@ -264,7 +267,12 @@ animint2dir <- function(plot.list, out.dir = NULL,
   ## lower-level functions.
   meta <- newEnvironment()
   meta$selector.types <- plot.list$selector.types
-  dir.create(out.dir,showWarnings=FALSE)
+  if(persistent_server==FALSE){
+    
+    dir.create(out.dir,showWarnings=FALSE)
+    
+  }
+    
   meta$out.dir <- out.dir
   ## First, copy html/js/json files to out.dir.
   src.dir <- system.file("htmljs",package="animint2")
