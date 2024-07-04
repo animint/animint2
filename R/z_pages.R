@@ -88,6 +88,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
       }
     }
     Sys.sleep(3)
+    #browseURL(url)
     chrome.session$Page$navigate(url)
     Sys.sleep(3)
     screenshot_path <- file.path(res$out.dir, "screenshot.png")
@@ -98,9 +99,9 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   # Capture screenshot
   
   screenshot <- chrome.session$Page$captureScreenshot()
-  image_raw <- magick::image_read(jsonlite::base64_dec(screenshot$data))
-  image_trimmed <- magick::image_trim(image_raw)
-  magick::image_write(image_trimmed, screenshot_path)
+  #image_raw <- magick::image_read(jsonlite::base64_dec(screenshot$data))
+  #image_trimmed <- magick::image_trim(image_raw)
+  #magick::image_write(image_trimmed, screenshot_path)
   
   chrome.session$close()
   
