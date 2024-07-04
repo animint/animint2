@@ -39,7 +39,7 @@
 
 
 
-animint2pages <- function(plot.list, github_repo, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), ...) {
+animint2pages <- function(plot.list, github_repo, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"),server="None", ...) {
   
   for(opt in required_opts){
     if(!opt %in% names(plot.list)){
@@ -54,25 +54,49 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
     }
   }
   # Generate plot files
-  res <- animint2dir(plot.list, open.browser = FALSE, ...)
-  
-  portNum <- servr::random_port()
   chrome.session <- chromote::ChromoteSession$new()
   
-  # Start servr and navigate to the localhost::port using chromote
-  normDir <- normalizePath(res$out.dir, winslash = "/", mustWork = TRUE)
-  code = sprintf("servr::httd(dir='%s', port=%d)", normDir, portNum)
-  system2("Rscript", c("-e", shQuote(code)), wait = FALSE)
+  if (server=="None") {
+    res <- animint2dir(plot.list, open.browser = FALSE, ...)
+    portNum <- servr::random_port()
+    normDir <- normalizePath(res$out.dir, winslash = "/", mustWork = TRUE)
+    code = sprintf("servr::httd(dir='%s', port=%d)", normDir, portNum)
+    system2("Rscript", c("-e", shQuote(code)), wait = FALSE)
+    Sys.sleep(3)
+    url <- sprintf("http://localhost:%d", portNum)
+    chrome.session$Page$navigate(url)
+    Sys.sleep(3)
+    screenshot_path <- file.path(res$out.dir, "screenshot.png")
+    
+  }else{
+    res <- animint2dir(plot.list, open.browser = FALSE, ...)
+    #print(res$out.dir)
+    #print(server$output.dir)
+    url <- sprintf("http://localhost:%d",8080)
+    files_server <- list.files(server$output.dir, full.names = TRUE)
+    files_res <- list.files(res$out.dir, full.names = TRUE)
+    
+    for (file in files_res) {
+      
+      destination_file <- file.path(server$output.dir, sub(res$out.dir, "", file, fixed = TRUE))
+      if (file.info(file)$isdir) {
+        dir.create(destination_file, recursive = TRUE, showWarnings = FALSE)
+      } else {
+        
+        dir.create(dirname(destination_file), recursive = TRUE, showWarnings = FALSE)
+        file.copy(file, destination_file, overwrite = TRUE)
+      }
+    }
+    Sys.sleep(3)
+    chrome.session$Page$navigate(url)
+    Sys.sleep(3)
+    screenshot_path <- file.path(res$out.dir, "screenshot.png")
+    
+  }
   
-  Sys.sleep(3)
-  
-  url <- sprintf("http://localhost:%d", portNum)
-  chrome.session$Page$navigate(url)
-  
-  Sys.sleep(3)
   
   # Capture screenshot
-  screenshot_path <- file.path(res$out.dir, "screenshot.png")
+  
   screenshot <- chrome.session$Page$captureScreenshot()
   image_raw <- magick::image_read(jsonlite::base64_dec(screenshot$data))
   image_trimmed <- magick::image_trim(image_raw)
