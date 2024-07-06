@@ -52,12 +52,6 @@ test_that("animint2pages() default branch is gh-pages", {
   local_repo_path <- tempfile(pattern = "repo_clone_")
   gert::git_clone(url = paste0("https://github.com/", owner, "/animint2pages_test_repo.git"), path = local_repo_path)
   # Check the default branch after clone
-  head_file <- file.path(local_repo_path, ".git", "HEAD")
-  head_content <- readLines(head_file)
-  if (startsWith(head_content, "ref: refs/heads/")) {
-  default_branch <- sub("ref: refs/heads/", "", head_content)
-  } else {
-  default_branch <- NA
-  }
+  default_branch <- gert::git_branch(repo = local_repo_path)
   expect_equal(default_branch, "gh-pages")
 })
