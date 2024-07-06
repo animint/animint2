@@ -61,7 +61,6 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   
 
   if (is.null(server)) {
-    #print("if condition")
     res <- animint2dir(plot.list, open.browser = FALSE, ...)
     portNum <- servr::random_port()
     normDir <- normalizePath(res$out.dir, winslash = "/", mustWork = TRUE)
@@ -70,20 +69,13 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
     Sys.sleep(3)
     url <- sprintf("http://localhost:%d", portNum)
     chrome.session$Page$navigate(url)
-    
   }else{
-    #print("else condition")
     res <- animint2dir(plot.list, open.browser = FALSE,out.dir=server$output.dir,persistent_server=TRUE, ...)
-    #print(res$out.dir)
-    #print(server$output.dir)
     url <- sprintf("http://localhost:%d",8080)
-    #browseURL(url)
     chrome.session$Page$navigate(url)
-    
   }
-  #Sys.sleep(3)
-  screenshot_path <- file.path(res$out.dir, "screenshot.png")
-  chrome.session$Page$navigate(url)
+
+  screenshot_path <- file.path(res$out.dir, "Capture.PNG")
   
   Sys.sleep(3)
   

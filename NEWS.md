@@ -1,3 +1,7 @@
+# Changes in version 2024.7.5 (PR#131)
+  
+  - Added functionality to capture screenshot in animint2page
+
 # Changes in version 2024.3.12 (PR#119)
  
   - Add validation checks for duplicate args passed geom and aes

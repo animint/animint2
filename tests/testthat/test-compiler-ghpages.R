@@ -8,7 +8,6 @@ server <- function() {
   normDir <- normalizePath(out.dir, winslash = "/", mustWork = TRUE)
   code = sprintf("servr::httd(dir='%s', port=%d)", normDir,portNum)
   system2("Rscript", c("-e", shQuote(code)), wait = FALSE)
-  #list(out.dir)
   return(list(output.dir = normDir))
 }
 
@@ -49,7 +48,7 @@ test_that("check if animint2pages() successfully uploads screenshot", {
   
   file_exists <- {
     gh("GET /repos/:owner/:repo/contents/:path",
-       owner = repo_owner, repo = repo_name, path = "screenshot.png",ref ="gh-pages")
+       owner = repo_owner, repo = repo_name, path = "Capture.PNG",ref ="gh-pages")
     TRUE  # If the call succeeds, the file exists
   }
   expect_true(file_exists, info = "The screenshot should exist in the repository.")
