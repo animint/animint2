@@ -35,22 +35,28 @@ viz <- animint(
 info <- animint2HTML(viz)
 expect_source(NULL)
 
-getBounds <- function(geom.class){
- 
-    script.txt <- sprintf('return document.getElementsByClassName("%s")[0].getBoundingClientRect()', geom.class)
-    remDr$executeScript(script.txt)
+clickSelector <- function(selectorName) {
+  
+  script.txt <- sprintf('childDom = document.getElementsByClassName("%s")[0]; childDom.getElementsByClassName("selectize-input")[0].dispatchEvent(new CustomEvent("click"));', selectorName)
+  remDr$Runtime$evaluate(script.txt)
+}
+
+getBounds <- function(geom.class, position){
+    
+    if(position == "top") {
+      script.txt <- sprintf('document.getElementsByClassName("%s")[0].getBoundingClientRect().top', geom.class)
+      remDr$Runtime$evaluate(script.txt,returnByValue = TRUE)$result$value
+    } else {
+      script.txt <- sprintf('document.getElementsByClassName("%s")[0].getBoundingClientRect().bottom', geom.class)
+      remDr$Runtime$evaluate(script.txt,returnByValue = TRUE)$result$value
+    }
 }
 
 test_that("bottom of widerect is above line", {
   
-  
-  rect_bound_script <- 'document.getElementsByClassName("geom1_widerect_gg")[0].getBoundingClientRect().bottom;'
-  rect_bound <- remDr$Runtime$evaluate(rect_bound_script,returnByValue = TRUE)$result$value
-  line_bound_script <- 'document.getElementsByClassName("geom2_line_gg")[0].getBoundingClientRect().top;'
-  line_bound <- remDr$Runtime$evaluate(line_bound_script,returnByValue = TRUE)$result$value
+  rect_bound <- getBounds("geom1_widerect_gg", "bottom")
+  line_bound <- getBounds("geom2_line_gg", "top")
   expect_lt(rect_bound, line_bound)
-  
-  
 })
 
 data(WorldBank, package = "animint2")
@@ -348,18 +354,11 @@ test_that("pause stops animation (third time)", {
   expect_true(old.year == new.year)
 })
 
-# Function to send a key event
-sendKey <- function(key, code, keyCode) {
-  remDr$Input$dispatchKeyEvent(type = "keyDown", key = key, code = code, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = keyCode)
-  remDr$Input$dispatchKeyEvent(type = "keyUp", key = key, code = code, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = keyCode)
-}
-
-
 remDr$Runtime$evaluate("document.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));")
-remDr$Runtime$evaluate("childDom = document.getElementsByClassName('year_variable_selector_widget')[0]; childDom.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));")
+clickSelector("year_variable_selector_widget")
 sendKey("Backspace", "Backspace", 8)
 remDr$Input$insertText(text = "1962")
-remDr$Runtime$evaluate("childDom = document.getElementsByClassName('year_variable_selector_widget')[0]; childDom.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));") 
+clickSelector("year_variable_selector_widget")
 sendKey("ArrowDown", "ArrowDown", 40)
 sendKey("Enter", "Enter", 13)
    
@@ -384,8 +383,7 @@ test_that("initial countries same as first", {
   expect_identical(sort(country.vec), sort(wb.facets$first$country))
 })
 
-
-remDr$Runtime$evaluate("childDom = document.getElementsByClassName('country_variable_selector_widget')[0]; childDom.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));")
+clickSelector("country_variable_selector_widget")
 remDr$Input$insertText(text = "Afg")
 sendKey("Enter", "Enter", 13)
  
@@ -397,7 +395,15 @@ test_that("Afg autocompletes to Afghanistan", {
   expect_identical(sort(country.vec), sort(expected.countries))
 })
 
-## The below code is only reproducible on firefox
+clickSelector("country_variable_selector_widget")
+sendKey("Backspace", "Backspace", 8)
+Sys.sleep(1)
+
+test_that("backspace removes Afghanistan from selected countries", {
+  country.vec <- getCountries()
+  expected.countries <- c("United States", "Vietnam")
+  expect_identical(sort(country.vec), sort(expected.countries))
+})
 
 getWidth <- function(){
   node.set <-
@@ -425,4 +431,19 @@ test_that("middle of transition != after when duration=2000", {
 remDr$Runtime$evaluate("document.getElementById('plot_duration_ms_year').value = 0;")
 clickID("plot_duration_ms_year")
 sendKey("Enter", "Enter", 13)
+Sys.sleep(1)
 
+test_that("middle of transition == after when duration=0", {
+  clickID("year1960")
+  Sys.sleep(1)
+  before.width <- getWidth()
+  clickID("year2010")
+  during.width <- getWidth()
+  Sys.sleep(0.1)
+  after.width <- getWidth()
+  rbind(before=before.width,
+        during=during.width,
+        after=after.width)
+  expect_true(before.width != after.width)
+  #expect_true(during.width == after.width)
+})
