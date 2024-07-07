@@ -8,11 +8,9 @@ Rmd.file <- file.path("..", "..", "inst","examples", "test_knit_print.Rmd")
 index.file <- file.path("animint-htmltest", "index.Rmd")
 
 if (!dir.exists(dirname(index.file))) {
-  # Create directory if it doesn't exist
   dir.create(dirname(index.file), recursive = TRUE)
 }
 if (!file.exists(index.file)) {
-  # Create index.file if it doesn't exist
   file.create(index.file)
 }
 
@@ -94,8 +92,6 @@ get_elements <- function(id){
   b <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0]", as.character(id)),returnByValue = TRUE)$result$value
   show_hide <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('table.legend tr.label_variable')[0]", as.character(id)),returnByValue = TRUE)$result$value
   widget <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('table.legend tr.label_variable')[1]", as.character(id)),returnByValue = TRUE)$result$value
-    
-  
   list(a178=a,
        b934=b,
        show_hide=show_hide,
@@ -138,39 +134,28 @@ test_that("clicking bottom legend adds/remove points", {
   clickID("plot1bottom_q_label_variable_a178")
   expect_equal(get_circles(), list(10, 10))
 })
-
-clickTop <- function() {
-  remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
-  remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
-
-}
-
-clickBottom <- function() {
-  remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
-  remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
-  
-}
-
-# Function to send a key event
-sendKey <- function(key, code, keyCode) {
-  remDr$Input$dispatchKeyEvent(type = "keyDown", key = key, code = code, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = keyCode)
-  remDr$Input$dispatchKeyEvent(type = "keyUp", key = key, code = code, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = keyCode)
+clickSide<- function(position=NULL){
+  if(position=="top"){
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
+  }else{
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
+  }
 }
 
 sendBackspace <- function() {
   sendKey("Backspace", "Backspace", 8)
-  
   Sys.sleep(0.5)
 }
 
 send <- function(alphabet) {
   remDr$Input$insertText(text = alphabet)
   sendKey("Enter", "Enter", 13)
-  
   Sys.sleep(0.5)
 }
 
-clickTop()
+clickSide("top")
 test_that("top widget adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
   sendBackspace()
@@ -183,7 +168,7 @@ test_that("top widget adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
 })
 
-clickBottom()
+clickSide("bottom")
 test_that("bottom widget adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
   sendBackspace()

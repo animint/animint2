@@ -1,6 +1,6 @@
 # Changes in version 2024.6.6 (PR#126)
  
-  - Add chromote as headless browser for testing
+  - Add chromote as headless browser for testing and remove phantomjs/firefox support
 
 # Changes in version 2024.3.12 (PR#119)
  

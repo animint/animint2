@@ -63,13 +63,10 @@ getSelectorWidgets <- function(html=getHTML()){
 }
 
 clickHTML <- function(...){
-  
   v <- c(...)
-  
   stopifnot(length(v) == 1)
   selectorValue <- as.character(v)
   clickID(selectorValue)  
-  
   Sys.sleep(1)
   getHTML()
 }
@@ -78,7 +75,7 @@ clickID <- function(...){
   v <- c(...)
   stopifnot(length(v) == 1)
   remDr$Runtime$evaluate(sprintf("document.getElementById('%s').dispatchEvent(new CustomEvent('click'))", as.character(v)))
-t}
+}
 
 rgba.pattern <- paste0(
   "(?<before>rgba?)",

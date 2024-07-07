@@ -46,12 +46,8 @@ wb.facets <-
        first=list(year=1975, country=c("United States", "Vietnam")),
        selector.types=list(country="multiple"),
        title="World Bank data (multiple selection, facets)")
-custom_delay <- function(milliseconds) {
-  Sys.sleep(milliseconds / 1000)
-}
 
-custom_delay(60) 
-
+Sys.sleep(60 / 1000)
 info <- animint2HTML(wb.facets)
 
 test_that("if group is in nest_order, it is last", {

@@ -38,12 +38,6 @@ expect_rotate_anchor <- function(info, rotate, anchor){
   title_box <- remDr$Runtime$evaluate(title_box_script, returnByValue = TRUE)$result$value
   #An offset of 2.5 is added because chromote aligns text with slight differences
   expect_true(title_box+2.5>= tick_box)
-  
-
-  
-  
-
-  
 }
 test_that('no axis rotation is fine', {
   map <-      

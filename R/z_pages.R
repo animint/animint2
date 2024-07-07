@@ -47,7 +47,6 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
       stop(sprintf("Please run `install.packages('%s')` before using this function", pkg))
     }
   }
-
   # Generate plot files
   res <- animint2dir(plot.list, open.browser = FALSE, ...)
   # Select non-ignored files to post
