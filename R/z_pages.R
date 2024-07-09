@@ -89,7 +89,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
     initial_commit(local_clone, repo, viz_url)
   }
   # Handle gh-pages branch
-  manage_gh_pages(repo, owner, to_post, local_clone, commit_message, github_repo)
+  manage_gh_pages(repo, owner, to_post, local_clone, commit_message)
   message(sprintf(
     "Visualization will be available at %s\nDeployment via GitHub Pages may take a few minutes...", viz_url))
   viz_owner_repo
@@ -112,30 +112,23 @@ initial_commit <- function(local_clone, repo, viz_url) {
     all_branches <- df_or_vec
     current_master <- df_or_vec
   }
-  # do not attempt to rename a branch to "main" when a branch with that name already exists
-  if (current_master != "main" && !"main" %in% all_branches) {
-    gert::git_branch_move(branch = current_master, new_branch = "main", repo = repo)
+  # rename the master/main branch to gh-pages, so that gh-pages become the default branch
+  if (current_master != "gh-pages" && !"gh-pages" %in% all_branches) {
+    gert::git_branch_move(branch = current_master, new_branch = "gh-pages", repo = repo)
   }
   gert::git_push(repo = repo, remote = "origin", set_upstream = TRUE)
 }
 
-manage_gh_pages <- function(repo, owner, to_post, local_clone, commit_message, gh_repo_name) {
+manage_gh_pages <- function(repo, owner, to_post, local_clone, commit_message) {
   branches <- gert::git_branch_list(local = TRUE, repo = repo)
   if (!"gh-pages" %in% branches$name) {
-    gert::git_branch_create(repo = repo, branch = "gh-pages")
+    gert::git_branch_create(branch = "gh-pages", repo = repo)
   }
   gert::git_branch_checkout("gh-pages", repo = repo)
   file.copy(to_post, local_clone, recursive = TRUE)
   gert::git_add(files = ".", repo = repo)
   gert::git_commit(message = commit_message, repo = repo)
   gert::git_push(remote = "origin", set_upstream = TRUE, repo = repo, force = TRUE)
-  # Set 'gh-pages' as the default branch on GitHub using GitHub API
-  gh::gh(
-    "PATCH /repos/{owner}/{repo}",
-    owner = owner,
-    repo = gh_repo_name,
-    default_branch = "gh-pages"
-  )
 }
 
 check_no_github_repo <- function(owner, gh_repo) {
