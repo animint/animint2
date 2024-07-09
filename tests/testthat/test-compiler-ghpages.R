@@ -50,6 +50,7 @@ test_that("animint2pages() default branch is gh-pages", {
   whoami <- suppressMessages(gh::gh_whoami())
   owner <- whoami[["login"]]
   local_repo_path <- tempfile(pattern = "repo_clone_")
+  print(owner) # just for checking the gh action env
   gert::git_clone(url = paste0("https://github.com/", owner, "/animint2pages_test_repo.git"), path = local_repo_path)
   # Check the default branch after clone
   default_branch <- gert::git_branch(repo = local_repo_path)
