@@ -428,9 +428,7 @@ test_that("middle of transition != after when duration=2000", {
 })
 
 
-remDr$Runtime$evaluate("document.getElementById('plot_duration_ms_year').value = 0;")
-clickID("plot_duration_ms_year")
-sendKey("Enter", "Enter", 13)
+remDr$Runtime$evaluate("var e = document.getElementById('plot_duration_ms_year'); e.value = 0;e.dispatchEvent(new Event('change'));")
 Sys.sleep(1)
 
 test_that("middle of transition == after when duration=0", {
@@ -445,5 +443,5 @@ test_that("middle of transition == after when duration=0", {
         during=during.width,
         after=after.width)
   expect_true(before.width != after.width)
-  #expect_true(during.width == after.width)
+  expect_true(during.width == after.width)
 })
