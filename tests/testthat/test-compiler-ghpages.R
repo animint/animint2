@@ -49,8 +49,7 @@ test_that("animint2pages raises an error if no GitHub token is present", {
 test_that("animint2pages() default branch is gh-pages", {
   whoami <- suppressMessages(gh::gh_whoami())
   if (is.null(whoami)) {
-    repo_full_name <- Sys.getenv("GITHUB_REPOSITORY")
-    owner <- strsplit(repo_full_name, "/")[[1]][1]
+    owner <- "tdhock"
   } else {
     owner <- whoami[["login"]]
   }
