@@ -43,13 +43,8 @@ clickSelector <- function(selectorName) {
 
 getBounds <- function(geom.class, position){
     
-    if(position == "top") {
-      script.txt <- sprintf('document.getElementsByClassName("%s")[0].getBoundingClientRect().top', geom.class)
-      remDr$Runtime$evaluate(script.txt,returnByValue = TRUE)$result$value
-    } else {
-      script.txt <- sprintf('document.getElementsByClassName("%s")[0].getBoundingClientRect().bottom', geom.class)
-      remDr$Runtime$evaluate(script.txt,returnByValue = TRUE)$result$value
-    }
+  script.txt <- sprintf('document.getElementsByClassName("%s")[0].getBoundingClientRect().%s', geom.class, position)
+  remDr$Runtime$evaluate(script.txt,returnByValue = TRUE)$result$value
 }
 
 test_that("bottom of widerect is above line", {

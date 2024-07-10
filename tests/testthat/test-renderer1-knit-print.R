@@ -2,17 +2,9 @@ acontext("knitting multiple animint plots in a single Rmd")
 print("In test")
 knitr::knit_meta() #clear knitr 'metadata'
 # Rmd.file <- "~/R/animint/inst/examples/test_knit_print.Rmd" ## Do we need this???
-Rmd.file <- system.file("inst", "examples", "test_knit_print.Rmd", 
-                         package = "animint2")
-Rmd.file <- file.path("..", "..", "inst","examples", "test_knit_print.Rmd")
+Rmd.file <- system.file("examples", "test_knit_print.Rmd", 
+                        package = "animint2")
 index.file <- file.path("animint-htmltest", "index.Rmd")
-
-if (!dir.exists(dirname(index.file))) {
-  dir.create(dirname(index.file), recursive = TRUE)
-}
-if (!file.exists(index.file)) {
-  file.create(index.file)
-}
 
 file.copy(Rmd.file, index.file, overwrite=TRUE)
 ## https://github.com/rstudio/rmarkdown/issues/587#issuecomment-168437646
@@ -136,11 +128,11 @@ test_that("clicking bottom legend adds/remove points", {
 })
 clickSide<- function(position=NULL){
   if(position=="top"){
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('plot1%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));",position))
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('plot1%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));",position))
-  }else if(position=="bottom"){
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('plot1%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));",position))
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('plot1%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));",position))
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
+  }else{
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
   }
 }
 
