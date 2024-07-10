@@ -136,11 +136,11 @@ test_that("clicking bottom legend adds/remove points", {
 })
 clickSide<- function(position=NULL){
   if(position=="top"){
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
-  }else{
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('plot1%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));",position))
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('plot1%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));",position))
+  }else if(position=="bottom"){
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('plot1%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));",position))
+    remDr$Runtime$evaluate(sprintf("div = document.getElementById('plot1%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));",position))
   }
 }
 
