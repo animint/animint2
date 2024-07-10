@@ -54,7 +54,8 @@ test_that("animint2pages() default branch is gh-pages", {
     owner <- whoami[["login"]]
   }
   local_repo_path <- tempfile(pattern = "repo_clone_")
-  gert::git_clone(url = paste0("https://github.com/", owner, "/animint2pages_test_repo.git"), path = local_repo_path)
+  test_viz_repo <- animint2pages(viz, github_repo = "a2p_ghp_test")
+  gert::git_clone(url = paste0("https://github.com/", owner, "/a2p_ghp_test.git"), path = local_repo_path)
   # Check the default branch after clone
   default_branch <- gert::git_branch(repo = local_repo_path)
   expect_equal(default_branch, "gh-pages")
