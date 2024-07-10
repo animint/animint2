@@ -36,7 +36,10 @@ expect_rotate_anchor <- function(info, rotate, anchor){
   # Evaluate scripts and get the values
   tick_box <- remDr$Runtime$evaluate(tick_box_script, returnByValue = TRUE)$result$value
   title_box <- remDr$Runtime$evaluate(title_box_script, returnByValue = TRUE)$result$value
-  #An offset of 2.5 is added because chromote aligns text with slight differences
+  #An offset of 2.5 px is added in line below but it may need to changed slightly if browser environment is different.
+  #more information of getBoundingClientRect() and why value it returns depends on specific browser environment is in the links below
+  #https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
+  #https://stackoverflow.com/questions/40879171/in-javascript-why-does-getboundingclientrect-sometimes-return-floating-point
   expect_true(title_box+2.5>= tick_box)
 }
 test_that('no axis rotation is fine', {
