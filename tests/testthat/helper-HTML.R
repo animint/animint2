@@ -41,12 +41,6 @@ tests_init <- function(dir = ".", port = 4848, ...) {
   testDir <- file.path(testPath, "animint-htmltest")
   # if the htmltest directory exists, wipe clean, then create an empty folder
   unlink(testDir, recursive = TRUE)
-  # start-up remote driver
-  remotePort <- 4444L
-  OS <- Sys.info()[['sysname']]
-  if(OS == "Linux") {
-    animint_server <- "localhost"   
-  }
   
   chrome.session <- chromote::ChromoteSession$new()
   chrome.session$view()
