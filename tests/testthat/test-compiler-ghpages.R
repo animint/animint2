@@ -36,6 +36,10 @@ test_that("animint2pages raises an error if no GitHub token is present", {
   ## be called to set the env vars/token.
   repo.root <- system("git rev-parse --show-toplevel", intern=TRUE)
   config.file <- file.path(repo.root, ".git", "config")
+  # to be reverted, test only
+  config.content <- readLines(config.file)
+  print(config.content)
+  #
   config.old <- file.path(repo.root, ".git", "config.old")
   file.copy(config.file, config.old, overwrite = TRUE)
   cat("[credential]\n\tusername = FOO", file=config.file, append=TRUE)
@@ -50,7 +54,10 @@ test_that("animint2pages() default branch is gh-pages", {
   whoami <- suppressMessages(gh::gh_whoami())
   owner <- whoami[["login"]]
   local_repo_path <- tempfile(pattern = "repo_clone_")
-  print(owner) # just for checking the gh action env
+  # to be reverted, test only
+  print(whoami)
+  print(Sys.getenv("GITHUB_REPOSITORY"))
+  #
   gert::git_clone(url = paste0("https://github.com/", owner, "/animint2pages_test_repo.git"), path = local_repo_path)
   # Check the default branch after clone
   default_branch <- gert::git_branch(repo = local_repo_path)
