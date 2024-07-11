@@ -35,22 +35,14 @@ viz <- animint(
 info <- animint2HTML(viz)
 expect_source(NULL)
 
-clickSelector <- function(selectorName) {
-  
+clickSelector <- function(selectorName) {  
   script.txt <- sprintf('childDom = document.getElementsByClassName("%s")[0]; childDom.getElementsByClassName("selectize-input")[0].dispatchEvent(new CustomEvent("click"));', selectorName)
   remDr$Runtime$evaluate(script.txt)
 }
 
-getBounds <- function(geom.class, position){
-    
-  script.txt <- sprintf('document.getElementsByClassName("%s")[0].getBoundingClientRect().%s', geom.class, position)
-  remDr$Runtime$evaluate(script.txt,returnByValue = TRUE)$result$value
-}
-
-test_that("bottom of widerect is above line", {
-  
-  rect_bound <- getBounds("geom1_widerect_gg", "bottom")
-  line_bound <- getBounds("geom2_line_gg", "top")
+test_that("bottom of widerect is above line", {  
+  rect_bound <- getClassBound("geom1_widerect_gg", "bottom")
+  line_bound <- getClassBound("geom2_line_gg", "top")
   expect_lt(rect_bound, line_bound)
 })
 

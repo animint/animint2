@@ -41,7 +41,6 @@ tests_init <- function(dir = ".", port = 4848, ...) {
   testDir <- file.path(testPath, "animint-htmltest")
   # if the htmltest directory exists, wipe clean, then create an empty folder
   unlink(testDir, recursive = TRUE)
-  
   chrome.session <- chromote::ChromoteSession$new()
   chrome.session$view()
   chrome.session$refresh <- function(){
@@ -51,8 +50,6 @@ tests_init <- function(dir = ".", port = 4848, ...) {
     # Block until p resolves
     chrome.session$wait_for(prom)
   }
-  
-  
   chrome.session$navigate <- function(u){
     chrome.session$Page$navigate(u)
     }
@@ -62,7 +59,6 @@ tests_init <- function(dir = ".", port = 4848, ...) {
     }
   remDr <<- chrome.session
   remDr$navigate(sprintf("http://localhost:4848/animint-htmltest/"))
-
   invisible(TRUE)
 }
 ## get both horizontal and vertical grid lines
@@ -86,3 +82,11 @@ sendKey <- function(key, code, keyCode) {
   remDr$Input$dispatchKeyEvent(type = "keyDown", key = key, code = code, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = keyCode)
   remDr$Input$dispatchKeyEvent(type = "keyUp", key = key, code = code, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = keyCode)
 }
+
+getClassBound <- function(geom.class, position){
+  script.txt <- sprintf(
+    'document.getElementsByClassName("%s")[0].getBoundingClientRect().%s', 
+    geom.class, position)
+  remDr$Runtime$evaluate(script.txt, returnByValue = TRUE)$result$value
+}
+

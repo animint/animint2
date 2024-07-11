@@ -28,14 +28,8 @@ expect_rotate_anchor <- function(info, rotate, anchor){
   expect_match(rotated["style", ], paste("text-anchor:", anchor), fixed=TRUE)
   expect_match(rotated["transform", ], paste0("rotate(", rotate), fixed=TRUE)
   # http://stackoverflow.com/questions/442404/retrieve-the-position-x-y-of-an-html-element
-  
-  
-  tick_box_script <- 'document.getElementsByClassName("xaxis")[0].getBoundingClientRect().bottom;'
-  title_box_script <- 'document.getElementsByClassName("xtitle")[0].getBoundingClientRect().top;'
-    
-  # Evaluate scripts and get the values
-  tick_box <- remDr$Runtime$evaluate(tick_box_script, returnByValue = TRUE)$result$value
-  title_box <- remDr$Runtime$evaluate(title_box_script, returnByValue = TRUE)$result$value
+  tick_box <- getClassBound("xaxis", "bottom")
+  title_box <- getClassBound("xtitle", "top")
   #An offset of 2.5 px is added in line below but it may need to changed slightly if browser environment is different.
   #more information of getBoundingClientRect() and why value it returns depends on specific browser environment is in the links below
   #https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
