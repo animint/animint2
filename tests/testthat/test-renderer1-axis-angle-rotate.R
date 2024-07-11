@@ -68,7 +68,6 @@ test_that('and hjust=1 means style="text-anchor: end;"', {
          not=sg)
   info <- animint2HTML(map)
   expect_rotate_anchor(info, "-70", "end")
-  
 })
 
 test_that('and hjust=0 means style="text-anchor: start;"', {
