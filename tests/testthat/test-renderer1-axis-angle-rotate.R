@@ -34,7 +34,7 @@ expect_rotate_anchor <- function(info, rotate, anchor){
   #more information of getBoundingClientRect() and why value it returns depends on specific browser environment is in the links below
   #https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
   #https://stackoverflow.com/questions/40879171/in-javascript-why-does-getboundingclientrect-sometimes-return-floating-point
-  expect_true(title_box+2.5>= tick_box)
+  expect_gt(title_box+2.5, tick_box)
 }
 test_that('no axis rotation is fine', {
   map <-      
