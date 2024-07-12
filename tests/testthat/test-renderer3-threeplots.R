@@ -32,14 +32,37 @@ test_that("check if two plots exist", {
     xlab("X Axis") + ylab("Y Axis")
   
   plot_list <- list(
-    plot1 = plot1,
+    plot1=plot1,
     plot2=plot2,
     plot3=plot3
   )
   
   info <-animint2HTML(plot_list)
   titles <- getNodeSet(info$html, "//text[@class='plottitle']")
+  
+  points <- getNodeSet(info$html, "//circle[@class='geom']")
+  
+  number_of_points <- length(points)
+  tables <- getNodeSet(info$html, "//table[@style='display: inline-block;']")
+  svgs <- getNodeSet(info$html, "//svg[contains(@id,'')]")
+  number_of_tables<-length(tables)
+  
+  number_of_points <- length(points)
+  svg_dimensions <- lapply(svgs, function(svg) {
+    list(
+      height = as.numeric(xmlGetAttr(svg, "height")),
+      width = as.numeric(xmlGetAttr(svg, "width"))
+    )
+  })
+  for (dim in svg_dimensions) {
+    expect_equal(dim$height, 400)
+    expect_equal(dim$width, 400)
+    
+  }
+  
   expect_match(xmlValue(titles[[1]]), "Plot of 3 Dots")
   expect_match(xmlValue(titles[[2]]), "Plot of 2 Dots")
   expect_match(xmlValue(titles[[3]]), "Plot of 1 Dot")
+  expect_equal(number_of_points,6)
+  expect_equal(number_of_tables,3)
 })
