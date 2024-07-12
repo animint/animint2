@@ -53,12 +53,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
       stop(sprintf("Please run `install.packages('%s')` before using this function", pkg))
     }
   }
-  # Generate plot files
-  res <- animint2dir(plot.list, open.browser = FALSE, ...)
-  
-  portNum <- servr::random_port()
   chrome.session <- chromote::ChromoteSession$new()
-  
 
   if (is.null(server)) {
     res <- animint2dir(plot.list, open.browser = FALSE, ...)
@@ -76,9 +71,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   }
 
   screenshot_path <- file.path(res$out.dir, "Capture.PNG")
-  
   Sys.sleep(3)
-  
   # Capture screenshot
   screenshot <- chrome.session$Page$captureScreenshot()
   image_raw <- magick::image_read(jsonlite::base64_dec(screenshot$data))
