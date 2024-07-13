@@ -74,7 +74,7 @@ clickHTML <- function(...){
 clickID <- function(...){
   v <- c(...)
   stopifnot(length(v) == 1)
-  remDr$Runtime$evaluate(sprintf("document.getElementById('%s').dispatchEvent(new CustomEvent('click'))", as.character(v)))
+  runtime_evaluate(script=sprintf("document.getElementById('%s').dispatchEvent(new CustomEvent('click'))", as.character(v)))
 }
 
 rgba.pattern <- paste0(
@@ -415,5 +415,13 @@ find_test_path <- function(dir = ".") {
                     tests = "testthat",
                     testthat = "")
   file.path(dir, ext_dir)
+}
+
+runtime_evaluate <- function(script=NULL,return.value=FALSE){
+  if (return.value){
+    value<- remDr$Runtime$evaluate(script,returnByValue = TRUE)$result$value
+  }else{
+    value<- remDr$Runtime$evaluate(script,returnByValue = TRUE)
+  }
 }
 

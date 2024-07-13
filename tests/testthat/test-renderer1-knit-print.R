@@ -78,11 +78,10 @@ get_circles <- function(html=getHTML()) {
 }
 
 get_elements <- function(id){
-  ##print("before div")
-  a <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0]", as.character(id)),returnByValue = TRUE)$result$value
-  b <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0]", as.character(id)),returnByValue = TRUE)$result$value
-  show_hide <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('table.legend tr.label_variable')[0]", as.character(id)),returnByValue = TRUE)$result$value
-  widget <- remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('table.legend tr.label_variable')[1]", as.character(id)),returnByValue = TRUE)$result$value
+  a<- runtime_evaluate(script=sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0]", as.character(id)),return.value=TRUE)
+  b<- runtime_evaluate(script=sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0]", as.character(id)),return.value=TRUE)
+  show_hide <- runtime_evaluate(script =sprintf("div = document.getElementById('%s');div.getElementsByClassName('table.legend tr.label_variable')[0]", as.character(id)), return.value=TRUE)
+  widget <-runtime_evaluate(script=sprintf("div = document.getElementById('%s');div.getElementsByClassName('table.legend tr.label_variable')[1]", as.character(id)),return.value=TRUE)
   list(a178=a,
        b934=b,
        show_hide=show_hide,
@@ -127,11 +126,11 @@ test_that("clicking bottom legend adds/remove points", {
 })
 clickSide<- function(position=NULL){
   if(position=="top"){
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
+    runtime_evaluate(script=sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
+    runtime_evaluate(script=sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1top")))
   }else{
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
-    remDr$Runtime$evaluate(sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
+    runtime_evaluate(script=sprintf("div = document.getElementById('%s');div.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
+    runtime_evaluate(script=sprintf("div = document.getElementById('%s'); div.getElementsByClassName('selectize-input')[0].dispatchEvent(new CustomEvent('click'));", as.character("plot1bottom")))
   }
 }
 

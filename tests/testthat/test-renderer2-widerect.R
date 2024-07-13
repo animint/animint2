@@ -37,7 +37,7 @@ expect_source(NULL)
 
 clickSelector <- function(selectorName) {  
   script.txt <- sprintf('childDom = document.getElementsByClassName("%s")[0]; childDom.getElementsByClassName("selectize-input")[0].dispatchEvent(new CustomEvent("click"));', selectorName)
-  remDr$Runtime$evaluate(script.txt)
+  runtime_evaluate(script=script.txt)
 }
 
 test_that("bottom of widerect is above line", {  
@@ -339,14 +339,13 @@ test_that("pause stops animation (third time)", {
   expect_true(old.year == new.year)
 })
 
-remDr$Runtime$evaluate("document.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));")
+runtime_evaluate(script="document.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));")
 clickSelector("year_variable_selector_widget")
 sendKey("Backspace", "Backspace", 8)
 remDr$Input$insertText(text = "1962")
 clickSelector("year_variable_selector_widget")
 sendKey("ArrowDown", "ArrowDown", 40)
 sendKey("Enter", "Enter", 13)
-   
 Sys.sleep(3)
 
 test_that("typing into selectize widget changes year to 1962", {
@@ -408,7 +407,7 @@ test_that("middle of transition != after when duration=2000", {
   expect_true(during.width != after.width)
 })
 
-remDr$Runtime$evaluate("var e = document.getElementById('plot_duration_ms_year'); e.value = 0;e.dispatchEvent(new Event('change'));")
+runtime_evaluate(script="var e = document.getElementById('plot_duration_ms_year'); e.value = 0;e.dispatchEvent(new Event('change'));")
 Sys.sleep(1)
 
 test_that("middle of transition == after when duration=0", {
