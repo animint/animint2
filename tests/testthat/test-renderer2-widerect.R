@@ -331,8 +331,6 @@ test_that("clicking legend removes/adds countries", {
 
 clickID('updates_ms')
  
-
-
 test_that("pause stops animation (third time)", {
   clickID("play_pause")
   old.year <- getYear()
@@ -349,16 +347,12 @@ clickSelector("year_variable_selector_widget")
 sendKey("ArrowDown", "ArrowDown", 40)
 sendKey("Enter", "Enter", 13)
    
- 
 Sys.sleep(3)
 
 test_that("typing into selectize widget changes year to 1962", {
   current.year <- getYear()
   expect_identical(current.year, "1962")
 })
-
-
-
 
 getCountries <- function(){
   country.labels <- getNodeSet(getHTML(), '//g[@class="geom8_text_ts"]//text')
@@ -413,7 +407,6 @@ test_that("middle of transition != after when duration=2000", {
         after=after.width)
   expect_true(during.width != after.width)
 })
-
 
 remDr$Runtime$evaluate("var e = document.getElementById('plot_duration_ms_year'); e.value = 0;e.dispatchEvent(new Event('change'));")
 Sys.sleep(1)

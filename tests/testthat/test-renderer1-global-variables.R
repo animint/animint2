@@ -6,7 +6,6 @@ viz <- list(scatter=ggplot()+
                          showSelected="Species",
                          data=iris))
 
-
 myScript <- 'myArray = [];
 for(var b in window) { 
   if(window.hasOwnProperty(b)) {myArray.push(b);} 
@@ -21,7 +20,6 @@ getVariables <- function(){
   grep("plot|jQuery", vars, value=TRUE, invert=TRUE)
 }
 
-    
 test_that("animint.js only defines 1 object, called animint", {
   info <- animint2HTML(viz)
   animint.vars <- getVariables()

@@ -50,7 +50,6 @@ test_that('axis.text.x=element_text(angle=90) means transform="rotate(-90)"', {
          not=sg)
   info <- animint2HTML(map)
   expect_rotate_anchor(info, "-90", "end")
-  
 })
 
 test_that('axis.text.x=element_text(angle=70) means transform="rotate(-70)"', {
@@ -59,7 +58,6 @@ test_that('axis.text.x=element_text(angle=70) means transform="rotate(-70)"', {
          not=sg)
   info <- animint2HTML(map)
   expect_rotate_anchor(info, "-70", "end")
-  
 })
 
 test_that('and hjust=1 means style="text-anchor: end;"', {

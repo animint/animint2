@@ -76,7 +76,6 @@ get_grid_lines <- function(html, p_name, grid_class){
   attr_v <- apply(attr_v, 2, as.numeric)
   return(list(hor=attr_h, vert=attr_v))
 }
-
 # Function to send a key event
 sendKey <- function(key, code, keyCode) {
   remDr$Input$dispatchKeyEvent(type = "keyDown", key = key, code = code, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = keyCode)
@@ -90,3 +89,6 @@ getClassBound <- function(geom.class, position){
   remDr$Runtime$evaluate(script.txt, returnByValue = TRUE)$result$value
 }
 
+runtime_evaluate <- function(script=NULL,returnByValue=FALSE){
+  
+}
