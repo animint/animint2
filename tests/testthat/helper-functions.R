@@ -418,10 +418,11 @@ find_test_path <- function(dir = ".") {
 }
 
 runtime_evaluate <- function(script=NULL,return.value=FALSE){
+  eval.result<- remDr$Runtime$evaluate(script,returnByValue = TRUE)
   if (return.value){
-    value<- remDr$Runtime$evaluate(script,returnByValue = TRUE)$result$value
+    eval.result$result$value
   }else{
-    value<- remDr$Runtime$evaluate(script,returnByValue = TRUE)
+    eval.result
   }
 }
 
