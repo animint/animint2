@@ -214,10 +214,7 @@ var animint = function (to_select, json_file) {
     // Save this geom and load it!
     update_geom(g_name, null);
   };
-  var outer_table = d3.select("body").append("table")
-    .attr("id", "outerTable")
-    .style("width", "100%")
-    .style("border", "1px solid black");
+  var outer_table = element.append("table").attr("id", "outerTable").style("width", "100%").style("border", "1px solid black");
   var row = outer_table.append("tr");
   // Add a cell to the row (1st row, 1st column)
   
@@ -227,8 +224,7 @@ var animint = function (to_select, json_file) {
     // columns: tdLeft and tdRight.
     //var plot_table = element.append("table").style("display", "inline-block");
     var cell = row.append("td");
-    var plot_table = cell.append("table")
-    .style("display", "inline-block");
+    var plot_table = cell.append("table").style("display", "inline-block");
     var plot_tr = plot_table.append("tr");
     var tdLeft = plot_tr.append("td");
     var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
