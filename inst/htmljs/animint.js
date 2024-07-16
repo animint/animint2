@@ -1065,7 +1065,8 @@ var animint = function (to_select, json_file) {
       get_stroke_width = get_attr("stroke");
     }else{
       get_stroke_width = function(d){
-	return stroke_width;
+	//return stroke_width;
+	return 4
       };
     }
     
