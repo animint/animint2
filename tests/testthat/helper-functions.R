@@ -74,7 +74,7 @@ clickHTML <- function(...){
 clickID <- function(...){
   v <- c(...)
   stopifnot(length(v) == 1)
-  runtime_evaluate(script=sprintf("document.getElementById('%s').dispatchEvent(new CustomEvent('click'))", as.character(v)))
+  runtime_evaluate_helper(id=v,dispatch_event=TRUE)
 }
 
 rgba.pattern <- paste0(
@@ -426,3 +426,19 @@ runtime_evaluate <- function(script=NULL,return.value=FALSE){
   }
 }
 
+runtime_evaluate_helper <- function(class_name=NULL, id=NULL, list_num=NULL,dispatch_event=NULL,return.value=FALSE) {
+  if(!is.null(class_name) && !is.null(id) && !is.null(dispatch_event)){
+    script_template <- "div = document.getElementById('%s'); div.getElementsByClassName('%s')[%d].dispatchEvent(new CustomEvent('click'));"
+    script <- sprintf(script_template, as.character(id), class_name, list_num)
+  }else if(is.null(class_name) && !is.null(id) && !is.null(dispatch_event)){
+    script_template <- "document.getElementById('%s').dispatchEvent(new CustomEvent('click'))"
+    script <- sprintf(script_template, as.character(id))
+  }else if(!is.null(class_name) && !is.null(id) && is.null(dispatch_event)){
+    script_template <- "div = document.getElementById('%s');div.getElementsByClassName('%s')[%d]"
+    script <- sprintf(script_template, as.character(id),class_name,list_num)
+  }else if(!is.null(class_name) && is.null(id) && !is.null(dispatch_event)){
+    script_template <- "document.getElementsByClassName('%s')[%d].dispatchEvent(new CustomEvent('click'));"
+    script <- sprintf(script_template,class_name,list_num)
+  }
+  runtime_evaluate(script = script, return.value = return.value)
+}

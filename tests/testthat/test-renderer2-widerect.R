@@ -339,7 +339,8 @@ test_that("pause stops animation (third time)", {
   expect_true(old.year == new.year)
 })
 
-runtime_evaluate(script="document.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));")
+#runtime_evaluate(script="document.getElementsByClassName('show_hide_selector_widgets')[0].dispatchEvent(new CustomEvent('click'));")
+runtime_evaluate_helper(class_name="show_hide_selector_widgets",list_num=0,dispatch_event=TRUE)
 clickSelector("year_variable_selector_widget")
 sendKey("Backspace", "Backspace", 8)
 remDr$Input$insertText(text = "1962")
