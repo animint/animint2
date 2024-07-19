@@ -86,5 +86,6 @@ getClassBound <- function(geom.class, position){
   script.txt <- sprintf(
     'document.getElementsByClassName("%s")[0].getBoundingClientRect().%s', 
     geom.class, position)
+  Sys.sleep(2)
   runtime_evaluate(script=script.txt,return.value=TRUE)
 }
