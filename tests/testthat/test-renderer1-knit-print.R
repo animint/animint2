@@ -126,11 +126,11 @@ test_that("clicking bottom legend adds/remove points", {
 })
 clickSide<- function(position=NULL){
   if(position=="top"){
-    runtime_evaluate_helper(id=as.character("plot1top"),class_name='show_hide_selector_widgets',list_num=0)
-    runtime_evaluate_helper(id=as.character("plot1top"),class_name='selectize-input',list_num=0)
-  }else{
-    runtime_evaluate_helper(id=as.character("plot1bottom"),class_name='show_hide_selector_widgets',list_num=0)
-    runtime_evaluate_helper(id=as.character("plot1bottom"),class_name='selectize-input',list_num=0)
+    runtime_evaluate_helper(id=as.character("plot1top"),class_name='show_hide_selector_widgets',list_num=0,dispatch_event=TRUE)
+    runtime_evaluate_helper(id=as.character("plot1top"),class_name='selectize-input',list_num=0,dispatch_event=TRUE)
+  }else if(position=="bottom"){
+    runtime_evaluate_helper(id=as.character("plot1bottom"),class_name='show_hide_selector_widgets',list_num=0,dispatch_event=TRUE)
+    runtime_evaluate_helper(id=as.character("plot1bottom"),class_name='selectize-input',list_num=0,dispatch_event=TRUE)
   }
 }
 
