@@ -4,8 +4,9 @@
 //   var plot = new animint("#plot","path/to/plot.json");
 // </script>
 // Constructor for animint Object.
-var animint = function (to_select, json_file) {
 
+var animint = function (to_select, json_file) {
+  
   var default_axis_px = 16;
 
    function wait_until_then(timeout, condFun, readyFun) {
@@ -214,15 +215,19 @@ var animint = function (to_select, json_file) {
     // Save this geom and load it!
     update_geom(g_name, null);
   };
-  var outer_table = element.append("table").attr("id", "outerTable").style("width", "100%").style("border", "1px solid black");
-  var row = outer_table.append("tr");
-  // Add a cell to the row (1st row, 1st column)
   
-  var add_plot = function (p_name, p_info) {
+  
+  //var outer_table = element.append("table").attr("id", "outerTable").style("width", "100%").style("border", "1px solid black");
+  //var row = outer_table.append("tr");
+  //Add a cell to the row (1st row, 1st column)
+  
+  
+  var add_plot = function (p_name, p_info,outer_table) {
     // Each plot may have one or more legends. To make space for the
     // legends, we put each plot in a table with one row and two
     // columns: tdLeft and tdRight.
     //var plot_table = element.append("table").style("display", "inline-block");
+    var row = outer_table.append("tr");
     var cell = row.append("td");
     var plot_table = cell.append("table").style("display", "inline-block");
     var plot_tr = plot_table.append("tr");
@@ -2026,8 +2031,14 @@ var animint = function (to_select, json_file) {
       d3.select("title").text(response.title);
     }
     // Add plots.
+    var construct_outer_table = function () {
+    var outer_table = element.append("table").attr("id", "outerTable").style("width", "100%").style("border", "1px solid black");
+  //var row1 = outer_table1.append("tr");
+  return outer_table;
+  }
+  var outer_table=construct_outer_table();
     for (var p_name in response.plots) {
-      add_plot(p_name, response.plots[p_name]);
+      add_plot(p_name, response.plots[p_name],outer_table);
       add_legend(p_name, response.plots[p_name]);
       // Append style sheet to document head.
       css.appendChild(document.createTextNode(styles.join(" ")));
