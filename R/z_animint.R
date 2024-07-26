@@ -37,7 +37,7 @@ parsePlot <- function(meta, plot, plot.name){
   ## Now ggplot specifies panel.margin in 'pt' instead of 'lines'
   plot.info$panel_margin_lines <- pt.to.lines(theme.pars$panel.margin)
 
-  ## No legend if theme(legend.postion="none").
+  ## No legend if theme(legend.position="none").
   plot.info$legend <- if(theme.pars$legend.position != "none"){
     getLegendList(built)
   }
@@ -103,7 +103,9 @@ parsePlot <- function(meta, plot, plot.name){
   # extract minor grid lines
   plot.info$grid_minor <- get_grid(theme.pars$panel.grid.minor, theme.pars,
                                    plot.info, meta, built, major = F)
-
+  theme <- plot_theme(built$plot)
+  plot.info$row <-theme$row
+  plot.info$col <-theme$col
   ## Flip labels if coords are flipped - transform does not take care
   ## of this. Do this BEFORE checking if it is blank or not, so that
   ## individual axes can be hidden appropriately, e.g. #1.
@@ -249,6 +251,7 @@ storeLayer <- function(meta, g, g.data.varied){
 animint2dir <- function(plot.list, out.dir = NULL,
                         json.file = "plot.json", open.browser = interactive(),
                         css.file = "") {
+  
   if(is.null(out.dir)){
     out.dir <- tempfile()
   }
@@ -359,6 +362,7 @@ animint2dir <- function(plot.list, out.dir = NULL,
     if(is.ggplot(p)){
       ## If plot is correct, save to meta for further processing
       parsed_info <- parsePlot(meta, p, list.name) # calls ggplot_build.
+      #print(parsed_info$plot.info)
       AllPlotsInfo[[list.name]] <- parsed_info$plot.info
       ggplot.list[[list.name]]$ggplot <- parsed_info$ggplot
       ggplot.list[[list.name]]$built <- parsed_info$built
@@ -638,7 +642,7 @@ animint2dir <- function(plot.list, out.dir = NULL,
       stop("missing first selector variable")
     }
   }
-
+  
   meta$plots <- AllPlotsInfo
   meta$time <- AnimationInfo$time
   meta$timeValues <- AnimationInfo$timeValues
@@ -690,6 +694,7 @@ getLegendList <- function(plistextra){
   position <- theme$legend.position
   text <- theme$legend.text
   title <- theme$legend.title
+  #print(theme$row)
   # by default, guide boxes are vertically aligned
   if(is.null(theme$legend.box)) theme$legend.box <- "vertical" else theme$legend.box
 
