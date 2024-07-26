@@ -6,7 +6,13 @@
 // Constructor for animint Object.
 
 var animint = function (to_select, json_file) {
-  console.log("hello")
+  //console.log(json_file)
+  fetch(json_file)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data); // Prints the entire JSON data
+  })
+  .catch(error => console.error('Error fetching the JSON file:', error));
   var default_axis_px = 16;
 
    function wait_until_then(timeout, condFun, readyFun) {
@@ -217,22 +223,11 @@ var animint = function (to_select, json_file) {
   };
   
   
-  //var outer_table = element.append("table").attr("id", "outerTable").style("width", "100%").style("border", "1px solid black");
-  //var row = outer_table.append("tr");
-  //Add a cell to the row (1st row, 1st column)
-  
-  
-  var add_plot = function (p_name, p_info,outer_table,rowIdx=1,colIdx=1) {
+  var add_plot = function (p_name, p_info,outer_table) {
     // Each plot may have one or more legends. To make space for the
     // legends, we put each plot in a table with one row and two
     // columns: tdLeft and tdRight.
-    //var plot_table = element.append("table").style("display", "inline-block");
-    //var row = outer_table.append("tr");
-    //var cell = row.append("td");
-    //var cell = outer_table.select(`tr:nth-child(${rowIdx + 1})`).select(`td:nth-child(${colIdx + 1})`);
     
-    //var plot_table = cell.append("table").style("display", "inline-block");
-    //var outer_table = d3.select("#outerTable")
     var plot_table = outer_table.append("table").style("display", "inline-block");
     var plot_tr = plot_table.append("tr");
     var tdLeft = plot_tr.append("td");
@@ -2035,31 +2030,87 @@ var animint = function (to_select, json_file) {
       d3.select("title").text(response.title);
     }
     // Add plots.
-    var construct_outer_table = function () {
-    var outer_table = element.append("table").attr("id", "outerTable").style("width", "100%").style("border", "1px solid black");
-    //var row = outer_table.append("tr");
-    //var cell = row.append("td");
+  
+  var user_defined_layout= false
+  var count=0
+  for (var p_name in response.plots) {
+    if (count>0){
+      break;
+    }
+    if ('row' in response.plots[p_name]) {
+      user_defined_layout= true
+}
+count=count+1
+}
+  
+  console.log(user_defined_layout)
+  if(user_defined_layout){
+    var maximum_row= 0
+    var maximum_column= 0
+    for (var p_name in response.plots) {
+    if (response.plots[p_name].row>maximum_row){
+      maximum_row=response.plots[p_name].row
+    }
+    if (response.plots[p_name].col>maximum_column){
+      maximum_column=response.plots[p_name].col
+    }
+  }
+  
+  var construct_outer_table = function () {
+    var outer_table = element.append("table").attr("id", "outerTable").style("width", "1500px").style("border", "1px solid white");
+    for (var i = 0; i <=maximum_row; i++) {
+        var current_row = outer_table.append("tr").style("border", "1px solid white").style("height", "500px");
+        for (var j = 0; j <=maximum_column; j++){
+            current_row.append("td").attr("id", "row"+i+"col"+j).style("border", "1px solid white").style("width", "500px");
+        }
+    }
+    
   return outer_table;
   }
   var outer_table=construct_outer_table();
-  var current_row=outer_table.append("tr")
-  var current_col=current_row.append("td")
-  var count=0;
-    for (var p_name in response.plots) {
-      count=count+1
-      if (count>2){
-        count=1
-        current_row=outer_table.append("tr")
-        current_col=current_row.append("td")
-      }
-      //console.log(count)
-      add_plot(p_name, response.plots[p_name],current_col);
+  
+  for (var p_name in response.plots) {
+      id= "#row"+response.plots[p_name].row+"col"+response.plots[p_name].col
+      var cell= d3.select(id);
+      
+      add_plot(p_name, response.plots[p_name],cell);
       add_legend(p_name, response.plots[p_name]);
       // Append style sheet to document head.
       css.appendChild(document.createTextNode(styles.join(" ")));
       document.head.appendChild(css);
-      current_col=current_row.append("td")
     }
+  }else{
+    var construct_outer_table = function () {
+     var outer_table = element.append("table").attr("id", "outerTable").style("width", "100%").style("border", "1px solid black");
+     //var row = outer_table.append("tr");
+     //var cell = row.append("td");
+   return outer_table;
+   }
+   var outer_table=construct_outer_table();
+   var current_row=outer_table.append("tr")
+   var current_col=current_row.append("td")
+   var count=0;
+   for (var p_name in response.plots) {
+       count=count+1
+       if (count>2){
+         count=1
+         current_row=outer_table.append("tr")
+         current_col=current_row.append("td")
+       }
+       //console.log(count)
+       add_plot(p_name, response.plots[p_name],current_col);
+       add_legend(p_name, response.plots[p_name]);
+       // Append style sheet to document head.
+       css.appendChild(document.createTextNode(styles.join(" ")));
+       document.head.appendChild(css);
+       current_col=current_row.append("td")
+     }
+    
+  }
+  
+    
+  
+    
     // Then add selectors and start downloading the first data subset.
     for (var s_name in response.selectors) {
       add_selector(s_name, response.selectors[s_name]);
