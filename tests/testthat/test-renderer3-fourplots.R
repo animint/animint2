@@ -29,7 +29,7 @@ test_that("check if two plots exist", {
   plot3 <- ggplot(data3, aes(x, y)) + 
     geom_point(size = 2) +            # Plot points with a specified size
     ggtitle("Plot of 1 Dot") +        # Add a title to the plot
-    xlab("X Axis") + ylab("Y Axis")+theme(row=0,col=0)
+    xlab("X Axis") + ylab("Y Axis")+theme(row=0)
   plot4 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
     geom_point() +
     labs(title = "Car Weight vs. MPG") +
