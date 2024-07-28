@@ -2032,15 +2032,18 @@ var animint = function (to_select, json_file) {
     // Add plots.
   
   var user_defined_layout= false
-  var count=0
+  //var count=0
   for (var p_name in response.plots) {
-    if (count>0){
-      break;
-    }
-    if ('row' in response.plots[p_name]) {
+    //console.log(response.plots[p_name].title)
+    if ('row' in response.plots[p_name] && 'col' in response.plots[p_name]) {
       user_defined_layout= true
 }
-count=count+1
+if ('row' in response.plots[p_name] && !('col' in response.plots[p_name])){
+  throw new Error("You forgot to add column in "+response.plots[p_name].title+" plot.");
+}
+if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
+  throw new Error("You forgot to add row in "+response.plots[p_name].title+" plot.");
+}
 }
   
   console.log(user_defined_layout)
