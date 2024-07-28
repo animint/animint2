@@ -2079,6 +2079,18 @@ count=count+1
       css.appendChild(document.createTextNode(styles.join(" ")));
       document.head.appendChild(css);
     }
+    var parentElement1 = d3.select('#row1col1');
+    var parentElement2 = d3.select('#row1col0');
+    if (!parentElement1.select('svg').empty()) {
+    console.log("An <svg> element exists in #row1col1.");
+} else {
+    console.log("No <svg> element found in #row1col1.");
+}
+if (!parentElement2.select('svg').empty()) {
+    console.log("An <svg> element exists in #row1col0.");
+} else {
+    console.log("No <svg> element found in #row1col0.");
+}
   }else{
     var construct_outer_table = function () {
      var outer_table = element.append("table").attr("id", "outerTable").style("width", "100%").style("border", "1px solid black");
@@ -2105,7 +2117,6 @@ count=count+1
        document.head.appendChild(css);
        current_col=current_row.append("td")
      }
-    
   }
   
     
