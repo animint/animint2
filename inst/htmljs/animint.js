@@ -2041,10 +2041,8 @@ var animint = function (to_select, json_file) {
     }
   }
   
-  var user_defined_layout= false
-  //var count=0
+  
   for (var p_name in response.plots) {
-    //console.log(response.plots[p_name].title)
     if ('row' in response.plots[p_name] && 'col' in response.plots[p_name]) {
       user_defined_layout= true
 }
@@ -2054,13 +2052,15 @@ if ('row' in response.plots[p_name] && !('col' in response.plots[p_name])){
 if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
   throw new Error("You forgot to add row in "+response.plots[p_name].title+" plot.");
 }
-}
+  }
   
-  
-  if(user_defined_layout){
+
+
     var maximum_row= 0
     var maximum_column= 0
+    var count=0
     for (var p_name in response.plots) {
+      count=count+1
     if (response.plots[p_name].row>maximum_row){
       maximum_row=response.plots[p_name].row
     }
@@ -2070,7 +2070,12 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
   }
   
   var construct_outer_table = function () {
+    var count_dimensions = Math.ceil(Math.sqrt(count))-1;
     var outer_table = element.append("table").attr("id", "outerTable").style("width", "1500px").style("border", "1px solid white");
+    maximum_row=Math.max(maximum_row,count_dimensions)
+    maximum_column=Math.max(maximum_column,count_dimensions)
+    console.log(maximum_row)
+    console.log(maximum_column)
     for (var i = 0; i <=maximum_row; i++) {
         var current_row = outer_table.append("tr").style("border", "1px solid white").style("height", "500px");
         for (var j = 0; j <=maximum_column; j++){
@@ -2083,6 +2088,7 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
   var outer_table=construct_outer_table();
   
   for (var p_name in response.plots) {
+    if ('row' in response.plots[p_name] && 'col' in response.plots[p_name]) {
       id= "#row"+response.plots[p_name].row+"col"+response.plots[p_name].col
       var cell= d3.select(id);
       
@@ -2092,40 +2098,32 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
       css.appendChild(document.createTextNode(styles.join(" ")));
       document.head.appendChild(css);
     }
-    for (var i = 0; i <=maximum_row; i++) {
-      for (var j = 0; j <=maximum_column; j++){
-        if (check_svg(i,j)){
-          console.log("row"+i+" "+"col"+j)
-        }
-      }
-      }
-  }else{
-    var construct_outer_table = function () {
-     var outer_table = element.append("table").attr("id", "outerTable").style("width", "100%").style("border", "1px solid black");
-     //var row = outer_table.append("tr");
-     //var cell = row.append("td");
-   return outer_table;
-   }
-   var outer_table=construct_outer_table();
-   var current_row=outer_table.append("tr")
-   var current_col=current_row.append("td")
-   var count=0;
-   for (var p_name in response.plots) {
-       count=count+1
-       if (count>2){
-         count=1
-         current_row=outer_table.append("tr")
-         current_col=current_row.append("td")
-       }
-       //console.log(count)
-       add_plot(p_name, response.plots[p_name],current_col);
-       add_legend(p_name, response.plots[p_name]);
-       // Append style sheet to document head.
-       css.appendChild(document.createTextNode(styles.join(" ")));
-       document.head.appendChild(css);
-       current_col=current_row.append("td")
-     }
   }
+      pointer_row=0
+      pointer_column=0
+      for (var p_name in response.plots) {
+        if (!('row' in response.plots[p_name])){
+          while (check_svg(pointer_row,pointer_column)) {
+            pointer_column=pointer_column+1
+            if (pointer_column>maximum_column){
+              pointer_column=0
+              pointer_row=pointer_row+1
+            }
+            }
+      id= "#row"+pointer_row+"col"+pointer_column
+      //console.log(id)
+      var cell= d3.select(id);
+      
+      add_plot(p_name, response.plots[p_name],cell);
+      add_legend(p_name, response.plots[p_name]);
+      // Append style sheet to document head.
+      css.appendChild(document.createTextNode(styles.join(" ")));
+      document.head.appendChild(css);
+            
+}
+ }
+      
+  
   
     
   
