@@ -9,7 +9,7 @@ test_that("check if two plots exist", {
   plot1 <- ggplot(data1, aes(x, y)) + 
     geom_point(size = 2) +            # Plot points with a specified size
     ggtitle("Plot of 3 Dots") +        # Add a title to the plot
-    xlab("X Axis") + ylab("Y Axis")+theme(row=2,col=0)
+    xlab("X Axis") + ylab("Y Axis")+theme(row=0,col=0)
   #theme(plot.title = element_text(color = "purple", size = 20, face = "bold"))
   data2 <- data.frame(
     x = c(1, 2), # x-coordinates of the dots
@@ -19,7 +19,7 @@ test_that("check if two plots exist", {
   plot2 <- ggplot(data2, aes(x, y)) + 
     geom_point(size = 2) +            # Plot points with a specified size
     ggtitle("Plot of 2 Dots") +        # Add a title to the plot
-    xlab("X Axis") + ylab("Y Axis")+theme(row=2,col=2)
+    xlab("X Axis") + ylab("Y Axis")+theme(row=0,col=1)
   
   data3 <- data.frame(
     x = c(2), # x-coordinates of the dots
@@ -29,7 +29,7 @@ test_that("check if two plots exist", {
   plot3 <- ggplot(data3, aes(x, y)) + 
     geom_point(size = 2) +            # Plot points with a specified size
     ggtitle("Plot of 1 Dot") +        # Add a title to the plot
-    xlab("X Axis") + ylab("Y Axis")+theme(row=0)
+    xlab("X Axis") + ylab("Y Axis")+theme(row=1,col=0)
   plot4 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
     geom_point() +
     labs(title = "Car Weight vs. MPG") +
@@ -41,8 +41,8 @@ test_that("check if two plots exist", {
       axis.text.y = element_text(color = "red", size = 12),
       legend.position = "bottom",
       legend.background = element_rect(fill = "lightblue", color = "black", size = 0.5),
-      row=1,
-      col=1
+      row=2,
+      col=2
     )
   
   plot_list <- list(

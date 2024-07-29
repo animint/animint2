@@ -2030,6 +2030,16 @@ var animint = function (to_select, json_file) {
       d3.select("title").text(response.title);
     }
     // Add plots.
+    
+  var check_svg = function (row_number,col_number) {
+    id="#row"+row_number+"col"+col_number
+    parentElement= d3.select(id)
+    if (!parentElement.select('svg').empty()) {
+      return true
+    }else{
+      return false
+    }
+  }
   
   var user_defined_layout= false
   //var count=0
@@ -2046,7 +2056,7 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
 }
 }
   
-  console.log(user_defined_layout)
+  
   if(user_defined_layout){
     var maximum_row= 0
     var maximum_column= 0
@@ -2082,18 +2092,13 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
       css.appendChild(document.createTextNode(styles.join(" ")));
       document.head.appendChild(css);
     }
-    var parentElement1 = d3.select('#row1col1');
-    var parentElement2 = d3.select('#row1col0');
-    if (!parentElement1.select('svg').empty()) {
-    console.log("An <svg> element exists in #row1col1.");
-} else {
-    console.log("No <svg> element found in #row1col1.");
-}
-if (!parentElement2.select('svg').empty()) {
-    console.log("An <svg> element exists in #row1col0.");
-} else {
-    console.log("No <svg> element found in #row1col0.");
-}
+    for (var i = 0; i <=maximum_row; i++) {
+      for (var j = 0; j <=maximum_column; j++){
+        if (check_svg(i,j)){
+          console.log("row"+i+" "+"col"+j)
+        }
+      }
+      }
   }else{
     var construct_outer_table = function () {
      var outer_table = element.append("table").attr("id", "outerTable").style("width", "100%").style("border", "1px solid black");
