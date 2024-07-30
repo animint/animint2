@@ -2030,10 +2030,11 @@ var animint = function (to_select, json_file) {
       d3.select("title").text(response.title);
     }
     // Add plots.
-    
+  
+  
   var check_svg = function (row_number,col_number) {
-    id="#row"+row_number+"col"+col_number
-    parentElement= d3.select(id)
+    var id="#row"+row_number+"col"+col_number
+    var parentElement= d3.select(id)
     if (!parentElement.select('svg').empty()) {
       return true
     }else{
@@ -2054,11 +2055,14 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
 }
   }
   
-
-
-    var maximum_row= 0
-    var maximum_column= 0
-    var count=0
+  var maximum_row= 0
+  var maximum_column= 0
+  var construct_outer_table = function () {
+  var count=0
+  
+  var find_maximum_dimensions = function () {
+  
+  
     for (var p_name in response.plots) {
       count=count+1
     if (response.plots[p_name].row>maximum_row){
@@ -2068,14 +2072,14 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
       maximum_column=response.plots[p_name].col
     }
   }
-  
-  var construct_outer_table = function () {
+   }
+  find_maximum_dimensions()
     var count_dimensions = Math.ceil(Math.sqrt(count))-1;
     var outer_table = element.append("table").attr("id", "outerTable").style("width", "1500px").style("border", "1px solid white");
     maximum_row=Math.max(maximum_row,count_dimensions)
     maximum_column=Math.max(maximum_column,count_dimensions)
-    console.log(maximum_row)
-    console.log(maximum_column)
+    //console.log(maximum_row)
+    //console.log(maximum_column)
     for (var i = 0; i <=maximum_row; i++) {
         var current_row = outer_table.append("tr").style("border", "1px solid white").style("height", "500px");
         for (var j = 0; j <=maximum_column; j++){
@@ -2089,7 +2093,7 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
   
   for (var p_name in response.plots) {
     if ('row' in response.plots[p_name] && 'col' in response.plots[p_name]) {
-      id= "#row"+response.plots[p_name].row+"col"+response.plots[p_name].col
+      var id= "#row"+response.plots[p_name].row+"col"+response.plots[p_name].col
       var cell= d3.select(id);
       
       add_plot(p_name, response.plots[p_name],cell);
@@ -2099,8 +2103,8 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
       document.head.appendChild(css);
     }
   }
-      pointer_row=0
-      pointer_column=0
+      var pointer_row=0
+      var pointer_column=0
       for (var p_name in response.plots) {
         if (!('row' in response.plots[p_name])){
           while (check_svg(pointer_row,pointer_column)) {
@@ -2110,7 +2114,7 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
               pointer_row=pointer_row+1
             }
             }
-      id= "#row"+pointer_row+"col"+pointer_column
+      var id= "#row"+pointer_row+"col"+pointer_column
       //console.log(id)
       var cell= d3.select(id);
       
@@ -2122,8 +2126,7 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
             
 }
  }
-      
-  
+
   
     
   
