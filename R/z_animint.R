@@ -362,7 +362,13 @@ animint2dir <- function(plot.list, out.dir = NULL,
     if(is.ggplot(p)){
       ## If plot is correct, save to meta for further processing
       parsed_info <- parsePlot(meta, p, list.name) # calls ggplot_build.
-      #print(parsed_info$plot.info)
+      #print(parsed_info$plot.info$title)
+      if (!is.null(parsed_info$plot.info$row) && is.null(parsed_info$plot.info$col)) {
+        stop("You forget to add col in ",parsed_info$plot.info$title)
+      }
+      if (!is.null(parsed_info$plot.info$col) && is.null(parsed_info$plot.info$row)) {
+        stop("You forget to add row in ",parsed_info$plot.info$title)
+      }
       AllPlotsInfo[[list.name]] <- parsed_info$plot.info
       ggplot.list[[list.name]]$ggplot <- parsed_info$ggplot
       ggplot.list[[list.name]]$built <- parsed_info$built
