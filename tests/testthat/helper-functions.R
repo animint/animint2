@@ -418,6 +418,7 @@ find_test_path <- function(dir = ".") {
 }
 
 runtime_evaluate <- function(script=NULL,return.value=FALSE){
+  
   eval.result<- remDr$Runtime$evaluate(script,returnByValue = TRUE)
   if (return.value){
     eval.result$result$value
@@ -426,7 +427,7 @@ runtime_evaluate <- function(script=NULL,return.value=FALSE){
   }
 }
 
-runtime_evaluate_helper <- function(class_name=NULL, id=NULL, list_num=NULL,dispatch_event=NULL,return.value=FALSE) {
+runtime_evaluate_helper <- function(class_name=NULL, id=NULL, list_num=NULL, dispatch_event=NULL, return.value=FALSE) {
   if(!is.null(class_name) && !is.null(id) && !is.null(dispatch_event)){
     script_template <- "div = document.getElementById('%s'); div.getElementsByClassName('%s')[%d].dispatchEvent(new CustomEvent('click'));"
     script <- sprintf(script_template, as.character(id), class_name, list_num)
