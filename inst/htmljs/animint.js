@@ -2043,18 +2043,6 @@ var animint = function (to_select, json_file) {
   }
   
   
-  for (var p_name in response.plots) {
-    if ('row' in response.plots[p_name] && 'col' in response.plots[p_name]) {
-      user_defined_layout= true
-}
-if ('row' in response.plots[p_name] && !('col' in response.plots[p_name])){
-  throw new Error("You forgot to add column in "+response.plots[p_name].title+" plot.");
-}
-if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
-  throw new Error("You forgot to add row in "+response.plots[p_name].title+" plot.");
-}
-  }
-  
   var maximum_row= 0
   var maximum_column= 0
   var construct_outer_table = function () {
@@ -2092,8 +2080,8 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
   var outer_table=construct_outer_table();
   
   for (var p_name in response.plots) {
-    if ('row' in response.plots[p_name] && 'col' in response.plots[p_name]) {
-      var id= "#row"+response.plots[p_name].row+"col"+response.plots[p_name].col
+    if ('row' in response.plots[p_name].position && 'col' in response.plots[p_name].position) {
+      var id= "#row"+response.plots[p_name].position.row+"col"+response.plots[p_name].position.col
       var cell= d3.select(id);
       
       add_plot(p_name, response.plots[p_name],cell);
@@ -2106,7 +2094,7 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
       var pointer_row=0
       var pointer_column=0
       for (var p_name in response.plots) {
-        if (!('row' in response.plots[p_name])){
+        if (!('row' in response.plots[p_name].position)){
           while (check_svg(pointer_row,pointer_column)) {
             pointer_column=pointer_column+1
             if (pointer_column>maximum_column){
@@ -2127,10 +2115,6 @@ if ('col' in response.plots[p_name] && !('row'in response.plots[p_name])){
 }
  }
 
-  
-    
-  
-    
     // Then add selectors and start downloading the first data subset.
     for (var s_name in response.selectors) {
       add_selector(s_name, response.selectors[s_name]);
