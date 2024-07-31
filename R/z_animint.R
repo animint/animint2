@@ -104,8 +104,6 @@ parsePlot <- function(meta, plot, plot.name){
   plot.info$grid_minor <- get_grid(theme.pars$panel.grid.minor, theme.pars,
                                    plot.info, meta, built, major = F)
   theme <- plot_theme(built$plot)
-  plot.info$row <-theme$row
-  plot.info$col <-theme$col
   ## Flip labels if coords are flipped - transform does not take care
   ## of this. Do this BEFORE checking if it is blank or not, so that
   ## individual axes can be hidden appropriately, e.g. #1.
@@ -202,7 +200,9 @@ parsePlot <- function(meta, plot, plot.name){
   options_list <- getWidthAndHeight(plot$theme)
   options_list <- setUpdateAxes(plot$theme, options_list)
   plot.info$options <- options_list
-
+  
+  plot.info$position <- getRowAndColumn(plot$theme)
+  
   list(
     plot.info=plot.info,
     ggplot=plot,
@@ -361,13 +361,14 @@ animint2dir <- function(plot.list, out.dir = NULL,
     p <- plot.list[[list.name]]
     if(is.ggplot(p)){
       ## If plot is correct, save to meta for further processing
+      
       parsed_info <- parsePlot(meta, p, list.name) # calls ggplot_build.
       #print(parsed_info$plot.info$title)
-      if (!is.null(parsed_info$plot.info$row) && is.null(parsed_info$plot.info$col)) {
-        stop("You forget to add col in ",parsed_info$plot.info$title)
+      if (!is.null(parsed_info$plot.info$position$row) && is.null(parsed_info$plot.info$position$col)) {
+        stop("You passed row but not the col argument for ",parsed_info$plot.info$title)
       }
-      if (!is.null(parsed_info$plot.info$col) && is.null(parsed_info$plot.info$row)) {
-        stop("You forget to add row in ",parsed_info$plot.info$title)
+      if (!is.null(parsed_info$plot.info$position$col) && is.null(parsed_info$plot.info$position$row)) {
+        stop("You passed col but not the row argument for ",parsed_info$plot.info$title)
       }
       AllPlotsInfo[[list.name]] <- parsed_info$plot.info
       ggplot.list[[list.name]]$ggplot <- parsed_info$ggplot

@@ -353,20 +353,19 @@ print.theme <- function(x, ...) utils::str(x)
 #' }
 theme <- function(..., complete = FALSE, validate = TRUE) {
   elements <- list(...)
-
+  
   if (!is.null(elements$axis.ticks.margin)) {
     warning("`axis.ticks.margin` is deprecated. Please set `margin` property ",
       " of `axis.text` instead", call. = FALSE)
     elements$axis.ticks.margin <- NULL
   }
-
+  
   # Check that all elements have the correct class (element_text, unit, etc)
   if (validate) {
     mapply(validate_element, elements, names(elements))
   }
-
-  structure(elements, class = c("theme", "gganimint"),
-            complete = complete, validate = validate)
+  
+  structure(elements, class = c("theme", "gganimint"),complete = complete, validate = validate)
 }
 
 
@@ -494,7 +493,7 @@ update_theme <- function(oldtheme, newtheme) {
   # the default theme -- just replace everything with newtheme
   if (attr(newtheme, "complete"))
     return(newtheme)
-
+  
   # These are elements in newtheme that aren't already set in oldtheme.
   # They will be pulled from the default theme.
   newitems <- !names(newtheme) %in% names(oldtheme)
