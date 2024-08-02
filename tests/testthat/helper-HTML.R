@@ -78,8 +78,10 @@ get_grid_lines <- function(html, p_name, grid_class){
 }
 # Function to send a key event
 sendKey <- function(key, code, keyCode) {
-  remDr$Input$dispatchKeyEvent(type = "keyDown", key = key, code = code, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = keyCode)
-  remDr$Input$dispatchKeyEvent(type = "keyUp", key = key, code = code, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = keyCode)
+  types <- c("keyDown", "keyUp")
+  for (type in types) {
+    remDr$Input$dispatchKeyEvent(type = type,key = key,code = code,windowsVirtualKeyCode = keyCode,nativeVirtualKeyCode = keyCode)
+  }
 }
 
 getClassBound <- function(geom.class, position){
