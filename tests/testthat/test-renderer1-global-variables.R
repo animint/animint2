@@ -14,7 +14,7 @@ myArray;'
 
 getVariables <- function(){
   
-  vars<-runtime_evaluate(script=myScript, return.value=TRUE)
+  vars<-runtime_evaluate(script=myScript)
   
   # ignore the "plot" variable -- 
   # https://github.com/tdhock/animint/pull/62#issuecomment-100008532

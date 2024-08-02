@@ -87,5 +87,5 @@ getClassBound <- function(geom.class, position){
     'document.getElementsByClassName("%s")[0].getBoundingClientRect().%s', 
     geom.class, position)
   Sys.sleep(2)
-  runtime_evaluate(script=script.txt,return.value=TRUE)
+  runtime_evaluate(script=script.txt)
 }
