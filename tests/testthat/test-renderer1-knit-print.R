@@ -78,10 +78,12 @@ get_circles <- function(html=getHTML()) {
 }
 
 get_elements <- function(id){
+  
   a<- runtime_evaluate_helper(id=id,class_name='show_hide_selector_widgets',list_num=0,return.value=TRUE)
   b<- runtime_evaluate_helper(id=id,class_name='show_hide_selector_widgets',list_num=0,return.value=TRUE)
   show_hide <- runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=0,return.value=TRUE)
   widget <- runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=1,return.value=TRUE)
+  
   list(a178=a,
        b934=b,
        show_hide=show_hide,
