@@ -90,5 +90,4 @@ getClassBound <- function(geom.class, position){
     geom.class, position)
   Sys.sleep(2)
   runtime_evaluate(script=script.txt)
-  Sys.sleep(2)
 }
