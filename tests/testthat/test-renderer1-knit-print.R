@@ -84,7 +84,7 @@ get_elements <- function(id){
   legend_show_hide <- runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=0,return.value=TRUE)
   legend_widget <- runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=1,return.value=TRUE)
   
-  list(a178=top_widget_show_hide,
+  list(a172=top_widget_show_hide,
        b934=bottom_widget_show_hide,
        show_hide=legend_show_hide,
        widget=legend_widget)
@@ -98,7 +98,7 @@ plot1bottom <- get_elements("plot1bottom")
 test_that("clicking top legend adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
   
-  clickID("plot1top_q_label_variable_a178")
+  clickID("plot1top_q_label_variable_a172")
   expect_equal(get_circles(), list(5, 10))
   
   clickID("plot1top_q_label_variable_b934")
@@ -107,14 +107,14 @@ test_that("clicking top legend adds/remove points", {
   clickID("plot1top_q_label_variable_b934")
   expect_equal(get_circles(), list(5, 10))
   
-  clickID("plot1top_q_label_variable_a178")
+  clickID("plot1top_q_label_variable_a172")
   expect_equal(get_circles(), list(10, 10))
 })
 
 test_that("clicking bottom legend adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
   
-  clickID("plot1bottom_q_label_variable_a178")
+  clickID("plot1bottom_q_label_variable_a172")
   expect_equal(get_circles(), list(10, 5))
   
   clickID("plot1bottom_q_label_variable_b934")
@@ -123,7 +123,7 @@ test_that("clicking bottom legend adds/remove points", {
   clickID("plot1bottom_q_label_variable_b934")
   expect_equal(get_circles(), list(10, 5))
   
-  clickID("plot1bottom_q_label_variable_a178")
+  clickID("plot1bottom_q_label_variable_a172")
   expect_equal(get_circles(), list(10, 10))
 })
 clickSide<- function(position=NULL){
