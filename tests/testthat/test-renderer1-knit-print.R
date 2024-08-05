@@ -79,15 +79,10 @@ get_circles <- function(html=getHTML()) {
 
 get_elements <- function(id){
   
-  top_widget_show_hide<- runtime_evaluate_helper(id=id,class_name='show_hide_selector_widgets',list_num=0,return.value=TRUE)
-  bottom_widget_show_hide<- runtime_evaluate_helper(id=id,class_name='show_hide_selector_widgets',list_num=0,return.value=TRUE)
-  legend_show_hide <- runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=0,return.value=TRUE)
-  legend_widget <- runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=1,return.value=TRUE)
-  
-  list(a178=top_widget_show_hide,
-       b934=bottom_widget_show_hide,
-       show_hide=legend_show_hide,
-       widget=legend_widget)
+  list(a178=runtime_evaluate_helper(id=id,class_name='show_hide_selector_widgets',list_num=0,return.value=TRUE),
+       b934=runtime_evaluate_helper(id=id,class_name='show_hide_selector_widgets',list_num=0,return.value=TRUE),
+       show_hide=runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=0,return.value=TRUE),
+       widget=runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=1,return.value=TRUE))
 }
 
 plot1top <- get_elements("plot1top")
