@@ -6,13 +6,7 @@
 // Constructor for animint Object.
 
 var animint = function (to_select, json_file) {
-  //console.log(json_file)
-  fetch(json_file)
-  .then(response => response.json())
-  .then(data => {
-    console.log(data); // Prints the entire JSON data
-  })
-  .catch(error => console.error('Error fetching the JSON file:', error));
+
   var default_axis_px = 16;
 
    function wait_until_then(timeout, condFun, readyFun) {
