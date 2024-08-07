@@ -418,25 +418,14 @@ find_test_path <- function(dir = ".") {
 }
 
 runtime_evaluate <- function(script=NULL){
-  
   remDr$Runtime$evaluate(script,returnByValue = TRUE)$result$value
-  
 }
 
-runtime_evaluate_helper <- function(class_name=NULL, id=NULL, list_num=NULL, dispatch_event=NULL, return.value=FALSE) {
-  
-  if(!is.null(class_name) && !is.null(id) && !is.null(dispatch_event)){
-    script_template <- "div = document.getElementById('%s'); div.getElementsByClassName('%s')[%d].dispatchEvent(new CustomEvent('click'));"
-    script <- sprintf(script_template, as.character(id), class_name, list_num)
-  }else if(is.null(class_name) && !is.null(id) && !is.null(dispatch_event)){
-    script_template <- "document.getElementById('%s').dispatchEvent(new CustomEvent('click'))"
-    script <- sprintf(script_template, as.character(id))
-  }else if(!is.null(class_name) && !is.null(id) && is.null(dispatch_event)){
-    script_template <- "div = document.getElementById('%s');div.getElementsByClassName('%s')[%d]"
-    script <- sprintf(script_template, as.character(id),class_name,list_num)
-  }else if(!is.null(class_name) && is.null(id) && !is.null(dispatch_event)){
-    script_template <- "document.getElementsByClassName('%s')[%d].dispatchEvent(new CustomEvent('click'));"
-    script <- sprintf(script_template,class_name,list_num)
-  }
-  runtime_evaluate(script = script)
+runtime_evaluate_helper <- function(class_name=NULL, id=NULL, list_num=NULL, dispatch_event=NULL) {
+  runtime_evaluate(script = paste0(
+    "document",
+    if(is.character(id))sprintf(".getElementById('%s')", id),
+    if(is.character(class_name))sprintf(".getElementsByClassName('%s')", class_name),
+    if(is.atomic(list_num))sprintf("[%d]", as.integer(list_num)),
+    if(isTRUE(dispatch_event))".dispatchEvent(new CustomEvent('click'))"))
 }
