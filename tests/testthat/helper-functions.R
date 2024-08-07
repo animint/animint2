@@ -418,9 +418,7 @@ find_test_path <- function(dir = ".") {
 }
 
 runtime_evaluate <- function(script=NULL){
-  
   remDr$Runtime$evaluate(script,returnByValue = TRUE)$result$value
-  
 }
 
 runtime_evaluate_helper <- function(class_name=NULL, id=NULL, list_num=NULL, dispatch_event=NULL, return.value=FALSE) {
