@@ -79,10 +79,10 @@ get_circles <- function(html=getHTML()) {
 
 get_elements <- function(id){
   
-  list(a178=runtime_evaluate_helper(id=id,class_name='show_hide_selector_widgets',list_num=0,return.value=TRUE),
-       b934=runtime_evaluate_helper(id=id,class_name='show_hide_selector_widgets',list_num=0,return.value=TRUE),
-       show_hide=runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=0,return.value=TRUE),
-       widget=runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=1,return.value=TRUE))
+  list(a178=runtime_evaluate_helper(id=id,class_name='show_hide_selector_widgets',list_num=0),
+       b934=runtime_evaluate_helper(id=id,class_name='show_hide_selector_widgets',list_num=1),
+       show_hide=runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=0),
+       widget=runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=1))
 }
 
 plot1top <- get_elements("plot1top")
