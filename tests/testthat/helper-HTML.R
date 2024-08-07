@@ -30,7 +30,7 @@ getHTML <- function(){
 #' @export
 #' @seealso \link{tests_run}
 #'
-tests_init <- function(dir = ".", port = 4848, ...) {
+tests_init <- function(dir = ".", ...) {
   # try to exit out of previously initated processes
   ex <- tests_exit()
   # start a non-blocking local file server under path/to/animint/tests/testhat
@@ -58,7 +58,7 @@ tests_init <- function(dir = ".", port = 4848, ...) {
     chrome.session$DOM$getOuterHTML(doc$root$nodeId)$outerHTML
     }
   remDr <<- chrome.session
-  remDr$navigate(sprintf("http://localhost:4848/animint-htmltest/"))
+  remDr$navigate("http://localhost:4848/animint-htmltest/")
   invisible(TRUE)
 }
 ## get both horizontal and vertical grid lines
