@@ -35,7 +35,7 @@ tests_init <- function(dir = ".", ...) {
   ex <- tests_exit()
   # start a non-blocking local file server under path/to/animint/tests/testhat
   testPath <- find_test_path(dir)
-  run_servr(port = "4848", directory = testPath)
+  run_servr(port = 4848, directory = testPath)
   # animint tests are performed in path/to/testthat/animint-htmltest/
   # note this path has to match the out.dir argument in animint2THML...
   testDir <- file.path(testPath, "animint-htmltest")
