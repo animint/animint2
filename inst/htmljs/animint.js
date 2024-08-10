@@ -2059,7 +2059,7 @@ var animint = function (to_select, json_file) {
     var count_dimensions = Math.ceil(Math.sqrt(count))-1;
     maximum_row=Math.max(maximum_row,count_dimensions)
     maximum_column=Math.max(maximum_column,count_dimensions)
-    table_width=(maximum_column+1)*500+"px"
+    var table_width=(maximum_column+1)*500+"px"
     var outer_table = element.append("table").attr("id", "outerTable").style("width", table_width).style("border", "1px solid solid transparent");
     
     for (var i = 0; i <=maximum_row; i++) {
