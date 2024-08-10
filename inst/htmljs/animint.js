@@ -2057,15 +2057,15 @@ var animint = function (to_select, json_file) {
    }
   find_maximum_dimensions()
     var count_dimensions = Math.ceil(Math.sqrt(count))-1;
-    var outer_table = element.append("table").attr("id", "outerTable").style("width", "1500px").style("border", "1px solid white");
     maximum_row=Math.max(maximum_row,count_dimensions)
     maximum_column=Math.max(maximum_column,count_dimensions)
-    //console.log(maximum_row)
-    //console.log(maximum_column)
+    table_width=(maximum_column+1)*500+"px"
+    var outer_table = element.append("table").attr("id", "outerTable").style("width", table_width).style("border", "1px solid solid transparent");
+    
     for (var i = 0; i <=maximum_row; i++) {
-        var current_row = outer_table.append("tr").style("border", "1px solid white").style("height", "500px");
+        var current_row = outer_table.append("tr").style("border", "1px solid transparent").style("height", "500px");
         for (var j = 0; j <=maximum_column; j++){
-            current_row.append("td").attr("id", "row"+i+"col"+j).style("border", "1px solid white").style("width", "500px");
+            current_row.append("td").attr("id", "row"+i+"col"+j).style("border", "1px solid solid transparent").style("width", "500px");
         }
     }
     
