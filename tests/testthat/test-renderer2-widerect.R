@@ -341,11 +341,11 @@ test_that("pause stops animation (third time)", {
 
 runtime_evaluate_helper(class_name="show_hide_selector_widgets",list_num=0,dispatch_event=TRUE)
 clickSelector("year_variable_selector_widget")
-sendKey("Backspace", "Backspace", 8)
+sendKey("Backspace")
 remDr$Input$insertText(text = "1962")
 clickSelector("year_variable_selector_widget")
-sendKey("ArrowDown", "ArrowDown", 40)
-sendKey("Enter", "Enter", 13)
+sendKey("ArrowDown")
+sendKey("Enter")
 Sys.sleep(3)
 
 test_that("typing into selectize widget changes year to 1962", {
@@ -365,7 +365,7 @@ test_that("initial countries same as first", {
 
 clickSelector("country_variable_selector_widget")
 remDr$Input$insertText(text = "Afg")
-sendKey("Enter", "Enter", 13)
+sendKey("Enter")
  
 Sys.sleep(1)
 
@@ -376,7 +376,7 @@ test_that("Afg autocompletes to Afghanistan", {
 })
 
 clickSelector("country_variable_selector_widget")
-sendKey("Backspace", "Backspace", 8)
+sendKey("Backspace")
 Sys.sleep(1)
 
 test_that("backspace removes Afghanistan from selected countries", {

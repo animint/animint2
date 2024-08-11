@@ -78,11 +78,10 @@ get_circles <- function(html=getHTML()) {
 }
 
 get_elements <- function(id){
-  
-  list(a178=runtime_evaluate_helper(id=id,class_name='show_hide_selector_widgets',list_num=0),
-       b934=runtime_evaluate_helper(id=id,class_name='show_hide_selector_widgets',list_num=1),
-       show_hide=runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=0),
-       widget=runtime_evaluate_helper(id=id,class_name='table.legend tr.label_variable',list_num=1))
+  list(a178=runtime_evaluate_helper(id=id, class_name='show_hide_selector_widgets', list_num=0),
+       b934=runtime_evaluate_helper(id=id, class_name='show_hide_selector_widgets', list_num=1),
+       show_hide=runtime_evaluate_helper(id=id, class_name='table.legend tr.label_variable', list_num=0),
+       widget=runtime_evaluate_helper(id=id, class_name='table.legend tr.label_variable', list_num=1))
 }
 
 plot1top <- get_elements("plot1top")
@@ -121,24 +120,20 @@ test_that("clicking bottom legend adds/remove points", {
   clickID("plot1bottom_q_label_variable_a178")
   expect_equal(get_circles(), list(10, 10))
 })
-clickSide<- function(position=NULL){
-  if(position=="top"){
-    runtime_evaluate_helper(id=as.character("plot1top"),class_name='show_hide_selector_widgets',list_num=0,dispatch_event=TRUE)
-    runtime_evaluate_helper(id=as.character("plot1top"),class_name='selectize-input',list_num=0,dispatch_event=TRUE)
-  }else if(position=="bottom"){
-    runtime_evaluate_helper(id=as.character("plot1bottom"),class_name='show_hide_selector_widgets',list_num=0,dispatch_event=TRUE)
-    runtime_evaluate_helper(id=as.character("plot1bottom"),class_name='selectize-input',list_num=0,dispatch_event=TRUE)
-  }
+clickSide <- function(position=NULL){
+  id <- paste0("plot1", position)
+  runtime_evaluate_helper(id=id, class_name='show_hide_selector_widgets', list_num=0, dispatch_event=TRUE)
+  runtime_evaluate_helper(id=id, class_name='selectize-input', list_num=0, dispatch_event=TRUE)
 }
 
 sendBackspace <- function() {
-  sendKey("Backspace", "Backspace", 8)
+  sendKey("Backspace")
   Sys.sleep(0.5)
 }
 
 send <- function(alphabet) {
   remDr$Input$insertText(text = alphabet)
-  sendKey("Enter", "Enter", 13)
+  sendKey("Enter")
   Sys.sleep(0.5)
 }
 

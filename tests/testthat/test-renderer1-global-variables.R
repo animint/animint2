@@ -13,9 +13,7 @@ for(var b in window) {
 myArray;'
 
 getVariables <- function(){
-  
-  vars<-runtime_evaluate(script=myScript)
-  
+  vars <- runtime_evaluate(script=myScript)
   # ignore the "plot" variable -- 
   # https://github.com/tdhock/animint/pull/62#issuecomment-100008532
   # also ignore jQuery1238915281937 variable:
