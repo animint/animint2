@@ -78,12 +78,12 @@ get_grid_lines <- function(html, p_name, grid_class){
 }
 # Function to send a key event
 sendKey <- function(key) {
-  types <- c("keyDown", "keyUp")
+  stopifnot(is.character(key))
   key2code <- c(
     Backspace=8,
     Enter=13,
     ArrowDown=40)
-  for (type in types) {
+  for (type in c("keyDown", "keyUp")) {
     remDr$Input$dispatchKeyEvent(type = type, key = key, code = key, windowsVirtualKeyCode = key2code[[key]], nativeVirtualKeyCode = key2code[[key]])
   }
 }
