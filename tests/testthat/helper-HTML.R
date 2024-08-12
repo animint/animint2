@@ -79,6 +79,10 @@ get_grid_lines <- function(html, p_name, grid_class){
 # Function to send a key event
 sendKey <- function(key) {
   stopifnot(is.character(key))
+  #The key codes in the list below are adopted from Windows Virtual keycode standards
+  #https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+  # VK_BACK->Backspace, VK_RETURN->Enter, VK_DOWN->ArrowDown
+  # we use the decimal values of the key codes
   key2code <- c(
     Backspace=8,
     Enter=13,
