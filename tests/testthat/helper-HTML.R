@@ -84,7 +84,7 @@ sendKey <- function(key) {
     Enter=13,
     ArrowDown=40)
   for (type in types) {
-    remDr$Input$dispatchKeyEvent(type = type, key = key, code = key, windowsVirtualKeyCode = keyCode, nativeVirtualKeyCode = key2code[[key]])
+    remDr$Input$dispatchKeyEvent(type = type, key = key, code = key, windowsVirtualKeyCode = key2code[[key]], nativeVirtualKeyCode = key2code[[key]])
   }
 }
 
