@@ -82,7 +82,7 @@ sendKey <- function(key) {
   #The key codes in the list below are adopted from Windows Virtual keycode standards
   #https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
   # VK_BACK->Backspace, VK_RETURN->Enter, VK_DOWN->ArrowDown
-  # we use the decimal values of the key codes
+  # we use the corresponding decimal values of the key codes given in hex value in the above link
   key2code <- c(
     Backspace=8,
     Enter=13,
