@@ -76,19 +76,23 @@ get_grid_lines <- function(html, p_name, grid_class){
   attr_v <- apply(attr_v, 2, as.numeric)
   return(list(hor=attr_h, vert=attr_v))
 }
+### The hex codes come from
+### https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values
+key2hex_code <- c(
+  Backspace="08",
+  Enter="0D",
+  ArrowDown="28")
+### https://chromedevtools.github.io/devtools-protocol/tot/Input/ says
+### that dispatchKeyEvent() requires DOM key codes (in decimal) for
+### the windowsVirtualKeyCode and nativeVirtualKeyCode arguments.
+key2dec_code <- structure(
+  strtoi(key2hex_code,base=16),
+  names=names(key2hex_code))
 # Function to send a key event
 sendKey <- function(key) {
   stopifnot(is.character(key))
-  #The key codes in the list below are adopted from Windows Virtual keycode standards
-  #https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
-  # VK_BACK->Backspace, VK_RETURN->Enter, VK_DOWN->ArrowDown
-  # we use the corresponding decimal values of the key codes given in hex value in the above link
-  key2code <- c(
-    Backspace=8,
-    Enter=13,
-    ArrowDown=40)
   for (type in c("keyDown", "keyUp")) {
-    remDr$Input$dispatchKeyEvent(type = type, key = key, code = key, windowsVirtualKeyCode = key2code[[key]], nativeVirtualKeyCode = key2code[[key]])
+    remDr$Input$dispatchKeyEvent(type = type, key = key, code = key, windowsVirtualKeyCode = key2dec_code[[key]], nativeVirtualKeyCode = key2dec_code[[key]])
   }
 }
 
