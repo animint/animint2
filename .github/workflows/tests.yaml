@@ -20,9 +20,6 @@ jobs:
       GITHUB_PAT: ${{ secrets.PAT_GITHUB }}
       GH_ACTION: "ENABLED"
     steps:
-      - uses: actions/checkout@v3
-      - name: Start Selenium Docker
-        run: docker run -d --network="host" selenium/standalone-firefox-debug:2.53.0
       - name: install and update texlive
         run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt update -y -qq
       - run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt install texlive texlive-fonts-extra -y
