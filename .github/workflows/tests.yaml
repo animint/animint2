@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test-suite: [ renderer1,renderer2,renderer3,compiler,CRAN]
+        test-suite: [ renderer, compiler, CRAN ]
 
     name: Test Suite ${{ matrix.test-suite }}
     env: 

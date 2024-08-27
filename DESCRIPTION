@@ -87,7 +87,7 @@ Suggests:
     htmltools,
     rmarkdown,
     testthat,
-    RSelenium, XML,
+    XML,
     devtools,
     httr,
     maps,
@@ -102,7 +102,6 @@ Suggests:
     svglite,
     ggplot2,
     chromote
-Remotes: ropensci/RSelenium@v1.7.4
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
