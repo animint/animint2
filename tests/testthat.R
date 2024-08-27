@@ -14,4 +14,4 @@ if(filter == ""){
 message(gh.action)
 if(use.browser)tests_init()
 tests_run(filter=filter)
-if(use_browser)tests_exit()
+if(use.browser)tests_exit()
