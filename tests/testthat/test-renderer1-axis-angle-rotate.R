@@ -28,12 +28,16 @@ expect_rotate_anchor <- function(info, rotate, anchor){
   expect_match(rotated["style", ], paste("text-anchor:", anchor), fixed=TRUE)
   expect_match(rotated["transform", ], paste0("rotate(", rotate), fixed=TRUE)
   # http://stackoverflow.com/questions/442404/retrieve-the-position-x-y-of-an-html-element
-  tick_box <- remDr$executeScript('return document.getElementsByClassName("xaxis")[0].firstChild.getBoundingClientRect()')
-  title_box <- remDr$executeScript('return document.getElementsByClassName("xtitle")[0].getBoundingClientRect()')
-  expect_true(title_box$top >= tick_box$bottom)
+  tick_box <- getClassBound("xaxis", "bottom")
+  title_box <- getClassBound("xtitle", "top")
+  #An offset of 2.5 px is added in line below but it may need to changed slightly if browser environment is different.
+  #more information of getBoundingClientRect() and why value it returns depends on specific browser environment is in the links below
+  #https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
+  #https://stackoverflow.com/questions/40879171/in-javascript-why-does-getboundingclientrect-sometimes-return-floating-point
+  expect_gt(title_box+2.5, tick_box)
 }
 test_that('no axis rotation is fine', {
-  map <-
+  map <-      
     list(rotated=fg,
          not=sg)
   info <- animint2HTML(map)

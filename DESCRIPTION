@@ -1,6 +1,6 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2024.3.12
+Version: 2024.6.6
 URL: https://animint.github.io/animint2/
 BugReports: https://github.com/animint/animint2/issues
 Authors@R: c(
@@ -50,12 +50,12 @@ Authors@R: c(
     person("Yufan", "Fei",
      role="aut",
      comment="Animint2 GSoC 2022"),
-	person("Jocelyne", "Chen",
-	 role="aut",
-	 comment="Animint2 GSoC 2023"),
-	 person("Siddhesh", "Deodhar",
-	 role="aut",
-	 comment="Animint2 GSoC 2024"))
+    person("Jocelyne", "Chen",
+     role="aut",
+     comment="Animint2 GSoC 2023"),
+    person("Siddhesh", "Deodhar",
+     role="aut",
+     comment="Animint2 GSoC 2024"))
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
  on a web page. The 2018 Journal of Computational and 
@@ -100,7 +100,8 @@ Suggests:
     nlme,
     rpart,
     svglite,
-    ggplot2
+    ggplot2,
+    chromote
 Remotes: ropensci/RSelenium@v1.7.4
 License: GPL-3
 Encoding: UTF-8
