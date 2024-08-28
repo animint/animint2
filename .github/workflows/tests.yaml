@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test-suite: [ renderer1,renderer2,renderer3,compiler,CRAN]
+        test-suite: [ renderer, compiler, CRAN ]
 
     name: Test Suite ${{ matrix.test-suite }}
     env: 
@@ -21,8 +21,6 @@ jobs:
       GH_ACTION: "ENABLED"
     steps:
       - uses: actions/checkout@v3
-      - name: Start Selenium Docker
-        run: docker run -d --network="host" selenium/standalone-firefox-debug:2.53.0
       - name: install and update texlive
         run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt update -y -qq
       - run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt install texlive texlive-fonts-extra -y

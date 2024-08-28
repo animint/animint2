@@ -330,10 +330,7 @@ unequal <- function(object, expected, ...){
 #' tests_exit()
 #' }
 #'
-
 tests_run <- function(dir = ".", filter = NULL) {
-  if (!"package:RSelenium" %in% search())
-    stop("Please load RSelenium: library(RSelenium)")
   if (!"package:testthat" %in% search())
     stop("Please load testthat: library(testthat)")
   testDir <- find_test_path(dir)

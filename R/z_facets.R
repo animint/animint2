@@ -1,4 +1,3 @@
-
 # Determine titles to put on facet panels.
 # The implementation here is a modified version of facet_strips.
 getStrips <- function(facet, panel, ...)
@@ -36,7 +35,6 @@ build_strip <- function(panel, label_df, labeller, side = "right", ...) {
   labels <- matrix(list(), nrow = nrow(label_df), ncol = ncol(label_df))
   labels <- lapply(labeller(label_df), cbind)
   labels <- do.call("cbind", labels)
-
   # unlike ggplot2, we collapse "layers" of strips into 1 layer
   apply(labels, 1, paste, collapse = "; ")
 }
