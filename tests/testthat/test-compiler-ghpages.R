@@ -23,8 +23,22 @@ test_that("error for viz with no source", {
   }, "plot.list does not contain option named source, which is required by animint2pages")
 })
 
+## This test requires a fine-grained PAT
+## - go to https://github.com/settings/personal-access-tokens/new
+## - Resource owner: animint-test
+## - Repository access: All repositories
+## - Repository permissions: Administration and Contents: read and write.
+## - Generate token
+## - copy token and paste into PAT_GITHUB on https://github.com/animint/animint2/settings/secrets/actions
+## Note that it is animint2pages_test_repo under owner=animint-test (not animint), because we want to limit the damage that a malicious user could do with this token: there are no repos with important data in the animint-test org.
 test_that("animint2pages() returns list of meta-data", {
-  result_list <- animint2pages(viz, github_repo = "animint2pages_test_repo")
+  ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#delete-a-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write) gh api --method DELETE -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/OWNER/REPO
+  gh::gh("DELETE /repos/animint-test/animint2pages_test_repo")
+  ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-an-organization-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write)
+  gh::gh("POST /orgs/animint-test/repos", name="animint2pages_test_repo")
+  ## first run of animint2pages creates new data viz.
+  result_list <- animint2pages(viz, "animint2pages_test_repo", owner="animint-test")
+  result_list
   expect_match(result_list$owner_repo, "animint2pages_test_repo")
   expect_match(result_list$viz_url, "github.io/animint2pages_test_repo")
   expect_match(result_list$gh_pages_url, "animint2pages_test_repo/tree/gh-pages")
@@ -32,6 +46,18 @@ test_that("animint2pages() returns list of meta-data", {
   README.lines <- readLines(README.md)
   expected.line <- paste("##", viz$title)
   expect_identical(README.lines[1], expected.line)
+  get_tsv <- function(L)Sys.glob(file.path(L$local_clone, "*tsv"))
+  tsv_files_created <- get_tsv(result_list)
+  expect_equal(length(tsv_files_created), 1)
+  ## second run of animint2pages updates data viz.
+  viz.more <- viz
+  viz.more$five <- ggplot()+
+    geom_point(aes(
+      x, x),
+      data=data.frame(x=1:5))
+  update_list <- animint2pages(viz.more, "animint2pages_test_repo", owner="animint-test")
+  tsv_files_updated <- get_tsv(update_list)
+  expect_equal(length(tsv_files_updated), 2)
 })
 
 test_that("animint2pages raises an error if no GitHub token is present", {
