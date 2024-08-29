@@ -1,4 +1,3 @@
-
 # Changes in version 2024.8.29 (PR#131)
   
   - Added functionality to capture screenshot in animint2pages
