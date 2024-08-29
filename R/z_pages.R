@@ -36,25 +36,19 @@
 #' }
 #'
 #' @export
-
-
-
 animint2pages <- function(plot.list, github_repo, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"),server=NULL, ...) {
-  
   for(opt in required_opts){
     if(!opt %in% names(plot.list)){
       stop(sprintf("plot.list does not contain option named %s, which is required by animint2pages", opt))
     }
   }
-  
-  # Check for required packages
+  ## Check for required packages
   for(pkg in c("gert", "gh")){
     if (!requireNamespace(pkg)) {
       stop(sprintf("Please run `install.packages('%s')` before using this function", pkg))
     }
   }
   chrome.session <- chromote::ChromoteSession$new()
-
   if (is.null(server)) {
     res <- animint2dir(plot.list, open.browser = FALSE, ...)
     portNum <- servr::random_port()
@@ -69,17 +63,16 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
     url <- sprintf("http://localhost:%d",8080)
     chrome.session$Page$navigate(url)
   }
-
   screenshot_path <- file.path(res$out.dir, "Capture.PNG")
+  screenshot_full <- file.path(res$out.dir, "Capture_full.PNG")
   Sys.sleep(3)
-  # Capture screenshot
-  screenshot <- chrome.session$Page$captureScreenshot()
-  image_raw <- magick::image_read(jsonlite::base64_dec(screenshot$data))
+  ## Capture screenshot
+  chrome.session$screenshot(screenshot_full, selector = ".plot_content")
+  image_raw <- magick::image_read(screenshot_full)
   image_trimmed <- magick::image_trim(image_raw)
   magick::image_write(image_trimmed, screenshot_path)
-  
+  unlink(screenshot_full)
   chrome.session$close()
-  
   all_files <- Sys.glob(file.path(res$out.dir, "*"))
   file_info <- file.info(all_files)
   to_post <- all_files[!(file_info$size == 0 | grepl("~$", all_files))]
@@ -105,8 +98,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
     repo <- gert::git_clone(origin_url, local_clone)
   }
   viz_url <- paste0("https://", owner, ".github.io/", github_repo)
-  
-  # check if repo has commit, if not, give it first commit, this can avoid error
+  ## check if repo has commit, if not, give it first commit, this can avoid error
   has_commits <- FALSE
   try(
     {
@@ -119,11 +111,10 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   if (!has_commits) {
     initial_commit(local_clone, repo, viz_url)
   }
-  # Handle gh-pages branch
+  ## Handle gh-pages branch
   manage_gh_pages(repo, to_post, local_clone, commit_message)
   message(sprintf(
     "Visualization will be available at %s\nDeployment via GitHub Pages may take a few minutes...", viz_url))
-  
   viz_owner_repo
 }
 
