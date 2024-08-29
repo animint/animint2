@@ -2,7 +2,6 @@ acontext("GitHub Pages")
 library(gh)
 server <- function() {
   out.dir <- tempfile()
-  
   dir.create(out.dir, showWarnings=FALSE, recursive=TRUE)
   portNum <- 8080
   normDir <- normalizePath(out.dir, winslash = "/", mustWork = TRUE)
@@ -12,6 +11,7 @@ server <- function() {
 }
 
 s<-server()
+
 viz <- animint(
   title="one to ten",
   source="https://github.com/animint/animint2/tree/master/tests/testthat/test-compiler-ghpages.R",
