@@ -102,7 +102,6 @@ Suggests:
     svglite,
     ggplot2,
     chromote,
-    gh,
     magick
 License: GPL-3
 Encoding: UTF-8
