@@ -1,5 +1,6 @@
 acontext("GitHub Pages")
 
+library(animint2)
 viz <- animint(
   title="one to ten",
   source="https://github.com/animint/animint2/tree/master/tests/testthat/test-compiler-ghpages.R",
@@ -22,9 +23,15 @@ test_that("error for viz with no source", {
   }, "plot.list does not contain option named source, which is required by animint2pages")
 })
 
-test_that("animint2pages() returns owner/repo string", {
-  viz_owner_repo <- animint2pages(viz, github_repo = "animint2pages_test_repo")
-  expect_is(viz_owner_repo, "character")
+test_that("animint2pages() returns list of meta-data", {
+  result_list <- animint2pages(viz, github_repo = "animint2pages_test_repo")
+  expect_match(result_list$owner_repo, "animint2pages_test_repo")
+  expect_match(result_list$viz_url, "github.io/animint2pages_test_repo")
+  expect_match(result_list$gh_pages_url, "animint2pages_test_repo/tree/gh-pages")
+  README.md <- file.path(result_list$local_clone, "README.md")
+  README.lines <- readLines(README.md)
+  expected.line <- paste("##", viz$title)
+  expect_identical(README.lines[1], expected.line)
 })
 
 test_that("animint2pages raises an error if no GitHub token is present", {

@@ -92,7 +92,7 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
   manage_gh_pages(repo, to_post, local_clone, commit_message)
   message(sprintf(
     "Visualization will be available at %s\nDeployment via GitHub Pages may take a few minutes...", viz_url))
-  viz_owner_repo
+  list(owner_repo=viz_owner_repo, local_clone=local_clone, viz_url=viz_url, gh_pages_url=sprintf("https://github.com/%s/tree/gh-pages", viz_owner_repo))
 }
 
 initial_commit <- function(local_clone, repo, viz_url) {
