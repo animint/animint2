@@ -1,9 +1,8 @@
 acontext("knitting multiple animint plots in a single Rmd")
-
 knitr::knit_meta() #clear knitr 'metadata'
 # Rmd.file <- "~/R/animint/inst/examples/test_knit_print.Rmd" ## Do we need this???
 Rmd.file <- system.file("examples", "test_knit_print.Rmd", 
-                         package = "animint2")
+                        package = "animint2")
 index.file <- file.path("animint-htmltest", "index.Rmd")
 
 file.copy(Rmd.file, index.file, overwrite=TRUE)
@@ -11,7 +10,7 @@ file.copy(Rmd.file, index.file, overwrite=TRUE)
 ## @yihui says "Do not use the output_dir argument of render()"
 rmarkdown::render(index.file)
 remDr$refresh()
-Sys.sleep(1)
+Sys.sleep(3)
 html <- getHTML()
 
 test_that("knit_print.animint renders five x axis titles", {
@@ -27,9 +26,9 @@ test_that("knit_print.animint renders five x axis titles", {
 })
 
 test_that("segments and breakpoints are rendered", {
-  seg.list <- getNodeSet(html, "//g[@class='geom3_segment_signal']//line")
+  seg.list <- getNodeSet(html, '//g[@class="geom3_segment_signal"]//line')
   expect_equal(length(seg.list), 6)
-  break.list <- getNodeSet(html, "//g[@class='geom4_vline_signal']//line")
+  break.list <- getNodeSet(html, '//g[@class="geom4_vline_signal"]//line')
   expect_equal(length(break.list), 5)
 })
 
@@ -79,22 +78,10 @@ get_circles <- function(html=getHTML()) {
 }
 
 get_elements <- function(id){
-  ##print("before div")
-  div <- remDr$findElement("id", id)
-  ## For debugging a NoSuchElement error I insert print statements.
-  ##print("before css selector")
-  tr.list <- div$findChildElements(
-    "css selector", "table.legend tr.label_variable")
-  a <- tr.list[[1]]
-  b <- tr.list[[2]]
-  ##print("before show_hide")
-  show_hide <- div$findChildElement("class name", "show_hide_selector_widgets")
-  ##print("before col_selector_widget")
-  widget <- div$findChildElement("class name", "label_variable_selector_widget")
-  list(a178=a,
-       b934=b,
-       show_hide=show_hide,
-       widget=widget)
+  list(a178=runtime_evaluate_helper(id=id, class_name='show_hide_selector_widgets', list_num=0),
+       b934=runtime_evaluate_helper(id=id, class_name='show_hide_selector_widgets', list_num=1),
+       show_hide=runtime_evaluate_helper(id=id, class_name='table.legend tr.label_variable', list_num=0),
+       widget=runtime_evaluate_helper(id=id, class_name='table.legend tr.label_variable', list_num=1))
 }
 
 plot1top <- get_elements("plot1top")
@@ -133,36 +120,45 @@ test_that("clicking bottom legend adds/remove points", {
   clickID("plot1bottom_q_label_variable_a178")
   expect_equal(get_circles(), list(10, 10))
 })
+clickSide <- function(position=NULL){
+  id <- paste0("plot1", position)
+  runtime_evaluate_helper(id=id, class_name='show_hide_selector_widgets', list_num=0, dispatch_event=TRUE)
+  runtime_evaluate_helper(id=id, class_name='selectize-input', list_num=0, dispatch_event=TRUE)
+}
 
-plot1top$show_hide$clickElement()
-s.div <- plot1top$widget$findChildElement("class name", "selectize-input")
-s.div$clickElement()
+sendBackspace <- function() {
+  sendKey("Backspace")
+  Sys.sleep(0.5)
+}
 
+send <- function(alphabet) {
+  remDr$Input$insertText(text = alphabet)
+  sendKey("Enter")
+  Sys.sleep(0.5)
+}
+
+clickSide("top")
 test_that("top widget adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
-  remDr$sendKeysToActiveElement(list(key="backspace"))
+  sendBackspace()
   expect_equal(get_circles(), list(5, 10))
-  remDr$sendKeysToActiveElement(list(key="backspace"))
+  sendBackspace()
   expect_equal(get_circles(), list(0, 10))
-  remDr$sendKeysToActiveElement(list("a", key="enter"))
+  send("a")
   expect_equal(get_circles(), list(5, 10))
-  remDr$sendKeysToActiveElement(list("b", key="enter"))
+  send("b")
   expect_equal(get_circles(), list(10, 10))
 })
 
-plot1bottom$show_hide$clickElement()
-s.div <-
-  plot1bottom$widget$findChildElement("class name", "selectize-input")
-s.div$clickElement()
-
+clickSide("bottom")
 test_that("bottom widget adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
-  remDr$sendKeysToActiveElement(list(key="backspace"))
+  sendBackspace()
   expect_equal(get_circles(), list(10, 5))
-  remDr$sendKeysToActiveElement(list(key="backspace"))
+  sendBackspace()
   expect_equal(get_circles(), list(10, 0))
-  remDr$sendKeysToActiveElement(list("a", key="enter"))
+  send("a")
   expect_equal(get_circles(), list(10, 5))
-  remDr$sendKeysToActiveElement(list("b", key="enter"))
+  send("b")
   expect_equal(get_circles(), list(10, 10))
 })

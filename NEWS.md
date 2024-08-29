@@ -1,14 +1,23 @@
-# Changes in version 2024.7.5 (PR#131)
+
+# Changes in version 2024.8.29 (PR#131)
   
   - Added functionality to capture screenshot in animint2pages
 
+# Changes in version 2024.8.27 (PR#144)
+ 
+- Remove selenium, combine renderer tests into single CI job.
+
+# Changes in version 2024.6.6 (PR#126)
+ 
+- Add chromote as headless browser for testing and remove phantomjs/firefox support
+
 # Changes in version 2024.3.12 (PR#119)
  
-  - Add validation checks for duplicate args passed geom and aes
+- Add validation checks for duplicate args passed geom and aes
   
 # Changes in version 2024.2.4 (PR#116)
  
-  - Add validation checks for duplicate and missing args passed to animint.
+- Add validation checks for duplicate and missing args passed to animint.
 
 # Changes in version 2024.1.24 (PR#112)
 

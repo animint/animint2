@@ -2,7 +2,9 @@ acontext("shiny")
 
 ## We do not need if(on wercker or travis){skip shiny test} as of 10
 ## Oct 2015, since we only run tests that match the TEST_SUITE env
-## var, and test-shiny.R never matches.
+## var, and test-shiny.R never matches. TODO convert
+## sendKeysToActiveElement to new sendKeys, get shiny tests working on
+## new chromote framework.
 
 ## shiny tests require navigating to different ports, so remember
 ## where we are and return when tests are done
