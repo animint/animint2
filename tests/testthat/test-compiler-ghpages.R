@@ -23,25 +23,11 @@ test_that("error for viz with no source", {
   }, "plot.list does not contain option named source, which is required by animint2pages")
 })
 
-## Running this test requires permission for creating and deleting repos under the animint-test org.
-## GITHUB ACTIONS TESTING:
-## In the context of github actions, we use a fine-grained PAT,
-## Need to create one every year (1 year is the max expiration).
-## - go to https://github.com/settings/personal-access-tokens/new
-## - Resource owner: animint-test
-## - Repository access: All repositories
-## - Repository permissions: Administration and Contents: read and write.
-## - Generate token
-## - copy token and paste into PAT_GITHUB on https://github.com/animint/animint2/settings/secrets/actions
-## Note that it is animint2pages_test_repo under owner=animint-test (not animint), because we want to limit the damage that a malicious user could do with this token: there are no repos with important data in the animint-test org.
-## LOCAL TESTING:
-## First you need to become a member of the animint-test org (ask tdhock).
-## On windows the credential manager will by default give you a token,
-## without enough permissions to perform the delete operation.
-## Use gitcreds::gitcreds_delete() if necessary to remove the old token.
-## Go to https://github.com/settings/tokens/new and check repo and delete_repo,
-## git bash on windows, git push, a window pops up, click token.
-## Then the test case below should run locally.
+## The test below requires a github token with repo delete
+## permission. Read
+## https://github.com/animint/animint2/wiki/Testing#installation to
+## see how to set that up on your local computer, or on github
+## actions.
 test_that("animint2pages() returns list of meta-data", {
   ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#delete-a-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write) gh api --method DELETE -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/OWNER/REPO
   gh::gh("DELETE /repos/animint-test/animint2pages_test_repo")
