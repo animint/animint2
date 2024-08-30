@@ -60,11 +60,6 @@ the default plot specification, e.g. \code{\link{borders}}.}
 \description{
 Remove duplicates.
 }
-\section{Aesthetics}{
-
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "unique")}
-}
-
 \examples{
 ggplot(mtcars, aes(vs, am)) + geom_point(alpha = 0.1)
 ggplot(mtcars, aes(vs, am)) + geom_point(alpha = 0.1, stat="unique")

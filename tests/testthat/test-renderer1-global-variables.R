@@ -10,10 +10,10 @@ myScript <- 'myArray = [];
 for(var b in window) { 
   if(window.hasOwnProperty(b)) {myArray.push(b);} 
 }
-return myArray;'
+myArray;'
 
 getVariables <- function(){
-  vars <- remDr$executeScript(myScript)
+  vars <- runtime_evaluate(script=myScript)
   # ignore the "plot" variable -- 
   # https://github.com/tdhock/animint/pull/62#issuecomment-100008532
   # also ignore jQuery1238915281937 variable:
@@ -31,8 +31,8 @@ test_that("animint.js only defines 1 object, called animint", {
   # ReferenceError: Can't find variable: animint
   # since we've removed the animint.js script
   remDr$refresh()
+  Sys.sleep(3)
   without.vars <- getVariables()
   diff.vars <- animint.vars[!animint.vars %in% without.vars]
-  print(diff.vars)
   expect_identical(diff.vars, "animint")
 })

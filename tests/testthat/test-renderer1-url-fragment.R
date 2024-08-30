@@ -32,7 +32,7 @@ test_that("one observation selected for url with no selection", {
   expect_equal(as.numeric(opacity.str[!is.selected]), rep(0.5, 298))
 })
 
-old_address <- remDr$getCurrentUrl()[[1]]
+old_address <- runtime_evaluate(script="window.location.href")
 new_address <- paste0(old_address, '#Species={setosa}')
 remDr$navigate(new_address)
 remDr$refresh()
@@ -58,4 +58,3 @@ test_that("one species is selected for url with selection", {
 ## })
 
 remDr$navigate(old_address)
-

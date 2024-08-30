@@ -65,8 +65,8 @@ getSelectorWidgets <- function(html=getHTML()){
 clickHTML <- function(...){
   v <- c(...)
   stopifnot(length(v) == 1)
-  e <- remDr$findElement(names(v), as.character(v))
-  e$clickElement()
+  selectorValue <- as.character(v)
+  clickID(selectorValue)  
   Sys.sleep(1)
   getHTML()
 }
@@ -74,7 +74,7 @@ clickHTML <- function(...){
 clickID <- function(...){
   v <- c(...)
   stopifnot(length(v) == 1)
-  remDr$executeScript(sprintf("document.getElementById('%s').dispatchEvent(new CustomEvent('click'))", as.character(v)))
+  runtime_evaluate_helper(id=v,dispatch_event=TRUE)
 }
 
 rgba.pattern <- paste0(
@@ -330,10 +330,7 @@ unequal <- function(object, expected, ...){
 #' tests_exit()
 #' }
 #'
-
 tests_run <- function(dir = ".", filter = NULL) {
-  if (!"package:RSelenium" %in% search())
-    stop("Please load RSelenium: library(RSelenium)")
   if (!"package:testthat" %in% search())
     stop("Please load testthat: library(testthat)")
   testDir <- find_test_path(dir)
@@ -417,3 +414,15 @@ find_test_path <- function(dir = ".") {
   file.path(dir, ext_dir)
 }
 
+runtime_evaluate <- function(script=NULL){
+  remDr$Runtime$evaluate(script,returnByValue = TRUE)$result$value
+}
+
+runtime_evaluate_helper <- function(class_name=NULL, id=NULL, list_num=NULL, dispatch_event=NULL) {
+  runtime_evaluate(script = paste0(
+    "document",
+    if(is.character(id))sprintf(".getElementById('%s')", id),
+    if(is.character(class_name))sprintf(".getElementsByClassName('%s')", class_name),
+    if(is.atomic(list_num))sprintf("[%d]", as.integer(list_num)),
+    if(isTRUE(dispatch_event))".dispatchEvent(new CustomEvent('click'))"))
+}

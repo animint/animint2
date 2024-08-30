@@ -8,6 +8,7 @@
 #' @param plot.list A named list of ggplots and option lists.
 #' @param github_repo The name of the GitHub repository to which the
 #'   files will be pushed.
+#' @param owner The user/org under which the repo will be created, default comes from \code{gh::gh_whoami}.
 #' @param commit_message A string specifying the commit message for
 #'   the pushed files.
 #' @param private A logical flag indicating whether the GitHub
@@ -35,7 +36,7 @@
 #' }
 #'
 #' @export
-animint2pages <- function(plot.list, github_repo, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), ...) {
+animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), ...) {
   for(opt in required_opts){
     if(!opt %in% names(plot.list)){
       stop(sprintf("plot.list does not contain option named %s, which is required by animint2pages", opt))
@@ -61,8 +62,10 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
     stop("The github_repo argument should not contain '/'.")
   }
   # Check for existing repository
-  whoami <- suppressMessages(gh::gh_whoami())
-  owner <- whoami[["login"]]
+  if(is.null(owner)){
+    whoami <- suppressMessages(gh::gh_whoami())
+    owner <- whoami[["login"]]
+  }
   viz_owner_repo <- paste0(owner, "/", github_repo)
   local_clone <- tempfile()
   if (!check_no_github_repo(owner, github_repo)) {
@@ -86,18 +89,20 @@ animint2pages <- function(plot.list, github_repo, commit_message = "Commit from 
     silent = TRUE
   )
   if (!has_commits) {
-    initial_commit(local_clone, repo, viz_url)
+    title <- plot.list[["title"]]
+    if(!is.character(title))title <- "New animint visualization"
+    initial_commit(local_clone, repo, viz_url, title)
   }
   # Handle gh-pages branch
   manage_gh_pages(repo, owner, to_post, local_clone, commit_message)
   message(sprintf(
     "Visualization will be available at %s\nDeployment via GitHub Pages may take a few minutes...", viz_url))
-  viz_owner_repo
+  list(owner_repo=viz_owner_repo, local_clone=local_clone, viz_url=viz_url, gh_pages_url=sprintf("https://github.com/%s/tree/gh-pages", viz_owner_repo))
 }
 
-initial_commit <- function(local_clone, repo, viz_url) {
+initial_commit <- function(local_clone, repo, viz_url, title) {
   readme_file_path <- file.path(local_clone, "README.md")
-  header <- "## New animint visualization\n"
+  header <- sprintf("## %s\n", title)
   url_hyperlink <- sprintf("[%s](%s)\n", viz_url, viz_url)
   full_content <- paste0(header, url_hyperlink)
   writeLines(full_content, readme_file_path)

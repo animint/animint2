@@ -173,7 +173,7 @@
 #' Housing sales in TX.
 #'
 #' Information about the housing market in Texas provided by the TAMU
-#' real estate center, \url{https://www.recenter.tamu.edu/}.
+#' real estate center.
 #'
 #' @format A data frame with 8602 observations and 9 variables:
 #' \describe{
