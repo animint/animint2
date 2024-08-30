@@ -1,3 +1,8 @@
+# Changes in version 2024.8.29 (PR#147)
+ 
+- animint2pages initial commit README.md uses viz title.
+- animint2pages gains owner argument, with default taken from `gh::gh_whoami` (same as before, always returns user, even when token has permissions on an org); this allows user to specify an org where the user/token has write permissions. This is used in a new test-compiler-ghpages.R, which now assumes `PAT_GITHUB` has Administration and Contents permissions for all repos in `animint-test` org, so our test code can delete the `animint2pages_test_repo`, create a new one, and then use animint2pages twice, to test the results of creation/update.
+
 # Changes in version 2024.8.27 (PR#144)
  
 - Remove selenium, combine renderer tests into single CI job.
