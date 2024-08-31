@@ -7,6 +7,7 @@
 animint2pages(
   plot.list,
   github_repo,
+  owner = NULL,
   commit_message = "Commit from animint2pages",
   private = FALSE,
   required_opts = c("title", "source"),
@@ -19,6 +20,8 @@ animint2pages(
 
 \item{github_repo}{The name of the GitHub repository to which the
 files will be pushed.}
+
+\item{owner}{The user/org under which the repo will be created, default comes from \code{gh::gh_whoami}.}
 
 \item{commit_message}{A string specifying the commit message for
 the pushed files.}

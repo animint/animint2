@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: install and update texlive
         run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt update -y -qq
-      - run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt install texlive texlive-fonts-extra -y
+      - run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt install tidy texlive texlive-fonts-extra -y
       - uses: r-lib/actions/setup-r@v2
       - uses: r-lib/actions/setup-r-dependencies@v2
 
