@@ -1,17 +1,4 @@
 acontext("GitHub Pages")
-library(gh)
-server <- function() {
-  out.dir <- tempfile()
-  dir.create(out.dir, showWarnings=FALSE, recursive=TRUE)
-  portNum <- 8080
-  normDir <- normalizePath(out.dir, winslash = "/", mustWork = TRUE)
-  code = sprintf("servr::httd(dir='%s', port=%d)", normDir,portNum)
-  system2("Rscript", c("-e", shQuote(code)), wait = FALSE)
-  return(list(output.dir = normDir))
-}
-
-s<-server()
-
 library(animint2)
 viz <- animint(
   title="one to ten",
@@ -23,7 +10,7 @@ test_that("error for viz with no title", {
   viz.no.title <- viz
   viz.no.title$title <- NULL
   expect_error({
-    animint2pages(viz.no.title, "no-title",server=s)
+    animint2pages(viz.no.title, "no-title")
   }, "plot.list does not contain option named title, which is required by animint2pages")
 })
 
@@ -31,7 +18,7 @@ test_that("error for viz with no source", {
   viz.no.source <- viz
   viz.no.source$source <- NULL
   expect_error({
-    animint2pages(viz.no.source, "no-source",server=s)
+    animint2pages(viz.no.source, "no-source")
   }, "plot.list does not contain option named source, which is required by animint2pages")
 })
 
@@ -58,6 +45,10 @@ test_that("animint2pages() returns list of meta-data", {
   get_tsv <- function(L)Sys.glob(file.path(L$local_clone, "*tsv"))
   tsv_files_created <- get_tsv(result_list)
   expect_equal(length(tsv_files_created), 1)
+  expect_Capture <- function(L){
+    expect_gt(file.size(file.path(L$local_clone,"Capture.PNG")), 0)
+  }
+  expect_Capture(result_list)
   ## second run of animint2pages updates data viz.
   viz.more <- viz
   viz.more$five <- ggplot()+
@@ -67,21 +58,7 @@ test_that("animint2pages() returns list of meta-data", {
   update_list <- animint2pages(viz.more, "animint2pages_test_repo", owner="animint-test")
   tsv_files_updated <- get_tsv(update_list)
   expect_equal(length(tsv_files_updated), 2)
-})
-
-test_that("check if animint2pages() successfully uploads screenshot", {
-
-  viz_owner_repo <- animint2pages(viz, github_repo = "animint2pages_test_repo",server=s)
-  split_viz_owner_repo <- strsplit(viz_owner_repo, "/")[[1]]
-  repo_owner <- split_viz_owner_repo[1]
-  repo_name <- split_viz_owner_repo[2]
-  
-  file_exists <- {
-    gh("GET /repos/:owner/:repo/contents/:path",
-       owner = repo_owner, repo = repo_name, path = "Capture.PNG",ref ="gh-pages")
-    TRUE  # If the call succeeds, the file exists
-  }
-  expect_true(file_exists, info = "The screenshot should exist in the repository.")
+  expect_Capture(update_list)
 })
 
 test_that("animint2pages raises an error if no GitHub token is present", {
@@ -97,7 +74,7 @@ test_that("animint2pages raises an error if no GitHub token is present", {
   file.copy(config.file, config.old, overwrite = TRUE)
   cat("[credential]\n\tusername = FOO", file=config.file, append=TRUE)
   expect_error({
-    animint2pages(viz, github_repo = "test_repo",server=s)
+    animint2pages(viz, github_repo = "test_repo")
   }, "A GitHub token is required to create and push to a new repository. \nTo create a GitHub token, follow these steps:\n1. Go to https://github.com/settings/tokens/new?scopes=repo&description=animint2pages\n2. Confirm your password if prompted.\n3. Ensure that the 'repo' scope is checked.\n4. Click 'Generate token' at the bottom of the page.\n5. Copy the generated token.\nAfter creating the token, you can set it up in your R environment by running: \nSys.setenv(GITHUB_PAT=\"yourGithubPAT\") \ngert::git_config_global_set(\"user.name\", \"yourUserName\") \ngert::git_config_global_set(\"user.email\", \"yourEmail\") \n", fixed=TRUE)
   do.call(Sys.setenv, as.list(env.old))
   file.copy(config.old, config.file, overwrite = TRUE)
