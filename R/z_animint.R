@@ -203,6 +203,8 @@ parsePlot <- function(meta, plot, plot.name){
   
   plot.info$position <- getRowAndColumn(plot$theme)
   
+  plot.info$span <- getRowspanAndColumnspan(plot$theme)
+  
   list(
     plot.info=plot.info,
     ggplot=plot,
