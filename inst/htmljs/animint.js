@@ -2025,7 +2025,6 @@ var animint = function (to_select, json_file) {
     }
     // Add plots.
   
-  
   var check_svg = function (row_number,col_number) {
     var id="#row"+row_number+"col"+col_number
     var parentElement= d3.select(id)
@@ -2036,14 +2035,12 @@ var animint = function (to_select, json_file) {
     }
   }
   
-  
   var maximum_row= 0
   var maximum_column= 0
   var construct_outer_table = function () {
   var count=0
   
   var find_maximum_dimensions = function () {
-  
   
     for (var p_name in response.plots) {
       count=count+1
@@ -2056,16 +2053,38 @@ var animint = function (to_select, json_file) {
   }
    }
   find_maximum_dimensions()
+  function generateKey(row, col) {
+    return `${row},${col}`;
+}
     var count_dimensions = Math.ceil(Math.sqrt(count))-1;
     maximum_row=Math.max(maximum_row,count_dimensions)
     maximum_column=Math.max(maximum_column,count_dimensions)
     var table_width=(maximum_column+1)*500+"px"
-    var outer_table = element.append("table").attr("id", "outerTable").style("width", table_width).style("border", "1px solid solid transparent");
+    var outer_table = element.append("table").attr("id", "outerTable").style("width", table_width).style("border", "1px solid black");
+    let span_map = new Map();
+    for (var p_name in response.plots) {
+       if (('rowspan' in response.plots[p_name].span)){
+     
+         let key = generateKey(response.plots[p_name].position.row, response.plots[p_name].position.col);
+         span_map.set(key,response.plots[p_name].span)
+         
+       }
+    }
     
     for (var i = 0; i <=maximum_row; i++) {
-        var current_row = outer_table.append("tr").style("border", "1px solid transparent").style("height", "500px");
+        
+        var current_row = outer_table.append("tr").style("height", "500px").style("border", "1px solid black");
         for (var j = 0; j <=maximum_column; j++){
-            current_row.append("td").attr("id", "row"+i+"col"+j).style("border", "1px solid solid transparent").style("width", "500px");
+          
+          let key = generateKey(i,j);
+          if (span_map.has(key)){
+            var rowspan=span_map.get(key).rowspan
+            current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan).style("height", "500px").style("border", "1px solid black");
+          }
+          else{
+            current_row.append("td").attr("id", "row"+i+"col"+j).style("height", "500px").style("border", "1px solid black");
+          }
+            
         }
     }
     
@@ -2077,7 +2096,6 @@ var animint = function (to_select, json_file) {
     if ('row' in response.plots[p_name].position && 'col' in response.plots[p_name].position) {
       var id= "#row"+response.plots[p_name].position.row+"col"+response.plots[p_name].position.col
       var cell= d3.select(id);
-      
       add_plot(p_name, response.plots[p_name],cell);
       add_legend(p_name, response.plots[p_name]);
       // Append style sheet to document head.
@@ -2097,7 +2115,6 @@ var animint = function (to_select, json_file) {
             }
             }
       var id= "#row"+pointer_row+"col"+pointer_column
-      //console.log(id)
       var cell= d3.select(id);
       
       add_plot(p_name, response.plots[p_name],cell);

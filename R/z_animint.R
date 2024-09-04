@@ -365,7 +365,6 @@ animint2dir <- function(plot.list, out.dir = NULL,
       ## If plot is correct, save to meta for further processing
       
       parsed_info <- parsePlot(meta, p, list.name) # calls ggplot_build.
-      #print(parsed_info$plot.info$title)
       if (!is.null(parsed_info$plot.info$position$row) && is.null(parsed_info$plot.info$position$col)) {
         stop("You passed row but not the col argument for ",parsed_info$plot.info$title)
       }
