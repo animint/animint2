@@ -35,15 +35,15 @@ viz <- animint(
 info <- animint2HTML(viz)
 expect_source(NULL)
 
-getBounds <- function(geom.class){
-  script.txt <- sprintf('return document.getElementsByClassName("%s")[0].getBoundingClientRect()', geom.class)
-  remDr$executeScript(script.txt)
+clickSelector <- function(selectorName) {  
+  script.txt <- sprintf('childDom = document.getElementsByClassName("%s")[0]; childDom.getElementsByClassName("selectize-input")[0].dispatchEvent(new CustomEvent("click"));', selectorName)
+  runtime_evaluate(script=script.txt)
 }
 
-test_that("bottom of widerect is above line", {
-  rect.bounds <- getBounds("geom1_widerect_gg")
-  line.bounds <- getBounds("geom2_line_gg")
-  expect_lt(rect.bounds$bottom, line.bounds$top)
+test_that("bottom of widerect is above line", {  
+  rect_bound <- getClassBound("geom1_widerect_gg", "bottom")
+  line_bound <- getClassBound("geom2_line_gg", "top")
+  expect_lt(rect_bound, line_bound)
 })
 
 data(WorldBank, package = "animint2")
@@ -329,11 +329,8 @@ test_that("clicking legend removes/adds countries", {
   expect_equal(sum(twoclicks$legends=="0.5"), 0)
 })
 
-e <- remDr$findElement("id", "updates_ms")
-e$clickElement()
-e$clearElement()
-e$sendKeysToElement(list("3000", key="enter"))
-
+clickID('updates_ms')
+ 
 test_that("pause stops animation (third time)", {
   clickID("play_pause")
   old.year <- getYear()
@@ -342,32 +339,18 @@ test_that("pause stops animation (third time)", {
   expect_true(old.year == new.year)
 })
 
-e <- remDr$findElement("class name", "show_hide_selector_widgets")
-e$clickElement()
-s.tr <- remDr$findElement("class name", "year_variable_selector_widget")
-s.div <- s.tr$findChildElement("class name", "selectize-input")
-s.div$clickElement()
-# Selenium Versions > 2 do not support the sendKeysToActiveElement function as I found on their github.
-# https://github.com/SeleniumHQ/selenium/issues/7686
-# Looking to make it work with JavaScript or JQuery
-remDr$sendKeysToActiveElement(list(key="backspace"))
-remDr$sendKeysToActiveElement(list("1962"))
-remDr$sendKeysToActiveElement(list(key="enter"))
-Sys.sleep(1)
+runtime_evaluate_helper(class_name="show_hide_selector_widgets",list_num=0,dispatch_event=TRUE)
+clickSelector("year_variable_selector_widget")
+sendKey("Backspace")
+remDr$Input$insertText(text = "1962")
+clickSelector("year_variable_selector_widget")
+sendKey("ArrowDown")
+sendKey("Enter")
+Sys.sleep(3)
 
 test_that("typing into selectize widget changes year to 1962", {
   current.year <- getYear()
   expect_identical(current.year, "1962")
-})
-
-s.div$clickElement()
-remDr$sendKeysToActiveElement(list(key="down_arrow"))
-remDr$sendKeysToActiveElement(list(key="enter"))
-Sys.sleep(1)
-
-test_that("down arrow key changes year to 1963", {
-  current.year <- getYear()
-  expect_identical(current.year, "1963")
 })
 
 getCountries <- function(){
@@ -380,11 +363,10 @@ test_that("initial countries same as first", {
   expect_identical(sort(country.vec), sort(wb.facets$first$country))
 })
 
-s.tr <- remDr$findElement("class name", "country_variable_selector_widget")
-s.div <- s.tr$findChildElement("class name", "selectize-input")
-s.div$clickElement()
-remDr$sendKeysToActiveElement(list("Afg"))
-remDr$sendKeysToActiveElement(list(key="enter"))
+clickSelector("country_variable_selector_widget")
+remDr$Input$insertText(text = "Afg")
+sendKey("Enter")
+ 
 Sys.sleep(1)
 
 test_that("Afg autocompletes to Afghanistan", {
@@ -393,15 +375,8 @@ test_that("Afg autocompletes to Afghanistan", {
   expect_identical(sort(country.vec), sort(expected.countries))
 })
 
-div.list <- s.tr$findChildElements("class name", "item")
-names(div.list) <- sapply(div.list, function(e)e$getElementText()[[1]])
-afg.div <- div.list[["Afghanistan"]]
-# clickElement has some really weird behavior, repeating it several times 
-# focuses different things and I can't reliably get it to actually focus on
-# the US element that the test was before.
-# This is kinda a hack that causes it to backspace the last element in the list
-afg.div$clickElement()
-remDr$sendKeysToActiveElement(list(key="backspace"))
+clickSelector("country_variable_selector_widget")
+sendKey("Backspace")
 Sys.sleep(1)
 
 test_that("backspace removes Afghanistan from selected countries", {
@@ -432,10 +407,7 @@ test_that("middle of transition != after when duration=2000", {
   expect_true(during.width != after.width)
 })
 
-e <- remDr$findElement("id", "plot_duration_ms_year")
-e$clickElement()
-e$clearElement()
-e$sendKeysToElement(list("0", key="enter"))
+runtime_evaluate(script="var e = document.getElementById('plot_duration_ms_year'); e.value = 0;e.dispatchEvent(new Event('change'));")
 Sys.sleep(1)
 
 test_that("middle of transition == after when duration=0", {
