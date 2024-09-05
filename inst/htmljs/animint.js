@@ -2055,45 +2055,55 @@ var animint = function (to_select, json_file) {
   find_maximum_dimensions()
   function generateKey(row, col) {
     return `${row},${col}`;
-}
-    var count_dimensions = Math.ceil(Math.sqrt(count))-1;
-    maximum_row=Math.max(maximum_row,count_dimensions)
-    maximum_column=Math.max(maximum_column,count_dimensions)
-    var table_width=(maximum_column+1)*500+"px"
-    var outer_table = element.append("table").attr("id", "outerTable").style("width", table_width).style("border", "1px solid black");
-    let span_map = new Map();
-    for (var p_name in response.plots) {
-       if (('rowspan' in response.plots[p_name].span)){
-     
-         let key = generateKey(response.plots[p_name].position.row, response.plots[p_name].position.col);
-         span_map.set(key,response.plots[p_name].span)
-         
-       }
-    }
     
+  }
+  var count_dimensions = Math.ceil(Math.sqrt(count))-1;
+  maximum_row=Math.max(maximum_row,count_dimensions)
+  maximum_column=Math.max(maximum_column,count_dimensions)
+  var table_width=(maximum_column+1)*500+"px"
+  var outer_table = element.append("table").attr("id", "outerTable").style("width", table_width).style("border", "1px solid black");
+  let rowspan_map = new Map();
+  let colspan_map = new Map();
+  for (var p_name in response.plots) {
+    if (('rowspan' in response.plots[p_name].span)){
+      let key = generateKey(response.plots[p_name].position.row, response.plots[p_name].position.col);
+      rowspan_map.set(key,response.plots[p_name].span)
+      
+    }
+    if (('colspan' in response.plots[p_name].span)){
+      let key = generateKey(response.plots[p_name].position.row, response.plots[p_name].position.col);
+      colspan_map.set(key,response.plots[p_name].span)
+      
+    }
+    }
     for (var i = 0; i <=maximum_row; i++) {
+      var current_row = outer_table.append("tr").style("height", "500px").style("border", "1px solid black");
+      for (var j = 0; j <=maximum_column; j++){
+      let key = generateKey(i,j);
+      if (rowspan_map.has(key)){
+        var rowspan=span_map.get(key).rowspan
+        current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan).style("height", "500px").style("border", "1px solid black");
         
-        var current_row = outer_table.append("tr").style("height", "500px").style("border", "1px solid black");
-        for (var j = 0; j <=maximum_column; j++){
-          
-          let key = generateKey(i,j);
-          if (span_map.has(key)){
-            var rowspan=span_map.get(key).rowspan
-            current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan).style("height", "500px").style("border", "1px solid black");
-          }
-          else{
-            current_row.append("td").attr("id", "row"+i+"col"+j).style("height", "500px").style("border", "1px solid black");
-          }
-            
-        }
+      }
+      else if(colspan_map.has(key)){
+        var colspan=colspan_map.get(key).colspan
+        current_row.append("td").attr("id", "row"+i+"col"+j).attr("colspan",colspan).style("height", "500px").style("border", "1px solid black");
+        
+      }
+      else{
+        current_row.append("td").attr("id", "row"+i+"col"+j).style("height", "500px").style("border", "1px solid black");
+        
+      }
+        
+      } 
+      
     }
+    return outer_table;
     
-  return outer_table;
   }
   var outer_table=construct_outer_table();
-  
   for (var p_name in response.plots) {
-    if ('row' in response.plots[p_name].position && 'col' in response.plots[p_name].position) {
+    if ('row' in response.plots[p_name].position && 'col' in response.plots[p_name].position){
       var id= "#row"+response.plots[p_name].position.row+"col"+response.plots[p_name].position.col
       var cell= d3.select(id);
       add_plot(p_name, response.plots[p_name],cell);
@@ -2103,17 +2113,19 @@ var animint = function (to_select, json_file) {
       document.head.appendChild(css);
     }
   }
-      var pointer_row=0
-      var pointer_column=0
-      for (var p_name in response.plots) {
-        if (!('row' in response.plots[p_name].position)){
-          while (check_svg(pointer_row,pointer_column)) {
-            pointer_column=pointer_column+1
-            if (pointer_column>maximum_column){
-              pointer_column=0
-              pointer_row=pointer_row+1
-            }
-            }
+  var pointer_row=0
+  var pointer_column=0
+  for (var p_name in response.plots) {
+    if (!('row' in response.plots[p_name].position)){
+      while (check_svg(pointer_row,pointer_column)) {
+        pointer_column=pointer_column+1
+        if (pointer_column>maximum_column){
+          pointer_column=0
+          pointer_row=pointer_row+1
+          
+        }
+        
+      }
       var id= "#row"+pointer_row+"col"+pointer_column
       var cell= d3.select(id);
       
@@ -2122,9 +2134,10 @@ var animint = function (to_select, json_file) {
       // Append style sheet to document head.
       css.appendChild(document.createTextNode(styles.join(" ")));
       document.head.appendChild(css);
-            
-}
- }
+      
+    }
+    
+  }
 
     // Then add selectors and start downloading the first data subset.
     for (var s_name in response.selectors) {
