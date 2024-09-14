@@ -1,4 +1,3 @@
-
 #' Publish a list of ggplots as interactive visualizations on a GitHub repository
 #'
 #' This function takes a named list of ggplots, generates interactive animations,

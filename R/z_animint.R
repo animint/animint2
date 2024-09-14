@@ -259,7 +259,6 @@ animint2dir <- function(plot.list, out.dir = NULL,
   if(persistent_server==FALSE){
     unlink(out.dir, recursive=TRUE)
   }
- 
   ## Check plot.list for errors
   checkPlotList(plot.list)
 
@@ -268,11 +267,8 @@ animint2dir <- function(plot.list, out.dir = NULL,
   meta <- newEnvironment()
   meta$selector.types <- plot.list$selector.types
   if(persistent_server==FALSE){
-    
     dir.create(out.dir,showWarnings=FALSE)
-    
   }
-    
   meta$out.dir <- out.dir
   ## First, copy html/js/json files to out.dir.
   src.dir <- system.file("htmljs",package="animint2")
