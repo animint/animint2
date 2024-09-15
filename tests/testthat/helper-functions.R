@@ -351,18 +351,9 @@ tests_run <- function(dir = ".", filter = NULL) {
 #' @seealso \link{tests_run}
 #' @export
 tests_exit <- function() {
-  res <- stop_binary()
+  stop_binary()
   Sys.unsetenv("ANIMINT_BROWSER")
-  f <- file.path(find_test_path(), "pids.txt")
-  if (file.exists(f)) {
-    e <- try(readLines(con <- file(f), warn = FALSE), silent = TRUE)
-    if (!inherits(e, "try-error")) {
-      pids <- as.integer(e)
-      res <- c(res, tools::pskill(pids))
-    }
-    close(con)
-    unlink(f)
-  }
+  res <- stop_server(tmpPath = find_test_path())
   invisible(all(res))
 }
 
@@ -376,12 +367,7 @@ tests_exit <- function() {
 #' @return port number of the successful attempt
 run_servr <- function(directory = ".", port = 4848,
                       code = "servr::httd(dir='%s', port=%d)") {
-  dir <- normalizePath(directory, winslash = "/", mustWork = TRUE)
-  cmd <- sprintf(
-    paste("write.table(Sys.getpid(), file='%s', append=T, row.name=F, col.names=F);", code),
-    file.path(find_test_path(), "pids.txt"), dir, port
-  )
-  system2("Rscript", c("-e", shQuote(cmd)), wait = FALSE)
+  start_servr(directory, port, code, tmpPath = find_test_path())
 }
 
 # --------------------------
