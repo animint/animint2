@@ -36,7 +36,7 @@
 #' }
 #' 
 #' @export
-animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), server=NULL, ...) {
+animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), ...) {
   for(opt in required_opts){
     if(!opt %in% names(plot.list)){
       stop(sprintf("plot.list does not contain option named %s, which is required by animint2pages", opt))
@@ -49,20 +49,13 @@ animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "
     }
   }
   chrome.session <- chromote::ChromoteSession$new()
-  if (is.null(server)) {
-    res <- animint2dir(plot.list, open.browser = FALSE, ...)
-    portNum <- servr::random_port()
-    normDir <- normalizePath(res$out.dir, winslash = "/", mustWork = TRUE)
-    code = sprintf("servr::httd(dir='%s', port=%d)", normDir, portNum)
-    system2("Rscript", c("-e", shQuote(code)), wait = FALSE)
-    Sys.sleep(3)
-    url <- sprintf("http://localhost:%d", portNum)
-    chrome.session$Page$navigate(url)
-  }else{
-    res <- animint2dir(plot.list, open.browser = FALSE,out.dir=server$output.dir,persistent_server=TRUE, ...)
-    url <- sprintf("http://localhost:%d",8080)
-    chrome.session$Page$navigate(url)
-  }
+  res <- animint2dir(plot.list, open.browser = FALSE, ...)
+  portNum <- servr::random_port()
+  normDir <- normalizePath(res$out.dir, winslash = "/", mustWork = TRUE)
+  start_servr(serverDirectory = normDir, port = portNum, tmpPath = normDir)
+  Sys.sleep(3)
+  url <- sprintf("http://localhost:%d", portNum)
+  chrome.session$Page$navigate(url)
   screenshot_path <- file.path(res$out.dir, "Capture.PNG")
   screenshot_full <- file.path(res$out.dir, "Capture_full.PNG")
   Sys.sleep(3)
