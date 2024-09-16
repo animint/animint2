@@ -580,8 +580,8 @@ issueSelectorWarnings <- function(geoms, selector.aes, duration){
   return(NULL)
 }
 
-#' Gives a unique name to each layer in \code{saveLayer}
-#' @param L layer in saveLayer to be named
+#' Gives a unique name to each layer in \code{export_animint}
+#' @param L layer in export_animint to be named
 #' @param geom_num the number of the layer to be saved
 #' @param p.name the name of the plot to which the layer belongs
 #' @return a unique name for the layer

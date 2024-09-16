@@ -249,6 +249,7 @@ storeLayer <- function(meta, g, g.data.varied){
 animint2dir <- function(plot.list, out.dir = NULL,
                         json.file = "plot.json", open.browser = interactive(),
                         css.file = "") {
+  print("start of animint2dir")
   if(is.null(out.dir)){
     out.dir <- tempfile()
   }
@@ -352,6 +353,7 @@ animint2dir <- function(plot.list, out.dir = NULL,
   }
 
   ## Call ggplot_build in parsPlot for all ggplots
+  print("before parse")
   ggplot.list <- list()
   AllPlotsInfo <- list()
   for(list.name in names(plot.list)){
@@ -367,6 +369,7 @@ animint2dir <- function(plot.list, out.dir = NULL,
 
   ## After going through all of the meta-data in all of the ggplots,
   ## now we have enough info to save the TSV file database.
+  print("before export")
   geom_num <- 0
   g.list <- list()
   for(p.name in names(ggplot.list)){
@@ -406,8 +409,9 @@ animint2dir <- function(plot.list, out.dir = NULL,
       g.list[[p.name]][[gl$g$classed]] <- gl
     }#layer.i
   }
+  print("after export")
 
-  ## Selector levels and update were stored in saveLayer, so now
+  ## Selector levels and update were stored in export_animint, so now
   ## compute the unique values to store in meta$selectors.
   for(selector.name in names(meta$selector.values)){
     values.update <- meta$selector.values[[selector.name]]
