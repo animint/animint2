@@ -5,6 +5,7 @@ getStrips <- function(facet, panel, ...)
   # themes or special options later
   UseMethod("getStrips")
 
+#' @export
 getStrips.grid <- function(facet, panel, ...) {
   npanels <- nrow(panel$layout)
   # preallocate strip labels to a default of ""
@@ -39,6 +40,7 @@ build_strip <- function(panel, label_df, labeller, side = "right", ...) {
   apply(labels, 1, paste, collapse = "; ")
 }
 
+#' @export
 getStrips.wrap <- function(facet, panel, ...) {
   labels_df <- panel$layout[names(facet$facets)]
   labels_df[] <- plyr::llply(labels_df, format, justify = "none")
@@ -50,6 +52,7 @@ getStrips.wrap <- function(facet, panel, ...) {
   strips
 }
 
+#' @export
 getStrips.null <- function(facet, panel, ...) {
   list(top = list(""), right = list(""), n = list(top = 0, right = 0))
 }
@@ -61,6 +64,7 @@ getStrips.null <- function(facet, panel, ...) {
 flag_axis <- function(facet, layout)
   UseMethod("flag_axis")
 
+#' @export
 flag_axis.grid <- function(facet, layout) {
   # 'grid rules' are to draw y-axis on panels with COL == 1
   # and ROW == max(ROW).
@@ -69,12 +73,14 @@ flag_axis.grid <- function(facet, layout) {
   layout
 }
 
+#' @export
 flag_axis.wrap <- function(facet, layout) {
   if (sum(grepl("^AXIS_[X-Y]$", names(layout))) != 2)
     stop("Expected 'AXIS_X' and 'AXIS_Y' to be in panel layout")
   layout
 }
 
+#' @export
 flag_axis.null <- function(facet, layout) {
   cbind(layout, AXIS_X = TRUE, AXIS_Y = TRUE)
 }
