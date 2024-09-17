@@ -50,6 +50,7 @@ animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "
   }
   chrome.session <- chromote::ChromoteSession$new()
   res <- animint2dir(plot.list, open.browser = FALSE, ...)
+  #Find available port and start server
   portNum <- servr::random_port()
   normDir <- normalizePath(res$out.dir, winslash = "/", mustWork = TRUE)
   start_servr(serverDirectory = normDir, port = portNum, tmpPath = normDir)
@@ -66,6 +67,8 @@ animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "
   magick::image_write(image_trimmed, screenshot_path)
   unlink(screenshot_full)
   chrome.session$close()
+  # Stop the server
+  stop_server(normDir)
   all_files <- Sys.glob(file.path(res$out.dir, "*"))
   file_info <- file.info(all_files)
   to_post <- all_files[!(file_info$size == 0 | grepl("~$", all_files))]
