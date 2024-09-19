@@ -364,8 +364,8 @@ tests_exit <- function() {
 #' @param port port number to _attempt_ to run server on.
 #' @param code R code to execute in a child session
 #' @return port number of the successful attempt
-run_servr <- function(directory, port, code) {
-  start_servr(directory, port, code, tmpPath = find_test_path())
+run_servr <- function(directory, port) {
+  start_servr(directory, port, tmpPath = find_test_path())
 }
 
 # --------------------------
