@@ -2042,13 +2042,13 @@ var animint = function (to_select, json_file) {
   var find_maximum_dimensions = function () {
     for (var p_name in response.plots) {
       count=count+1
-    if (response.plots[p_name].row>maximum_row){
-      maximum_row=response.plots[p_name].row
+      if (response.plots[p_name].position.row>maximum_row){
+        maximum_row=response.plots[p_name].position.row
+      }
+      if (response.plots[p_name].position.col>maximum_column){
+        maximum_column=response.plots[p_name].position.col
+      }
     }
-    if (response.plots[p_name].col>maximum_column){
-      maximum_column=response.plots[p_name].col
-    }
-  }
    }
   find_maximum_dimensions()
   function generateKey(row, col) {
@@ -2057,6 +2057,7 @@ var animint = function (to_select, json_file) {
   var count_dimensions = Math.ceil(Math.sqrt(count))-1;
   maximum_row=Math.max(maximum_row,count_dimensions)
   maximum_column=Math.max(maximum_column,count_dimensions)
+  var maximum_dimensions=Math.max(maximum_column,maximum_row)
   var outer_table = element.append("table").attr("id", "outerTable");
   let rowspan_map = new Map();
   let colspan_map = new Map();
@@ -2070,17 +2071,22 @@ var animint = function (to_select, json_file) {
       colspan_map.set(key,response.plots[p_name].span)
     }
     }
-    for (var i = 0; i <=maximum_row; i++) {
+    for (var i = 0; i <=maximum_dimensions; i++) {
       var current_row = outer_table.append("tr");
-      for (var j = 0; j <=maximum_column; j++){
+      for (var j = 0; j <=maximum_dimensions; j++){
       let key = generateKey(i,j);
-      if (rowspan_map.has(key)){
-        var rowspan=span_map.get(key).rowspan
-        current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan);
+      if (rowspan_map.has(key) && (colspan_map.has(key))){
+        var rowspan=rowspan_map.get(key).rowspan
+        var colspan=colspan_map.get(key).colspan
+        current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan).attr("colspan",colspan);
       }
       else if(colspan_map.has(key)){
         var colspan=colspan_map.get(key).colspan
         current_row.append("td").attr("id", "row"+i+"col"+j).attr("colspan",colspan);
+      }
+      else if(rowspan_map.has(key)){
+       var rowspan=rowspan_map.get(key).rowspan
+       current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan);
       }
       else{
         current_row.append("td").attr("id", "row"+i+"col"+j);
