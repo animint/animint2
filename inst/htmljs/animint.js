@@ -2025,16 +2025,6 @@ var animint = function (to_select, json_file) {
     }
     // Add plots.
   
-  var check_svg = function (row_number,col_number) {
-    var id="#row"+row_number+"col"+col_number
-    var parentElement= d3.select(id)
-    if (!parentElement.select('svg').empty()) {
-      return true
-    }else{
-      return false
-    }
-  }
-  
   var maximum_row= 0
   var maximum_column= 0
   var construct_outer_table = function () {
@@ -2111,12 +2101,10 @@ var animint = function (to_select, json_file) {
   var pointer_column=0
   for (var p_name in response.plots) {
     if (!('row' in response.plots[p_name].position)){
-      while (check_svg(pointer_row,pointer_column)) {
-        pointer_column=pointer_column+1
-        if (pointer_column>maximum_column){
-          pointer_column=0
-          pointer_row=pointer_row+1
-        }
+      pointer_column=pointer_column+1
+      if (pointer_column>maximum_column){
+        pointer_column=0
+        pointer_row=pointer_row+1
       }
       var id= "#row"+pointer_row+"col"+pointer_column
       var cell= d3.select(id);
