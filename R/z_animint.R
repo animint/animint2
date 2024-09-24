@@ -359,17 +359,23 @@ animint2dir <- function(plot.list, out.dir = NULL,
   ## Call ggplot_build in parsPlot for all ggplots
   ggplot.list <- list()
   AllPlotsInfo <- list()
+  custom_layout <- FALSE
   for(list.name in names(plot.list)){
     p <- plot.list[[list.name]]
     if(is.ggplot(p)){
       ## If plot is correct, save to meta for further processing
-      
       parsed_info <- parsePlot(meta, p, list.name) # calls ggplot_build.
       if (!is.null(parsed_info$plot.info$position$row) && is.null(parsed_info$plot.info$position$col)) {
         stop("You passed row but not the col argument for ",parsed_info$plot.info$title)
       }
       if (!is.null(parsed_info$plot.info$position$col) && is.null(parsed_info$plot.info$position$row)) {
         stop("You passed col but not the row argument for ",parsed_info$plot.info$title)
+      }
+      if (!is.null(parsed_info$plot.info$position$row) && !is.null(parsed_info$plot.info$position$col)){
+        custom_layout<- TRUE
+      }
+      if (is.null(parsed_info$plot.info$position$row) && is.null(parsed_info$plot.info$position$col) && custom_layout){
+        stop("You passed col and row for some plots and not for others, please pass for all or none")
       }
       AllPlotsInfo[[list.name]] <- parsed_info$plot.info
       ggplot.list[[list.name]]$ggplot <- parsed_info$ggplot
