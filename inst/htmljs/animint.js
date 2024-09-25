@@ -2024,7 +2024,7 @@ var animint = function (to_select, json_file) {
       d3.select("title").text(response.title);
     }
     // Add plots.
-  
+    
   var maximum_row= 0
   var maximum_column= 0
   var construct_outer_table = function () {
@@ -2087,7 +2087,7 @@ var animint = function (to_select, json_file) {
   }
   var outer_table=construct_outer_table();
   for (var p_name in response.plots) {
-    if ('row' in response.plots[p_name].position && 'col' in response.plots[p_name].position){
+    if ('row' in response.plots[p_name].position){
       var id= "#row"+response.plots[p_name].position.row+"col"+response.plots[p_name].position.col
       var cell= d3.select(id);
       add_plot(p_name, response.plots[p_name],cell);
@@ -2136,7 +2136,6 @@ var animint = function (to_select, json_file) {
         }
       }
     }
-
     ////////////////////////////////////////////
     // Widgets at bottom of page
     ////////////////////////////////////////////
