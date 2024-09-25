@@ -2024,7 +2024,6 @@ var animint = function (to_select, json_file) {
       d3.select("title").text(response.title);
     }
     // Add plots.
-    
   var maximum_row= 0
   var maximum_column= 0
   var construct_outer_table = function () {
@@ -2101,14 +2100,13 @@ var animint = function (to_select, json_file) {
   var pointer_column=0
   for (var p_name in response.plots) {
     if (!('row' in response.plots[p_name].position)){
-      pointer_column=pointer_column+1
-      if (pointer_column>maximum_column){
-        pointer_column=0
-        pointer_row=pointer_row+1
-      }
       var id= "#row"+pointer_row+"col"+pointer_column
       var cell= d3.select(id);
-      
+      pointer_column=pointer_column+1
+      if (pointer_column>maximum_column){
+           pointer_column=0
+           pointer_row=pointer_row+1
+         }
       add_plot(p_name, response.plots[p_name],cell);
       add_legend(p_name, response.plots[p_name]);
       // Append style sheet to document head.
