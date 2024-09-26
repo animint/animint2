@@ -1,3 +1,7 @@
+# Changes in version 2024.9.17
+
+- @export for internal S3 methods, to quiet roxygen2::document() messages.
+ 
 # Changes in version 2024.8.29 (PR#147)
  
 - animint2pages initial commit README.md uses viz title.
