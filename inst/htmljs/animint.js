@@ -4,7 +4,6 @@
 //   var plot = new animint("#plot","path/to/plot.json");
 // </script>
 // Constructor for animint Object.
-
 var animint = function (to_select, json_file) {
 
   var default_axis_px = 16;
@@ -215,13 +214,10 @@ var animint = function (to_select, json_file) {
     // Save this geom and load it!
     update_geom(g_name, null);
   };
-  
-  
   var add_plot = function (p_name, p_info,outer_table) {
     // Each plot may have one or more legends. To make space for the
     // legends, we put each plot in a table with one row and two
     // columns: tdLeft and tdRight.
-    
     var plot_table = outer_table.append("table").style("display", "inline-block");
     var plot_tr = plot_table.append("tr");
     var tdLeft = plot_tr.append("td");
@@ -1070,7 +1066,6 @@ var animint = function (to_select, json_file) {
     }else{
       get_stroke_width = function(d){
 	return stroke_width;
-	
       };
     }
     
@@ -2114,7 +2109,6 @@ var animint = function (to_select, json_file) {
       document.head.appendChild(css);
     }
   }
-
     // Then add selectors and start downloading the first data subset.
     for (var s_name in response.selectors) {
       add_selector(s_name, response.selectors[s_name]);

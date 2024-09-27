@@ -200,9 +200,7 @@ parsePlot <- function(meta, plot, plot.name){
   options_list <- getWidthAndHeight(plot$theme)
   options_list <- setUpdateAxes(plot$theme, options_list)
   plot.info$options <- options_list
-  
   plot.info$position <- getRowAndColumn(plot$theme)
-  
   plot.info$span <- getRowspanAndColumnspan(plot$theme)
   
   list(
@@ -253,7 +251,6 @@ storeLayer <- function(meta, g, g.data.varied){
 animint2dir <- function(plot.list, out.dir = NULL,
                         json.file = "plot.json", open.browser = interactive(),
                         css.file = "") {
-  
   if(is.null(out.dir)){
     out.dir <- tempfile()
   }
@@ -656,7 +653,6 @@ animint2dir <- function(plot.list, out.dir = NULL,
       stop("missing first selector variable")
     }
   }
-  
   meta$plots <- AllPlotsInfo
   meta$time <- AnimationInfo$time
   meta$timeValues <- AnimationInfo$timeValues
@@ -708,10 +704,8 @@ getLegendList <- function(plistextra){
   position <- theme$legend.position
   text <- theme$legend.text
   title <- theme$legend.title
-  #print(theme$row)
   # by default, guide boxes are vertically aligned
   if(is.null(theme$legend.box)) theme$legend.box <- "vertical" else theme$legend.box
-
   # size of key (also used for bar in colorbar guide)
   if(is.null(theme$legend.key.width)) theme$legend.key.width <- theme$legend.key.size
   if(is.null(theme$legend.key.height)) theme$legend.key.height <- theme$legend.key.size
