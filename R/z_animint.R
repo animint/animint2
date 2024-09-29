@@ -248,7 +248,7 @@ storeLayer <- function(meta, g, g.data.varied){
 #' @example inst/examples/animint2dir.R
 animint2dir <- function(plot.list, out.dir = NULL,
                         json.file = "plot.json", open.browser = interactive(),
-                        css.file = "", ...) {
+                        css.file = "") {
   if(is.null(out.dir)){
     out.dir <- tempfile()
   }
