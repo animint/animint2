@@ -200,8 +200,7 @@ parsePlot <- function(meta, plot, plot.name){
   options_list <- getWidthAndHeight(plot$theme)
   options_list <- setUpdateAxes(plot$theme, options_list)
   plot.info$options <- options_list
-  plot.info$position <- getRowAndColumn(plot$theme)
-  plot.info$span <- getRowspanAndColumnspan(plot$theme)
+  plot.info$attributes <- theme_attribute(plot$theme)
   
   list(
     plot.info=plot.info,

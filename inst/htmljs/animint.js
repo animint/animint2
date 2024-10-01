@@ -2026,11 +2026,11 @@ var animint = function (to_select, json_file) {
   var find_maximum_dimensions = function () {
     for (var p_name in response.plots) {
       count=count+1
-      if (response.plots[p_name].position.row>maximum_row){
-        maximum_row=response.plots[p_name].position.row
+      if (response.plots[p_name].attributes.row>maximum_row){
+        maximum_row=response.plots[p_name].attributes.row
       }
-      if (response.plots[p_name].position.col>maximum_column){
-        maximum_column=response.plots[p_name].position.col
+      if (response.plots[p_name].attributes.col>maximum_column){
+        maximum_column=response.plots[p_name].attributes.col
       }
     }
    }
@@ -2046,13 +2046,13 @@ var animint = function (to_select, json_file) {
   let rowspan_map = new Map();
   let colspan_map = new Map();
   for (var p_name in response.plots) {
-    if (('rowspan' in response.plots[p_name].span)){
-      let key = generateKey(response.plots[p_name].position.row, response.plots[p_name].position.col);
-      rowspan_map.set(key,response.plots[p_name].span)
+    if (('rowspan' in response.plots[p_name].attributes)){
+      let key = generateKey(response.plots[p_name].attributes.row, response.plots[p_name].attributes.col);
+      rowspan_map.set(key,response.plots[p_name].attributes)
     }
-    if (('colspan' in response.plots[p_name].position)){
-      let key = generateKey(response.plots[p_name].position.row, response.plots[p_name].position.col);
-      colspan_map.set(key,response.plots[p_name].span)
+    if (('colspan' in response.plots[p_name].attributes)){
+      let key = generateKey(response.plots[p_name].attributes.row, response.plots[p_name].attributes.col);
+      colspan_map.set(key,response.plots[p_name].attributes)
     }
     }
     for (var i = 0; i <=maximum_dimensions; i++) {
@@ -2081,8 +2081,8 @@ var animint = function (to_select, json_file) {
   }
   var outer_table=construct_outer_table();
   for (var p_name in response.plots) {
-    if ('row' in response.plots[p_name].position){
-      var id= "#row"+response.plots[p_name].position.row+"col"+response.plots[p_name].position.col
+    if ('row' in response.plots[p_name].attributes){
+      var id= "#row"+response.plots[p_name].attributes.row+"col"+response.plots[p_name].attributes.col
       var cell= d3.select(id);
       add_plot(p_name, response.plots[p_name],cell);
       add_legend(p_name, response.plots[p_name]);
@@ -2094,7 +2094,7 @@ var animint = function (to_select, json_file) {
   var pointer_row=0
   var pointer_column=0
   for (var p_name in response.plots) {
-    if (!('row' in response.plots[p_name].position)){
+    if (!('row' in response.plots[p_name].attributes)){
       var id= "#row"+pointer_row+"col"+pointer_column
       var cell= d3.select(id);
       pointer_column=pointer_column+1
