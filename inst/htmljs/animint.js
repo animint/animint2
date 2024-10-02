@@ -2021,7 +2021,6 @@ var animint = function (to_select, json_file) {
     // Add plots.
   var maximum_row= 0
   var maximum_column= 0
-  var construct_outer_table = function () {
   var count=0
   var find_maximum_dimensions = function () {
     for (var p_name in response.plots) {
@@ -2034,10 +2033,43 @@ var animint = function (to_select, json_file) {
       }
     }
    }
+   
   find_maximum_dimensions()
+  var rowspan_count_map = new Map();
+  
+  var create_grid = function () {
+    let array2D = new Array(maximum_row);
+    for (let i = 0; i <= maximum_row; i++){
+      array2D[i] = new Array(maximum_column+1).fill(0);  // Fill each row with 0s
+      }
+      return array2D
+  }
+  var span_grid=create_grid()
+  
+  var update_rowspan_values = function (start_row,col,rowspan) {
+    var current_row=start_row
+    while (current_row< start_row+rowspan-1) {
+      span_grid[current_row][col]=1
+      current_row=current_row+1
+    }
+  }
+  
+  var update_rowspan_prefix = function () {
+    for (var current_row=0;current_row<=maximum_row;current_row=current_row+1){
+      for (var current_col=1;current_col<=maximum_column;current_col=current_col+1){
+        
+        span_grid[current_row][current_col]=span_grid[current_row][current_col]+span_grid[current_row][current_col-1]
+      }
+      }
+    }
+    
+    var construct_outer_table = function () {
+  
   function generateKey(row, col) {
     return `${row},${col}`;
   }
+ 
+  
   var count_dimensions = Math.ceil(Math.sqrt(count))-1;
   maximum_row=Math.max(maximum_row,count_dimensions)
   maximum_column=Math.max(maximum_column,count_dimensions)
@@ -2049,40 +2081,64 @@ var animint = function (to_select, json_file) {
     if (('rowspan' in response.plots[p_name].attributes)){
       let key = generateKey(response.plots[p_name].attributes.row, response.plots[p_name].attributes.col);
       rowspan_map.set(key,response.plots[p_name].attributes)
-    }
+      var rowspan_value=response.plots[p_name].attributes.rowspan
+      if (rowspan_value>1){
+        var start_row=response.plots[p_name].attributes.row+1
+        update_rowspan_values(start_row,response.plots[p_name].attributes.col,response.plots[p_name].attributes.rowspan)
+      
+      }
+      }
+      
     if (('colspan' in response.plots[p_name].attributes)){
       let key = generateKey(response.plots[p_name].attributes.row, response.plots[p_name].attributes.col);
       colspan_map.set(key,response.plots[p_name].attributes)
     }
     }
+    
     for (var i = 0; i <=maximum_dimensions; i++) {
-      var current_row = outer_table.append("tr");
+      var current_row = outer_table.append("tr").style("border","1px solid white");
       for (var j = 0; j <=maximum_dimensions; j++){
       let key = generateKey(i,j);
       if (rowspan_map.has(key) && (colspan_map.has(key))){
         var rowspan=rowspan_map.get(key).rowspan
         var colspan=colspan_map.get(key).colspan
-        current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan).attr("colspan",colspan);
+        current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan).attr("colspan",colspan).style("border","1px solid white");
       }
       else if(colspan_map.has(key)){
         var colspan=colspan_map.get(key).colspan
-        current_row.append("td").attr("id", "row"+i+"col"+j).attr("colspan",colspan);
+        current_row.append("td").attr("id", "row"+i+"col"+j).attr("colspan",colspan).style("border","1px solid white");
       }
       else if(rowspan_map.has(key)){
        var rowspan=rowspan_map.get(key).rowspan
-       current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan);
+       current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan).style("border","1px solid white");
       }
       else{
-        current_row.append("td").attr("id", "row"+i+"col"+j);
+        current_row.append("td").attr("id", "row"+i+"col"+j).style("border","1px solid white");
       }
       } 
     }
     return outer_table;
-  }
+    }  
+  
   var outer_table=construct_outer_table();
+  
+  if((span_grid[0].length>1)){
+    update_rowspan_prefix();
+  }
+  
   for (var p_name in response.plots) {
     if ('row' in response.plots[p_name].attributes){
-      var id= "#row"+response.plots[p_name].attributes.row+"col"+response.plots[p_name].attributes.col
+      var row=response.plots[p_name].attributes.row
+      var column=response.plots[p_name].attributes.col
+      if(column>0){
+        decrease=span_grid[row][column-1]
+        
+      }
+      else{
+        decrease=0
+      }
+      
+      var id= "#row"+response.plots[p_name].attributes.row+"col"+(response.plots[p_name].attributes.col-decrease)
       var cell= d3.select(id);
       add_plot(p_name, response.plots[p_name],cell);
       add_legend(p_name, response.plots[p_name]);
@@ -2091,6 +2147,7 @@ var animint = function (to_select, json_file) {
       document.head.appendChild(css);
     }
   }
+  
   var pointer_row=0
   var pointer_column=0
   for (var p_name in response.plots) {
