@@ -32,7 +32,7 @@
 #'   viz,
 #'   github_repo = "my_animint2_plots",
 #'   commit_message = "New animint",
-#'   private = TRUE)
+#'   private = FALSE)
 #' }
 #'
 #' @export
@@ -94,7 +94,7 @@ animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "
     initial_commit(local_clone, repo, viz_url, title)
   }
   # Handle gh-pages branch
-  manage_gh_pages(repo, to_post, local_clone, commit_message)
+  manage_gh_pages(repo, owner, to_post, local_clone, commit_message)
   message(sprintf(
     "Visualization will be available at %s\nDeployment via GitHub Pages may take a few minutes...", viz_url))
   list(owner_repo=viz_owner_repo, local_clone=local_clone, viz_url=viz_url, gh_pages_url=sprintf("https://github.com/%s/tree/gh-pages", viz_owner_repo))
@@ -117,17 +117,17 @@ initial_commit <- function(local_clone, repo, viz_url, title) {
     all_branches <- df_or_vec
     current_master <- df_or_vec
   }
-  # do not attempt to rename a branch to "main" when a branch with that name already exists
-  if (current_master != "main" && !"main" %in% all_branches) {
-    gert::git_branch_move(branch = current_master, new_branch = "main", repo = repo)
+  # rename the master/main branch to gh-pages, so that gh-pages become the default branch
+  if (current_master != "gh-pages" && !"gh-pages" %in% all_branches) {
+    gert::git_branch_move(branch = current_master, new_branch = "gh-pages", repo = repo)
   }
   gert::git_push(repo = repo, remote = "origin", set_upstream = TRUE)
 }
 
-manage_gh_pages <- function(repo, to_post, local_clone, commit_message) {
+manage_gh_pages <- function(repo, owner, to_post, local_clone, commit_message) {
   branches <- gert::git_branch_list(local = TRUE, repo = repo)
   if (!"gh-pages" %in% branches$name) {
-    gert::git_branch_create(repo = repo, branch = "gh-pages")
+    gert::git_branch_create(branch = "gh-pages", repo = repo)
   }
   gert::git_branch_checkout("gh-pages", repo = repo)
   file.copy(to_post, local_clone, recursive = TRUE)
@@ -136,10 +136,10 @@ manage_gh_pages <- function(repo, to_post, local_clone, commit_message) {
   gert::git_push(remote = "origin", set_upstream = TRUE, repo = repo, force = TRUE)
 }
 
-check_no_github_repo <- function(owner, repo) {
+check_no_github_repo <- function(owner, gh_repo) {
   tryCatch(
     {
-      gh::gh("/repos/{owner}/{repo}", owner = owner, repo = repo)
+      gh::gh("/repos/{owner}/{repo}", owner = owner, repo = gh_repo)
       TRUE
     },
     "http_error_404" = function(err) FALSE
