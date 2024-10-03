@@ -2035,7 +2035,6 @@ var animint = function (to_select, json_file) {
    }
    
   find_maximum_dimensions()
-  var rowspan_count_map = new Map();
   
   var create_grid = function () {
     let array2D = new Array(maximum_row);
@@ -2044,6 +2043,7 @@ var animint = function (to_select, json_file) {
       }
       return array2D
   }
+  
   var span_grid=create_grid()
   
   var update_rowspan_values = function (start_row,col,rowspan) {
@@ -2069,7 +2069,6 @@ var animint = function (to_select, json_file) {
     return `${row},${col}`;
   }
  
-  
   var count_dimensions = Math.ceil(Math.sqrt(count))-1;
   maximum_row=Math.max(maximum_row,count_dimensions)
   maximum_column=Math.max(maximum_column,count_dimensions)
@@ -2132,7 +2131,6 @@ var animint = function (to_select, json_file) {
       var column=response.plots[p_name].attributes.col
       if(column>0){
         decrease=span_grid[row][column-1]
-        
       }
       else{
         decrease=0
