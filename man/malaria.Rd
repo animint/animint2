@@ -14,6 +14,8 @@
 }
 \usage{data("malaria")}
 \format{
+TODO add codebook
+
 List of 8 data.frames:
  $ error.variants  :'data.frame':	18800 obs. of  19 variables:
  $ regions         :'data.frame':	14 obs. of  6 variables:

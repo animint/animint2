@@ -10,6 +10,8 @@ Evolution simulation
 }
 \usage{data(generation.loci)}
 \format{
+  TODO add codebook
+  
   A data frame with 120000 observations on the following 4 variables.
   \describe{
     \item{\code{locus}}{a numeric vector}
