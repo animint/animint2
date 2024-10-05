@@ -37,7 +37,7 @@ parsePlot <- function(meta, plot, plot.name){
   ## Now ggplot specifies panel.margin in 'pt' instead of 'lines'
   plot.info$panel_margin_lines <- pt.to.lines(theme.pars$panel.margin)
 
-  ## No legend if theme(legend.postion="none").
+  ## No legend if theme(legend.position="none").
   plot.info$legend <- if(theme.pars$legend.position != "none"){
     getLegendList(built)
   }
@@ -103,7 +103,7 @@ parsePlot <- function(meta, plot, plot.name){
   # extract minor grid lines
   plot.info$grid_minor <- get_grid(theme.pars$panel.grid.minor, theme.pars,
                                    plot.info, meta, built, major = F)
-
+  theme <- plot_theme(built$plot)
   ## Flip labels if coords are flipped - transform does not take care
   ## of this. Do this BEFORE checking if it is blank or not, so that
   ## individual axes can be hidden appropriately, e.g. #1.
@@ -200,7 +200,8 @@ parsePlot <- function(meta, plot, plot.name){
   options_list <- getWidthAndHeight(plot$theme)
   options_list <- setUpdateAxes(plot$theme, options_list)
   plot.info$options <- options_list
-
+  plot.info$attributes <- theme_attribute(plot$theme)
+  
   list(
     plot.info=plot.info,
     ggplot=plot,
@@ -354,11 +355,24 @@ animint2dir <- function(plot.list, out.dir = NULL,
   ## Call ggplot_build in parsPlot for all ggplots
   ggplot.list <- list()
   AllPlotsInfo <- list()
+  custom_layout <- FALSE
   for(list.name in names(plot.list)){
     p <- plot.list[[list.name]]
     if(is.ggplot(p)){
       ## If plot is correct, save to meta for further processing
       parsed_info <- parsePlot(meta, p, list.name) # calls ggplot_build.
+      if (!is.null(parsed_info$plot.info$position$row) && is.null(parsed_info$plot.info$position$col)) {
+        stop("You passed row but not the col argument for ",parsed_info$plot.info$title)
+      }
+      if (!is.null(parsed_info$plot.info$position$col) && is.null(parsed_info$plot.info$position$row)) {
+        stop("You passed col but not the row argument for ",parsed_info$plot.info$title)
+      }
+      if (!is.null(parsed_info$plot.info$position$row) && !is.null(parsed_info$plot.info$position$col)){
+        custom_layout<- TRUE
+      }
+      if (is.null(parsed_info$plot.info$position$row) && is.null(parsed_info$plot.info$position$col) && custom_layout){
+        stop("You passed col and row for some plots and not for others, please pass for all or none")
+      }
       AllPlotsInfo[[list.name]] <- parsed_info$plot.info
       ggplot.list[[list.name]]$ggplot <- parsed_info$ggplot
       ggplot.list[[list.name]]$built <- parsed_info$built
@@ -638,7 +652,6 @@ animint2dir <- function(plot.list, out.dir = NULL,
       stop("missing first selector variable")
     }
   }
-
   meta$plots <- AllPlotsInfo
   meta$time <- AnimationInfo$time
   meta$timeValues <- AnimationInfo$timeValues
@@ -692,7 +705,6 @@ getLegendList <- function(plistextra){
   title <- theme$legend.title
   # by default, guide boxes are vertically aligned
   if(is.null(theme$legend.box)) theme$legend.box <- "vertical" else theme$legend.box
-
   # size of key (also used for bar in colorbar guide)
   if(is.null(theme$legend.key.width)) theme$legend.key.width <- theme$legend.key.size
   if(is.null(theme$legend.key.height)) theme$legend.key.height <- theme$legend.key.size
