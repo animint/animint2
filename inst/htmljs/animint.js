@@ -2019,10 +2019,21 @@ var animint = function (to_select, json_file) {
       d3.select("title").text(response.title);
     }
     // Add plots.
-  var maximum_row= 0
-  var maximum_column= 0
-  var count=0
-  var find_maximum_dimensions = function () {
+  
+  
+  var check_customized_layout = function () {
+    for (var p_name in response.plots) {
+      if ("row" in response.plots[p_name].attributes){
+        return true
+      }
+      return false
+    }
+  } 
+  var layout_customized=check_customized_layout()
+  if (layout_customized){
+    var maximum_row= 0
+    var maximum_column= 0
+    var find_maximum_dimensions = function () {
     for (var p_name in response.plots) {
       count=count+1
       if (response.plots[p_name].attributes.row>maximum_row){
@@ -2033,19 +2044,16 @@ var animint = function (to_select, json_file) {
       }
     }
    }
-   
-  find_maximum_dimensions()
-  
-  var create_grid = function () {
-    let array2D = new Array(maximum_row);
-    for (let i = 0; i <= maximum_row; i++){
-      array2D[i] = new Array(maximum_column+1).fill(0);  // Fill each row with 0s
+   find_maximum_dimensions()
+   var create_grid = function () {
+     let array2D = new Array(maximum_row);
+     for (let i = 0; i <= maximum_row; i++){
+       array2D[i] = new Array(maximum_column+1).fill(0);  // Fill each row with 0s
       }
       return array2D
-  }
+   }
   
   var span_grid=create_grid()
-  
   var update_rowspan_values = function (start_row,col,rowspan) {
     var current_row=start_row
     while (current_row< start_row+rowspan-1) {
@@ -2057,76 +2065,67 @@ var animint = function (to_select, json_file) {
   var update_rowspan_prefix = function () {
     for (var current_row=0;current_row<=maximum_row;current_row=current_row+1){
       for (var current_col=1;current_col<=maximum_column;current_col=current_col+1){
-        
         span_grid[current_row][current_col]=span_grid[current_row][current_col]+span_grid[current_row][current_col-1]
+        
       }
-      }
+      
     }
     
-    var construct_outer_table = function () {
-  
-  function generateKey(row, col) {
-    return `${row},${col}`;
   }
- 
-  var count_dimensions = Math.ceil(Math.sqrt(count))-1;
-  maximum_row=Math.max(maximum_row,count_dimensions)
-  maximum_column=Math.max(maximum_column,count_dimensions)
-  var maximum_dimensions=Math.max(maximum_column,maximum_row)
-  var outer_table = element.append("table").attr("id", "outerTable");
-  let rowspan_map = new Map();
-  let colspan_map = new Map();
-  for (var p_name in response.plots) {
-    if (('rowspan' in response.plots[p_name].attributes)){
+  var construct_outer_table = function () {
+    function generateKey(row, col) {
+      return `${row},${col}`;
+      
+    }
+    var maximum_dimensions=Math.max(maximum_column,maximum_row)
+    var outer_table = element.append("table").attr("id", "outerTable");
+    let rowspan_map = new Map();
+    let colspan_map = new Map();
+    for (var p_name in response.plots) {
+      if (('rowspan' in response.plots[p_name].attributes)){
       let key = generateKey(response.plots[p_name].attributes.row, response.plots[p_name].attributes.col);
       rowspan_map.set(key,response.plots[p_name].attributes)
       var rowspan_value=response.plots[p_name].attributes.rowspan
       if (rowspan_value>1){
         var start_row=response.plots[p_name].attributes.row+1
         update_rowspan_values(start_row,response.plots[p_name].attributes.col,response.plots[p_name].attributes.rowspan)
-      
+        
       }
       }
-      
     if (('colspan' in response.plots[p_name].attributes)){
       let key = generateKey(response.plots[p_name].attributes.row, response.plots[p_name].attributes.col);
       colspan_map.set(key,response.plots[p_name].attributes)
     }
+      
     }
-    
     for (var i = 0; i <=maximum_dimensions; i++) {
       var current_row = outer_table.append("tr").style("border","1px solid white");
       for (var j = 0; j <=maximum_dimensions; j++){
-      let key = generateKey(i,j);
-      if (rowspan_map.has(key) && (colspan_map.has(key))){
-        var rowspan=rowspan_map.get(key).rowspan
-        var colspan=colspan_map.get(key).colspan
-        current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan).attr("colspan",colspan).style("border","1px solid white");
-      }
-      else if(colspan_map.has(key)){
-        var colspan=colspan_map.get(key).colspan
-        current_row.append("td").attr("id", "row"+i+"col"+j).attr("colspan",colspan).style("border","1px solid white");
-      }
-      else if(rowspan_map.has(key)){
-       var rowspan=rowspan_map.get(key).rowspan
-       current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan).style("border","1px solid white");
-      }
-      else{
-        current_row.append("td").attr("id", "row"+i+"col"+j).style("border","1px solid white");
-      }
+        let key = generateKey(i,j);
+        if (rowspan_map.has(key) && (colspan_map.has(key))){
+          var rowspan=rowspan_map.get(key).rowspan
+          var colspan=colspan_map.get(key).colspan
+          current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan).attr("colspan",colspan).style("border","1px solid white");
+          
+        }
+        else if(colspan_map.has(key)){
+          var colspan=colspan_map.get(key).colspan
+          current_row.append("td").attr("id", "row"+i+"col"+j).attr("colspan",colspan).style("border","1px solid white");
+        }
+        else if(rowspan_map.has(key)){
+          var rowspan=rowspan_map.get(key).rowspan
+          current_row.append("td").attr("id", "row"+i+"col"+j).attr("rowspan",rowspan).style("border","1px solid white");
+        }
+        else{
+          current_row.append("td").attr("id", "row"+i+"col"+j).style("border","1px solid white");
+        }
       } 
     }
     return outer_table;
-    }  
-  
-  var outer_table=construct_outer_table();
-  
-  if((span_grid[0].length>1)){
+    }
+    var outer_table=construct_outer_table();
     update_rowspan_prefix();
-  }
-  
-  for (var p_name in response.plots) {
-    if ('row' in response.plots[p_name].attributes){
+    for (var p_name in response.plots) {
       var row=response.plots[p_name].attributes.row
       var column=response.plots[p_name].attributes.col
       if(column>0){
@@ -2143,27 +2142,45 @@ var animint = function (to_select, json_file) {
       // Append style sheet to document head.
       css.appendChild(document.createTextNode(styles.join(" ")));
       document.head.appendChild(css);
+      
     }
-  }
+  }else{
+    var count=0
+    for (var p_name in response.plots){
+      count=count+1
+    }
+    var maximum_dimensions = Math.ceil(Math.sqrt(count))-1;
+    var construct_outer_table = function () {
+
+    var outer_table = element.append("table").attr("id", "outerTable");
+    for (var i = 0; i <=maximum_dimensions; i++) {
+      var current_row = outer_table.append("tr").style("border","1px solid white");
+      for (var j = 0; j <=maximum_dimensions; j++){
+        current_row.append("td").attr("id", "row"+i+"col"+j).style("border","1px solid white");
+      } 
+    }
+    return outer_table;
+    }  
+  var outer_table=construct_outer_table();
   
   var pointer_row=0
   var pointer_column=0
   for (var p_name in response.plots) {
-    if (!('row' in response.plots[p_name].attributes)){
-      var id= "#row"+pointer_row+"col"+pointer_column
-      var cell= d3.select(id);
-      pointer_column=pointer_column+1
-      if (pointer_column>maximum_column){
-           pointer_column=0
-           pointer_row=pointer_row+1
-         }
-      add_plot(p_name, response.plots[p_name],cell);
-      add_legend(p_name, response.plots[p_name]);
-      // Append style sheet to document head.
-      css.appendChild(document.createTextNode(styles.join(" ")));
-      document.head.appendChild(css);
+    var id= "#row"+pointer_row+"col"+pointer_column
+    var cell= d3.select(id);
+    pointer_column=pointer_column+1
+    if (pointer_column>maximum_dimensions){
+      pointer_column=0
+      pointer_row=pointer_row+1
     }
+    add_plot(p_name, response.plots[p_name],cell);
+    add_legend(p_name, response.plots[p_name]);
+    // Append style sheet to document head.
+    css.appendChild(document.createTextNode(styles.join(" ")));
+    document.head.appendChild(css);
   }
+  }
+  
     // Then add selectors and start downloading the first data subset.
     for (var s_name in response.selectors) {
       add_selector(s_name, response.selectors[s_name]);
