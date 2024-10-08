@@ -220,7 +220,14 @@ var animint = function (to_select, json_file) {
     // columns: tdLeft and tdRight.
     var parent_of_plot;
     if(making_outer_table){
-      parent_of_plot = current_outer_tr;
+      parent_of_plot = current_outer_tr.append("td");
+      var span_prefix_array = ["row","col"];
+      for(span_prefix in span_prefix_array){
+	span_attr = span_prefix+"span";
+	if(p_info.hasOwnProperty(span_attr)){
+	  parent_of_plot.attr(span_attr, p_info[span_attr]);
+	}
+      }
     }else{
       parent_of_plot = element;
     }
