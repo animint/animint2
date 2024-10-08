@@ -218,7 +218,16 @@ var animint = function (to_select, json_file) {
     // Each plot may have one or more legends. To make space for the
     // legends, we put each plot in a table with one row and two
     // columns: tdLeft and tdRight.
-    var plot_table = element.append("table").style("display", "inline-block");
+    var parent_of_plot;
+    if(making_outer_table){
+      parent_of_plot = current_outer_tr;
+    }else{
+      parent_of_plot = element;
+    }
+    if(p_info.last_in_row){
+      current_outer_tr = outer_table.append("tr");
+    }
+    var plot_table = parent_of_plot.append("table").style("display", "inline-block");
     var plot_tr = plot_table.append("tr");
     var tdLeft = plot_tr.append("td");
     var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
@@ -2019,6 +2028,11 @@ var animint = function (to_select, json_file) {
       d3.select("title").text(response.title);
     }
     // Add plots.
+    var outer_table, current_outer_tr;
+    if (making_outer_table){
+      outer_table = element.append("table");
+      current_outer_tr = outer_table.append("tr");
+    }
     for (var p_name in response.plots) {
       add_plot(p_name, response.plots[p_name]);
       add_legend(p_name, response.plots[p_name]);
