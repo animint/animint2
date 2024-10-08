@@ -214,6 +214,7 @@ var animint = function (to_select, json_file) {
     // Save this geom and load it!
     update_geom(g_name, null);
   };
+  var span_array = ["rowspan","colspan"];
   var add_plot = function (p_name, p_info) {
     // Each plot may have one or more legends. To make space for the
     // legends, we put each plot in a table with one row and two
@@ -221,12 +222,10 @@ var animint = function (to_select, json_file) {
     var parent_of_plot;
     if(making_outer_table){
       parent_of_plot = current_outer_tr.append("td");
-      var span_prefix_array = ["row","col"];
-      for(span_prefix in span_prefix_array){
-	span_attr = span_prefix+"span";
-	if(p_info.hasOwnProperty(span_attr)){
-	  parent_of_plot.attr(span_attr, p_info[span_attr]);
-	}
+      for(var span_attr in span_array){
+        if(p_info.hasOwnProperty(span_attr)){
+          parent_of_plot.attr(span_attr, p_info[span_attr]);
+        }
       }
     }else{
       parent_of_plot = element;
@@ -2034,12 +2033,24 @@ var animint = function (to_select, json_file) {
       // global d3.select here.
       d3.select("title").text(response.title);
     }
-    // Add plots.
+    // Determine if we should create an outer table to arrange plots in a grid.
     var outer_table, current_outer_tr;
+    outer_table_plot_attrs = span_array.slice();
+    outer_table_plot_attrs.push("last_in_row");
+    var making_outer_table = false;
+    for (var p_name in response.plots) {
+      p_info = response.plots[p_name];
+      for(var outer_tab_attr in outer_table_plot_attrs){
+        if(p_info.hasOwnProperty(outer_tab_attr)){
+          making_outer_table = true;
+        }
+      }
+    }
     if (making_outer_table){
       outer_table = element.append("table");
       current_outer_tr = outer_table.append("tr");
     }
+    // Add plots.
     for (var p_name in response.plots) {
       add_plot(p_name, response.plots[p_name]);
       add_legend(p_name, response.plots[p_name]);
