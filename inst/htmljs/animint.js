@@ -2052,7 +2052,7 @@ var animint = function (to_select, json_file) {
     element.append("br");
     if(response.hasOwnProperty("source")){
       element.append("a")
-	.attr("id","a_source_href")
+	.attr("class","a_source_href")
 	.attr("href", response.source)
 	.text("source");
     }
