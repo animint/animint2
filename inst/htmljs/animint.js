@@ -215,7 +215,7 @@ var animint = function (to_select, json_file) {
     update_geom(g_name, null);
   };
   var span_array = ["rowspan","colspan"];
-  var add_plot = function (p_name, p_info) {
+  var add_plot = function (p_name, p_info,making_outer_table) {
     // Each plot may have one or more legends. To make space for the
     // legends, we put each plot in a table with one row and two
     // columns: tdLeft and tdRight.
@@ -2039,7 +2039,7 @@ var animint = function (to_select, json_file) {
     outer_table_plot_attrs.push("last_in_row");
     var making_outer_table = false;
     for (var p_name in response.plots) {
-      p_info = response.plots[p_name];
+      var p_info = response.plots[p_name];
       for(var outer_tab_attr in outer_table_plot_attrs){
         if(p_info.hasOwnProperty(outer_tab_attr)){
           making_outer_table = true;
@@ -2052,7 +2052,7 @@ var animint = function (to_select, json_file) {
     }
     // Add plots.
     for (var p_name in response.plots) {
-      add_plot(p_name, response.plots[p_name]);
+      add_plot(p_name, response.plots[p_name],making_outer_table);
       add_legend(p_name, response.plots[p_name]);
       // Append style sheet to document head.
       css.appendChild(document.createTextNode(styles.join(" ")));
