@@ -1,7 +1,7 @@
 acontext("geom_widerect")
 library(animint2)
 expect_source <- function(expected){
-  a.list <- getNodeSet(info$html, '//a[@id="a_source_href"]')
+  a.list <- getNodeSet(info$html, '//a[@class="a_source_href"]')
   computed <- if(length(a.list)==0){
     NULL
   }else{
