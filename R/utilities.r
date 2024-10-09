@@ -292,7 +292,7 @@ start_servr <- function(serverDirectory = ".", port = 4848,
   system2("Rscript", c("-e", shQuote(cmd)), wait = FALSE)
 }
 
-stop_server <- function(tmpPath = ".") {
+stop_servr <- function(tmpPath = ".") {
   res <- TRUE
   f <- file.path(tmpPath, "pids.txt")
   if (file.exists(f)) {

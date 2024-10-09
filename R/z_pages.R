@@ -70,7 +70,7 @@ animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "
     unlink(screenshot_full)
     chrome.session$close()
     # Stop the server
-    stop_server(normDir)
+    stop_servr(normDir)
   }
   all_files <- Sys.glob(file.path(res$out.dir, "*"))
   file_info <- file.info(all_files)

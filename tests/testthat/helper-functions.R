@@ -352,7 +352,7 @@ tests_run <- function(dir = ".", filter = NULL) {
 #' @export
 tests_exit <- function() {
   Sys.unsetenv("ANIMINT_BROWSER")
-  res <- stop_server(tmpPath = find_test_path())
+  res <- stop_servr(tmpPath = find_test_path())
   invisible(all(res))
 }
 
