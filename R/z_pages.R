@@ -23,18 +23,18 @@
 #' @examples
 #' \dontrun{
 #' library(animint2)
-#' p1 <- ggplot(mtcars, aes(x = mpg, y = wt)) +
-#'   geom_point()
-#' p2 <- ggplot(mtcars, aes(x = hp, y = wt)) +
-#'   geom_point()
-#' viz <- list(plot1 = p1, plot2 = p2)
-#' animint2pages(
-#'   viz,
-#'   github_repo = "my_animint2_plots",
-#'   commit_message = "New animint",
-#'   private = TRUE)
+#' mtcars$Cyl <- factor(mtcars$cyl)
+#' viz <- animint(
+#'   ggplot(mtcars, aes(x = mpg, y = disp, color=Cyl)) +
+#'     geom_point(),
+#'   ggplot(mtcars, aes(x = hp, y = wt, color=Cyl)) +
+#'     geom_point(),
+#'   title="Motor Trend Cars data viz",
+#'   source="https://github.com/animint/animint2/blob/master/R/z_pages.R"
+#' )
+#' animint2pages(viz, "animint2pages-example-mtcars")
 #' }
-#'
+#' 
 #' @export
 animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), ...) {
   for(opt in required_opts){
@@ -42,15 +42,36 @@ animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "
       stop(sprintf("plot.list does not contain option named %s, which is required by animint2pages", opt))
     }
   }
-  # Check for required packages
+  ## Check for required packages
   for(pkg in c("gert", "gh")){
     if (!requireNamespace(pkg)) {
       stop(sprintf("Please run `install.packages('%s')` before using this function", pkg))
     }
   }
-  # Generate plot files
-  res <- animint2dir(plot.list, open.browser = FALSE, ...)
-  # Select non-ignored files to post
+  
+  if(requireNamespace("chromote") && requireNamespace("magick")) {
+    chrome.session <- chromote::ChromoteSession$new()
+    res <- animint2dir(plot.list, open.browser = FALSE, ...)
+    #Find available port and start server
+    portNum <- servr::random_port()
+    normDir <- normalizePath(res$out.dir, winslash = "/", mustWork = TRUE)
+    start_servr(serverDirectory = normDir, port = portNum, tmpPath = normDir)
+    Sys.sleep(3)
+    url <- sprintf("http://localhost:%d", portNum)
+    chrome.session$Page$navigate(url)
+    screenshot_path <- file.path(res$out.dir, "Capture.PNG")
+    screenshot_full <- file.path(res$out.dir, "Capture_full.PNG")
+    Sys.sleep(3)
+    ## Capture screenshot
+    chrome.session$screenshot(screenshot_full, selector = ".plot_content")
+    image_raw <- magick::image_read(screenshot_full)
+    image_trimmed <- magick::image_trim(image_raw)
+    magick::image_write(image_trimmed, screenshot_path)
+    unlink(screenshot_full)
+    chrome.session$close()
+    # Stop the server
+    stop_servr(normDir)
+  }
   all_files <- Sys.glob(file.path(res$out.dir, "*"))
   file_info <- file.info(all_files)
   to_post <- all_files[!(file_info$size == 0 | grepl("~$", all_files))]
@@ -78,7 +99,7 @@ animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "
     repo <- gert::git_clone(origin_url, local_clone)
   }
   viz_url <- paste0("https://", owner, ".github.io/", github_repo)
-  # check if repo has commit, if not, give it first commit, this can avoid error
+  ## check if repo has commit, if not, give it first commit, this can avoid error
   has_commits <- FALSE
   try(
     {
@@ -93,7 +114,7 @@ animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "
     if(!is.character(title))title <- "New animint visualization"
     initial_commit(local_clone, repo, viz_url, title)
   }
-  # Handle gh-pages branch
+  ## Handle gh-pages branch
   manage_gh_pages(repo, to_post, local_clone, commit_message)
   message(sprintf(
     "Visualization will be available at %s\nDeployment via GitHub Pages may take a few minutes...", viz_url))

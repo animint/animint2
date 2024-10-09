@@ -9,7 +9,9 @@ animint2dir(
   out.dir = NULL,
   json.file = "plot.json",
   open.browser = interactive(),
-  css.file = ""
+  css.file = "",
+  persistent_server = FALSE,
+  ...
 )
 }
 \arguments{

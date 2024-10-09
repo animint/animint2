@@ -1,3 +1,7 @@
+# Changes in version 2024.9.18 (PR#131)
+  
+  - Added functionality to capture screenshot in animint2pages
+
 # Changes in version 2024.9.17
 
 - @export for internal S3 methods, to quiet roxygen2::document() messages.

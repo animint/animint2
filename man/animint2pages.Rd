@@ -11,6 +11,7 @@ animint2pages(
   commit_message = "Commit from animint2pages",
   private = FALSE,
   required_opts = c("title", "source"),
+  server = NULL,
   ...
 )
 }
@@ -46,16 +47,16 @@ Before using this function set your appropriate git 'user.username' and 'user.em
 \examples{
 \dontrun{
 library(animint2)
-p1 <- ggplot(mtcars, aes(x = mpg, y = wt)) +
-  geom_point()
-p2 <- ggplot(mtcars, aes(x = hp, y = wt)) +
-  geom_point()
-viz <- list(plot1 = p1, plot2 = p2)
-animint2pages(
-  viz,
-  github_repo = "my_animint2_plots",
-  commit_message = "New animint",
-  private = TRUE)
+mtcars$Cyl <- factor(mtcars$cyl)
+viz <- animint(
+  ggplot(mtcars, aes(x = mpg, y = disp, color=Cyl)) +
+    geom_point(),
+  ggplot(mtcars, aes(x = hp, y = wt, color=Cyl)) +
+    geom_point(),
+  title="Motor Trend Cars data viz",
+  source="https://github.com/animint/animint2/blob/master/R/z_pages.R"
+)
+animint2pages(viz, "animint2pages-example-mtcars")
 }
 
 }

@@ -351,18 +351,8 @@ tests_run <- function(dir = ".", filter = NULL) {
 #' @seealso \link{tests_run}
 #' @export
 tests_exit <- function() {
-  res <- stop_binary()
   Sys.unsetenv("ANIMINT_BROWSER")
-  f <- file.path(find_test_path(), "pids.txt")
-  if (file.exists(f)) {
-    e <- try(readLines(con <- file(f), warn = FALSE), silent = TRUE)
-    if (!inherits(e, "try-error")) {
-      pids <- as.integer(e)
-      res <- c(res, tools::pskill(pids))
-    }
-    close(con)
-    unlink(f)
-  }
+  res <- stop_servr(tmpPath = find_test_path())
   invisible(all(res))
 }
 
@@ -374,30 +364,13 @@ tests_exit <- function() {
 #' @param port port number to _attempt_ to run server on.
 #' @param code R code to execute in a child session
 #' @return port number of the successful attempt
-run_servr <- function(directory = ".", port = 4848,
-                      code = "servr::httd(dir='%s', port=%d)") {
-  dir <- normalizePath(directory, winslash = "/", mustWork = TRUE)
-  cmd <- sprintf(
-    paste("write.table(Sys.getpid(), file='%s', append=T, row.name=F, col.names=F);", code),
-    file.path(find_test_path(), "pids.txt"), dir, port
-  )
-  system2("Rscript", c("-e", shQuote(cmd)), wait = FALSE)
+run_servr <- function(directory, port) {
+  start_servr(directory, port, tmpPath = find_test_path())
 }
 
 # --------------------------
 # Functions that are used in multiple places
 # --------------------------
-
-stop_binary <- function() {
-  if (exists("pJS")) pJS$stop()
-  # these methods are really queries to the server
-  # thus, if it is already shut down, we get some arcane error message
-  e <- try({
-    remDr$closeWindow()
-    remDr$closeServer()
-  }, silent = TRUE)
-  TRUE
-}
 
 # find the path to animint's testthat directory
 find_test_path <- function(dir = ".") {
