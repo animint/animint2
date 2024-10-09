@@ -1,6 +1,6 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2024.9.17
+Version: 2024.9.18
 URL: https://animint.github.io/animint2/
 BugReports: https://github.com/animint/animint2/issues
 Authors@R: c(
@@ -101,7 +101,8 @@ Suggests:
     rpart,
     svglite,
     ggplot2,
-    chromote
+    chromote,
+    magick
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
