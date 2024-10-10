@@ -1,3 +1,8 @@
+# Changes in version 2024.10.10 [(PR#145)](https://github.com/animint/animint2/pull/145)
+
+  - Updated `animist.js` to use classes for source links, resolving issue #145.
+
+
 # Changes in version 2024.9.18 (PR#131)
   
   - Added functionality to capture screenshot in animint2pages
