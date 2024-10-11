@@ -1,6 +1,6 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2024.9.18
+Version: 2024.10.11
 URL: https://animint.github.io/animint2/
 BugReports: https://github.com/animint/animint2/issues
 Authors@R: c(
@@ -8,6 +8,9 @@ Authors@R: c(
      email="toby.hocking@r-project.org",
      role=c("aut", "cre"),
      comment="Original animint code"),
+    person("Biplab", "Sutradhar",
+     role = "ctb",
+     comment = "Updated animist.js to use class for source links"),
     person("Hadley", "Wickham",
      role=c("aut"),
      comment="Forked ggplot2 code"),

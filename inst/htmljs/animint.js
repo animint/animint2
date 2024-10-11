@@ -2055,7 +2055,7 @@ var animint = function (to_select, json_file) {
     ////////////////////////////////////////////
     if(response.hasOwnProperty("source")){
       widget_td.append("a")
-	.attr("id","a_source_href")
+	.attr("class","a_source_href")
 	.attr("href", response.source)
 	.text("source");
     }
