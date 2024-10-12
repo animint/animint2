@@ -280,3 +280,29 @@ dispatch_args <- function(f, ...) {
   formals(f) <- formals
   f
 }
+
+start_servr <- function(serverDirectory = ".", port = 4848,
+                      code = "servr::httd(dir='%s', port=%d)",
+                      tmpPath = ".") {
+  dir <- normalizePath(serverDirectory, winslash = "/", mustWork = TRUE)
+  cmd <- sprintf(
+    paste("write.table(Sys.getpid(), file='%s', append=T, row.name=F, col.names=F);", code),
+    file.path(tmpPath, "pids.txt"), dir, port
+  )
+  system2("Rscript", c("-e", shQuote(cmd)), wait = FALSE)
+}
+
+stop_servr <- function(tmpPath = ".") {
+  res <- TRUE
+  f <- file.path(tmpPath, "pids.txt")
+  if (file.exists(f)) {
+    e <- try(readLines(con <- file(f), warn = FALSE), silent = TRUE)
+    if (!inherits(e, "try-error")) {
+      pids <- as.integer(e)
+      res <- c(res, tools::pskill(pids))
+    }
+    close(con)
+    unlink(f)
+  }
+  res
+}
