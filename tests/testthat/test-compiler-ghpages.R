@@ -1,5 +1,4 @@
 acontext("GitHub Pages")
-
 library(animint2)
 viz <- animint(
   title="one to ten",
@@ -46,6 +45,10 @@ test_that("animint2pages() returns list of meta-data", {
   get_tsv <- function(L)Sys.glob(file.path(L$local_clone, "*tsv"))
   tsv_files_created <- get_tsv(result_list)
   expect_equal(length(tsv_files_created), 1)
+  expect_Capture <- function(L){
+    expect_gt(file.size(file.path(L$local_clone,"Capture.PNG")), 0)
+  }
+  expect_Capture(result_list)
   ## second run of animint2pages updates data viz.
   viz.more <- viz
   viz.more$five <- ggplot()+
@@ -55,6 +58,7 @@ test_that("animint2pages() returns list of meta-data", {
   update_list <- animint2pages(viz.more, "animint2pages_test_repo", owner="animint-test")
   tsv_files_updated <- get_tsv(update_list)
   expect_equal(length(tsv_files_updated), 2)
+  expect_Capture(update_list)
 })
 
 test_that("animint2pages raises an error if no GitHub token is present", {
