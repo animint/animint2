@@ -5,74 +5,48 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Functions are provided for defining animated,
- interactive data visualizations in R code, and rendering
- on a web page. The 2018 Journal of Computational and 
- Graphical Statistics paper,
- &lt;doi:10.1080/10618600.2018.1513367&gt;
- describes the concepts implemented.">
 <title>Animated Interactive Grammar of Graphics • animint2</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><link href="deps/Roboto_Condensed-0.4.4/font.css" rel="stylesheet">
-<link href="deps/Roboto_Mono-0.4.4/font.css" rel="stylesheet">
-<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/Roboto_Condensed-0.4.9/font.css" rel="stylesheet">
+<link href="deps/Roboto_Mono-0.4.9/font.css" rel="stylesheet">
+<link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
 <meta property="og:title" content="Animated Interactive Grammar of Graphics">
-<meta property="og:description" content="Functions are provided for defining animated,
- interactive data visualizations in R code, and rendering
- on a web page. The 2018 Journal of Computational and 
- Graphical Statistics paper,
- &lt;doi:10.1080/10618600.2018.1513367&gt;
- describes the concepts implemented.">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<meta name="description" content="Functions are provided for defining animated, interactive data visualizations in R code, and rendering on a web page. The 2018 Journal of Computational and Graphical Statistics paper, &lt;doi:10.1080/10618600.2018.1513367&gt; describes the concepts implemented.">
+<meta property="og:description" content="Functions are provided for defining animated, interactive data visualizations in R code, and rendering on a web page. The 2018 Journal of Computational and Graphical Statistics paper, &lt;doi:10.1080/10618600.2018.1513367&gt; describes the concepts implemented.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="index.html">animint2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2023.6.11</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2024.10.11</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="articles/animint2.html">Get started</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="reference/index.html">Reference</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="articles/animint2.html">Get started</a></li>
+<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/animint/animint2/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/animint/animint2/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-home">
 <div class="row">
@@ -83,10 +57,10 @@
 <div class="section level2">
 <h2 id="about">About<a class="anchor" aria-label="anchor" href="#about"></a>
 </h2>
-<p>Animint2 is an R package for generating and sharing interactive data visualizations, sometimes referred to as animints. It is a fork of, and uses similar syntax to, <a href="https://ggplot2.tidyverse.org/" class="external-link">ggplot2</a>. Animint2 is especially useful for large datasets, but smaller datasets can be made interactive, too. It is also capable of generating static data visualizations.</p>
-<p>Play around with this interactive data visualization of <a href="https://rcdata.nau.edu/genomic-ml/WorldBank-facets/" class="external-link">data from the World Bank</a>. For more examples, go to the <a href="https://rcdata.nau.edu/genomic-ml/animint-gallery/" class="external-link">animint gallery</a>.</p>
+<p>Animint2 is an R package for generating and sharing animated interactive data visualizations, sometimes referred to as animints. It is a fork of, and uses similar syntax to, <a href="https://ggplot2.tidyverse.org/" class="external-link">ggplot2</a>. Animint2 is especially useful for large datasets, but smaller datasets can be made interactive, too. It is also capable of generating static data visualizations.</p>
+<p><a href="https://rcdata.nau.edu/genomic-ml/WorldBank-facets/" class="external-link"><img src="reference/figures/world_bank_screencast.gif" alt="A screencast of an interactive data visualization displaying fertility data from the World Bank. The user types in the selection menu and clicks on the legend, which causes changes in the visualization. GIF."></a> <!-- If you're familiar with Markdown, you may be wondering why I've elected to use HTML here instead of using the conventional ![alt text](source). It's cuz R's pkgdown package renders the alt text as both alt text and a fig caption. That's redundant. Using <img> ensures that it comes out the way we want. --></p>
+<p>Play around with <a href="https://rcdata.nau.edu/genomic-ml/WorldBank-facets/" class="external-link">this interactive data visualization of data from the World Bank</a>. For more examples, see these galleries, which have screenshots along with links to the interactive data viz, and source code: * <a href="https://rcdata.nau.edu/genomic-ml/animint-gallery/" class="external-link">NAU rcdata animint gallery</a> has 50+ big data viz examples dating back to animint’s inception in 2014. * <a href="https://animint.github.io/gallery" class="external-link">GitHub Pages animint gallery</a> is a newer collection of animints that have been published using the <code>animint2pages</code> function.</p>
 <p>To learn how to generate your own interactive data visualizations, go to the official <a href="https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html" class="external-link">Animint2 Manual</a>. If you encounter problems, please see the <a href="https://github.com/animint/animint2/wiki" class="external-link">animint2 wiki</a> or <a href="https://github.com/animint/animint2/issues" class="external-link">report them</a>.</p>
-<p><img src="reference/figures/world_bank_screencast.gif" alt="A screencast of an interactive data visualization displaying fertility data from the World Bank. The user types in the selection menu and clicks on the legend, which causes changes in the visualization. GIF."><!-- If you're familiar with Markdown, you may be wondering why I've elected to use HTML here instead of using the conventional ![alt text](source). It's cuz R's pkgdown package renders the alt text as both alt text and a fig caption. That's redundant. Using <img> ensures that it comes out the way we want. --></p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -97,12 +71,12 @@
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"animint2"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># If you want to install the development version:</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"animint/animint2"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"animint/animint2"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="use">Use<a class="anchor" aria-label="anchor" href="#use"></a>
 </h2>
-<p>Animint2 uses the same implementation of <code>ggplot2</code>’s grammar of graphics—with a few additions. If you’re familiar with <code>ggplot2</code>, using <code>animint2</code> will be easy. If you’re not, no worries. To get started, see the brief <a href="vignettes/starter-kit.html">Animint2 Quick Start Guide</a> or read the first few chapters of the <a href="https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html" class="external-link">Animint2 Manual</a>.</p>
+<p>Animint2 uses the same implementation of <code>ggplot2</code>’s grammar of graphics—with a few additions. If you’re familiar with <code>ggplot2</code>, using <code>animint2</code> will be easy. If you’re not, no worries. To get started, see the brief <a href="https://animint.github.io/animint2/articles/animint2.html">Animint2 Quick Start Guide</a> or read the first few chapters of the <a href="https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html" class="external-link">Animint2 Manual</a>.</p>
 <p><code>animint2</code> renders and animates data visualizations. It can neither manipulate the datasets you give it nor generate its own data.</p>
 </div>
 <div class="section level2">
@@ -116,6 +90,12 @@
 <h2 id="problems">Problems?<a class="anchor" aria-label="anchor" href="#problems"></a>
 </h2>
 <p>The <code>animint2</code> package is a work in progress. If you spot any bugs or unexpected behaviors, please let us know by <a href="https://github.com/animint/animint2/issues" class="external-link">reporting it as an issue on GitHub</a>. Thanks! Have a great day.</p>
+</div>
+<div class="section level2">
+<h2 id="other-galleries">Other galleries<a class="anchor" aria-label="anchor" href="#other-galleries"></a>
+</h2>
+<p><a href="https://github.com/Vatsal-Rajput/Vatsal-Animint-Gallery/tree/gh-pages" class="external-link">Vatsal-Rajput</a> created a small gallery with a different index.Rmd file.</p>
+<p><a href="https://nhintruong.github.io/gallery_repo/" class="external-link">nhintruong</a> created a gallery with several example adapted from the animation package, like <a href="https://github.com/tdhock/animint/wiki/Ports-of-animation-examples" class="external-link">the wiki page</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -160,6 +140,7 @@
 <li>Himanshu Singh <br><small class="roles"> Author </small>  </li>
 <li>Yufan Fei <br><small class="roles"> Author </small>  </li>
 <li>Jocelyne Chen <br><small class="roles"> Author </small>  </li>
+<li>Siddhesh Deodhar <br><small class="roles"> Author </small>  </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -171,21 +152,19 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p>
-<p>Developed by Toby Hocking, Hadley Wickham, Winston Chang, Nicholas Lewin-Koh, Martin Maechler, Randall Prium, Susan VanderPlas, Carson Sievert, Kevin Ferris, Jun Cai, Faizan Khan, Vivek Kumar, Himanshu Singh, Yufan Fei, Jocelyne Chen.</p>
+  <p>Developed by Toby Hocking, Hadley Wickham, Winston Chang, Nicholas Lewin-Koh, Martin Maechler, Randall Prium, Susan VanderPlas, Carson Sievert, Kevin Ferris, Jun Cai, Faizan Khan, Vivek Kumar, Himanshu Singh, Yufan Fei, Jocelyne Chen, Siddhesh Deodhar.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>
