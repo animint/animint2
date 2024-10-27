@@ -15,6 +15,7 @@
 
 template:
   bootstrap: 5
+  light-switch: true
   bslib:
     base_font: {google: "Roboto Condensed"}
     heading_font: {google: "Roboto Condensed"}
