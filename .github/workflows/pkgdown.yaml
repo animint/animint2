@@ -3,8 +3,6 @@
 on:
   push:
     branches: [main, master, automatic-birthday-machine]
-  pull_request:
-    branches: [main, master, automatic-birthday-machine]
   release:
     types: [published]
   workflow_dispatch:
