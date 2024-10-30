@@ -8,9 +8,6 @@ Authors@R: c(
      email="toby.hocking@r-project.org",
      role=c("aut", "cre"),
      comment="Original animint code"),
-    person("Biplab", "Sutradhar",
-     role = "ctb",
-     comment = "Updated animist.js to use class for source links"),
     person("Hadley", "Wickham",
      role=c("aut"),
      comment="Forked ggplot2 code"),
@@ -58,7 +55,10 @@ Authors@R: c(
      comment="Animint2 GSoC 2023"),
     person("Siddhesh", "Deodhar",
      role="aut",
-     comment="Animint2 GSoC 2024"))
+     comment="Animint2 GSoC 2024"),
+    person("Biplab", "Sutradhar",
+     role = "ctb",
+     comment = "bug fixer: id issue"))
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
  on a web page. The 2018 Journal of Computational and 

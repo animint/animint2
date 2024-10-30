@@ -1,10 +1,10 @@
 # Changes in version 2024.10.10 (PR#154)
 
-  - Updated `animist.js` to use classes for source links, resolving issue #145.
+- Updated `animint.js` to use CSS classes instead of IDs for source links.
 
 # Changes in version 2024.9.18 (PR#131)
   
-  - Added functionality to capture screenshot in animint2pages
+- Added functionality to capture screenshot in animint2pages.
 
 # Changes in version 2024.9.17
 
