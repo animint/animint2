@@ -2,8 +2,6 @@
 #'
 #' Colour bar guide shows continuous color scales mapped onto values.
 #' Colour bar is available with \code{scale_fill} and \code{scale_colour}.
-#' For more information, see the inspiration for this function:
-#' \href{http://www.mathworks.com/help/techdoc/ref/colorbar.html}{Matlab's colorbar function}.
 #'
 #' Guides can be specified in each \code{scale_*} or in \code{\link{guides}}.
 #' \code{guide="legend"} in \code{scale_*} is syntactic sugar for
