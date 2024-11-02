@@ -1,4 +1,4 @@
-# Changes in version 2024.11.2 (PR#TODO)
+# Changes in version 2024.11.2 (PR#163)
 
 - Added [gtable] to \link{gtable} to fix new CRAN issue (\link{} targets missing package anchors).
 
