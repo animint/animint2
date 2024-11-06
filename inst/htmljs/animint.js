@@ -5,7 +5,7 @@
 // </script>
 // Constructor for animint Object.
 var animint = function (to_select, json_file) {
-
+  var steps = [];
   var default_axis_px = 16;
 
    function wait_until_then(timeout, condFun, readyFun) {
@@ -185,6 +185,24 @@ var animint = function (to_select, json_file) {
 
   var add_geom = function (g_name, g_info) {
     // Determine if data will be an object or an array.
+    // added geom properties in steps array
+    var geom = g_info.geom;
+    var id = "plot_" + geom + "Plot";
+  
+    var helpText = g_info.params.help || '';
+    var showSelected = g_info.params.showSelected || '';
+    var clickSelects = g_info.params.clickSelects || '';
+  
+    steps.push({
+      element: "#" + id,
+      popover: {
+        title: geom.charAt(0).toUpperCase() + geom.slice(1),
+        description: `${helpText} Data are shown for the current selection of: ${showSelected}. Click to change selection of: ${clickSelects}.`
+      }
+    });
+  
+
+
     if(g_info.geom in data_object_geoms){
       g_info.data_is_object = true;
     }else{
@@ -2053,6 +2071,28 @@ var animint = function (to_select, json_file) {
     ////////////////////////////////////////////
     // Widgets at bottom of page
     ////////////////////////////////////////////
+
+    // Function to start the tour
+  var element = d3.select("body");
+
+  function startTour() {
+    const driver = window.driver.js.driver;
+
+    const driverObj = driver({
+      showProgress: true,
+      steps: steps
+    });
+
+    driverObj.drive();
+  }
+ 
+  element.append("button")
+  .text("Start Tour")
+   
+  .on("click", function() {
+    startTour();
+  });
+ 
     if(response.hasOwnProperty("source")){
       widget_td.append("a")
 	.attr("class","a_source_href")
