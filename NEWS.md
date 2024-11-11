@@ -1,3 +1,7 @@
+# Changes in version 2024.11.11 (PR#166)
+
+- if(require(maps)) in test-compiler-animation.R.
+
 # Changes in version 2024.11.2 (PR#163)
 
 - Added [gtable] to \link{gtable} to fix new CRAN issue (\link{} targets missing package anchors).
