@@ -11,7 +11,6 @@ animint2pages(
   commit_message = "Commit from animint2pages",
   private = FALSE,
   required_opts = c("title", "source"),
-  server = NULL,
   ...
 )
 }
