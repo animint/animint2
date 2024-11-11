@@ -1,10 +1,14 @@
+# Changes in version 2024.11.2 (PR#163)
+
+- Added [gtable] to \link{gtable} to fix new CRAN issue (\link{} targets missing package anchors).
+
 # Changes in version 2024.10.10 (PR#154)
 
-  - Updated `animist.js` to use classes for source links, resolving issue #145.
+- Updated `animist.js` to use classes for source links, resolving issue #145.
 
 # Changes in version 2024.9.18 (PR#131)
   
-  - Added functionality to capture screenshot in animint2pages
+- Added functionality to capture screenshot in animint2pages
 
 # Changes in version 2024.9.17
 
