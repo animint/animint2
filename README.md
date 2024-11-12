@@ -6,7 +6,7 @@
 </a>
 <!-- Feel free to change the HTML block above this comment into Markdown. It's just in HTML cuz I couldn't be arsed to figure out how to correctly combine an image and a link in Github-flavored Markdown. -->
 
-
+[Slides for a 30-60 minute presentation about animint2](https://docs.google.com/presentation/d/1QDwo9x4OM7UKAXffJrny6nSfeytFR0kO5NB-NQEspcE/edit?usp=sharing)!
 
 ## About
 
