@@ -1,3 +1,9 @@
+# Changes in version 2024.11.27 (PR#TODO)
+
+- When scale_log10 changes -Inf to NA, Inf handling logic now works
+  (previous was error, user should still fix their code to change -Inf
+  to 0).
+
 # Changes in version 2024.11.2 (PR#163)
 
 - Added [gtable] to \link{gtable} to fix new CRAN issue (\link{} targets missing package anchors).
