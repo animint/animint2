@@ -607,8 +607,12 @@ Geom <- gganimintproto("Geom",
         to.rep <- cmp(xy.col.df, extreme.vec)
         repNA <- is.na(to.rep)
         if(any(repNA)){
-          warning("NA found in code for handling infinite values. Typically this means that user should change -Inf to 0 when using scale_log10 etc")
           to.rep[repNA] <- FALSE
+        }
+        origNA <- is.na(l$data)[, xy.col.vec, drop=FALSE]
+        warnNA <- repNA & !origNA
+        if(any(warnNA)){
+          warning("NA found in code for handling infinite values. Typically this means that user should change -Inf to 0 when using scale_log10 etc")
         }
         row.vec <- row(to.rep)[to.rep]
         xy.col.df[to.rep] <- extreme.vec[row.vec]
