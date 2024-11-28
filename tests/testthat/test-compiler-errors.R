@@ -99,11 +99,11 @@ test_that("warn for -Inf but not NA input to scale_log10", {
   viz_neg_Inf <- get_viz(-Inf)
   expect_warning({
     animint2dir(viz_neg_Inf, open.browser=FALSE)
-  }, "NA found in code for handling infinite values. Typically this means that user should change -Inf to 0 when using scale_log10 etc")
+  }, "NaNs produced")
   viz_NA <- get_viz(NA)
   expect_no_warning({
     animint2dir(viz_NA, open.browser=FALSE)
-  }, "NA found in code for handling infinite values. Typically this means that user should change -Inf to 0 when using scale_log10 etc")
+  })
 })
 
 test_that("warn no key for geom_text with showSelected=duration var", {
