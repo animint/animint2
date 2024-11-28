@@ -9,6 +9,8 @@
 }
 \usage{data(WorldBank)}
 \format{
+  TODO add codebook
+  
   A data frame with 11342 observations on the following 15 variables.
   \describe{
     \item{\code{iso2c}}{a character vector}

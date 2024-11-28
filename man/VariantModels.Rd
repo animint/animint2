@@ -5,6 +5,8 @@
   Error rates of supervised learning methods for variant calling
 }
 \description{
+  TODO add codebook
+  
   Several supervised machine learning models were applied to the binary
   classification task of predicting True Positive or False Positive
   variants, using several filtering scores as input.
