@@ -1,8 +1,12 @@
-# Changes in version 2024.11.27 (PR#TODO)
+# Changes in version 2024.11.27 (PR#170)
 
 - When scale_log10 changes -Inf to NA, Inf handling logic now works
   (previous was error, user should still fix their code to change -Inf
   to 0).
+
+# Changes in version 2024.11.11 (PR#166)
+
+- if(require(maps)) in test-compiler-animation.R.
 
 # Changes in version 2024.11.2 (PR#163)
 
