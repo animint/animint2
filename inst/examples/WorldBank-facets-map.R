@@ -19,7 +19,7 @@ wb.facets <- animint(
   ts=ggplot()+
     theme_bw()+
     theme(panel.margin=grid::unit(0, "lines"))+
-    theme_animint(width=1000, height=800)+
+    theme_animint(width=1100, height=600)+
     xlab("")+
     ylab("")+
     ## TS
@@ -33,11 +33,8 @@ wb.facets <- animint(
       clickSelects="country",
       data=TS(not.na),
       size=4,
-      alpha=3/5)+
-    geom_point(aes(
-      year, life.expectancy, color=region, size=population),
-      showSelected="country", clickSelects="country",
-      data=TS(not.na))+
+      alpha=1,
+      alpha_off=0.1)+
     geom_text(aes(
       year, life.expectancy, colour=region, label=country),
       showSelected="country",
@@ -55,12 +52,8 @@ wb.facets <- animint(
       clickSelects="country",
       data=TS2(not.na),
       size=4,
-      alpha=3/5)+
-    geom_point(aes(
-      fertility.rate, year, color=region, size=population),
-      showSelected="country",
-      clickSelects="country",
-      data=TS2(not.na))+
+      alpha=1,
+      alpha_off=0.1)+
     ## SCATTER
     geom_point(aes(
       fertility.rate, life.expectancy, colour=region, size=population,
@@ -83,9 +76,13 @@ wb.facets <- animint(
       key=1),
       showSelected="year",
       data=SCATTER(years)),
-  time=list(variable="year", ms=2000),
-  duration=list(year=1000),
+  ##time=list(variable="year", ms=3000),
+  duration=list(year=2000),
   first=list(year=1975, country=c("United States", "Vietnam")),
   selector.types=list(country="multiple"),
+  source="https://github.com/animint/animint2/blob/master/inst/examples/WorldBank-facets-map.R",
   title="World Bank data (multiple selection, facets)")
 wb.facets
+if(FALSE){
+  animint2pages(wb.facets, "2025-01-WorldBank-facets-map")
+}
