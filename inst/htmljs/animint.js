@@ -246,6 +246,7 @@ var animint = function (to_select, json_file) {
   var add_geom = function (g_name, g_info) {
     // Determine if data will be an object or an array.
     // added geom properties in steps array
+
     var geom = g_info.classed;
 
     var helpText = g_info.params.help || '';
@@ -257,6 +258,7 @@ var animint = function (to_select, json_file) {
       popover: {
         title: geom.charAt(0).toUpperCase() + geom.slice(1),
         description: `${helpText}${showSelected ? ` Data are shown for the current selection of: ${showSelected}.` : ''}${clickSelects ? ` Click to change selection of: ${clickSelects}.` : ''}`,
+      
       },
     });
 
@@ -2245,6 +2247,7 @@ var animint = function (to_select, json_file) {
 
     element
       .append('button')
+      .attr('id', 'start_tour')
       .text('Start Tour')
       .on('click', function () {
         const driver = window.driver.js.driver;
@@ -2386,6 +2389,7 @@ var animint = function (to_select, json_file) {
         d3.select('.urltable').style('display', 'none');
       }
     };
+
     var show_hide_selector_widgets = widget_td
       .append('button')
       .text(toggle_message)
