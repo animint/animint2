@@ -14,6 +14,7 @@ my_plot <- list(
   pointPlot = ggplot(data, aes(x = life_expectancy, y = fertility_rate)) +
     animint2::geom_point(
       aes(size = population, color = country),
+      title = "Life Expectancy Threshold",
       help = "Each point represents life expectancy and fertility rate for a given country.",
       showSelected = "year",
       clickSelects = "country"
@@ -24,12 +25,12 @@ my_plot <- list(
       xintercept = 80,
       linetype = "dashed",
       color = "red",
+      title = "Life Expectancy Threshold",
       help = "Vertical line represents a life expectancy threshold of 80."
     )
 )
 
 map <- animint2HTML(my_plot)
-
 count_elements <- function(html_content, xpath) {
   html_text <- if (inherits(html_content, "XMLInternalDocument")) {
     saveXML(html_content)
@@ -58,7 +59,7 @@ test_that("Check first element of tour after clicking 'start_tour'", {
   clickID("start_tour")
   first_element_count <- count_elements(
     getHTML(),
-    "//div[contains(@class, 'driver-popover-title')][contains(text(), 'Geom1_point_pointPlot')]"
+    "//div[contains(@class, 'driver-popover-title')][contains(text(), 'Life Expectancy Threshold')]"
   )
   expect_gt(first_element_count, 0, "Expected at least one 'Geom1_point_pointPlot' element in the tour popup")
 })
@@ -71,7 +72,7 @@ test_that("Check second element of tour after clicking 'Next'", {
   )
   second_element_count <- count_elements(
     getHTML(),
-    "//div[contains(@class, 'driver-popover-title') and contains(text(), 'Geom2_vline_vlinePlot')]"
+    "//div[contains(@class, 'driver-popover-title') and contains(text(), 'Life Expectancy Threshold')]"
   )
   expect_gt(second_element_count, 0, "Expected 'Geom2_vline_vlinePlot' element after clicking Next")
 })
