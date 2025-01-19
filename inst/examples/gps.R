@@ -121,9 +121,11 @@ villes.start.end[, let(
   text.y=ifelse(where=="start", 49.4, 49.35))]
 city.text.size <- 15
 where.colors <- c(start="white",end="black")
-animint(
+viz <- animint(
   title="Toby Hocking Bike Rides 2009",
+  source="https://github.com/animint/animint2/blob/master/inst/examples/gps.R",
   map=ggplot()+
+    ggtitle("Map of rides, click to select ride")+
     theme_bw()+
     theme_animint(width=1000)+
     scale_fill_manual(
@@ -178,8 +180,10 @@ animint(
       size=city.text.size,
       data=villes.start.end),
   ts=ggplot()+
+    ggtitle("Time series of rides, click to select ride")+
     theme_bw()+
     theme_animint(width=1000, height=200)+
+    scale_y_continuous("Number of GPS points")+
     geom_point(aes(
       pct, N_data),
       clickSelects="timestamp",
@@ -187,10 +191,14 @@ animint(
       color="black",
       color_off="grey",
       data=ride.show)+
-    scale_x_datetime(date_breaks="1 month"),
+    scale_x_datetime("Date/time of ride", date_breaks="1 month"),
   out.dir="gps",
   time=list(
     variable="timestamp",
     ms=1000
   )
 )
+viz
+if(FALSE){
+  animint2pages(viz, "2025-01-19-bike-rides-around-paris-2009")
+}
