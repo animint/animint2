@@ -2200,8 +2200,14 @@ var animint = function (to_select, json_file) {
       .append("th")
       .text("Selected value(s)")
     ;
-      
-     // looping through and adding a row for each selector
+    // video link
+    if(response.hasOwnProperty("video")){
+      widget_td.append("a")
+	.attr("class","a_video_href")
+	.attr("href", response.video)
+	.text("video");
+    }
+    // looping through and adding a row for each selector
     for(s_name in Selectors) {
       var s_info = Selectors[s_name];
       // for .variable .value selectors, levels is undefined and we do
