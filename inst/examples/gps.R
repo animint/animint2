@@ -1,9 +1,9 @@
-library(data.table)
 if(!file.exists("gspdb-code")){
   system("hg clone http://hg.code.sf.net/p/gpsdb/code gpsdb-code")
 }
-gpx.glob <- "~/gpsdb-code/gpx/*"
-gpx.vec <- Sys.glob(gpx.glob)
+gpx.glob <- "gpsdb-code/gpx/*"
+library(data.table)
+data.table(gpx=Sys.glob(gpx.glob))
 f <- function(name)nc::field(
   name, '="', "[0-9.]+",
   as.numeric)
