@@ -147,6 +147,16 @@ getWidthAndHeight <- function(theme){
   options_list
 }
 
+theme_attribute <- function(theme){
+  options_list <- list()
+  for(attributes in c("rowspan", "colspan","row","col")){
+    arc <- paste0("animint.", attributes)
+    options_list[[attributes]] <- if(arc %in% names(theme)){
+      theme[[arc]]
+    }
+  }
+  options_list
+}
 
 setUpdateAxes <- function(theme, options_list){
   update_axes <- "animint.update_axes"
