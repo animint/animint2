@@ -184,6 +184,7 @@ check_no_github_repo <- function(owner, repo) {
 ##'   active.
 ##' @return named list of data tables (meta and error).
 ##' @author Toby Dylan Hocking
+##' @importFrom utils download.file
 ##' @export
 update_gallery <- function(gallery_path="~/R/gallery"){
   commit.POSIXct <- title <- NULL
