@@ -1,7 +1,8 @@
 acontext("geom_widerect")
 library(animint2)
-expect_source <- function(expected){
-  a.list <- getNodeSet(info$html, '//a[@class="a_source_href"]')
+expect_href <- function(kind, expected){
+  xpath <- sprintf('//a[@class="a_%s_href"]', kind)
+  a.list <- getNodeSet(info$html, xpath)
   computed <- if(length(a.list)==0){
     NULL
   }else{
@@ -10,6 +11,16 @@ expect_source <- function(expected){
   }
   expect_identical(as.character(computed), as.character(expected))
 }
+
+video.viz <- animint(
+  ggplot()+
+    geom_point(aes(x, y), data=data.frame(x=1,y=2)),
+  video="http://tdhock.github.io")
+info <- animint2HTML(video.viz)
+test_that("video link for animint(video='foo')", {
+  expect_href("source", NULL)
+  expect_href("video", "http://tdhock.github.io")
+})
 
 recommendation <- data.frame(
   min.C=21,
@@ -33,7 +44,10 @@ viz <- animint(
 )
 
 info <- animint2HTML(viz)
-expect_source(NULL)
+test_that("no source/video links rendered by default", {
+  expect_href("source", NULL)
+  expect_href("video", NULL)
+})
 
 clickSelector <- function(selectorName) {  
   script.txt <- sprintf('childDom = document.getElementsByClassName("%s")[0]; childDom.getElementsByClassName("selectize-input")[0].dispatchEvent(new CustomEvent("click"));', selectorName)
@@ -128,7 +142,10 @@ wb.facets <- animint(
   source="https://github.com/animint/animint2/blob/master/tests/testthat/test-renderer2-widerect.R")
 
 info <- animint2HTML(wb.facets)
-expect_source("https://github.com/animint/animint2/blob/master/tests/testthat/test-renderer2-widerect.R")
+test_that("source link rendered for animint(source='foo')", {
+  expect_href("source", "https://github.com/animint/animint2/blob/master/tests/testthat/test-renderer2-widerect.R")
+  expect_href("video", NULL)
+})
 
 rect.list <- getNodeSet(
   info$html, '//svg[@id="plot_ts"]//rect[@class="border_rect"]')
@@ -152,13 +169,11 @@ test_that("three unique border_rect y values (no vert space)", {
 })
 
 line.xpath <- '//g[@class="geom2_line_ts"]//g[@class="PANEL4"]//path'
-opacityPattern <-
-  paste0("opacity:",
-         "(?<value>.*?)",
-         ";")
-
+opacityPattern <- paste0(
+  "opacity:",
+  "(?<value>.*?)",
+  ";")
 test_that("line opacity initially 0.1 or 0.6", {
-
   node.set <- getNodeSet(info$html, line.xpath)
   opacity.list <- list()
   for(node.i in seq_along(node.set)){
@@ -170,27 +185,22 @@ test_that("line opacity initially 0.1 or 0.6", {
     opacity.list[[node.id]] <- as.numeric(opacity.mat[, "value"])
   }
   opacity.vec <- do.call(c, opacity.list)
-
   selected.computed <- as.numeric(opacity.vec[wb.facets$first$country])
   selected.expected <- rep(0.6, length(selected.computed))
   expect_equal(selected.computed, selected.expected)
-
   unselected.computed <-
     as.numeric(opacity.vec[!names(opacity.vec) %in% wb.facets$first$country])
   unselected.expected <- rep(0.1, length(unselected.computed))
   expect_equal(unselected.computed, unselected.expected)
-
 })
 
-dasharrayPattern <-
-  paste0("stroke-dasharray:",
-         "(?<value>.*?)",
-         ";")
-
-rect.xpaths <-
-  c('//g[@class="geom6_widerect_ts"]//g[@class="PANEL1"]//rect',
-    '//g[@class="geom1_tallrect_ts"]//g[@class="PANEL4"]//rect')
-
+dasharrayPattern <- paste0(
+  "stroke-dasharray:",
+  "(?<value>.*?)",
+  ";")
+rect.xpaths <- c(
+  '//g[@class="geom6_widerect_ts"]//g[@class="PANEL1"]//rect',
+  '//g[@class="geom1_tallrect_ts"]//g[@class="PANEL4"]//rect')
 test_that("wide/tallrect renders a <rect> for every year", {
   for(rect.xpath in rect.xpaths){
     node.set <- getNodeSet(info$html, rect.xpath)
