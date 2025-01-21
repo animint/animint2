@@ -1,3 +1,9 @@
+# Changes in version 2025.1.21 (PR#181)
+
+- `animint(video="https://some.url")` renders the link at the bottom
+  of the data viz.
+- `update_gallery()` uses `download.file()` instead of git clone (faster).
+
 # Changes in version 2024.11.27 (PR#170)
 
 - When scale_log10 changes -Inf to NA, Inf handling logic now works
