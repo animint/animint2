@@ -122,8 +122,9 @@ villes.start.end[, let(
 city.text.size <- 15
 where.colors <- c(start="white",end="black")
 viz <- animint(
-  title="Toby Hocking Bike Rides 2009",
+  title="Map and time series of Toby Hocking's Bike Rides in 2009",
   source="https://github.com/animint/animint2/blob/master/inst/examples/gps.R",
+  video="https://vimeo.com/1048533960",
   map=ggplot()+
     ggtitle("Map of rides, click to select ride")+
     theme_bw()+
