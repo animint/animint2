@@ -1047,6 +1047,7 @@ addSSandCSasAesthetics <- function(aesthetics, extra_params){
 ##' @param extra_params named list containing the details of showSelected
 ##' and clickSelects values of the layer
 ##' @param aes_mapping aesthetics mapping of the layer
+##' @param layer_df the data frame
 ##' @return Modified \code{extra_params} list
 checkExtraParams <- function(extra_params, aes_mapping, layer_df){
   cs.ss <- intersect(names(extra_params), c("showSelected", "clickSelects"))

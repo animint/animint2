@@ -11,6 +11,8 @@ checkExtraParams(extra_params, aes_mapping, layer_df)
 and clickSelects values of the layer}
 
 \item{aes_mapping}{aesthetics mapping of the layer}
+
+\item{layer_df}{the data frame}
 }
 \value{
 Modified \code{extra_params} list
