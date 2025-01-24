@@ -1048,7 +1048,7 @@ addSSandCSasAesthetics <- function(aesthetics, extra_params){
 ##' and clickSelects values of the layer
 ##' @param aes_mapping aesthetics mapping of the layer
 ##' @return Modified \code{extra_params} list
-checkExtraParams <- function(extra_params, aes_mapping){
+checkExtraParams <- function(extra_params, aes_mapping, layer_df){
   cs.ss <- intersect(names(extra_params), c("showSelected", "clickSelects"))
   for(i in cs.ss){
     ep <- extra_params[[i]]
@@ -1070,6 +1070,18 @@ checkExtraParams <- function(extra_params, aes_mapping){
         "^showSelectedlegend", names(aes_mapping))]
       ep <- ep[ !ep %in% ss_added_by_legend ]
     }
+    ## make help string for variable/value aes.
+    named.i <- which(names(ep) != "")
+    named.str <- if(length(named.i)==1){
+      var.name <- names(ep)[[named.i]]
+      u.vals <- unique(layer_df[[var.name]])
+      if(length(u.vals)==1){
+        u.vals
+      }else{
+        sprintf("one of: [%s]", paste(u.vals, collapse=", "))
+      }
+    }
+    extra_params[[paste0("help_",i)]] <- c(ep[-named.i], named.str)
     extra_params[[i]] <- ep
   }
   extra_params

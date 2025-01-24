@@ -68,7 +68,7 @@ parsePlot <- function(meta, plot, plot.name){
     ## -> handles .value/.variable named params
     ## -> removes duplicates
     ## -> removes duplicates due to showSelected legend
-    L$extra_params <- checkExtraParams(L$extra_params, L$mapping)
+    L$extra_params <- checkExtraParams(L$extra_params, L$mapping, L$data)
 
     ## Add the showSelected/clickSelects params to the aesthetics
     ## mapping before calling ggplot_build
