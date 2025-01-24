@@ -186,19 +186,26 @@ var animint = function (to_select, json_file) {
   var add_geom = function (g_name, g_info) {
     // Determine if data will be an object or an array.
     // added geom properties in steps array
-      console.log(g_info);
-      var geom = g_info.classed;
-      var title = g_info.params.title || '';
-      var helpText = g_info.params.help || '';
-      var showSelected = g_info.params.showSelected || '';
-      var clickSelects = g_info.params.clickSelects || '';  
-      steps.push({  // this add the geom to the steps array for guided tour
-        element: '.' + geom, 
-        popover: {
-          title: `${title}`,
-          description: `${helpText}<br>${showSelected ? ` Data are shown for the current selection of: ${showSelected}.` : ''}<br>${clickSelects ? ` Click to change selection of: ${clickSelects}.` : ''}`,
-        }, 
-      });
+    console.log(g_info);
+    var geom = g_info.classed;
+    var title = g_info.params.title || g_info.classed;
+    var helpText = g_info.params.help || '';
+    var showSelected = g_info.params.showSelected || '';
+    var clickSelects = g_info.params.clickSelects || '';
+    var description = helpText;
+    if(g_info.params.hasOwnProperty("showSelected")){
+      description += '<br>Data are shown for the current selection of: ' + g_info.params.showSelected;
+    }
+    if(g_info.params.hasOwnProperty("clickSelects")){
+      description += '<br>Click to select: ' + g_info.params.clickSelects;
+    }
+    steps.push({  // this add the geom to the steps array for guided tour
+      element: '.' + geom,
+      popover: {
+        title: title,
+        description: description
+      }
+    });
     if(g_info.geom in data_object_geoms){
       g_info.data_is_object = true;
     }else{
@@ -2069,24 +2076,24 @@ var animint = function (to_select, json_file) {
     ////////////////////////////////////////////
      // Function to start the tour
      var element = d3.select('body');
-     element
-       .append('button')
-       .attr('id', 'start_tour')
-       .text('Start Tour')
-       .on('click', function () {
-         const driver = window.driver.js.driver;
-         const driverObj = driver({
-           showProgress: true,
-           steps: steps,
-         });
-         driverObj.drive();
-       });
     if(response.hasOwnProperty("source")){
       widget_td.append("a")
 	.attr("class","a_source_href")
 	.attr("href", response.source)
 	.text("source");
     }
+    widget_td
+      .append('button')
+      .attr('id', 'start_tour')
+      .text('Start Tour')
+      .on('click', function () {
+        const driver = window.driver.js.driver;
+        const driverObj = driver({
+          showProgress: true,
+          steps: steps,
+        });
+        driverObj.drive();
+      });
     // loading table.
     var show_hide_table = widget_td.append("button")
       .text("Show download status table");
