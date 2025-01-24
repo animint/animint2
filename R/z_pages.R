@@ -16,6 +16,7 @@
 #' @param required_opts Character vector of plot.list element names
 #'   which are checked (stop with an error if not present). Use
 #'   required_opts=NULL to skip check.
+#' @param chromote_sleep_seconds if numeric, chromote will be used to take a screenshot of the data viz, pausing this number of seconds to wait for rendering (experimental).
 #' @param ... Additional options passed onto \code{animint2dir}.
 #'
 #' @return The function returns the initialized GitHub repository object.
@@ -36,7 +37,7 @@
 #' }
 #' 
 #' @export
-animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), ...) {
+animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), chromote_sleep_seconds=NULL, ...) {
   for(opt in required_opts){
     if(!opt %in% names(plot.list)){
       stop(sprintf("plot.list does not contain option named %s, which is required by animint2pages", opt))
@@ -48,20 +49,19 @@ animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "
       stop(sprintf("Please run `install.packages('%s')` before using this function", pkg))
     }
   }
-  
-  if(requireNamespace("chromote") && requireNamespace("magick")) {
+  res <- animint2dir(plot.list, open.browser = FALSE, ...)
+  if(requireNamespace("chromote") && requireNamespace("magick") && is.numeric(chromote_sleep_seconds)) {
     chrome.session <- chromote::ChromoteSession$new()
-    res <- animint2dir(plot.list, open.browser = FALSE, ...)
     #Find available port and start server
     portNum <- servr::random_port()
     normDir <- normalizePath(res$out.dir, winslash = "/", mustWork = TRUE)
     start_servr(serverDirectory = normDir, port = portNum, tmpPath = normDir)
-    Sys.sleep(3)
+    Sys.sleep(chromote_sleep_seconds)
     url <- sprintf("http://localhost:%d", portNum)
     chrome.session$Page$navigate(url)
     screenshot_path <- file.path(res$out.dir, "Capture.PNG")
     screenshot_full <- file.path(res$out.dir, "Capture_full.PNG")
-    Sys.sleep(3)
+    Sys.sleep(chromote_sleep_seconds)
     ## Capture screenshot
     chrome.session$screenshot(screenshot_full, selector = ".plot_content")
     image_raw <- magick::image_read(screenshot_full)

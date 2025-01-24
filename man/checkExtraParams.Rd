@@ -4,7 +4,7 @@
 \alias{checkExtraParams}
 \title{Check \code{extra_params} argument for duplicates, non-named list}
 \usage{
-checkExtraParams(extra_params, aes_mapping)
+checkExtraParams(extra_params, aes_mapping, layer_df)
 }
 \arguments{
 \item{extra_params}{named list containing the details of showSelected

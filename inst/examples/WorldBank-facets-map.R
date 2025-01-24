@@ -85,6 +85,7 @@ wb.facets <- animint(
     geom_line(aes(
       year, life.expectancy, group=country, colour=region),
       clickSelects="country",
+      help="Time series of life expectancy, one line per country",
       data=TS(not.na),
       size=4,
       alpha=1,
@@ -93,6 +94,7 @@ wb.facets <- animint(
       year, life.expectancy, colour=region, label=country),
       showSelected="country",
       clickSelects="country",
+      help="Names of selected countries",
       data=TS(min.years),
       hjust=1)+
     ## TS2
@@ -100,6 +102,7 @@ wb.facets <- animint(
     geom_path(aes(
       fertility.rate, year, group=country, colour=region),
       clickSelects="country",
+      help="Time series of fertility rate, one line per country",
       data=TS2(not.na),
       size=4,
       alpha=1,
@@ -110,6 +113,7 @@ wb.facets <- animint(
       key=country), # key aesthetic for smooth transitions!
       clickSelects="country",
       showSelected="year",
+      help="Scatter plot for the selected year, one point per country",
       alpha=1,
       alpha_off=0.3,
       chunk_vars=character(),
@@ -119,6 +123,7 @@ wb.facets <- animint(
       key=country), #also use key here!
       showSelected=c("country", "year", "region"),
       clickSelects="country",
+      help="Names of selected countries",
       chunk_vars=character(),
       data=SCATTER(not.na))+
     scale_size_animint(breaks=10^(9:5))+
@@ -127,10 +132,12 @@ wb.facets <- animint(
       5, 85, label=paste0("year = ", year),
       key=1),
       showSelected="year",
+      title="Selected year",
       data=SCATTER(years))+
     ## MAP
     geom_polygon(aes(
       x, y, group=group, fill=region),
+      title="World map",
       clickSelects="country",
       color="black",
       color_off="transparent",
@@ -143,6 +150,7 @@ wb.facets <- animint(
   selector.types=list(country="multiple"),
   source="https://github.com/animint/animint2/blob/master/inst/examples/WorldBank-facets-map.R",
   out.dir="WorldBank-facets-map",
+  video="https://vimeo.com/1050117030",
   title="World Bank data (multiple selection, facets)")
 options(browser="firefox")
 wb.facets
