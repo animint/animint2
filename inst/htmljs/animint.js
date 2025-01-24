@@ -2087,7 +2087,7 @@ var animint = function (to_select, json_file) {
     }
     widget_td
       .append('button')
-      .attr('id', 'start_tour')
+      .attr('class', 'animint_start_tour')
       .text('Start Tour')
       .on('click', function () {
         const driver = window.driver.js.driver;
