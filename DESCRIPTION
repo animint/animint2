@@ -1,6 +1,6 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2025.1.24
+Version: 2025.1.25
 URL: https://animint.github.io/animint2/
 BugReports: https://github.com/animint/animint2/issues
 Authors@R: c(
