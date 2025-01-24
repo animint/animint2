@@ -1072,16 +1072,17 @@ checkExtraParams <- function(extra_params, aes_mapping, layer_df){
     }
     ## make help string for variable/value aes.
     named.i <- which(names(ep) != "")
-    named.str <- if(length(named.i)==1){
+    extra_params[[paste0("help_",i)]] <- if(length(named.i)==1){
       var.name <- names(ep)[[named.i]]
       u.vals <- unique(layer_df[[var.name]])
-      if(length(u.vals)==1){
+      c(ep[-named.i], if(length(u.vals)==1){
         u.vals
       }else{
         sprintf("one of: [%s]", paste(u.vals, collapse=", "))
-      }
+      })
+    }else{
+      ep
     }
-    extra_params[[paste0("help_",i)]] <- c(ep[-named.i], named.str)
     extra_params[[i]] <- ep
   }
   extra_params

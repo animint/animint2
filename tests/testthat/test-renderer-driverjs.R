@@ -10,7 +10,7 @@ wb_data <- data.frame(
   population = c(300, 100, 150, 310, 110, 160, 320, 120, 170, 330, 130, 180, 340, 140, 190, 350, 150, 200)
 )
 
-my_plot <- list(
+wb_viz <- list(
   pointPlot = ggplot(wb_data, aes(x = life_expectancy, y = fertility_rate)) +
     geom_point(
       aes(size = population, color = country),
@@ -27,16 +27,16 @@ my_plot <- list(
       color = "red"
     )
 )
-info <- animint2HTML(my_plot)
+info <- animint2HTML(wb_viz)
 
 djs.list <- driverjs_get(info$html)
-test_that("no title nor description initially", {
+test_that("World Bank no title nor description initially", {
   expect_identical(djs.list$title, list())
   expect_identical(djs.list$description, list())
 })
 
 djs.list.start <- driverjs_start()
-test_that("Check first element of tour after clicking 'start_tour'", {
+test_that("World Bank first element of Start Tour", {
   expect_identical(djs.list.start$title, list(
     text="One country",
     .attrs=c(
@@ -54,7 +54,7 @@ test_that("Check first element of tour after clicking 'start_tour'", {
 })
 
 djs.list.next <- driverjs_next()
-test_that("Check second element of tour after clicking 'Next'", {
+test_that("World Bank tour after clicking Next", {
   expect_identical(djs.list.next$title, list(
     text = "geom2_vline_vlinePlot",
     .attrs = c(
@@ -82,13 +82,13 @@ viz <- animint(
 info <- animint2HTML(viz)
 
 djs.list <- driverjs_get(info$html)
-test_that("no title nor description initially", {
+test_that("driver tallrect no title nor description initially", {
   expect_identical(djs.list$title, list())
   expect_identical(djs.list$description, list())
 })
 
 djs.list.start <- driverjs_start()
-test_that("Check first element of tour after clicking Start Tour", {
+test_that("driver tallrect Start Tour", {
   expect_identical(djs.list.start$title, list(
     text="geom1_line_pointRect",
     .attrs=c(
@@ -102,14 +102,13 @@ test_that("Check first element of tour after clicking Start Tour", {
 })
 
 djs.list.next <- driverjs_next()
-test_that("Check second element of tour after clicking 'Next'", {
+test_that("driver tallrect after clicking Next", {
   expect_identical(djs.list.next$title, list(
     text = "geom2_tallrect_pointRect",
     .attrs = c(
       class = "driver-popover-title",
       style = "display: block;")))
   expect_identical(djs.list.next$description, list(
-    br=NULL,
     text = "Data are shown for the current selection of: year",
     br=NULL,
     text = "Click to select: year",
