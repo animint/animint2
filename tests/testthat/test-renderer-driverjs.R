@@ -117,3 +117,36 @@ test_that("driver tallrect after clicking Next", {
       style = "display: block;")))
 })
 
+sel_df <- data.frame(
+  selectorName=sprintf("model_%d_size", 1:10),
+  selectorValue=1:100)
+sel_viz <- animint(
+  points=ggplot()+
+    geom_point(aes(
+      selectorValue, selectorName),
+      data=sel_df,
+      size=5,
+      clickSelects=c(selectorName="selectorValue"))
+)
+info <- animint2HTML(sel_viz)
+
+djs.list <- driverjs_get(info$html)
+test_that("driver sel no title nor description initially", {
+  expect_identical(djs.list$title, list())
+  expect_identical(djs.list$description, list())
+})
+
+djs.list.start <- driverjs_start()
+test_that("driver sel Start Tour", {
+  expect_identical(djs.list.start$title, list(
+    text="geom1_point_points",
+    .attrs=c(
+      class="driver-popover-title",
+      style="display: block;")))
+  expect_identical(djs.list.start$description, list(
+    text = "Click to select: one of: [model_1_size, model_2_size, ..., model_9_size, model_10_size]",
+    .attrs = c(
+      class = "driver-popover-description",
+      style = "display: block;")))
+})
+
