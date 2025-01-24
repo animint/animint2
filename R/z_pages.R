@@ -167,39 +167,6 @@ check_no_github_repo <- function(owner, repo) {
   )
 }
 
-get_pages_info <- function(viz_owner_repo){
-  viz_dir <- tempfile()
-  origin_url <- paste0("https://github.com/", viz_owner_repo, ".git")
-  gert::git_clone(origin_url, viz_dir)
-  gert::git_branch_checkout("gh-pages", repo=viz_dir)
-  Capture.PNG <- file.path(viz_dir, "Capture.PNG")
-  if(!file.exists(Capture.PNG)){
-    stop(sprintf("gh-pages branch of %s should contain file named Capture.PNG (screenshot of data viz)", viz_owner_repo))
-  }
-  plot.json <- file.path(viz_dir, "plot.json")
-  jlist <- RJSONIO::fromJSON(plot.json)
-  commit.row <- gert::git_log(max=1, repo=viz_dir)
-  repo.row <- data.table(
-    viz_owner_repo, Capture.PNG, commit.POSIXct=commit.row$time)
-  to.check <- c(
-    source="URL of data viz source code",
-    title="string describing the data viz")
-  for(attr.name in names(to.check)){
-    attr.value <- jlist[[attr.name]]
-    if(
-      is.character(attr.value)
-      && length(attr.value)==1
-      && !is.na(attr.value)
-      && nchar(attr.value)>0
-    ){
-      set(repo.row, j=attr.name, value=attr.value)
-    }else{
-      stop(sprintf("plot.json file in gh-pages branch of %s should have element named %s which should be %s", viz_owner_repo, attr.name, to.check[[attr.name]]))
-    }
-  }
-  repo.row
-}
-
 ##' A gallery is a collection of meta-data about animints that have
 ##' been published to github pages. A gallery is defined as a github
 ##' repo that should have two source files in the gh-pages branch:
@@ -217,6 +184,7 @@ get_pages_info <- function(viz_owner_repo){
 ##'   active.
 ##' @return named list of data tables (meta and error).
 ##' @author Toby Dylan Hocking
+##' @importFrom utils download.file
 ##' @export
 update_gallery <- function(gallery_path="~/R/gallery"){
   commit.POSIXct <- title <- NULL
@@ -224,22 +192,53 @@ update_gallery <- function(gallery_path="~/R/gallery"){
   repos.txt <- file.path(gallery_path, "repos.txt")
   repos.dt <- fread(repos.txt,header=FALSE,col.names="viz_owner_repo")
   meta.csv <- file.path(gallery_path, "meta.csv")
-  old.meta <- fread(meta.csv)
-  todo.meta <- repos.dt[!old.meta, on="viz_owner_repo"]
+  if(file.exists(meta.csv)){
+    old.meta <- fread(meta.csv)
+    todo.meta <- repos.dt[!old.meta, on="viz_owner_repo"]
+  }else{
+    old.meta <- NULL
+    todo.meta <- repos.dt
+  }
   meta.dt.list <- list(old.meta)
   error.dt.list <- list()
   add.POSIXct <- Sys.time()
   for(viz_owner_repo in todo.meta[["viz_owner_repo"]]){
     tryCatch({
-      meta.row <- data.table(add.POSIXct, get_pages_info(viz_owner_repo))
-      meta.dt.list[[viz_owner_repo]] <- meta.row[, .(
-        add.POSIXct, viz_owner_repo, commit.POSIXct, source, title)]
-      Capture.PNG <- meta.row[["Capture.PNG"]]
+      viz_url <- function(filename)sprintf(
+        "https://raw.githubusercontent.com/%s/refs/heads/gh-pages/%s",
+        viz_owner_repo, filename)
       repo.png <- file.path(
         gallery_path, "repos", paste0(viz_owner_repo, ".png"))
-      user.dir <- dirname(repo.png)
-      dir.create(user.dir, showWarnings = FALSE, recursive = TRUE)
-      file.copy(Capture.PNG, repo.png, overwrite = TRUE)
+      if(!file.exists(repo.png)){
+        download.file(viz_url("Capture.PNG"), repo.png)
+      }
+      local.json <- tempfile()
+      download.file(viz_url("plot.json"), local.json)
+      jlist <- RJSONIO::fromJSON(local.json)
+      to.check <- c(
+        source="URL of data viz source code",
+        title="string describing the data viz")
+      repo.row <- data.table()
+      repo.row$video <- if("video" %in% names(jlist)){
+        jlist$video
+      }else{
+        NA_character_
+      }
+      for(attr.name in names(to.check)){
+        attr.value <- jlist[[attr.name]]
+        if(
+          is.character(attr.value)
+          && length(attr.value)==1
+          && !is.na(attr.value)
+          && nchar(attr.value)>0
+        ){
+          set(repo.row, j=attr.name, value=attr.value)
+        }else{
+          stop(sprintf("plot.json file in gh-pages branch of %s should have element named %s which should be %s", viz_owner_repo, attr.name, to.check[[attr.name]]))
+        }
+      }
+      meta.dt.list[[viz_owner_repo]] <- data.table(
+        add.POSIXct, viz_owner_repo, repo.row)
     }, error=function(e){
       error.dt.list[[viz_owner_repo]] <<- data.table(
         add.POSIXct, viz_owner_repo, error=e$message)

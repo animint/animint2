@@ -304,16 +304,16 @@ animint2dir <- function(plot.list, out.dir = NULL,
   if(is.list(plot.list$title)){
     plot.list$title <- plot.list$title[[1]]
   }
-  if(is.character(plot.list$title)){
-    meta$title <- plot.list$title[[1]]
-    plot.list$title <- NULL
-  }
   if(!is.null(plot.list$out.dir)){
     plot.list$out.dir <- NULL
   }
-  if(is.character(plot.list[["source"]])){
-    meta$source <- plot.list[["source"]]
-    plot.list$source <- NULL
+  char_attr_names <- c("source","video","title")
+  for(attr_name in char_attr_names){
+    maybe_char <- plot.list[[attr_name]]
+    if(is.character(maybe_char) && length(maybe_char)==1 && !is.na(maybe_char)){
+      meta[[attr_name]] <- maybe_char
+      plot.list[[attr_name]] <- NULL
+    }
   }
 
   ## Extract essential info from ggplots, reality checks.
@@ -643,7 +643,8 @@ animint2dir <- function(plot.list, out.dir = NULL,
   meta$time <- AnimationInfo$time
   meta$timeValues <- AnimationInfo$timeValues
   export.names <- c(
-    "geoms", "time", "duration", "selectors", "plots", "title", "source")
+    "geoms", "time", "duration", "selectors", "plots",
+    char_attr_names)
   export.data <- list()
   for(export.name in export.names){
     if(export.name %in% ls(meta)){

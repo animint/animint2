@@ -352,7 +352,7 @@ tests_run <- function(dir = ".", filter = NULL) {
 #' @export
 tests_exit <- function() {
   Sys.unsetenv("ANIMINT_BROWSER")
-  res <- stop_servr(tmpPath = find_test_path())
+  res <- animint2:::stop_servr(tmpPath = find_test_path())
   invisible(all(res))
 }
 
@@ -365,7 +365,7 @@ tests_exit <- function() {
 #' @param code R code to execute in a child session
 #' @return port number of the successful attempt
 run_servr <- function(directory, port) {
-  start_servr(directory, port, tmpPath = find_test_path())
+  animint2:::start_servr(directory, port, tmpPath = find_test_path())
 }
 
 # --------------------------
