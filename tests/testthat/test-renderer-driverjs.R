@@ -12,67 +12,57 @@ data <- data.frame(
 
 my_plot <- list(
   pointPlot = ggplot(data, aes(x = life_expectancy, y = fertility_rate)) +
-    animint2::geom_point(
+    geom_point(
       aes(size = population, color = country),
-      title = "Life Expectancy Threshold",
+      title = "One country",
       help = "Each point represents life expectancy and fertility rate for a given country.",
       showSelected = "year",
       clickSelects = "country"
     ) +
     labs(title = "Life Expectancy vs. Fertility Rate", x = "Life Expectancy", y = "Fertility Rate"),
   vlinePlot = ggplot(data, aes(x = life_expectancy, y = fertility_rate)) +
-    animint2::geom_vline(
+    geom_vline(
       xintercept = 80,
       linetype = "dashed",
-      color = "red",
-      title = "Life Expectancy Threshold",
-      help = "Vertical line represents a life expectancy threshold of 80."
+      color = "red"
     )
 )
+info <- animint2HTML(my_plot)
 
-map <- animint2HTML(my_plot)
-count_elements <- function(html_content, xpath) {
-  html_text <- if (inherits(html_content, "XMLInternalDocument")) {
-    saveXML(html_content)
-  } else {
-    as.character(html_content)
-  }
-  length(getNodeSet(htmlParse(html_text, asText = TRUE), xpath))
-}
-
-test_that("Check pixel ranges for geom1_point_pointPlot", {
-  info <- list(html_updated1 = getHTML())
-  no_updates_ranges1 <- get_pixel_ranges(info$html_updated1, "geom1_point_pointPlot")
-  expect_gt(length(no_updates_ranges1$x), 0, "Expected at least one x value in pixel ranges for geom1_point_pointPlot")
-  expect_gt(length(no_updates_ranges1$y), 0, "Expected at least one y value in pixel ranges for geom1_point_pointPlot")
+djs.list <- driverjs_get(info$html)
+test_that("no title nor description initially", {
+  expect_identical(djs.list$title, list())
+  expect_identical(djs.list$description, list())
 })
 
-test_that("Check if the title 'Life Expectancy vs. Fertility Rate' is present", {
-  title_count <- count_elements(
-    getHTML(),
-    "//*[contains(text(), 'Life Expectancy vs. Fertility Rate')]"
-  )
-  expect_gt(title_count, 0, "Expected the text 'Life Expectancy vs. Fertility Rate' to be present in the plot title.")
-})
-
+djs.list.start <- driverjs_start()
 test_that("Check first element of tour after clicking 'start_tour'", {
-  clickID("start_tour")
-  first_element_count <- count_elements(
-    getHTML(),
-    "//div[contains(@class, 'driver-popover-title')][contains(text(), 'Life Expectancy Threshold')]"
-  )
-  expect_gt(first_element_count, 0, "Expected at least one 'Geom1_point_pointPlot' element in the tour popup")
+  expect_identical(djs.list.start$title, list(
+    text="One country",
+    .attrs=c(
+      class="driver-popover-title",
+      style="display: block;")))
+  expect_identical(djs.list.start$description, list(
+    text = "Each point represents life expectancy and fertility rate for a given country.",
+    br = NULL,
+    text = "Data are shown for the current selection of: year",
+    br = NULL,
+    text = "Click to select: country",
+    .attrs = c(
+      class = "driver-popover-description",
+      style = "display: block;")))
 })
 
+djs.list.next <- driverjs_next()
 test_that("Check second element of tour after clicking 'Next'", {
-  runtime_evaluate_helper(
-    class_name = "driver-popover-next-btn",
-    list_num = 0,
-    dispatch_event = TRUE
-  )
-  second_element_count <- count_elements(
-    getHTML(),
-    "//div[contains(@class, 'driver-popover-title') and contains(text(), 'Life Expectancy Threshold')]"
-  )
-  expect_gt(second_element_count, 0, "Expected 'Geom2_vline_vlinePlot' element after clicking Next")
+  expect_identical(djs.list.next$title, list(
+    text = "geom2_vline_vlinePlot",
+    .attrs = c(
+      class = "driver-popover-title",
+      style = "display: block;")))
+  expect_identical(djs.list.next$description, list(
+    text = "No interactions available",
+    .attrs = c(
+      class = "driver-popover-description",
+      style = "display: block;")))
 })

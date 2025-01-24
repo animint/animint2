@@ -399,3 +399,31 @@ runtime_evaluate_helper <- function(class_name=NULL, id=NULL, list_num=NULL, dis
     if(is.atomic(list_num))sprintf("[%d]", as.integer(list_num)),
     if(isTRUE(dispatch_event))".dispatchEvent(new CustomEvent('click'))"))
 }
+
+driverjs_start <- function(){
+  clickID("start_tour")
+  driverjs_get()
+}
+
+driverjs_next <- function(){
+  runtime_evaluate_helper(
+    class_name = "driver-popover-next-btn",
+    list_num = 0,
+    dispatch_event = TRUE
+  )
+  driverjs_get()
+}
+
+driverjs_get <- function(html=getHTML()){
+  out.list <- list()
+  for(suffix in c("title","description")){
+    xpath <- sprintf('//div[@class="driver-popover-%s"]', suffix)
+    node.list <- getNodeSet(html, xpath)
+    out.list[[suffix]] <- if(length(node.list)==0){
+      list()
+    }else{
+      xmlToList(node.list[[1]])
+    }
+  }
+  out.list
+}

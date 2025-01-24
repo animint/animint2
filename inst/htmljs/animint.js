@@ -199,6 +199,9 @@ var animint = function (to_select, json_file) {
     if(g_info.params.hasOwnProperty("clickSelects")){
       description += '<br>Click to select: ' + g_info.params.clickSelects;
     }
+    if(description == ""){
+      description = "No interactions available";
+    }
     steps.push({  // this add the geom to the steps array for guided tour
       element: '.' + geom,
       popover: {
