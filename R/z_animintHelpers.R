@@ -1078,7 +1078,12 @@ checkExtraParams <- function(extra_params, aes_mapping, layer_df){
       c(ep[-named.i], if(length(u.vals)==1){
         u.vals
       }else{
-        sprintf("one of: [%s]", paste(u.vals, collapse=", "))
+        disp.vals <- if(length(u.vals)>4){
+          c(u.vals[1:2], "...", u.vals[c(length(u.vals)-1, length(u.vals))])
+        }else{
+          u.vals
+        }
+        sprintf("one of: [%s]", paste(disp.vals, collapse=", "))
       })
     }else{
       ep

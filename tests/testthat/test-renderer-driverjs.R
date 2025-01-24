@@ -149,4 +149,3 @@ test_that("driver sel Start Tour", {
       class = "driver-popover-description",
       style = "display: block;")))
 })
-
