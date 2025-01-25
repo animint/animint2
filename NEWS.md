@@ -2,6 +2,7 @@
 
 - Tour text includes selector names for geoms with named clickSelects/showSelected.
 - `animint2pages(chromote_sleep_seconds=NULL)` is the new default (no screenshot).
+- knit_print.animint supports Start Tour button.
 
 # Changes in version 2025.1.24 (PR#164)
 
