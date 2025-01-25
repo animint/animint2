@@ -169,7 +169,9 @@ test_that("knit driver start first plot", {
         class = "driver-popover-title", 
         style = "display: block;")),
     description = list(
-      text = "first plot", 
+      text = "first plot",
+      br=NULL,
+      text="Data are shown for the current selection of: label",
       .attrs = c(
         class = "driver-popover-description",
         style = "display: block;"
@@ -186,6 +188,8 @@ test_that("knit driver start second plot", {
         style = "display: block;")),
     description = list(
       text = "second plot", 
+      br=NULL,
+      text="Data are shown for the current selection of: label",
       .attrs = c(
         class = "driver-popover-description",
         style = "display: block;"

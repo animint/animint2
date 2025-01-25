@@ -45,7 +45,7 @@ test_that("World Bank first element of Start Tour", {
   expect_identical(djs.list.start$description, list(
     text = "Each point represents life expectancy and fertility rate for a given country.",
     br = NULL,
-    text = "Data are shown for the current selection of: year",
+    text = "Data are shown for the current selection of: year,country",
     br = NULL,
     text = "Click to select: country",
     .attrs = c(
@@ -95,7 +95,7 @@ test_that("driver tallrect Start Tour", {
       class="driver-popover-title",
       style="display: block;")))
   expect_identical(djs.list.start$description, list(
-    text = "No interactions available",
+    text = "Data are shown for the current selection of: country",
     .attrs = c(
       class = "driver-popover-description",
       style = "display: block;")))

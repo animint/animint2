@@ -31,9 +31,7 @@ addShowSelectedForLegend <- function(meta, legend, L){
         ## used by the geom
         type.vec <- one.legend$legend_type
         if(any(type.vec %in% names(L$mapping))){
-          type.str <- paste(type.vec, collapse="")
-          a.name <- paste0("showSelectedlegend", type.str)
-          L$mapping[[a.name]] <- as.symbol(s.name)
+          L$extra_params$showSelected <- c(L$extra_params$showSelected, s.name)
         }
       }
       ## if selector.types has not been specified, create it
@@ -1065,12 +1063,6 @@ checkExtraParams <- function(extra_params, aes_mapping, layer_df){
     }
     ## Remove duplicates
     ep <- ep[ !duplicated(ep) ]
-    ## Remove from extra_params if already added by legend
-    if(i=="showSelected"){
-      ss_added_by_legend <- aes_mapping[grepl(
-        "^showSelectedlegend", names(aes_mapping))]
-      ep <- ep[ !ep %in% ss_added_by_legend ]
-    }
     ## make help string for variable/value aes.
     named.i <- which(names(ep) != "")
     extra_params[[paste0("help_",i)]] <- if(length(named.i)==1){
