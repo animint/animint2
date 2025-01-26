@@ -35,12 +35,25 @@ print.animint <- function(x, ...){
 ##'
 ##' if(require('data.table'))setDTthreads(1)#for CRAN.
 ##' library(animint2)
-##' ## Simple hello world example.
+##' ## Simple hello world example (1 selector: word).
 ##' animint(ggplot()+geom_text(aes(
-##'   Var, Var, label=Var, color=Var),
-##'   data=data.frame(Var=c("Hello","world!"))))
+##'   word, word, label=word, color=word),
+##'   data=data.frame(word=c("Hello","world!"))))
 ##'
-##' ## More complex World Bank example.
+##' ## More complex Hello World (2 selectors: number, language).
+##' hello_df = data.frame(
+##'   language=c("en","en","fr","fr"),
+##'   word=c("Hello","world!","Bonjour","monde !"),
+##'   number=factor(c(1,2,1,2)))
+##' animint(ggplot()+geom_text(aes(
+##'   number, "message", label=word, color=number),
+##'   showSelected="language", data=hello_df)+
+##' geom_text(aes(
+##'   number, "select language", label=language),
+##'   clickSelects="language",
+##'   data=data.frame(number=factor(1:2), language=c("en","fr"))))
+##'
+##' ## More complex World Bank example (3 selectors: country, region, year).
 ##' data(WorldBank, package="animint2")
 ##' years <- unique(WorldBank[, "year", drop=FALSE])
 ##' y1960 <- subset(WorldBank, year==1960)
