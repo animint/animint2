@@ -32,8 +32,15 @@ print.animint <- function(x, ...){
 ##' @return list of class animint
 ##' @author Toby Dylan Hocking
 ##' @examples
+##'
 ##' if(require('data.table'))setDTthreads(1)#for CRAN.
 ##' library(animint2)
+##' ## Simple hello world example.
+##' animint(ggplot()+geom_text(aes(
+##'   Var, Var, label=Var, color=Var),
+##'   data=data.frame(Var=c("Hello","world!"))))
+##'
+##' ## More complex World Bank example.
 ##' data(WorldBank, package="animint2")
 ##' years <- unique(WorldBank[, "year", drop=FALSE])
 ##' y1960 <- subset(WorldBank, year==1960)
@@ -66,6 +73,7 @@ print.animint <- function(x, ...){
 ##'     geom_point(aes(
 ##'       fertility.rate, life.expectancy,
 ##'       key=country, colour=region, size=population),
+##'       chunk_vars=character(),
 ##'       showSelected="year",
 ##'       clickSelects="country",
 ##'       data=WorldBank)+
@@ -74,6 +82,7 @@ print.animint <- function(x, ...){
 ##'       key=country,
 ##'       label=country),
 ##'       showSelected=c("country", "year"),
+##'       chunk_vars=character(),
 ##'       data=WorldBank)+
 ##'     geom_text(aes(
 ##'       5, 80, key=1, label=paste("year =", year)),
