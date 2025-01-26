@@ -121,6 +121,7 @@ viz <- animint(
     theme_grey()+
     geom_text(aes(
       0,y,label=text,color=text),
+      size=6,
       data=df),
   sizeNum=ggplot()+
     ggtitle("theme_grey()+theme(legend.text)")+
@@ -129,6 +130,7 @@ viz <- animint(
     theme(legend.text=element_text(size=16))+
     geom_text(aes(
       0,y,label=text,color=text),
+      size=24,
       data=df),
   sizePx=ggplot()+
     ggtitle("theme_grey()+theme(legend.text)")+
@@ -157,7 +159,7 @@ test_that("theme_grey legend entry text size is 16px", {
 test_that("little a in legend svg is same size as key", {
   text.selector <- '//table[@class="legend"]//svg//text'
   size.computed <- getPropertyValue(info$html, text.selector, "font-size")
-  size.expected <- rep("8.8pt",8)
+  size.expected <- rep(c("12","6","24","12"),each=2)
   expect_equal(size.computed, size.expected)
   fill.computed <- getStyleValue(info$html, text.selector, "fill")
   fill.expected <- rep(c("blue","red"),4)

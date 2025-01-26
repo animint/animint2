@@ -817,7 +817,6 @@ getLegendList <- function(plistextra){
       gdefs[[legend.name]]$breaks <- sc$breaks
     }
   }
-
   legend.list <- lapply(gdefs, getLegend)
   ## Add a flag to specify whether or not there is both a color and a
   ## fill legend to display. If so, we need to draw the interior of
