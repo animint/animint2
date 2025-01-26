@@ -113,36 +113,29 @@ geom_abline <- function(mapping = NULL, data = NULL,
 GeomAbline <- gganimintproto("GeomAbline", Geom,
   draw_panel = function(data, panel_scales, coord) {
     ranges <- coord$range(panel_scales)
-
     data$x    <- ranges$x[1]
     data$xend <- ranges$x[2]
     data$y    <- ranges$x[1] * data$slope + data$intercept
     data$yend <- ranges$x[2] * data$slope + data$intercept
-
     GeomSegment$draw_panel(unique(data), panel_scales, coord)
   },
-
   pre_process = function(g, g.data, ranges) {
-    ## loop through each set of slopes/intercepts
-
-    ## TODO: vectorize this code!
-    for(i in 1:nrow(g.data)) {
-
-    # "Trick" ggplot coord_transform into transforming the slope and intercept
-    g.data[i, "x"] <- ranges[[ g.data$PANEL[i] ]]$x.range[1]
-    g.data[i, "xend"] <- ranges[[ g.data$PANEL[i] ]]$x.range[2]
-    g.data[i, "y"] <- g.data$slope[i] * g.data$x[i] + g.data$intercept[i]
-    g.data[i, "yend"] <- g.data$slope[i] * g.data$xend[i] + g.data$intercept[i]
-
-    # make sure that lines don't run off the graph
-    if(g.data$y[i] < ranges[[ g.data$PANEL[i] ]]$y.range[1] ) {
-        g.data$y[i] <- ranges[[ g.data$PANEL[i] ]]$y.range[1]
-        g.data$x[i] <- (g.data$y[i] - g.data$intercept[i]) / g.data$slope[i]
+    range.mats <- list()
+    for(xy in c("x","y")){
+      range.mats[[xy]] <- do.call(rbind, lapply(ranges, "[[", paste0(xy, ".range")))[g.data$PANEL,,drop=FALSE]
     }
-    if(g.data$yend[i] > ranges[[ g.data$PANEL[i] ]]$y.range[2]) {
-        g.data$yend[i] <- ranges[[ g.data$PANEL[i] ]]$y.range[2]
-        g.data$xend[i] <- (g.data$yend[i] - g.data$intercept[i]) / g.data$slope[i]
-    }
+    suffix.list <- c("","end")
+    for(idx in seq_along(suffix.list)){
+      suffix <- suffix.list[[idx]]
+      maybe.x <- range.mats$x[,idx]
+      maybe.y <- maybe.x*g.data$slope+g.data$intercept
+      inv <- function(y)(y-g.data$intercept)/g.data$slope
+      g.data[[paste0("x",suffix)]] <- ifelse(
+        maybe.y < range.mats$y[,1], inv(range.mats$y[,1]), ifelse(
+          maybe.y > range.mats$y[,2], inv(range.mats$y[,2]), maybe.x))
+      g.data[[paste0("y",suffix)]] <- ifelse(
+        maybe.y < range.mats$y[,1], range.mats$y[,1], ifelse(
+          maybe.y > range.mats$y[,2], range.mats$y[,2], maybe.y))
     }
     ## ggplot2 defaults to adding a group aes for ablines!
     ## Remove it since it is meaningless.
@@ -151,9 +144,7 @@ GeomAbline <- gganimintproto("GeomAbline", Geom,
     g$geom <- "segment"
     return(list(g = g, g.data = g.data))
   },
-
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
   required_aes = c("slope", "intercept"),
-
   draw_key = draw_key_abline
 )
