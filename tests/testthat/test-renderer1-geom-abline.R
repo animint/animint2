@@ -49,18 +49,17 @@ if(FALSE){
   viz
 }
 
-(ab.df <- rbind(data.frame(i=1, s=-2)))
 viz <- animint(
   p=ggplot()+
     geom_abline(aes(
       intercept=i,slope=s),
-      data=ab.df)+
+      data=data.frame(i=10, s=-2))+
     geom_point(aes(
       x,x),
-      data=data.frame(x=0:1))+
+      data=data.frame(x=c(0,10)))+
     geom_point(aes(
       x,y),
-      data=data.frame(x=0.5,y=0))
+      data=data.frame(x=5,y=0))
 )
 info <- animint2HTML(viz)
 get_num <- function(cls, el, at){
@@ -72,7 +71,7 @@ get_num <- function(cls, el, at){
 cxy <- get_num("geom3_point_p","circle",c("cx","cy"))
 abl <- get_num('geom1_abline_p',"line",c("x1","x2","y1","y2"))
 (slope <- with(abl, (y1-y2)/(x1-x2)))
-abline.at.0.5 <- slope*(abl$x1-cxy$cx)+abl$y1
+abline.at.5 <- slope*(cxy$cx-abl$x1)+abl$y1
 test_that("abline with negative slope intersects point", {
-  expect_equal(abline.at.0.5, cxy$cy)
+  expect_equal(abline.at.5, cxy$cy)
 })
