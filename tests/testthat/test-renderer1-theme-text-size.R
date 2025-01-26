@@ -154,6 +154,16 @@ test_that("theme_grey legend entry text size is 16px", {
   expect_match(size.list$sizePx, "16px")
 })
 
+test_that("little a in legend svg is same size as key", {
+  text.selector <- '//table[@class="legend"]//svg//text'
+  size.computed <- getPropertyValue(info$html, text.selector, "font-size")
+  size.expected <- rep("8.8pt",8)
+  expect_equal(size.computed, size.expected)
+  fill.computed <- getStyleValue(info$html, text.selector, "fill")
+  fill.expected <- rep(c("blue","red"),4)
+  expect_color(fill.computed, fill.expected)
+})
+
 test_that("text colors rendered", {
   computed.colors <- getStyleValue(
     info$html, '//svg[@id="plot_default"]//text[@class="geom"]', "fill")

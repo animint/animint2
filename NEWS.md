@@ -1,3 +1,8 @@
+# Changes in version 2025.1.27 (PR#184)
+
+- Add simple Hello world example to ?animint.
+- Increase text size of "a" in legend SVG.
+
 # Changes in version 2025.1.25 (PR#182)
 
 - Tour text includes selector names for geoms with named clickSelects/showSelected.
