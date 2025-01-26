@@ -1,3 +1,9 @@
+# Changes in version 2025.1.25 (PR#182)
+
+- Tour text includes selector names for geoms with named clickSelects/showSelected.
+- `animint2pages(chromote_sleep_seconds=NULL)` is the new default (no screenshot).
+- knit_print.animint supports Start Tour button.
+
 # Changes in version 2025.1.24 (PR#164)
 
 - New Start Tour widget at the bottom of each data viz, which highlights what interactions are possible with each geom. Use `geom_*(title="title for geom in tour", help="details about what this geom is supposed to represent)` to change what is displayed for each geom during the tour. Powered by https://driverjs.com/

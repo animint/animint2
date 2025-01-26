@@ -190,14 +190,16 @@ var animint = function (to_select, json_file) {
     var geom = g_info.classed;
     var title = g_info.params.title || g_info.classed;
     var helpText = g_info.params.help || '';
-    var showSelected = g_info.params.showSelected || '';
-    var clickSelects = g_info.params.clickSelects || '';
+    var help_showSelected = g_info.params.help_showSelected || '';
+    var help_clickSelects = g_info.params.help_clickSelects || '';
     var description = helpText;
     if(g_info.params.hasOwnProperty("showSelected")){
-      description += '<br>Data are shown for the current selection of: ' + g_info.params.showSelected;
+      if(description != "")description += '<br>';
+      description += 'Data are shown for the current selection of: ' + help_showSelected;
     }
     if(g_info.params.hasOwnProperty("clickSelects")){
-      description += '<br>Click to select: ' + g_info.params.clickSelects;
+      if(description != "")description += '<br>';
+      description += 'Click to select: ' + help_clickSelects;
     }
     if(description == ""){
       description = "No interactions available";

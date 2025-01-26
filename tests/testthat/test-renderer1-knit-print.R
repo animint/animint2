@@ -91,32 +91,24 @@ plot1bottom <- get_elements("plot1bottom")
 
 test_that("clicking top legend adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
-  
   clickID("plot1top_q_label_variable_a178")
   expect_equal(get_circles(), list(5, 10))
-  
   clickID("plot1top_q_label_variable_b934")
   expect_equal(get_circles(), list(0, 10))
-  
   clickID("plot1top_q_label_variable_b934")
   expect_equal(get_circles(), list(5, 10))
-  
   clickID("plot1top_q_label_variable_a178")
   expect_equal(get_circles(), list(10, 10))
 })
 
 test_that("clicking bottom legend adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
-  
   clickID("plot1bottom_q_label_variable_a178")
   expect_equal(get_circles(), list(10, 5))
-  
   clickID("plot1bottom_q_label_variable_b934")
   expect_equal(get_circles(), list(10, 0))
-  
   clickID("plot1bottom_q_label_variable_b934")
   expect_equal(get_circles(), list(10, 5))
-  
   clickID("plot1bottom_q_label_variable_a178")
   expect_equal(get_circles(), list(10, 10))
 })
@@ -161,4 +153,45 @@ test_that("bottom widget adds/remove points", {
   expect_equal(get_circles(), list(10, 5))
   send("b")
   expect_equal(get_circles(), list(10, 10))
+})
+
+djs.init.list <- driverjs_get(html)
+test_that("knit driver initially shows nothing", {
+  expect_identical(djs.init.list, list(title=list(), description=list()))
+})
+
+djs.start0.list <- driverjs_start(0)
+test_that("knit driver start first plot", {
+  expect_identical(djs.start0.list, list(
+    title = list(
+      text = "geom1_point_q",
+      .attrs = c(
+        class = "driver-popover-title", 
+        style = "display: block;")),
+    description = list(
+      text = "first plot",
+      br=NULL,
+      text="Data are shown for the current selection of: label",
+      .attrs = c(
+        class = "driver-popover-description",
+        style = "display: block;"
+    ))))
+})
+
+djs.start1.list <- driverjs_start(1)
+test_that("knit driver start second plot", {
+  expect_identical(djs.start1.list, list(
+    title = list(
+      text = "geom1_point_q",
+      .attrs = c(
+        class = "driver-popover-title", 
+        style = "display: block;")),
+    description = list(
+      text = "second plot", 
+      br=NULL,
+      text="Data are shown for the current selection of: label",
+      .attrs = c(
+        class = "driver-popover-description",
+        style = "display: block;"
+    ))))
 })

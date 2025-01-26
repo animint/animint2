@@ -29,7 +29,9 @@ knit_print.animint <- function(x, options, ...) {
 <script type="text/javascript" src="%s/vendor/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="%s/vendor/selectize.min.js"></script>
 <link rel="stylesheet" type="text/css" href="%s/vendor/selectize.css" />
-%s', dir, dir, dir, dir, dir, res)
+<script type="text/javascript" src="%s/vendor/driver.js.iife.js"></script>
+<link rel="stylesheet" href="%s/vendor/driver.css" />
+%s', dir, dir, dir, dir, dir, dir, dir, res)
   }
   knitr::asis_output(res, meta = list(animint = structure("", class = "animint")))
 }

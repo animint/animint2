@@ -67,10 +67,10 @@ common <- read.table(common.tsv, sep="\t", header=TRUE,
                      comment.char="", quote="")
 
 test_that("common chunk contains expected columns", {
-  expected.cols <-
-    c("ymin", "ymax", "xmin", "fill", "key",
-      "clickSelects", "showSelectedlegendfill",
-      "group")
+  expected.cols <- c(
+    "ymin", "ymax", "xmin", "fill", "key",
+    "clickSelects", "showSelected2",
+    "group")
   expect_identical(sort(names(common)), sort(expected.cols))
 })
 

@@ -400,17 +400,17 @@ runtime_evaluate_helper <- function(class_name=NULL, id=NULL, list_num=NULL, dis
     if(isTRUE(dispatch_event))".dispatchEvent(new CustomEvent('click'))"))
 }
 
-driverjs_click_class <- function(class_name){
+driverjs_click_class <- function(class_name,list_num=0){
   runtime_evaluate_helper(
     class_name = class_name,
-    list_num = 0,
+    list_num = list_num,
     dispatch_event = TRUE
   )
   Sys.sleep(1)
   driverjs_get()
 }
 
-driverjs_start <- function()driverjs_click_class("animint_start_tour")
+driverjs_start <- function(list_num=0)driverjs_click_class("animint_start_tour",list_num)
 driverjs_next <- function()driverjs_click_class("driver-popover-next-btn")
 
 driverjs_get <- function(html=getHTML()){
