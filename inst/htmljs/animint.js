@@ -186,7 +186,6 @@ var animint = function (to_select, json_file) {
   var add_geom = function (g_name, g_info) {
     // Determine if data will be an object or an array.
     // added geom properties in steps array
-    console.log(g_info);
     var geom = g_info.classed;
     var title = g_info.params.title || g_info.classed;
     var helpText = g_info.params.help || '';
@@ -205,7 +204,7 @@ var animint = function (to_select, json_file) {
       description = "No interactions available";
     }
     steps.push({  // this add the geom to the steps array for guided tour
-      element: '.' + geom,
+      element: '#' + viz_id + ' .' + geom,
       popover: {
         title: title,
         description: description
