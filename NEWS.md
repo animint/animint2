@@ -1,6 +1,18 @@
-# Changes in version 2025.1.26 (PR#185)
+# Changes in version 2025.1.26
+
+## PR#185
 
 - Tour highlights the geom in the correct plot (instead of always the first viz on the page).
+
+## PR#186
+
+- `geom_abline()`: fix and vectorize `pre_process()` method.
+
+## PR#184
+
+- Add simple Hello world example to ?animint.
+- Increase text size of "a" in legend SVG.
+>>>>>>> master
 
 # Changes in version 2025.1.25 (PR#182)
 
