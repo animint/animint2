@@ -124,7 +124,7 @@ GeomAbline <- gganimintproto("GeomAbline", Geom,
 
   pre_process = function(g, g.data, ranges) {
     ## loop through each set of slopes/intercepts
-
+    browser()
     ## TODO: vectorize this code!
     for(i in 1:nrow(g.data)) {
 
