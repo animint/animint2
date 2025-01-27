@@ -136,18 +136,24 @@ viz <- animint(
       longitude, latitude, group=timestamp),
       clickSelects="timestamp",
       color_off="grey",
-      color="black",
+      color="grey40",
+      help="All rides displayed in grey",
       size=4,
       data=data.table(path.show, what="ride"))+
     geom_path(aes(
-      longitude, latitude, group=timestamp),
+      longitude, latitude,
+      key=1),
       showSelected="timestamp",
       color="black",
+      help="Selected ride shown in black",
       chunk_vars=character(),
       size=4,
       data=data.table(path.show, what="ride"))+
     geom_point(aes(
-      longitude, latitude, fill=where, color=what),
+      longitude, latitude,
+      key=where,
+      fill=where, color=what),
+      help="Start and end of selected ride",
       showSelected="timestamp",
       size=4,
       data=data.table(start.end.dt, what="ride"))+
@@ -155,28 +161,38 @@ viz <- animint(
       ride="black",
       "nearby cities"="red"))+
     geom_point(aes(
-      longitude, latitude, fill=where, color=what),
+      longitude, latitude,
+      key=where,
+      fill=where, color=what),
+      help="Cities nearest to start and end of selected ride",
       showSelected=c("timestamp","where"),
       data=villes.start.end)+
     geom_point(aes(
-      longitude, latitude, color=what, tooltip=long_name),
+      longitude, latitude, color=what,
+      key=long_name,
+      tooltip=long_name),
+      help="Cities near the selected ride (hover cursor to show details)",
       showSelected="timestamp",
       data=data.table(villes.near.path, what="nearby cities"))+
     geom_text(aes(
       text.x, text.y, color=what,
+      key=where,
       label=sprintf(
         "%s: %s", where, long_name)),
       hjust=1,
+      help="Details of cities nearest to start and end of selected ride",
       showSelected=c("timestamp","where"),
       data=villes.start.end,
       size=city.text.size)+
     geom_text(aes(
       longitude, latitude, label=label,
+      key=where,
       color=what,
       hjust=ifelse(
         direction<0,
         ifelse(where=="start", 0, 1),
         ifelse(where=="start", 1, 0))),
+      help="Cities nearest to start and end of selected ride",
       showSelected=c("timestamp","where"),
       size=city.text.size,
       data=villes.start.end),
@@ -188,15 +204,23 @@ viz <- animint(
     geom_point(aes(
       pct, N_data),
       clickSelects="timestamp",
+      help="One point for each ride",
       size=5,
-      color="black",
-      color_off="grey",
+      alpha=0.7,
+      data=ride.show)+
+    geom_point(aes(
+      pct, N_data,
+      key=1),
+      help="Selected ride",
+      showSelected="timestamp",
+      size=5,
       data=ride.show)+
     scale_x_datetime("Date/time of ride", date_breaks="1 month"),
   out.dir="gps",
+  duration=list(timestamp=1000),
   time=list(
     variable="timestamp",
-    ms=1000
+    ms=1500
   )
 )
 viz
