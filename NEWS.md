@@ -1,4 +1,4 @@
-# Changes in version 2025.1.26
+# Changes in version 2025.1.28
 
 ## PR#185
 
@@ -12,7 +12,6 @@
 
 - Add simple Hello world example to ?animint.
 - Increase text size of "a" in legend SVG.
->>>>>>> master
 
 # Changes in version 2025.1.25 (PR#182)
 
