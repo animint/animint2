@@ -153,6 +153,21 @@ for(path.i in seq_along(with.mat)){
 }
 (villes.near.path <- rbindlist(villes.show.list))
 
+mseq <- function(x,N=10)as.list()
+pca.input.dt <- path.show[, {
+  Lout <- list()
+  for(vname in c("longitude","latitude")){
+    value <- .SD[[vname]]
+    N.feat <- 10
+    ares <- approx(seq(0,1,l=length(value)),value,seq(0,1,l=N.feat))
+    Lout[paste0(vname,seq(1,N.feat))] <- ares$y
+  }
+  Lout
+}, by=timestamp]
+pca.input.mat <- as.matrix(pca.input.dt[,-1])
+pca.out <- princomp(pca.input.mat)
+pca.out.dt <- data.table(pca.input.dt[,.(timestamp)],pca.out$scores[,1:2])
+
 km.text.x <- 1
 km.text.y <- 48.4
 text.hjust <- 0
@@ -208,6 +223,10 @@ viz <- animint(
       showSelected="timestamp",
       size=4,
       data=data.table(start.end.dt, what="ride"))+
+    scale_y_continuous(
+      breaks=seq(48,50,by=0.2))+
+    scale_x_continuous(
+      breaks=seq(1,4,by=0.2))+
     scale_color_manual(values=c(
       ride="black",
       "Dept. en IDF"="orange",
@@ -261,14 +280,19 @@ viz <- animint(
   ts=ggplot()+
     ggtitle("Time series of rides, click to select ride")+
     theme_bw()+
-    theme_animint(width=1000, height=200)+
+    theme_animint(width=800, height=200)+
     scale_y_continuous("Kilometers")+
     geom_point(aes(
       pct, kilometers),
       clickSelects="timestamp",
       help="One point for each ride.",
       size=5,
-      alpha=0.7,
+      alpha=1,
+      alpha_off=0.3,
+      color="black",
+      color_off=NA,
+      fill="grey",
+      fill_off="grey",
       data=dist.path)+
     geom_point(aes(
       pct, kilometers,
@@ -278,6 +302,29 @@ viz <- animint(
       size=5,
       data=dist.path)+
     scale_x_datetime("Date/time of ride", date_breaks="1 month"),
+  pca=ggplot()+
+    ggtitle("PCA, click to select ride")+
+    theme_bw()+
+    theme_animint(width=200,height=200)+
+    geom_point(aes(
+      Comp.1, -Comp.2),
+      clickSelects="timestamp",
+      help="One point for each ride.",
+      size=5,
+      alpha=1,
+      alpha_off=0.3,
+      color="black",
+      color_off=NA,
+      fill="grey",
+      fill_off="grey",
+      data=pca.out.dt)+
+    geom_point(aes(
+      Comp.1, -Comp.2,
+      key=1),
+      help="Selected ride.",
+      showSelected="timestamp",
+      size=5,
+      data=pca.out.dt),
   out.dir="gps",
   duration=list(timestamp=1000),
   time=list(
