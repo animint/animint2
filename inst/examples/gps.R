@@ -54,6 +54,20 @@ start.end.dt <- path.show[
   direction=diff(longitude)
 )]
 , by=timestamp]
+ile_de_france.json <- "departements-ile-de-france.geojson"
+if(!file.exists(ile_de_france.json)){
+  u <- paste0(
+    "https://france-geojson.gregoiredavid.fr/repo/regions/ile-de-france/",
+    ile_de_france.json)
+  download.file(u, ile_de_france.json)
+}
+##ile_de_france.list <- RJSONIO::fromJSON(ile_de_france.json)
+ile_de_france.sf <- geojsonsf::geojson_sf(ile_de_france.json)
+names(ile_de_france.sf)
+class(ile_de_france.sf)
+ile_de_france.dt <- data.table(ile_de_france.sf)[, {
+  setnames(data.table(geometry[[1]][[1]]), c("longitude","latitude"))
+}, by=.(code,nom)]
 
 if(!file.exists("gps-villes-de-france.csv")){
   download.file("https://www.data.gouv.fr/fr/datasets/r/51606633-fb13-4820-b795-9a2a575a72f1", "gps-villes-de-france.csv")
@@ -138,11 +152,14 @@ for(path.i in seq_along(with.mat)){
   }
 }
 (villes.near.path <- rbindlist(villes.show.list))
-text.x <- 3.1
+
+km.text.x <- 1
+km.text.y <- 48.4
+text.hjust <- 0
 villes.start.end[, let(
   what="nearby cities",
-  text.x=text.x,
-  text.y=ifelse(where=="start", 49.4, 49.35))]
+  text.x=km.text.x,
+  text.y=ifelse(where=="start", 48.3, 48.2))]
 city.text.size <- 15
 where.colors <- c(start="white",end="black")
 viz <- animint(
@@ -153,9 +170,19 @@ viz <- animint(
     ggtitle("Map of rides, click to select ride")+
     theme_bw()+
     theme_animint(width=1000)+
+    coord_cartesian(expand=FALSE)+
     scale_fill_manual(
       values=where.colors,
       breaks=names(where.colors))+
+    geom_polygon(aes(
+      longitude, latitude, group=nom,
+      tooltip=sprintf("%s (%s)", nom, code),
+      color=what),
+      alpha=0.5,
+      data=data.table(
+        what="Dept. en IDF",
+        ile_de_france.dt),
+      fill="yellow")+
     geom_path(aes(
       longitude, latitude, group=timestamp),
       clickSelects="timestamp",
@@ -183,6 +210,7 @@ viz <- animint(
       data=data.table(start.end.dt, what="ride"))+
     scale_color_manual(values=c(
       ride="black",
+      "Dept. en IDF"="orange",
       "nearby cities"="red"))+
     geom_point(aes(
       longitude, latitude,
@@ -203,17 +231,17 @@ viz <- animint(
       key=where,
       label=sprintf(
         "%s: %s", where, long_name)),
-      hjust=1,
+      hjust=text.hjust,
       help="Details of cities nearest to start and end of selected ride.",
       showSelected=c("timestamp","where"),
       data=villes.start.end,
       size=city.text.size)+
     geom_text(aes(
-      text.x, 49.3,
+      km.text.x, km.text.y,
       color=what,
       key=1,
       label=sprintf("%.1f kilometers", kilometers)),
-      hjust=1,
+      hjust=text.hjust,
       help="Number of kilometers along path.",
       size=city.text.size,
       showSelected="timestamp",
