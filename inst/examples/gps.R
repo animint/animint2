@@ -211,6 +211,7 @@ viz <- animint(
     geom_text(aes(
       text.x, 49.3,
       color=what,
+      key=1,
       label=sprintf("%.1f kilometers", kilometers)),
       hjust=1,
       help="Number of kilometers along path.",
