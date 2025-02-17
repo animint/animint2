@@ -23,8 +23,7 @@ read_lat_lon <- function(path)nc::capture_all_str(
 (ride.dt <- lat.lon.dt[, .(
   N_data=.N,
   ## https://r-spatial.github.io/sf/reference/geos_measures.html TODO kilometers
-  pct = as.POSIXct(strptime(timestamp, "%Y-%m-%d:%H:%M:%S")),
-  dist=sqrt((latitude[1]-latitude[.N])^2+(longitude[1]-longitude[.N])^2)
+  pct = as.POSIXct(strptime(timestamp, "%Y-%m-%d:%H:%M:%S"))
 ), by=timestamp])
 
 tag.lines <- readLines("~/gpsdb-code/kml/tags.txt")
@@ -75,35 +74,60 @@ villes.in.lim <- villes.dt[
   department_name, department_number, region_geojson_name)
 ][]
 
+dt2point <- function(DT){
+  DT[, sf::st_sfc(apply(
+    cbind(longitude, latitude),
+    1,
+    sf::st_point,
+    simplify=FALSE
+  )) |> sf::st_set_crs(4326)]
+}
 villes.sf <- sf::st_sf(villes.in.lim[, .(
   label,
-  geometry=sf::st_sfc(apply(
-    cbind(longitude, latitude),
-    1,
-    sf::st_point,
-    simplify=FALSE
-  ))
+  geometry=dt2point(.SD)
 )])
 path.sf <- sf::st_sf(path.show[, .(
-  geometry=sf::st_sfc(sf::st_linestring(cbind(longitude, latitude)))
+  geometry=sf::st_sfc(sf::st_linestring(cbind(longitude, latitude))) |>
+    sf::st_set_crs(4326)
 ), by=timestamp])
-
+data.table(path.sf)
 start.end.sf <- sf::st_sf(start.end.dt[, .(
   timestamp, where,
-  geometry=sf::st_sfc(apply(
-    cbind(longitude, latitude),
-    1,
-    sf::st_point,
-    simplify=FALSE
-  ))
+  geometry=dt2point(.SD)
 )])
+dist.dt <- data.table(start.end.sf)[, .(
+  dist_units=sf::st_distance(geometry[1], geometry[2])
+), by=timestamp
+][
+, kilometers := as.numeric(dist_units)/1000
+][
+  ride.show, on="timestamp"
+]
+dist.path <- path.show[
+, geometry := dt2point(.SD)
+][, .(
+  dist_units_total=sum(sf::st_distance(
+    geometry[-1],geometry[-.N], by_element = TRUE))
+), by=timestamp][
+, kilometers := as.numeric(dist_units_total)/1000
+][
+  ride.show, on="timestamp"
+]
+both.dist <- data.table(dist.path, dist.dt)
+ggplot()+
+  theme_bw()+
+  geom_abline(slope=1,intercept=0,color="grey")+
+  geom_point(aes(
+    as.numeric(dist_units), as.numeric(dist_units_total)),
+    data=both.dist)
 nearest.index.vec <- sf::st_nearest_feature(start.end.sf, villes.sf)
 villes.start.end <- data.table(
   start.end.dt[,.(timestamp,direction,where)],
   villes.in.lim[nearest.index.vec])
-
 ## villes near path.
-with.mat <- sf::st_is_within_distance(path.sf, villes.sf, dist=0.01)
+with.mat <- sf::st_is_within_distance(
+  path.sf, villes.sf,
+  dist=1000)#meters
 villes.show.list <- list()
 for(path.i in seq_along(with.mat)){
   ville.i <- with.mat[[path.i]]
@@ -114,10 +138,10 @@ for(path.i in seq_along(with.mat)){
   }
 }
 (villes.near.path <- rbindlist(villes.show.list))
-
+text.x <- 3.1
 villes.start.end[, let(
   what="nearby cities",
-  text.x=3.1,
+  text.x=text.x,
   text.y=ifelse(where=="start", 49.4, 49.35))]
 city.text.size <- 15
 where.colors <- c(start="white",end="black")
@@ -137,7 +161,7 @@ viz <- animint(
       clickSelects="timestamp",
       color_off="grey",
       color="grey40",
-      help="All rides displayed in grey",
+      help="All rides displayed in grey.",
       size=4,
       data=data.table(path.show, what="ride"))+
     geom_path(aes(
@@ -145,7 +169,7 @@ viz <- animint(
       key=1),
       showSelected="timestamp",
       color="black",
-      help="Selected ride shown in black",
+      help="Selected ride shown in black.",
       chunk_vars=character(),
       size=4,
       data=data.table(path.show, what="ride"))+
@@ -153,7 +177,7 @@ viz <- animint(
       longitude, latitude,
       key=where,
       fill=where, color=what),
-      help="Start and end of selected ride",
+      help="Start and end of selected ride.",
       showSelected="timestamp",
       size=4,
       data=data.table(start.end.dt, what="ride"))+
@@ -164,14 +188,14 @@ viz <- animint(
       longitude, latitude,
       key=where,
       fill=where, color=what),
-      help="Cities nearest to start and end of selected ride",
+      help="Cities nearest to start and end of selected ride.",
       showSelected=c("timestamp","where"),
       data=villes.start.end)+
     geom_point(aes(
       longitude, latitude, color=what,
       key=long_name,
       tooltip=long_name),
-      help="Cities near the selected ride (hover cursor to show details)",
+      help="Cities near the selected ride (hover cursor to show details).",
       showSelected="timestamp",
       data=data.table(villes.near.path, what="nearby cities"))+
     geom_text(aes(
@@ -180,10 +204,19 @@ viz <- animint(
       label=sprintf(
         "%s: %s", where, long_name)),
       hjust=1,
-      help="Details of cities nearest to start and end of selected ride",
+      help="Details of cities nearest to start and end of selected ride.",
       showSelected=c("timestamp","where"),
       data=villes.start.end,
       size=city.text.size)+
+    geom_text(aes(
+      text.x, 49.3,
+      color=what,
+      label=sprintf("%.1f kilometers", kilometers)),
+      hjust=1,
+      help="Number of kilometers along path.",
+      size=city.text.size,
+      showSelected="timestamp",
+      data=data.table(what="ride", dist.path))+
     geom_text(aes(
       longitude, latitude, label=label,
       key=where,
@@ -192,7 +225,7 @@ viz <- animint(
         direction<0,
         ifelse(where=="start", 0, 1),
         ifelse(where=="start", 1, 0))),
-      help="Cities nearest to start and end of selected ride",
+      help="Cities nearest to start and end of selected ride.",
       showSelected=c("timestamp","where"),
       size=city.text.size,
       data=villes.start.end),
@@ -200,21 +233,21 @@ viz <- animint(
     ggtitle("Time series of rides, click to select ride")+
     theme_bw()+
     theme_animint(width=1000, height=200)+
-    scale_y_continuous("Number of GPS points")+
+    scale_y_continuous("Kilometers")+
     geom_point(aes(
-      pct, N_data),
+      pct, kilometers),
       clickSelects="timestamp",
-      help="One point for each ride",
+      help="One point for each ride.",
       size=5,
       alpha=0.7,
-      data=ride.show)+
+      data=dist.path)+
     geom_point(aes(
-      pct, N_data,
+      pct, kilometers,
       key=1),
-      help="Selected ride",
+      help="Selected ride.",
       showSelected="timestamp",
       size=5,
-      data=ride.show)+
+      data=dist.path)+
     scale_x_datetime("Date/time of ride", date_breaks="1 month"),
   out.dir="gps",
   duration=list(timestamp=1000),
