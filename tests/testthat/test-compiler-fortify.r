@@ -1,14 +1,13 @@
 context("Fortify")
 library(sp)
 library(ggplot2)
-library(dplyr)
 
 test_that("Spatial polygons have correct ordering", {
   make_square <- function(x = 0, y = 0, height = 1, width = 1){
     delx <- width/2
     dely <- height/2
     Polygon(matrix(c(x + delx, x - delx,x - delx,x + delx,x + delx ,
-        y - dely,y - dely,y + dely,y + dely,y - dely), ncol = 2))
+                  y - dely,y - dely,y + dely,y + dely,y - dely), ncol = 2))
   }
 
   make_hole <- function(x = 0, y = 0, height = .5, width = .5){
@@ -34,5 +33,10 @@ test_that("Spatial polygons have correct ordering", {
   polys2_sp <- SpatialPolygons(polys2)
   fake_sp2 <- SpatialPolygonsDataFrame(polys2_sp, fake_data)
 
-  expect_equivalent(fortify(fake_sp), arrange(fortify(fake_sp2), id, order))
+  # arranged with data.table::setorder
+  fortified_sp2 <- fortify(fake_sp2)
+  fortified_sp2 <- as.data.table(fortified_sp2)
+  setorder(fortified_sp2, id, order)
+
+  expect_equivalent(fortify(fake_sp), fortified_sp2)
 })
