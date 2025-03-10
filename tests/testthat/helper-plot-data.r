@@ -1,13 +1,16 @@
+library(data.table)
 # Transform the data as the coordinate system does
 cdata <- function(plot) {
   pieces <- ggplot_build(plot)
 
   lapply(pieces$data, function(d) {
-    plyr::ddply(d, "PANEL", function(panel_data) {
-      scales <- panel_scales(pieces$panel, panel_data$PANEL[1])
+    d <- as.data.table(d)  
+    d[, {
+      scales <- panel_scales(pieces$panel, .SD$PANEL[1])
       details <- plot$coordinates$train(scales)
-      plot$coordinates$transform(panel_data, details)
-    })
+      transformed_data <- plot$coordinates$transform(.SD, details)
+      transformed_data
+    }, by = .(PANEL)]
   })
 }
 

@@ -40,10 +40,15 @@ grad.desc <- function(
 dat <- grad.desc()
 contour <- dat$contour
 objective <- dat$objective
-objective <- plyr::ldply(objective$iteration, function(i) {
-  df <- subset(objective, iteration <= i)
+
+# Replaced plyr::ldply with data.table
+library(data.table) 
+objective_dt <- as.data.table(objective)
+objective <- objective_dt[, {
+  df <- .SD[iteration <= i]
   cbind(df, iteration2 = i)
-})
+}, by = .(iteration)]
+
 objective2 <- subset(objective, iteration == iteration2)
 
 grad.desc.viz <- function(hjust) {
