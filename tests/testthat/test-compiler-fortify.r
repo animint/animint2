@@ -1,13 +1,13 @@
 context("Fortify")
 library(sp)
-library(ggplot2)
+library(animint2)
 
 test_that("Spatial polygons have correct ordering", {
   make_square <- function(x = 0, y = 0, height = 1, width = 1){
     delx <- width/2
     dely <- height/2
     Polygon(matrix(c(x + delx, x - delx,x - delx,x + delx,x + delx ,
-                  y - dely,y - dely,y + dely,y + dely,y - dely), ncol = 2))
+        y - dely,y - dely,y + dely,y + dely,y - dely), ncol = 2))
   }
 
   make_hole <- function(x = 0, y = 0, height = .5, width = .5){

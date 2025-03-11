@@ -10,9 +10,8 @@ if(require(maps)){
   USpolygons <- map_data("state")
   USpolygons$state <- state.abb[match(USpolygons$region, tolower(state.name))]
 
-  # Convert to data.table
-  setDT(UStornadoes)
-  UStornadoCounts <- UStornadoes[, .(count = .N), by = .(state, year)]
+  UStornadoes_dt <- as.data.table(copy(UStornadoes))
+  UStornadoCounts <- UStornadoes_dt[, .(count = .N), by = .(state, year)]
 
   tornado.anim <- list(
     map=ggplot()+
@@ -24,7 +23,7 @@ if(require(maps)){
       geom_segment(aes(
         x=startLong, y=startLat, xend=endLong, yend=endLat),
         showSelected="year",
-        colour="#55B1F7", data=UStornadoes),
+        colour="#55B1F7", data=UStornadoes_dt),
     ts=ggplot()+
       make_tallrect(UStornadoCounts, "year")+
       geom_line(aes(
