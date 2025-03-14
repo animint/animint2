@@ -7,7 +7,7 @@ test_that("Spatial polygons have correct ordering", {
     delx <- width/2
     dely <- height/2
     Polygon(matrix(c(x + delx, x - delx,x - delx,x + delx,x + delx ,
-        y - dely,y - dely,y + dely,y + dely,y - dely), ncol = 2))
+                     y - dely,y - dely,y + dely,y + dely,y - dely), ncol = 2))
   }
 
   make_hole <- function(x = 0, y = 0, height = .5, width = .5){
@@ -33,10 +33,10 @@ test_that("Spatial polygons have correct ordering", {
   polys2_sp <- SpatialPolygons(polys2)
   fake_sp2 <- SpatialPolygonsDataFrame(polys2_sp, fake_data)
 
-  # arranged with data.table::setorder
+  # arranged with data.table[order(id, order)]
   fortified_sp2 <- fortify(fake_sp2)
   fortified_sp2 <- as.data.table(fortified_sp2)
-  setorder(fortified_sp2, id, order)
+  fortified_sp2 <- fortified_sp2[order(id, order)]
 
   expect_equivalent(fortify(fake_sp), fortified_sp2)
 })

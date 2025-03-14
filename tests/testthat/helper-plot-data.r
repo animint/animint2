@@ -3,15 +3,17 @@ library(data.table)
 cdata <- function(plot) {
   pieces <- ggplot_build(plot)
 
-  lapply(pieces$data, function(d) {
-    d <- as.data.table(d)  
-    d[, {
-      scales <- panel_scales(pieces$panel, .SD$PANEL[1])
-      details <- plot$coordinates$train(scales)
-      transformed_data <- plot$coordinates$transform(.SD, details)
-      transformed_data
-    }, by = .(PANEL)]
-  })
+  dt <- rbindlist(pieces$data, idcol = "data_id")
+
+  result <- dt[, {
+    scales <- panel_scales(pieces$panel, PANEL[1])
+    details <- plot$coordinates$train(scales)
+    transformed_data <- plot$coordinates$transform(.SD, details)
+    transformed_data
+  }, by = .(data_id, PANEL)]
+
+  # Split the result back into a list of data.tables
+  split(result, by = "data_id", keep.by = FALSE)
 }
 
 pranges <- function(plot) {
