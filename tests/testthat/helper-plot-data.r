@@ -8,8 +8,7 @@ cdata <- function(plot) {
   result <- dt[, {
     scales <- panel_scales(pieces$panel, PANEL[1])
     details <- plot$coordinates$train(scales)
-    transformed_data <- plot$coordinates$transform(.SD, details)
-    transformed_data
+    plot$coordinates$transform(.SD, details)
   }, by = .(data_id, PANEL)]
 
   # Split the result back into a list of data.tables

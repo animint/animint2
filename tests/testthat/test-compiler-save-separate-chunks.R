@@ -85,11 +85,9 @@ test_that("save separate chunks for geom_polygon", {
 })
 
 ### test case 2
-# Convert plyr::ddply to data.table
 USpolygons_dt <- as.data.table(FluView$USpolygons)
 USdots <- USpolygons_dt[, .(mean.lat = mean(lat), mean.long = mean(long)), by = region]
 
-# Convert plyr::ldply to data.table
 flu.points <- rbindlist(lapply(unique(state_flu$WEEKEND), function(we) {
   df <- subset(state_flu, WEEKEND == we)
   merge(USdots, df, by.x = "region", by.y = "state")
