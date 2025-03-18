@@ -41,9 +41,11 @@ dat <- grad.desc()
 contour <- dat$contour
 objective <- dat$objective
 
-# Replaced plyr::ldply with data.table
 library(data.table) 
 objective_dt <- as.data.table(objective)
+
+i <- max(objective_dt$iteration)
+
 objective <- objective_dt[, {
   df <- .SD[iteration <= i]
   cbind(df, iteration2 = i)
