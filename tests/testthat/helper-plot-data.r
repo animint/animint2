@@ -3,16 +3,20 @@ library(data.table)
 
 cdata <- function(plot) {
   pieces <- ggplot_build(plot)
-  DT <- data.table(pieces$data)
+  
+  # Process each data frame in pieces$data
+  DT <- data.table(index = seq_along(pieces$data), data = pieces$data)
+  
   DT[, {
     d <- as.data.table(data[[1]])
     d[, {
-      scales <- panel_scales(pieces$panel, .BY[[1]])
+      scales <- panel_scales(pieces$panel, PANEL)
       details <- plot$coordinates$train(scales)
       plot$coordinates$transform(.SD, details)
-    }, by = PANEL]
-  }, by = seq_along(pieces$data)]
+    }, by = .(PANEL)]
+  }, by = index]
 }
+
 
 pranges <- function(plot) {
   panels <- ggplot_build(plot)$panel
