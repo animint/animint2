@@ -1,19 +1,17 @@
 library(data.table)
 # Transform the data as the coordinate system does
+
 cdata <- function(plot) {
   pieces <- ggplot_build(plot)
-
-  dt <- rbindlist(pieces$data, idcol = "data_id", fill = TRUE)
-
-  result <- dt[, {
-    scales <- panel_scales(pieces$panel, PANEL[1])
-    details <- plot$coordinates$train(scales)
-    transformed_data <- plot$coordinates$transform(.SD, details)
-    transformed_data
-  }, by = .(data_id, PANEL)]
-
-  # Split the result back into a list of data.tables
-  split(result, by = "data_id", keep.by = FALSE)
+  DT <- data.table(pieces$data)
+  DT[, {
+    d <- as.data.table(data[[1]])
+    d[, {
+      scales <- panel_scales(pieces$panel, .BY[[1]])
+      details <- plot$coordinates$train(scales)
+      plot$coordinates$transform(.SD, details)
+    }, by = PANEL]
+  }, by = seq_along(pieces$data)]
 }
 
 pranges <- function(plot) {

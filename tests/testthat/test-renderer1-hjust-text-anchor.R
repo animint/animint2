@@ -41,15 +41,14 @@ dat <- grad.desc()
 contour <- dat$contour
 objective <- dat$objective
 
-library(data.table) 
+library(data.table)
+
 objective_dt <- as.data.table(objective)
 
-i <- max(objective_dt$iteration)
-
-objective <- objective_dt[, {
-  df <- .SD[iteration <= i]
-  cbind(df, iteration2 = i)
-}, by = .(iteration)]
+objective <- objective_dt[
+  CJ(iteration = iteration, iteration2 = iteration), 
+  on = .(iteration <= iteration2)
+][, iteration2 := iteration]
 
 objective2 <- subset(objective, iteration == iteration2)
 
