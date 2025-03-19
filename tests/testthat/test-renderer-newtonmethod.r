@@ -163,13 +163,11 @@ test_that("legend items are initially visible", {
 })
 
 # Simulate a mouse click on the "Zero Line" legend item
-clickID("plot_newtonRaphsonPlot_Line_Type_variable_Zero_Line_label")
+clickID("plot_newtonRaphsonPlot_Line_Type_variable_Zero_Line")
 Sys.sleep(0.5)
 
 # updated HTML after the click
 after_zero_line_click <- getHTML()
-
-cat(saveXML(info$html))
 
 # Testing the updated state after clicking "Zero Line"
 test_that("Zero line disappears after click", {
@@ -178,7 +176,7 @@ test_that("Zero line disappears after click", {
 })
 
 # Simulating a mouse click on the "Function Line" legend item
-clickID("plot_newtonRaphsonPlot_Line_Type_variable_Function_Line_label")
+clickID("plot_newtonRaphsonPlot_Line_Type_variable_Function_Line")
 Sys.sleep(0.5)
 
 # updated HTML after the click
@@ -191,7 +189,7 @@ test_that("Function line disappears after click", {
 })
 
 # Simulating a mouse click on the "Tangent Line" legend item
-clickID("plot_newtonRaphsonPlot_Line_Type_variable_Tangent_Line_label")
+clickID("plot_newtonRaphsonPlot_Line_Type_variable_Tangent_Line")
 Sys.sleep(0.5)
 
 # Getting the updated HTML after the click
