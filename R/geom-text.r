@@ -126,7 +126,8 @@ geom_text <- function(mapping = NULL, data = NULL,
                       check_overlap = FALSE,
                       na.rm = FALSE,
                       show.legend = NA,
-                      inherit.aes = TRUE)
+                      inherit.aes = TRUE,
+                      tooltip = NULL)
 {
   if (!missing(nudge_x) || !missing(nudge_y)) {
     if (!missing(position)) {
@@ -148,6 +149,7 @@ geom_text <- function(mapping = NULL, data = NULL,
       parse = parse,
       check_overlap = check_overlap,
       na.rm = na.rm,
+      tooltip = tooltip,
       ...
     )
   )
@@ -193,7 +195,8 @@ GeomText <- gganimintproto("GeomText", Geom,
         fontface = data$fontface,
         lineheight = data$lineheight
       ),
-      check.overlap = check_overlap
+      check.overlap = check_overlap,
+      tooltip = tooltip
     )
   },
   pre_process = function(g, g.data, ...) {

@@ -1061,6 +1061,49 @@ var animint = function (to_select, json_file) {
     var panel_g_element = layer_g_element.select("g.PANEL" + PANEL);
     var elements = panel_g_element.selectAll(".geom");
 
+    //adding tooltip using tippy.js
+
+    var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
+    if (has_clickSelects || has_tooltip || has_clickSelects_variable) {
+      var tooltipText;
+
+      // Define the tooltip text based on the aesthetic
+      if (has_tooltip) {
+        // Use the custom tooltip text from aes(tooltip)
+        tooltipText = function (d) {
+          return d.tooltip;
+        };
+      } else if (has_clickSelects) {
+        // Use the default tooltip text for clickSelects
+        tooltipText = function (d) {
+          var v_name = g_info.aes.clickSelects;
+          return v_name + " " + d.clickSelects;
+        };
+      } else { // clickSelects_variable
+        // Use the default tooltip text for clickSelects.variable
+        tooltipText = function (d) {
+          return d["clickSelects.variable"] + " " + d["clickSelects.value"];
+        };
+      }
+
+      // Set the data-tippy-content attribute on each element
+      elements.each(function (d) {
+        var text = tooltipText(d);
+        d3.select(this).attr("data-tippy-content", text);
+      });
+
+      // Initialize tippy.js on all elements with data-tippy-content
+      tippy("[data-tippy-content]", {
+        allowHTML: true,
+        interactive: true,
+        theme: 'light',  // Use a theme for styling
+        delay: [100, 200],  // Show after 100ms, hide after 200ms
+        appendTo: document.body
+      });
+      // Remove any existing <title> elements to avoid conflicts
+      elements.selectAll("title").remove();
+    }
+    
     // helper functions so we can write code that works for both
     // grouped and ungrouped geoms. get_one_row returns one row of
     // data (not one group), in both cases.
@@ -1609,29 +1652,7 @@ var animint = function (to_select, json_file) {
       moreActions(e)
     };
     doActions(enter);  // DO NOT DELETE!
-    var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
-    if(has_clickSelects || has_tooltip || has_clickSelects_variable){
-      var text_fun;
-      if(has_tooltip){
-        text_fun = function(d){
-	  return d.tooltip;
-	};
-      }else if(has_clickSelects){
-	text_fun = function(d){
-          var v_name = g_info.aes.clickSelects;
-          return v_name + " " + d.clickSelects;
-	};
-      }else{ //clickSelects_variable
-	text_fun = function(d){
-	  return d["clickSelects.variable"] + " " + d["clickSelects.value"];
-	};
-      }
-      // if elements have an existing title, remove it.
-      elements.selectAll("title").remove();
-      elements.append("svg:title")
-        .text(get_fun(text_fun))
-      ;
-    }
+
     if(Selectors.hasOwnProperty(selector_name)){
       var milliseconds = Selectors[selector_name].duration;
       elements = elements.transition().duration(milliseconds);
