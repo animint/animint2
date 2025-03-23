@@ -1616,17 +1616,17 @@ var animint = function (to_select, json_file) {
       var text_fun;
       if(has_tooltip){
         text_fun = function(d){
-          return d.tooltip;
-        };
+	  return d.tooltip;
+	};
       }else if(has_clickSelects){
-        text_fun = function(d){
+	text_fun = function(d){
           var v_name = g_info.aes.clickSelects;
           return v_name + " " + d.clickSelects;
-        };
+	};
       }else{ //clickSelects_variable
-        text_fun = function(d){
-          return d["clickSelects.variable"] + " " + d["clickSelects.value"];
-        };
+	text_fun = function(d){
+	  return d["clickSelects.variable"] + " " + d["clickSelects.value"];
+	};
       }
 
       // Setting the data-tippy-content attribute on each element
