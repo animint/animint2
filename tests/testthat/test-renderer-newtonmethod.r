@@ -69,13 +69,11 @@ viz <- list(
     geom_hline(
       aes(yintercept = yintercept, linetype = Line_Type),
       data = zero_line_df, color = "gray", size = 1.5,
-      #   showSelected = "iteration",
       help = "This line represents f(x) = 0, showing where we seek the root."
     ) +
     geom_line(
       aes(x = x, y = y, linetype = Line_Type),
       data = function_data_df, color = "black", size = 1.2,
-      #   showSelected = "iteration",
       help = "The black curve represents the function f(x), whose root we are approximating."
     ) +
     geom_abline(
@@ -120,7 +118,6 @@ viz <- list(
     ) +
     labs(
       title = "Newton-Raphson Method - Root Finding",
-      subtitle = "Solving f(x) = 5x³ - 7x² - 40x + 100",
       x = "x",
       y = "f(x)"
     ),
@@ -132,7 +129,7 @@ info <- animint2HTML(viz)
 
 # Test the initial HTML
 test_that("visualization of function is correct", {
-  expect_true(nrow(function_data_df) > 0, info = "Function data should not be empty.")
+  expect_gt(nrow(function_data_df), 0)  # Function data should not be empty
   expect_true(all(!is.na(function_data_df$y)), info = "Function values should not contain NA.")
 })
 
@@ -142,7 +139,7 @@ test_that("HTML content generated contains correct plot components", {
 })
 
 test_that("Data correctness in iterations_df", {
-  expect_true(nrow(iterations_df) > 0, info = "No iterations were performed.")
+  expect_gt(nrow(iterations_df), 0)  # No iterations were performed
   expect_true(all(!is.na(iterations_df$f_x)), info = "f(x) values should not contain NA.")
 })
 
@@ -157,9 +154,9 @@ test_that("legend items are initially visible", {
   function_line <- getNodeSet(info$html, '//g[@class="geom2_line_newtonRaphsonPlot"]//path')
   tangent_line <- getNodeSet(info$html, '//g[@class="geom3_abline_newtonRaphsonPlot"]//line')
   
-  expect_true(length(zero_line) > 0, info = "Zero line should be visible initially.")
-  expect_true(length(function_line) > 0, info = "Function line should be visible initially.")
-  expect_true(length(tangent_line) > 0, info = "Tangent lines should be visible initially.")
+  expect_gt(length(zero_line), 0)  # Zero line should be visible initially
+  expect_gt(length(function_line), 0)  # Function line should be visible initially
+  expect_gt(length(tangent_line), 0)  # Tangent lines should be visible initially
 })
 
 # Simulate a mouse click on the "Zero Line" legend item
