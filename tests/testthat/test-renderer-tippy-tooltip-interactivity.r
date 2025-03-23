@@ -39,7 +39,7 @@ test_that("aria-expanded updates correctly on hover interaction", {
   updated_rect <- getNodeSet(getHTML(), '//rect[@data-tippy-content="Test Rectangle"]')[[1]]
   updated_rect_aria <- xmlGetAttr(updated_rect, "aria-expanded")
   
-  # Verify rectangle tooltip activation and circle deactivation
+  # Verify rectangle tooltip activation
   expect_equal(updated_rect_aria, "true")
   
   # Simulate mouseout (move mouse to background)
