@@ -1628,10 +1628,7 @@ var animint = function (to_select, json_file) {
 	};
       }
       // Setting the data-tippy-content attribute on each element
-      elements.each(function (d) {
-        var text = tooltipText(d);
-        d3.select(this).attr("data-tippy-content", text);
-      });
+      elements.attr("data-tippy-content", text_fun);
 
       // Initializing tippy.js on all elements with data-tippy-content
       tippy("[data-tippy-content]", {
