@@ -1609,7 +1609,6 @@ var animint = function (to_select, json_file) {
       moreActions(e)
     };
     doActions(enter);  // DO NOT DELETE!
-
     //adding tooltip using tippy.js
     var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
     if(has_clickSelects || has_tooltip || has_clickSelects_variable){
@@ -1628,7 +1627,6 @@ var animint = function (to_select, json_file) {
 	  return d["clickSelects.variable"] + " " + d["clickSelects.value"];
 	};
       }
-
       // Setting the data-tippy-content attribute on each element
       elements.each(function (d) {
         var text = tooltipText(d);
@@ -1646,7 +1644,6 @@ var animint = function (to_select, json_file) {
       // Removing any existing <title> elements to avoid conflicts
       elements.selectAll("title").remove();
     }
-
     if(Selectors.hasOwnProperty(selector_name)){
       var milliseconds = Selectors[selector_name].duration;
       elements = elements.transition().duration(milliseconds);
