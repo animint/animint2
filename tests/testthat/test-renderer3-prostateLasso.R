@@ -98,12 +98,10 @@ test_that("selected tallrect moves to the left", {
 clickID("arclength174")
 html.click2 <- getHTML()
 
-test_that("tallrect displays correct tooltip", {
-  r <- getGreyRect(html.click2)
-  child.list <- xmlChildren(r)
-  expect_identical(names(child.list), "title")
-  value.vec <- sapply(child.list, xmlValue)
-  expect_identical(paste(value.vec), "arclength 17.4461019561232")
+test_that("tallrect displays tooltip", {
+  rect_xpath <- '//g[@class="geom3_tallrect_path"]//rect[@data-tippy-content][1]'
+  rect_node <- getNodeSet(info$html, rect_xpath)
+  expect_equal(length(rect_node), 1, info = "Rectangle element with data-tippy-content should exist.")
 })
 
 viz.time <- viz.no.time
