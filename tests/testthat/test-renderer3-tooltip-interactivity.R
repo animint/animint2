@@ -4,56 +4,47 @@ data("CO2")
 
 plot_viz <- ggplot() + 
   geom_point(aes(conc, uptake, color=Treatment, tooltip=Plant),
-             data = CO2)
+             data = CO2) +
+  geom_rect(aes(xmin=100, xmax=200, ymin=20, ymax=30, 
+                tooltip="Test Rectangle"), alpha=0.5)
 viz <- list(p=plot_viz)
+
 info <- animint2HTML(viz)
 
-# Hide titles with Treatment = "nonchilled" 
-clickID(c("plot_p_Treatment_variable_nonchilled"))
-Sys.sleep(0.5)
-info$html_updated1 <- getHTML()
+test_that("aria-expanded updates correctly on hover interaction", {
+  # Initial state - aria-expanded should be "false"
+  initial_circle <- getNodeSet(info$html, '//circle[@data-tippy-content="Mn3"]')[[1]]
+  initial_rect <- getNodeSet(info$html, '//rect[@data-tippy-content="Test Rectangle"]')[[1]]
+ 
+  expect_equal(xmlGetAttr(initial_circle, "aria-expanded"), "false")
+  expect_equal(xmlGetAttr(initial_rect, "aria-expanded"), "false")
 
-# Hide all titles
-clickID(c("plot_p_Treatment_variable_chilled"))
-Sys.sleep(0.5)
-info$html_updated2 <- getHTML()
-
-# Show titles with Treatment = "nonchilled"
-clickID(c("plot_p_Treatment_variable_nonchilled"))
-Sys.sleep(0.5)
-info$html_updated3 <- getHTML()
-
-
-test_that("Interactivity does not mess up tooltip titles", {
-  # Initially all titles are rendered
-  title_nodes1 <-
-    getNodeSet(info$html, '//g[@class="geom1_point_p"]//circle//title')
-  rendered_titles1 <- sapply(title_nodes1, xmlValue)
+  rect_x <- as.numeric(xmlGetAttr(initial_rect, "x"))
+  rect_y <- as.numeric(xmlGetAttr(initial_rect, "y"))
+  rect_width <- as.numeric(xmlGetAttr(initial_rect, "width"))
+  rect_height <- as.numeric(xmlGetAttr(initial_rect, "height"))
   
-  expect_equal(length(rendered_titles1), length(CO2$Plant))
-  expect_identical(sort(unique(rendered_titles1)), 
-                   sort(sapply(unique(CO2$Plant), as.character)))
+  # Calculate center coordinates of the rectangle
+  rect_center_x <- rect_x + rect_width / 2
+  rect_center_y <- rect_y + rect_height / 2
   
-  title_nodes2 <-
-    getNodeSet(info$html_updated1, '//g[@class="geom1_point_p"]//circle//title')
-  rendered_titles2 <- sapply(title_nodes2, xmlValue)
-  rendered_titles2_unique <- unique(rendered_titles2)
-  actual_titles2 <- c("Qc1", "Qc2", "Qc3", "Mc1", "Mc2", "Mc3")
+  # Simulate hover on rectangle
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = rect_center_x, y = rect_center_y)
+  Sys.sleep(1)  # Wait for the tooltip to activate
   
-  expect_equal(length(rendered_titles2), sum(CO2$Treatment == "chilled"))
-  expect_identical(sort(rendered_titles2_unique), sort(actual_titles2))
+  # Get updated rectangle element
+  updated_rect <- getNodeSet(getHTML(), '//rect[@data-tippy-content="Test Rectangle"]')[[1]]
+  updated_rect_aria <- xmlGetAttr(updated_rect, "aria-expanded")
   
-  title_nodes3 <-
-    getNodeSet(info$html_updated2, '//g[@class="geom1_point_p"]//circle//title')
+  # Verify rectangle tooltip activation
+  expect_equal(updated_rect_aria, "true")
   
-  expect_equal(length(title_nodes3), 0)
+  # Simulate mouseout (move mouse to background)
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
+  Sys.sleep(1)  # Wait for the tooltips to deactivate
   
-  title_nodes4 <-
-    getNodeSet(info$html_updated3, '//g[@class="geom1_point_p"]//circle//title')
-  rendered_titles4 <- sapply(title_nodes4, xmlValue)
-  rendered_titles4_unique <- unique(rendered_titles4)
-  actual_titles4 <- c("Qn1", "Qn2", "Qn3", "Mn1", "Mn2", "Mn3")
-  
-  expect_equal(length(rendered_titles4), sum(CO2$Treatment == "nonchilled"))
-  expect_identical(sort(rendered_titles4_unique), sort(actual_titles4))
+  # Get final rectangle element
+  final_rect <- getNodeSet(getHTML(), '//rect[@data-tippy-content="Test Rectangle"]')[[1]]
+  final_rect_aria <- xmlGetAttr(final_rect, "aria-expanded")
+  expect_equal(final_rect_aria, "false")
 })
