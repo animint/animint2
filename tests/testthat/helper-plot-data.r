@@ -4,19 +4,21 @@ library(data.table)
 cdata <- function(plot) {
   pieces <- ggplot_build(plot)
   
-  # Process each data frame in pieces$data
-  DT <- data.table(index = seq_along(pieces$data), data = pieces$data)
-  
-  DT[, {
-    d <- as.data.table(data[[1]])
-    d[, {
-      scales <- panel_scales(pieces$panel, PANEL)
+  # Process each piece of data while maintaining panel structure
+  result <- lapply(pieces$data, function(d) {
+    dt <- as.data.table(d)
+    
+    # Explicitly group by PANEL and process each panel's data
+    dt[, {
+      current_panel <- .BY[[1]]  # Get the current PANEL from grouping
+      scales <- panel_scales(pieces$panel, current_panel)
       details <- plot$coordinates$train(scales)
-      plot$coordinates$transform(.SD, details)
-    }, by = .(PANEL)]
-  }, by = index]
+      as.data.table(plot$coordinates$transform(as.data.frame(.SD), details))
+    }, by = PANEL]
+  })
+  
+  return(result)
 }
-
 
 pranges <- function(plot) {
   panels <- ggplot_build(plot)$panel
