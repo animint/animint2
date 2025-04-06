@@ -1,5 +1,6 @@
 context("Fortify")
 library(sp)
+library(animint2)
 
 test_that("Spatial polygons have correct ordering", {
   make_square <- function(x = 0, y = 0, height = 1, width = 1){
@@ -32,6 +33,9 @@ test_that("Spatial polygons have correct ordering", {
   polys2_sp <- SpatialPolygons(polys2)
   fake_sp2 <- SpatialPolygonsDataFrame(polys2_sp, fake_data)
 
-  expect_equivalent(fortify(fake_sp), plyr::arrange(fortify(fake_sp2), id, order))
-
+  # arranged with data.table[order(id, order)]
+  fortified_sp2 <- fortify(fake_sp2)
+  fortified_sp2 <- as.data.table(fortified_sp2)
+  fortified_sp2 <- fortified_sp2[order(id, order)]
+  expect_equivalent(fortify(fake_sp), fortified_sp2)
 })
