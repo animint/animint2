@@ -5,7 +5,6 @@ cdata <- function(plot) {
   # Process each piece of data while maintaining panel structure
   lapply(pieces$data, function(d) {
     dt <- as.data.table(d)
-
     # Explicitly group by PANEL and process each panel's data
     dt[, {
       scales <- panel_scales(pieces$panel, PANEL)
