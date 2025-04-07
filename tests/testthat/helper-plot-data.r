@@ -1,10 +1,9 @@
-# Transform the data as the coordinate system does
 library(data.table)
 # Transform the data as the coordinate system does
 cdata <- function(plot) {
   pieces <- ggplot_build(plot)
   # Process each piece of data while maintaining panel structure
-  result <- lapply(pieces$data, function(d) {
+  lapply(pieces$data, function(d) {
     dt <- as.data.table(d)
 
     # Explicitly group by PANEL and process each panel's data
@@ -14,8 +13,6 @@ cdata <- function(plot) {
       as.data.table(plot$coordinates$transform(as.data.frame(.SD), details))
     }, by = PANEL]
   })
-
-  return(result)
 }
 
 pranges <- function(plot) {

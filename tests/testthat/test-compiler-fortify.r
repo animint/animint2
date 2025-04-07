@@ -34,8 +34,7 @@ test_that("Spatial polygons have correct ordering", {
   fake_sp2 <- SpatialPolygonsDataFrame(polys2_sp, fake_data)
 
   # arranged with data.table[order(id, order)]
-  fortified_sp2 <- fortify(fake_sp2)
-  fortified_sp2 <- as.data.table(fortified_sp2)
-  fortified_sp2 <- fortified_sp2[order(id, order)]
-  expect_equivalent(fortify(fake_sp), fortified_sp2)
+  fortified <- fortify(fake_sp2)
+  fortified <- fortified[order(fortified$id, fortified$order), ]
+  expect_equivalent(fortify(fake_sp), fortified)
 })
