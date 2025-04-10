@@ -1633,10 +1633,11 @@ var animint = function (to_select, json_file) {
       // Initializing tippy.js on all elements with data-tippy-content
       tippy("[data-tippy-content]", {
         allowHTML: true,
-        interactive: true,
+        interactive: false,
         theme: 'light',
-        delay: [100, 200],
-        appendTo: document.body
+        delay: [800, 0],
+        appendTo: document.body,
+        hideOnClick: true
       });
       // Removing any existing <title> elements to avoid conflicts
       elements.selectAll("title").remove();
