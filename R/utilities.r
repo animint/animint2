@@ -306,3 +306,90 @@ stop_servr <- function(tmpPath = ".") {
   }
   res
 }
+
+# Replacement for plyr::as.quoted
+as.quoted <- function(x) {
+  if (is.null(x)) return(list())
+  if (is.quoted(x)) return(x)
+  
+  if (is.character(x)) {
+    return(structure(lapply(x, as.name), class = "quoted"))
+  }
+  if (is.name(x)) {
+    return(structure(list(x), class = "quoted"))
+  }
+  if (is.formula(x)) {
+    return(structure(as.list(parse.formula(x)), class = "quoted"))
+  }
+  if (is.call(x)) {
+    if (identical(x[[1]], as.name("+"))) {
+      # Handle expressions like a + b
+      left <- as.quoted(x[[2]])
+      right <- as.quoted(x[[3]])
+      return(structure(c(left, right), class = "quoted"))
+    }
+    return(structure(list(x), class = "quoted"))
+  }
+  if (is.list(x)) {
+    return(structure(x, class = "quoted"))
+  }
+  
+  structure(list(x), class = "quoted")
+}
+
+# Helper function to check if object is already quoted
+is.quoted <- function(x) {
+  inherits(x, "quoted")
+}
+
+# Helper to parse formula objects
+parse.formula <- function(f) {
+  if (length(f) == 2) {
+    # One-sided formula
+    vars <- f[[2]]
+  } else if (length(f) == 3) {
+    # Two-sided formula
+    vars <- f[[2:3]]
+  } else {
+    stop("Invalid formula")
+  }
+  
+  if (is.call(vars) && identical(vars[[1]], as.name("+"))) {
+    # Handle formulas with multiple variables (e.g., a + b)
+    as.list(vars[-1])
+  } else {
+    list(vars)
+  }
+}
+
+# Evaluation function to replace plyr::eval.quoted
+eval.quoted <- function(exprs, data = NULL, enclos = parent.frame()) {
+  if (!is.quoted(exprs)) exprs <- as.quoted(exprs)
+  
+  if (is.null(data)) {
+    lapply(exprs, eval, envir = enclos)
+  } else {
+    lapply(exprs, eval, envir = data, enclos = enclos)
+  }
+}
+
+# Replacement for plyr::id
+id <- function(x, drop = FALSE) {
+  if (length(x) == 0) return(integer())
+  
+  if (is.data.frame(x)) {
+    # Handle data frames by converting to a list of vectors
+    x <- lapply(x, as.factor)
+  } else {
+    x <- as.factor(x)
+  }
+  
+  # For a single vector, just return the numeric values
+  if (!is.list(x)) {
+    return(as.integer(x))
+  }
+  
+  # For multiple vectors, create unique combinations
+  combs <- do.call(paste, c(x, sep = "\r"))
+  as.integer(factor(combs, levels = unique(combs)))
+} 
