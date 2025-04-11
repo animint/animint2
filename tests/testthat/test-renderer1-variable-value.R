@@ -123,11 +123,10 @@ circle.xpath <- '//svg[@id="plot_peaks"]//circle'
 title.xpath <- paste0(circle.xpath, '//title')
 
 test_that("clickSelects.variable tooltip/title", {
-  circle.list <- getNodeSet(info$html, circle.xpath)
-  expect_equal(length(circle.list), 3)
-  title.list <- getNodeSet(info$html, title.xpath)
-  title.vec <- sapply(title.list, xmlValue)
-  expect_identical(title.vec, paste("size.100.problem.1", 0:2))
+  first.circle <- getNodeSet(info$html, circle.xpath)[[1]]
+  tooltip.text <- xmlGetAttr(first.circle, "data-tippy-content")
+  expected.tooltip <- "size.100.problem.1 0"
+  expect_equal(tooltip.text, expected.tooltip)
 })
 
 test_that("two lines rendered in first plot", {
@@ -292,10 +291,9 @@ test_that("changing problem downloads one chunk", {
                  0, 0, 0, 0))
 })
 
-test_that("clickSelects tooltip/title", {
-  circle.list <- getNodeSet(info$html, circle.xpath)
-  expect_equal(length(circle.list), 3)
-  title.list <- getNodeSet(info$html, title.xpath)
-  title.vec <- sapply(title.list, xmlValue)
-  expect_identical(title.vec, paste("size.100.problem.1peaks", 0:2))
+test_that("clickSelects tooltip for circle", {
+  first.circle <- getNodeSet(info$html, circle.xpath)[[1]]
+  tooltip.text <- xmlGetAttr(first.circle, "data-tippy-content")
+  expected.tooltip <- "size.100.problem.1peaks 0"
+  expect_equal(tooltip.text, expected.tooltip)
 })

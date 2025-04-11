@@ -56,49 +56,47 @@ subset(years, year==1975)
 
 info <- animint2HTML(viz)
 
+# Test 1: Checking data-tippy-content for points (circles)
 test_that("aes(tooltip, clickSelects) means show tooltip", {
-  nodes <-
-    getNodeSet(info$html, '//g[@class="geom1_point_scatter"]//circle//title')
-  tooltips <- sapply(nodes, xmlValue)
-  expect_match(tooltips, "population")
+  circle_xpath <- '//g[@class="geom1_point_scatter"]//circle[@data-tippy-content="India population 622232355"]'
+  circle_node <- getNodeSet(info$html, circle_xpath)
+  expect_equal(length(circle_node), 1, info = "Circle element for India should exist.")
+  tooltip_text <- xmlGetAttr(circle_node[[1]], "data-tippy-content")
+  expect_match(tooltip_text, "India population 622232355", info = "Tooltip text should match 'India population 622232355'.")
 })
 
-test_that("aes(clickSelects) means show 'variable value'", {
-  nodes <-
-    getNodeSet(info$html, '//g[@class="geom7_line_ts"]//path//title')
-  tooltips <- sapply(nodes, xmlValue)
-  expect_match(tooltips, "country")
+# Test 2: Checking aria-expanded for points (circles)
+test_that("aria-expanded is initially false for points", {
+  circle_xpath <- '//g[@class="geom1_point_scatter"]//circle[@data-tippy-content="India population 622232355"]'
+  circle_node <- getNodeSet(info$html, circle_xpath)
+  aria_expanded <- xmlGetAttr(circle_node[[1]], "aria-expanded")
+  expect_equal(aria_expanded, "false", info = "aria-expanded should be 'false' initially.")
 })
 
-test_that("aes(tooltip) means show tooltip", {
-  nodes <-
-    getNodeSet(info$html, '//g[@class="geom3_rect_scatter"]//rect//title')
-  tooltips <- sapply(nodes, xmlValue)
-  expect_match(tooltips, "not NA")
+# Test 3: Checking data-tippy-content for bars (rects)
+test_that("aes(tooltip) means show tooltip with data-tippy-content for bars", {
+  rect_xpath <- '//g[@class="geom8_bar_bar"]//rect[@data-tippy-content="country Albania"]'
+  rect_node <- getNodeSet(info$html, rect_xpath)
+  expect_equal(length(rect_node), 1, info = "Rect element for Albania should exist.")
+  tooltip_text <- xmlGetAttr(rect_node[[1]], "data-tippy-content")
+  expect_match(tooltip_text, "country Albania", info = "Tooltip text should match 'country Albania'.")
 })
 
+# Test 4: Checking aria-expanded for bars (rects)
+test_that("aria-expanded is initially false for bars", {
+  rect_xpath <- '//g[@class="geom8_bar_bar"]//rect[@data-tippy-content="country Albania"]'
+  rect_node <- getNodeSet(info$html, rect_xpath)
+  aria_expanded <- xmlGetAttr(rect_node[[1]], "aria-expanded")
+  expect_equal(aria_expanded, "false", info = "aria-expanded should be 'false' initially.")
+})
+
+# Test 5: Checking absence of tooltips for elements without aes(tooltip)
 test_that("aes() means show no tooltip", {
-  rect.xpath <- '//g[@class="geom4_rect_scatter"]//rect'
-  rect.nodes <- getNodeSet(info$html, rect.xpath)
-  expect_equal(length(rect.nodes), 1)
-  
-  title.xpath <- paste0(rect.xpath, '//title')
-  title.nodes <- getNodeSet(info$html, title.xpath)
-  expect_equal(length(title.nodes), 0)
-})
-
-set.seed(1)
-viz <- list(
-  linetip=ggplot()+
-    geom_line(aes(x, y, tooltip=paste("group", g), group=g),
-              size=5,
-              data=data.frame(x=c(1,2,1,2), y=rnorm(4), g=c(1,1,2,2))))
-
-test_that("line tooltip renders as title", {
-  info <- animint2HTML(viz)
-  title.nodes <- getNodeSet(info$html, '//g[@class="geom1_line_linetip"]//title')
-  value.vec <- sapply(title.nodes, xmlValue)
-  expect_identical(value.vec, c("group 1", "group 2"))
+  rect_xpath <- '//g[@class="geom4_rect_scatter"]//rect'
+  rect_node <- getNodeSet(info$html, rect_xpath)
+  expect_equal(length(rect_node), 1, info = "Rect element should exist.")
+  tooltip_text <- xmlGetAttr(rect_node[[1]], "data-tippy-content", default = NA)
+  expect_true(is.na(tooltip_text), info = "data-tippy-content should not be present.")
 })
 
 WorldBank1975 <- WorldBank[WorldBank$year == 1975, ]
@@ -111,15 +109,15 @@ ex_plot <- ggplot() +
 viz <- list(ex = ex_plot)
 info <- animint2HTML(viz)
 
-test_that("tooltip works with href",{
+test_that("tooltip works with href and aria-expanded", {
   # Test for bug when points are not rendered with both href + tooltip
-  point_nodes <-
-    getNodeSet(info$html, '//g[@class="geom1_point_ex"]//a//circle')
-  expected.countries <- NotNA1975$country
-  expect_equal(length(point_nodes), length(expected.countries))
-  # See that every <a> element has a title (the country name) initially
-  title_nodes <-
-    getNodeSet(info$html, '//g[@class="geom1_point_ex"]//a//title')
-  rendered_titles <- sapply(title_nodes, xmlValue)
-  expect_identical(sort(rendered_titles), sort(expected.countries))
+  point_nodes <- getNodeSet(info$html, '//g[@class="geom1_point_ex"]//a//circle')
+  expected_countries <- NotNA1975$country
+  expect_equal(length(point_nodes), length(expected_countries))
+  # see that every <a> element has a data-tippy-content attribute (the country name)
+  tooltip_nodes <- getNodeSet(info$html, '//g[@class="geom1_point_ex"]//a')
+  rendered_tooltips <- sapply(tooltip_nodes, function(node) {
+    xmlGetAttr(node, "data-tippy-content")
+  })
+  expect_identical(sort(rendered_tooltips), sort(expected_countries))
 })

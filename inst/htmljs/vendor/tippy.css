@@ -1,0 +1,29 @@
+.tippy-box[data-theme~=light][data-placement^=top] > .tippy-arrow:before {
+    border-top-color: radial-gradient(rgba(255, 255, 255, 0.1), transparent);
+}
+.tippy-box[data-theme~=light][data-placement^=bottom] > .tippy-arrow:before {
+    border-bottom-color: radial-gradient(rgba(255, 255, 255, 0.1), transparent);
+}
+.tippy-box[data-theme~=light][data-placement^=left] > .tippy-arrow:before {
+    border-left-color: radial-gradient(rgba(255, 255, 255, 0.1), transparent);
+}
+.tippy-box[data-theme~=light][data-placement^=right] > .tippy-arrow:before {
+    border-right-color: radial-gradient(rgba(255, 255, 255, 0.1), transparent);
+}
+
+/* SVG Arrow */
+.tippy-box[data-theme~=light] > .tippy-svg-arrow {
+    fill: #000;
+}
+
+/* Subtle glow effect for 3D feel */
+.tippy-box[data-theme~=light]:before {
+    content: "";
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: radial-gradient(rgba(255, 255, 255, 0.1), transparent);
+    border-radius: inherit;
+}
