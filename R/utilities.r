@@ -392,4 +392,65 @@ id <- function(x, drop = FALSE) {
   # For multiple vectors, create unique combinations
   combs <- do.call(paste, c(x, sep = "\r"))
   as.integer(factor(combs, levels = unique(combs)))
+}
+
+#' Fill in missing values in a list with values from another list
+#'
+#' This function takes two lists and fills in missing values in the first list
+#' with values from the second list. It's similar to modifyList() but preserves
+#' NULLs and doesn't recursively merge nested lists.
+#'
+#' @param x the list to be modified
+#' @param y the list of defaults to use to fill in missing values
+#' @return a new list with missing values in x filled in from y
+#' @noRd
+defaults <- function(x, y) {
+  if (is.null(x)) return(y)
+  if (is.null(y)) return(x)
+  
+  # Special handling for unit objects
+  if (inherits(x, "unit") || inherits(y, "unit")) {
+    return(x)
+  }
+  # Special handling for theme elements
+  if (inherits(x, "element") || inherits(y, "element")) {
+    return(x)
+  }
+  # Handle unnamed vectors/lists
+  if (is.null(names(x)) && is.null(names(y))) {
+    return(x)
+  }
+  # If x is unnamed but y is named, add names from y
+  if (is.null(names(x)) && !is.null(names(y))) {
+    names(x) <- names(y)[seq_along(x)]
+  }
+  # Get names from both lists
+  nx <- names(x)
+  ny <- names(y)
+  # Find which names in y are missing from x
+  missing <- setdiff(ny, nx)
+  # Add missing elements from y to x
+  if (length(missing) > 0) {
+    # Handle lists specially to preserve attributes
+    if (is.list(x) && is.list(y)) {
+      x[missing] <- y[missing]
+    } else {
+      # For other types, do standard combination
+      x <- c(x, y[missing])
+    }
+  }
+  # Preserve attributes where possible
+  if (!is.null(attributes(y))) {
+    attrs <- attributes(y)
+    # Don't copy over names or class
+    attrs$names <- NULL 
+    attrs$class <- NULL
+    # Copy remaining attributes if they don't already exist
+    for (a in names(attrs)) {
+      if (is.null(attr(x, a))) {
+        attr(x, a) <- attrs[[a]]
+      }
+    }
+  }
+  x
 } 
