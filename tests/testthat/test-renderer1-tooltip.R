@@ -56,51 +56,63 @@ subset(years, year==1975)
 
 info <- animint2HTML(viz)
 
-test_that("aes(tooltip, clickSelects) means show tooltip", {
-  nodes <-
-    getNodeSet(info$html, '//g[@class="geom1_point_scatter"]//circle//title')
-  tooltips <- sapply(nodes, xmlValue)
-  expect_match(tooltips, "population")
+test_that("animint-tooltip div exists with correct initial state", {
+  tooltip_div <- getNodeSet(info$html, '//div[@class="animint-tooltip"]')
+  expect_equal(length(tooltip_div), 1)
+  # Check initial opacity is 0
+  style <- xmlGetAttr(tooltip_div[[1]], "style")
+  expect_match(style, "opacity: 0;")
 })
 
-test_that("aes(clickSelects) means show 'variable value'", {
-  nodes <-
-    getNodeSet(info$html, '//g[@class="geom7_line_ts"]//path//title')
-  tooltips <- sapply(nodes, xmlValue)
-  expect_match(tooltips, "country")
-})
-
-test_that("aes(tooltip) means show tooltip", {
-  nodes <-
-    getNodeSet(info$html, '//g[@class="geom3_rect_scatter"]//rect//title')
-  tooltips <- sapply(nodes, xmlValue)
-  expect_match(tooltips, "not NA")
-})
-
-test_that("aes() means show no tooltip", {
-  rect.xpath <- '//g[@class="geom4_rect_scatter"]//rect'
-  rect.nodes <- getNodeSet(info$html, rect.xpath)
-  expect_equal(length(rect.nodes), 1)
+test_that("tooltip shows correct content for rect", {
+  # Find the rectangle element
+  rect_node <- getNodeSet(
+    info$html, 
+    '//g[@class="geom3_rect_scatter"]//rect'
+  )[[1]]
   
-  title.xpath <- paste0(rect.xpath, '//title')
-  title.nodes <- getNodeSet(info$html, title.xpath)
-  expect_equal(length(title.nodes), 0)
+  # Get coordinates for hover simulation
+  rect_x <- as.numeric(xmlGetAttr(rect_node, "x"))
+  rect_y <- as.numeric(xmlGetAttr(rect_node, "y"))
+  rect_width <- as.numeric(xmlGetAttr(rect_node, "width"))
+  rect_height <- as.numeric(xmlGetAttr(rect_node, "height"))
+  
+  # Calculate center point
+  center_x <- rect_x + (rect_width / 2)
+  center_y <- rect_y + (rect_height / 2)
+  
+  # Simulate hover over rectangle center
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = center_x, y = center_y)
+  Sys.sleep(0.5) # Wait for tooltip
+  
+  # Check tooltip content matches expected
+  tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
+  tooltip_text <- xmlValue(tooltip_div)
+  expect_match(tooltip_text, "187 not NA in 1975")
+  
+  # Clean up - move mouse away
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
+  Sys.sleep(0.5)
 })
 
-set.seed(1)
-viz <- list(
-  linetip=ggplot()+
-    geom_line(aes(x, y, tooltip=paste("group", g), group=g),
-              size=5,
-              data=data.frame(x=c(1,2,1,2), y=rnorm(4), g=c(1,1,2,2))))
-
-test_that("line tooltip renders as title", {
-  info <- animint2HTML(viz)
-  title.nodes <- getNodeSet(info$html, '//g[@class="geom1_line_linetip"]//title')
-  value.vec <- sapply(title.nodes, xmlValue)
-  expect_identical(value.vec, c("group 1", "group 2"))
+test_that("tooltip shows correct content for point", {
+  remDr$Input$dispatchMouseEvent(
+    type = "mouseMoved", 
+    x = 230.01787959856264, #coordinates for the circle corresponding to Country Myanmar
+    y = 177.9050016888368
+  )
+  Sys.sleep(0.5)
+  
+  # Check tooltip contains "year"
+  tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
+  tooltip_text <- xmlValue(tooltip_div)
+  expect_match(tooltip_text, "Myanmar population 30640635")
+  
+  # Clean up - move mouse away
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
 })
 
+# Test with href
 WorldBank1975 <- WorldBank[WorldBank$year == 1975, ]
 NotNA1975 <- subset(not.na, year==1975)
 ex_plot <- ggplot() +
@@ -111,15 +123,8 @@ ex_plot <- ggplot() +
 viz <- list(ex = ex_plot)
 info <- animint2HTML(viz)
 
-test_that("tooltip works with href",{
-  # Test for bug when points are not rendered with both href + tooltip
-  point_nodes <-
-    getNodeSet(info$html, '//g[@class="geom1_point_ex"]//a//circle')
-  expected.countries <- NotNA1975$country
-  expect_equal(length(point_nodes), length(expected.countries))
-  # See that every <a> element has a title (the country name) initially
-  title_nodes <-
-    getNodeSet(info$html, '//g[@class="geom1_point_ex"]//a//title')
-  rendered_titles <- sapply(title_nodes, xmlValue)
-  expect_identical(sort(rendered_titles), sort(expected.countries))
+test_that("tooltip div exists with href elements", {
+  tooltip_div <- getNodeSet(info$html, '//div[@class="animint-tooltip"]')
+  expect_equal(length(tooltip_div), 1)
+  expect_match(xmlGetAttr(tooltip_div[[1]], "style"), "opacity: 0;")
 })

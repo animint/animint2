@@ -1626,11 +1626,53 @@ var animint = function (to_select, json_file) {
 	  return d["clickSelects.variable"] + " " + d["clickSelects.value"];
 	};
       }
-      // if elements have an existing title, remove it.
+      var tooltip = d3.select("#plot").select(".animint-tooltip").node() 
+    ? d3.select(".animint-tooltip")
+    : d3.select("#plot").append("div")
+        .attr("class", "animint-tooltip")
+        .style("opacity", 0);
+      // Remove existing title elements to avoid conflicts with tooltips
       elements.selectAll("title").remove();
-      elements.append("svg:title")
-        .text(get_fun(text_fun))
-      ;
+      // Add tooltip handlers
+      elements
+        .on("mouseover.tooltip", function(d) {
+          if (!d || typeof text_fun !== 'function') return;
+          var content;
+          try {
+            content = text_fun(d);
+          } catch(e) {
+            console.error("Error generating tooltip content:", e);
+            return;
+          }
+          var mouseX = 0, mouseY = 0;
+          try {
+            mouseX = (d3.event && d3.event.pageX) || 0;
+            mouseY = (d3.event && d3.event.pageY) || 0;
+          } catch(e) {
+            console.error("Error getting mouse position:", e);
+          }
+          tooltip
+            .html(content)
+            .style("left", (mouseX + 10) + "px")
+            .style("top", (mouseY - 28) + "px")
+            .style("opacity", 1);
+        })
+        .on("mouseout.tooltip", function() {
+          tooltip.style("opacity", 0)
+          .html(null);
+        })
+        .on("mousemove.tooltip", function() {
+          var mouseX = 0, mouseY = 0;
+          try {
+            mouseX = (d3.event && d3.event.pageX) || 0;
+            mouseY = (d3.event && d3.event.pageY) || 0;
+          } catch(e) {
+            console.error("Error getting mouse position:", e);
+          }
+          tooltip
+            .style("left", (mouseX + 10) + "px")
+            .style("top", (mouseY - 28) + "px");
+        });
     }
     if(Selectors.hasOwnProperty(selector_name)){
       var milliseconds = Selectors[selector_name].duration;

@@ -1,0 +1,14 @@
+.animint-tooltip {
+  position: absolute;
+  padding: 8px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  font-family: sans-serif;
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 1000;
+  max-width: 300px;
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+}

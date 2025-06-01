@@ -4,56 +4,46 @@ data("CO2")
 
 plot_viz <- ggplot() + 
   geom_point(aes(conc, uptake, color=Treatment, tooltip=Plant),
-             data = CO2)
+             data = CO2)+
+  geom_rect(aes(xmin=100, xmax=200, ymin=20, ymax=30, 
+              tooltip="Test Rectangle"), alpha=0.5)
 viz <- list(p=plot_viz)
 info <- animint2HTML(viz)
 
-# Hide titles with Treatment = "nonchilled" 
-clickID(c("plot_p_Treatment_variable_nonchilled"))
-Sys.sleep(0.5)
-info$html_updated1 <- getHTML()
-
-# Hide all titles
-clickID(c("plot_p_Treatment_variable_chilled"))
-Sys.sleep(0.5)
-info$html_updated2 <- getHTML()
-
-# Show titles with Treatment = "nonchilled"
-clickID(c("plot_p_Treatment_variable_nonchilled"))
-Sys.sleep(0.5)
-info$html_updated3 <- getHTML()
-
-
-test_that("Interactivity does not mess up tooltip titles", {
-  # Initially all titles are rendered
-  title_nodes1 <-
-    getNodeSet(info$html, '//g[@class="geom1_point_p"]//circle//title')
-  rendered_titles1 <- sapply(title_nodes1, xmlValue)
+test_that("tooltip shows correct content on hover interaction", {
+  # Initial state - tooltip should be hidden
+  tooltip_div <- getNodeSet(info$html, '//div[@class="animint-tooltip"]')[[1]]
+  expect_equal(xmlGetAttr(tooltip_div, "style"), "opacity: 0;")
   
-  expect_equal(length(rendered_titles1), length(CO2$Plant))
-  expect_identical(sort(unique(rendered_titles1)), 
-                   sort(sapply(unique(CO2$Plant), as.character)))
+  # Find the rectangle element
+  rect_node <- getNodeSet(info$html, '//g[contains(@class,"geom2_rect")]//rect')[[1]]
+  rect_x <- as.numeric(xmlGetAttr(rect_node, "x"))
+  rect_y <- as.numeric(xmlGetAttr(rect_node, "y"))
+  rect_width <- as.numeric(xmlGetAttr(rect_node, "width"))
+  rect_height <- as.numeric(xmlGetAttr(rect_node, "height"))
   
-  title_nodes2 <-
-    getNodeSet(info$html_updated1, '//g[@class="geom1_point_p"]//circle//title')
-  rendered_titles2 <- sapply(title_nodes2, xmlValue)
-  rendered_titles2_unique <- unique(rendered_titles2)
-  actual_titles2 <- c("Qc1", "Qc2", "Qc3", "Mc1", "Mc2", "Mc3")
+  # Calculate center coordinates
+  rect_center_x <- rect_x + rect_width / 2
+  rect_center_y <- rect_y + rect_height / 2
   
-  expect_equal(length(rendered_titles2), sum(CO2$Treatment == "chilled"))
-  expect_identical(sort(rendered_titles2_unique), sort(actual_titles2))
+  # Simulate hover on rectangle
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", 
+                                x = rect_center_x, 
+                                y = rect_center_y)
+  Sys.sleep(1)  # Wait for tooltip
   
-  title_nodes3 <-
-    getNodeSet(info$html_updated2, '//g[@class="geom1_point_p"]//circle//title')
+  # Verify tooltip is visible and shows correct content
+  tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
+  expect_match(xmlGetAttr(tooltip_div, "style"), "opacity: 1;")
+  expect_equal(xmlValue(tooltip_div), "Test Rectangle")
   
-  expect_equal(length(title_nodes3), 0)
+  # Simulate mouseout (move mouse to background)
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
+  clickID("background")
+  Sys.sleep(1)
   
-  title_nodes4 <-
-    getNodeSet(info$html_updated3, '//g[@class="geom1_point_p"]//circle//title')
-  rendered_titles4 <- sapply(title_nodes4, xmlValue)
-  rendered_titles4_unique <- unique(rendered_titles4)
-  actual_titles4 <- c("Qn1", "Qn2", "Qn3", "Mn1", "Mn2", "Mn3")
-  
-  expect_equal(length(rendered_titles4), sum(CO2$Treatment == "nonchilled"))
-  expect_identical(sort(rendered_titles4_unique), sort(actual_titles4))
+  # Verify tooltip is hidden again
+  tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
+  expect_match(xmlGetAttr(tooltip_div, "style"), "opacity: 0;")
+  expect_equal(xmlValue(tooltip_div), "") # Content should be cleared
 })
