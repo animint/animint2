@@ -113,7 +113,6 @@ test_that("tallrect displays correct tooltip", {
     x = rect_x ,
     y = rect_y + 20 # Adjust y to hover over the rect
   )
-  print(paste("Hovering at:", rect_x, rect_y))
   Sys.sleep(1)
   # Checking tooltip content
   tooltip_text <- xmlValue(getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]])
