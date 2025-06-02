@@ -96,18 +96,22 @@ test_that("tooltip shows correct content for rect", {
 })
 
 test_that("tooltip shows correct content for point", {
+  point_node <- getNodeSet(
+    info$html, 
+    '//g[@class="geom1_point_scatter"]//circle'
+  )[[6]] # Ukraine is the 6th point in the scatter plot
+  cx = as.numeric(xmlGetAttr(point_node, "cx"))
+  cy = as.numeric(xmlGetAttr(point_node, "cy"))
+  # Simulate hover over the point
   remDr$Input$dispatchMouseEvent(
     type = "mouseMoved", 
-    x = 230.01787959856264, #coordinates for the circle corresponding to Country Myanmar
-    y = 177.9050016888368
+    x = cx,
+    y = cy
   )
-  Sys.sleep(0.5)
-  
-  # Check tooltip contains "year"
+  Sys.sleep(0.3)
   tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
   tooltip_text <- xmlValue(tooltip_div)
-  expect_match(tooltip_text, "Myanmar population 30640635")
-  
+  expect_match(tooltip_text, "Ukraine population 48758333")
   # Clean up - move mouse away
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
 })
