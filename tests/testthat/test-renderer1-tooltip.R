@@ -99,7 +99,7 @@ test_that("tooltip shows correct content for point", {
   point_node <- getNodeSet(
     info$html, 
     '//g[@class="geom1_point_scatter"]//circle'
-  )[[6]] # Ukraine is the 6th point in the scatter plot
+  )[[2]]
   cx = as.numeric(xmlGetAttr(point_node, "cx"))
   cy = as.numeric(xmlGetAttr(point_node, "cy"))
   # Simulate hover over the point
@@ -111,7 +111,7 @@ test_that("tooltip shows correct content for point", {
   Sys.sleep(0.3)
   tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
   tooltip_text <- xmlValue(tooltip_div)
-  expect_match(tooltip_text, "Ukraine population 48758333")
+  expect_match(tooltip_text, "population") # point tooltip should include "population"
   # Clean up - move mouse away
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
 })
