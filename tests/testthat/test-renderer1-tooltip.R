@@ -9,7 +9,7 @@ viz <-
   list(scatter=ggplot()+
        geom_point(aes(life.expectancy, fertility.rate,
                       colour=region, size=population,
-                      tooltip=paste(country, "population", population),
+                      tooltip=paste(country, "population", population), id = country,
                       key=country), # key aesthetic for animated transitions!
                   clickSelects="country",
                   showSelected="year",
@@ -82,8 +82,9 @@ test_that("tooltip shows correct content for rect", {
   center_y <- rect_y + (rect_height / 2)
   
   # Simulate hover over rectangle center
-  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = center_x, y = center_y)
-  Sys.sleep(0.5) # Wait for tooltip
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = center_x + 10, y = center_y)
+  # (Adjust for 10px left margin in the plot)
+  Sys.sleep(0.5)
   
   # Check tooltip content matches expected
   tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
@@ -98,21 +99,21 @@ test_that("tooltip shows correct content for rect", {
 test_that("tooltip shows correct content for point", {
   point_node <- getNodeSet(
     info$html, 
-    '//g[@class="geom1_point_scatter"]//circle'
-  )[[2]]
-  cx = as.numeric(xmlGetAttr(point_node, "cx"))
-  cy = as.numeric(xmlGetAttr(point_node, "cy"))
-  # Simulate hover over the point
+    '//g[@class="geom1_point_scatter"]//circle[@id="China"]'
+  )[[1]]
+  cx <- as.numeric(xmlGetAttr(point_node, "cx"))
+  cy <- as.numeric(xmlGetAttr(point_node, "cy"))
   remDr$Input$dispatchMouseEvent(
     type = "mouseMoved", 
-    x = cx,
+    x = cx + 10,  # Adjust for 10px left margin in the plot
     y = cy
   )
   Sys.sleep(0.3)
   tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
   tooltip_text <- xmlValue(tooltip_div)
-  expect_match(tooltip_text, "population") # point tooltip should include "population"
-  # Clean up - move mouse away
+  # Verify tooltip contains expected content
+  expect_match(tooltip_text, "China population 916395000")
+  # Move mouse away to clean up
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
 })
 

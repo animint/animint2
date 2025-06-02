@@ -21,17 +21,14 @@ test_that("tooltip shows correct content on hover interaction", {
   rect_y <- as.numeric(xmlGetAttr(rect_node, "y"))
   rect_width <- as.numeric(xmlGetAttr(rect_node, "width"))
   rect_height <- as.numeric(xmlGetAttr(rect_node, "height"))
-  
   # Calculate center coordinates
   rect_center_x <- rect_x + rect_width / 2
   rect_center_y <- rect_y + rect_height / 2
-  
   # Simulate hover on rectangle
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", 
-                                x = rect_center_x, 
+                                x = rect_center_x + 10,  # Adjust for 10px left margin in the plot
                                 y = rect_center_y)
   Sys.sleep(1)  # Wait for tooltip
-  
   # Verify tooltip is visible and shows correct content
   tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
   expect_match(xmlGetAttr(tooltip_div, "style"), "opacity: 1;")
