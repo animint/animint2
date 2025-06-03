@@ -65,48 +65,49 @@ test_that("animint-tooltip div exists with correct initial state", {
 })
 
 test_that("tooltip shows correct content for rect", {
-  # Find the rectangle element
-  rect_node <- getNodeSet(
-    info$html, 
-    '//g[@class="geom3_rect_scatter"]//rect'
-  )[[1]]
-  
-  # Get coordinates for hover simulation
-  rect_x <- as.numeric(xmlGetAttr(rect_node, "x"))
-  rect_y <- as.numeric(xmlGetAttr(rect_node, "y"))
-  rect_width <- as.numeric(xmlGetAttr(rect_node, "width"))
-  rect_height <- as.numeric(xmlGetAttr(rect_node, "height"))
-  
-  # Calculate center point
-  center_x <- rect_x + (rect_width / 2)
-  center_y <- rect_y + (rect_height / 2)
-  
-  # Simulate hover over rectangle center
-  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = center_x + 10, y = center_y)
-  # (Adjust for 10px left margin in the plot)
-  Sys.sleep(0.5)
-  
-  # Check tooltip content matches expected
+  # Get rect position on viewport
+  rect_position <- runtime_evaluate(
+  "(() => {
+      const rect = document.querySelector('rect.geom');
+      const box = rect.getBoundingClientRect();
+      return {
+        left: box.left,
+        top: box.top
+      };
+  })()"
+  )
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = rect_position$left, y = rect_position$top)
+  Sys.sleep(0.3)
   tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
   tooltip_text <- xmlValue(tooltip_div)
+  # Verify tooltip contains expected content
   expect_match(tooltip_text, "187 not NA in 1975")
-  
-  # Clean up - move mouse away
+  # Move mouse away to clean up
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
-  Sys.sleep(0.5)
+  Sys.sleep(0.2)
 })
 
 test_that("tooltip shows correct content for point", {
-  point_node <- getNodeSet(
-    info$html, 
-    '//g[@class="geom1_point_scatter"]//circle[@id="China"]'
-  )[[1]]
-  cx <- as.numeric(xmlGetAttr(point_node, "cx"))
-  cy <- as.numeric(xmlGetAttr(point_node, "cy"))
+  # Get circle position on viewport
+  circle_position <- runtime_evaluate(
+    "(() => {
+        const circle = document.querySelector('circle#China');
+        const box = circle.getBoundingClientRect();
+        return {
+          left: box.left,
+          top: box.top,
+          width: box.width,
+          height: box.height
+        };
+    })()"
+  )
+  center_x <- circle_position$left + (circle_position$width / 2)
+  center_y <- circle_position$top + (circle_position$height / 2)
+  # Hover over center of the circle
   remDr$Input$dispatchMouseEvent(
-    type = "mouseMoved", 
-    x = cx + 10,  # Adjust for 10px left margin in the plot
-    y = cy
+    type = "mouseMoved",
+    x = center_x,
+    y = center_y
   )
   Sys.sleep(0.3)
   tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
