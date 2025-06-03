@@ -7,7 +7,7 @@
 var animint = function (to_select, json_file) {
   var steps = [];
   var default_axis_px = 16;
-
+  
    function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
@@ -243,23 +243,31 @@ var animint = function (to_select, json_file) {
     // Save this geom and load it!
     update_geom(g_name, null);
   };
-  var add_plot = function (p_name, p_info) {
-    // Each plot may have one or more legends. To make space for the
-    // legends, we put each plot in a table with one row and two
-    // columns: tdLeft and tdRight.
-    var plot_table = plot_td.append("table").style("display", "inline-block");
-    var plot_tr = plot_table.append("tr");
-    var tdLeft = plot_tr.append("td");
-    var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
-    if(viz_id === null){
-      p_info.plot_id = p_name;
-    }else{
-      p_info.plot_id = viz_id + "_" + p_name;
-    }
-    var svg = tdLeft.append("svg")
-      .attr("id", p_info.plot_id)
-      .attr("height", p_info.options.height)
-      .attr("width", p_info.options.width);
+ var add_plot = function (p_name, p_info, making_outer_table) {
+  var parent_of_plot;
+  if (making_outer_table) {
+  parent_of_plot = current_outer_tr.append("td");
+  const attributes = p_info.attributes || {};
+  if (attributes.rowspan) {
+    parent_of_plot.attr("rowspan", attributes.rowspan);
+  }
+  if (attributes.colspan) {
+    parent_of_plot.attr("colspan", attributes.colspan);
+  }
+} else {
+    parent_of_plot = element;
+  }
+  if (p_info.last_in_row) {
+    current_outer_tr = outer_table.append("tr");
+  }
+  var plot_table = parent_of_plot.append("table").style("display", "inline-block");
+  var plot_tr = plot_table.append("tr");
+  var tdLeft = plot_tr.append("td");
+  var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
+  var svg = tdLeft.append("svg")
+    .attr("id", p_info.plot_id)
+    .attr("height", p_info.options.height)
+    .attr("width", p_info.options.width);
 
     // divvy up width/height based on the panel layout
     var nrows = Math.max.apply(null, p_info.layout.ROW);
@@ -2047,6 +2055,37 @@ var animint = function (to_select, json_file) {
       // global d3.select here.
       d3.select("title").text(response.title);
     }
+
+    var customized_layout = false;
+    for (var p_name in response.plots) {
+      var attrs = response.plots[p_name].attributes;
+      if ("rowspan" in attrs || "colspan" in attrs || "last_in_row" in attrs) {
+        customized_layout = true;
+        break;
+      }
+    }
+      if (customized_layout) {
+      var outer_table = element.append("table");
+      var current_row = outer_table.append("tr");
+      for (var p_name in response.plots) {
+        var plot_info = response.plots[p_name];
+        var attrs = plot_info.attributes || {};
+        var td = current_row.append("td");
+        if ("rowspan" in attrs) td.attr("rowspan", attrs.rowspan);
+        if ("colspan" in attrs) td.attr("colspan", attrs.colspan);
+        add_plot(p_name, plot_info, td); // Make sure add_plot uses the passed td
+        add_legend(p_name, plot_info);
+        if (attrs.last_in_row) {
+          current_row = outer_table.append("tr");
+        }
+      }
+    } else {
+      for (var p_name in response.plots) {
+        add_plot(p_name, response.plots[p_name]);
+        add_legend(p_name, response.plots[p_name]);
+      }
+    }
+
     // Add plots.
     for (var p_name in response.plots) {
       add_plot(p_name, response.plots[p_name]);
