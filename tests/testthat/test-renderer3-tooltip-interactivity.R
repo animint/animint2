@@ -17,16 +17,7 @@ test_that(".animint-tooltip exists and is hidden initially", {
 })
 test_that("tooltip shows correct content on hover interaction", {
   # Get rectangle position on the viewport
-  rect_position <- runtime_evaluate(
-  "(() => {
-      const rect = document.querySelector('g[class*=\"geom2_rect\"] rect');
-      const box = rect.getBoundingClientRect();
-      return {
-        left: box.left,
-        top: box.top
-      };
-  })()"
-  )
+  rect_position <- get_element_bbox('g[class*=\"geom2_rect\"] rect')
   # Hover over the rect
   remDr$Input$dispatchMouseEvent(
     type = "mouseMoved", 

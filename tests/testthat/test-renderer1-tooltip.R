@@ -66,16 +66,7 @@ test_that("animint-tooltip div exists with correct initial state", {
 
 test_that("tooltip shows correct content for rect", {
   # Get rect position on viewport
-  rect_position <- runtime_evaluate(
-  "(() => {
-      const rect = document.querySelector('rect.geom');
-      const box = rect.getBoundingClientRect();
-      return {
-        left: box.left,
-        top: box.top
-      };
-  })()"
-  )
+  rect_position <- get_element_bbox('rect.geom')
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = rect_position$left, y = rect_position$top)
   Sys.sleep(0.3)
   tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
@@ -89,18 +80,7 @@ test_that("tooltip shows correct content for rect", {
 
 test_that("tooltip shows correct content for point", {
   # Get circle position on viewport
-  circle_position <- runtime_evaluate(
-    "(() => {
-        const circle = document.querySelector('circle#China');
-        const box = circle.getBoundingClientRect();
-        return {
-          left: box.left,
-          top: box.top,
-          width: box.width,
-          height: box.height
-        };
-    })()"
-  )
+  circle_position <- get_element_bbox('circle#China')
   center_x <- circle_position$left + (circle_position$width / 2)
   center_y <- circle_position$top + (circle_position$height / 2)
   # Hover over center of the circle

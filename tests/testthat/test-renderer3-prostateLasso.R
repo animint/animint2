@@ -100,16 +100,7 @@ html.click2 <- getHTML()
 
 test_that("tallrect displays correct tooltip", {
   # Get tallrect position on the viewport
-  tallrect_position <- runtime_evaluate(
-  "(() => {
-      const rect = document.querySelector('g.geom3_tallrect_path rect#arclength101');
-      const box = rect.getBoundingClientRect();
-      return {
-        left: box.left,
-        top: box.top
-      };
-  })()"
-  )
+  tallrect_position <- get_element_bbox("g.geom3_tallrect_path rect#arclength101")
   #hover over the tallrect
   remDr$Input$dispatchMouseEvent(
     type = "mouseMoved",

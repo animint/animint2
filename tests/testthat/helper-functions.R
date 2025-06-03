@@ -400,6 +400,21 @@ runtime_evaluate_helper <- function(class_name=NULL, id=NULL, list_num=NULL, dis
     if(isTRUE(dispatch_event))".dispatchEvent(new CustomEvent('click'))"))
 }
 
+# get the bounding box (position and size) of an element relative to the viewport.
+get_element_bbox <- function(selector) {
+  script <- sprintf("(() => {
+    const el = document.querySelector('%s');
+    const box = el.getBoundingClientRect();
+    return {
+      left: box.left,
+      top: box.top,
+      width: box.width,
+      height: box.height
+    };
+  })()", selector)
+  runtime_evaluate(script)
+}
+
 driverjs_click_class <- function(class_name,list_num=0){
   runtime_evaluate_helper(
     class_name = class_name,

@@ -1611,6 +1611,10 @@ var animint = function (to_select, json_file) {
     doActions(enter);  // DO NOT DELETE!
     var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
     if(has_clickSelects || has_tooltip || has_clickSelects_variable){
+      // Tooltip positioning constants
+      var TOOLTIP_HORIZONTAL_OFFSET = 10; // pixels right of mouse pointer
+      var TOOLTIP_VERTICAL_OFFSET = 28;   // pixels above mouse pointer
+
       var text_fun;
       if(has_tooltip){
         text_fun = function(d){
@@ -1653,8 +1657,8 @@ var animint = function (to_select, json_file) {
           }
           tooltip
             .html(content)
-            .style("left", (mouseX + 10) + "px")
-            .style("top", (mouseY - 28) + "px")
+            .style("left", (mouseX + TOOLTIP_HORIZONTAL_OFFSET) + "px")
+            .style("top", (mouseY - TOOLTIP_VERTICAL_OFFSET) + "px")
             .style("opacity", 1);
         })
         .on("mouseout.tooltip", function() {
@@ -1670,8 +1674,8 @@ var animint = function (to_select, json_file) {
             console.error("Error getting mouse position:", e);
           }
           tooltip
-            .style("left", (mouseX + 10) + "px")
-            .style("top", (mouseY - 28) + "px");
+            .style("left", (mouseX + TOOLTIP_HORIZONTAL_OFFSET) + "px")
+            .style("top", (mouseY - TOOLTIP_VERTICAL_OFFSET) + "px");
         });
     }
     if(Selectors.hasOwnProperty(selector_name)){
