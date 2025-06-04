@@ -1,76 +1,55 @@
-test_that("check rowspan, all plots in single row", {
-  plot_of_3_dots_data <- data.frame(x = c(1, 2, 3), y = c(1, 4, 9))
-  plot_of_2_dots_data <- data.frame(x = c(1, 2), y = c(1, 4))
-  plot_of_1_dot_data  <- data.frame(x = c(2), y = c(2))
-  plot_of_4_dots_data <- data.frame(x = c(1, 2, 3, 6), y = c(1, 4, 9, 13))
-  plot_of_5_dots_data <- data.frame(x = c(1, 2, 3, 6, 9), y = c(1, 4, 9, 13, 16))
-  plot_of_6_dots_data <- data.frame(x = c(1, 2, 3, 6, 9, 11), y = c(1, 4, 9, 13, 16, 18))
+test_that("HTML layout includes rowspan and colspan attributes", {
 
-  plot_of_3_dots <- ggplot(plot_of_3_dots_data, aes(x, y)) +
-    geom_point(size = 2) +
-    ggtitle("Plot of 3 Dots") +
-    xlab("X Axis") + ylab("Y Axis") +
-    theme_animint(rowspan = 2)
+  base_data <- data.frame(x = 1:3, y = c(2, 4, 6))
 
-  plot_of_2_dots <- ggplot(plot_of_2_dots_data, aes(x, y)) +
-    geom_point(size = 2) +
-    ggtitle("Plot of 2 Dots") +
-    xlab("X Axis") + ylab("Y Axis")
-
-  plot_of_1_dot <- ggplot(plot_of_1_dot_data, aes(x, y)) +
-    geom_point(size = 2) +
-    ggtitle("Plot of 1 Dot") +
-    xlab("X Axis") + ylab("Y Axis") +
-    theme_animint(rowspan = 2)
-
-  plot_of_4_dots <- ggplot(plot_of_4_dots_data, aes(x, y)) +
-    geom_point(size = 2) +
-    ggtitle("Plot of 4 Dots") +
-    xlab("X Axis") + ylab("Y Axis")
-
-  plot_of_4_dots_copy <- ggplot(plot_of_4_dots_data, aes(x, y)) +
-    geom_point(size = 2) +
-    ggtitle("Plot of 4 Dots Copy") +
-    xlab("X Axis") + ylab("Y Axis")
-
-  plot_of_5_dots <- ggplot(plot_of_5_dots_data, aes(x, y)) +
-    geom_point(size = 2) +
-    ggtitle("Plot of 5 Dots") +
-    xlab("X Axis") + ylab("Y Axis")
-
-  plot_of_6_dots <- ggplot(plot_of_6_dots_data, aes(x, y)) +
-    geom_point(size = 2) +
-    ggtitle("Plot of 6 Dots") +
-    xlab("X Axis") + ylab("Y Axis") +
-    theme_animint(row = 1, col = 3)
 
   plot_list <- list(
-    plot1 = plot_of_1_dot,
-    plot2 = plot_of_2_dots,
-    plot3 = plot_of_3_dots,
-    plot4 = plot_of_4_dots,
-    plot5 = plot_of_5_dots,
-    plot6 = plot_of_6_dots
+    LargeLeftPanel = ggplot(base_data, aes(x, y)) +
+      geom_point() +
+      ggtitle("Left Side Large") +
+      theme_animint(rowspan = 2, colspan = 1),
+
+    TopRight = ggplot(base_data, aes(x, y)) +
+      geom_point() +
+      ggtitle("Top Right"),
+
+    BottomRight = ggplot(base_data, aes(x, y)) +
+      geom_point() +
+      ggtitle("Bottom Right"),
+
+    FooterLeft = ggplot(base_data, aes(x, y)) +
+      geom_point() +
+      ggtitle("Footer Left"),
+
+    FooterMiddle = ggplot(base_data, aes(x, y)) +
+      geom_point() +
+      ggtitle("Footer Middle"),
+
+    FooterRight = ggplot(base_data, aes(x, y)) +
+      geom_point() +
+      ggtitle("Footer Right") +
+      theme_animint(colspan = 2)
   )
+
 
   info <- animint2HTML(plot_list)
   html <- info$html
 
-  tables <- getNodeSet(html, "//table[@style='display: inline-block;']")
-  number_of_tables <- length(tables)
-  print(paste("Number of tables:", number_of_tables))
 
-  
-  expect_equal(number_of_tables, 6)
+  all_plot_tables <- getNodeSet(html, "//table[@style='display: inline-block;']")
+  expect_equal(length(all_plot_tables), 6)
 
-  # rowspan_nodes <- getNodeSet(html, "//td[@rowspan]")
-  # rowspan_values <- sapply(rowspan_nodes, function(node) xmlGetAttr(node, "rowspan"))
-  # # print(paste("Rowspan values found:", paste(rowspan_values, collapse = ", ")))
-  # expect_true(any(rowspan_values == "2"), info = "At least one cell has rowspan=2")
 
-  # colspan_nodes <- getNodeSet(html, "//td[@colspan]")
-  # colspan_values <- sapply(colspan_nodes, function(node) xmlGetAttr(node, "colspan"))
-  # print(colspan_nodes)
-  # # If your test data does not include colspan, this just confirms zero is expected
-  # expect_true(length(colspan_values) >= 0, info = "colspan handled (may be 0)")
+  td_with_rowspan <- getNodeSet(html, "//td[@rowspan]")
+  rowspan_values <- sapply(td_with_rowspan, xmlGetAttr, "rowspan")
+  expect_true(any(rowspan_values == "2"), info = "Expect one or more cells with rowspan=2")
+
+
+  td_with_colspan <- getNodeSet(html, "//td[@colspan]")
+  colspan_values <- sapply(td_with_colspan, xmlGetAttr, "colspan")
+  expect_true(any(colspan_values == "2"), info = "Expect one or more cells with colspan=2")
+ 
+  html_lines <- as.character(html)
+  expect_true(any(grepl("Left Side Large", html_lines)))
+  expect_true(any(grepl("Footer Right", html_lines)))
 })
