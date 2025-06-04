@@ -219,37 +219,31 @@ var animint = function (to_select, json_file) {
     update_geom(g_name, null);
   };
   var span_array = ["rowspan","colspan"];
-  var add_plot = function (p_name, p_info,making_outer_table) {
-    // Each plot may have one or more legends. To make space for the
-    // legends, we put each plot in a table with one row and two
-    // columns: tdLeft and tdRight.
-    var parent_of_plot;
-    if(making_outer_table){
-      parent_of_plot = current_outer_tr.append("td");
-      for(var span_attr in span_array){
-        if(p_info.hasOwnProperty(span_attr)){
-          parent_of_plot.attr(span_attr, p_info[span_attr]);
-        }
-      }
-    }else{
-      parent_of_plot = element;
-    }
-    if(p_info.last_in_row){
-      current_outer_tr = outer_table.append("tr");
-    }
-    var plot_table = parent_of_plot.append("table").style("display", "inline-block");
-    var plot_tr = plot_table.append("tr");
-    var tdLeft = plot_tr.append("td");
-    var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
-    if(viz_id === null){
-      p_info.plot_id = p_name;
-    }else{
-      p_info.plot_id = viz_id + "_" + p_name;
-    }
-    var svg = tdLeft.append("svg")
-      .attr("id", p_info.plot_id)
-      .attr("height", p_info.options.height)
-      .attr("width", p_info.options.width);
+   var add_plot = function (p_name, p_info, making_outer_table) {
+  var parent_of_plot;
+  if (making_outer_table) {
+  parent_of_plot = current_outer_tr.append("td");
+  const attributes = p_info.attributes || {};
+  if (attributes.rowspan) {
+    parent_of_plot.attr("rowspan", attributes.rowspan);
+  }
+  if (attributes.colspan) {
+    parent_of_plot.attr("colspan", attributes.colspan);
+  }
+} else {
+    parent_of_plot = element;
+  }
+  if ((p_info.attributes || {}).last_in_row) {
+    current_outer_tr = outer_table.append("tr");
+  }
+  var plot_table = parent_of_plot.append("table").style("display", "inline-block");
+  var plot_tr = plot_table.append("tr");
+  var tdLeft = plot_tr.append("td");
+  var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
+  var svg = tdLeft.append("svg")
+    .attr("id", p_info.plot_id)
+    .attr("height", p_info.options.height)
+    .attr("width", p_info.options.width);
 
     // divvy up width/height based on the panel layout
     var nrows = Math.max.apply(null, p_info.layout.ROW);
@@ -2038,22 +2032,37 @@ var animint = function (to_select, json_file) {
       d3.select("title").text(response.title);
     }
     // Determine if we should create an outer table to arrange plots in a grid.
-    var outer_table, current_outer_tr;
-    outer_table_plot_attrs = span_array.slice();
-    outer_table_plot_attrs.push("last_in_row");
-    var making_outer_table = false;
+
+    var customized_layout = false;
     for (var p_name in response.plots) {
-      var p_info = response.plots[p_name];
-      for(var outer_tab_attr in outer_table_plot_attrs){
-        if(p_info.hasOwnProperty(outer_tab_attr)){
-          making_outer_table = true;
-        }
+      var attrs = response.plots[p_name].attributes;
+      if ("rowspan" in attrs || "colspan" in attrs || "last_in_row" in attrs) {
+        customized_layout = true;
+        break;
       }
     }
-    if (making_outer_table){
-      outer_table = element.append("table");
-      current_outer_tr = outer_table.append("tr");
+      if (customized_layout) {
+      var outer_table = element.append("table");
+      var current_row = outer_table.append("tr");
+      for (var p_name in response.plots) {
+        var plot_info = response.plots[p_name];
+        var attrs = plot_info.attributes || {};
+        var td = current_row.append("td");
+        if ("rowspan" in attrs) td.attr("rowspan", attrs.rowspan);
+        if ("colspan" in attrs) td.attr("colspan", attrs.colspan);
+        add_plot(p_name, plot_info, td); // Make sure add_plot uses the passed td
+        add_legend(p_name, plot_info);
+        if (attrs.last_in_row) {
+          current_row = outer_table.append("tr");
+        }
+      }
+    } else {
+      for (var p_name in response.plots) {
+        add_plot(p_name, response.plots[p_name]);
+        add_legend(p_name, response.plots[p_name]);
+      }
     }
+
     // Add plots.
     for (var p_name in response.plots) {
       add_plot(p_name, response.plots[p_name],making_outer_table);
