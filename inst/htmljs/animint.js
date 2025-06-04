@@ -1635,8 +1635,6 @@ var animint = function (to_select, json_file) {
     : d3.select("#plot").append("div")
         .attr("class", "animint-tooltip")
         .style("opacity", 0);
-      // Remove existing title elements to avoid conflicts with tooltips
-      elements.selectAll("title").remove();
       // Add tooltip handlers
       elements
         .on("mouseover.tooltip", function(d) {
