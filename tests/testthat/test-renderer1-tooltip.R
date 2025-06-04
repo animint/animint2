@@ -14,7 +14,7 @@ viz <-
                   clickSelects="country",
                   showSelected="year",
                   data=WorldBank)+
-       geom_text(aes(life.expectancy, fertility.rate, label=country,
+       geom_text(aes(life.expectancy, fertility.rate, label=country, tooltip = country, id = country,
                      key=country), #also use key here!
                  showSelected=c("country", "year"),
                  data=WorldBank)+
@@ -94,6 +94,28 @@ test_that("tooltip shows correct content for point", {
   tooltip_text <- xmlValue(tooltip_div)
   # Verify tooltip contains expected content
   expect_match(tooltip_text, "China population 916395000")
+  # Move mouse away to clean up
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
+  Sys.sleep(0.2)
+})
+
+test_that("tooltip shows correct content for geom_text", {
+  clickID('China') # Select the circle corresponding to China for highlighting text
+  Sys.sleep(0.2)
+  # Get text position on viewport
+  us_bbox <- get_element_bbox('text#China')
+  center_x <- us_bbox$left + us_bbox$width/2
+  center_y <- us_bbox$top + us_bbox$height/2
+  remDr$Input$dispatchMouseEvent(
+    type = "mouseMoved",
+    x = center_x,
+    y = center_y
+  )
+  Sys.sleep(0.2)
+  tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
+  tooltip_text <- xmlValue(tooltip_div) 
+  # Verify tooltip contains expected content
+  expect_match(tooltip_text, "China")
   # Move mouse away to clean up
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
 })
