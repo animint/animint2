@@ -103,9 +103,9 @@ test_that("tooltip shows correct content for geom_text", {
   clickID('China') # Select the circle corresponding to China for highlighting text
   Sys.sleep(0.2)
   # Get text position on viewport
-  us_bbox <- get_element_bbox('text#China')
-  center_x <- us_bbox$left + us_bbox$width/2
-  center_y <- us_bbox$top + us_bbox$height/2
+  text_position <- get_element_bbox('text#China')
+  center_x <- text_position$left + text_position$width/2
+  center_y <- text_position$top + text_position$height/2
   remDr$Input$dispatchMouseEvent(
     type = "mouseMoved",
     x = center_x,
