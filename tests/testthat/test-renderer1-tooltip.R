@@ -14,7 +14,7 @@ viz <-
                   clickSelects="country",
                   showSelected="year",
                   data=WorldBank)+
-       geom_text(aes(life.expectancy, fertility.rate, label=country, tooltip = country, id = country,
+       geom_text(aes(life.expectancy, fertility.rate, label=country, tooltip = country, id=paste0("text_",country),
                      key=country), #also use key here!
                  showSelected=c("country", "year"),
                  data=WorldBank)+
@@ -103,7 +103,7 @@ test_that("tooltip shows correct content for geom_text", {
   clickID('China') # Select the circle corresponding to China for highlighting text
   Sys.sleep(0.2)
   # Get text position on viewport
-  text_position <- get_element_bbox('text#China')
+  text_position <- get_element_bbox('text#text_China')
   center_x <- text_position$left + text_position$width/2
   center_y <- text_position$top + text_position$height/2
   remDr$Input$dispatchMouseEvent(
