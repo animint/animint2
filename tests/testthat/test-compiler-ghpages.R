@@ -34,11 +34,15 @@ expect_no_Capture <- function(L){
 ## https://github.com/animint/animint2/wiki/Testing#installation to
 ## see how to set that up on your local computer, or on github
 ## actions.
-test_that("animint2pages(chromote_sleep_seconds=3) creates Capture.PNG", {
+reset_test_repo <- function(){
   ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#delete-a-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write) gh api --method DELETE -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/OWNER/REPO
   gh::gh("DELETE /repos/animint-test/animint2pages_test_repo")
   ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-an-organization-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write)
   gh::gh("POST /orgs/animint-test/repos", name="animint2pages_test_repo")
+  Sys.sleep(3)
+}
+test_that("animint2pages(chromote_sleep_seconds=3) creates Capture.PNG", {
+  reset_test_repo()
   ## first run of animint2pages creates new data viz.
   result_list <- animint2pages(viz, "animint2pages_test_repo", owner="animint-test", chromote_sleep_seconds=3)
   result_list
@@ -65,8 +69,7 @@ test_that("animint2pages(chromote_sleep_seconds=3) creates Capture.PNG", {
 })
 
 test_that("animint2pages(chromote_sleep_seconds=NULL) does not create Capture.PNG", {
-  gh::gh("DELETE /repos/animint-test/animint2pages_test_repo")
-  gh::gh("POST /orgs/animint-test/repos", name="animint2pages_test_repo")
+  reset_test_repo()
   result_list <- animint2pages(viz, "animint2pages_test_repo", owner="animint-test", chromote_sleep_seconds=NULL)
   expect_match(result_list$owner_repo, "animint2pages_test_repo")
   expect_match(result_list$viz_url, "github.io/animint2pages_test_repo")
