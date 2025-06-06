@@ -1610,6 +1610,20 @@ var animint = function (to_select, json_file) {
     };
     doActions(enter);  // DO NOT DELETE!
     var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
+    function positionTooltip(tooltip, content) {
+      var mouseX = 0, mouseY = 0;
+      try {
+        mouseX = (d3.event && d3.event.pageX) || 0;
+        mouseY = (d3.event && d3.event.pageY) || 0;
+      } catch (e) {
+        console.error("Error getting mouse position:", e);
+      }
+      tooltip
+        .html(content)
+        .style("left", (mouseX + TOOLTIP_HORIZONTAL_OFFSET) + "px")
+        .style("top", (mouseY - TOOLTIP_VERTICAL_OFFSET) + "px")
+        .style("opacity", 1);
+    }
     if(has_clickSelects || has_tooltip || has_clickSelects_variable){
       // Tooltip positioning constants
       var TOOLTIP_HORIZONTAL_OFFSET = 10; // pixels right of mouse pointer
@@ -1646,34 +1660,14 @@ var animint = function (to_select, json_file) {
             console.error("Error generating tooltip content:", e);
             return;
           }
-          var mouseX = 0, mouseY = 0;
-          try {
-            mouseX = (d3.event && d3.event.pageX) || 0;
-            mouseY = (d3.event && d3.event.pageY) || 0;
-          } catch(e) {
-            console.error("Error getting mouse position:", e);
-          }
-          tooltip
-            .html(content)
-            .style("left", (mouseX + TOOLTIP_HORIZONTAL_OFFSET) + "px")
-            .style("top", (mouseY - TOOLTIP_VERTICAL_OFFSET) + "px")
-            .style("opacity", 1);
+          positionTooltip(tooltip, content);
         })
         .on("mouseout.tooltip", function() {
           tooltip.style("opacity", 0)
           .html(null);
         })
         .on("mousemove.tooltip", function() {
-          var mouseX = 0, mouseY = 0;
-          try {
-            mouseX = (d3.event && d3.event.pageX) || 0;
-            mouseY = (d3.event && d3.event.pageY) || 0;
-          } catch(e) {
-            console.error("Error getting mouse position:", e);
-          }
-          tooltip
-            .style("left", (mouseX + TOOLTIP_HORIZONTAL_OFFSET) + "px")
-            .style("top", (mouseY - TOOLTIP_VERTICAL_OFFSET) + "px");
+          positionTooltip(tooltip, tooltip.html());
         });
     }
     if(Selectors.hasOwnProperty(selector_name)){
