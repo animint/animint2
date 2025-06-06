@@ -1,3 +1,10 @@
+# Changes in version 2025.6.6
+
+## PR#201
+
+- `animint2pages()` default branch is gh-pages instead of main.
+- `update_gallery()` creates repos/* directories and removes errors.csv file if necessary.
+
 # Changes in version 2025.1.28
 
 ## PR#185
