@@ -1656,6 +1656,8 @@ var animint = function (to_select, json_file) {
         })
         .on("mouseout.tooltip", function() {
           tooltip.style("opacity", 0)
+          .style("left", null)
+          .style("top", null)
           .html(null);
         })
         .on("mousemove.tooltip", function() {
