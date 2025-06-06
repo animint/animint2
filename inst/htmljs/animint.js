@@ -1612,11 +1612,9 @@ var animint = function (to_select, json_file) {
     var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
     function positionTooltip(tooltip, content) {
       var mouseX = 0, mouseY = 0;
-      try {
-        mouseX = (d3.event && d3.event.pageX) || 0;
-        mouseY = (d3.event && d3.event.pageY) || 0;
-      } catch (e) {
-        console.error("Error getting mouse position:", e);
+      if (d3.event) {
+        mouseX = d3.event.pageX;
+        mouseY = d3.event.pageY;
       }
       tooltip
         .html(content)
@@ -1653,13 +1651,7 @@ var animint = function (to_select, json_file) {
       elements
         .on("mouseover.tooltip", function(d) {
           if (!d || typeof text_fun !== 'function') return;
-          var content;
-          try {
-            content = text_fun(d);
-          } catch(e) {
-            console.error("Error generating tooltip content:", e);
-            return;
-          }
+          var content = text_fun(d);
           positionTooltip(tooltip, content);
         })
         .on("mouseout.tooltip", function() {
