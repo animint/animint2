@@ -1429,6 +1429,48 @@ var animint = function (to_select, json_file) {
 	};
 	eAppend = "circle";
       }
+
+      if (g_info.geom == "aligned_boxes") {
+        elements = elements.data(data, key_fun);
+        eActions = function(e) {
+          // e.attr("x", toXY("x", "x"))
+          //   .attr("y", toXY("y", "y"))
+          e.attr("x", function(d) {
+              var textSize = measureText(d.label, d.size || 12);
+              return scales.x(d.x) - (textSize.width + (d.label_padding || 5) * 2) / 2;
+            })
+            .attr("y", function(d) {
+              var textSize = measureText(d.label, d.size || 12);
+              return scales.y(d.y) - (textSize.height + (d.label_padding || 5) * 2) / 2;
+            })
+            .attr("width", function(d) {
+              var textSize = measureText(d.label, d.size || 12);
+              return textSize.width + (d.label_padding || 5) * 2;
+            })
+            .attr("height", function(d) {
+              var textSize = measureText(d.label, d.size || 12);
+              return textSize.height + (d.label_padding || 5) * 2;
+            })
+            .attr("rx", function(d) { return d.label_r || 0; })
+            .attr("ry", function(d) { return d.label_r || 0; })
+            .style("fill", get_fill)
+            .style("stroke", get_colour)
+            .style("stroke-width", function(d) { return d.label_size || 0.25; })
+            .style("stroke-dasharray", get_dasharray);
+        };
+        eAppend = "rect";
+
+        // Draw text labels
+        elements.enter().append("text")
+        .attr("x", function(d) { return scales.x(d.x); })
+        .attr("y", function(d) { return scales.y(d.y); })
+        .text(function(d) { return d.label; })
+        .style("font-size", get_size)
+        .style("font-family", function(d) { return d.family || "sans-serif"; })
+        .style("text-anchor", "middle")
+        .style("fill", get_colour);
+      }
+
       var rect_geoms = ["tallrect","widerect","rect"];
       if(rect_geoms.includes(g_info.geom)){
 	eAppend = "rect";
