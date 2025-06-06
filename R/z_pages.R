@@ -209,6 +209,8 @@ update_gallery <- function(gallery_path="~/R/gallery"){
         viz_owner_repo, filename)
       repo.png <- file.path(
         gallery_path, "repos", paste0(viz_owner_repo, ".png"))
+      repo.dir <- dirname(repo.png)
+      dir.create(repo.dir, showWarnings = FALSE)
       if(!file.exists(repo.png)){
         download.file(viz_url("Capture.PNG"), repo.png)
       }
@@ -245,9 +247,15 @@ update_gallery <- function(gallery_path="~/R/gallery"){
     })
   }
   (meta.dt <- rbindlist(meta.dt.list))
-  (error.dt <- rbindlist(error.dt.list))
   fwrite(meta.dt, meta.csv)
-  fwrite(error.dt, file.path(gallery_path, "error.csv"))
+  error.csv <- file.path(gallery_path, "error.csv")
+  if(length(error.dt.list)){
+    (error.dt <- rbindlist(error.dt.list))
+    fwrite(error.dt, error.csv)
+  }else{
+    error.dt <- NULL
+    if(file.exists(error.csv))file.remove(error.csv)
+  }
   rmarkdown::render(file.path(gallery_path, "index.Rmd"))
   to_add <- c(
     "*.csv",
