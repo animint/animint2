@@ -409,7 +409,9 @@ get_element_bbox <- function(selector) {
       left: box.left,
       top: box.top,
       width: box.width,
-      height: box.height
+      height: box.height,
+      center_x: box.left + box.width / 2,
+      center_y: box.top + box.height / 2
     };
   })()", selector)
   runtime_evaluate(script)

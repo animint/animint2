@@ -81,13 +81,11 @@ test_that("tooltip shows correct content for rect", {
 test_that("tooltip shows correct content for point", {
   # Get circle position on viewport
   circle_position <- get_element_bbox('circle#China')
-  center_x <- circle_position$left + (circle_position$width / 2)
-  center_y <- circle_position$top + (circle_position$height / 2)
   # Hover over center of the circle
   remDr$Input$dispatchMouseEvent(
     type = "mouseMoved",
-    x = center_x,
-    y = center_y
+    x = circle_position$center_x,
+    y = circle_position$center_y
   )
   Sys.sleep(0.3)
   tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
@@ -104,12 +102,10 @@ test_that("tooltip shows correct content for geom_text", {
   Sys.sleep(0.2)
   # Get text position on viewport
   text_position <- get_element_bbox('text#text_China')
-  center_x <- text_position$left + text_position$width/2
-  center_y <- text_position$top + text_position$height/2
   remDr$Input$dispatchMouseEvent(
     type = "mouseMoved",
-    x = center_x,
-    y = center_y
+    x = text_position$center_x,
+    y = text_position$center_y
   )
   Sys.sleep(0.2)
   tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
