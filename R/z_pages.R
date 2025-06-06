@@ -138,9 +138,9 @@ initial_commit <- function(local_clone, repo, viz_url, title) {
     all_branches <- df_or_vec
     current_master <- df_or_vec
   }
-  # do not attempt to rename a branch to "main" when a branch with that name already exists
-  if (current_master != "main" && !"main" %in% all_branches) {
-    gert::git_branch_move(branch = current_master, new_branch = "main", repo = repo)
+  # do not attempt to rename a branch to "gh-pages" when a branch with that name already exists
+  if (current_master != "gh-pages" && !"gh-pages" %in% all_branches) {
+    gert::git_branch_move(branch = current_master, new_branch = "gh-pages", repo = repo)
   }
   gert::git_push(repo = repo, remote = "origin", set_upstream = TRUE)
 }
