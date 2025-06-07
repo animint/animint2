@@ -1,3 +1,7 @@
+# Changes in version 2025.6.4 (PR#197)
+
+- `aes(tooltip = "...")` now renders fast, lightweight tooltips using D3.
+
 # Changes in version 2025.1.28
 
 ## PR#185
