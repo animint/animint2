@@ -20,7 +20,7 @@ test_that("tooltip shows correct content on hover interaction", {
   rect_position <- get_element_bbox('g[class*=\"geom2_rect\"] rect')
   # Hover over the rect
   remDr$Input$dispatchMouseEvent(
-    type = "mouseMoved", 
+    type = "mouseMoved",
     x = rect_position$left,
     y = rect_position$top
   )
@@ -36,6 +36,7 @@ test_that("tooltip shows correct content on hover interaction", {
 test_that("Interactivity does not mess up tooltips", {
   # Hide all nonchilled points
   clickID("plot_p_Treatment_variable_nonchilled")
+  Sys.sleep(0.5)
   # Hover over a chilled point
   bbox_chilled <- get_element_bbox('circle#Qc1_22')
   remDr$Input$dispatchMouseEvent(
@@ -43,7 +44,7 @@ test_that("Interactivity does not mess up tooltips", {
     x = bbox_chilled$center_x,
     y = bbox_chilled$center_y
   )
-  Sys.sleep(0.2)
+  Sys.sleep(0.5)
   tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
   tooltip_text <- xmlValue(tooltip_div)
   expect_match(tooltip_text, "Qc1", info = "Expected tooltip for chilled point Qc1")
@@ -53,7 +54,7 @@ test_that("Interactivity does not mess up tooltips", {
   Sys.sleep(0.2)
 
   # Hover over a nonchilled point
-  bbox_nonchilled <- get_element_bbox('circle#Qn1_3')
+  bbox_nonchilled <- get_element_bbox('circle#Mn3_60')
   remDr$Input$dispatchMouseEvent(
     type = "mouseMoved",
     x = bbox_nonchilled$center_x,
@@ -62,7 +63,7 @@ test_that("Interactivity does not mess up tooltips", {
   Sys.sleep(0.2)
   tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
   tooltip_text <- xmlValue(tooltip_div)
-  expect_match(tooltip_text, "Qn1", info = "Expected tooltip for nonchilled point Qn1")
+  expect_match(tooltip_text, "Mn3", info = "Expected tooltip for nonchilled point Qn1")
 
   # Move mouse away at the end
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
