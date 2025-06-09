@@ -18,8 +18,7 @@
 #'   y = c(1, 2, 3),
 #'   label = c("A", "B", "C")
 #' )
-#' ggplot(df, aes(x, y, label = label)) +
-#'   geom_aligned_boxes()
+#' geom_aligned_boxes(df, aes(x, y, label = label))
 geom_aligned_boxes <- function(mapping = NULL, data = NULL,
                               stat = "identity", position = "identity",
                               ...,
@@ -57,9 +56,9 @@ GeomAlignedBoxes <- gganimintproto("GeomAlignedBoxes", Geom,
   required_aes = c("x", "y", "label"),
   
   default_aes = aes(
-    colour = "black", fill = "grey35", size = 0.5, 
-    linetype = 1, alpha = 0.5, family = "", 
-    fontface = 1, lineheight = 1.2
+    colour = "#a70000", fill = "#fa8181", size = 3.88, 
+    angle = 0, hjust = 0.5, vjust = 0.5, alpha = NA,
+    family = "", fontface = 1, lineheight = 1.2
   ),
 
   draw_panel = function(self, data, panel_scales, coord,
@@ -74,101 +73,56 @@ GeomAlignedBoxes <- gganimintproto("GeomAlignedBoxes", Geom,
 
     coords <- coord$transform(data, panel_scales)
 
-    # Optimize positions if needed
-    if (alignment == "vertical") {
-      coords$y <- optimize_vertical_positions(coords$y, rep(0.1, nrow(coords)), min_distance)
-    } else {
-      coords$x <- optimize_horizontal_positions(coords$x, rep(0.1, nrow(coords)), min_distance)
-    }
-
-    # Add parameters for JavaScript
     coords$label.padding <- convertWidth(label.padding, "native", valueOnly = TRUE)
     coords$label.r <- convertWidth(label.r, "native", valueOnly = TRUE)
     coords$label.size <- label.size
+    coords$alignment <- alignment
+    coords$min_distance <- min_distance
 
-    # Create grobs for static plot
+
     rect_grobs <- lapply(1:nrow(coords), function(i) {
-      row <- coords[i, , drop = FALSE]
       grid::roundrectGrob(
-        x = unit(row$x, "native"),
-        y = unit(row$y, "native"),
-        width = unit(0.1, "native"),  # Will be calculated in JS
-        height = unit(0.1, "native"), # Will be calculated in JS
-        just = c(0.5, 0.5),
-        r = unit(row$label.r, "native"),
+        x = unit(coords$x[i], "native"),
+        y = unit(coords$y[i], "native"),
+        width = unit(0.1, "npc"),
+        height = unit(0.1, "npc"),
+        just = "center",
+        r = unit(coords$label.r[i], "native"),
         gp = grid::gpar(
-          col = row$colour,
-          fill = scales::alpha(row$fill, row$alpha),
-          lwd = row$label.size * .pt
+          col = coords$colour[i],
+          fill = scales::alpha(coords$fill[i], coords$alpha[i]),
+          lwd = coords$label.size[i] * .pt
         )
       )
     })
 
     text_grobs <- lapply(1:nrow(coords), function(i) {
-      row <- coords[i, , drop = FALSE]
       grid::textGrob(
-        row$label,
-        x = unit(row$x, "native"),
-        y = unit(row$y, "native"),
-        # just = c(row$hjust, row$vjust),
-        just = c(0.5, 0.5),
+        coords$label[i],
+        x = unit(coords$x[i], "native"),
+        y = unit(coords$y[i], "native"),
+        just = "center",
         gp = grid::gpar(
-          col = row$colour,
-          fontsize = row$size * .pt,
-          fontfamily = row$family,
-          fontface = row$fontface,
-          lineheight = row$lineheight
+          col = coords$colour[i],
+          fontsize = coords$size[i] * .pt,
+          fontfamily = coords$family[i],
+          fontface = coords$fontface[i],
+          lineheight = coords$lineheight[i]
         )
       )
     })
 
-    grobs <- mapply(function(rect, text) grid::gTree(children = grid::gList(rect, text)),
-                    rect_grobs, text_grobs, SIMPLIFY = FALSE)
+    grobs <- mapply(function(r, t) grid::gTree(children = grid::gList(r, t)), 
+                   rect_grobs, text_grobs)
     class(grobs) <- "gList"
     ggname("geom_aligned_boxes", grid::grobTree(children = grobs))
   },
 
+   pre_process = function(g, g.data, ...) {
+    # This ensures our geom is identified as "aligned_boxes" in JS
+    g$geom <- "aligned_boxes"
+    return(list(g = g, g.data = g.data))
+  },
+  
   draw_key = draw_key_label
 )
-
-# Helper function to optimize vertical positions using quadratic programming
-optimize_vertical_positions <- function(y, heights, min_distance) {
-  n <- length(y)
-  if (n <= 1) return(y)
-  Dmat <- diag(n)
-  dvec <- y
-  Amat <- matrix(0, nrow = n * (n-1)/2, ncol = n)
-  bvec <- numeric(n * (n-1)/2)
-  k <- 1
-  for (i in 1:(n-1)) {
-    for (j in (i+1):n) {
-      Amat[k, i] <- 1
-      Amat[k, j] <- -1
-      bvec[k] <- (heights[i] + heights[j])/2 + min_distance
-      k <- k + 1
-    }
-  }
-  result <- quadprog::solve.QP(Dmat, dvec, t(Amat), bvec)
-  return(result$solution)
-}
-
-# Helper function to optimize horizontal positions using quadratic programming
-optimize_horizontal_positions <- function(x, widths, min_distance) {
-  n <- length(x)
-  if (n <= 1) return(x)
-  Dmat <- diag(n)
-  dvec <- x
-  Amat <- matrix(0, nrow = n * (n-1)/2, ncol = n)
-  bvec <- numeric(n * (n-1)/2)
-  k <- 1
-  for (i in 1:(n-1)) {
-    for (j in (i+1):n) {
-      Amat[k, i] <- 1
-      Amat[k, j] <- -1
-      bvec[k] <- (widths[i] + widths[j])/2 + min_distance
-      k <- k + 1
-    }
-  }
-  result <- quadprog::solve.QP(Dmat, dvec, t(Amat), bvec)
-  return(result$solution)
-}

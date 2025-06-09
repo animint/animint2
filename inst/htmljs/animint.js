@@ -1431,44 +1431,121 @@ var animint = function (to_select, json_file) {
       }
 
       if (g_info.geom == "aligned_boxes") {
-        elements = elements.data(data, key_fun);
-        eActions = function(e) {
-          // e.attr("x", toXY("x", "x"))
-          //   .attr("y", toXY("y", "y"))
-          e.attr("x", function(d) {
-              var textSize = measureText(d.label, d.size || 12);
-              return scales.x(d.x) - (textSize.width + (d.label_padding || 5) * 2) / 2;
-            })
-            .attr("y", function(d) {
-              var textSize = measureText(d.label, d.size || 12);
-              return scales.y(d.y) - (textSize.height + (d.label_padding || 5) * 2) / 2;
-            })
-            .attr("width", function(d) {
-              var textSize = measureText(d.label, d.size || 12);
-              return textSize.width + (d.label_padding || 5) * 2;
-            })
-            .attr("height", function(d) {
-              var textSize = measureText(d.label, d.size || 12);
-              return textSize.height + (d.label_padding || 5) * 2;
-            })
-            .attr("rx", function(d) { return d.label_r || 0; })
-            .attr("ry", function(d) { return d.label_r || 0; })
-            .style("fill", get_fill)
-            .style("stroke", get_colour)
-            .style("stroke-width", function(d) { return d.label_size || 0.25; })
-            .style("stroke-dasharray", get_dasharray);
-        };
-        eAppend = "rect";
+          // Get parameters
+          var alignment = g_info.params.alignment || "vertical";
+          var min_distance = g_info.params.min_distance || 2;
+          var label_padding = g_info.params.label_padding || 5;
+          
+          // 1. Measure all text dimensions and calculate box sizes
+          data.forEach(function(d) {
+              // Create text style string for measurement
+              var textStyle = [
+                  "font-family:" + (d.family || "sans-serif"),
+                  "font-size:" + d.size + "px",
+                  "font-weight:" + (d.fontface == 2 ? "bold" : "normal"),
+                  "font-style:" + (d.fontface == 3 ? "italic" : "normal")
+              ].join(";");
+              
+              // Measure text
+              var textSize = measureText(d.label, d.size, d.angle, textStyle);
+              
+              // Store dimensions on the data object
+              d.textWidth = textSize.width;
+              d.textHeight = textSize.height;
+              d.boxWidth = textSize.width + 2 * label_padding;
+              d.boxHeight = textSize.height + 2 * label_padding;
+              d.scaledX = scales.x(d.x);
+              d.scaledY = scales.y(d.y);
+          });
+          
+          // Set up quadratic programming problem (to be made into a seperate function)
+          var n = data.length;
+          
+          // Handle case with only 1 point (no constraints needed)
+          if (n === 1) {
+              // No optimization needed for single point
+              data[0].optimizedPos = alignment == "vertical" ? data[0].scaledY : data[0].scaledX;
+          } else {
+              // Initialize matrices for n > 1
+              var Dmat = new Array(n);
+              var dvec = new Array(n);
+              var Amat = [];
+              var bvec = [];
+              
+              // Create identity matrix D and initial position vector dvec
+              for (var i = 0; i < n; i++) {
+                  Dmat[i] = new Array(n).fill(0);
+                  Dmat[i][i] = 1; // Identity matrix
+                  dvec[i] = alignment == "vertical" ? data[i].scaledY : data[i].scaledX;
+                  
+                  // Create constraints for all pairs (i,j) where i < j
+                  for (var j = i+1; j < n; j++) {
+                      var constraint = new Array(n).fill(0);
+                      constraint[i] = 1;
+                      constraint[j] = -1;
+                      Amat.push(constraint);
+                      
+                      var min_dist = (alignment == "vertical") 
+                          ? (data[i].boxHeight + data[j].boxHeight)/2 + min_distance
+                          : (data[i].boxWidth + data[j].boxWidth)/2 + min_distance;
+                      bvec.push(min_dist);
+                  }
+              }
+              
+              // Only solve QP if we have constraints
+              if (Amat.length > 0) {
+                  try {
+                      var qpSolution = solveQP(Dmat, dvec, Amat, bvec);
+                      // Store optimized positions
+                      data.forEach(function(d, i) {
+                          d.optimizedPos = qpSolution.solution[i+1]; // quadprog.js is 1-based
+                      });
+                  } catch (e) {
+                      console.error("QP solver error:", e);
+                      // Fallback to original positions if QP fails
+                      data.forEach(function(d, i) {
+                          d.optimizedPos = alignment == "vertical" ? d.scaledY : d.scaledX;
+                      });
+                  }
+              }
+          }
+          var default_textSize = 12;
+          eAppend = "g";
+          eActions = function(groups) {
+              // Update or append <rect> and <text> within each group
+              groups.each(function(d) {
+                  var group = d3.select(this);
+                  // Remove existing rect/text to avoid duplicates
+                  group.selectAll("rect").remove();
+                  group.selectAll("text").remove();
+                  group.append("rect")
+                      .attr("x", function(d) { 
+                          var pos = alignment == "vertical" ? d.scaledX : d.optimizedPos;
+                          return pos - d.boxWidth / 2;
+                      })
+                      .attr("y", function(d) {
+                          var pos = alignment == "vertical" ? d.optimizedPos : d.scaledY;
+                          return pos - d.boxHeight / 2;
+                      })
+                      .attr("width", function(d) { return d.boxWidth; })
+                      .attr("height", function(d) { return d.boxHeight; })
+                      .attr("rx", g_info.params.label_r || 0)
+                      .attr("ry", g_info.params.label_r || 0);
 
-        // Draw text labels
-        elements.enter().append("text")
-        .attr("x", function(d) { return scales.x(d.x); })
-        .attr("y", function(d) { return scales.y(d.y); })
-        .text(function(d) { return d.label; })
-        .style("font-size", get_size)
-        .style("font-family", function(d) { return d.family || "sans-serif"; })
-        .style("text-anchor", "middle")
-        .style("fill", get_colour);
+                  group.append("text")
+                      .attr("x", function(d) {
+                          return alignment == "vertical" ? d.scaledX : d.optimizedPos;
+                      })
+                      .attr("y", function(d) {
+                          return (alignment == "vertical" ? d.optimizedPos : d.scaledY) + ((d.size || 12) / 3);
+                      })
+                      .attr("font-size", function(d) { return (d.size || default_textSize) + "px"; })
+                      .style("text-anchor", "middle")
+                      .style("dominant-baseline", "middle")
+                      .style("pointer-events", "none")
+                      .text(function(d) { return d.label; });
+              });
+          };
       }
 
       var rect_geoms = ["tallrect","widerect","rect"];
