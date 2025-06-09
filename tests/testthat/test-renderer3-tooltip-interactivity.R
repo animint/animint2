@@ -3,7 +3,7 @@ acontext("tooltip-interactivity")
 data("CO2")
 
 plot_viz <- ggplot() + 
-  geom_point(aes(conc, uptake, color=Treatment, tooltip=Plant , id = paste0(CO2$Plant, "_", seq_len(nrow(CO2)))), # Unique ID for every circle
+  geom_point(aes(conc, uptake, color=Treatment, tooltip=Plant , id = paste0(Plant, "_", seq_len(nrow(CO2)))), # Unique ID for every circle
              data = CO2)+
   geom_rect(aes(xmin=100, xmax=200, ymin=20, ymax=30, 
               tooltip="Test Rectangle"), alpha=0.5)
