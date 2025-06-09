@@ -100,6 +100,7 @@ function dposl(a, lda, n, b) {
 let epsilon = 1.0e-60;
 let tmpa;
 let tmpb;
+let vsmall = 1.0e-60;
 
 do {
     epsilon += epsilon;
@@ -597,4 +598,75 @@ function solveQP(Dmat, dvec, Amat, bvec = [], meq = 0, factorized = [0, 0]) {
     };
 }
 
-// exports.solveQP = solveQP;
+function optimizeAlignedBoxes(data, alignment, min_distance) {
+    console.log("got data : ", data, "alignement : ", alignment)
+  var n = data.length;
+
+  if (n === 1) {
+    console.log("Only one label, skipping QP optimization.");
+    data[0].optimizedPos = alignment === "vertical" ? data[0].scaledY : data[0].scaledX;
+    return;
+  }
+  if (n > 100) {
+    console.warn("Too many labels (" + n + "), skipping QP optimization.");
+    data.forEach(function(d) {
+      d.optimizedPos = alignment === "vertical" ? d.scaledY : d.scaledX;
+    });
+    return;
+  }
+
+var Dmat = [];
+var dvec = [];
+    for (var i = 0; i < n; i++) {
+        Dmat[i] = [];
+        for (var j = 0; j < n; j++) Dmat[i][j] = (i == j ? 1 : 0);
+        dvec[i] = alignment === "vertical" ? data[i].scaledY : data[i].scaledX;
+    }
+    var Amat = [];
+    var bvec = [];
+    for (var i = 0; i < n - 1; i++) {
+        for (var j = i + 1; j < n; j++) {
+            var constraint = new Array(n).fill(0);
+            constraint[i] = 1;
+            constraint[j] = -1;
+            Amat.push(constraint);
+            var min_dist = alignment === "vertical"
+            ? (data[i].boxHeight + data[j].boxHeight) / 2 + min_distance
+            : (data[i].boxWidth + data[j].boxWidth) / 2 + min_distance;
+            bvec.push(min_dist);
+        }
+    }
+
+    function transpose(matrix) {
+    return matrix[0].map((_, colIndex) => matrix.map(row => row[colIndex]));
+    }
+
+  try {
+    var tAmat = transpose(Amat);
+    console.log("QP Inputs:");
+    console.log("Dmat:", Dmat);
+    console.log("dvec:", dvec);
+    console.log("Amat (transposed):", tAmat);
+    console.log("bvec:", bvec);
+
+    var qpSolution = solveQP(Dmat, dvec, tAmat, bvec);
+
+
+    if (!qpSolution || !qpSolution.solution) {
+      throw new Error("solveQP did not return a valid solution object.");
+    }
+
+    console.log("QP Output:", qpSolution.solution);
+
+    data.forEach(function(d, i) {
+      d.optimizedPos = qpSolution.solution[i + 1]; // 1-based index
+    });
+
+  } catch (e) {
+    console.error("QP solver error:", e);
+    console.warn("Falling back to original positions.");
+    data.forEach(function(d) {
+      d.optimizedPos = alignment === "vertical" ? d.scaledY : d.scaledX;
+    });
+  }
+}

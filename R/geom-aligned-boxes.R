@@ -58,7 +58,7 @@ GeomAlignedBoxes <- gganimintproto("GeomAlignedBoxes", Geom,
   default_aes = aes(
     colour = "#a70000", fill = "#fa8181", size = 3.88, 
     angle = 0, hjust = 0.5, vjust = 0.5, alpha = NA,
-    family = "", fontface = 1, lineheight = 1.2
+    family = "", fontface = 1, lineheight = 1.2, fontsize = 12
   ),
 
   draw_panel = function(self, data, panel_scales, coord,

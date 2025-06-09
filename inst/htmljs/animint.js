@@ -1441,7 +1441,7 @@ var animint = function (to_select, json_file) {
               // Create text style string for measurement
               var textStyle = [
                   "font-family:" + (d.family || "sans-serif"),
-                  "font-size:" + d.size + "px",
+                  "font-size:" + d.fontsize + "px",
                   "font-weight:" + (d.fontface == 2 ? "bold" : "normal"),
                   "font-style:" + (d.fontface == 3 ? "italic" : "normal")
               ].join(";");
@@ -1457,58 +1457,9 @@ var animint = function (to_select, json_file) {
               d.scaledX = scales.x(d.x);
               d.scaledY = scales.y(d.y);
           });
-          
-          // Set up quadratic programming problem (to be made into a seperate function)
-          var n = data.length;
-          
-          // Handle case with only 1 point (no constraints needed)
-          if (n === 1) {
-              // No optimization needed for single point
-              data[0].optimizedPos = alignment == "vertical" ? data[0].scaledY : data[0].scaledX;
-          } else {
-              // Initialize matrices for n > 1
-              var Dmat = new Array(n);
-              var dvec = new Array(n);
-              var Amat = [];
-              var bvec = [];
-              
-              // Create identity matrix D and initial position vector dvec
-              for (var i = 0; i < n; i++) {
-                  Dmat[i] = new Array(n).fill(0);
-                  Dmat[i][i] = 1; // Identity matrix
-                  dvec[i] = alignment == "vertical" ? data[i].scaledY : data[i].scaledX;
-                  
-                  // Create constraints for all pairs (i,j) where i < j
-                  for (var j = i+1; j < n; j++) {
-                      var constraint = new Array(n).fill(0);
-                      constraint[i] = 1;
-                      constraint[j] = -1;
-                      Amat.push(constraint);
-                      
-                      var min_dist = (alignment == "vertical") 
-                          ? (data[i].boxHeight + data[j].boxHeight)/2 + min_distance
-                          : (data[i].boxWidth + data[j].boxWidth)/2 + min_distance;
-                      bvec.push(min_dist);
-                  }
-              }
-              
-              // Only solve QP if we have constraints
-              if (Amat.length > 0) {
-                  try {
-                      var qpSolution = solveQP(Dmat, dvec, Amat, bvec);
-                      // Store optimized positions
-                      data.forEach(function(d, i) {
-                          d.optimizedPos = qpSolution.solution[i+1]; // quadprog.js is 1-based
-                      });
-                  } catch (e) {
-                      console.error("QP solver error:", e);
-                      // Fallback to original positions if QP fails
-                      data.forEach(function(d, i) {
-                          d.optimizedPos = alignment == "vertical" ? d.scaledY : d.scaledX;
-                      });
-                  }
-              }
-          }
+          // using quadprog.js for optimizing positions
+          optimizeAlignedBoxes(data, alignment, min_distance);
+
           var default_textSize = 12;
           eAppend = "g";
           eActions = function(groups) {
@@ -1529,6 +1480,7 @@ var animint = function (to_select, json_file) {
                       })
                       .attr("width", function(d) { return d.boxWidth; })
                       .attr("height", function(d) { return d.boxHeight; })
+                      .attr("stroke-width", 1)
                       .attr("rx", g_info.params.label_r || 0)
                       .attr("ry", g_info.params.label_r || 0);
 
@@ -1539,10 +1491,9 @@ var animint = function (to_select, json_file) {
                       .attr("y", function(d) {
                           return (alignment == "vertical" ? d.optimizedPos : d.scaledY) + ((d.size || 12) / 3);
                       })
-                      .attr("font-size", function(d) { return (d.size || default_textSize) + "px"; })
+                      .attr("font-size", function(d) { return (d.fontsize || default_textSize) + "px"; })
                       .style("text-anchor", "middle")
-                      .style("dominant-baseline", "middle")
-                      .style("pointer-events", "none")
+                      .attr("stroke-width", 1)
                       .text(function(d) { return d.label; });
               });
           };
