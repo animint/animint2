@@ -88,11 +88,11 @@ performance special case for when all the tiles are the same size.
 # to use geom_raster here because it's so much faster, and produces
 # smaller output when saving to PDF
 ggplot(faithfuld, aes(waiting, eruptions)) +
- geom_raster(aes(fill = density))
+ geom_tile(aes(fill = density))
 
 # Interpolation smooths the surface & is most helpful when rendering images.
 ggplot(faithfuld, aes(waiting, eruptions)) +
- geom_raster(aes(fill = density), interpolate = TRUE)
+ geom_tile(aes(fill = density), interpolate = TRUE)
 
 # If you want to draw arbitrary rectangles, use geom_tile() or geom_rect()
 df <- data.frame(
