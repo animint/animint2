@@ -161,7 +161,7 @@ col.vec <- paste("col", c(1:3))
 heat.data <- data.table(row.name = row.vec,
   col.name = rep(col.vec, each=length(row.vec)),
   value = c(2,8,-5,-7,15,3,-1,6,-7.5))
-viz.tile <- list(
+viz.tile <- animint(
   default=ggplot() +
     geom_tile(aes(
       x = row.name, y = col.name, fill = value),

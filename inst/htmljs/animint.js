@@ -186,23 +186,30 @@ var animint = function (to_select, json_file) {
   var add_geom = function (g_name, g_info) {
     // Determine if data will be an object or an array.
     // added geom properties in steps array
-    var geom = g_info.geom;
-    var id = "plot_" + geom + "Plot";
-  
+    var geom = g_info.classed;
+    var title = g_info.params.title || g_info.classed;
     var helpText = g_info.params.help || '';
-    var showSelected = g_info.params.showSelected || '';
-    var clickSelects = g_info.params.clickSelects || '';
-  
-    steps.push({
-      element: "#" + id,
+    var help_showSelected = g_info.params.help_showSelected || '';
+    var help_clickSelects = g_info.params.help_clickSelects || '';
+    var description = helpText;
+    if(g_info.params.hasOwnProperty("showSelected")){
+      if(description != "")description += '<br>';
+      description += 'Data are shown for the current selection of: ' + help_showSelected;
+    }
+    if(g_info.params.hasOwnProperty("clickSelects")){
+      if(description != "")description += '<br>';
+      description += 'Click to select: ' + help_clickSelects;
+    }
+    if(description == ""){
+      description = "No interactions available";
+    }
+    steps.push({  // this add the geom to the steps array for guided tour
+      element: '#' + viz_id + ' .' + geom,
       popover: {
-        title: geom.charAt(0).toUpperCase() + geom.slice(1),
-        description: `${helpText} Data are shown for the current selection of: ${showSelected}. Click to change selection of: ${clickSelects}.`
+        title: title,
+        description: description
       }
     });
-  
-
-
     if(g_info.geom in data_object_geoms){
       g_info.data_is_object = true;
     }else{
@@ -2071,34 +2078,26 @@ var animint = function (to_select, json_file) {
     ////////////////////////////////////////////
     // Widgets at bottom of page
     ////////////////////////////////////////////
-
-    // Function to start the tour
-  var element = d3.select("body");
-
-  function startTour() {
-    const driver = window.driver.js.driver;
-
-    const driverObj = driver({
-      showProgress: true,
-      steps: steps
-    });
-
-    driverObj.drive();
-  }
- 
-  element.append("button")
-  .text("Start Tour")
-   
-  .on("click", function() {
-    startTour();
-  });
- 
+     // Function to start the tour
+     var element = d3.select('body');
     if(response.hasOwnProperty("source")){
       widget_td.append("a")
 	.attr("class","a_source_href")
 	.attr("href", response.source)
 	.text("source");
     }
+    widget_td
+      .append('button')
+      .attr('class', 'animint_start_tour')
+      .text('Start Tour')
+      .on('click', function () {
+        const driver = window.driver.js.driver;
+        const driverObj = driver({
+          showProgress: true,
+          steps: steps,
+        });
+        driverObj.drive();
+      });
     // loading table.
     var show_hide_table = widget_td.append("button")
       .text("Show download status table");
@@ -2240,8 +2239,14 @@ var animint = function (to_select, json_file) {
       .append("th")
       .text("Selected value(s)")
     ;
-      
-     // looping through and adding a row for each selector
+    // video link
+    if(response.hasOwnProperty("video")){
+      widget_td.append("a")
+	.attr("class","a_video_href")
+	.attr("href", response.video)
+	.text("video");
+    }
+    // looping through and adding a row for each selector
     for(s_name in Selectors) {
       var s_info = Selectors[s_name];
       // for .variable .value selectors, levels is undefined and we do
@@ -2526,5 +2531,4 @@ var animint = function (to_select, json_file) {
     }//if(window.location.hash)
   });
 };
-
 

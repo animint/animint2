@@ -31,9 +31,7 @@ addShowSelectedForLegend <- function(meta, legend, L){
         ## used by the geom
         type.vec <- one.legend$legend_type
         if(any(type.vec %in% names(L$mapping))){
-          type.str <- paste(type.vec, collapse="")
-          a.name <- paste0("showSelectedlegend", type.str)
-          L$mapping[[a.name]] <- as.symbol(s.name)
+          L$extra_params$showSelected <- c(L$extra_params$showSelected, s.name)
         }
       }
       ## if selector.types has not been specified, create it
@@ -1047,8 +1045,9 @@ addSSandCSasAesthetics <- function(aesthetics, extra_params){
 ##' @param extra_params named list containing the details of showSelected
 ##' and clickSelects values of the layer
 ##' @param aes_mapping aesthetics mapping of the layer
+##' @param layer_df the data frame
 ##' @return Modified \code{extra_params} list
-checkExtraParams <- function(extra_params, aes_mapping){
+checkExtraParams <- function(extra_params, aes_mapping, layer_df){
   cs.ss <- intersect(names(extra_params), c("showSelected", "clickSelects"))
   for(i in cs.ss){
     ep <- extra_params[[i]]
@@ -1064,11 +1063,23 @@ checkExtraParams <- function(extra_params, aes_mapping){
     }
     ## Remove duplicates
     ep <- ep[ !duplicated(ep) ]
-    ## Remove from extra_params if already added by legend
-    if(i=="showSelected"){
-      ss_added_by_legend <- aes_mapping[grepl(
-        "^showSelectedlegend", names(aes_mapping))]
-      ep <- ep[ !ep %in% ss_added_by_legend ]
+    ## make help string for variable/value aes.
+    named.i <- which(names(ep) != "")
+    extra_params[[paste0("help_",i)]] <- if(length(named.i)==1){
+      var.name <- names(ep)[[named.i]]
+      u.vals <- unique(layer_df[[var.name]])
+      c(ep[-named.i], if(length(u.vals)==1){
+        u.vals
+      }else{
+        disp.vals <- if(length(u.vals)>4){
+          c(u.vals[1:2], "...", u.vals[c(length(u.vals)-1, length(u.vals))])
+        }else{
+          u.vals
+        }
+        sprintf("one of: [%s]", paste(disp.vals, collapse=", "))
+      })
+    }else{
+      ep
     }
     extra_params[[i]] <- ep
   }

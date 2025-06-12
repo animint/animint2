@@ -30,8 +30,28 @@ This function creates a list with the items in ... and
   data for the currently selected year.
 }
 \examples{
+
 if(require('data.table'))setDTthreads(1)#for CRAN.
 library(animint2)
+## Simple hello world example (1 selector: word).
+animint(ggplot()+geom_text(aes(
+  word, word, label=word, color=word),
+  data=data.frame(word=c("Hello","world!"))))
+
+## More complex Hello World (2 selectors: number, language).
+hello_df = data.frame(
+  language=c("en","en","fr","fr"),
+  word=c("Hello","world!","Bonjour","monde !"),
+  number=factor(c(1,2,1,2)))
+animint(ggplot()+geom_text(aes(
+  number, "message", label=word, color=number),
+  showSelected="language", data=hello_df)+
+geom_text(aes(
+  number, "select language", label=language),
+  clickSelects="language",
+  data=data.frame(number=factor(1:2), language=c("en","fr"))))
+
+## More complex World Bank example (3 selectors: country, region, year).
 data(WorldBank, package="animint2")
 years <- unique(WorldBank[, "year", drop=FALSE])
 y1960 <- subset(WorldBank, year==1960)
@@ -64,6 +84,7 @@ animint(
     geom_point(aes(
       fertility.rate, life.expectancy,
       key=country, colour=region, size=population),
+      chunk_vars=character(),
       showSelected="year",
       clickSelects="country",
       data=WorldBank)+
@@ -72,6 +93,7 @@ animint(
       key=country,
       label=country),
       showSelected=c("country", "year"),
+      chunk_vars=character(),
       data=WorldBank)+
     geom_text(aes(
       5, 80, key=1, label=paste("year =", year)),
