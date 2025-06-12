@@ -1434,7 +1434,6 @@ var animint = function (to_select, json_file) {
           // Get parameters
           var alignment = g_info.params.alignment || "vertical";
           var min_distance = g_info.params.min_distance || 2;
-          var label_padding = g_info.params.label_padding || 5;
           
           // 1. Measure all text dimensions and calculate box sizes
           data.forEach(function(d) {
@@ -1452,13 +1451,21 @@ var animint = function (to_select, json_file) {
               // Store dimensions on the data object
               d.textWidth = textSize.width;
               d.textHeight = textSize.height;
-              d.boxWidth = textSize.width + 2 * label_padding;
-              d.boxHeight = textSize.height + 2 * label_padding;
+              d.boxWidth = textSize.width;
+              d.boxHeight = textSize.height;
               d.scaledX = scales.x(d.x);
               d.scaledY = scales.y(d.y);
           });
-          // using quadprog.js for optimizing positions
-          optimizeAlignedBoxes(data, alignment, min_distance);
+          var plot_limits;
+          if (alignment === "vertical") {
+            var yRange = scales.y.range();
+            plot_limits = [Math.min.apply(null, yRange), Math.max.apply(null, yRange)];
+          } else {
+            var xRange = scales.x.range();
+            plot_limits = [Math.min.apply(null, xRange), Math.max.apply(null, xRange)];
+          }
+          // using quadprog.js for optimizing positions of colliding boxes
+          optimizeAlignedBoxes(data, alignment, min_distance, plot_limits);
 
           var default_textSize = 12;
           eAppend = "g";
