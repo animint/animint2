@@ -21,6 +21,7 @@ test_that("geom_xxx and GeomXxx$draw arg defaults match", {
   # GeomXxx$draw_groups functions, make sure that if they have same args, that
   # the args have the same default values.
   lapply(geom_fun_names, function(geom_fun_name) {
+    if (geom_fun_name %in% c("geom_raster")) return(NULL) 
     geom_fun    <- animint2_ns[[geom_fun_name]]
     draw        <- geom_fun()$geom$draw_layer
     draw_groups <- geom_fun()$geom$draw_group

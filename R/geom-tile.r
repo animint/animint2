@@ -4,7 +4,7 @@
 #' parameterised differently. \code{geom_rect} uses the locations of the four
 #' corners (\code{xmin}, \code{xmax}, \code{ymin} and \code{ymax}).
 #' \code{geom_tile} uses the center of the tile and its size (\code{x},
-#' \code{y}, \code{width}, \code{height}). \code{geom_raster} is a high
+#' \code{y}, \code{width}, \code{height}). \code{geom_tile} is a high
 #' performance special case for when all the tiles are the same size.
 #'
 #' @section Aesthetics:
@@ -14,15 +14,8 @@
 #' @inheritParams geom_point
 #' @export
 #' @examples
-#' # The most common use for rectangles is to draw a surface. You always want
-#' # to use geom_raster here because it's so much faster, and produces
-#' # smaller output when saving to PDF
 #' ggplot(faithfuld, aes(waiting, eruptions)) +
-#'  geom_raster(aes(fill = density))
-#'
-#' # Interpolation smooths the surface & is most helpful when rendering images.
-#' ggplot(faithfuld, aes(waiting, eruptions)) +
-#'  geom_raster(aes(fill = density), interpolate = TRUE)
+#'  geom_tile(aes(fill = density))
 #'
 #' # If you want to draw arbitrary rectangles, use geom_tile() or geom_rect()
 #' df <- data.frame(
@@ -43,9 +36,7 @@
 #' df <- expand.grid(x = 0:5, y = 0:5)
 #' df$z <- runif(nrow(df))
 #' # default is compatible with geom_tile()
-#' ggplot(df, aes(x, y, fill = z)) + geom_raster()
-#' # zero padding
-#' ggplot(df, aes(x, y, fill = z)) + geom_raster(hjust = 0, vjust = 0)
+#' ggplot(df, aes(x, y, fill = z)) + geom_tile()
 #'
 #' # Inspired by the image-density plots of Ken Knoblauch
 #' cars <- ggplot(mtcars, aes(mpg, factor(cyl)))
@@ -53,8 +44,8 @@
 #' cars + stat_bin2d(aes(fill = ..count..), binwidth = c(3,1))
 #' cars + stat_bin2d(aes(fill = ..density..), binwidth = c(3,1))
 #'
-#' cars + stat_density(aes(fill = ..density..), geom = "raster", position = "identity")
-#' cars + stat_density(aes(fill = ..count..), geom = "raster", position = "identity")
+#' cars + stat_density(aes(fill = ..density..), geom = "tile", position = "identity")
+#' cars + stat_density(aes(fill = ..count..), geom = "tile", position = "identity")
 #' }
 geom_tile <- function(mapping = NULL, data = NULL,
                       stat = "identity", position = "identity",
