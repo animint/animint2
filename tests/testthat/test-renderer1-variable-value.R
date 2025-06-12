@@ -121,13 +121,14 @@ test_that("No widgets for .variable .value selectors", {
 
 circle.xpath <- '//svg[@id="plot_peaks"]//circle'
 title.xpath <- paste0(circle.xpath, '//title')
+tooltip.xpath <- '//div[@class="animint-tooltip"]'
 
 test_that("animint-tooltip exists due to clickSelects", {
-  tooltip_div <- getNodeSet(info$html, '//div[@class="animint-tooltip"]')
+  tooltip_div <- getNodeSet(info$html, tooltip.xpath)
   expect_equal(length(tooltip_div), 1)
   # check that the tooltip has initial opactity 0
-  style <- xmlGetAttr(tooltip_div[[1]], "style")
-  expect_match(style, "opacity: 0;")
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, 'opacity')
+  expect_identical(opacity, "0")
 })
 
 test_that("two lines rendered in first plot", {
@@ -292,9 +293,9 @@ test_that("changing problem downloads one chunk", {
                  0, 0, 0, 0))
 })
 test_that("animint-tooltip exists due to clickSelects", {
-  tooltip_div <- getNodeSet(info$html, '//div[@class="animint-tooltip"]')
+  tooltip_div <- getNodeSet(info$html, tooltip.xpath)
   expect_equal(length(tooltip_div), 1)
   # check that the tooltip has initial opactity 0
-  style <- xmlGetAttr(tooltip_div[[1]], "style")
-  expect_match(style, "opacity: 0;")
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, 'opacity')
+  expect_identical(opacity, "0")
 })

@@ -55,13 +55,13 @@ subset(WorldBank, country=="United States" & year == 1975)$population
 subset(years, year==1975)
 
 info <- animint2HTML(viz)
-
+tooltip.xpath <- '//div[@class="animint-tooltip"]'
 test_that("animint-tooltip div exists with correct initial state", {
-  tooltip_div <- getNodeSet(info$html, '//div[@class="animint-tooltip"]')
+  tooltip_div <- getNodeSet(info$html, tooltip.xpath)
   expect_equal(length(tooltip_div), 1)
   # Check initial opacity is 0
-  style <- xmlGetAttr(tooltip_div[[1]], "style")
-  expect_match(style, "opacity: 0;")
+  opacity <- getStyleValue(info$html, tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
 })
 
 test_that("tooltip shows correct content for rect", {
@@ -69,7 +69,7 @@ test_that("tooltip shows correct content for rect", {
   rect_position <- get_element_bbox('rect.geom')
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = rect_position$left, y = rect_position$top)
   Sys.sleep(0.3)
-  tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
+  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
   tooltip_text <- xmlValue(tooltip_div)
   # Verify tooltip contains expected content
   expect_match(tooltip_text, "187 not NA in 1975")
@@ -88,7 +88,7 @@ test_that("tooltip shows correct content for point", {
     y = circle_position$center_y
   )
   Sys.sleep(0.3)
-  tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
+  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
   tooltip_text <- xmlValue(tooltip_div)
   # Verify tooltip contains expected content
   expect_match(tooltip_text, "China population 916395000")
@@ -108,7 +108,7 @@ test_that("tooltip shows correct content for geom_text", {
     y = text_position$center_y
   )
   Sys.sleep(0.2)
-  tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
+  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
   tooltip_text <- xmlValue(tooltip_div) 
   # Verify tooltip contains expected content
   expect_match(tooltip_text, "China")
@@ -128,7 +128,8 @@ viz <- list(ex = ex_plot)
 info <- animint2HTML(viz)
 
 test_that("tooltip div exists with href elements", {
-  tooltip_div <- getNodeSet(info$html, '//div[@class="animint-tooltip"]')
+  tooltip_div <- getNodeSet(info$html, tooltip.xpath)
   expect_equal(length(tooltip_div), 1)
-  expect_match(xmlGetAttr(tooltip_div[[1]], "style"), "opacity: 0;")
+  opacity <- getStyleValue(info$html, tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
 })

@@ -10,10 +10,11 @@ plot_viz <- ggplot() +
 viz <- list(p=plot_viz)
 info <- animint2HTML(viz)
 
+tooltip.xpath <- '//div[@class="animint-tooltip"]'
 test_that(".animint-tooltip exists and is hidden initially", {
   # Initial state - tooltip should be hidden
-  tooltip_div <- getNodeSet(info$html, '//div[@class="animint-tooltip"]')[[1]]
-  expect_equal(xmlGetAttr(tooltip_div, "style"), "opacity: 0;")
+  opacity <- getStyleValue(info$html, tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
 })
 test_that("tooltip shows correct content on hover interaction", {
   # Get rectangle position on the viewport
@@ -26,8 +27,9 @@ test_that("tooltip shows correct content on hover interaction", {
   )
   Sys.sleep(0.5)
   # Verify tooltip is visible and shows correct content
-  tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
-  expect_match(xmlGetAttr(tooltip_div, "style"), "opacity: 1;")
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "1")
+  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
   expect_equal(xmlValue(tooltip_div), "Test Rectangle")
   # Simulate mouseout
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
@@ -45,7 +47,7 @@ test_that("Interactivity does not mess up tooltips", {
     y = bbox_chilled$center_y
   )
   Sys.sleep(0.5)
-  tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
+  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
   tooltip_text <- xmlValue(tooltip_div)
   expect_match(tooltip_text, "Qc1", info = "Expected tooltip for chilled point Qc1")
 
@@ -61,7 +63,7 @@ test_that("Interactivity does not mess up tooltips", {
     y = bbox_nonchilled$center_y
   )
   Sys.sleep(0.2)
-  tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
+  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
   tooltip_text <- xmlValue(tooltip_div)
   expect_match(tooltip_text, "Mn3", info = "Expected tooltip for nonchilled point Qn1")
 
@@ -70,7 +72,8 @@ test_that("Interactivity does not mess up tooltips", {
 })
 
 test_that("tooltip is hidden after mouseout", {
-  tooltip_div <- getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]]
-  expect_match(xmlGetAttr(tooltip_div, "style"), "opacity: 0;")
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
+  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
   expect_equal(xmlValue(tooltip_div), "") # Content should be cleared
 })
