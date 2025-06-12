@@ -352,7 +352,7 @@ tests_run <- function(dir = ".", filter = NULL) {
 #' @export
 tests_exit <- function() {
   Sys.unsetenv("ANIMINT_BROWSER")
-  res <- stop_servr(tmpPath = find_test_path())
+  res <- animint2:::stop_servr(tmpPath = find_test_path())
   invisible(all(res))
 }
 
@@ -365,7 +365,7 @@ tests_exit <- function() {
 #' @param code R code to execute in a child session
 #' @return port number of the successful attempt
 run_servr <- function(directory, port) {
-  start_servr(directory, port, tmpPath = find_test_path())
+  animint2:::start_servr(directory, port, tmpPath = find_test_path())
 }
 
 # --------------------------
@@ -398,4 +398,31 @@ runtime_evaluate_helper <- function(class_name=NULL, id=NULL, list_num=NULL, dis
     if(is.character(class_name))sprintf(".getElementsByClassName('%s')", class_name),
     if(is.atomic(list_num))sprintf("[%d]", as.integer(list_num)),
     if(isTRUE(dispatch_event))".dispatchEvent(new CustomEvent('click'))"))
+}
+
+driverjs_click_class <- function(class_name,list_num=0){
+  runtime_evaluate_helper(
+    class_name = class_name,
+    list_num = list_num,
+    dispatch_event = TRUE
+  )
+  Sys.sleep(1)
+  driverjs_get()
+}
+
+driverjs_start <- function(list_num=0)driverjs_click_class("animint_start_tour",list_num)
+driverjs_next <- function()driverjs_click_class("driver-popover-next-btn")
+
+driverjs_get <- function(html=getHTML()){
+  out.list <- list()
+  for(suffix in c("title","description")){
+    xpath <- sprintf('//div[@class="driver-popover-%s"]', suffix)
+    node.list <- getNodeSet(html, xpath)
+    out.list[[suffix]] <- if(length(node.list)==0){
+      list()
+    }else{
+      xmlToList(node.list[[1]])
+    }
+  }
+  out.list
 }

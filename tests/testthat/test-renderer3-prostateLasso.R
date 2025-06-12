@@ -26,10 +26,14 @@ viz.no.time <- list(
     facet_grid(y.var ~ ., scales="free")+
     ylab("")+
     scale_color_manual(values=variable.colors)+
-    geom_line(aes(arclength, standardized.coef, color=variable, group=variable),
-              data=addY(prostateLasso$path, "weights"))+
-    geom_line(aes(arclength, mse, linetype=set, group=set),
-              data=addY(prostateLasso$error, "error"))+
+    geom_line(aes(
+      arclength, standardized.coef, color=variable, group=variable),
+      help="Regularization path of linear model coefficients, one line for each variable",
+      data=addY(prostateLasso$path, "weights"))+
+    geom_line(aes(
+      arclength, mse, linetype=set, group=set),
+      title="Error curves",
+      data=addY(prostateLasso$error, "error"))+
     geom_tallrect(aes(
       xmin=arclength.click-rect.width,
       xmax=arclength.click+rect.width,

@@ -6,7 +6,9 @@
 </a>
 <!-- Feel free to change the HTML block above this comment into Markdown. It's just in HTML cuz I couldn't be arsed to figure out how to correctly combine an image and a link in Github-flavored Markdown. -->
 
-
+Slides in [English](https://docs.google.com/presentation/d/1QDwo9x4OM7UKAXffJrny6nSfeytFR0kO5NB-NQEspcE/edit?usp=sharing) and [French](https://docs.google.com/presentation/d/1WpRZs9qz9wm1yik_MLj8tIJyWuL5-IBPYKLhOHZ9X4Y/edit?usp=sharing) for a 30-60 minute presentation about animint2!
+[Abstract](https://github.com/animint/animint2/wiki/Presentations#30-60-minute-talk),
+[Video of presentation in French at Toulouse-Dataviz](https://www.youtube.com/watch?v=Em6AVJi37zo).
 
 ## About
 
@@ -14,7 +16,7 @@ Animint2 is an R package for generating and sharing animated interactive data vi
 
 <a href="https://rcdata.nau.edu/genomic-ml/WorldBank-facets/"><img src="man/figures/world_bank_screencast.gif" alt="A screencast of an interactive data visualization displaying fertility data from the World Bank. The user types in the selection menu and clicks on the legend, which causes changes in the visualization. GIF."></a> <!-- If you're familiar with Markdown, you may be wondering why I've elected to use HTML here instead of using the conventional ![alt text](source). It's cuz R's pkgdown package renders the alt text as both alt text and a fig caption. That's redundant. Using <img> ensures that it comes out the way we want. -->
 
-Play around with [this interactive data visualization of data from the World Bank](https://rcdata.nau.edu/genomic-ml/WorldBank-facets/). For more examples, see these galleries, which have screenshots along with links to the interactive data viz, and source code:
+Play around with [this interactive data visualization of data from the World Bank](https://rcdata.nau.edu/genomic-ml/WorldBank-facets/), or [a more recent version which also includes a world map](https://tdhock.github.io/2025-01-WorldBank-facets-map/). For more examples, see these galleries, which have screenshots along with links to the interactive data viz, and source code:
 * [NAU rcdata animint gallery](https://rcdata.nau.edu/genomic-ml/animint-gallery/) has 50+ big data viz examples dating back to animint's inception in 2014.
 * [GitHub Pages animint gallery](https://animint.github.io/gallery) is a newer collection of animints that have been published using the `animint2pages` function.
 

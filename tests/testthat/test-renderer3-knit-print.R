@@ -91,32 +91,24 @@ plot1bottom <- get_elements("plot1bottom")
 
 test_that("clicking top legend adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
-  
   clickID("plot1top_q_label_variable_a178")
   expect_equal(get_circles(), list(5, 10))
-  
   clickID("plot1top_q_label_variable_b934")
   expect_equal(get_circles(), list(0, 10))
-  
   clickID("plot1top_q_label_variable_b934")
   expect_equal(get_circles(), list(5, 10))
-  
   clickID("plot1top_q_label_variable_a178")
   expect_equal(get_circles(), list(10, 10))
 })
 
 test_that("clicking bottom legend adds/remove points", {
   expect_equal(get_circles(), list(10, 10))
-  
   clickID("plot1bottom_q_label_variable_a178")
   expect_equal(get_circles(), list(10, 5))
-  
   clickID("plot1bottom_q_label_variable_b934")
   expect_equal(get_circles(), list(10, 0))
-  
   clickID("plot1bottom_q_label_variable_b934")
   expect_equal(get_circles(), list(10, 5))
-  
   clickID("plot1bottom_q_label_variable_a178")
   expect_equal(get_circles(), list(10, 10))
 })
@@ -162,3 +154,89 @@ test_that("bottom widget adds/remove points", {
   send("b")
   expect_equal(get_circles(), list(10, 10))
 })
+
+click_center <- function(id){
+  script <- sprintf("document.getElementById('%s').scrollIntoView(true);", id)
+  runtime_evaluate(script=script)
+  x <- remDr$DOM$getDocument()
+  x <- remDr$DOM$querySelector(x$root$nodeId, paste0("#",id))
+  x <- remDr$DOM$getBoxModel(x$nodeId)
+  m <- matrix(as.numeric(x$model$content), 4, 2,byrow=TRUE, dimnames=list(
+    corner=c("left_top", "right_top", "right_bottom", "left_bottom"),
+    dim=c("x","y")))
+  xy <- as.list((m["left_top",]+m["right_bottom",])/2)
+  for(type in c("mousePressed", "mouseReleased")){
+    L <- c(xy, button="left", clickCount=1, type=type)
+    ## https://github.com/rstudio/chromote/issues/32
+    do.call(remDr$Input$dispatchMouseEvent, L)
+  }
+}
+
+djs.init.list <- driverjs_get(html)
+expected.driver.empty <- list(title=list(), description=list())
+test_that("knit driver initially shows nothing", {
+  expect_identical(djs.init.list, expected.driver.empty)
+})
+
+djs.start0.list <- driverjs_start(0)
+expected.driver.top <- list(
+  title = list(
+    text = "geom1_point_q",
+    .attrs = c(
+      class = "driver-popover-title", 
+      style = "display: block;")),
+  description = list(
+    text = "first plot",
+    br=NULL,
+    text="Data are shown for the current selection of: label",
+    .attrs = c(
+      class = "driver-popover-description",
+      style = "display: block;"
+    )))
+test_that("knit driver start first plot", {
+  expect_identical(djs.start0.list, expected.driver.top)
+})
+
+click_center("plot1top_q")
+djs.start0.top.list <- driverjs_get()
+test_that("clicking top plot keeps driver open", {
+  expect_identical(djs.start0.top.list, expected.driver.top)
+})
+
+click_center("plot1bottom_q")
+djs.start0.bottom.list <- driverjs_get()
+test_that("clicking bottom plot closes driver", {
+  expect_identical(djs.start0.bottom.list, expected.driver.empty)
+})
+
+expected.driver.bottom <- list(
+  title = list(
+    text = "geom1_point_q",
+    .attrs = c(
+      class = "driver-popover-title", 
+      style = "display: block;")),
+  description = list(
+    text = "second plot", 
+    br=NULL,
+    text="Data are shown for the current selection of: label",
+    .attrs = c(
+      class = "driver-popover-description",
+      style = "display: block;"
+    )))
+djs.start1.list <- driverjs_start(1)
+test_that("knit driver start second plot", {
+  expect_identical(djs.start1.list, expected.driver.bottom)
+})
+
+click_center("plot1bottom_q")
+djs.start1.bottom.list <- driverjs_get()
+test_that("clicking bottom plot keeps driver open", {
+  expect_identical(djs.start1.bottom.list, expected.driver.bottom)
+})
+
+click_center("plot1top_q")
+djs.start1.top.list <- driverjs_get()
+test_that("clicking top plot closes driver", {
+  expect_identical(djs.start1.top.list, expected.driver.empty)
+})
+

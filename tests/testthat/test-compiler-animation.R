@@ -1,38 +1,38 @@
 acontext("animation")
 
-library(maps)
-library(plyr)
-data(UStornadoes, package = "animint2")
-stateOrder <- data.frame(state = unique(UStornadoes$state)[order(unique(UStornadoes$TornadoesSqMile), decreasing=T)], rank = 1:49) # order states by tornadoes per square mile
-UStornadoes$state <- factor(UStornadoes$state, levels=stateOrder$state, ordered=TRUE)
-UStornadoes$weight <- 1/UStornadoes$LandArea
-# useful for stat_bin, etc. 
-
-USpolygons <- map_data("state")
-USpolygons$state = state.abb[match(USpolygons$region, tolower(state.name))]
-
-UStornadoCounts <-
-  ddply(UStornadoes, .(state, year), summarize, count=length(state))
-tornado.anim <-
-  list(map=ggplot()+
-       geom_polygon(aes(x=long, y=lat, group=group),
-                    data=USpolygons,
-                    clickSelects="state",
-                    fill="black", colour="grey") +
-       geom_segment(aes(x=startLong, y=startLat, xend=endLong, yend=endLat),
-                    showSelected="year",                    
-                    colour="#55B1F7", data=UStornadoes),
-       ts=ggplot()+
-       make_tallrect(UStornadoCounts, "year")+
-       geom_line(aes(year, count, group=state),
-                 clickSelects="state", 
-                 data=UStornadoCounts, alpha=3/5, size=4),
-       time=list(variable="year",ms=2000))
-
-test_that("tornado animation frames correct", {
-  info <- animint2dir(tornado.anim, open.browser=FALSE)
-  expect_identical(info$time$sequence, as.character(1950:2012))
-})
+if(require(maps) && require(plyr)){
+  data(UStornadoes, package = "animint2")
+  stateOrder <- data.frame(state = unique(UStornadoes$state)[order(unique(UStornadoes$TornadoesSqMile), decreasing=T)], rank = 1:49) # order states by tornadoes per square mile
+  UStornadoes$state <- factor(UStornadoes$state, levels=stateOrder$state, ordered=TRUE)
+  UStornadoes$weight <- 1/UStornadoes$LandArea
+  # useful for stat_bin, etc.
+  USpolygons <- map_data("state")
+  USpolygons$state = state.abb[match(USpolygons$region, tolower(state.name))]
+  UStornadoCounts <-
+    ddply(UStornadoes, .(state, year), summarize, count=length(state))
+  tornado.anim <- list(
+    map=ggplot()+
+      geom_polygon(aes(
+        x=long, y=lat, group=group),
+        data=USpolygons,
+        clickSelects="state",
+        fill="black", colour="grey") +
+      geom_segment(aes(
+        x=startLong, y=startLat, xend=endLong, yend=endLat),
+        showSelected="year",
+        colour="#55B1F7", data=UStornadoes),
+    ts=ggplot()+
+      make_tallrect(UStornadoCounts, "year")+
+      geom_line(aes(
+        year, count, group=state),
+        clickSelects="state",
+        data=UStornadoCounts, alpha=3/5, size=4),
+    time=list(variable="year",ms=2000))
+  test_that("tornado animation frames correct", {
+    info <- animint2dir(tornado.anim, open.browser=FALSE)
+    expect_identical(info$time$sequence, as.character(1950:2012))
+  })
+}
 
 ## WorldBank/gapminder example.
 data(WorldBank, package = "animint2")

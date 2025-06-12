@@ -85,6 +85,27 @@ test_that("no warning for no duration vars", {
   })
 })
 
+test_that("warn for -Inf but not NA input to scale_log10", {
+  get_viz <- function(value){
+    animint(
+      g=ggplot()+
+        geom_segment(aes(
+          x, y, xend=xend, yend=yend),
+          data=data.table(
+            x=c(value, 0, 1, Inf), xend=10,
+            y=10, yend=100))+
+        scale_x_log10())
+  }
+  viz_neg_Inf <- get_viz(-Inf)
+  expect_warning({
+    animint2dir(viz_neg_Inf, open.browser=FALSE)
+  }, "NaNs produced")
+  viz_NA <- get_viz(NA)
+  expect_no_warning({
+    animint2dir(viz_NA, open.browser=FALSE)
+  })
+})
+
 test_that("warn no key for geom_text with showSelected=duration var", {
   viz.duration <- viz.no.duration
   viz.duration$duration <- list(year=2000)
