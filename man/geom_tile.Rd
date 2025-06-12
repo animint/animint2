@@ -84,8 +84,6 @@ performance special case for when all the tiles are the same size.
 }
 
 \examples{
-# The most common use for rectangles is to draw a surface. You always want
-# to use geom_tile here because it's so much faster, and produces
 # smaller output when saving to PDF
 ggplot(faithfuld, aes(waiting, eruptions)) +
  geom_tile(aes(fill = density))

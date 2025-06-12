@@ -11,10 +11,7 @@ animint2pages(
   commit_message = "Commit from animint2pages",
   private = FALSE,
   required_opts = c("title", "source"),
-<<<<<<<<< Temporary merge branch 1
   chromote_sleep_seconds = NULL,
-=========
->>>>>>>>> Temporary merge branch 2
   ...
 )
 }
