@@ -14,13 +14,8 @@
 #' @inheritParams geom_point
 #' @export
 #' @examples
-#' # smaller output when saving to PDF
 #' ggplot(faithfuld, aes(waiting, eruptions)) +
 #'  geom_tile(aes(fill = density))
-#'
-#' # Interpolation smooths the surface & is most helpful when rendering images.
-#' ggplot(faithfuld, aes(waiting, eruptions)) +
-#'  geom_tile(aes(fill = density), interpolate = TRUE)
 #'
 #' # If you want to draw arbitrary rectangles, use geom_tile() or geom_rect()
 #' df <- data.frame(
@@ -42,8 +37,6 @@
 #' df$z <- runif(nrow(df))
 #' # default is compatible with geom_tile()
 #' ggplot(df, aes(x, y, fill = z)) + geom_tile()
-#' # zero padding
-#' ggplot(df, aes(x, y, fill = z)) + geom_tile(hjust = 0, vjust = 0)
 #'
 #' # Inspired by the image-density plots of Ken Knoblauch
 #' cars <- ggplot(mtcars, aes(mpg, factor(cyl)))
