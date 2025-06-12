@@ -53,8 +53,8 @@
 #' cars + stat_bin2d(aes(fill = ..count..), binwidth = c(3,1))
 #' cars + stat_bin2d(aes(fill = ..density..), binwidth = c(3,1))
 #'
-#' cars + stat_density(aes(fill = ..density..), geom = "raster", position = "identity")
-#' cars + stat_density(aes(fill = ..count..), geom = "raster", position = "identity")
+#' cars + stat_density(aes(fill = ..density..), geom = "tile", position = "identity")
+#' cars + stat_density(aes(fill = ..count..), geom = "tile", position = "identity")
 #' }
 geom_tile <- function(mapping = NULL, data = NULL,
                       stat = "identity", position = "identity",
