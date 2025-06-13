@@ -5,24 +5,46 @@
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point
-#' @param label.padding Amount of padding around label. Defaults to 0.25 lines.
 #' @param label.r Radius of rounded corners. Defaults to 0.15 lines.
 #' @param label.size Size of label border, in mm.
 #' @param alignment One of "vertical" or "horizontal" to specify the alignment direction.
 #' @param min_distance Minimum distance between boxes in native units.
 #' @export
 #' @examples
-#' library(ggplot2)
+#' Example 1:
 #' df <- data.frame(
 #'   x = c(1, 2, 3),
 #'   y = c(1, 2, 3),
 #'   label = c("A", "B", "C")
 #' )
-#' geom_aligned_boxes(df, aes(x, y, label = label))
+#' geom_aligned_boxes(data = df, aes(x, y, label = label))
+#' 
+#' Example 2:
+#' 
+#' library(nlme)
+#' library(dplyr)
+#' data(BodyWeight, package = "nlme")
+#' # Extracting the last point of each rat's trajectory
+#' label_data <- BodyWeight %>%
+#'   group_by(Rat) %>%
+#'   filter(Time == max(Time)) %>%
+#'   ungroup() %>%
+#'   mutate(label = as.character(Rat))
+#' viz <- list(
+#'   bodyPlot = ggplot() +
+#'     geom_line(aes(x = Time, y = weight, group = Rat, colour = Rat),
+#'               data = BodyWeight) +
+#'     geom_aligned_boxes(aes(x = Time, y = weight, label = label, fill = Rat),
+#'                        data = label_data) +
+#'     facet_wrap(~Diet, nrow = 1) +
+#'     ggtitle("Rat body weight over time by diet") +
+#'     xlab("Time (days)") +
+#'     ylab("Body Weight (grams)")
+#' )
+
 geom_aligned_boxes <- function(mapping = NULL, data = NULL,
                               stat = "identity", position = "identity",
                               ...,
-                              label.padding = unit(0.25, "lines"),
                               label.r = unit(0.15, "lines"),
                               label.size = 0.25,
                               alignment = "vertical",
@@ -39,7 +61,6 @@ geom_aligned_boxes <- function(mapping = NULL, data = NULL,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(
-      label.padding = label.padding,
       label.r = label.r,
       label.size = label.size,
       alignment = alignment,
@@ -56,13 +77,12 @@ GeomAlignedBoxes <- gganimintproto("GeomAlignedBoxes", Geom,
   required_aes = c("x", "y", "label"),
   
   default_aes = aes(
-    colour = "#a70000", fill = "#fa8181", size = 3.88, 
+    colour = "black", fill = "grey", size = 3.88, 
     angle = 0, hjust = 0.5, vjust = 0.5, alpha = 1,
     family = "", fontface = 1, lineheight = 1.2, fontsize = 12
   ),
 
   draw_panel = function(self, data, panel_scales, coord,
-                       label.padding = unit(0.25, "lines"),
                        label.r = unit(0.15, "lines"),
                        label.size = 0.25,
                        alignment = "vertical",
@@ -73,7 +93,6 @@ GeomAlignedBoxes <- gganimintproto("GeomAlignedBoxes", Geom,
 
     coords <- coord$transform(data, panel_scales)
 
-    coords$label.padding <- convertWidth(label.padding, "native", valueOnly = TRUE)
     coords$label.r <- convertWidth(label.r, "native", valueOnly = TRUE)
     coords$label.size <- label.size
     coords$alignment <- alignment
