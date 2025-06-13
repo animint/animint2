@@ -38,3 +38,51 @@ p <- ggplot() +
 
 viz <- list(syntheticTrend = p)
 animint2dir(viz, "smart_aligned_labels")
+
+# Plot 2 : Collisions with axes and other boxes at the same time 
+library(nlme)
+library(dplyr)
+data(BodyWeight, package = "nlme")
+# Extracting the last point of each rat's trajectory
+label_data <- BodyWeight %>%
+  group_by(Rat) %>%
+  filter(Time == max(Time)) %>%
+  ungroup() %>%
+  mutate(label = as.character(Rat))
+
+viz2 <- list(
+  bodyPlot = ggplot() +
+    geom_line(aes(x = Time, y = weight, group = Rat, colour = Rat),
+              data = BodyWeight) +
+    geom_aligned_boxes(aes(x = Time, y = weight, label = label, fill = Rat),
+                       data = label_data) +
+    facet_wrap(~Diet, nrow = 1) +
+    ggtitle("Rat body weight over time by diet") +
+    xlab("Time (days)") +
+    ylab("Body Weight (grams)")
+)
+
+# Render to directory
+animint2dir(viz2, "bodyweight-aligned-boxes")
+
+# Plot 3 : Collisions from all directions
+# Simulating 15 points arranged close enough to test for all-direction collisions
+set.seed(42)
+label_data <- data.frame(
+  x = c(1, 2, 3, 4, 5, 3.5, 2.5, 3, 4, 1.5, 2, 4.5, 3, 2, 5),
+  y = c(1, 2, 3, 4, 5, 2.5, 3.5, 4, 1, 4.5, 2, 3, 3.2, 2.8, 1.2),
+  label = paste("Label", 1:15)
+)
+
+# color for visibility
+label_data$group <- factor(1:15)
+
+viz3 <- list(
+  overlapTest = ggplot() +
+    geom_aligned_boxes(aes(x, y, label = label, fill = group), data = label_data) +
+    ggtitle("Overlap Test: Aligned Boxes") +
+    xlab("X") +
+    ylab("Y")
+)
+
+animint2dir(viz3, "overlap-aligned-boxes")
