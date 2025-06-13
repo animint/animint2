@@ -607,207 +607,79 @@ function solveQP(Dmat, dvec, Amat, bvec = [], meq = 0, factorized = [0, 0]) {
 // `optimizeAlignedBoxes` uses a QP solver to reposition only the overlapping label boxes,
 // finding the nearest possible positions to their original locations, subject to the constraint
 // that the boxes do not overlap.
-//
-// `bumpup` and `bumpleft` are heuristic fallback strategies, also inspired by directlabels.
+function optimizeAlignedBoxes(data, alignment, min_distance = 2, plot_limits = null) {
+  const n = data.length;
+  if (n === 0) return;
 
-function optimizeAlignedBoxes(data, alignment, min_distance, plot_limits) {
-  var n = data.length;
-  // If only one label, no optimization needed
-  if (n === 1) {
-    data[0].optimizedPos = alignment === "vertical" ? data[0].scaledY : data[0].scaledX;
-    return;
-  }
-  // Sort data by target position (original position)
-  data.sort(function(a, b) {
-    var aPos = alignment === "vertical" ? a.scaledY : a.scaledX;
-    var bPos = alignment === "vertical" ? b.scaledY : b.scaledX;
-    return aPos - bPos;
-  });
-  // Calculate label sizes
-  var labelSizes = [];
-  for (var i = 0; i < n; i++) {
-    var size = alignment === "vertical" ? data[i].boxHeight : data[i].boxWidth;
-    labelSizes.push(size);
-  }
+  // Prepare variables
+  const getSize = d => alignment === "vertical" ? d.boxHeight : d.boxWidth;
+  const getPos = d => alignment === "vertical" ? d.scaledY : d.scaledX;
+  const setOptimized = (d, pos) => { d.optimizedPos = pos; };
 
-  var minPos = plot_limits[0];
-  var maxPos = plot_limits[1];
-  // Prepare QP matrices
-  var D = [];
-  var dvec = [];
-  var Amat = [];
-  var bvec = [];
-  // D matrix (identity - we want to minimize distance from original positions)
-  for (var i = 0; i < n; i++) {
-    D[i] = new Array(n).fill(0);
-    D[i][i] = 1;
-  }
-  // d vector (target positions - we want to stay close to these)
-  for (var i = 0; i < n; i++) {
-    dvec[i] = alignment === "vertical" ? data[i].scaledY : data[i].scaledX;
-  }
-  // A matrix for non-overlapping constraints
-  // For vertical: y_i + size_i/2 + min_distance <= y_{i+1} - size_{i+1}/2
-  // For horizontal: x_i + size_i/2 + min_distance <= x_{i+1} - size_{i+1}/2
-  // Both translate to: pos_i - pos_{i+1} <= -(size_i/2 + size_{i+1}/2 + min_distance)
-  for (var i = 0; i < n - 1; i++) {
-    var constraint = new Array(n).fill(0);
-    constraint[i] = 1;
-    constraint[i + 1] = -1;
-    Amat.push(constraint);
-    
-    var requiredSeparation = (labelSizes[i]/2 + labelSizes[i+1]/2 + min_distance);
-    bvec.push(-requiredSeparation);
-  }
-  // boundary constraints
-  for (var i = 0; i < n; i++) {
-    var halfSize = labelSizes[i]/2;
-    // Lower bound constraint
-    var lowerConstraint = new Array(n).fill(0);
-    lowerConstraint[i] = -1;
-    Amat.push(lowerConstraint);
-    bvec.push(-(minPos + halfSize));
-    // Upper bound constraint
-    var upperConstraint = new Array(n).fill(0);
-    upperConstraint[i] = 1;
-    Amat.push(upperConstraint);
-    bvec.push(maxPos - halfSize);
-  }
-  try {
-    // Transpose Amat for the solver
-    function transpose(matrix) {
-      return matrix[0].map((_, colIndex) => matrix.map(row => row[colIndex]));
-    }
-    var tAmat = Amat.length > 0 ? transpose(Amat) : [];
-    // Add small epsilon to diagonal to ensure positive definiteness
-    for (var i = 0; i < n; i++) {
-      D[i][i] += 1e-8;
-    }
-    var qpSolution = solveQP(D, dvec, tAmat, bvec);
-    if (qpSolution && qpSolution.solution) {
-      for (var i = 0; i < n; i++) {
-        var pos = qpSolution.solution[i + 1]; // 1-based index
-        
-        if (!isFinite(pos)) {
-          console.log("Invalid position for label", i, "falling back to original position");
-          pos = dvec[i];
-        }
-        
-        data[i].optimizedPos = pos;
-      }
-      
-      // Verify all constraints are satisfied
-      var allConstraintsSatisfied = true;
-      for (var i = 0; i < n - 1; i++) {
-        var currentPos = data[i].optimizedPos;
-        var nextPos = data[i+1].optimizedPos;
-        var currentUpper = currentPos + labelSizes[i]/2;
-        var nextLower = nextPos - labelSizes[i+1]/2;
-        
-        if (currentUpper + min_distance > nextLower) {
-          allConstraintsSatisfied = false;
-          console.log("Collision detected between", i, "and", i+1);
-          break;
-        }
-      }
-      
-      if (!allConstraintsSatisfied) {
-        if (alignment === "vertical") {
-          bumpUpLabels(data, alignment, min_distance, plot_limits);
-          console.warn("QP solution didn't satisfy constraints, using bumpup algorithm");
-        } else {
-          console.warn("QP solution didn't satisfy constraints, using bump left algorithm");
-          bumpLeftLabels(data, alignment, min_distance, plot_limits);
-        }
-      }
-    } else {
-      throw new Error("No valid solution from QP solver");
-    }
-  } catch (e) {
-    console.error("QP solver error:", e);
-    if (alignment === "vertical") {
-      bumpUpLabels(data, alignment, min_distance, plot_limits);
-    } else {
-      bumpLeftLabels(data, alignment, min_distance, plot_limits);
-    }
-  }
-}
+  // Sort by desired position
+  data.sort((a, b) => getPos(a) - getPos(b));
 
-function bumpLeftLabels(data, alignment, min_distance, plot_limits) {
-  var minPos = plot_limits[0];
-  var maxPos = plot_limits[1];
-  
-  // Process from right to left
-  for (var i = data.length - 2; i >= 0; i--) {
-    var next = data[i+1];
-    var curr = data[i];
-    
-    var nextPos = next.optimizedPos || next.scaledX;
-    var nextSize = next.boxWidth;
-    var currPos = curr.scaledX;
-    var currSize = curr.boxWidth;
-    
-    var nextLower = nextPos - nextSize/2;
-    var currUpper = currPos + currSize/2;
-    
-    if (currUpper + min_distance > nextLower) {
-      // Need to move current box left
-      var newPos = nextLower - currSize/2 - min_distance;
-      newPos = Math.max(newPos, minPos + currSize/2);
-      curr.optimizedPos = newPos;
-    } else {
-      curr.optimizedPos = currPos;
+  // QP setup: minimize 0.5 * (x - x0)^T (x - x0)
+  // Dmat: identity, dvec: original positions
+  // Constraints: x[i+1] - x[i] >= (size[i] + size[i+1])/2 + min_distance
+  const Dmat = [null]; // Dmat[1..n][1..n]
+  const dvec = [null];
+  for (let i = 0; i < n; i++) {
+    Dmat[i + 1] = Array(n + 1).fill(0);
+    Dmat[i + 1][i + 1] = 1;
+    dvec[i + 1] = getPos(data[i]);
+  }
+  // Constraints
+  let Amat = [null]; // Amat[1..n][1..m]
+  let bvec = [null];
+  let m = 0;
+  // Non-overlap constraints: x[i+1] - x[i] >= min_gap
+  for (let i = 0; i < n - 1; i++) {
+    m++;
+    Amat[m] = Array(n + 1).fill(0);
+    Amat[m][i + 1] = -1;
+    Amat[m][i + 2] = 1;
+    const minGap = (getSize(data[i]) + getSize(data[i + 1])) / 2 + min_distance;
+    bvec[m] = minGap;
+  }
+  // Plot limits constraints
+  if (plot_limits) {
+    const [minBound, maxBound] = plot_limits;
+    // Lower bound: x[i] - minBound >= size[i]/2
+    for (let i = 0; i < n; i++) {
+      m++;
+      Amat[m] = Array(n + 1).fill(0);
+      Amat[m][i + 1] = 1;
+      bvec[m] = minBound + getSize(data[i]) / 2;
+    }
+    // Upper bound: maxBound - x[i] >= size[i]/2  =>  -x[i] >= -maxBound + size[i]/2
+    for (let i = 0; i < n; i++) {
+      m++;
+      Amat[m] = Array(n + 1).fill(0);
+      Amat[m][i + 1] = -1;
+      bvec[m] = -maxBound + getSize(data[i]) / 2;
     }
   }
-  
-  // Ensure last box is within bounds
-  if (data.length > 0) {
-    var last = data[data.length - 1];
-    var lastPos = last.optimizedPos || last.scaledX;
-    var lastSize = last.boxWidth;
-    last.optimizedPos = Math.max(minPos + lastSize/2, Math.min(maxPos - lastSize/2, lastPos));
-  }
-}
-
-function bumpUpLabels(data, alignment, min_distance, plot_limits) {
-  var minPos = plot_limits[0];
-  var maxPos = plot_limits[1];
-  
-  for (var i = 1; i < data.length; i++) {
-    var prev = data[i-1];
-    var curr = data[i];
-    
-    var prevPos = alignment === "vertical" ? prev.optimizedPos || prev.scaledY : prev.optimizedPos || prev.scaledX;
-    var prevSize = alignment === "vertical" ? prev.boxHeight : prev.boxWidth;
-    var currPos = alignment === "vertical" ? curr.scaledY : curr.scaledX;
-    var currSize = alignment === "vertical" ? curr.boxHeight : curr.boxWidth;
-    
-    // Check if boxes overlap
-    var prevUpper = prevPos + prevSize/2;
-    var currLower = currPos - currSize/2;
-    var minRequired = min_distance;
-    
-    if (prevUpper > currLower - minRequired) {
-      // Need to bump up
-      var newPos = prevUpper + currSize/2 + minRequired;
-      // Ensure we don't go beyond plot limits
-      newPos = Math.min(newPos, maxPos - currSize/2);
-      
-      if (alignment === "vertical") {
-        curr.optimizedPos = newPos;
-      } else {
-        curr.optimizedPos = newPos;
-      }
-    } else {
-      curr.optimizedPos = currPos;
+  // Transpose Amat to match solveQP's expected input: Amat[n+1][m+1]
+  // (solveQP expects Amat[1..n][1..m])
+  let AmatT = [null];
+  for (let i = 1; i <= n; i++) {
+    AmatT[i] = [null];
+    for (let j = 1; j <= m; j++) {
+      AmatT[i][j] = Amat[j][i] || 0;
     }
   }
-  
-  // For first label
-  if (data.length > 0) {
-    var first = data[0];
-    var firstPos = alignment === "vertical" ? first.scaledY : first.scaledX;
-    var firstSize = alignment === "vertical" ? first.boxHeight : first.boxWidth;
-    first.optimizedPos = Math.max(minPos + firstSize/2, Math.min(maxPos - firstSize/2, firstPos));
+  // Call QP solver
+  const result = solveQP(Dmat, dvec, AmatT, bvec, 0);
+  // Assign optimized positions
+  if (result.solution) {
+    for (let i = 0; i < n; i++) {
+      setOptimized(data[i], result.solution[i + 1]);
+    }
+  } else {
+    // fallback: assign original positions
+    for (let i = 0; i < n; i++) {
+      setOptimized(data[i], getPos(data[i]));
+    }
   }
 }
