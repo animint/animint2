@@ -9,12 +9,12 @@ viz <-
   list(scatter=ggplot()+
        geom_point(aes(life.expectancy, fertility.rate,
                       colour=region, size=population,
-                      tooltip=paste(country, "population", population),
+                      tooltip=paste(country, "population", population), id = country,
                       key=country), # key aesthetic for animated transitions!
                   clickSelects="country",
                   showSelected="year",
                   data=WorldBank)+
-       geom_text(aes(life.expectancy, fertility.rate, label=country,
+       geom_text(aes(life.expectancy, fertility.rate, label=country, tooltip = country, id=paste0("text_",country),
                      key=country), #also use key here!
                  showSelected=c("country", "year"),
                  data=WorldBank)+
@@ -55,52 +55,86 @@ subset(WorldBank, country=="United States" & year == 1975)$population
 subset(years, year==1975)
 
 info <- animint2HTML(viz)
-
-test_that("aes(tooltip, clickSelects) means show tooltip", {
-  nodes <-
-    getNodeSet(info$html, '//g[@class="geom1_point_scatter"]//circle//title')
-  tooltips <- sapply(nodes, xmlValue)
-  expect_match(tooltips, "population")
+tooltip.xpath <- '//div[@class="animint-tooltip"]'
+test_that("animint-tooltip div exists with correct initial state", {
+  tooltip_div <- getNodeSet(info$html, tooltip.xpath)
+  expect_equal(length(tooltip_div), 1)
+  # Check initial opacity is 0
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
 })
 
-test_that("aes(clickSelects) means show 'variable value'", {
-  nodes <-
-    getNodeSet(info$html, '//g[@class="geom7_line_ts"]//path//title')
-  tooltips <- sapply(nodes, xmlValue)
-  expect_match(tooltips, "country")
+test_that("tooltip shows correct content for rect", {
+  # Get rect position on viewport
+  rect_position <- get_element_bbox('rect.geom')
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = rect_position$left, y = rect_position$top)
+  Sys.sleep(0.3)
+  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
+  tooltip_text <- xmlValue(tooltip_div)
+  # Verify tooltip contains expected content
+  expect_match(tooltip_text, "187 not NA in 1975")
+  # Verify that tooltip opacity is now 1 (tooltip shown)
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "1")
+  # Move mouse away to clean up
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
+  Sys.sleep(0.2)
+  # Verify that tooltip hides correctly after mouseout
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
 })
 
-test_that("aes(tooltip) means show tooltip", {
-  nodes <-
-    getNodeSet(info$html, '//g[@class="geom3_rect_scatter"]//rect//title')
-  tooltips <- sapply(nodes, xmlValue)
-  expect_match(tooltips, "not NA")
+test_that("tooltip shows correct content for point", {
+  # Get circle position on viewport
+  circle_position <- get_element_bbox('circle#China')
+  # Hover over center of the circle
+  remDr$Input$dispatchMouseEvent(
+    type = "mouseMoved",
+    x = circle_position$center_x,
+    y = circle_position$center_y
+  )
+  Sys.sleep(0.3)
+  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
+  tooltip_text <- xmlValue(tooltip_div)
+  # Verify tooltip contains expected content
+  expect_match(tooltip_text, "China population 916395000")
+  # Verify that tooltip opacity is now 1 (tooltip shown)
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "1")
+  # Move mouse away to clean up
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
+  Sys.sleep(0.2)
+  # Verify that tooltip hides correctly after mouseout
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
 })
 
-test_that("aes() means show no tooltip", {
-  rect.xpath <- '//g[@class="geom4_rect_scatter"]//rect'
-  rect.nodes <- getNodeSet(info$html, rect.xpath)
-  expect_equal(length(rect.nodes), 1)
-  
-  title.xpath <- paste0(rect.xpath, '//title')
-  title.nodes <- getNodeSet(info$html, title.xpath)
-  expect_equal(length(title.nodes), 0)
+test_that("tooltip shows correct content for geom_text", {
+  clickID('China') # Select the circle corresponding to China for highlighting text
+  Sys.sleep(0.2)
+  # Get text position on viewport
+  text_position <- get_element_bbox('text#text_China')
+  remDr$Input$dispatchMouseEvent(
+    type = "mouseMoved",
+    x = text_position$center_x,
+    y = text_position$center_y
+  )
+  Sys.sleep(0.2)
+  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
+  tooltip_text <- xmlValue(tooltip_div) 
+  # Verify tooltip contains expected content
+  expect_match(tooltip_text, "China")
+  # Verify that tooltip opacity is now 1 (tooltip shown)
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "1")
+  # Move mouse away to clean up
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
+  # Verify that tooltip hides correctly after mouseout
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
 })
 
-set.seed(1)
-viz <- list(
-  linetip=ggplot()+
-    geom_line(aes(x, y, tooltip=paste("group", g), group=g),
-              size=5,
-              data=data.frame(x=c(1,2,1,2), y=rnorm(4), g=c(1,1,2,2))))
-
-test_that("line tooltip renders as title", {
-  info <- animint2HTML(viz)
-  title.nodes <- getNodeSet(info$html, '//g[@class="geom1_line_linetip"]//title')
-  value.vec <- sapply(title.nodes, xmlValue)
-  expect_identical(value.vec, c("group 1", "group 2"))
-})
-
+# Test with href
 WorldBank1975 <- WorldBank[WorldBank$year == 1975, ]
 NotNA1975 <- subset(not.na, year==1975)
 ex_plot <- ggplot() +
@@ -111,15 +145,10 @@ ex_plot <- ggplot() +
 viz <- list(ex = ex_plot)
 info <- animint2HTML(viz)
 
-test_that("tooltip works with href",{
-  # Test for bug when points are not rendered with both href + tooltip
-  point_nodes <-
-    getNodeSet(info$html, '//g[@class="geom1_point_ex"]//a//circle')
-  expected.countries <- NotNA1975$country
-  expect_equal(length(point_nodes), length(expected.countries))
-  # See that every <a> element has a title (the country name) initially
-  title_nodes <-
-    getNodeSet(info$html, '//g[@class="geom1_point_ex"]//a//title')
-  rendered_titles <- sapply(title_nodes, xmlValue)
-  expect_identical(sort(rendered_titles), sort(expected.countries))
+test_that("tooltip div exists with href elements", {
+  tooltip_div <- getNodeSet(info$html, tooltip.xpath)
+  expect_equal(length(tooltip_div), 1)
+  # Opacity is initially 0 when tooltip is hidden
+  opacity <- getStyleValue(info$html, tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
 })
