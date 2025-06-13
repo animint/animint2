@@ -60,7 +60,7 @@ test_that("animint-tooltip div exists with correct initial state", {
   tooltip_div <- getNodeSet(info$html, tooltip.xpath)
   expect_equal(length(tooltip_div), 1)
   # Check initial opacity is 0
-  opacity <- getStyleValue(info$html, tooltip.xpath, "opacity")
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_identical(opacity, "0")
 })
 
@@ -73,9 +73,15 @@ test_that("tooltip shows correct content for rect", {
   tooltip_text <- xmlValue(tooltip_div)
   # Verify tooltip contains expected content
   expect_match(tooltip_text, "187 not NA in 1975")
+  # Verify that tooltip opacity is now 1 (tooltip shown)
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "1")
   # Move mouse away to clean up
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
   Sys.sleep(0.2)
+  # Verify that tooltip hides correctly after mouseout
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
 })
 
 test_that("tooltip shows correct content for point", {
@@ -92,9 +98,15 @@ test_that("tooltip shows correct content for point", {
   tooltip_text <- xmlValue(tooltip_div)
   # Verify tooltip contains expected content
   expect_match(tooltip_text, "China population 916395000")
+  # Verify that tooltip opacity is now 1 (tooltip shown)
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "1")
   # Move mouse away to clean up
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
   Sys.sleep(0.2)
+  # Verify that tooltip hides correctly after mouseout
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
 })
 
 test_that("tooltip shows correct content for geom_text", {
@@ -112,8 +124,14 @@ test_that("tooltip shows correct content for geom_text", {
   tooltip_text <- xmlValue(tooltip_div) 
   # Verify tooltip contains expected content
   expect_match(tooltip_text, "China")
+  # Verify that tooltip opacity is now 1 (tooltip shown)
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "1")
   # Move mouse away to clean up
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
+  # Verify that tooltip hides correctly after mouseout
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
 })
 
 # Test with href
@@ -130,6 +148,7 @@ info <- animint2HTML(viz)
 test_that("tooltip div exists with href elements", {
   tooltip_div <- getNodeSet(info$html, tooltip.xpath)
   expect_equal(length(tooltip_div), 1)
+  # Opacity is initially 0 when tooltip is hidden
   opacity <- getStyleValue(info$html, tooltip.xpath, "opacity")
   expect_identical(opacity, "0")
 })
