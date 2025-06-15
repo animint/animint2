@@ -1429,6 +1429,83 @@ var animint = function (to_select, json_file) {
 	};
 	eAppend = "circle";
       }
+
+      if (g_info.geom == "aligned_boxes") {
+          // Get parameters
+          var alignment = g_info.params.alignment || "vertical";
+          var min_distance = g_info.params.min_distance || 2;
+          
+          // 1. Measure all text dimensions and calculate box sizes
+          data.forEach(function(d) {
+              // Create text style string for measurement
+              var textStyle = [
+                  "font-family:" + (d.family || "sans-serif"),
+                  "font-size:" + d.fontsize + "px",
+                  "font-weight:" + (d.fontface == 2 ? "bold" : "normal"),
+                  "font-style:" + (d.fontface == 3 ? "italic" : "normal")
+              ].join(";");
+              
+              // Measure text
+              var textSize = measureText(d.label, d.size, d.angle, textStyle);
+              
+              // Store dimensions on the data object
+              d.textWidth = textSize.width;
+              d.textHeight = textSize.height;
+              d.boxWidth = textSize.width;
+              d.boxHeight = textSize.height;
+              d.scaledX = scales.x(d.x);
+              d.scaledY = scales.y(d.y);
+          });
+          var plot_limits;
+          if (alignment === "vertical") {
+            var yRange = scales.y.range();
+            plot_limits = [Math.min.apply(null, yRange), Math.max.apply(null, yRange)];
+          } else {
+            var xRange = scales.x.range();
+            plot_limits = [Math.min.apply(null, xRange), Math.max.apply(null, xRange)];
+          }
+          // using quadprog.js for optimizing positions of colliding boxes
+          optimizeAlignedBoxes(data, alignment, min_distance, plot_limits);
+
+          var default_textSize = 12;
+          eAppend = "g";
+          eActions = function(groups) {
+              // Update or append <rect> and <text> within each group
+              groups.each(function(d) {
+                  var group = d3.select(this);
+                  // Remove existing rect/text to avoid duplicates
+                  group.selectAll("rect").remove();
+                  group.selectAll("text").remove();
+                  group.append("rect")
+                      .attr("x", function(d) { 
+                          var pos = alignment == "vertical" ? d.scaledX : d.optimizedPos;
+                          return pos - d.boxWidth / 2;
+                      })
+                      .attr("y", function(d) {
+                          var pos = alignment == "vertical" ? d.optimizedPos : d.scaledY;
+                          return pos - d.boxHeight / 2;
+                      })
+                      .attr("width", function(d) { return d.boxWidth; })
+                      .attr("height", function(d) { return d.boxHeight; })
+                      .attr("stroke-width", 1)
+                      .attr("rx", g_info.params.label_r || 0)
+                      .attr("ry", g_info.params.label_r || 0);
+
+                  group.append("text")
+                      .attr("x", function(d) {
+                          return alignment == "vertical" ? d.scaledX : d.optimizedPos;
+                      })
+                      .attr("y", function(d) {
+                          return (alignment == "vertical" ? d.optimizedPos : d.scaledY) + ((d.size || 12) / 3);
+                      })
+                      .attr("font-size", function(d) { return (d.fontsize || default_textSize) + "px"; })
+                      .style("text-anchor", "middle")
+                      .attr("stroke-width", 1)
+                      .text(function(d) { return d.label; });
+              });
+          };
+      }
+
       var rect_geoms = ["tallrect","widerect","rect"];
       if(rect_geoms.includes(g_info.geom)){
 	eAppend = "rect";
