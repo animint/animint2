@@ -1,11 +1,14 @@
-library(gapminder)
+acontext("interactions-aligned-boxes")
+
+library(animint2)
+data(WorldBank, package = "animint2")
 
 # subset of countries
 tracked_countries <- c("United States", "Vietnam", "India", "China", "Brazil",
-  "Nigeria", "Germany", "South Africa")
+                      "Nigeria", "Germany", "South Africa")
 
-# Filter gapminder data
-gm <- gapminder %>%
+# Filter WorldBank data
+wb <- WorldBank %>%
   filter(country %in% tracked_countries) %>%
   mutate(
     year = as.integer(year),
@@ -13,47 +16,46 @@ gm <- gapminder %>%
   )
 
 # Label data for aligned boxes
-label_data <- gm %>%
+label_data <- wb %>%
   mutate(label = country)
 
 # Text data for year display
 year_text_data <- data.frame(
-  year = unique(gm$year),
-  label = unique(gm$year)
+  year = unique(wb$year),
+  label = unique(wb$year)
 )
 
 viz <- animint(
-  gapminderAnim = ggplot() +
+  worldbankAnim = ggplot() +
     geom_point(
-      data = gm,
-      aes(x = gdpPercap, y = lifeExp, color = group, key = country),
+      data = wb,
+      aes(x = fertility.rate, y = life.expectancy, color = group, key = country),
       size = 8,
       showSelected = "year",
       clickSelects = "country"
     ) +
     geom_aligned_boxes(
       data = label_data,
-      aes(x = gdpPercap, y = lifeExp, label = label, fill = group, key = country),
-      alignment = "vertical", color = "#560078",label_r = "9",
+      aes(x = fertility.rate, y = life.expectancy, label = label, fill = group, key = country),
+      alignment = "vertical", color = "#ffffd1", label_r = "9",
       showSelected = "year",
       clickSelects = "country"
     ) +
-    scale_x_log10() +
-    make_text(year_text_data, x = 1e3, y = 82, label = "label") +
-    ggtitle("Life Expectancy vs GDP Per Capita") +
-    xlab("GDP Per Capita (log scale)") +
+    make_text(year_text_data, x = 1, y = 82, label = "label") +
+    ggtitle("Life Expectancy vs Fertility Rate") +
+    xlab("Fertility Rate") +
     ylab("Life Expectancy"),
 
   timeSeries = ggplot() +
     geom_line(
-      data = gm,
-      aes(x = year, y = lifeExp, group = country, color = group),
+      data = wb,
+      aes(x = year, y = life.expectancy, group = country, color = group),
       size = 1.5,
       showSelected = "country"
     ) +
     geom_point(
-      data = gm,
-      aes(x = year, y = lifeExp, color = group),
+      data = wb,
+      aes(x = year, y = life.expectancy, color = group),
       showSelected = "country",
       size = 2
     ) +
@@ -61,9 +63,9 @@ viz <- animint(
     xlab("Year") +
     ylab("Life Expectancy"),
 
-  time = list(variable = "year", ms = 1500),
+  time = list(variable = "year", ms = 1000),
   duration = list(year = 800),
-  first = list(year = 1952),
+  first = list(year = min(wb$year)),
   selector.types = list(country = "multiple")
 )
 
@@ -72,12 +74,12 @@ info <- animint2HTML(viz)
 test_that("Aligned boxes respond to deselecting and reselecting without disappearing or duplicating", {
   # Helper to extract label texts from aligned boxes
   extract_labels <- function(html_doc) {
-    text_nodes <- getNodeSet(html_doc, '//g[@class="geom2_alignedboxes_gapminderAnim"]//g[@class="geom"]/text')
+    text_nodes <- getNodeSet(html_doc, '//g[@class="geom2_alignedboxes_worldbankAnim"]//g[@class="geom"]/text')
     sapply(text_nodes, xmlValue)
   }
 
   # Deselect China
-  clickID("plot_gapminderAnim_group_variable_China")
+  clickID("plot_worldbankAnim_group_variable_China")
   Sys.sleep(0.5)
   info$html_updated1 <- getHTML()
   labels1 <- extract_labels(info$html_updated1)
@@ -85,7 +87,7 @@ test_that("Aligned boxes respond to deselecting and reselecting without disappea
   expect_true("India" %in% labels1)
 
   # Deselect India
-  clickID("plot_gapminderAnim_group_variable_India")
+  clickID("plot_worldbankAnim_group_variable_India")
   Sys.sleep(0.5)
   info$html_updated2 <- getHTML()
   labels2 <- extract_labels(info$html_updated2)
@@ -93,7 +95,7 @@ test_that("Aligned boxes respond to deselecting and reselecting without disappea
   expect_false("India" %in% labels2)
 
   # Reselect China
-  clickID("plot_gapminderAnim_group_variable_China")
+  clickID("plot_worldbankAnim_group_variable_China")
   Sys.sleep(0.5)
   info$html_updated3 <- getHTML()
   labels3 <- extract_labels(info$html_updated3)
@@ -114,6 +116,7 @@ test_that("labels do not collide even after interaction and movements", {
   # The animation is paused after some movement, and the updated positions of
   # the aligned boxes are checked to verify that they remain non-overlapping.
 
+  Sys.sleep(1) # Let movements of aligned boxes occur 
   # Pause animation
   clickID("plot_show_hide_animation_controls")
   Sys.sleep(0.5)
@@ -121,7 +124,7 @@ test_that("labels do not collide even after interaction and movements", {
   # HTML after pause
   info$html_paused <- getHTML()
   # Extracting aligned box positions after pause
-  box_groups <- getNodeSet(info$html_paused, '//g[@class="geom2_alignedboxes_gapminderAnim"]//g[@class="geom"]')
+  box_groups <- getNodeSet(info$html_paused, '//g[@class="geom2_alignedboxes_worldbankAnim"]//g[@class="geom"]')
   box_info <- lapply(box_groups, function(group) {
     rect <- getNodeSet(group, './/rect')[[1]]
     attrs <- xmlAttrs(rect)
@@ -141,7 +144,7 @@ test_that("labels do not collide even after interaction and movements", {
       y_overlap <- box1$y < (box2$y + box2$height) && (box1$y + box1$height) > box2$y
       expect_false(
         x_overlap && y_overlap,
-        info = paste("Boxes", i, "and", j, "overlap at paused year:", old.year)
+        info = paste("Boxes", i, "and", j, "overlap at paused year")
       )
     }
   }
