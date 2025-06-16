@@ -95,13 +95,21 @@ layout_base <- function(data, vars = NULL, drop = TRUE) {
   # variables that appear in the data
   has_all <- unlist(plyr::llply(values, length)) == length(vars)
   if (!any(has_all)) {
-  missing_vars <- setdiff(var_names, unique(unlist(lapply(data, names))))
+  var_names <- names(vars)
+
+  all_data_vars <- unique(unlist(lapply(data, names)))
+  missing_vars <- setdiff(var_names, all_data_vars)
+
   stop(
-    "Missing faceting variables:\n",
-    "Could not find: ", paste(missing_vars, collapse = ", "), 
-    ". Ensure these exist in the data of at least one layer."
+    paste0(
+      "Missing faceting variables: ",
+      paste(missing_vars, collapse = ", "),
+      ". Ensure these exist in the data of at least one layer."
+    ),
+    call. = FALSE
   )
 }
+
 
   base <- unique(plyr::ldply(values[has_all]))
   if (!drop) {
