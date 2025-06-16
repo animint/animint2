@@ -31,7 +31,7 @@
 #' # Other parameters
 #' v + geom_contour(aes(colour = ..level..))
 #' v + geom_contour(colour = "red")
-#' v + geom_raster(aes(fill = density)) +
+#' v + geom_tile(aes(fill = density)) +
 #'   geom_contour(colour = "white")
 #' }
 geom_contour <- function(mapping = NULL, data = NULL,
