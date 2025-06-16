@@ -110,6 +110,7 @@ layout_base <- function(data, vars = NULL, drop = TRUE) {
   )
 }
 
+
   base <- unique(plyr::ldply(values[has_all]))
   if (!drop) {
     base <- unique_combs(base)
