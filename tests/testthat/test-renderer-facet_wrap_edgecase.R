@@ -1,7 +1,7 @@
 acontext("facet_wrap error handling for missing variables")
 
 test_that("facet_wrap throws informative error when faceting variable is missing", {
-  # iris dataset without Species column
+# iris dataset without Species column
 df <- iris[, c("Sepal.Length", "Petal.Length")]
 
   p <- ggplot() +
