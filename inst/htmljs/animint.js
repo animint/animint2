@@ -1435,7 +1435,7 @@ var animint = function (to_select, json_file) {
           var alignment = g_info.params.alignment || "vertical";
           var min_distance = g_info.params.min_distance || 2;
           
-          // 1. Measure all text dimensions and calculate box sizes
+          // Measure all text dimensions and calculate box sizes
           data.forEach(function(d) {
               // Create text style string for measurement
               var textStyle = [
@@ -1474,8 +1474,7 @@ var animint = function (to_select, json_file) {
               groups.each(function(d) {
                   var group = d3.select(this);
                   // Remove existing rect/text to avoid duplicates
-                  group.selectAll("rect").remove();
-                  group.selectAll("text").remove();
+                  group.selectAll("*").remove();
                   group.append("rect")
                       .attr("x", function(d) { 
                           var pos = alignment == "vertical" ? d.scaledX : d.optimizedPos;
@@ -1487,7 +1486,9 @@ var animint = function (to_select, json_file) {
                       })
                       .attr("width", function(d) { return d.boxWidth; })
                       .attr("height", function(d) { return d.boxHeight; })
-                      .attr("stroke-width", 1)
+                      .style("opacity", get_alpha)
+                      .style("stroke", get_colour)
+                      .style("fill", get_fill)
                       .attr("rx", g_info.params.label_r || 0)
                       .attr("ry", g_info.params.label_r || 0);
 
@@ -1500,7 +1501,7 @@ var animint = function (to_select, json_file) {
                       })
                       .attr("font-size", function(d) { return (d.fontsize || default_textSize) + "px"; })
                       .style("text-anchor", "middle")
-                      .attr("stroke-width", 1)
+                      .style("fill", get_colour)
                       .text(function(d) { return d.label; });
               });
           };
@@ -1594,6 +1595,7 @@ var animint = function (to_select, json_file) {
       size = g_info.params.size;
     }
     var styleActions = function(e){
+      if (g_info.geom == "aligned_boxes") return;  // Do NOT call styleActions(e) for geom_aligned_boxes
       g_info.style_list.forEach(function(s){
 	e.style(s, function(d) {
 	  var style_on_fun = style_on_funs[s];
@@ -1617,15 +1619,18 @@ var animint = function (to_select, json_file) {
     var select_style_default = ["opacity","stroke","fill"];
     g_info.select_style = select_style_default.filter(
       X => g_info.style_list.includes(X));
+    var styles_to_apply = (g_info.geom === "aligned_boxes") ? ["opacity"] : g_info.select_style;
+    // (Only apply opacity to geom_aligned_boxes 
+    // due to its structure difference -- to avoid double styling in both <g> and <text> inside <g>)
     var over_fun = function(e){
-      g_info.select_style.forEach(function(s){
+      styles_to_apply.forEach(function(s){
         e.style(s, function (d) {
           return style_on_funs[s](d);
         });
       });
     };
     var out_fun = function(e){
-      g_info.select_style.forEach(function(s){
+      styles_to_apply.forEach(function(s){
         e.style(s, function (d) {
           var select_on = style_on_funs[s](d);
           var select_off = style_off_funs[s](d);
@@ -1655,6 +1660,7 @@ var animint = function (to_select, json_file) {
     }
     var moreActions = function(e){};
     if (has_clickSelects || has_clickSelects_variable) {
+      // if(g_info.geom != "aligned_boxes"){
       moreActions = out_fun;
       elements.call(out_fun)
         .on("mouseover", function (d) {
@@ -1664,6 +1670,7 @@ var animint = function (to_select, json_file) {
           d3.select(this).call(out_fun);
         })
       ;
+      // }
       if(has_clickSelects){
 	elements.on("click", function (d) {
             var s_name = g_info.aes.clickSelects;
