@@ -1660,7 +1660,6 @@ var animint = function (to_select, json_file) {
     }
     var moreActions = function(e){};
     if (has_clickSelects || has_clickSelects_variable) {
-      // if(g_info.geom != "aligned_boxes"){
       moreActions = out_fun;
       elements.call(out_fun)
         .on("mouseover", function (d) {
@@ -1670,7 +1669,6 @@ var animint = function (to_select, json_file) {
           d3.select(this).call(out_fun);
         })
       ;
-      // }
       if(has_clickSelects){
 	elements.on("click", function (d) {
             var s_name = g_info.aes.clickSelects;
