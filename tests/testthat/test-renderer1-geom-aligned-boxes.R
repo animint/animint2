@@ -59,7 +59,7 @@ test_that("each geom has both rect and text elements", {
 test_that("box colors match the fill aesthetic (basic check)", {
   label_names <- paste("Label", 1:5)
   for (label in label_names) {
-    fill_color <- getStyleValue(info$html, '//g[@class="geom2_alignedboxes_syntheticTrend"]//g[@class="geom"]', "fill")
+    fill_color <- getStyleValue(info$html, '//g[@class="geom2_alignedboxes_syntheticTrend"]//g[@class="geom"]/rect', "fill")
     expect_match(fill_color, "^rgb\\(", info = paste("Expected a valid RGB fill for", label))
   }
 })
