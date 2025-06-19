@@ -104,3 +104,16 @@ getClassBound <- function(geom.class, position){
   Sys.sleep(2)
   runtime_evaluate(script=script.txt)
 }
+
+# Start JS coverage collection
+start_js_coverage <- function() {
+  remDr$Profiler$enable()
+  remDr$Profiler$startPreciseCoverage(callCount = TRUE, detailed = TRUE)
+}
+
+# Stop JS coverage collection and save to file
+stop_js_coverage <- function(outfile = "../js-coverage.json") {
+  cov <- remDr$Profiler$takePreciseCoverage()
+  remDr$Profiler$stopPreciseCoverage()
+  jsonlite::write_json(cov$result, outfile, auto_unbox = TRUE)
+}
