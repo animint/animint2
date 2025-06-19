@@ -1,0 +1,9 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 80%
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
+  require_changes: true

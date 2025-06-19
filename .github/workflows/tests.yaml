@@ -38,3 +38,49 @@ jobs:
       
       - name: run tests
         run: if [ "$TEST_SUITE" == "CRAN" ];then bash build.sh;else Rscript -e "source('tests/testthat.R', chdir = TRUE)";fi
+
+  test-and-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
+
+      - name: Install covr
+        run: Rscript -e 'install.packages("covr")'
+
+      - name: Install Node.js and puppeteer-to-istanbul
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y nodejs npm
+          npm install -g puppeteer-to-istanbul nyc
+
+      - name: Run R tests and collect coverage
+        run: |
+          cd tests
+          Rscript run-coverage.R
+          cd ../
+
+      - name: Run R tests (renderer) to collect JS coverage
+        env:
+          TEST_SUITE: renderer
+        run: |
+          cd tests
+          Rscript ../tests/testthat.R
+          cd ../
+
+      - name: Convert JS coverage to lcov
+        run: |
+          npx puppeteer-to-istanbul js-coverage.json
+          npx nyc report --reporter=lcov --report-dir=coverage
+
+      - name: Download Codecov uploader
+        run: curl -Os https://uploader.codecov.io/latest/linux/codecov
+      - name: Make uploader executable
+        run: chmod +x codecov
+
+      - name: Upload coverage to Codecov
+        # env:
+         
+        run: |
+          ./codecov -f coverage.xml -f coverage/lcov.info
