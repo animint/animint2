@@ -72,6 +72,7 @@ Depends:
     R (>= 3.4.0)
 Imports:
     servr,
+    covr,
     digest,
     RJSONIO,
     grid,
@@ -89,6 +90,7 @@ Suggests:
     sp,
     gistr (>= 0.2),
     shiny,
+    covr,
     RColorBrewer,
     htmltools,
     rmarkdown,
