@@ -55,18 +55,13 @@ jobs:
           sudo apt-get install -y nodejs npm
           npm install -g puppeteer-to-istanbul nyc
 
-      # - name: Run R tests and collect coverage
-      #   run: |
-      #     Rscript run-coverage.R
-      #     Rscript -e 'covr::codecov()'
-
-      - name: Run R tests (renderer) to collect JS coverage
+      - name: Run all tests and collect R coverage
         env:
           TEST_SUITE: renderer
         run: |
-          cd tests
-          Rscript ../tests/testthat.R
-          cd ../
+          Rscript -e 'cov <- covr::package_coverage(type = "tests"); covr::to_cobertura(cov, file = "coverage.xml")'
+          # This will run all tests (including renderer) and collect R coverage.
+          # The JS coverage will be dumped by your testthat.R as js-coverage.json
 
       - name: Convert JS coverage to lcov
         run: |
@@ -79,7 +74,7 @@ jobs:
         run: chmod +x codecov
 
       - name: Upload coverage to Codecov
-        # env:
-         
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: |
-          ./codecov -f coverage/lcov.info
+          ./codecov -f coverage.xml -f coverage/lcov.info
