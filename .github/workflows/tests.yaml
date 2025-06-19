@@ -55,11 +55,10 @@ jobs:
           sudo apt-get install -y nodejs npm
           npm install -g puppeteer-to-istanbul nyc
 
-      - name: Run R tests and collect coverage
-        run: |
-          cd tests
-          Rscript run-coverage.R
-          cd ../
+      # - name: Run R tests and collect coverage
+      #   run: |
+      #     Rscript run-coverage.R
+      #     Rscript -e 'covr::codecov()'
 
       - name: Run R tests (renderer) to collect JS coverage
         env:
@@ -83,4 +82,4 @@ jobs:
         # env:
          
         run: |
-          ./codecov -f coverage.xml -f coverage/lcov.info
+          ./codecov -f coverage/lcov.info
