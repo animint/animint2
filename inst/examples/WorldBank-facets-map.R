@@ -90,7 +90,7 @@ wb.facets <- animint(
       size=4,
       alpha=1,
       alpha_off=0.1)+
-    geom_text(aes(
+    geom_aligned_boxes(aes(
       year, life.expectancy, colour=region, label=country),
       showSelected="country",
       clickSelects="country",
