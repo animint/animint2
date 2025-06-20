@@ -159,6 +159,7 @@ Collate:
     'fortify.r'
     'stat-.r'
     'geom-abline.r'
+    'geom-aligned-boxes.R'
     'geom-rect.r'
     'geom-bar.r'
     'geom-bin2d.r'

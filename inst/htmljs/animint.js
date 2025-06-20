@@ -1429,6 +1429,84 @@ var animint = function (to_select, json_file) {
 	};
 	eAppend = "circle";
       }
+
+      if (g_info.geom == "aligned_boxes") {
+          // Get parameters
+          var alignment = g_info.params.alignment || "vertical";
+          var min_distance = g_info.params.min_distance || 2;
+          
+          // Measure all text dimensions and calculate box sizes
+          data.forEach(function(d) {
+              // Create text style string for measurement
+              var textStyle = [
+                  "font-family:" + (d.family || "sans-serif"),
+                  "font-size:" + d.fontsize + "px",
+                  "font-weight:" + (d.fontface == 2 ? "bold" : "normal"),
+                  "font-style:" + (d.fontface == 3 ? "italic" : "normal")
+              ].join(";");
+              
+              // Measure text
+              var textSize = measureText(d.label, d.size, d.angle, textStyle);
+              
+              // Store dimensions on the data object
+              d.textWidth = textSize.width;
+              d.textHeight = textSize.height;
+              d.boxWidth = textSize.width;
+              d.boxHeight = textSize.height;
+              d.scaledX = scales.x(d.x);
+              d.scaledY = scales.y(d.y);
+          });
+          var plot_limits;
+          if (alignment === "vertical") {
+            var yRange = scales.y.range();
+            plot_limits = [Math.min.apply(null, yRange), Math.max.apply(null, yRange)];
+          } else {
+            var xRange = scales.x.range();
+            plot_limits = [Math.min.apply(null, xRange), Math.max.apply(null, xRange)];
+          }
+          // using quadprog.js for optimizing positions of colliding boxes
+          optimizeAlignedBoxes(data, alignment, min_distance, plot_limits);
+
+          var default_textSize = 12;
+          eAppend = "g";
+          eActions = function(groups) {
+              // Update or append <rect> and <text> within each group
+              groups.each(function(d) {
+                  var group = d3.select(this);
+                  // Remove existing rect/text to avoid duplicates
+                  group.selectAll("*").remove();
+                  group.append("rect")
+                      .attr("x", function(d) { 
+                          var pos = alignment == "vertical" ? d.scaledX : d.optimizedPos;
+                          return pos - d.boxWidth / 2;
+                      })
+                      .attr("y", function(d) {
+                          var pos = alignment == "vertical" ? d.optimizedPos : d.scaledY;
+                          return pos - d.boxHeight / 2;
+                      })
+                      .attr("width", function(d) { return d.boxWidth; })
+                      .attr("height", function(d) { return d.boxHeight; })
+                      .style("opacity", get_alpha)
+                      .style("stroke", get_colour)
+                      .style("fill", get_fill)
+                      .attr("rx", g_info.params.label_r || 0)
+                      .attr("ry", g_info.params.label_r || 0);
+
+                  group.append("text")
+                      .attr("x", function(d) {
+                          return alignment == "vertical" ? d.scaledX : d.optimizedPos;
+                      })
+                      .attr("y", function(d) {
+                          return (alignment == "vertical" ? d.optimizedPos : d.scaledY) + ((d.size || 12) / 3);
+                      })
+                      .attr("font-size", function(d) { return (d.fontsize || default_textSize) + "px"; })
+                      .style("text-anchor", "middle")
+                      .style("fill", get_colour)
+                      .text(function(d) { return d.label; });
+              });
+          };
+      }
+
       var rect_geoms = ["tallrect","widerect","rect"];
       if(rect_geoms.includes(g_info.geom)){
 	eAppend = "rect";
@@ -1517,6 +1595,7 @@ var animint = function (to_select, json_file) {
       size = g_info.params.size;
     }
     var styleActions = function(e){
+      if (g_info.geom == "aligned_boxes") return;  // Do NOT call styleActions(e) for geom_aligned_boxes
       g_info.style_list.forEach(function(s){
 	e.style(s, function(d) {
 	  var style_on_fun = style_on_funs[s];
@@ -1540,15 +1619,18 @@ var animint = function (to_select, json_file) {
     var select_style_default = ["opacity","stroke","fill"];
     g_info.select_style = select_style_default.filter(
       X => g_info.style_list.includes(X));
+    var styles_to_apply = (g_info.geom === "aligned_boxes") ? ["opacity"] : g_info.select_style;
+    // (Only apply opacity to geom_aligned_boxes 
+    // due to its structure difference -- to avoid double styling in both <g> and <text> inside <g>)
     var over_fun = function(e){
-      g_info.select_style.forEach(function(s){
+      styles_to_apply.forEach(function(s){
         e.style(s, function (d) {
           return style_on_funs[s](d);
         });
       });
     };
     var out_fun = function(e){
-      g_info.select_style.forEach(function(s){
+      styles_to_apply.forEach(function(s){
         e.style(s, function (d) {
           var select_on = style_on_funs[s](d);
           var select_off = style_off_funs[s](d);
