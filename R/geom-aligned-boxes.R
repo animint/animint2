@@ -77,7 +77,7 @@ GeomAlignedBoxes <- gganimintproto("GeomAlignedBoxes", Geom,
   required_aes = c("x", "y", "label"),
   
   default_aes = aes(
-    colour = "black", fill = "grey", size = 3.88, 
+    colour = "black", fill = "white", size = 3.88, 
     angle = 0, hjust = 0.5, vjust = 0.5, alpha = 1,
     family = "", fontface = 1, lineheight = 1.2, fontsize = 12
   ),

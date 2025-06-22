@@ -1140,8 +1140,11 @@ var animint = function (to_select, json_file) {
       };
     }
     var get_colour_off_default = get_colour;
-
-    var fill = "black", fill_off = "black";
+    if (g_info.geom == "aligned_boxes") {
+      var fill = "white", fill_off = "white";
+    }else{
+      var fill = "black", fill_off = "black";
+    }
     var get_fill = function (d) {
       return fill;
     };
