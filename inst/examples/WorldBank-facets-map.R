@@ -90,7 +90,7 @@ wb.facets <- animint(
       size=4,
       alpha=1,
       alpha_off=0.1)+
-    geom_aligned_boxes(aes(
+    geom_label_aligned(aes(
       year, life.expectancy, colour=region, label=country),
       showSelected="country",
       clickSelects="country",
@@ -118,7 +118,7 @@ wb.facets <- animint(
       alpha_off=0.3,
       chunk_vars=character(),
       data=SCATTER(not.na))+
-    geom_aligned_boxes(aes(
+    geom_label_aligned(aes(
       fertility.rate, life.expectancy, label=country,
       key=country), #also use key here!
       showSelected=c("country", "year", "region"),

@@ -1,6 +1,7 @@
 acontext("geom-label-aligned")
 
 library(animint2)
+library(dplyr)
 data(WorldBank, package = "animint2")
 
 # subset of countries

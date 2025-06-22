@@ -1437,19 +1437,20 @@ var animint = function (to_select, json_file) {
           // Get parameters
           var alignment = g_info.params.alignment || "vertical";
           var min_distance = g_info.params.min_distance || 2;
+          var default_textSize = 12;
           
           // Measure all text dimensions and calculate box sizes
           data.forEach(function(d) {
               // Create text style string for measurement
               var textStyle = [
                   "font-family:" + (d.family || "sans-serif"),
-                  "font-size:" + d.fontsize + "px",
                   "font-weight:" + (d.fontface == 2 ? "bold" : "normal"),
                   "font-style:" + (d.fontface == 3 ? "italic" : "normal")
               ].join(";");
               
+              var fontsize = d.fontsize || default_textSize;
               // Measure text
-              var textSize = measureText(d.label, d.fontsize, d.angle, textStyle);
+              var textSize = measureText(d.label, fontsize, d.angle, textStyle);
               
               // Store dimensions on the data object
               d.boxWidth = textSize.width;
@@ -1468,7 +1469,6 @@ var animint = function (to_select, json_file) {
           // using quadprog.js for optimizing positions of colliding boxes
           optimizeAlignedLabels(data, alignment, min_distance, plot_limits);
 
-          var default_textSize = 12;
           eAppend = "g";
           eActions = function(groups) {
               // Update or append <rect> and <text> within each group
