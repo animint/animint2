@@ -8,8 +8,7 @@ tracked_countries <- c("United States", "Vietnam", "India", "China", "Brazil",
                       "Nigeria", "Germany", "South Africa")
 
 # Filter WorldBank data
-wb <- WorldBank %>%
-  filter(country %in% tracked_countries) %>%
+wb <- subset(WorldBank, country %in% tracked_countries) %>%
   mutate(
     year = as.integer(year),
     group = country
