@@ -1151,7 +1151,16 @@ var animint = function (to_select, json_file) {
     var get_fill_off = function (d) {
       return fill_off;
     };
-    
+
+    var get_hjust;
+    var default_hjust = 0.5; // default center
+    if(aes.hasOwnProperty("hjust")){
+      get_hjust = get_attr("hjust");
+    }else if(g_info.params.hasOwnProperty("hjust")){
+      get_hjust = function(d){ return g_info.params.hjust; };
+    }else{
+      get_hjust = function(d){ return default_hjust; };
+    }
     var angle = 0;
     var get_angle;
     if(aes.hasOwnProperty("angle")){
@@ -1479,7 +1488,7 @@ var animint = function (to_select, json_file) {
                   group.append("rect")
                       .attr("x", function(d) { 
                           var pos = alignment == "vertical" ? d.scaledX : d.optimizedPos;
-                          return pos - d.boxWidth / 2;
+                          return pos - d.boxWidth * get_hjust(d);
                       })
                       .attr("y", function(d) {
                           var pos = alignment == "vertical" ? d.optimizedPos : d.scaledY;
@@ -1495,7 +1504,8 @@ var animint = function (to_select, json_file) {
 
                   group.append("text")
                       .attr("x", function(d) {
-                          return alignment == "vertical" ? d.scaledX : d.optimizedPos;
+                          var pos = alignment == "vertical" ? d.scaledX : d.optimizedPos;
+                          return pos - d.boxWidth * get_hjust(d) + d.boxWidth / 2;
                       })
                       .attr("y", function(d) {
                           return (alignment == "vertical" ? d.optimizedPos : d.scaledY) + ((d.size || 12) / 3);
