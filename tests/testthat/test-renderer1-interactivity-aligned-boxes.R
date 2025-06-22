@@ -1,4 +1,4 @@
-acontext("geom-aligned-boxes")
+acontext("geom-label-aligned")
 
 library(animint2)
 data(WorldBank, package = "animint2")
@@ -15,7 +15,7 @@ wb <- WorldBank %>%
     group = country
   )
 
-# Label data for aligned boxes
+# Label data for aligned labels
 label_data <- wb %>%
   mutate(label = country)
 
@@ -34,7 +34,7 @@ viz <- animint(
       showSelected = "year",
       clickSelects = "country"
     ) +
-    geom_aligned_boxes(
+    geom_label_aligned(
       data = label_data,
       aes(x = fertility.rate, y = life.expectancy, label = label, fill = group, key = country),
       alignment = "vertical", color = "#ffffd1", label_r = "9",
@@ -72,13 +72,13 @@ viz <- animint(
 info <- animint2HTML(viz)
 
 # Basic rendering tests
-test_that("correct number of aligned box geoms are created", {
-  box_groups <- getNodeSet(info$html, '//g[@class="geom2_alignedboxes_worldbankAnim"]//g[@class="geom"]')
+test_that("correct number of label_aligned geoms are created", {
+  box_groups <- getNodeSet(info$html, '//g[@class="geom2_labelaligned_worldbankAnim"]//g[@class="geom"]')
   expect_equal(length(box_groups), length(tracked_countries))
 })
 
 test_that("each geom has both rect and text elements", {
-  box_groups <- getNodeSet(info$html, '//g[@class="geom2_alignedboxes_worldbankAnim"]//g[@class="geom"]')
+  box_groups <- getNodeSet(info$html, '//g[@class="geom2_labelaligned_worldbankAnim"]//g[@class="geom"]')
   for (group in box_groups) {
     rect <- getNodeSet(group, './/rect')
     expect_equal(length(rect), 1)
@@ -88,7 +88,7 @@ test_that("each geom has both rect and text elements", {
 })
 
 test_that("label text content is correct", {
-  box_groups <- getNodeSet(info$html, '//g[@class="geom2_alignedboxes_worldbankAnim"]//g[@class="geom"]')
+  box_groups <- getNodeSet(info$html, '//g[@class="geom2_labelaligned_worldbankAnim"]//g[@class="geom"]')
   actual_texts <- sapply(box_groups, function(group) {
     text_node <- getNodeSet(group, './/text')[[1]]
     xmlValue(text_node)
@@ -97,18 +97,18 @@ test_that("label text content is correct", {
 })
 
 # Collision avoidance tests
-test_that("boxes do not overlap initially", {
+test_that("label boxes do not overlap initially", {
   check_aligned_box_collisions(
     info$html,
-    '//g[@class="geom2_alignedboxes_worldbankAnim"]//g[@class="geom"]'
+    '//g[@class="geom2_labelaligned_worldbankAnim"]//g[@class="geom"]'
   )
 })
 
 # Interaction tests
-test_that("Aligned boxes respond to deselecting and reselecting without disappearing or duplicating", {
-  # Helper to extract label texts from aligned boxes
+test_that("Aligned Labels respond to deselecting and reselecting without disappearing or duplicating", {
+  # Helper to extract label texts from aligned labels
   extract_labels <- function(html_doc) {
-    text_nodes <- getNodeSet(html_doc, '//g[@class="geom2_alignedboxes_worldbankAnim"]//g[@class="geom"]/text')
+    text_nodes <- getNodeSet(html_doc, '//g[@class="geom2_labelaligned_worldbankAnim"]//g[@class="geom"]/text')
     sapply(text_nodes, xmlValue)
   }
 
@@ -143,14 +143,14 @@ test_that("Aligned boxes respond to deselecting and reselecting without disappea
 test_that("labels do not collide even after interaction and movements", {
   # This test ensures that aligned box labels do not overlap
   # even after:
-  # 1. The animation has been playing for some time, causing boxes to move
+  # 1. The animation has been playing for some time, causing label boxes to move
   #    to new positions
   # 2. User interactions such as selection/deselection of countries have occurred. (during previous test)
 
   # The animation is paused after some movement, and the updated positions of
-  # the aligned boxes are checked to verify that they remain non-overlapping.
+  # the aligned labels are checked to verify that they remain non-overlapping.
 
-  Sys.sleep(1) # Let movements of aligned boxes occur 
+  Sys.sleep(1) # Let movements of aligned labels occur 
   # Pause animation
   clickID("plot_show_hide_animation_controls")
   Sys.sleep(0.5)
@@ -159,7 +159,7 @@ test_that("labels do not collide even after interaction and movements", {
   info$html_paused <- getHTML()
   check_aligned_box_collisions(
     info$html_paused,
-    '//g[@class="geom2_alignedboxes_worldbankAnim"]//g[@class="geom"]'
+    '//g[@class="geom2_labelaligned_worldbankAnim"]//g[@class="geom"]'
   )
 })
 
@@ -183,7 +183,7 @@ viz <- list(
       aes(x = circumference, y = age, group = Tree, color = TreeFactor),
       size = 1.2
     ) +
-    geom_aligned_boxes(
+    geom_label_aligned(
       data = label_data,
       aes(x = circumference, y = age, label = label, fill = TreeFactor),
       alignment = "horizontal",
@@ -196,7 +196,7 @@ viz <- list(
 info <- animint2HTML(viz)
 
 # Path to the chunk1 TSV file
-chunk1.tsv <- file.path("animint-htmltest", "geom2_alignedboxes_orangeGrowth_chunk1.tsv")
+chunk1.tsv <- file.path("animint-htmltest", "geom2_labelaligned_orangeGrowth_chunk1.tsv")
 
 test_that("chunk1.tsv exists", {
   expect_true(file.exists(chunk1.tsv))
@@ -225,9 +225,9 @@ test_that("chunk1 group column matches TreeFactor as numeric levels", {
   expect_setequal(actual.groups, expected.groups)
 })
 
-test_that("boxes do not overlap", {
+test_that("label boxes do not overlap", {
   check_aligned_box_collisions(
     info$html,
-    '//g[contains(@class, "geom2_alignedboxes_orangeGrowth")]//g[@class="geom"]'
+    '//g[contains(@class, "geom2_labelaligned_orangeGrowth")]//g[@class="geom"]'
   )
 })

@@ -607,7 +607,7 @@ function solveQP(Dmat, dvec, Amat, bvec = [], meq = 0, factorized = [0, 0]) {
 // `optimizeAlignedBoxes` uses a QP solver to reposition only the overlapping label boxes,
 // finding the nearest possible positions to their original locations, subject to the constraint
 // that the boxes do not overlap.
-function optimizeAlignedBoxes(data, alignment, min_distance = 2, plot_limits = null) {
+function optimizeAlignedLabels(data, alignment, min_distance = 2, plot_limits = null) {
   const n = data.length;
   if (n === 0) return;
 

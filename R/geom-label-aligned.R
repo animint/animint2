@@ -1,4 +1,4 @@
-#' Aligned label boxes
+#' Non-overlapping label boxes
 #'
 #' This geom creates boxes with labels that are aligned either vertically or horizontally,
 #' using quadratic programming to optimize their positions and avoid overlaps.
@@ -17,7 +17,7 @@
 #'   y = c(1, 2, 3),
 #'   label = c("A", "B", "C")
 #' )
-#' geom_aligned_boxes(data = df, aes(x, y, label = label))
+#' geom_label_aligned(data = df, aes(x, y, label = label))
 #' 
 #' Example 2:
 #' 
@@ -34,7 +34,7 @@
 #'   bodyPlot = ggplot() +
 #'     geom_line(aes(x = Time, y = weight, group = Rat, colour = Rat),
 #'               data = BodyWeight) +
-#'     geom_aligned_boxes(aes(x = Time, y = weight, label = label, fill = Rat),
+#'     geom_label_aligned(aes(x = Time, y = weight, label = label, fill = Rat),
 #'                        data = label_data) +
 #'     facet_wrap(~Diet, nrow = 1) +
 #'     ggtitle("Rat body weight over time by diet") +
@@ -42,7 +42,7 @@
 #'     ylab("Body Weight (grams)")
 #' )
 
-geom_aligned_boxes <- function(mapping = NULL, data = NULL,
+geom_label_aligned <- function(mapping = NULL, data = NULL,
                               stat = "identity", position = "identity",
                               ...,
                               label.r = unit(0.15, "lines"),
@@ -56,7 +56,7 @@ geom_aligned_boxes <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomAlignedBoxes,
+    geom = GeomLabelAligned,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -71,9 +71,9 @@ geom_aligned_boxes <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname geom_aligned_boxes
+#' @rdname geom_label_aligned
 #' @export
-GeomAlignedBoxes <- gganimintproto("GeomAlignedBoxes", Geom,
+GeomLabelAligned <- gganimintproto("GeomLabelAligned", Geom,
   required_aes = c("x", "y", "label"),
   
   default_aes = aes(
@@ -134,12 +134,12 @@ GeomAlignedBoxes <- gganimintproto("GeomAlignedBoxes", Geom,
     grobs <- mapply(function(r, t) grid::gTree(children = grid::gList(r, t)), 
                    rect_grobs, text_grobs)
     class(grobs) <- "gList"
-    ggname("geom_aligned_boxes", grid::grobTree(children = grobs))
+    ggname("geom_label_aligned", grid::grobTree(children = grobs))
   },
 
    pre_process = function(g, g.data, ...) {
-    # This ensures our geom is identified as "aligned_boxes" in JS
-    g$geom <- "aligned_boxes"
+    # This ensures our geom is identified as "label_aligned" in JS
+    g$geom <- "label_aligned"
     return(list(g = g, g.data = g.data))
   },
   

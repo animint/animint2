@@ -1140,7 +1140,7 @@ var animint = function (to_select, json_file) {
       };
     }
     var get_colour_off_default = get_colour;
-    if (g_info.geom == "aligned_boxes") {
+    if (g_info.geom == "label_aligned") {
       var fill = "white", fill_off = "white";
     }else{
       var fill = "black", fill_off = "black";
@@ -1433,7 +1433,7 @@ var animint = function (to_select, json_file) {
 	eAppend = "circle";
       }
 
-      if (g_info.geom == "aligned_boxes") {
+      if (g_info.geom == "label_aligned") {
           // Get parameters
           var alignment = g_info.params.alignment || "vertical";
           var min_distance = g_info.params.min_distance || 2;
@@ -1449,11 +1449,9 @@ var animint = function (to_select, json_file) {
               ].join(";");
               
               // Measure text
-              var textSize = measureText(d.label, d.size, d.angle, textStyle);
+              var textSize = measureText(d.label, d.fontsize, d.angle, textStyle);
               
               // Store dimensions on the data object
-              d.textWidth = textSize.width;
-              d.textHeight = textSize.height;
               d.boxWidth = textSize.width;
               d.boxHeight = textSize.height;
               d.scaledX = scales.x(d.x);
@@ -1468,7 +1466,7 @@ var animint = function (to_select, json_file) {
             plot_limits = [Math.min.apply(null, xRange), Math.max.apply(null, xRange)];
           }
           // using quadprog.js for optimizing positions of colliding boxes
-          optimizeAlignedBoxes(data, alignment, min_distance, plot_limits);
+          optimizeAlignedLabels(data, alignment, min_distance, plot_limits);
 
           var default_textSize = 12;
           eAppend = "g";
@@ -1598,7 +1596,7 @@ var animint = function (to_select, json_file) {
       size = g_info.params.size;
     }
     var styleActions = function(e){
-      if (g_info.geom == "aligned_boxes") return;  // Do NOT call styleActions(e) for geom_aligned_boxes
+      if (g_info.geom == "label_aligned") return;  // Do NOT call styleActions(e) for geom_label_aligned
       g_info.style_list.forEach(function(s){
 	e.style(s, function(d) {
 	  var style_on_fun = style_on_funs[s];
@@ -1622,8 +1620,8 @@ var animint = function (to_select, json_file) {
     var select_style_default = ["opacity","stroke","fill"];
     g_info.select_style = select_style_default.filter(
       X => g_info.style_list.includes(X));
-    var styles_to_apply = (g_info.geom === "aligned_boxes") ? ["opacity"] : g_info.select_style;
-    // (Only apply opacity to geom_aligned_boxes 
+    var styles_to_apply = (g_info.geom === "label_aligned") ? ["opacity"] : g_info.select_style;
+    // (Only apply opacity to geom_label_aligned 
     // due to its structure difference -- to avoid double styling in both <g> and <text> inside <g>)
     var over_fun = function(e){
       styles_to_apply.forEach(function(s){
