@@ -1,4 +1,4 @@
-acontext("interactions-aligned-boxes")
+acontext("geom-aligned-boxes")
 
 library(animint2)
 data(WorldBank, package = "animint2")

@@ -118,7 +118,7 @@ wb.facets <- animint(
       alpha_off=0.3,
       chunk_vars=character(),
       data=SCATTER(not.na))+
-    geom_text(aes(
+    geom_aligned_boxes(aes(
       fertility.rate, life.expectancy, label=country,
       key=country), #also use key here!
       showSelected=c("country", "year", "region"),
