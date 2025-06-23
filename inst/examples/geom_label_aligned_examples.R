@@ -65,24 +65,73 @@ viz2 <- list(
 # Render to directory
 animint2dir(viz2, "bodyweight-label-aligned")
 
-# Plot 3 : Collisions from all directions
-# Simulating 15 points arranged close enough to test for all-direction collisions
-set.seed(42)
-label_data <- data.frame(
-  x = c(1, 2, 3, 4, 5, 3.5, 2.5, 3, 4, 1.5, 2, 4.5, 3, 2, 5),
-  y = c(1, 2, 3, 4, 5, 2.5, 3.5, 4, 1, 4.5, 2, 3, 3.2, 2.8, 1.2),
-  label = paste("Label", 1:15)
-)
+# Example 3: World Bank Data with Interactive Aligned Labels
+library(dplyr)
+data(WorldBank, package = "animint2")
 
-# color for visibility
-label_data$group <- factor(1:15)
+# subset of countries
+tracked_countries <- c("United States", "Vietnam", "India", "China", "Brazil",
+                      "Nigeria", "Germany", "South Africa")
+
+# Filter WorldBank data
+wb <- subset(WorldBank, country %in% tracked_countries) %>%
+  mutate(
+    year = as.integer(year),
+    group = country
+  )
+
+# Label data for aligned labels
+label_data <- wb %>%
+  mutate(label = country)
+
+# Text data for year display
+year_text_data <- data.frame(
+  year = unique(wb$year),
+  label = unique(wb$year)
+)
 
 viz3 <- list(
-  overlapTest = ggplot() +
-    geom_label_aligned(aes(x, y, label = label, fill = group), data = label_data) +
-    ggtitle("Overlap Test: Aligned Labels") +
-    xlab("X") +
-    ylab("Y")
+  worldbankAnim = ggplot() +
+    geom_point(
+      data = wb,
+      aes(x = fertility.rate, y = life.expectancy, color = group, key = country),
+      size = 8,
+      showSelected = "year",
+      clickSelects = "country"
+    ) +
+    geom_label_aligned(
+      data = label_data,
+      aes(x = fertility.rate, y = life.expectancy, label = label, fill = group, key = country),
+      alignment = "vertical", color = "#ffffd1", label_r = "9",
+      showSelected = "year",
+      clickSelects = "country"
+    ) +
+    make_text(year_text_data, x = 1, y = 82, label = "label") +
+    ggtitle("Life Expectancy vs Fertility Rate") +
+    xlab("Fertility Rate") +
+    ylab("Life Expectancy"),
+
+  timeSeries = ggplot() +
+    geom_line(
+      data = wb,
+      aes(x = year, y = life.expectancy, group = country, color = group),
+      size = 1.5,
+      showSelected = "country"
+    ) +
+    geom_point(
+      data = wb,
+      aes(x = year, y = life.expectancy, color = group),
+      showSelected = "country",
+      size = 2
+    ) +
+    ggtitle("Life Expectancy Over Time (Selected Country)") +
+    xlab("Year") +
+    ylab("Life Expectancy"),
+
+  time = list(variable = "year", ms = 1000),
+  duration = list(year = 800),
+  first = list(year = min(wb$year)),
+  selector.types = list(country = "multiple")
 )
 
-animint2dir(viz3, "overlap-label-aligned")
+animint2dir(viz3, "worldbank-label-aligned")
