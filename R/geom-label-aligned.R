@@ -1,13 +1,27 @@
 #' Non-overlapping label boxes
 #'
 #' This geom creates boxes with labels that are aligned either vertically or horizontally,
-#' using quadratic programming to optimize their positions and avoid overlaps.
+#' using quadratic programming to optimize their positions and avoid overlaps. The QP solver
+#' is applied after all showSelected filtering occurs, and operates as follows:
+#' 
+#' For vertical alignment (default):
+#' - QP optimizes Y positions while keeping X positions fixed
+#' - Constraints ensure boxes don't overlap vertically
+#' - Boxes are aligned along the vertical axis at their original X positions
+#' 
+#' For horizontal alignment:
+#' - QP optimizes X positions while keeping Y positions fixed
+#' - Constraints ensure boxes don't overlap horizontally
+#' - Boxes are aligned along the horizontal axis at their original Y positions
+#'
+#' The QP solver minimizes the total squared distance from original positions while
+#' enforcing minimum spacing constraints between boxes.
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point
 #' @param label.r Radius of rounded corners. Defaults to 0.15 lines.
 #' @param label.size Size of label border, in mm.
-#' @param alignment One of "vertical" or "horizontal" to specify the alignment direction.
+#' @param alignment One of "vertical" (QP on Y axis) or "horizontal" (QP on X axis)
 #' @param min_distance Minimum distance between boxes in native units.
 #' @export
 #' @examples
