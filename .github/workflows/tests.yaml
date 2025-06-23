@@ -37,47 +37,11 @@ jobs:
         run: git config --global user.email toby.hocking@r-project.org
       
       - name: run tests
-        run: if [ "$TEST_SUITE" == "CRAN" ];then bash build.sh;else Rscript -e "source('tests/testthat.R', chdir = TRUE)";fi
-  
-  r-coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: r-lib/actions/setup-r@v2
-      - uses: r-lib/actions/setup-r-dependencies@v2
-      - name: Install covr
-        run: Rscript -e 'install.packages("covr")'
-      - name: Run covr on compiler tests
-        run: Rscript -e 'cov <- covr::package_coverage(type = "tests", test_filter = "compiler"); covr::to_cobertura(cov, file = "coverage.xml")'
-      - name: Download Codecov uploader
-        run: curl -Os https://uploader.codecov.io/latest/linux/codecov
-      - name: Make uploader executable
-        run: chmod +x codecov
-      - name: Upload R coverage to Codecov
-        run: ./codecov -f coverage.xml
-
-  js-coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: r-lib/actions/setup-r@v2
-      - uses: r-lib/actions/setup-r-dependencies@v2
-      - name: Install Node.js and puppeteer-to-istanbul
         run: |
-          sudo apt-get update
-          sudo apt-get install -y nodejs npm
-          npm install -g puppeteer-to-istanbul nyc
-      - name: Run renderer tests (collect JS coverage)
-        env:
-          TEST_SUITE: renderer
-        run: Rscript tests/testthat.R
-      - name: Convert JS coverage to lcov
-        run: |
-          npx puppeteer-to-istanbul js-coverage.json
-          npx nyc report --reporter=lcov --report-dir=coverage
-      - name: Download Codecov uploader
-        run: curl -Os https://uploader.codecov.io/latest/linux/codecov
-      - name: Make uploader executable
-        run: chmod +x codecov
-      - name: Upload JS coverage to Codecov
-        run: ./codecov -f coverage/lcov.info
+          if [ "$TEST_SUITE" == "CRAN" ]; then
+            bash build.sh
+          elif [ "$TEST_SUITE" == "compiler" ]; then
+            Rscript -e "covr::codecov(type = 'tests', filter = 'compiler')"
+          else
+            Rscript -e "source('tests/testthat.R', chdir = TRUE)"
+          fi
