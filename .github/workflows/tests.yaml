@@ -41,7 +41,7 @@ jobs:
           if [ "$TEST_SUITE" == "CRAN" ]; then
             bash build.sh
           elif [ "$TEST_SUITE" == "compiler" ]; then
-            Rscript -e "source('tests/testthat.R', chdir = TRUE)" && \
+            Rscript -e "source('tests/testthat.R', chdir = TRUE)"
           else
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
           fi
