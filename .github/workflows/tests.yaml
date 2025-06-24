@@ -44,7 +44,9 @@ jobs:
             # First run tests normally
             Rscript -e "source('tests/testthat.R', chdir = TRUE)" && \
             # If successful, run with coverage
-            Rscript -e "covr::codecov(type = 'tests', filter = 'compiler')"
+            # Rscript -e "covr::codecov(type = 'tests', filter = 'compiler',token = Sys.getenv("CODECOV_TOKEN"))"
           else
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
           fi
+        after_success:
+          run: Rscript -e 'library(covr);codecov()'
