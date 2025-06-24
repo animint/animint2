@@ -40,10 +40,10 @@ jobs:
         run: |
           if [ "$TEST_SUITE" == "CRAN" ]; then
             bash build.sh
-          elif [ "$TEST_SUITE" == "compiler" ]; then
-            Rscript -e "source('tests/testthat.R', chdir = TRUE)"
           else
+            # Runs tests with proper directory context
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
+            
+            # Uploads coverage with minimal output
+            Rscript -e 'covr::codecov(quiet = TRUE)'
           fi
-      - name: Run full test coverage and upload to Codecov
-        run: Rscript -e "covr::codecov()"
