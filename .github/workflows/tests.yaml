@@ -41,12 +41,9 @@ jobs:
           if [ "$TEST_SUITE" == "CRAN" ]; then
             bash build.sh
           elif [ "$TEST_SUITE" == "compiler" ]; then
-            # First run tests normally
             Rscript -e "source('tests/testthat.R', chdir = TRUE)" && \
-            # If successful, run with coverage
-            # Rscript -e "covr::codecov(type = 'tests', filter = 'compiler',token = Sys.getenv("CODECOV_TOKEN"))"
           else
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
           fi
-        after_success:
-          run: Rscript -e 'library(covr);codecov()'
+      - name: Run full test coverage and upload to Codecov
+        run: Rscript -e "covr::codecov()"
