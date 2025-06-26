@@ -614,72 +614,104 @@ function optimizeAlignedLabels(data, alignment, min_distance = 2, plot_limits = 
   // Prepare variables
   const getSize = d => alignment === "vertical" ? d.boxHeight : d.boxWidth;
   const getPos = d => alignment === "vertical" ? d.scaledY : d.scaledX;
+  const getFixedPos = d => alignment === "vertical" ? d.scaledX : d.scaledY;
   const setOptimized = (d, pos) => { d.optimizedPos = pos; };
 
-  // Sort by desired position
-  data.sort((a, b) => getPos(a) - getPos(b));
+  // Sort by fixed position first, then by optimization axis
+  data.sort((a, b) => {
+    const fixedDiff = getFixedPos(a) - getFixedPos(b);
+    return fixedDiff !== 0 ? fixedDiff : getPos(a) - getPos(b);
+  });
 
-  // QP setup: minimize 0.5 * (x - x0)^T (x - x0)
-  // Dmat: identity, dvec: original positions
-  // Constraints: x[i+1] - x[i] >= (size[i] + size[i+1])/2 + min_distance
-  const Dmat = [null]; // Dmat[1..n][1..n]
-  const dvec = [null];
-  for (let i = 0; i < n; i++) {
-    Dmat[i + 1] = Array(n + 1).fill(0);
-    Dmat[i + 1][i + 1] = 1;
-    dvec[i + 1] = getPos(data[i]);
-  }
-  // Constraints
-  let Amat = [null]; // Amat[1..n][1..m]
-  let bvec = [null];
-  let m = 0;
-  // Non-overlap constraints: x[i+1] - x[i] >= min_gap
-  for (let i = 0; i < n - 1; i++) {
-    m++;
-    Amat[m] = Array(n + 1).fill(0);
-    Amat[m][i + 1] = -1;
-    Amat[m][i + 2] = 1;
-    const minGap = (getSize(data[i]) + getSize(data[i + 1])) / 2 + min_distance;
-    bvec[m] = minGap;
-  }
-  // Plot limits constraints
-  if (plot_limits) {
-    const [minBound, maxBound] = plot_limits;
-    // Lower bound: x[i] - minBound >= size[i]/2
-    for (let i = 0; i < n; i++) {
-      m++;
-      Amat[m] = Array(n + 1).fill(0);
-      Amat[m][i + 1] = 1;
-      bvec[m] = minBound + getSize(data[i]) / 2;
+  // Group by fixed position with overlap tolerance
+  const groups = [];
+  let currentGroup = [];
+  let currentFixedMin = Infinity;
+  let currentFixedMax = -Infinity;
+
+  data.forEach(d => {
+    const fixedPos = getFixedPos(d);
+    const fixedSize = alignment === "vertical" ? d.boxWidth : d.boxHeight;
+    const fixedMin = fixedPos - fixedSize/2;
+    const fixedMax = fixedPos + fixedSize/2;
+
+    if (currentGroup.length === 0 || 
+        fixedMin <= currentFixedMax + min_distance) {
+      // Belongs to current group
+      currentGroup.push(d);
+      currentFixedMin = Math.min(currentFixedMin, fixedMin);
+      currentFixedMax = Math.max(currentFixedMax, fixedMax);
+    } else {
+      // Start new group
+      groups.push(currentGroup);
+      currentGroup = [d];
+      currentFixedMin = fixedMin;
+      currentFixedMax = fixedMax;
     }
-    // Upper bound: maxBound - x[i] >= size[i]/2  =>  -x[i] >= -maxBound + size[i]/2
+  });
+  if (currentGroup.length > 0) groups.push(currentGroup);
+
+  // Process each group separately
+  groups.forEach(group => {
+    // Sort by optimization axis within group
+    group.sort((a, b) => getPos(a) - getPos(b));
+    // QP optimization for this group
+    const n = group.length;
+    const Dmat = [null];
+    const dvec = [null];
     for (let i = 0; i < n; i++) {
+      Dmat[i + 1] = Array(n + 1).fill(0);
+      Dmat[i + 1][i + 1] = 1;
+      dvec[i + 1] = getPos(group[i]);
+    }
+    // Constraints - all adjacent pairs in group
+    let Amat = [null]; // Amat[1..n][1..m]
+    let bvec = [null];
+    let m = 0;
+    // Non-overlap constraints: x[i+1] - x[i] >= min_gap
+    for (let i = 0; i < n - 1; i++) {
       m++;
       Amat[m] = Array(n + 1).fill(0);
       Amat[m][i + 1] = -1;
-      bvec[m] = -maxBound + getSize(data[i]) / 2;
+      Amat[m][i + 2] = 1;
+      const minGap = (getSize(group[i]) + getSize(group[i + 1])) / 2 + min_distance;
+      bvec[m] = minGap;
     }
-  }
-  // Transpose Amat to match solveQP's expected input: Amat[n+1][m+1]
-  // (solveQP expects Amat[1..n][1..m])
-  let AmatT = [null];
-  for (let i = 1; i <= n; i++) {
-    AmatT[i] = [null];
-    for (let j = 1; j <= m; j++) {
-      AmatT[i][j] = Amat[j][i] || 0;
+    // Plot limits constraints
+    if (plot_limits) {
+      const [minBound, maxBound] = plot_limits;
+      for (let i = 0; i < n; i++) {
+        m++;
+        Amat[m] = Array(n + 1).fill(0);
+        Amat[m][i + 1] = 1;
+        bvec[m] = minBound + getSize(group[i]) / 2;
+        m++;
+        Amat[m] = Array(n + 1).fill(0);
+        Amat[m][i + 1] = -1;
+        bvec[m] = -maxBound + getSize(group[i]) / 2;
+      }
     }
-  }
-  // Call QP solver
-  const result = solveQP(Dmat, dvec, AmatT, bvec, 0);
-  // Assign optimized positions
-  if (result.solution) {
-    for (let i = 0; i < n; i++) {
-      setOptimized(data[i], result.solution[i + 1]);
+    // Transpose Amat to match solveQP's expected input: Amat[n+1][m+1]
+    // (solveQP expects Amat[1..n][1..m])
+    let AmatT = [null];
+    for (let i = 1; i <= n; i++) {
+      AmatT[i] = [null];
+      for (let j = 1; j <= m; j++) {
+        AmatT[i][j] = Amat[j][i] || 0;
+      }
     }
-  } else {
-    // fallback: assign original positions
-    for (let i = 0; i < n; i++) {
-      setOptimized(data[i], getPos(data[i]));
+    // Call QP solver
+    const result = solveQP(Dmat, dvec, AmatT, bvec, 0);
+    // Assign optimized positions
+    if (result.solution) {
+      for (let i = 0; i < n; i++) {
+        setOptimized(group[i], result.solution[i + 1]);
+      }
+    } else {
+      // fallback: assign original positions
+      for (let i = 0; i < n; i++) {
+        setOptimized(group[i], getPos(group[i]));
+      }
     }
-  }
+  });
 }
