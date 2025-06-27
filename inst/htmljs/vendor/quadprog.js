@@ -607,28 +607,15 @@ function solveQP(Dmat, dvec, Amat, bvec = [], meq = 0, factorized = [0, 0]) {
 // `optimizeAlignedBoxes` uses a QP solver to reposition only the overlapping label boxes,
 // finding the nearest possible positions to their original locations, subject to the constraint
 // that the boxes do not overlap.
-function optimizeAlignedLabels(data, alignment, min_distance = 2, plot_limits = null, measureText, default_textSize = 12) {
+function optimizeAlignedLabels(data, alignment, min_distance = 2, plot_limits = null, default_textSize , calcLabelBox) {
   const n = data.length;
   if (n === 0) return;
-
-   // Helper: recalculate box size for a label given its current fontsize
-function recalcBox(d) {
-    var textStyle = [
-      "font-family:" + (d.family || "sans-serif"),
-      "font-weight:" + (d.fontface == 2 ? "bold" : "normal"),
-      "font-style:" + (d.fontface == 3 ? "italic" : "normal")
-    ].join(";");
-    var fontsize = d.fontsize || d.originalFontsize || default_textSize;
-    var textSize = measureText(d.label, fontsize, d.angle, textStyle);
-    d.boxWidth = textSize.width;
-    d.boxHeight = textSize.height;
-  }
 
   // Prepare variables
   const getSize = d => alignment === "vertical" ? d.boxHeight : d.boxWidth;
   const setFontSize = (d, newFontSize) => {
     d.fontsize = newFontSize;
-    recalcBox(d);
+    calcLabelBox(d, default_textSize);
   };
   const getPos = d => alignment === "vertical" ? d.scaledY : d.scaledX;
   const getFixedPos = d => alignment === "vertical" ? d.scaledX : d.scaledY;
@@ -676,7 +663,7 @@ function recalcBox(d) {
     // Always start from original font size for each label
     group.forEach(d => {
       d.fontsize = d.originalFontsize || d.fontsize || default_textSize;
-      recalcBox(d);
+      calcLabelBox(d, default_textSize);
     });
     let available = plot_limits ? Math.abs(plot_limits[1] - plot_limits[0]) : Infinity;
     // let minFontSize = 6; // px, minimum readable

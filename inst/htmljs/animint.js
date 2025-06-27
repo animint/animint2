@@ -1288,6 +1288,25 @@ var animint = function (to_select, json_file) {
         d.clickSelects = keyed_data[d.value][0].clickSelects;
         return d;
       });
+      // function to calculate the size of boxes in geom_label_aligned according to the inside text
+      function calcLabelBox(d, default_textSize) {
+        var textStyle = [
+            "font-family:" + (d.family || "sans-serif"),
+            "font-weight:" + (d.fontface == 2 ? "bold" : "normal"),
+            "font-style:" + (d.fontface == 3 ? "italic" : "normal")
+        ].join(";");
+        // Store original font size for restoration
+        if (typeof d.originalFontsize === "undefined") {
+            d.originalFontsize = d.fontsize || default_textSize;
+        }
+        // Use d.fontsize if present, else default
+        var fontsize = d.fontsize || d.originalFontsize || default_textSize;
+        var textSize = measureText(d.label, fontsize, d.angle, textStyle);
+        d.boxWidth = textSize.width;
+        d.boxHeight = textSize.height;
+        d.scaledX = scales.x(d.x);
+        d.scaledY = scales.y(d.y);
+      }
 
       // line, path, and polygon use d3.svg.line(),
       // ribbon uses d3.svg.area()
@@ -1447,26 +1466,9 @@ var animint = function (to_select, json_file) {
           var alignment = g_info.params.alignment || "vertical";
           var min_distance = g_info.params.min_distance || 2;
           var default_textSize = 12;
-          
-          // Measure all text dimensions and calculate box sizes
+          // calculate box sizes
           data.forEach(function(d) {
-              // Create text style string for measurement
-              var textStyle = [
-                  "font-family:" + (d.family || "sans-serif"),
-                  "font-weight:" + (d.fontface == 2 ? "bold" : "normal"),
-                  "font-style:" + (d.fontface == 3 ? "italic" : "normal")
-              ].join(";");
-              // Store original font size for restoration
-              if (typeof d.originalFontsize === "undefined") {
-                  d.originalFontsize = d.fontsize || default_textSize;
-              }
-              // Use d.fontsize if present, else default
-              var fontsize = d.fontsize || d.originalFontsize || default_textSize;
-              var textSize = measureText(d.label, fontsize, d.angle, textStyle);
-              d.boxWidth = textSize.width;
-              d.boxHeight = textSize.height;
-              d.scaledX = scales.x(d.x);
-              d.scaledY = scales.y(d.y);
+              calcLabelBox(d, default_textSize);
           });
           var plot_limits;
           if (alignment === "vertical") {
@@ -1477,7 +1479,7 @@ var animint = function (to_select, json_file) {
             plot_limits = [Math.min.apply(null, xRange), Math.max.apply(null, xRange)];
           }
           // using quadprog.js for optimizing positions of colliding boxes
-          optimizeAlignedLabels(data, alignment, min_distance, plot_limits, measureText, default_textSize);
+          optimizeAlignedLabels(data, alignment, min_distance, plot_limits, default_textSize, calcLabelBox);
 
           eAppend = "g";
           eActions = function(groups) {
