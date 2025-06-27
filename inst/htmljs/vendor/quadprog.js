@@ -613,6 +613,10 @@ function optimizeAlignedLabels(data, alignment, min_distance = 2, plot_limits = 
 
   // Prepare variables
   const getSize = d => alignment === "vertical" ? d.boxHeight : d.boxWidth;
+  const setSize = (d, newSize) => {
+    if (alignment === "vertical") d.boxHeight = newSize;
+    else d.boxWidth = newSize;
+  };
   const getPos = d => alignment === "vertical" ? d.scaledY : d.scaledX;
   const getFixedPos = d => alignment === "vertical" ? d.scaledX : d.scaledY;
   const setOptimized = (d, pos) => { d.optimizedPos = pos; };
@@ -651,12 +655,24 @@ function optimizeAlignedLabels(data, alignment, min_distance = 2, plot_limits = 
   });
   if (currentGroup.length > 0) groups.push(currentGroup);
 
-  // Process each group separately
+  // For each group, run QP with plot limits and shrink if needed
   groups.forEach(group => {
     // Sort by optimization axis within group
     group.sort((a, b) => getPos(a) - getPos(b));
+    let n = group.length;
+    // Compute total space needed
+    let totalSize = group.reduce((sum, d) => sum + getSize(d), 0);
+    let available = plot_limits ? Math.abs(plot_limits[1] - plot_limits[0]) : Infinity;
+    // If not enough space, shrink label sizes (cex) until they fit
+    let shrinkFactor = 1;
+    if (totalSize + min_distance * (n - 1) > available) {
+      shrinkFactor = (available - min_distance * (n - 1)) / totalSize * 0.98; // a bit smaller for safety
+      group.forEach(d => {
+        setSize(d, getSize(d) * shrinkFactor);
+        d.fontsize = (d.fontsize) * shrinkFactor;
+      });
+    }
     // QP optimization for this group
-    const n = group.length;
     const Dmat = [null];
     const dvec = [null];
     for (let i = 0; i < n; i++) {
@@ -680,11 +696,15 @@ function optimizeAlignedLabels(data, alignment, min_distance = 2, plot_limits = 
     // Plot limits constraints
     if (plot_limits) {
       const [minBound, maxBound] = plot_limits;
+      // Lower bound: pos[i] - size[i]/2 >= minBound
       for (let i = 0; i < n; i++) {
         m++;
         Amat[m] = Array(n + 1).fill(0);
         Amat[m][i + 1] = 1;
         bvec[m] = minBound + getSize(group[i]) / 2;
+      }
+      // Upper bound: pos[i] + size[i]/2 <= maxBound  =>  -pos[i] >= -maxBound + size[i]/2
+      for (let i = 0; i < n; i++) {
         m++;
         Amat[m] = Array(n + 1).fill(0);
         Amat[m][i + 1] = -1;
@@ -702,6 +722,62 @@ function optimizeAlignedLabels(data, alignment, min_distance = 2, plot_limits = 
     }
     // Call QP solver
     const result = solveQP(Dmat, dvec, AmatT, bvec, 0);
+    // If QP fails (infeasible), shrink further and retry (up to a limit)
+    let retry = 0;
+    while ((!result.solution) && retry < 5 && shrinkFactor > 0.1) {
+      shrinkFactor *= 0.8;
+      group.forEach(d => {
+        setSize(d, getSize(d) * 0.8);
+        d.fontsize = (d.fontsize) * 0.8;
+      });
+      // Rebuild Dmat, dvec, Amat, bvec, AmatT
+      for (let i = 0; i < n; i++) {
+        Dmat[i + 1][i + 1] = 1;
+        dvec[i + 1] = getPos(group[i]);
+      }
+      m = 0;
+      Amat = [null];
+      bvec = [null];
+      for (let i = 0; i < n - 1; i++) {
+        m++;
+        Amat[m] = Array(n + 1).fill(0);
+        Amat[m][i + 1] = -1;
+        Amat[m][i + 2] = 1;
+        const minGap = (getSize(group[i]) + getSize(group[i + 1])) / 2 + min_distance;
+        bvec[m] = minGap;
+      }
+      if (plot_limits) {
+        const [minBound, maxBound] = plot_limits;
+        for (let i = 0; i < n; i++) {
+          m++;
+          Amat[m] = Array(n + 1).fill(0);
+          Amat[m][i + 1] = 1;
+          bvec[m] = minBound + getSize(group[i]) / 2;
+        }
+        for (let i = 0; i < n; i++) {
+          m++;
+          Amat[m] = Array(n + 1).fill(0);
+          Amat[m][i + 1] = -1;
+          bvec[m] = -maxBound + getSize(group[i]) / 2;
+        }
+      }
+      AmatT = [null];
+      for (let i = 1; i <= n; i++) {
+        AmatT[i] = [null];
+        for (let j = 1; j <= m; j++) {
+          AmatT[i][j] = Amat[j][i] || 0;
+        }
+      }
+      // Try again
+      const retryResult = solveQP(Dmat, dvec, AmatT, bvec, 0);
+      if (retryResult.solution) {
+        for (let i = 0; i < n; i++) {
+          setOptimized(group[i], retryResult.solution[i + 1]);
+        }
+        return;
+      }
+      retry++;
+    }
     // Assign optimized positions
     if (result.solution) {
       for (let i = 0; i < n; i++) {

@@ -1466,6 +1466,7 @@ var animint = function (to_select, json_file) {
               d.boxHeight = textSize.height;
               d.scaledX = scales.x(d.x);
               d.scaledY = scales.y(d.y);
+              d.fontsize = fontsize
           });
           var plot_limits;
           if (alignment === "vertical") {
