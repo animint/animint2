@@ -1456,17 +1456,17 @@ var animint = function (to_select, json_file) {
                   "font-weight:" + (d.fontface == 2 ? "bold" : "normal"),
                   "font-style:" + (d.fontface == 3 ? "italic" : "normal")
               ].join(";");
-              
-              var fontsize = d.fontsize || default_textSize;
-              // Measure text
+              // Store original font size for restoration
+              if (typeof d.originalFontsize === "undefined") {
+                  d.originalFontsize = d.fontsize || default_textSize;
+              }
+              // Use d.fontsize if present, else default
+              var fontsize = d.fontsize || d.originalFontsize || default_textSize;
               var textSize = measureText(d.label, fontsize, d.angle, textStyle);
-              
-              // Store dimensions on the data object
               d.boxWidth = textSize.width;
               d.boxHeight = textSize.height;
               d.scaledX = scales.x(d.x);
               d.scaledY = scales.y(d.y);
-              d.fontsize = fontsize
           });
           var plot_limits;
           if (alignment === "vertical") {
@@ -1477,7 +1477,7 @@ var animint = function (to_select, json_file) {
             plot_limits = [Math.min.apply(null, xRange), Math.max.apply(null, xRange)];
           }
           // using quadprog.js for optimizing positions of colliding boxes
-          optimizeAlignedLabels(data, alignment, min_distance, plot_limits);
+          optimizeAlignedLabels(data, alignment, min_distance, plot_limits, measureText, default_textSize);
 
           eAppend = "g";
           eActions = function(groups) {
