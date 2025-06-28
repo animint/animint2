@@ -607,7 +607,7 @@ function solveQP(Dmat, dvec, Amat, bvec = [], meq = 0, factorized = [0, 0]) {
 // `optimizeAlignedBoxes` uses a QP solver to reposition only the overlapping label boxes,
 // finding the nearest possible positions to their original locations, subject to the constraint
 // that the boxes do not overlap.
-function optimizeAlignedLabels(data, alignment, min_distance = 2, plot_limits = null, default_textSize , calcLabelBox) {
+function optimizeAlignedLabels(data, alignment, min_distance = 2, plot_limits = null, default_textSize, calcLabelBox) {
   const n = data.length;
   if (n === 0) return;
 
@@ -627,30 +627,29 @@ function optimizeAlignedLabels(data, alignment, min_distance = 2, plot_limits = 
     return fixedDiff !== 0 ? fixedDiff : getPos(a) - getPos(b);
   });
 
-  // Group by fixed position with overlap tolerance
+  // Calculate all boxes at original font size FIRST
+  data.forEach(d => {
+    if (!d.originalFontsize) d.originalFontsize = d.fontsize || default_textSize;
+    d.fontsize = d.originalFontsize;
+    calcLabelBox(d, default_textSize);
+  });
+  // grouping logic
   const groups = [];
   let currentGroup = [];
-  let currentFixedMin = Infinity;
-  let currentFixedMax = -Infinity;
+  let currentFixedBoundary = -Infinity;
 
   data.forEach(d => {
     const fixedPos = getFixedPos(d);
-    const fixedSize = alignment === "vertical" ? d.boxWidth : d.boxHeight;
-    const fixedMin = fixedPos - fixedSize/2;
-    const fixedMax = fixedPos + fixedSize/2;
-
-    if (currentGroup.length === 0 || 
-        fixedMin <= currentFixedMax + min_distance) {
-      // Belongs to current group
+    const size = alignment === "vertical" ? d.boxWidth : d.boxHeight;
+    const minPos = fixedPos - size/2 - min_distance;
+    if (currentGroup.length === 0 || minPos <= currentFixedBoundary) {
       currentGroup.push(d);
-      currentFixedMin = Math.min(currentFixedMin, fixedMin);
-      currentFixedMax = Math.max(currentFixedMax, fixedMax);
+      // Update boundary using current item's max position + min_distance
+      currentFixedBoundary = Math.max(currentFixedBoundary, fixedPos + size/2 + min_distance);
     } else {
-      // Start new group
       groups.push(currentGroup);
       currentGroup = [d];
-      currentFixedMin = fixedMin;
-      currentFixedMax = fixedMax;
+      currentFixedBoundary = fixedPos + size/2 + min_distance;
     }
   });
   if (currentGroup.length > 0) groups.push(currentGroup);
@@ -665,22 +664,17 @@ function optimizeAlignedLabels(data, alignment, min_distance = 2, plot_limits = 
       d.fontsize = d.originalFontsize || d.fontsize || default_textSize;
       calcLabelBox(d, default_textSize);
     });
+    // Compute total space needed
+    let totalSize = group.reduce((sum, d) => sum + getSize(d), 0);
     let available = plot_limits ? Math.abs(plot_limits[1] - plot_limits[0]) : Infinity;
-    // let minFontSize = 6; // px, minimum readable
-    let shrinkFactor = 1.0;
-    let fits = false;
-    // Shrink font size for all labels in group until they fit
-    while (!fits) {
-      let totalSize = group.reduce((sum, d) => sum + getSize(d), 0);
-      fits = (totalSize + min_distance * (n - 1)) <= available &&
-             group.every(d => d.fontsize);
-      if (!fits) {
-        shrinkFactor *= 0.9;
-        group.forEach(d => {
-          let newFont = (d.originalFontsize || d.fontsize || default_textSize) * shrinkFactor;
-          setFontSize(d, newFont);
-        });
-      }
+    // If not enough space, shrink label sizes until they fit
+    let shrinkFactor = 1;
+    if (totalSize + min_distance * (n - 1) > available) {
+      shrinkFactor = (available - min_distance * (n - 1)) / totalSize * 0.98; // a bit smaller for safety
+      group.forEach(d => {
+        let newFont = (d.originalFontsize || d.fontsize || default_textSize) * shrinkFactor;
+        setFontSize(d, newFont);
+      });
     }
     // QP optimization for this group
     const Dmat = [null];
