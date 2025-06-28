@@ -1288,25 +1288,6 @@ var animint = function (to_select, json_file) {
         d.clickSelects = keyed_data[d.value][0].clickSelects;
         return d;
       });
-      // function to calculate the size of boxes in geom_label_aligned according to the inside text
-      function calcLabelBox(d, default_textSize) {
-        var textStyle = [
-            "font-family:" + (d.family || "sans-serif"),
-            "font-weight:" + (d.fontface == 2 ? "bold" : "normal"),
-            "font-style:" + (d.fontface == 3 ? "italic" : "normal")
-        ].join(";");
-        // Store original font size for restoration
-        if (typeof d.originalFontsize === "undefined") {
-            d.originalFontsize = d.fontsize || default_textSize;
-        }
-        // Use d.fontsize if present, else default
-        var fontsize = d.fontsize || d.originalFontsize || default_textSize;
-        var textSize = measureText(d.label, fontsize, d.angle, textStyle);
-        d.boxWidth = textSize.width;
-        d.boxHeight = textSize.height;
-        d.scaledX = scales.x(d.x);
-        d.scaledY = scales.y(d.y);
-      }
 
       // line, path, and polygon use d3.svg.line(),
       // ribbon uses d3.svg.area()
@@ -1460,7 +1441,25 @@ var animint = function (to_select, json_file) {
 	};
 	eAppend = "circle";
       }
-
+      // function to calculate the size of boxes in geom_label_aligned according to the inside text
+      var calcLabelBox = function(d, default_textSize) {
+        var textStyle = [
+            "font-family:" + (d.family || "sans-serif"),
+            "font-weight:" + (d.fontface == 2 ? "bold" : "normal"),
+            "font-style:" + (d.fontface == 3 ? "italic" : "normal")
+        ].join(";");
+        // Store original font size for restoration
+        if (typeof d.originalFontsize === "undefined") {
+            d.originalFontsize = d.fontsize || default_textSize;
+        }
+        // Use d.fontsize if present, else default
+        var fontsize = d.fontsize || d.originalFontsize || default_textSize;
+        var textSize = measureText(d.label, fontsize, d.angle, textStyle);
+        d.boxWidth = textSize.width;
+        d.boxHeight = textSize.height;
+        d.scaledX = scales.x(d.x);
+        d.scaledY = scales.y(d.y);
+      }
       if (g_info.geom == "label_aligned") {
           // Get parameters
           var alignment = g_info.params.alignment || "vertical";
