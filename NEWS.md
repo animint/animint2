@@ -1,6 +1,4 @@
-# Changes in version 2025.6.28
-
-## PR#204 
+# Changes in version 2025.6.28 (PR#204) 
 
 - The geom_raster implementation has been removed.
 
