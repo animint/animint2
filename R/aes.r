@@ -5,7 +5,7 @@ NULL
   "colour", "fg", "fill", "group", "hjust", "label", "linetype", "lower",
   "lty", "lwd", "max", "middle", "min", "pch", "radius", "sample", "shape",
   "size", "srt", "upper", "vjust", "weight", "width", "x", "xend", "xmax",
-  "xmin", "xintercept", "y", "yend", "ymax", "ymin", "yintercept", "z")
+  "xmin", "xintercept", "y", "yend", "ymax", "ymin", "yintercept", "z", "tooltip")
 
 .base_to_ggplot <- c(
   "col"   = "colour",
