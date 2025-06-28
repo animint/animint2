@@ -1161,6 +1161,15 @@ var animint = function (to_select, json_file) {
     }else{
       get_hjust = function(d){ return default_hjust; };
     }
+    var get_vjust;
+    var default_vjust = 0.5; // default center
+    if(aes.hasOwnProperty("vjust")){
+      get_vjust = get_attr("vjust");
+    }else if(g_info.params.hasOwnProperty("vjust")){
+      get_vjust = function(d){ return g_info.params.vjust; };
+    }else{
+      get_vjust = function(d){ return default_vjust; };
+    }
     var angle = 0;
     var get_angle;
     if(aes.hasOwnProperty("angle")){
@@ -1489,12 +1498,18 @@ var animint = function (to_select, json_file) {
                   group.selectAll("*").remove();
                   group.append("rect")
                       .attr("x", function(d) { 
-                          var pos = alignment == "vertical" ? d.scaledX : d.optimizedPos;
-                          return pos - d.boxWidth * get_hjust(d);
+                          if (alignment == "vertical") {
+                              return d.scaledX - d.boxWidth * get_hjust(d);
+                          } else {
+                              return d.optimizedPos - d.boxWidth / 2;
+                          }
                       })
                       .attr("y", function(d) {
-                          var pos = alignment == "vertical" ? d.optimizedPos : d.scaledY;
-                          return pos - d.boxHeight / 2;
+                          if (alignment == "vertical") {
+                              return d.optimizedPos - d.boxHeight / 2;
+                          } else {
+                              return d.scaledY - d.boxHeight * get_vjust(d);
+                          }
                       })
                       .attr("width", function(d) { return d.boxWidth; })
                       .attr("height", function(d) { return d.boxHeight; })
@@ -1506,11 +1521,18 @@ var animint = function (to_select, json_file) {
 
                   group.append("text")
                       .attr("x", function(d) {
-                          var pos = alignment == "vertical" ? d.scaledX : d.optimizedPos;
-                          return pos - d.boxWidth * get_hjust(d) + d.boxWidth / 2;
+                          if (alignment == "vertical") {
+                              return d.scaledX - d.boxWidth * get_hjust(d) + d.boxWidth / 2;
+                          } else {
+                              return d.optimizedPos;
+                          }
                       })
                       .attr("y", function(d) {
-                          return (alignment == "vertical" ? d.optimizedPos : d.scaledY) + ((d.size || 12) / 3);
+                          if (alignment == "vertical") {
+                              return d.optimizedPos + ((d.size || 12) / 3);
+                          } else {
+                              return d.scaledY - d.boxHeight * get_vjust(d) + d.boxHeight / 2;
+                          }
                       })
                       .attr("font-size", function(d) { return (d.fontsize || default_textSize) + "px"; })
                       .style("text-anchor", "middle")
