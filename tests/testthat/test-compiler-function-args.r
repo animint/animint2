@@ -14,7 +14,7 @@ test_that("geom_xxx and GeomXxx$draw arg defaults match", {
   geom_fun_names <- setdiff(
     geom_fun_names,
     c("geom_aesthetics", "geom_map", "annotation_custom", "annotation_map",
-      "annotation_raster", "annotation_id")
+       "annotation_id")
   )
 
   # For each geom_xxx function and the corresponding GeomXxx$draw and
