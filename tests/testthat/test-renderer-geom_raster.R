@@ -1,8 +1,8 @@
-acontext("geom_raster error handling")
+acontext("geom_raster not defined")
 
-test_that("geom_raster throws an informative error", {
+test_that("geom_raster is not defined", {
   expect_error(
-    ggplot(data.frame(x = 1, y = 1), aes(x, y)) + geom_raster(),
-    "geom_raster is not supported in animint2. Please use geom_tile instead."
+    geom_raster(),
+    'could not find function "geom_raster"'
   )
 })
