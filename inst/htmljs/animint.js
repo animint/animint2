@@ -1529,9 +1529,9 @@ var animint = function (to_select, json_file) {
                       })
                       .attr("y", function(d) {
                           if (alignment == "vertical") {
-                              return d.optimizedPos + ((d.size || 12) / 3);
+                              return d.optimizedPos + (d.fontsize / 3);
                           } else {
-                              return d.scaledY - d.boxHeight * get_vjust(d) + d.boxHeight / 2;
+                              return d.scaledY - d.boxHeight * get_vjust(d) + d.boxHeight / 2 + ((d.fontsize || default_textSize) / 3);
                           }
                       })
                       .attr("font-size", function(d) { return (d.fontsize || default_textSize) + "px"; })
