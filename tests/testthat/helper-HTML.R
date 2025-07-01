@@ -41,7 +41,7 @@ tests_init <- function(dir = ".", ...) {
   testDir <- file.path(testPath, "animint-htmltest")
   # if the htmltest directory exists, wipe clean, then create an empty folder
   unlink(testDir, recursive = TRUE)
-  options(chromote.timeout = 150)
+  options(chromote.timeout = 200)
   chrome.session <- chromote::ChromoteSession$new()
   chrome.session$view()
   chrome.session$refresh <- function(){
