@@ -49,21 +49,19 @@ jobs:
           if [ "$TEST_SUITE" == "CRAN" ]; then
             bash build.sh
           else
-            # Runs tests with proper directory context
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
-            
-            # Uploads coverage with minimal output
             Rscript -e 'covr::codecov(quiet = TRUE)'
           fi
 
       - name: Convert JS coverage to lcov
-        if: matrix.test-suite == 'renderer'
+        if: matrix.test-suite == 'renderer' && hashFiles('js-coverage.json') != ''
         run: |
           npx puppeteer-to-istanbul js-coverage.json
           npx nyc report --reporter=lcov --report-dir=coverage
-        
-      - name: Upload coverage to Codecov
-        run : |
+
+      - name: Upload JS coverage to Codecov
+        if: matrix.test-suite == 'renderer' && hashFiles('coverage/lcov.info') != ''
+        run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
           ./codecov -f coverage/lcov.info -t ${{ secrets.CODECOV_TOKEN }} --flags javascript
