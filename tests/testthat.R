@@ -13,18 +13,25 @@ if(filter == ""){
   filter <- NULL
 }
 message(gh.action)
+
 if(use.browser) {
   tests_init()
-  coverage_active <- start_js_coverage()
-  if(exists("coverage_active") && coverage_active) {
-      print("JS coverage is active")
+  # Start coverage if enabled
+  coverage_active <- FALSE
+  if(collect.coverage) {
+    coverage_active <- start_js_coverage()
+    if(coverage_active) {
+      message("JS coverage collection started")
     }
-  on.exit({
-    if(exists("coverage_active") && coverage_active) {
-      stop_js_coverage()
-    }
-    tests_exit()
-  }, add = TRUE)
+  }
+  # Run tests
+  tests_run(filter=filter)
+  # Save coverage and cleanup
+  if(coverage_active) {
+    stop_js_coverage()
+  }
+  tests_exit()
+} else {
+  # Non-browser tests
+  tests_run(filter=filter)
 }
-
-tests_run(filter=filter)
