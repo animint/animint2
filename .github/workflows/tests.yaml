@@ -33,7 +33,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y nodejs npm
-          npm install -g puppeteer-to-istanbul nyc codecov
+          npm install puppeteer-to-istanbul nyc
 
       - name: install package
         run: R CMD INSTALL .
@@ -61,8 +61,8 @@ jobs:
           # Convert coverage using puppeteer-to-istanbul
           if [ -f "tests/testthat/js-coverage.json" ]; then
             echo "Converting JS coverage data..."
-            puppeteer-to-istanbul tests/testthat/js-coverage.json --coverage-type v8
-            nyc report --reporter=lcov --report-dir=coverage
+            npx puppeteer-to-istanbul tests/testthat/js-coverage.json --coverage-type v8
+            npx nyc report --reporter=lcov --report-dir=coverage
 
             # Upload to Codecov
             curl -Os https://uploader.codecov.io/latest/linux/codecov
