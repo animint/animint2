@@ -48,7 +48,7 @@ jobs:
         run: |
           if [ "$TEST_SUITE" == "CRAN" ]; then
             bash build.sh
-          else if [ "$TEST_SUITE" == "compiler" ]; then
+          elif [ "$TEST_SUITE" == "compiler" ]; then
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
             Rscript -e 'covr::codecov(quiet = TRUE)'
           else
