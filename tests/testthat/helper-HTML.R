@@ -43,6 +43,10 @@ tests_init <- function(dir = ".", ...) {
   unlink(testDir, recursive = TRUE)
   options(chromote.timeout = 120)
   chrome.session <- chromote::ChromoteSession$new()
+  # Enable required DevTools domains for coverage
+  chrome.session$Runtime$enable()
+  chrome.session$Profiler$enable()
+
   chrome.session$view()
   chrome.session$refresh <- function(){
     ## from https://github.com/rstudio/chromote?tab=readme-ov-file#loading-a-page-reliably
@@ -105,15 +109,34 @@ getClassBound <- function(geom.class, position){
   runtime_evaluate(script=script.txt)
 }
 
-# Start JS coverage collection
+# JS Coverage collection functions
 start_js_coverage <- function() {
-  remDr$Profiler$enable()
-  remDr$Profiler$startPreciseCoverage(callCount = TRUE, detailed = TRUE)
+  tryCatch({
+    remDr$Profiler$enable()
+    remDr$Profiler$startPreciseCoverage(
+      callCount = TRUE,
+      detailed = TRUE
+    )
+    TRUE
+  }, error = function(e) {
+    warning("Failed to start JS coverage: ", e$message)
+    FALSE
+  })
 }
 
-# Stop JS coverage collection and save to file
-stop_js_coverage <- function(outfile = "../js-coverage.json") {
-  cov <- remDr$Profiler$takePreciseCoverage()
-  remDr$Profiler$stopPreciseCoverage()
-  jsonlite::write_json(cov$result, outfile, auto_unbox = TRUE)
+stop_js_coverage <- function(outfile = "js-coverage.json") {
+  tryCatch({
+    cov <- remDr$Profiler$takePreciseCoverage()
+    # Ensure the format matches what puppeteer-to-istanbul expects
+    coverage_data <- list(
+      result = cov$result,
+      url = "http://localhost:4848/animint-htmltest/animint.js"
+    )
+    jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
+    message("JS coverage saved to ", normalizePath(outfile))
+    TRUE
+  }, error = function(e) {
+    warning("Failed to save JS coverage: ", e$message)
+    FALSE
+  })
 }

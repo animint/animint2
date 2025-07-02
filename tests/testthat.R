@@ -15,14 +15,16 @@ if(filter == ""){
 message(gh.action)
 if(use.browser) {
   tests_init()
-  if(collect.coverage) {
-    start_js_coverage()
-  }
+  coverage_active <- start_js_coverage()
+  if(exists("coverage_active") && coverage_active) {
+      print("JS coverage is active")
+    }
+  on.exit({
+    if(exists("coverage_active") && coverage_active) {
+      stop_js_coverage()
+    }
+    tests_exit()
+  }, add = TRUE)
 }
+
 tests_run(filter=filter)
-if(use.browser) {
-  if(collect.coverage) {
-    stop_js_coverage()
-  }
-  tests_exit()
-}

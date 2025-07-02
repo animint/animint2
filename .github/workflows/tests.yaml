@@ -33,7 +33,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y nodejs npm
-          npm install -g puppeteer-to-istanbul nyc
+          npm install -g puppeteer-to-istanbul nyc codecov
 
       - name: install package
         run: R CMD INSTALL .
@@ -48,20 +48,27 @@ jobs:
         run: |
           if [ "$TEST_SUITE" == "CRAN" ]; then
             bash build.sh
-          else
+          else if [ "$TEST_SUITE" == "compiler" ]; then
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
             Rscript -e 'covr::codecov(quiet = TRUE)'
+          else
+            Rscript -e "source('tests/testthat.R', chdir = TRUE)"
           fi
 
-      - name: Convert JS coverage to lcov
-        if: matrix.test-suite == 'renderer' && hashFiles('js-coverage.json') != ''
+      - name: Process JS coverage and upload to Codecov
+        if: matrix.test-suite == 'renderer'
         run: |
-          npx puppeteer-to-istanbul js-coverage.json
-          npx nyc report --reporter=lcov --report-dir=coverage
+          # Convert coverage using puppeteer-to-istanbul
+          if [ -f "js-coverage.json" ]; then
+            echo "Converting JS coverage data..."
+            npx puppeteer-to-istanbul js-coverage.json --coverage-type v8
+            npx nyc report --reporter=lcov --report-dir=coverage
 
-      - name: Upload JS coverage to Codecov
-        if: matrix.test-suite == 'renderer' && hashFiles('coverage/lcov.info') != ''
-        run: |
-          curl -Os https://uploader.codecov.io/latest/linux/codecov
-          chmod +x codecov
-          ./codecov -f coverage/lcov.info -t ${{ secrets.CODECOV_TOKEN }} --flags javascript
+            # Upload to Codecov
+            curl -Os https://uploader.codecov.io/latest/linux/codecov
+            chmod +x codecov
+            ./codecov -f coverage/lcov.info -t ${{ secrets.CODECOV_TOKEN }} --flags javascript
+          else
+            echo "No JS coverage file found"
+            exit 1
+          fi
