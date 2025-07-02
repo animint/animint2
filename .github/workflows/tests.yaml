@@ -59,9 +59,9 @@ jobs:
         if: matrix.test-suite == 'renderer'
         run: |
           # Convert coverage using puppeteer-to-istanbul
-          if [ -f "js-coverage.json" ]; then
+          if [ -f "tests/testthat/js-coverage.json" ]; then
             echo "Converting JS coverage data..."
-            npx puppeteer-to-istanbul js-coverage.json --coverage-type v8
+            npx puppeteer-to-istanbul tests/testthat/js-coverage.json --coverage-type v8
             npx nyc report --reporter=lcov --report-dir=coverage
 
             # Upload to Codecov

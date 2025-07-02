@@ -124,9 +124,10 @@ start_js_coverage <- function() {
   })
 }
 
-stop_js_coverage <- function(outfile = "js-coverage.json") {
+stop_js_coverage <- function() {
   tryCatch({
     cov <- remDr$Profiler$takePreciseCoverage()
+    outfile <- "js-coverage.json"
     # Ensure the format matches what puppeteer-to-istanbul expects
     coverage_data <- list(
       result = cov$result,
