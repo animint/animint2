@@ -53,8 +53,8 @@ jobs:
         if: matrix.test-suite == 'renderer'
         run: |
           # Install Node.js and Puppeteer dependencies
-          sudo apt-get update
-          sudo apt-get install -y nodejs npm
+          /usr/bin/sudo apt-get update
+          /usr/bin/sudo apt-get install -y nodejs npm
           npm install puppeteer-to-istanbul nyc
           # Convert coverage using puppeteer-to-istanbul
           if [ -f "tests/testthat/js-coverage.json" ]; then
