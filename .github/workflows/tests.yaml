@@ -29,16 +29,6 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
       - uses: r-lib/actions/setup-r-dependencies@v2
 
-      - name: Setup Node.js properly
-        if: matrix.test-suite == 'renderer'
-        working-directory: ${{ github.workspace }}
-        run: |
-            curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-            npm install puppeteer-to-istanbul nyc
-            # Add local node_modules/.bin to PATH
-            echo "${PWD}/node_modules/.bin" >> $GITHUB_PATH
-
       - name: install package
         run: R CMD INSTALL .
 
@@ -62,6 +52,10 @@ jobs:
       - name: Process JS coverage and upload to Codecov
         if: matrix.test-suite == 'renderer'
         run: |
+          # Install Node.js and Puppeteer dependencies
+          sudo apt-get update
+          sudo apt-get install -y nodejs npm
+          npm install puppeteer-to-istanbul nyc
           # Convert coverage using puppeteer-to-istanbul
           if [ -f "tests/testthat/js-coverage.json" ]; then
             echo "Converting JS coverage data..."
