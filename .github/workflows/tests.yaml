@@ -31,18 +31,13 @@ jobs:
 
       - name: Setup Node.js properly
         if: matrix.test-suite == 'renderer'
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-          cache: 'npm'
-
-      - name: Install coverage tools
-        if: matrix.test-suite == 'renderer'
+        working-directory: ${{ github.workspace }}
         run: |
-          # Install in a known permanent location
-          npm config set prefix ~/.npm-global
-          echo 'export PATH=~/.npm-global/bin:$PATH' >> $GITHUB_ENV
-          npm install -g puppeteer-to-istanbul@1.1.1 nyc@15.1.0
+            curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            npm install puppeteer-to-istanbul nyc
+            # Add local node_modules/.bin to PATH
+            echo "${PWD}/node_modules/.bin" >> $GITHUB_PATH
 
       - name: install package
         run: R CMD INSTALL .
@@ -67,15 +62,11 @@ jobs:
       - name: Process JS coverage and upload to Codecov
         if: matrix.test-suite == 'renderer'
         run: |
-          echo "Node/npm paths:"
-          which node
-          which npm
-          which puppeteer-to-istanbul
           # Convert coverage using puppeteer-to-istanbul
           if [ -f "tests/testthat/js-coverage.json" ]; then
             echo "Converting JS coverage data..."
-            puppeteer-to-istanbul tests/testthat/js-coverage.json --coverage-type v8
-            nyc report --reporter=lcov --report-dir=coverage
+            npx puppeteer-to-istanbul tests/testthat/js-coverage.json --coverage-type v8
+            npx nyc report --reporter=lcov --report-dir=coverage
 
             # Upload to Codecov
             curl -Os https://uploader.codecov.io/latest/linux/codecov
