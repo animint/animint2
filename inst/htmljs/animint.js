@@ -1474,6 +1474,7 @@ var animint = function (to_select, json_file) {
           var alignment = g_info.params.alignment || "vertical";
           var min_distance = g_info.params.min_distance || 2;
           var default_textSize = 12;
+          var background_rect = g_info.params.background_rect !== false; // Default true
           // calculate box sizes
           data.forEach(function(d) {
               calcLabelBox(d, default_textSize);
@@ -1496,28 +1497,30 @@ var animint = function (to_select, json_file) {
                   var group = d3.select(this);
                   // Remove existing rect/text to avoid duplicates
                   group.selectAll("*").remove();
-                  group.append("rect")
-                      .attr("x", function(d) { 
-                          if (alignment == "vertical") {
-                              return d.scaledX - d.boxWidth * get_hjust(d);
-                          } else {
-                              return d.optimizedPos - d.boxWidth / 2;
-                          }
-                      })
-                      .attr("y", function(d) {
-                          if (alignment == "vertical") {
-                              return d.optimizedPos - d.boxHeight / 2;
-                          } else {
-                              return d.scaledY - d.boxHeight * get_vjust(d);
-                          }
-                      })
-                      .attr("width", function(d) { return d.boxWidth; })
-                      .attr("height", function(d) { return d.boxHeight; })
-                      .style("opacity", get_alpha)
-                      .style("stroke", get_colour)
-                      .style("fill", get_fill)
-                      .attr("rx", g_info.params.label_r || 0)
-                      .attr("ry", g_info.params.label_r || 0);
+                  if (background_rect) {
+                    group.append("rect")
+                        .attr("x", function(d) { 
+                            if (alignment == "vertical") {
+                                return d.scaledX - d.boxWidth * get_hjust(d);
+                            } else {
+                                return d.optimizedPos - d.boxWidth / 2;
+                            }
+                        })
+                        .attr("y", function(d) {
+                            if (alignment == "vertical") {
+                                return d.optimizedPos - d.boxHeight / 2;
+                            } else {
+                                return d.scaledY - d.boxHeight * get_vjust(d);
+                            }
+                        })
+                        .attr("width", function(d) { return d.boxWidth; })
+                        .attr("height", function(d) { return d.boxHeight; })
+                        .style("opacity", get_alpha)
+                        .style("stroke", get_colour)
+                        .style("fill", get_fill)
+                        .attr("rx", g_info.params.label_r || 0)
+                        .attr("ry", g_info.params.label_r || 0);
+                  }
 
                   group.append("text")
                       .attr("x", function(d) {

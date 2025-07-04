@@ -63,6 +63,7 @@ geom_label_aligned <- function(mapping = NULL, data = NULL,
                               label.size = 0.25,
                               alignment = "vertical",
                               min_distance = 0.1,
+                              background_rect = TRUE,
                               na.rm = FALSE,
                               show.legend = NA,
                               inherit.aes = TRUE) {
@@ -79,6 +80,7 @@ geom_label_aligned <- function(mapping = NULL, data = NULL,
       label.size = label.size,
       alignment = alignment,
       min_distance = min_distance,
+      background_rect = background_rect,
       na.rm = na.rm,
       ...
     )
@@ -101,6 +103,7 @@ GeomLabelAligned <- gganimintproto("GeomLabelAligned", Geom,
                        label.size = 0.25,
                        alignment = "vertical",
                        min_distance = 0.1,
+                       background_rect = TRUE,
                        na.rm = FALSE) {
     
     if (empty(data)) return(zeroGrob())
@@ -111,6 +114,7 @@ GeomLabelAligned <- gganimintproto("GeomLabelAligned", Geom,
     coords$label.size <- label.size
     coords$alignment <- alignment
     coords$min_distance <- min_distance
+    coords$background_rect <- background_rect
 
 
     rect_grobs <- lapply(1:nrow(coords), function(i) {
