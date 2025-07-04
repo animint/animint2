@@ -123,6 +123,7 @@ wb.facets <- animint(
       key=country), #also use key here!
       showSelected=c("country", "year", "region"),
       clickSelects="country",
+      alpha=0.7,
       help="Names of selected countries",
       chunk_vars=character(),
       data=SCATTER(not.na))+
