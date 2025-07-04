@@ -2,7 +2,7 @@ library(jsonlite)
 
 # Recursively list all JS files in a directory
 list_js_files <- function(dir) {
-  files <- list.files(dir, pattern = "\\.js$", recursive = TRUE, full.names = TRUE)
+  files <- list.files(dir, pattern = "\\.(js|css)$", recursive = TRUE, full.names = TRUE)
   normalizePath(files, winslash = "/", mustWork = FALSE)
 }
 

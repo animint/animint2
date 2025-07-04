@@ -1717,6 +1717,15 @@ var animint = function (to_select, json_file) {
       }
       return selected_values;
   };
+
+  // DEAD CODE FOR COVERAGE TESTING
+    function deadCodeForCoverage() {
+      // This function is never called and should show as uncovered in coverage reports.
+      var unused = 42;
+      if (unused === 43) {
+        console.log("This should never be printed.");
+      }
+    }
   
   // update scales for the plots that have update_axes option in
   // theme_animint
