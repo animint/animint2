@@ -56,20 +56,25 @@ jobs:
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
           fi
 
-      - name: Process JS coverage and upload to Codecov
+      - name: Convert JS coverage to LCOV
         if: matrix.test-suite == 'renderer'
         run: |
-          # Convert coverage using puppeteer-to-istanbul
           if [ -f "tests/testthat/js-coverage.json" ]; then
-            echo "Converting JS coverage data..."
-            npx puppeteer-to-istanbul tests/testthat/js-coverage.json --coverage-type v8
-            npx nyc report --reporter=lcov --report-dir=coverage
-
-            # Upload to Codecov
-            curl -Os https://uploader.codecov.io/latest/linux/codecov
-            chmod +x codecov
-            ./codecov -f coverage/lcov.info -t ${{ secrets.CODECOV_TOKEN }} --flags javascript
+            echo "Converting JS coverage to LCOV format..."
+            Rscript tests/testthat/js-coverage-to-lcov.R
           else
             echo "No JS coverage file found"
+            exit 1
+          fi
+
+      - name: Upload JS LCOV to Codecov
+        if: matrix.test-suite == 'renderer'
+        run: |
+          if [ -f "js-coverage.lcov" ]; then
+            curl -Os https://uploader.codecov.io/latest/linux/codecov
+            chmod +x codecov
+            ./codecov -f js-coverage.lcov -t ${{ secrets.CODECOV_TOKEN }} --flags javascript
+          else
+            echo "No LCOV file found"
             exit 1
           fi
