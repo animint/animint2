@@ -32,10 +32,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
       
       - name: Install coverage tools
-        run: npm install puppeteer-to-istanbul@2.0.0 nyc@15.1.0
+        run: npm install --no-save puppeteer-to-istanbul nyc
 
       - name: install package
         run: R CMD INSTALL .
