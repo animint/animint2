@@ -1,6 +1,6 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2025.6.4
+Version: 2025.6.28
 URL: https://animint.github.io/animint2/
 BugReports: https://github.com/animint/animint2/issues
 Authors@R: c(
@@ -129,8 +129,6 @@ Collate:
     'geom-polygon.r'
     'geom-map.r'
     'annotation-map.r'
-    'geom-raster.r'
-    'annotation-raster.r'
     'annotation.r'
     'autoplot.r'
     'bench.r'

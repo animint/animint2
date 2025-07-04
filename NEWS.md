@@ -1,3 +1,7 @@
+# Changes in version 2025.6.28 (PR#204) 
+
+- The geom_raster implementation has been removed.
+
 # Changes in version 2025.6.4 (PR#197)
 
 - `aes(tooltip = "...")` now renders fast, lightweight tooltips using D3.
