@@ -4,7 +4,7 @@ library(callr)
 library(shiny)
 library(animint2)
 
-# Override renderAnimint (unchanged)
+
 renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!requireNamespace("shiny")) message("Please install.packages('shiny')")
   func <- shiny::exprToFunction(expr, env, quoted)
@@ -18,7 +18,7 @@ renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
   shiny::markRenderFunction(animint2::animintOutput, renderFunc)
 }
 
-# Helper function to start Shiny app (unchanged)
+# Helper function to start Shiny app 
 start_shiny_app <- function(app_dir, port) {
   if (!dir.exists(app_dir)) stop("App directory does not exist: ", app_dir)
   app_url <- sprintf("http://127.0.0.1:%d", port)
@@ -46,9 +46,67 @@ start_shiny_app <- function(app_dir, port) {
   return(list(proc = proc, url = app_url))
 }
 
+# Helper function to start RMarkdown app 
+start_rmd_app <- function(rmd_file, port) {
+  if (!file.exists(rmd_file)) stop("RMarkdown file does not exist: ", rmd_file)
+  if (!requireNamespace("rmarkdown")) stop("Package 'rmarkdown' is not installed")
+  app_url <- sprintf("http://127.0.0.1:%d", port)
+  proc <- callr::r_bg(function(rmd_file, port) {
+    rmarkdown::run(file = rmd_file, shiny_args = list(port = port, launch.browser = FALSE))
+  }, args = list(rmd_file = rmd_file, port = port), stderr = "shiny_err.log", stdout = "shiny_out.log")
+  
+  start_time <- Sys.time()
+  app_started <- FALSE
+  while (Sys.time() - start_time < 30) {
+    if (!proc$is_alive()) {
+      err <- paste(readLines("shiny_err.log", warn = FALSE), collapse = "\n")
+      cat("RMarkdown process stderr:\n", err, "\n")
+      stop("RMarkdown app failed: ", proc$get_error())
+    }
+    con <- try(socketConnection("localhost", port, open = "r+", timeout = 5), silent = TRUE)
+    if (!inherits(con, "try-error")) {
+      close(con)
+      app_started <- TRUE
+      break
+    }
+    Sys.sleep(0.5)
+  }
+  if (!app_started) stop("Failed to start RMarkdown app after 30 seconds")
+  return(list(proc = proc, url = app_url))
+}
+
+# Helper function to start RMarkdown app
+start_rmd_app <- function(app_dir, port) {
+  if (!dir.exists(app_dir)) stop("App directory does not exist: ", app_dir)
+  if (!requireNamespace("rmarkdown")) stop("Package 'rmarkdown' is not installed")
+  app_url <- sprintf("http://127.0.0.1:%d", port)
+  proc <- callr::r_bg(function(app_dir, port) {
+    rmarkdown::run(dir = app_dir, shiny_args = list(port = port, launch.browser = FALSE))
+  }, args = list(app_dir = app_dir, port = port), stderr = "shiny_err.log", stdout = "shiny_out.log")
+  
+  start_time <- Sys.time()
+  app_started <- FALSE
+  while (Sys.time() - start_time < 30) {
+    if (!proc$is_alive()) {
+      err <- paste(readLines("shiny_err.log", warn = FALSE), collapse = "\n")
+      cat("RMarkdown process stderr:\n", err, "\n")
+      stop("RMarkdown app failed: ", proc$get_error())
+    }
+    con <- try(socketConnection("localhost", port, open = "r+", timeout = 5), silent = TRUE)
+    if (!inherits(con, "try-error")) {
+      close(con)
+      app_started <- TRUE
+      break
+    }
+    Sys.sleep(0.5)
+  }
+  if (!app_started) stop("Failed to start RMarkdown app after 30 seconds")
+  return(list(proc = proc, url = app_url))
+}
+
+# Test animint plot rendering in a Shiny app
 test_that("animint plot renders in a shiny app", {
-  # if file path error comes then Absolute Path should be used
-  app_dir <- "C:/Users/biplab sutradhar/OneDrive/Documents/WEB/exercisE/animintshiny/inst/examples/shiny"
+  app_dir <- "examples/shiny"
   if (!dir.exists(app_dir)) skip("Shiny app directory not found")
   
   unlink(file.path(app_dir, "animint"), recursive = TRUE)
@@ -95,22 +153,15 @@ test_that("animint plot renders in a shiny app", {
   cat("Animint div HTML (first 1000 chars):\n", substr(animint_html, 1, 1000), "\n")
   
   circles <- b$Runtime$evaluate(
-    "document.querySelector('div#animint').querySelectorAll('circle').length"
+    "document.querySelector('div#animint svg').querySelectorAll('circle').length"
   )$result$value
   cat("Number of circle elements:\n", circles, "\n")
   
-  if (circles == 0) {
-    svg_circles <- b$Runtime$evaluate(
-      "document.querySelector('div#animint svg').querySelectorAll('circle').length"
-    )$result$value
-    cat("Number of circle elements in svg:\n", svg_circles, "\n")
-  }
-  
-  expect_true(circles >= 1, info = "At least one circle should be rendered in div#animint")
+  expect_true(circles >= 1, info = "At least one circle should be rendered in div#animint svg")
 })
 
-# Start WorldBank app once for all related tests
-worldbank_dir <- "C:/Users/biplab sutradhar/OneDrive/Documents/WEB/exercisE/animintshiny/inst/examples/shiny-WorldBank"
+# WorldBank app once for all related tests
+worldbank_dir <- "examples/shiny-WorldBank"
 if (dir.exists(worldbank_dir)) {
   port <- sample(3000:9999, 1)
   worldbank_app_info <- start_shiny_app(worldbank_dir, port)
@@ -153,18 +204,11 @@ test_that("WorldBank renders in a shiny app", {
   cat("Animint div HTML (first 1000 chars):\n", substr(animint_html, 1, 1000), "\n")
   
   circles <- b$Runtime$evaluate(
-    "document.querySelector('div#animint').querySelectorAll('circle').length"
+    "document.querySelector('div#animint svg').querySelectorAll('circle').length"
   )$result$value
   cat("Number of circle elements:\n", circles, "\n")
   
-  if (circles == 0) {
-    svg_circles <- b$Runtime$evaluate(
-      "document.querySelector('div#animint svg').querySelectorAll('circle').length"
-    )$result$value
-    cat("Number of circle elements in svg:\n", svg_circles, "\n")
-  }
-  
-  expect_true(circles >= 1, info = "At least one circle should be rendered in div#animint")
+  expect_true(circles >= 1, info = "At least one circle should be rendered in div#animint svg")
 })
 
 test_that("animation updates", {
@@ -286,4 +330,58 @@ test_that("shiny changes axes", {
   
   new_facets <- get_facets()
   expect_identical(new_facets, c("literacy", "Years"), info = "Facets should update to literacy and Years")
+})
+
+# Test RMarkdown rendering
+test_that("animint plot renders in an interactive document", {
+  if (!requireNamespace("rmarkdown")) skip("Package 'rmarkdown' not installed")
+  rmd_file <- "examples/rmarkdown/index.Rmd"
+  if (!file.exists(rmd_file)) skip("RMarkdown file not found")
+  
+  port <- sample(3000:9999, 1)
+  app_info <- start_rmd_app(rmd_file, port)
+  on.exit({
+    app_info$proc$kill()
+    unlink("shiny_err.log")
+    unlink("shiny_out.log")
+  }, add = TRUE)
+  
+  cat("Attempting to access RMarkdown app at:", app_info$url, "\n")
+  
+  b <- ChromoteSession$new()
+  b$view()
+  on.exit(b$close(), add = TRUE)
+  b$Page$navigate(app_info$url)
+  b$Page$loadEventFired(wait_ = TRUE, timeout = 30000)
+  Sys.sleep(20)  
+  
+  iframe_ready <- FALSE
+  iframe_html <- ""
+  for (i in 1:100) {
+    res <- b$Runtime$evaluate("document.querySelector('.shiny-frame') !== null")
+    if (isTRUE(res$result$value)) {
+      iframe_ready <- TRUE
+      iframe_html <- b$Runtime$evaluate(
+        "document.querySelector('.shiny-frame').contentDocument.documentElement.outerHTML"
+      )$result$value
+      break
+    }
+    Sys.sleep(0.1)
+  }
+  expect_true(iframe_ready, info = "Shiny iframe should be present")
+  cat("Iframe HTML (first 1000 chars):\n", substr(iframe_html, 1, 1000), "\n")
+  
+  circles <- b$Runtime$evaluate(
+    "document.querySelector('.shiny-frame').contentDocument.querySelectorAll('svg circle').length"
+  )$result$value
+  cat("Number of circle elements in iframe:\n", circles, "\n")
+  
+  if (circles == 0) {
+    animint_circles <- b$Runtime$evaluate(
+      "document.querySelector('.shiny-frame').contentDocument.querySelectorAll('div#animint svg circle').length"
+    )$result$value
+    cat("Number of circle elements in div#animint svg:\n", animint_circles, "\n")
+  }
+  
+  expect_true(circles >= 1, info = "At least one circle should be rendered in iframe")
 })
