@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test-suite: [ renderer, compiler, CRAN ]
+        test-suite: [ renderer, compiler, CRAN, shiny]
 
     name: Test Suite ${{ matrix.test-suite }}
     env: 
@@ -37,4 +37,6 @@ jobs:
         run: git config --global user.email toby.hocking@r-project.org
       
       - name: run tests
-        run: if [ "$TEST_SUITE" == "CRAN" ];then bash build.sh;else Rscript -e "source('tests/testthat.R', chdir = TRUE)";fi
+        run: if [ "$TEST_SUITE" == "CRAN" ];then bash build.sh;
+            elif [ "$TEST_SUITE" == "shiny" ]; then Rscript -e "testthat::test_file('tests/testthat/test-shiny.R')"
+            else Rscript -e "source('tests/testthat.R', chdir = TRUE)";fi
