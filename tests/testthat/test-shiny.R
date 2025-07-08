@@ -3,6 +3,13 @@ library(chromote)
 library(callr)
 library(shiny)
 library(animint2)
+library("testthat")
+library("animint2")
+library("RSelenium");
+library("XML")
+source("helper-functions.R")
+source("helper-HTML.R")
+source("helper-plot-data.r")
 
 
 renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
@@ -46,14 +53,14 @@ start_shiny_app <- function(app_dir, port) {
   return(list(proc = proc, url = app_url))
 }
 
-# Helper function to start RMarkdown app
-start_rmd_app <- function(app_dir, port) {
-  if (!dir.exists(app_dir)) stop("App directory does not exist: ", app_dir)
+# Helper function to start RMarkdown app 
+start_rmd_app <- function(rmd_file, port) {
+  if (!file.exists(rmd_file)) stop("RMarkdown file does not exist: ", rmd_file)
   if (!requireNamespace("rmarkdown")) stop("Package 'rmarkdown' is not installed")
   app_url <- sprintf("http://127.0.0.1:%d", port)
-  proc <- callr::r_bg(function(app_dir, port) {
-    rmarkdown::run(dir = app_dir, shiny_args = list(port = port, launch.browser = FALSE))
-  }, args = list(app_dir = app_dir, port = port), stderr = "shiny_err.log", stdout = "shiny_out.log")
+  proc <- callr::r_bg(function(rmd_file, port) {
+    rmarkdown::run(file = rmd_file, shiny_args = list(port = port, launch.browser = FALSE))
+  }, args = list(rmd_file = rmd_file, port = port), stderr = "shiny_err.log", stdout = "shiny_out.log")
   
   start_time <- Sys.time()
   app_started <- FALSE
@@ -74,6 +81,8 @@ start_rmd_app <- function(app_dir, port) {
   if (!app_started) stop("Failed to start RMarkdown app after 30 seconds")
   return(list(proc = proc, url = app_url))
 }
+
+
 
 # Test animint plot rendering in a Shiny app
 test_that("animint plot renders in a shiny app", {
