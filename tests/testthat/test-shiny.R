@@ -18,6 +18,62 @@ renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
   shiny::markRenderFunction(animint2::animintOutput, renderFunc)
 }
 
+# Helper function to start Shiny app 
+start_shiny_app <- function(app_dir, port) {
+  if (!dir.exists(app_dir)) stop("App directory does not exist: ", app_dir)
+  app_url <- sprintf("http://127.0.0.1:%d", port)
+  proc <- callr::r_bg(function(app_dir, port) {
+    shiny::runApp(app_dir, port = port, launch.browser = FALSE)
+  }, args = list(app_dir = app_dir, port = port), stderr = "shiny_err.log", stdout = "shiny_out.log")
+  
+  start_time <- Sys.time()
+  app_started <- FALSE
+  while (Sys.time() - start_time < 30) {
+    if (!proc$is_alive()) {
+      err <- paste(readLines("shiny_err.log", warn = FALSE), collapse = "\n")
+      cat("Shiny process stderr:\n", err, "\n")
+      stop("Shiny app failed: ", proc$get_error())
+    }
+    con <- try(socketConnection("localhost", port, open = "r+", timeout = 5), silent = TRUE)
+    if (!inherits(con, "try-error")) {
+      close(con)
+      app_started <- TRUE
+      break
+    }
+    Sys.sleep(0.5)
+  }
+  if (!app_started) stop("Failed to start Shiny app after 30 seconds")
+  return(list(proc = proc, url = app_url))
+}
+
+# Helper function to start RMarkdown app
+start_rmd_app <- function(app_dir, port) {
+  if (!dir.exists(app_dir)) stop("App directory does not exist: ", app_dir)
+  if (!requireNamespace("rmarkdown")) stop("Package 'rmarkdown' is not installed")
+  app_url <- sprintf("http://127.0.0.1:%d", port)
+  proc <- callr::r_bg(function(app_dir, port) {
+    rmarkdown::run(dir = app_dir, shiny_args = list(port = port, launch.browser = FALSE))
+  }, args = list(app_dir = app_dir, port = port), stderr = "shiny_err.log", stdout = "shiny_out.log")
+  
+  start_time <- Sys.time()
+  app_started <- FALSE
+  while (Sys.time() - start_time < 30) {
+    if (!proc$is_alive()) {
+      err <- paste(readLines("shiny_err.log", warn = FALSE), collapse = "\n")
+      cat("RMarkdown process stderr:\n", err, "\n")
+      stop("RMarkdown app failed: ", proc$get_error())
+    }
+    con <- try(socketConnection("localhost", port, open = "r+", timeout = 5), silent = TRUE)
+    if (!inherits(con, "try-error")) {
+      close(con)
+      app_started <- TRUE
+      break
+    }
+    Sys.sleep(0.5)
+  }
+  if (!app_started) stop("Failed to start RMarkdown app after 30 seconds")
+  return(list(proc = proc, url = app_url))
+}
 
 # Test animint plot rendering in a Shiny app
 test_that("animint plot renders in a shiny app", {
