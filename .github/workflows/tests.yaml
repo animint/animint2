@@ -72,7 +72,7 @@ jobs:
             exit 1
           fi
 
-      - name: Upload JS LCOV to Codecov
+      - name: Upload JS coverage to Codecov
         if: matrix.test-suite == 'renderer'
         run: |
           if [ -f "coverage-istanbul.json" ]; then

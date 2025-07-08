@@ -128,7 +128,7 @@ stop_js_coverage <- function() {
   tryCatch({
     cov <- remDr$Profiler$takePreciseCoverage()
     outfile <- "js-coverage.json"
-    # Ensure the format matches what puppeteer-to-istanbul expects
+    # Ensure the format matches what v8-to-istanbul expects
     coverage_data <- list(
       result = cov$result,
       url = "http://localhost:4848/animint-htmltest/animint.js"

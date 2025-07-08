@@ -72,7 +72,6 @@ Depends:
     R (>= 3.4.0)
 Imports:
     servr,
-    covr,
     digest,
     RJSONIO,
     grid,

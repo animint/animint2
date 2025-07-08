@@ -26,6 +26,10 @@ async function convertToIstanbul() {
       if (!url) continue;
       // Extract the relative file path from the URL
       const filePath = url.replace(/^http:\/\/localhost:\d+\/animint-htmltest\//, '');
+      if (filePath.startsWith('vendor/')) {
+        //Skip files under vendor/
+        continue;
+      }
       const fullPath = path.join(baseDir, filePath);
       // Skip if path is empty or file doesn't exist
       if (!filePath || !fs.existsSync(fullPath)) {
