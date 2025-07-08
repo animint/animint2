@@ -53,7 +53,10 @@ jobs:
       - name: run tests
         run: |
           if [ "$TEST_SUITE" == "CRAN" ]; then
-            bash build.sh
+            Rscript -e 'cmd <- "R CMD check --as-cran --no-manual ."; 
+            results <- system(cmd, intern=TRUE); 
+            status <- attr(results, "status");
+            if (!is.null(status) || any(grepl("NOTE|WARNING", results))) { quit(status=1) }'
           elif [ "$TEST_SUITE" == "compiler" ]; then
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
             Rscript -e 'covr::codecov(quiet = TRUE)'
