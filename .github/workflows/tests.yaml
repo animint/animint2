@@ -37,6 +37,18 @@ jobs:
 
       - name: git config user.email
         run: git config --global user.email toby.hocking@r-project.org
+
+      - name: Setup Node.js
+        if: matrix.test-suite == 'renderer'
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+        
+      - name: Install Node.js dependencies
+        if: matrix.test-suite == 'renderer'
+        run: |
+          npm install v8-to-istanbul
+          echo "Node modules installed"
       
       - name: run tests
         run: |
@@ -49,12 +61,12 @@ jobs:
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
           fi
 
-      - name: Convert JS coverage to LCOV
+      - name: Convert JS coverage to Istanbul format
         if: matrix.test-suite == 'renderer'
         run: |
           if [ -f "tests/testthat/js-coverage.json" ]; then
             echo "Converting JS coverage to LCOV format..."
-            Rscript tests/testthat/js-coverage-to-lcov.R
+            node v8-to-istanbul.js
           else
             echo "No JS coverage file found"
             exit 1
@@ -63,11 +75,11 @@ jobs:
       - name: Upload JS LCOV to Codecov
         if: matrix.test-suite == 'renderer'
         run: |
-          if [ -f "js-coverage.lcov" ]; then
+          if [ -f "coverage-istanbul.json" ]; then
             curl -Os https://uploader.codecov.io/latest/linux/codecov
             chmod +x codecov
-            ./codecov -f js-coverage.lcov -t ${{ secrets.CODECOV_TOKEN }} --flags javascript
+            ./codecov -f coverage-istanbul.json -t ${{ secrets.CODECOV_TOKEN }} --flags javascript
           else
-            echo "No LCOV file found"
+            echo "No coverage file found"
             exit 1
           fi
