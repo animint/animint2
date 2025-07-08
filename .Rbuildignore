@@ -19,3 +19,6 @@ test-compiler-gist.R
 ^docs$
 ^pkgdown$
 ^\.github$
+^package\.json$
+^package-lock\.json$
+^node_modules/
