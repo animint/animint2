@@ -22,3 +22,4 @@ test-compiler-gist.R
 ^package\.json$
 ^package-lock\.json$
 ^node_modules/
+^v8-to-istanbul\.js$
