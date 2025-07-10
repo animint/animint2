@@ -19,6 +19,8 @@ jobs:
       TEST_SUITE: ${{ matrix.test-suite }}
       GITHUB_PAT: ${{ secrets.PAT_GITHUB }}
       GH_ACTION: "ENABLED"
+      COLLECT_COVERAGE: "TRUE"
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - name: install and update texlive
@@ -35,8 +37,49 @@ jobs:
 
       - name: git config user.email
         run: git config --global user.email toby.hocking@r-project.org
+
+      - name: Setup Node.js
+        if: matrix.test-suite == 'renderer'
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+        
+      - name: Install Node.js dependencies
+        if: matrix.test-suite == 'renderer'
+        run: |
+          npm install v8-to-istanbul
+          echo "Node modules installed"
       
       - name: run tests
-        run: if [ "$TEST_SUITE" == "CRAN" ];then bash build.sh;
-            elif [ "$TEST_SUITE" == "shiny" ]; then Rscript -e "library(animint2); testthat::test_file('tests/testthat/test-shiny.R')"
-            else Rscript -e "source('tests/testthat.R', chdir = TRUE)";fi
+        run: |
+          if [ "$TEST_SUITE" == "CRAN" ]; then
+            bash build.sh
+          elif [ "$TEST_SUITE" == "compiler" ]; then
+            Rscript -e "source('tests/testthat.R', chdir = TRUE)"
+            Rscript -e 'covr::codecov(quiet = TRUE)'
+          else
+            Rscript -e "source('tests/testthat.R', chdir = TRUE)"
+          fi
+
+      - name: Convert JS coverage to Istanbul format
+        if: matrix.test-suite == 'renderer'
+        run: |
+          if [ -f "tests/testthat/js-coverage.json" ]; then
+            echo "Converting JS coverage to LCOV format..."
+            node v8-to-istanbul.js
+          else
+            echo "No JS coverage file found"
+            exit 1
+          fi
+
+      - name: Upload JS coverage to Codecov
+        if: matrix.test-suite == 'renderer'
+        run: |
+          if [ -f "coverage-istanbul.json" ]; then
+            curl -Os https://uploader.codecov.io/latest/linux/codecov
+            chmod +x codecov
+            ./codecov -f coverage-istanbul.json -t ${{ secrets.CODECOV_TOKEN }} --flags javascript
+          else
+            echo "No coverage file found"
+            exit 1
+          fi
