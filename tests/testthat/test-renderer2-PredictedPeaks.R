@@ -267,11 +267,11 @@ viz <- list(
     facet_grid(nonInputType ~ .) +
     theme_bw()+
     scale_fill_gradient(low="grey90", high="red")+
-    theme_animint(width=600, height=200)+
+    theme_animint(width=600, height=500)+
     geom_rect(aes(xmin=up-size, xmax=up+size,
                   ymin=Input-size, ymax=Input+size,
                   tooltip=totals,
-                  fill=log10(count)),
+                  fill=log10(count), id=gsub("[^A-Za-z0-9]", "_", paste0("rect_", dotID))),
               clickSelects="dotID",
               showSelected="chrom",
               color="transparent",
@@ -334,6 +334,28 @@ test_that("hlines after toggling specific twice", {
   expect_equal(specific_opacity(html2), 1)
 })
 
+test_that("clicking scatter rect updates chroms summary text", {
+  clickID("rect_1_mono_samples__0_Input_samples")
+  Sys.sleep(0.2)
+  html1 <- getHTML()
+  chroms.text1 <- getNodeSet(html1, '//g[@class="geom5_text_chroms"]//text')
+  text.value1 <- sapply(chroms.text1, xmlValue)
+  expect_true(any(grepl("1 mono samples, 0 Input samples", text.value1)))
+})
+
+test_that("clicking scatter rect changes oneChrom text element count", {
+  clickID("rect_1_mono_samples__1_Input_samples")
+  Sys.sleep(0.2)
+  html1 <- getHTML()
+  oneChrom.text1 <- getNodeSet(html1, '//g[@class="geom1_text_oneChrom"]//text')
+  count1 <- length(oneChrom.text1)
+  clickID("rect_1_mono_samples__2_Input_samples")
+  Sys.sleep(0.2)
+  html2 <- getHTML()
+  oneChrom.text2 <- getNodeSet(html2, '//g[@class="geom1_text_oneChrom"]//text')
+  count2 <- length(oneChrom.text2)
+  expect_true(count1 != count2) # Expect change in label count
+})
 ## e <- remDr$findElement("class name", "show_hide_selector_widgets")
 ## e$clickElement()
 
