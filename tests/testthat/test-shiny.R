@@ -22,7 +22,7 @@ renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
 
 # Test animint plot rendering in a Shiny app
 test_that("animint plot renders in a shiny app", {
-  app_dir <- "examples/shiny"
+  app_dir <- system.file("examples/shiny", package = "animint2")
   if (!dir.exists(app_dir)) skip("Shiny app directory not found")
   
   unlink(file.path(app_dir, "animint"), recursive = TRUE)
@@ -77,7 +77,7 @@ test_that("animint plot renders in a shiny app", {
 })
 
 # WorldBank app once for all related tests
-worldbank_dir <- "examples/shiny-WorldBank"
+system.file("examples/shiny-WorldBank", package = "animint2")
 if (dir.exists(worldbank_dir)) {
   port <- sample(3000:9999, 1)
   worldbank_app_info <- start_shiny_app(worldbank_dir, port)
@@ -251,7 +251,7 @@ test_that("shiny changes axes", {
 # Test RMarkdown rendering
 test_that("animint plot renders in an interactive document", {
   if (!requireNamespace("rmarkdown")) skip("Package 'rmarkdown' not installed")
-  rmd_file <- "examples/rmarkdown/index.Rmd"
+   rmd_file <- system.file("examples/rmarkdown/index.Rmd", package = "animint2")
   if (!file.exists(rmd_file)) skip("RMarkdown file not found")
   
   port <- sample(3000:9999, 1)
