@@ -54,12 +54,15 @@ jobs:
         run: |
           if [ "$TEST_SUITE" == "CRAN" ]; then
             bash build.sh
+          elif [ "$TEST_SUITE" == "shiny" ]; then
+            Rscript -e "library(animint2); testthat::test_file('tests/testthat/test-shiny.R')"
           elif [ "$TEST_SUITE" == "compiler" ]; then
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
             Rscript -e 'covr::codecov(quiet = TRUE)'
           else
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
           fi
+
 
       - name: Convert JS coverage to Istanbul format
         if: matrix.test-suite == 'renderer'

@@ -3,14 +3,9 @@ library(chromote)
 library(callr)
 library(shiny)
 library(animint2)
-library("testthat")
-library("animint2")
-library("RSelenium");
-library("XML")
 source("helper-functions.R")
 source("helper-HTML.R")
 source("helper-plot-data.r")
-
 
 renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!requireNamespace("shiny")) message("Please install.packages('shiny')")
