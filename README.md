@@ -22,7 +22,7 @@ Play around with [this interactive data visualization of data from the World Ban
 
 To learn how to generate your own interactive data visualizations, go to the official [Animint2 Manual](https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html). If you encounter problems, please see the [animint2 wiki](https://github.com/animint/animint2/wiki) or [report them](https://github.com/animint/animint2/issues).
 
-[![codecov](https://codecov.io/gh/<user>/<repo>/branch/main/graph/badge.svg)](https://codecov.io/gh/<user>/<repo>)
+[![codecov](https://codecov.io/gh/animint/animint2/branch/main/graph/badge.svg)](https://codecov.io/gh/animint/animint2)
 
 ## Installation
 

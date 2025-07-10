@@ -46,9 +46,9 @@ viz <- list(
     ##           size=11,
     ##           data=PredictedPeaks$chromCounts)+
     geom_text(aes(relative.middle, type, label=samples.up,
-                href=paste0(
-                  "http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=",
-                  chrom, ":", zoomStart, "-", zoomEnd)),
+                  href=paste0(
+                    "http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=",
+                    chrom, ":", zoomStart, "-", zoomEnd)),
               showSelected=c("dotID", "chrom"),
               size=11,
               data=PredictedPeaks$chromCounts)+
@@ -65,23 +65,23 @@ viz <- list(
               size=11,
               data=PredictedPeaks$countsByChrom)+
     geom_segment(aes(chromStart/1e6, chrom,
-                   xend=chromEnd/1e6, yend=chrom),
-               clickSelects="chrom",
-               size=5,
-               data=PredictedPeaks$chrom.ranges)+
+                     xend=chromEnd/1e6, yend=chrom),
+                 clickSelects="chrom",
+                 size=5,
+                 data=PredictedPeaks$chrom.ranges)+
     geom_point(aes(chromEnd/1e6, chrom,
-                 id=chrom),
-             clickSelects="chrom",
-             size=3,
-             data=PredictedPeaks$chrom.ranges)+
+                   id=chrom),
+               clickSelects="chrom",
+               size=3,
+               data=PredictedPeaks$chrom.ranges)+
     geom_text(aes(max(PredictedPeaks$chrom.ranges$chromEnd)/2e6, chrom,
-                label=totals),
-            showSelected="dotID",
-            data=PredictedPeaks$scatter.text),
+                  label=totals),
+              showSelected="dotID",
+              data=PredictedPeaks$scatter.text),
   scatter=ggplot()+
     geom_hline(aes(yintercept=N),
-             color="grey",
-             data=PredictedPeaks$counts.Input)+
+               color="grey",
+               data=PredictedPeaks$counts.Input)+
     scale_x_continuous("number of samples with a peak")+
     facet_grid(nonInputType ~ .)+
     theme_bw()+
@@ -89,16 +89,16 @@ viz <- list(
     theme_animint(width=800)+
     theme(panel.margin=grid::unit(0, "cm"))+
     geom_vline(aes(xintercept=N),
-             color="grey",
-             data=PredictedPeaks$counts.not.Input)+
+               color="grey",
+               data=PredictedPeaks$counts.not.Input)+
     geom_rect(aes(xmin=up-size, xmax=up+size,
-              ymin=Input-size, ymax=Input+size,
-              tooltip=totals,
-              fill=log10(count)),
-            clickSelects="dotID",
-            showSelected="chrom",
-            color="transparent",
-            data=PredictedPeaks$bg.rect),
+                  ymin=Input-size, ymax=Input+size,
+                  tooltip=totals,
+                  fill=log10(count)),
+              clickSelects="dotID",
+              showSelected="chrom",
+              color="transparent",
+              data=PredictedPeaks$bg.rect),
   first=list(dotID=test_dotID, chrom=test_chrom))
 
 info <- animint2HTML(viz)

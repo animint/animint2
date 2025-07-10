@@ -33,7 +33,6 @@ async function convertToIstanbul() {
       const fullPath = path.join(baseDir, filePath);
       // Skip if path is empty or file doesn't exist
       if (!filePath || !fs.existsSync(fullPath)) {
-        console.warn(`File not found or path empty: ${fullPath}`);
         continue;
       }
       try {
