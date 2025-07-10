@@ -1,6 +1,6 @@
 # Changes in version 2025.7.10 (PR#208)
 
-- Added Codecov integration for both R and JavaScript tests; coverage reports now available at https://app.codecov.io/github/animint/animint2.
+- Added Codecov integration for both R and JavaScript tests; coverage reports now available at https://app.codecov.io/github/animint/animint2
 
 # Changes in version 2025.6.28 (PR#204) 
 
