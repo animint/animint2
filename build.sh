@@ -1,5 +1,6 @@
 #!/bin/bash
 set -o errexit
+set -o pipefail
 R -e 'devtools::document()'
 cd ..
 rm -rf animint2-release
@@ -30,4 +31,18 @@ EOF
 PKG_TGZ=$(R CMD build animint2-release|grep building|sed "s/.*\(animint2.*.tar.gz\).*/\1/")
 echo built $PKG_TGZ so now we INSTALL 
 R CMD INSTALL $PKG_TGZ
-R CMD check --as-cran $PKG_TGZ
+echo "Running R CMD check --as-cran $PKG_TGZ"
+check_output=$(R CMD check --as-cran $PKG_TGZ 2>&1)
+check_status=$?
+echo "$check_output"
+# Check for WARNINGs or NOTEs in the output
+if echo "$check_output" | grep -q -E "WARNING|NOTE"; then
+    echo "CRAN check generated WARNINGs or NOTEs:"
+    exit 1
+fi
+# Exit with original status if no WARNINGs/NOTEs but check failed
+if [ $check_status -ne 0 ]; then
+    echo "R CMD check failed with status $check_status"
+    exit $check_status
+fi
+echo "CRAN check completed successfully"

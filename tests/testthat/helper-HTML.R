@@ -43,6 +43,10 @@ tests_init <- function(dir = ".", ...) {
   unlink(testDir, recursive = TRUE)
   options(chromote.timeout = 120)
   chrome.session <- chromote::ChromoteSession$new()
+  # Enable required DevTools domains for coverage
+  chrome.session$Runtime$enable()
+  chrome.session$Profiler$enable()
+
   chrome.session$view()
   chrome.session$refresh <- function(){
     ## from https://github.com/rstudio/chromote?tab=readme-ov-file#loading-a-page-reliably
@@ -103,4 +107,37 @@ getClassBound <- function(geom.class, position){
     geom.class, position)
   Sys.sleep(2)
   runtime_evaluate(script=script.txt)
+}
+
+# JS Coverage collection functions
+start_js_coverage <- function() {
+  tryCatch({
+    remDr$Profiler$enable()
+    remDr$Profiler$startPreciseCoverage(
+      callCount = TRUE,
+      detailed = TRUE
+    )
+    TRUE
+  }, error = function(e) {
+    warning("Failed to start JS coverage: ", e$message)
+    FALSE
+  })
+}
+
+stop_js_coverage <- function() {
+  tryCatch({
+    cov <- remDr$Profiler$takePreciseCoverage()
+    outfile <- "js-coverage.json"
+    # Ensure the format matches what v8-to-istanbul expects
+    coverage_data <- list(
+      result = cov$result,
+      url = "http://localhost:4848/animint-htmltest/animint.js"
+    )
+    jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
+    message("JS coverage saved to ", normalizePath(outfile))
+    TRUE
+  }, error = function(e) {
+    warning("Failed to save JS coverage: ", e$message)
+    FALSE
+  })
 }
