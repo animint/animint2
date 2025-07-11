@@ -380,11 +380,7 @@ start_shiny_app <- function(app_dir, port) {
   start_time <- Sys.time()
   app_started <- FALSE
   while (Sys.time() - start_time < 30) {
-    if (!proc$is_alive()) {
-      err <- paste(readLines("shiny_err.log", warn = FALSE), collapse = "\n")
-      cat("Shiny process stderr:\n", err, "\n")
-      stop("Shiny app failed: ", proc$get_error())
-    }
+    if (!proc$is_alive()) stop("Shiny app failed")
     con <- try(socketConnection("localhost", port, open = "r+", timeout = 5), silent = TRUE)
     if (!inherits(con, "try-error")) {
       close(con)
@@ -397,7 +393,6 @@ start_shiny_app <- function(app_dir, port) {
   return(list(proc = proc, url = app_url))
 }
 
-# Helper function to start RMarkdown app 
 start_rmd_app <- function(rmd_file, port) {
   if (!file.exists(rmd_file)) stop("RMarkdown file does not exist: ", rmd_file)
   if (!requireNamespace("rmarkdown")) stop("Package 'rmarkdown' is not installed")
@@ -409,11 +404,7 @@ start_rmd_app <- function(rmd_file, port) {
   start_time <- Sys.time()
   app_started <- FALSE
   while (Sys.time() - start_time < 30) {
-    if (!proc$is_alive()) {
-      err <- paste(readLines("shiny_err.log", warn = FALSE), collapse = "\n")
-      cat("RMarkdown process stderr:\n", err, "\n")
-      stop("RMarkdown app failed: ", proc$get_error())
-    }
+    if (!proc$is_alive()) stop("RMarkdown app failed")
     con <- try(socketConnection("localhost", port, open = "r+", timeout = 5), silent = TRUE)
     if (!inherits(con, "try-error")) {
       close(con)
@@ -425,6 +416,7 @@ start_rmd_app <- function(rmd_file, port) {
   if (!app_started) stop("Failed to start RMarkdown app after 30 seconds")
   return(list(proc = proc, url = app_url))
 }
+
 
 # --------------------------
 # Functions that are used in multiple places

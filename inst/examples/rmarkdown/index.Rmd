@@ -9,8 +9,14 @@ runtime: shiny
 
 ```{r embedded}
 library(shiny)
+library(this.path)
+if (exists("this.path")) {
+  setwd(dirname(dirname(this.path::this.path())))
+} else {
+  setwd(dirname(dirname(getwd())))
+}
 shinyAppDir(
-  system.file("examples/shiny", package = "animint2"),
+  "shiny",
   options = list(width = "100%", height = 500)
 )
 ```

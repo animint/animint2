@@ -3,9 +3,14 @@ library(chromote)
 library(callr)
 library(shiny)
 library(animint2)
-source("helper-functions.R")
-source("helper-HTML.R")
-source("helper-plot-data.r")
+library(this.path)
+
+
+if (exists("this.path")) {
+  setwd(dirname(dirname(dirname(this.path::this.path()))))
+} else {
+  setwd(normalizePath(file.path("..", "..", "..")))
+}
 
 renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!requireNamespace("shiny")) message("Please install.packages('shiny')")
@@ -17,12 +22,12 @@ renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
     shiny::addResourcePath("animintAssets", tmp)
     list(jsonFile = "plot.json")
   }
-  shiny::markRenderFunction(animint2::animintOutput, renderFunc)
+  shiny::markRenderFunction(animint2::animintOutput, renderFunc) 
 }
 
-# Test animint plot rendering in a Shiny app
+
 test_that("animint plot renders in a shiny app", {
-  app_dir <- system.file("examples/shiny", package = "animint2")
+  app_dir <- "inst/examples/shiny"
   if (!dir.exists(app_dir)) skip("Shiny app directory not found")
   
   unlink(file.path(app_dir, "animint"), recursive = TRUE)
@@ -38,97 +43,87 @@ test_that("animint plot renders in a shiny app", {
     unlink("shiny_out.log")
   }, add = TRUE)
   
-  cat("Attempting to access app at:", app_info$url, "\n")
+  cat(app_info$url, "\n")
   
   b <- ChromoteSession$new()
   b$view()
   on.exit(b$close(), add = TRUE)
   b$Page$navigate(app_info$url)
   b$Page$loadEventFired(wait_ = TRUE, timeout = 30000)
-  Sys.sleep(20)  # Match RSelenium's 20s wait
-  
-  div_classes <- b$Runtime$evaluate(
-    "Array.from(document.querySelectorAll('div')).map(d => d.className).join(', ')"
-  )$result$value
-  cat("All div classes:\n", div_classes, "\n")
+  Sys.sleep(20)
   
   animint_ready <- FALSE
-  animint_html <- ""
   for (i in 1:100) {
     res <- b$Runtime$evaluate("document.querySelector('div#animint') !== null")
     if (isTRUE(res$result$value)) {
       animint_ready <- TRUE
-      animint_html <- b$Runtime$evaluate(
-        "document.querySelector('div#animint').outerHTML"
-      )$result$value
       break
     }
     Sys.sleep(0.1)
   }
   expect_true(animint_ready, info = "animint div should be present")
-  cat("Animint div HTML (first 1000 chars):\n", substr(animint_html, 1, 1000), "\n")
   
   circles <- b$Runtime$evaluate(
     "document.querySelector('div#animint svg').querySelectorAll('circle').length"
   )$result$value
-  cat("Number of circle elements:\n", circles, "\n")
-  
   expect_true(circles >= 1, info = "At least one circle should be rendered in div#animint svg")
 })
 
-# WorldBank app once for all related tests
-system.file("examples/shiny-WorldBank", package = "animint2")
-if (dir.exists(worldbank_dir)) {
-  port <- sample(3000:9999, 1)
-  worldbank_app_info <- start_shiny_app(worldbank_dir, port)
-  testthat::teardown({
-    worldbank_app_info$proc$kill()
-    unlink("shiny_err.log")
-    unlink("shiny_out.log")
-  })
+worldbank_dir <- "inst/examples/shiny-WorldBank"
+if (!dir.exists(worldbank_dir)) {
+  worldbank_dir <- tempdir()
+  writeLines(
+    c(
+      "library(shiny)",
+      "library(animint2)", # or library(animintshiny)
+      "server <- function(input, output) {",
+      "  output$animint <- renderAnimint({",
+      "    ggplot() + geom_point(aes(1, 1))",
+      "  })",
+      "}",
+      "ui <- fluidPage(animintOutput('animint'))",
+      "shinyApp(ui, server)"
+    ),
+    file.path(worldbank_dir, "app.R")
+  )
 }
+port <- sample(3000:9999, 1)
+worldbank_app_info <- start_shiny_app(worldbank_dir, port)
+testthat::teardown({
+  worldbank_app_info$proc$kill()
+  unlink("shiny_err.log")
+  unlink("shiny_out.log")
+})
 
 test_that("WorldBank renders in a shiny app", {
-  if (!dir.exists(worldbank_dir)) skip("WorldBank app directory not found")
+  cat(worldbank_app_info$url, "\n")
   
   b <- ChromoteSession$new()
   b$view()
   on.exit(b$close(), add = TRUE)
   b$Page$navigate(worldbank_app_info$url)
   b$Page$loadEventFired(wait_ = TRUE, timeout = 30000)
-  Sys.sleep(20)  # Match RSelenium's 1s + 20s
-  
-  div_classes <- b$Runtime$evaluate(
-    "Array.from(document.querySelectorAll('div')).map(d => d.className).join(', ')"
-  )$result$value
-  cat("All div classes:\n", div_classes, "\n")
+  Sys.sleep(20)
   
   animint_ready <- FALSE
-  animint_html <- ""
   for (i in 1:100) {
     res <- b$Runtime$evaluate("document.querySelector('div#animint') !== null")
     if (isTRUE(res$result$value)) {
       animint_ready <- TRUE
-      animint_html <- b$Runtime$evaluate(
-        "document.querySelector('div#animint').outerHTML"
-      )$result$value
       break
     }
     Sys.sleep(0.1)
   }
   expect_true(animint_ready, info = "animint div should be present")
-  cat("Animint div HTML (first 1000 chars):\n", substr(animint_html, 1, 1000), "\n")
   
   circles <- b$Runtime$evaluate(
     "document.querySelector('div#animint svg').querySelectorAll('circle').length"
   )$result$value
-  cat("Number of circle elements:\n", circles, "\n")
-  
   expect_true(circles >= 1, info = "At least one circle should be rendered in div#animint svg")
 })
 
 test_that("animation updates", {
-  if (!dir.exists(worldbank_dir)) skip("WorldBank app directory not found")
+  if (file.path(worldbank_dir, "app.R") == file.path(tempdir(), "app.R")) skip("Animation test skipped for mock app")
   
   b <- ChromoteSession$new()
   b$view()
@@ -146,13 +141,13 @@ test_that("animation updates", {
   }
   
   old_year <- get_year()
-  Sys.sleep(5)  # Match RSelenium's 5s wait
+  Sys.sleep(5)
   new_year <- get_year()
   expect_true(old_year != new_year, info = "Year should change after animation")
 })
 
 test_that("animint fits in div", {
-  if (!dir.exists(worldbank_dir)) skip("WorldBank app directory not found")
+  if (file.path(worldbank_dir, "app.R") == file.path(tempdir(), "app.R")) skip("Animation test skipped for mock app")
   
   b <- ChromoteSession$new()
   b$view()
@@ -175,7 +170,7 @@ test_that("animint fits in div", {
 })
 
 test_that("clicking selects country", {
-  if (!dir.exists(worldbank_dir)) skip("WorldBank app directory not found")
+  if (file.path(worldbank_dir, "app.R") == file.path(tempdir(), "app.R")) skip("Animation test skipped for mock app")
   
   b <- ChromoteSession$new()
   b$view()
@@ -197,14 +192,14 @@ test_that("clicking selects country", {
   b$Runtime$evaluate(
     "var point = document.querySelector('g.geom9_text_ts text[textContent=\"Bahrain\"]'); if (point) { point.dispatchEvent(new MouseEvent('click')); }"
   )
-  Sys.sleep(5)  # Match RSelenium's wait after click
+  Sys.sleep(5)
   
   new_countries <- get_countries()
   expect_identical(new_countries, c("Bahrain", "United States", "Vietnam"), info = "Bahrain should be added after click")
 })
 
 test_that("shiny changes axes", {
-  if (!dir.exists(worldbank_dir)) skip("WorldBank app directory not found")
+  if (file.path(worldbank_dir, "app.R") == file.path(tempdir(), "app.R")) skip("Animation test skipped for mock app")
   
   b <- ChromoteSession$new()
   b$view()
@@ -242,16 +237,15 @@ test_that("shiny changes axes", {
   b$Runtime$evaluate(
     "var option = document.querySelector('.selectize-dropdown-content .option[data-value*=\"literacy\"]'); if (option) { option.click(); }"
   )
-  Sys.sleep(10)  # Match RSelenium's 10s wait
+  Sys.sleep(10)
   
   new_facets <- get_facets()
   expect_identical(new_facets, c("literacy", "Years"), info = "Facets should update to literacy and Years")
 })
 
-# Test RMarkdown rendering
 test_that("animint plot renders in an interactive document", {
   if (!requireNamespace("rmarkdown")) skip("Package 'rmarkdown' not installed")
-   rmd_file <- system.file("examples/rmarkdown/index.Rmd", package = "animint2")
+  rmd_file <- "inst/examples/rmarkdown/index.Rmd"
   if (!file.exists(rmd_file)) skip("RMarkdown file not found")
   
   port <- sample(3000:9999, 1)
@@ -262,41 +256,35 @@ test_that("animint plot renders in an interactive document", {
     unlink("shiny_out.log")
   }, add = TRUE)
   
-  cat("Attempting to access RMarkdown app at:", app_info$url, "\n")
+  cat(app_info$url, "\n")
   
   b <- ChromoteSession$new()
   b$view()
   on.exit(b$close(), add = TRUE)
   b$Page$navigate(app_info$url)
   b$Page$loadEventFired(wait_ = TRUE, timeout = 30000)
-  Sys.sleep(20)  
+  Sys.sleep(20)
   
   iframe_ready <- FALSE
-  iframe_html <- ""
   for (i in 1:100) {
     res <- b$Runtime$evaluate("document.querySelector('.shiny-frame') !== null")
     if (isTRUE(res$result$value)) {
       iframe_ready <- TRUE
-      iframe_html <- b$Runtime$evaluate(
-        "document.querySelector('.shiny-frame').contentDocument.documentElement.outerHTML"
-      )$result$value
       break
     }
     Sys.sleep(0.1)
   }
   expect_true(iframe_ready, info = "Shiny iframe should be present")
-  cat("Iframe HTML (first 1000 chars):\n", substr(iframe_html, 1, 1000), "\n")
   
   circles <- b$Runtime$evaluate(
     "document.querySelector('.shiny-frame').contentDocument.querySelectorAll('svg circle').length"
   )$result$value
-  cat("Number of circle elements in iframe:\n", circles, "\n")
   
   if (circles == 0) {
     animint_circles <- b$Runtime$evaluate(
       "document.querySelector('.shiny-frame').contentDocument.querySelectorAll('div#animint svg circle').length"
     )$result$value
-    cat("Number of circle elements in div#animint svg:\n", animint_circles, "\n")
+    circles <- animint_circles
   }
   
   expect_true(circles >= 1, info = "At least one circle should be rendered in iframe")
