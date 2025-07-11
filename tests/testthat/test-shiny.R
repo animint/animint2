@@ -3,9 +3,9 @@ library(chromote)
 library(callr)
 library(shiny)
 library(animint2)
+
+if (!requireNamespace("this.path", quietly = TRUE)) install.packages("this.path")
 library(this.path)
-
-
 if (exists("this.path")) {
   setwd(dirname(dirname(dirname(this.path::this.path()))))
 } else {
@@ -24,7 +24,6 @@ renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
   }
   shiny::markRenderFunction(animint2::animintOutput, renderFunc) 
 }
-
 
 test_that("animint plot renders in a shiny app", {
   app_dir <- "inst/examples/shiny"
@@ -75,7 +74,7 @@ if (!dir.exists(worldbank_dir)) {
   writeLines(
     c(
       "library(shiny)",
-      "library(animint2)", # or library(animintshiny)
+      "library(animint2)",
       "server <- function(input, output) {",
       "  output$animint <- renderAnimint({",
       "    ggplot() + geom_point(aes(1, 1))",

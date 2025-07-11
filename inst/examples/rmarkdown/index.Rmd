@@ -9,6 +9,7 @@ runtime: shiny
 
 ```{r embedded}
 library(shiny)
+if (!requireNamespace("this.path", quietly = TRUE)) install.packages("this.path")
 library(this.path)
 if (exists("this.path")) {
   setwd(dirname(dirname(this.path::this.path())))
