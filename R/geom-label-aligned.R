@@ -23,6 +23,7 @@
 #' @param label.size Size of label border, in mm.
 #' @param alignment One of "vertical" (QP on Y axis) or "horizontal" (QP on X axis)
 #' @param min_distance Minimum distance between boxes in native units.
+#' @param background_rect Disables text background rect if set to FALSE.
 #' @export
 #' @examples
 #' Example 1:
@@ -55,7 +56,6 @@
 #'     xlab("Time (days)") +
 #'     ylab("Body Weight (grams)")
 #' )
-
 geom_label_aligned <- function(mapping = NULL, data = NULL,
                               stat = "identity", position = "identity",
                               ...,
@@ -87,7 +87,9 @@ geom_label_aligned <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' @rdname geom_label_aligned
+#' @rdname animint2-gganimintproto
+#' @format NULL
+#' @usage NULL
 #' @export
 GeomLabelAligned <- gganimintproto("GeomLabelAligned", Geom,
   required_aes = c("x", "y", "label"),
