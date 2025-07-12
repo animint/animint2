@@ -87,6 +87,7 @@ Imports:
 Suggests:
     gert, gitcreds, gh,
     sp,
+    dplyr
     gistr (>= 0.2),
     shiny,
     covr,
@@ -158,7 +159,6 @@ Collate:
     'fortify.r'
     'stat-.r'
     'geom-abline.r'
-    'geom-label-aligned.R'
     'geom-rect.r'
     'geom-bar.r'
     'geom-bin2d.r'
@@ -181,6 +181,7 @@ Collate:
     'geom-histogram.r'
     'geom-hline.r'
     'geom-jitter.r'
+    'geom-label-aligned.R'
     'geom-label.R'
     'geom-linerange.r'
     'geom-point.r'
