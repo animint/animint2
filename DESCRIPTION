@@ -87,7 +87,7 @@ Imports:
 Suggests:
     gert, gitcreds, gh,
     sp,
-    dplyr
+    dplyr,
     gistr (>= 0.2),
     shiny,
     covr,
