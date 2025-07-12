@@ -1492,58 +1492,72 @@ var animint = function (to_select, json_file) {
 
           eAppend = "g";
           eActions = function(groups) {
-              // Update or append <rect> and <text> within each group
-              groups.each(function(d) {
-                  var group = d3.select(this);
-                  // Remove existing rect/text to avoid duplicates
-                  group.selectAll("*").remove();
-                  if (background_rect) {
-                    group.append("rect")
-                        .attr("x", function(d) { 
-                            if (alignment == "vertical") {
-                                return d.scaledX - d.boxWidth * get_hjust(d);
-                            } else {
-                                return d.optimizedPos - d.boxWidth / 2;
-                            }
-                        })
-                        .attr("y", function(d) {
-                            if (alignment == "vertical") {
-                                return d.optimizedPos - d.boxHeight / 2;
-                            } else {
-                                return d.scaledY - d.boxHeight * get_vjust(d);
-                            }
-                        })
-                        .attr("width", function(d) { return d.boxWidth; })
-                        .attr("height", function(d) { return d.boxHeight; })
-                        .style("opacity", get_alpha)
-                        .style("stroke", get_colour)
-                        .style("fill", get_fill)
-                        .attr("rx", g_info.params.label_r || 0)
-                        .attr("ry", g_info.params.label_r || 0);
+            // Get transition duration
+            var transitionDuration = 0;
+            if (Selectors.hasOwnProperty(selector_name)) {
+              transitionDuration = +Selectors[selector_name].duration || 0;
+            }
+            groups.each(function(d) {
+              var group = d3.select(this);
+              // Select existing elements (if any)
+              var rect = group.select("rect");
+              var text = group.select("text");
+              // If elements don't exist, create them
+              if (rect.empty()) {rect = group.append("rect");}
+              if (text.empty()) {text = group.append("text");}
+              // Apply transitions to both elements
+              if (transitionDuration > 0) {
+                rect = rect.transition().duration(transitionDuration);
+                text = text.transition().duration(transitionDuration);
+              }
+              if (background_rect) {
+                rect
+                  .attr("x", function(d) { 
+                    if (alignment == "vertical") {
+                      return d.scaledX - d.boxWidth * get_hjust(d);
+                    } else {
+                      return d.optimizedPos - d.boxWidth / 2;
+                    }
+                  })
+                  .attr("y", function(d) {
+                    if (alignment == "vertical") {
+                      return d.optimizedPos - d.boxHeight / 2;
+                    } else {
+                      return d.scaledY - d.boxHeight * get_vjust(d);
+                    }
+                  })
+                  .attr("width", function(d) { return d.boxWidth; })
+                  .attr("height", function(d) { return d.boxHeight; })
+                  .style("opacity", get_alpha)
+                  .style("stroke", get_colour)
+                  .style("fill", get_fill)
+                  .attr("rx", g_info.params.label_r || 0)
+                  .attr("ry", g_info.params.label_r || 0);
+              } else {
+                rect.remove();
+              }
+              text
+                .attr("x", function(d) {
+                  if (alignment == "vertical") {
+                    return d.scaledX - d.boxWidth * get_hjust(d) + d.boxWidth / 2;
+                  } else {
+                    return d.optimizedPos;
                   }
-
-                  group.append("text")
-                      .attr("x", function(d) {
-                          if (alignment == "vertical") {
-                              return d.scaledX - d.boxWidth * get_hjust(d) + d.boxWidth / 2;
-                          } else {
-                              return d.optimizedPos;
-                          }
-                      })
-                      .attr("y", function(d) {
-                          if (alignment == "vertical") {
-                              return d.optimizedPos + (d.fontsize / 3);
-                          } else {
-                              return d.scaledY - d.boxHeight * get_vjust(d) + d.boxHeight / 2 + ((d.fontsize || default_textSize) / 3);
-                          }
-                      })
-                      .attr("font-size", function(d) { return (d.fontsize || default_textSize) + "px"; })
-                      .style("text-anchor", "middle")
-                      .style("fill", get_colour)
-                      .text(function(d) { return d.label; });
-              });
+                })
+                .attr("y", function(d) {
+                  if (alignment == "vertical") {
+                    return d.optimizedPos + (d.fontsize / 3);
+                  } else {
+                    return d.scaledY - d.boxHeight * get_vjust(d) + d.boxHeight / 2 + ((d.fontsize || default_textSize) / 3);
+                  }
+                })
+                .attr("font-size", function(d) { return (d.fontsize || default_textSize) + "px"; })
+                .style("text-anchor", "middle")
+                .style("fill", get_colour)
+                .text(function(d) { return d.label; });
+            });
           };
-      }
+        }
 
       var rect_geoms = ["tallrect","widerect","rect"];
       if(rect_geoms.includes(g_info.geom)){
