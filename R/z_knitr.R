@@ -85,26 +85,19 @@ animintOutput <- function(outputId) {
 #' @seealso http://shiny.rstudio.com/articles/building-outputs.html
 #' @export
 #' 
+
+
 renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
-  # Note that requireNamespace("shiny") should load digest & htmltools (both used later on)
   if (!requireNamespace("shiny")) message("Please install.packages('shiny')")
-  
-  # Convert the expression + environment into a function
   func <- shiny::exprToFunction(expr, env, quoted)
-  
-  # this will tell knitr how to place animint into an interactive document
-  # implementation is similar to htmlwidgets::shinyRenderWidget
-  # we can't use that in our case since we must call animint2dir
-  # everytime shiny calls renderFunc
   renderFunc <- function(shinysession, name, ...) {
     val <- func()
     tmp <- tempfile()
-    dir.create(tmp)
     stuff <- animint2dir(val, out.dir = tmp, open.browser = FALSE)
     shiny::addResourcePath("animintAssets", tmp)
     list(jsonFile = "plot.json")
   }
-  shiny::markRenderFunction(animint2::animintOutput, renderFunc)
+  shiny::markRenderFunction(animint2::animintOutput, renderFunc) 
 }
 
 # html dependencies according htmltools protocols

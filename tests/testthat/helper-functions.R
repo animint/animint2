@@ -370,6 +370,7 @@ run_servr <- function(directory, port) {
 
 
 # Helper function to start Shiny app 
+
 start_shiny_app <- function(app_dir, port) {
   if (!dir.exists(app_dir)) stop("App directory does not exist: ", app_dir)
   app_url <- sprintf("http://127.0.0.1:%d", port)
@@ -395,7 +396,6 @@ start_shiny_app <- function(app_dir, port) {
 
 start_rmd_app <- function(rmd_file, port) {
   if (!file.exists(rmd_file)) stop("RMarkdown file does not exist: ", rmd_file)
-  if (!requireNamespace("rmarkdown")) stop("Package 'rmarkdown' is not installed")
   app_url <- sprintf("http://127.0.0.1:%d", port)
   proc <- callr::r_bg(function(rmd_file, port) {
     rmarkdown::run(file = rmd_file, shiny_args = list(port = port, launch.browser = FALSE))
@@ -416,7 +416,6 @@ start_rmd_app <- function(rmd_file, port) {
   if (!app_started) stop("Failed to start RMarkdown app after 30 seconds")
   return(list(proc = proc, url = app_url))
 }
-
 
 # --------------------------
 # Functions that are used in multiple places
