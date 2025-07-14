@@ -6,17 +6,26 @@ data(WorldBank, package = "animint2")
 
 # subset of countries
 tracked_countries <- c("United States", "Vietnam", "India", "China", "Brazil",
-                      "Nigeria", "Germany", "South Africa")
+                      "Nigeria", "Mali", "South Africa", "Canada")
 
 # Filter WorldBank data
-wb <- subset(WorldBank, country %in% tracked_countries) %>%
+wb <- WorldBank %>%
+  filter(country %in% tracked_countries) %>%
+  filter(!is.na(life.expectancy) & !is.na(fertility.rate)) %>%
   mutate(
     year = as.integer(year),
     group = country
   )
+# Label data for the scatter plot
+label_data_scatter <- wb %>%
+  mutate(label = country)
 
-# Label data for aligned labels
-label_data <- wb %>%
+# Label data for the time series
+label_data_line <- wb %>%
+  group_by(country) %>%
+  filter(year == max(year)) %>%
+  slice_tail(n = 1) %>%
+  ungroup() %>%
   mutate(label = country)
 
 # Text data for year display
@@ -26,6 +35,27 @@ year_text_data <- data.frame(
 )
 
 viz <- animint(
+  lifeExpectancyPlot = ggplot() +
+    geom_line(
+      data = wb,
+      aes(x = year, y = life.expectancy, group = country, color = group),
+      size = 1.2,
+      clickSelects = "country",
+      showSelected = "country"
+    ) +
+    geom_label_aligned(
+      data = label_data_line,
+      aes(x = year, y = life.expectancy, label = label, fill = group, key = country),
+      alignment = "vertical",
+      hjust = 1,
+      color = "white",
+      showSelected = "country",
+      clickSelects = "country"
+    ) +
+    ggtitle("Life Expectancy Over Time") +
+    xlab("Year") +
+    ylab("Life Expectancy (years)"),
+
   worldbankAnim = ggplot() +
     geom_point(
       data = wb,
@@ -35,9 +65,9 @@ viz <- animint(
       clickSelects = "country"
     ) +
     geom_label_aligned(
-      data = label_data,
+      data = label_data_scatter,
       aes(x = fertility.rate, y = life.expectancy, label = label, fill = group, key = country),
-      alignment = "vertical", color = "#ffffd1", label_r = "9",
+      alignment = "vertical", color = "#ffffd1", label_r = "5",
       showSelected = "year",
       clickSelects = "country"
     ) +
@@ -46,25 +76,8 @@ viz <- animint(
     xlab("Fertility Rate") +
     ylab("Life Expectancy"),
 
-  timeSeries = ggplot() +
-    geom_line(
-      data = wb,
-      aes(x = year, y = life.expectancy, group = country, color = group),
-      size = 1.5,
-      showSelected = "country"
-    ) +
-    geom_point(
-      data = wb,
-      aes(x = year, y = life.expectancy, color = group),
-      showSelected = "country",
-      size = 2
-    ) +
-    ggtitle("Life Expectancy Over Time (Selected Country)") +
-    xlab("Year") +
-    ylab("Life Expectancy"),
-
-  time = list(variable = "year", ms = 1000),
-  duration = list(year = 800),
+  time = list(variable = "year", ms = 2000),
+  duration = list(year = 1000),
   first = list(year = min(wb$year)),
   selector.types = list(country = "multiple")
 )
@@ -73,12 +86,12 @@ info <- animint2HTML(viz)
 
 # Basic rendering tests
 test_that("correct number of label_aligned geoms are created", {
-  box_groups <- getNodeSet(info$html, '//g[@class="geom2_labelaligned_worldbankAnim"]//g[@class="geom"]')
+  box_groups <- getNodeSet(info$html, '//g[@class="geom4_labelaligned_worldbankAnim"]//g[@class="geom"]')
   expect_equal(length(box_groups), length(tracked_countries))
 })
 
 test_that("each geom has both rect and text elements", {
-  box_groups <- getNodeSet(info$html, '//g[@class="geom2_labelaligned_worldbankAnim"]//g[@class="geom"]')
+  box_groups <- getNodeSet(info$html, '//g[@class="geom4_labelaligned_worldbankAnim"]//g[@class="geom"]')
   for (group in box_groups) {
     rect <- getNodeSet(group, './/rect')
     expect_equal(length(rect), 1)
@@ -88,7 +101,7 @@ test_that("each geom has both rect and text elements", {
 })
 
 test_that("label text content is correct", {
-  box_groups <- getNodeSet(info$html, '//g[@class="geom2_labelaligned_worldbankAnim"]//g[@class="geom"]')
+  box_groups <- getNodeSet(info$html, '//g[@class="geom4_labelaligned_worldbankAnim"]//g[@class="geom"]')
   actual_texts <- sapply(box_groups, function(group) {
     text_node <- getNodeSet(group, './/text')[[1]]
     xmlValue(text_node)
@@ -97,90 +110,103 @@ test_that("label text content is correct", {
 })
 
 # Collision avoidance tests
-test_that("label boxes do not overlap initially", {
+test_that("label boxes in timeSeries plot do not overlap initially", {
   check_aligned_box_collisions(
     info$html,
-    '//g[@class="geom2_labelaligned_worldbankAnim"]//g[@class="geom"]'
+    '//g[@class="geom2_labelaligned_lifeExpectancyPlot"]//g[@class="geom"]'
   )
+})
+
+getLabelY <- function(country){
+  box.groups <- getNodeSet(getHTML(), '//g[@class="geom4_labelaligned_worldbankAnim"]//g[@class="PANEL1"]//g[@class="geom"]')
+  for (group in box.groups) {
+    text.node <- getNodeSet(group, './/text')[[1]]
+    if (xmlValue(text.node) == country) {
+      return(as.numeric(xmlAttrs(text.node)[["y"]]))
+    }
+  }
+}
+
+test_that("geom_label_aligned shows smooth transition of y-position", {
+  clickID("plot_show_hide_animation_controls")
+  Sys.sleep(2)
+  clickID("play_pause")
+  Sys.sleep(0.5)
+  before.y <- getLabelY("India")
+  clickID("play_pause")
+  during.y <- getLabelY("India")
+  Sys.sleep(1)
+  after.y <- getLabelY("India")
+  print(rbind(before = before.y, during = during.y, after = after.y))
+  expect_true(during.y != after.y, info = "During position should differ from after (smooth transition)")
 })
 
 # Interaction tests
-test_that("Aligned Labels respond to deselecting and reselecting without disappearing or duplicating", {
-  # Helper to extract label texts from aligned labels
-  extract_labels <- function(html_doc) {
-    text_nodes <- getNodeSet(html_doc, '//g[@class="geom2_labelaligned_worldbankAnim"]//g[@class="geom"]/text')
+test_that("Aligned labels in timeSeries respond to deselecting and reselecting without disappearing or duplicating", {
+  extract_labels_ts <- function(html_doc) {
+    text_nodes <- getNodeSet(html_doc, '//g[@class="geom2_labelaligned_lifeExpectancyPlot"]//g[@class="geom"]/text')
     sapply(text_nodes, xmlValue)
   }
 
-  # Deselect China
-  clickID("plot_worldbankAnim_group_variable_China")
+  # Deselect Brazil
+  clickID("plot_lifeExpectancyPlot_group_variable_Brazil")
   Sys.sleep(0.5)
-  info$html_updated1 <- getHTML()
-  labels1 <- extract_labels(info$html_updated1)
-  expect_false("China" %in% labels1)
+  info$html_ts_1 <- getHTML()
+  labels1 <- extract_labels_ts(info$html_ts_1)
+  expect_false("Brazil" %in% labels1)
   expect_true("India" %in% labels1)
 
   # Deselect India
-  clickID("plot_worldbankAnim_group_variable_India")
+  clickID("plot_lifeExpectancyPlot_group_variable_India")
   Sys.sleep(0.5)
-  info$html_updated2 <- getHTML()
-  labels2 <- extract_labels(info$html_updated2)
-  expect_false("China" %in% labels2)
+  info$html_ts_2 <- getHTML()
+  labels2 <- extract_labels_ts(info$html_ts_2)
+  expect_false("Brazil" %in% labels2)
   expect_false("India" %in% labels2)
 
-  # Reselect China
-  clickID("plot_worldbankAnim_group_variable_China")
+  # Reselect Brazil
+  clickID("plot_lifeExpectancyPlot_group_variable_Brazil")
   Sys.sleep(0.5)
-  info$html_updated3 <- getHTML()
-  labels3 <- extract_labels(info$html_updated3)
-  expect_true("China" %in% labels3)
+  info$html_ts_3 <- getHTML()
+  labels3 <- extract_labels_ts(info$html_ts_3)
+  expect_true("Brazil" %in% labels3)
   expect_false("India" %in% labels3)
 
-  # Ensure no duplicate labels in the final view
-  expect_equal(length(labels3), length(unique(labels3)), info = "No duplicate labels should exist")
+  # Ensure no duplicate labels
+  expect_equal(length(labels3), length(unique(labels3)), info = "No duplicate labels should exist in timeSeries labels")
 })
-
-test_that("labels do not collide even after interaction and movements", {
-  # This test ensures that aligned box labels do not overlap
-  # even after:
-  # 1. The animation has been playing for some time, causing label boxes to move
-  #    to new positions
-  # 2. User interactions such as selection/deselection of countries have occurred. (during previous test)
-
-  # The animation is paused after some movement, and the updated positions of
-  # the aligned labels are checked to verify that they remain non-overlapping.
-
-  Sys.sleep(1) # Let movements of aligned labels occur 
-  # Pause animation
-  clickID("plot_show_hide_animation_controls")
-  Sys.sleep(0.5)
-  clickID("play_pause")
-  # HTML after pause
-  info$html_paused <- getHTML()
+test_that("Aligned labels in timeSeries do not collide after selection/deselection", {
+  # interactions already occurred from previous test
+  info$html_ts_latest <- getHTML()
   check_aligned_box_collisions(
-    info$html_paused,
-    '//g[@class="geom2_labelaligned_worldbankAnim"]//g[@class="geom"]'
+    info$html_ts_latest,
+    '//g[@class="geom2_labelaligned_lifeExpectancyPlot"]//g[@class="geom"]'
   )
 })
 
-# Testing tsv file contents , horizontal alignment positions and shrinking mechanism for labels
+# Testing tsv file contents , alignment positions and shrinking mechanism for labels
 library(dplyr)
 data(Orange)
 set.seed(42)
 Orange <- bind_rows(
   lapply(1:6, function(i) {
+    group_name <- case_when(
+      i %% 3 == 1 ~ "Fast",
+      i %% 3 == 2 ~ "Medium", 
+      TRUE ~ "Slow"
+    )
+    age_scalar <- case_when(
+      group_name == "Fast" ~ 1.2,
+      group_name == "Medium" ~ 1.0,
+      group_name == "Slow" ~ 0.8
+    )
     Orange %>%
       mutate(
-        Tree = as.numeric(Tree) + (i-1)*100,  # Trees 101-105, 201-205, etc.
+        Tree = as.numeric(Tree) + (i-1)*100,
         TreeFactor = as.factor(Tree),
-        # growth groups with some natural overlap
-        growth_group = case_when(
-          i %% 3 == 1 ~ "Fast",
-          i %% 3 == 2 ~ "Medium", 
-          TRUE ~ "Slow"
-        ),
+        growth_group = group_name,
         circumference = circumference * (1 + (i %% 3)/5) * runif(nrow(Orange), 0.95, 1.05),
-        age = age * (1 + (i %% 3)/10) * runif(nrow(Orange), 0.98, 1.02)
+        age = age * age_scalar
       )
   })
 )
