@@ -93,34 +93,34 @@ The QP solver minimizes the total squared distance from original positions while
 enforcing minimum spacing constraints between boxes.
 }
 \examples{
-# Example 1:
-df <- data.frame(
-  x = c(1, 2, 3),
-  y = c(1, 2, 3),
-  label = c("A", "B", "C")
-)
-geom_label_aligned(data = df, aes(x, y, label = label))
-
-# Example 2:
-
 library(nlme)
-library(dplyr)
 data(BodyWeight, package = "nlme")
 # Extracting the last point of each rat's trajectory
-label_data <- BodyWeight \%>\%
-  group_by(Rat) \%>\%
-  filter(Time == max(Time)) \%>\%
-  ungroup() \%>\%
-  mutate(label = as.character(Rat))
-viz <- list(
+library(data.table)
+label_data <- data.table(BodyWeight)[Time == max(Time)]
+library(animint2)
+viz <- animint(
   bodyPlot = ggplot() +
-    geom_line(aes(x = Time, y = weight, group = Rat, colour = Rat),
-              data = BodyWeight) +
-    geom_label_aligned(aes(x = Time, y = weight, label = label, fill = Rat),
-                       data = label_data) +
-    facet_wrap(~Diet, nrow = 1) +
+    theme_bw() +
+    theme_animint(width=800)+
+    geom_line(aes(
+      x = Time, y = weight, group = Rat),
+      clickSelects="Rat",
+      size=3,
+      data = BodyWeight) +
+    geom_line(aes(
+      x = Time, y = weight, group = Rat, colour = Rat),
+      clickSelects="Rat",
+      data = BodyWeight) +
+    geom_label_aligned(aes(
+      x = Time, y = weight, label = Rat, fill = Rat),
+      clickSelects="Rat",
+      hjust = 0,
+      data = label_data) +
+    facet_grid(~Diet) +
     ggtitle("Rat body weight over time by diet") +
     xlab("Time (days)") +
     ylab("Body Weight (grams)")
 )
+viz
 }
