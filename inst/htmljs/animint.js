@@ -122,7 +122,7 @@ var animint = function (to_select, json_file) {
   // and then measure the element
   // Inspired from http://jsfiddle.net/uzddx/2/
   var measureText = function(pText, pFontSize, pAngle, pStyle) {
-    if (!pText || pText.length === 0) return {height: 0, width: 0};
+    if (pText === undefined || pText === null || pText.length === 0) return {height: 0, width: 0};
     if (pAngle === null || isNaN(pAngle)) pAngle = 0;
 
     var container = element.append('svg');
