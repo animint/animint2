@@ -26,7 +26,7 @@
 #' @param background_rect Disables text background rect if set to FALSE.
 #' @export
 #' @examples
-#' Example 1:
+#' # Example 1:
 #' df <- data.frame(
 #'   x = c(1, 2, 3),
 #'   y = c(1, 2, 3),
@@ -34,7 +34,7 @@
 #' )
 #' geom_label_aligned(data = df, aes(x, y, label = label))
 #' 
-#' Example 2:
+#' # Example 2:
 #' 
 #' library(nlme)
 #' library(dplyr)
