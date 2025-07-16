@@ -1,37 +1,25 @@
 acontext("geom-label-aligned")
 
 library(animint2)
+library(data.table)
 data(WorldBank, package = "animint2")
 
+WorldBank <- as.data.table(WorldBank)
 # subset of countries
 tracked_countries <- c("United States", "Vietnam", "India", "China", "Brazil",
                       "Nigeria", "Mali", "South Africa", "Canada")
 
 # Filter WorldBank data
-wb <- WorldBank %>%
-  filter(country %in% tracked_countries) %>%
-  filter(!is.na(life.expectancy) & !is.na(fertility.rate)) %>%
-  mutate(
-    year = as.integer(year),
-    group = country
-  )
+wb <- WorldBank[country %in% tracked_countries & 
+               !is.na(life.expectancy) & !is.na(fertility.rate), 
+               .(country, year = as.integer(year), life.expectancy, 
+                 fertility.rate, group = country)]
 # Label data for the scatter plot
-label_data_scatter <- wb %>%
-  mutate(label = country)
-
+label_data_scatter <- copy(wb)[, label := country]
 # Label data for the time series
-label_data_line <- wb %>%
-  group_by(country) %>%
-  filter(year == max(year)) %>%
-  slice_tail(n = 1) %>%
-  ungroup() %>%
-  mutate(label = country)
-
+label_data_line <- wb[, .SD[year == max(year)], by = country][, label := country]
 # Text data for year display
-year_text_data <- data.frame(
-  year = unique(wb$year),
-  label = unique(wb$year)
-)
+year_text_data <- data.table(year = unique(wb$year), label = unique(wb$year))
 
 viz <- animint(
   lifeExpectancyPlot = ggplot() +
@@ -211,38 +199,27 @@ test_that("labels have at least 3px vertical spacing", {
 })
 
 # Testing tsv file contents , alignment positions and shrinking mechanism for labels
+library(data.table)
 data(Orange)
 set.seed(42)
-Orange <- bind_rows(
-  lapply(1:6, function(i) {
-    group_name <- case_when(
-      i %% 3 == 1 ~ "Fast",
-      i %% 3 == 2 ~ "Medium", 
-      TRUE ~ "Slow"
-    )
-    age_scalar <- case_when(
-      group_name == "Fast" ~ 1.2,
-      group_name == "Medium" ~ 1.0,
-      group_name == "Slow" ~ 0.8
-    )
-    Orange %>%
-      mutate(
-        Tree = as.numeric(Tree) + (i-1)*100,
-        TreeFactor = as.factor(Tree),
-        growth_group = group_name,
-        circumference = circumference * (1 + (i %% 3)/5) * runif(nrow(Orange), 0.95, 1.05),
-        age = age * age_scalar
-      )
-  })
-)
-label_data <- Orange %>%
-  group_by(Tree) %>%
-  filter(age == max(age)) %>%
-  ungroup() %>%
-  mutate(
-    label = sprintf("Tree %d (%s)", Tree, growth_group),
-    TreeFactor = as.factor(Tree)
-  )
+Orange <- as.data.table(Orange)
+Orange_list <- lapply(1:6, function(i) {
+  group_name <- if(i %% 3 == 1) "Fast" else if(i %% 3 == 2) "Medium" else "Slow"
+  age_scalar <- if(group_name == "Fast") 1.2 else if(group_name == "Medium") 1.0 else 0.8
+  Orange_copy <- copy(Orange)
+  Orange_copy[, `:=`(
+    Tree = as.numeric(Tree) + (i-1)*100,
+    TreeFactor = as.factor(Tree),
+    growth_group = group_name,
+    circumference = circumference * (1 + (i %% 3)/5) * runif(.N, 0.95, 1.05),
+    age = age * age_scalar
+  )]
+  Orange_copy
+})
+Orange <- rbindlist(Orange_list)
+label_data <- Orange[, .SD[age == max(age)], by = Tree][
+  , label := sprintf("Tree %d (%s)", Tree, growth_group)][
+  , TreeFactor := as.factor(Tree)]
 viz <- list(
   orangeGrowth = ggplot() +
     geom_line(

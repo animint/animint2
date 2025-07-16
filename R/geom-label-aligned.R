@@ -59,7 +59,7 @@ geom_label_aligned <- function
 (mapping = NULL, data = NULL,
   stat = "identity", position = "identity",
   ...,
-  label_r = unit(0.15, "lines"),
+  label_r = 0.15,
   alignment = "vertical",
   min_distance = 0.1,
   background_rect = TRUE,
@@ -100,14 +100,14 @@ GeomLabelAligned <- gganimintproto(
   ),
   draw_panel = function
   (self, data, panel_scales, coord,
-    label_r = unit(0.15, "lines"),
+    label_r = 0.15,
     alignment = "vertical",
     min_distance = 0.1,
     background_rect = TRUE,
     na.rm = FALSE) {
     if (empty(data)) return(zeroGrob())
     coords <- coord$transform(data, panel_scales)
-    coords$label_r <- convertWidth(label_r, "native", valueOnly = TRUE)
+    coords$label_r <- label_r
     coords$alignment <- alignment
     coords$min_distance <- min_distance
     coords$background_rect <- background_rect

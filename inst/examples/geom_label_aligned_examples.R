@@ -66,31 +66,49 @@ viz2 <- list(
 animint2dir(viz2, "bodyweight-label-aligned")
 
 # Example 3: World Bank Data with Interactive Aligned Labels
-library(dplyr)
+library(data.table)
 data(WorldBank, package = "animint2")
 
+WorldBank <- as.data.table(WorldBank)
 # subset of countries
 tracked_countries <- c("United States", "Vietnam", "India", "China", "Brazil",
-                      "Nigeria", "Germany", "South Africa")
+                      "Nigeria", "Mali", "South Africa", "Canada")
 
 # Filter WorldBank data
-wb <- subset(WorldBank, country %in% tracked_countries) %>%
-  mutate(
-    year = as.integer(year),
-    group = country
-  )
-
-# Label data for aligned labels
-label_data <- wb %>%
-  mutate(label = country)
-
+wb <- WorldBank[country %in% tracked_countries & 
+               !is.na(life.expectancy) & !is.na(fertility.rate), 
+               .(country, year = as.integer(year), life.expectancy, 
+                 fertility.rate, group = country)]
+# Label data for the scatter plot
+label_data_scatter <- copy(wb)[, label := country]
+# Label data for the time series
+label_data_line <- wb[, .SD[year == max(year)], by = country][, label := country]
 # Text data for year display
-year_text_data <- data.frame(
-  year = unique(wb$year),
-  label = unique(wb$year)
-)
+year_text_data <- data.table(year = unique(wb$year), label = unique(wb$year))
 
 viz3 <- list(
+  lifeExpectancyPlot = ggplot() +
+    geom_line(
+      data = wb,
+      aes(x = year, y = life.expectancy, group = country, color = group),
+      size = 1.2,
+      clickSelects = "country",
+      showSelected = "country"
+    ) +
+    geom_label_aligned(
+      data = label_data_line,
+      aes(x = year, y = life.expectancy, label = label, fill = group, key = country),
+      alignment = "vertical",
+      hjust = 1,
+      min_distance = 3,
+      color = "white",
+      showSelected = "country",
+      clickSelects = "country"
+    ) +
+    ggtitle("Life Expectancy Over Time") +
+    xlab("Year") +
+    ylab("Life Expectancy (years)"),
+
   worldbankAnim = ggplot() +
     geom_point(
       data = wb,
@@ -100,9 +118,9 @@ viz3 <- list(
       clickSelects = "country"
     ) +
     geom_label_aligned(
-      data = label_data,
+      data = label_data_scatter,
       aes(x = fertility.rate, y = life.expectancy, label = label, fill = group, key = country),
-      alignment = "vertical", color = "#ffffd1", label_r = "9",
+      alignment = "vertical", color = "#ffffd1", label_r = 9,
       showSelected = "year",
       clickSelects = "country"
     ) +
@@ -111,25 +129,8 @@ viz3 <- list(
     xlab("Fertility Rate") +
     ylab("Life Expectancy"),
 
-  timeSeries = ggplot() +
-    geom_line(
-      data = wb,
-      aes(x = year, y = life.expectancy, group = country, color = group),
-      size = 1.5,
-      showSelected = "country"
-    ) +
-    geom_point(
-      data = wb,
-      aes(x = year, y = life.expectancy, color = group),
-      showSelected = "country",
-      size = 2
-    ) +
-    ggtitle("Life Expectancy Over Time (Selected Country)") +
-    xlab("Year") +
-    ylab("Life Expectancy"),
-
-  time = list(variable = "year", ms = 1000),
-  duration = list(year = 800),
+  time = list(variable = "year", ms = 3000),
+  duration = list(year = 2000),
   first = list(year = min(wb$year)),
   selector.types = list(country = "multiple")
 )
