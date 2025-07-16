@@ -48,6 +48,7 @@ viz <- animint(
       aes(x = year, y = life.expectancy, label = label, fill = group, key = country),
       alignment = "vertical",
       hjust = 1,
+      min_distance = 3,
       color = "white",
       showSelected = "country",
       clickSelects = "country"
@@ -183,6 +184,31 @@ test_that("Aligned labels in timeSeries do not collide after selection/deselecti
     info$html_ts_latest,
     '//g[@class="geom2_labelaligned_lifeExpectancyPlot"]//g[@class="geom"]'
   )
+})
+
+test_that("label_r sets correct rx and ry values", {
+  rect_node <- getNodeSet(
+    info$html,
+    '//g[@class="geom4_labelaligned_worldbankAnim"]//g[@class="PANEL1"]//g[@class="geom"]//rect'
+  )[[1]]
+  attrs <- xmlAttrs(rect_node)
+  expect_equal(as.numeric(attrs[["rx"]]), 5)
+  expect_equal(as.numeric(attrs[["ry"]]), 5)
+})
+
+test_that("labels have at least 3px vertical spacing", {
+  rects <- getNodeSet(info$html,
+    '//g[@class="geom2_labelaligned_lifeExpectancyPlot"]//rect')
+  positions <- lapply(rects, function(r) {
+    y <- as.numeric(xmlGetAttr(r, "y"))
+    h <- as.numeric(xmlGetAttr(r, "height"))
+    list(top = y, bottom = y + h)
+  })
+  positions <- positions[order(sapply(positions, `[[`, "top"))]
+  # Calculate vertical gaps: distance from bottom[i] to top[i+1]
+  gaps <- mapply(function(a, b) b$top - a$bottom,
+                 positions[-length(positions)], positions[-1])
+  expect_true(all(gaps >= 3), info = paste("Min gap found:", min(gaps)))
 })
 
 # Testing tsv file contents , alignment positions and shrinking mechanism for labels

@@ -63,8 +63,8 @@ geom_label_aligned <- function
   label.r = unit(0.15, "lines"),
   label.size = 0.25,
   alignment = "vertical",
-  min_distance = 0.1,
-  background_rect = TRUE,
+  min.distance = 0.1,
+  background.rect = TRUE,
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE) {
@@ -80,8 +80,8 @@ geom_label_aligned <- function
       label.r = label.r,
       label.size = label.size,
       alignment = alignment,
-      min_distance = min_distance,
-      background_rect = background_rect,
+      min.distance = min.distance,
+      background.rect = background.rect,
       na.rm = na.rm,
       ...
     )
@@ -106,16 +106,16 @@ GeomLabelAligned <- gganimintproto(
     label.r = unit(0.15, "lines"),
     label.size = 0.25,
     alignment = "vertical",
-    min_distance = 0.1,
-    background_rect = TRUE,
+    min.distance = 0.1,
+    background.rect = TRUE,
     na.rm = FALSE) {
     if (empty(data)) return(zeroGrob())
     coords <- coord$transform(data, panel_scales)
     coords$label.r <- convertWidth(label.r, "native", valueOnly = TRUE)
     coords$label.size <- label.size
     coords$alignment <- alignment
-    coords$min_distance <- min_distance
-    coords$background_rect <- background_rect
+    coords$min.distance <- min.distance
+    coords$background.rect <- background.rect
     rect_grobs <- lapply(1:nrow(coords), function(i) {
       grid::roundrectGrob(
         x = unit(coords$x[i], "native"),

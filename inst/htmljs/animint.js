@@ -1472,7 +1472,7 @@ var animint = function (to_select, json_file) {
       if (g_info.geom == "label_aligned") {
           // Get parameters
           var alignment = g_info.params.alignment || "vertical";
-          var min_distance = g_info.params.min_distance || 2;
+          var min_distance = g_info.params.min_distance || 0.1;
           var default_textSize = 12;
           var background_rect = g_info.params.background_rect !== false; // Default true
           // calculate box sizes
