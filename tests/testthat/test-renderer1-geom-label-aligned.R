@@ -3,39 +3,37 @@ acontext("geom-label-aligned")
 library(animint2)
 library(data.table)
 data(WorldBank, package = "animint2")
-
-WorldBank <- as.data.table(WorldBank)
+WorldBank_dt <- as.data.table(WorldBank)
 # subset of countries
-tracked_countries <- c("United States", "Vietnam", "India", "China", "Brazil",
-                      "Nigeria", "Mali", "South Africa", "Canada")
-
+tracked_countries <- c(
+  "United States", "Vietnam", "India", "China", "Brazil",
+  "Nigeria", "Mali", "South Africa", "Canada")
 # Filter WorldBank data
-wb <- WorldBank[country %in% tracked_countries & 
-               !is.na(life.expectancy) & !is.na(fertility.rate), 
-               .(country, year = as.integer(year), life.expectancy, 
-                 fertility.rate, group = country)]
-# Label data for the scatter plot
-label_data_scatter <- copy(wb)[, label := country]
+wb <- WorldBank_dt[
+  country %in% tracked_countries &
+    !is.na(life.expectancy) & !is.na(fertility.rate),
+  .(country, year = as.integer(year), life.expectancy, fertility.rate)]
 # Label data for the time series
-label_data_line <- wb[, .SD[year == max(year)], by = country][, label := country]
+label_data_line <- wb[, .SD[year == max(year)], by = country]
 # Text data for year display
-year_text_data <- data.table(year = unique(wb$year), label = unique(wb$year))
-
-viz <- animint(
+year_text_data <- data.table(year = unique(wb$year))
+wb.viz <- list(
   lifeExpectancyPlot = ggplot() +
-    geom_line(
-      data = wb,
-      aes(x = year, y = life.expectancy, group = country, color = group),
+    geom_line(aes(
+      x = year, y = life.expectancy, group = country,
+      color = country, key=country),
       size = 1.2,
       clickSelects = "country",
       showSelected = "country"
     ) +
-    geom_label_aligned(
+    geom_label_aligned(aes(
+      x = year, y = life.expectancy, label = country,
+      fill = country, key = country),
       data = label_data_line,
-      aes(x = year, y = life.expectancy, label = label, fill = group, key = country),
       alignment = "vertical",
       hjust = 1,
       min_distance = 3,
+      size=10,
       color = "white",
       showSelected = "country",
       clickSelects = "country"
@@ -43,33 +41,32 @@ viz <- animint(
     ggtitle("Life Expectancy Over Time") +
     xlab("Year") +
     ylab("Life Expectancy (years)"),
-
   worldbankAnim = ggplot() +
-    geom_point(
+    geom_point(aes(
+      x = fertility.rate, y = life.expectancy, color = country, key = country),
       data = wb,
-      aes(x = fertility.rate, y = life.expectancy, color = group, key = country),
       size = 8,
       showSelected = "year",
       clickSelects = "country"
     ) +
-    geom_label_aligned(
-      data = label_data_scatter,
-      aes(x = fertility.rate, y = life.expectancy, label = label, fill = group, key = country),
-      alignment = "vertical", color = "#ffffd1", label_r = "5",
+    geom_label_aligned(aes(
+      x = fertility.rate, y = life.expectancy,
+      label = country, fill = country, key = country),
+      data = wb,
+      size=5,
+      alignment = "vertical", color = "#ffffd1", label_r = 9,
       showSelected = "year",
       clickSelects = "country"
     ) +
-    make_text(year_text_data, x = 1, y = 82, label = "label") +
+    make_text(year_text_data, x = 4, y = 82, label = "year") +
     ggtitle("Life Expectancy vs Fertility Rate") +
     xlab("Fertility Rate") +
     ylab("Life Expectancy"),
-
   time = list(variable = "year", ms = 3000),
-  duration = list(year = 2000),
+  duration = list(year = 2000, country=2000),
   first = list(year = min(wb$year)),
   selector.types = list(country = "multiple")
 )
-
 info <- animint2HTML(viz)
 
 # Basic rendering tests
@@ -95,6 +92,13 @@ test_that("label text content is correct", {
     xmlValue(text_node)
   })
   expect_true(all(actual_texts %in% tracked_countries))
+})
+
+test_that("label size is correct", {
+  ts_size <- getStyleValue(info$html, '//g[@class="geom2_labelaligned_lifeExpectancyPlot"]//text', "font-size")
+  expect_equal(ts_size, rep(5, nrow(label_data_line)))
+  scatter_size <- getStyleValue(info$html, '//g[@class="geom4_labelaligned_worldbankAnim"]//text', "font-size")
+  expect_equal(scatter_size, rep(10, nrow(label_data_line)))
 })
 
 # Collision avoidance tests
