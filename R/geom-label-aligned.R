@@ -19,8 +19,7 @@
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point
-#' @param label.r Radius of rounded corners. Defaults to 0.15 lines.
-#' @param label.size Size of label border, in mm.
+#' @param label_r Radius of rounded corners. Defaults to 0.15 lines.
 #' @param alignment One of "vertical" (QP on Y axis) or "horizontal" (QP on X axis)
 #' @param min_distance Minimum distance between boxes in native units.
 #' @param background_rect Disables text background rect if set to FALSE.
@@ -60,11 +59,10 @@ geom_label_aligned <- function
 (mapping = NULL, data = NULL,
   stat = "identity", position = "identity",
   ...,
-  label.r = unit(0.15, "lines"),
-  label.size = 0.25,
+  label_r = unit(0.15, "lines"),
   alignment = "vertical",
-  min.distance = 0.1,
-  background.rect = TRUE,
+  min_distance = 0.1,
+  background_rect = TRUE,
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE) {
@@ -77,11 +75,10 @@ geom_label_aligned <- function
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(
-      label.r = label.r,
-      label.size = label.size,
+      label_r = label_r,
       alignment = alignment,
-      min.distance = min.distance,
-      background.rect = background.rect,
+      min_distance = min_distance,
+      background_rect = background_rect,
       na.rm = na.rm,
       ...
     )
@@ -103,19 +100,17 @@ GeomLabelAligned <- gganimintproto(
   ),
   draw_panel = function
   (self, data, panel_scales, coord,
-    label.r = unit(0.15, "lines"),
-    label.size = 0.25,
+    label_r = unit(0.15, "lines"),
     alignment = "vertical",
-    min.distance = 0.1,
-    background.rect = TRUE,
+    min_distance = 0.1,
+    background_rect = TRUE,
     na.rm = FALSE) {
     if (empty(data)) return(zeroGrob())
     coords <- coord$transform(data, panel_scales)
-    coords$label.r <- convertWidth(label.r, "native", valueOnly = TRUE)
-    coords$label.size <- label.size
+    coords$label_r <- convertWidth(label_r, "native", valueOnly = TRUE)
     coords$alignment <- alignment
-    coords$min.distance <- min.distance
-    coords$background.rect <- background.rect
+    coords$min_distance <- min_distance
+    coords$background_rect <- background_rect
     rect_grobs <- lapply(1:nrow(coords), function(i) {
       grid::roundrectGrob(
         x = unit(coords$x[i], "native"),
@@ -123,11 +118,10 @@ GeomLabelAligned <- gganimintproto(
         width = unit(0.1, "npc"),
         height = unit(0.1, "npc"),
         just = "center",
-        r = unit(coords$label.r[i], "native"),
+        r = unit(coords$label_r[i], "native"),
         gp = grid::gpar(
           col = coords$colour[i],
           fill = scales::alpha(coords$fill[i], coords$alpha[i]),
-          lwd = coords$label.size[i] * .pt
         )
       )
     })

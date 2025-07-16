@@ -1,7 +1,6 @@
 acontext("geom-label-aligned")
 
 library(animint2)
-library(dplyr)
 data(WorldBank, package = "animint2")
 
 # subset of countries
@@ -212,7 +211,6 @@ test_that("labels have at least 3px vertical spacing", {
 })
 
 # Testing tsv file contents , alignment positions and shrinking mechanism for labels
-library(dplyr)
 data(Orange)
 set.seed(42)
 Orange <- bind_rows(
