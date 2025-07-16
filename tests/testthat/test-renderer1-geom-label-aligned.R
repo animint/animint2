@@ -90,10 +90,7 @@ test_that("each geom has both rect and text elements", {
 
 test_that("label text content is correct", {
   box_groups <- getNodeSet(info$html, '//g[@class="geom4_labelaligned_worldbankAnim"]//g[@class="geom"]')
-  actual_texts <- sapply(box_groups, function(group) {
-    text_node <- getNodeSet(group, './/text')[[1]]
-    xmlValue(text_node)
-  })
+  actual_texts <- sapply(box_groups, getTextValue)
   expect_true(all(actual_texts %in% tracked_countries))
 })
 
@@ -198,6 +195,54 @@ test_that("labels have at least 3px vertical spacing", {
   expect_true(all(gaps >= 3), info = paste("Min gap found:", min(gaps)))
 })
 
+# Below test demonstrates that the `min_distance` parameter enforces a minimum spacing between aligned labels. 
+# The viz below uses the default `min_distance = 0.1`, so when we test for all labels being at least 3px apart 
+# vertically, it fails. Overlaps are avoided either way through optimization — this test simply shows that users 
+# can specify a custom minimum distance (e.g., 3px) if they want more spacing between labels in the alignment direction.
+viz_dup <- animint(
+  lifeExpectancyPlot = ggplot() +
+    geom_line(
+      data = wb,
+      aes(x = year, y = life.expectancy, group = country, color = group),
+      size = 1.2,
+      clickSelects = "country",
+      showSelected = "country"
+    ) +
+    geom_label_aligned(
+      data = label_data_line,
+      aes(x = year, y = life.expectancy, label = label, fill = group, key = country),
+      alignment = "vertical",
+      hjust = 1,
+      # default min_distance
+      color = "white",
+      showSelected = "country",
+      clickSelects = "country"
+    ) +
+    ggtitle("Life Expectancy Over Time") +
+    xlab("Year") +
+    ylab("Life Expectancy (years)"),
+
+  first = list(),
+  selector.types = list(country = "multiple")
+)
+
+info <- animint2HTML(viz_dup)
+
+test_that("labels have at least 3px vertical spacing", {
+  rects <- getNodeSet(info$html,
+    '//g[@class="geom2_labelaligned_lifeExpectancyPlot"]//rect')
+  positions <- lapply(rects, function(r) {
+    y <- as.numeric(xmlGetAttr(r, "y"))
+    h <- as.numeric(xmlGetAttr(r, "height"))
+    list(top = y, bottom = y + h)
+  })
+  positions <- positions[order(sapply(positions, `[[`, "top"))]
+  # Calculate vertical gaps: distance from bottom[i] to top[i+1]
+  gaps <- mapply(function(a, b) b$top - a$bottom,
+                 positions[-length(positions)], positions[-1])
+  expect_true(all(gaps >= 3), info = paste("Min gap found:", min(gaps)))
+})
+
 # Testing tsv file contents , alignment positions and shrinking mechanism for labels
 library(data.table)
 data(Orange)
@@ -273,7 +318,7 @@ test_that("chunk1 contains expected columns", {
 })
 
 test_that("chunk1 data matches label_data for initially selected growth groups", {
-  selected_labels <- label_data %>% filter(growth_group %in% c("Fast", "Medium", "Slow"))
+  selected_labels <- label_data[growth_group %in% c("Fast", "Medium", "Slow")]
   expect_equal(nrow(chunk1), nrow(selected_labels))
   expect_setequal(chunk1$label, selected_labels$label)
   expect_true(all(complete.cases(chunk1)))
