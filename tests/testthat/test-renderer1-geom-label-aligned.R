@@ -43,7 +43,6 @@ viz <- animint(
     ggtitle("Life Expectancy Over Time") +
     xlab("Year") +
     ylab("Life Expectancy (years)"),
-
   worldbankAnim = ggplot() +
     geom_point(
       data = wb,
@@ -63,7 +62,6 @@ viz <- animint(
     ggtitle("Life Expectancy vs Fertility Rate") +
     xlab("Fertility Rate") +
     ylab("Life Expectancy"),
-
   time = list(variable = "year", ms = 3000),
   duration = list(year = 2000),
   first = list(year = min(wb$year)),
@@ -123,7 +121,6 @@ test_that("geom_label_aligned shows smooth transition of y-position", {
   during.y <- getLabelY("China")
   Sys.sleep(2)
   after.y <- getLabelY("China")
-  print(rbind(before = before.y, during = during.y, after = after.y))
   expect_true(during.y != after.y, info = "During position should differ from after (smooth transition)")
 })
 
@@ -179,54 +176,6 @@ test_that("label_r sets correct rx and ry values", {
   expect_equal(as.numeric(attrs[["rx"]]), 5)
   expect_equal(as.numeric(attrs[["ry"]]), 5)
 })
-
-test_that("labels have at least 3px vertical spacing", {
-  rects <- getNodeSet(info$html,
-    '//g[@class="geom2_labelaligned_lifeExpectancyPlot"]//rect')
-  positions <- lapply(rects, function(r) {
-    y <- as.numeric(xmlGetAttr(r, "y"))
-    h <- as.numeric(xmlGetAttr(r, "height"))
-    list(top = y, bottom = y + h)
-  })
-  positions <- positions[order(sapply(positions, `[[`, "top"))]
-  # Calculate vertical gaps: distance from bottom[i] to top[i+1]
-  gaps <- mapply(function(a, b) b$top - a$bottom,
-                 positions[-length(positions)], positions[-1])
-  expect_true(all(gaps >= 3), info = paste("Min gap found:", min(gaps)))
-})
-
-# Below test demonstrates that the `min_distance` parameter enforces a minimum spacing between aligned labels. 
-# The viz below uses the default `min_distance = 0.1`, so when we test for all labels being at least 3px apart 
-# vertically, it fails. Overlaps are avoided either way through optimization — this test simply shows that users 
-# can specify a custom minimum distance (e.g., 3px) if they want more spacing between labels in the alignment direction.
-viz_dup <- animint(
-  lifeExpectancyPlot = ggplot() +
-    geom_line(
-      data = wb,
-      aes(x = year, y = life.expectancy, group = country, color = group),
-      size = 1.2,
-      clickSelects = "country",
-      showSelected = "country"
-    ) +
-    geom_label_aligned(
-      data = label_data_line,
-      aes(x = year, y = life.expectancy, label = label, fill = group, key = country),
-      alignment = "vertical",
-      hjust = 1,
-      # default min_distance
-      color = "white",
-      showSelected = "country",
-      clickSelects = "country"
-    ) +
-    ggtitle("Life Expectancy Over Time") +
-    xlab("Year") +
-    ylab("Life Expectancy (years)"),
-
-  first = list(),
-  selector.types = list(country = "multiple")
-)
-
-info <- animint2HTML(viz_dup)
 
 test_that("labels have at least 3px vertical spacing", {
   rects <- getNodeSet(info$html,
