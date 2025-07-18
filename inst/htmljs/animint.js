@@ -1556,11 +1556,12 @@ var animint = function (to_select, json_file) {
                 })
                 .attr("y", function(d) {
                   if (alignment == "vertical") {
-                    return d.optimizedPos + (d.size / 3);
+                    return d.optimizedPos;
                   } else {
-                    return d.scaledY - d.boxHeight * get_vjust(d) + d.boxHeight / 2 + (d.size / 3);
+                    return d.scaledY - d.boxHeight * get_vjust(d) + d.boxHeight / 2 ;
                   }
                 })
+                .attr("dominant-baseline", "middle")
                 .attr("font-size", function(d) { return d.size + "px"; })
                 .style("text-anchor", "middle")
                 .style("fill", get_colour)
