@@ -94,9 +94,9 @@ GeomLabelAligned <- gganimintproto(
   Geom,
   required_aes = c("x", "y", "label"),
   default_aes = aes(
-    colour = "black", fill = "white", size = 3.88, 
+    colour = "black", fill = "white", size = 12,
     angle = 0, hjust = 0.5, vjust = 0.5, alpha = 1,
-    family = "", fontface = 1, lineheight = 1.2, fontsize = 12
+    family = "", fontface = 1, lineheight = 1.2
   ),
   draw_panel = function
   (self, data, panel_scales, coord,
@@ -121,7 +121,7 @@ GeomLabelAligned <- gganimintproto(
         r = unit(coords$label_r[i], "native"),
         gp = grid::gpar(
           col = coords$colour[i],
-          fill = scales::alpha(coords$fill[i], coords$alpha[i]),
+          fill = scales::alpha(coords$fill[i], coords$alpha[i])
         )
       )
     })
@@ -133,7 +133,7 @@ GeomLabelAligned <- gganimintproto(
         just = "center",
         gp = grid::gpar(
           col = coords$colour[i],
-          fontsize = coords$size[i] * .pt,
+          fontsize = coords$size[i],
           fontfamily = coords$family[i],
           fontface = coords$fontface[i],
           lineheight = coords$lineheight[i]

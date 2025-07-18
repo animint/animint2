@@ -87,10 +87,7 @@ test_that("each geom has both rect and text elements", {
 
 test_that("label text content is correct", {
   box_groups <- getNodeSet(info$html, '//g[@class="geom4_labelaligned_worldbankAnim"]//g[@class="geom"]')
-  actual_texts <- sapply(box_groups, function(group) {
-    text_node <- getNodeSet(group, './/text')[[1]]
-    xmlValue(text_node)
-  })
+  actual_texts <- sapply(box_groups, getTextValue)
   expect_true(all(actual_texts %in% tracked_countries))
 })
 
@@ -130,7 +127,6 @@ test_that("geom_label_aligned shows smooth transition of y-position", {
   during.y <- getLabelY("China")
   Sys.sleep(2)
   after.y <- getLabelY("China")
-  print(rbind(before = before.y, during = during.y, after = after.y))
   expect_true(during.y != after.y, info = "During position should differ from after (smooth transition)")
 })
 
@@ -277,7 +273,7 @@ test_that("chunk1 contains expected columns", {
 })
 
 test_that("chunk1 data matches label_data for initially selected growth groups", {
-  selected_labels <- label_data %>% filter(growth_group %in% c("Fast", "Medium", "Slow"))
+  selected_labels <- label_data[growth_group %in% c("Fast", "Medium", "Slow")]
   expect_equal(nrow(chunk1), nrow(selected_labels))
   expect_setequal(chunk1$label, selected_labels$label)
   expect_true(all(complete.cases(chunk1)))
