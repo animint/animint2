@@ -10,8 +10,7 @@ geom_label_aligned(
   stat = "identity",
   position = "identity",
   ...,
-  label.r = unit(0.15, "lines"),
-  label.size = 0.25,
+  label_r = 0.15,
   alignment = "vertical",
   min_distance = 0.1,
   background_rect = TRUE,
@@ -51,9 +50,7 @@ often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
 
-\item{label.r}{Radius of rounded corners. Defaults to 0.15 lines.}
-
-\item{label.size}{Size of label border, in mm.}
+\item{label_r}{Radius of rounded corners. Defaults to 0.15 lines.}
 
 \item{alignment}{One of "vertical" (QP on Y axis) or "horizontal" (QP on X axis)}
 
