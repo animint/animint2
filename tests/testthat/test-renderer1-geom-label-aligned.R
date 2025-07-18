@@ -67,7 +67,7 @@ wb.viz <- list(
   first = list(year = min(wb$year)),
   selector.types = list(country = "multiple")
 )
-info <- animint2HTML(viz)
+info <- animint2HTML(wb.viz)
 
 # Basic rendering tests
 test_that("correct number of label_aligned geoms are created", {
