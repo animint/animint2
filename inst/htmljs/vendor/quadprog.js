@@ -607,15 +607,15 @@ function solveQP(Dmat, dvec, Amat, bvec = [], meq = 0, factorized = [0, 0]) {
 // `optimizeAlignedBoxes` uses a QP solver to reposition only the overlapping label boxes,
 // finding the nearest possible positions to their original locations, subject to the constraint
 // that the boxes do not overlap.
-function optimizeAlignedLabels(data, alignment, min_distance, plot_limits = null, default_textSize, calcLabelBox) {
+function optimizeAlignedLabels(data, alignment, min_distance, plot_limits = null, get_fontsize, calcLabelBox) {
   const n = data.length;
   if (n === 0) return;
 
   // Prepare variables
   const getSize = d => alignment === "vertical" ? d.boxHeight : d.boxWidth;
   const setFontSize = (d, newFontSize) => {
-    d.fontsize = newFontSize;
-    calcLabelBox(d, default_textSize);
+    d.size = newFontSize;
+    calcLabelBox(d);
   };
   const getPos = d => alignment === "vertical" ? d.scaledY : d.scaledX;
   const getFixedPos = d => alignment === "vertical" ? d.scaledX : d.scaledY;
@@ -629,9 +629,9 @@ function optimizeAlignedLabels(data, alignment, min_distance, plot_limits = null
 
   // Calculate all boxes at original font size FIRST
   data.forEach(d => {
-    if (!d.originalFontsize) d.originalFontsize = d.fontsize || default_textSize;
-    d.fontsize = d.originalFontsize;
-    calcLabelBox(d, default_textSize);
+    if (!d.originalFontsize) d.originalFontsize = get_fontsize(d);
+    d.size = d.originalFontsize;
+    calcLabelBox(d);
   });
   // grouping logic
   const groups = [];
@@ -658,8 +658,8 @@ function optimizeAlignedLabels(data, alignment, min_distance, plot_limits = null
     let n = group.length;
     // Always start from original font size for each label
     group.forEach(d => {
-      d.fontsize = d.originalFontsize || d.fontsize || default_textSize;
-      calcLabelBox(d, default_textSize);
+      d.size = d.originalFontsize || get_fontsize(d);
+      calcLabelBox(d);
     });
     // Compute total space needed
     let totalSize = group.reduce((sum, d) => sum + getSize(d), 0);
@@ -669,7 +669,7 @@ function optimizeAlignedLabels(data, alignment, min_distance, plot_limits = null
     if (totalSize + min_distance * (n - 1) > available) {
       shrinkFactor = (available - min_distance * (n - 1)) / totalSize * 0.98; // a bit smaller for safety
       group.forEach(d => {
-        let newFont = (d.originalFontsize || d.fontsize || default_textSize) * shrinkFactor;
+        let newFont = (d.originalFontsize || get_fontsize(d)) * shrinkFactor;
         setFontSize(d, newFont);
       });
     }

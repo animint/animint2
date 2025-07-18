@@ -1076,6 +1076,15 @@ var animint = function (to_select, json_file) {
       });
     };
 
+    var fontsize = 12;
+    var get_fontsize;
+    if (aes.hasOwnProperty("size")){
+      get_fontsize = get_attr("size")
+    }else if(g_info.params.hasOwnProperty("size")){
+      get_fontsize = function(d) { return g_info.params.size; };
+    }else{
+      get_fontsize = function(d) { return fontsize; };
+    }
     var size = 2;
     var get_size;
     if(aes.hasOwnProperty("size")){
@@ -1451,18 +1460,14 @@ var animint = function (to_select, json_file) {
 	eAppend = "circle";
       }
       // function to calculate the size of boxes in geom_label_aligned according to the inside text
-      var calcLabelBox = function(d, default_textSize) {
+      var calcLabelBox = function(d) {
         var textStyle = [
             "font-family:" + (d.family || "sans-serif"),
             "font-weight:" + (d.fontface == 2 ? "bold" : "normal"),
             "font-style:" + (d.fontface == 3 ? "italic" : "normal")
         ].join(";");
-        // Store original font size for restoration
-        if (typeof d.originalFontsize === "undefined") {
-            d.originalFontsize = d.fontsize || default_textSize;
-        }
-        // Use d.fontsize if present, else default
-        var fontsize = d.fontsize || d.originalFontsize || default_textSize;
+        // Use d.size for font size (always current value)
+        var fontsize = d.size;
         var textSize = measureText(d.label, fontsize, d.angle, textStyle);
         d.boxWidth = textSize.width;
         d.boxHeight = textSize.height;
@@ -1473,11 +1478,16 @@ var animint = function (to_select, json_file) {
           // Get parameters
           var alignment = g_info.params.alignment || "vertical";
           var min_distance = g_info.params.min_distance || 0.1;
-          var default_textSize = 12;
           var background_rect = g_info.params.background_rect !== false; // Default true
-          // calculate box sizes
+          // Set d.size and d.originalFontsize for each datum
           data.forEach(function(d) {
-              calcLabelBox(d, default_textSize);
+              if (typeof d.originalFontsize === "undefined") {
+                  d.size = get_fontsize(d);
+                  d.originalFontsize = d.size;
+              }
+              // Always reset to original before shrinking
+              d.size = d.originalFontsize;
+              calcLabelBox(d);
           });
           var plot_limits;
           if (alignment === "vertical") {
@@ -1488,7 +1498,7 @@ var animint = function (to_select, json_file) {
             plot_limits = [Math.min.apply(null, xRange), Math.max.apply(null, xRange)];
           }
           // using quadprog.js for optimizing positions of colliding boxes
-          optimizeAlignedLabels(data, alignment, min_distance, plot_limits, default_textSize, calcLabelBox);
+          optimizeAlignedLabels(data, alignment, min_distance, plot_limits, function(d){return d.size;}, calcLabelBox);
 
           eAppend = "g";
           eActions = function(groups) {
@@ -1546,12 +1556,12 @@ var animint = function (to_select, json_file) {
                 })
                 .attr("y", function(d) {
                   if (alignment == "vertical") {
-                    return d.optimizedPos + (d.fontsize / 3);
+                    return d.optimizedPos + (d.size / 3);
                   } else {
-                    return d.scaledY - d.boxHeight * get_vjust(d) + d.boxHeight / 2 + ((d.fontsize || default_textSize) / 3);
+                    return d.scaledY - d.boxHeight * get_vjust(d) + d.boxHeight / 2 + (d.size / 3);
                   }
                 })
-                .attr("font-size", function(d) { return (d.fontsize || default_textSize) + "px"; })
+                .attr("font-size", function(d) { return d.size + "px"; })
                 .style("text-anchor", "middle")
                 .style("fill", get_colour)
                 .text(function(d) { return d.label; });
