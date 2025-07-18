@@ -1,9 +1,21 @@
-# Changes in version 2025.6.6
+# Changes in version 2025.7.18
 
 ## PR#201
 
 - `animint2pages()` default branch is gh-pages instead of main.
 - `update_gallery()` creates repos/* directories and removes errors.csv file if necessary.
+
+# Changes in version 2025.7.10 (PR#208)
+
+- Added Codecov integration for both R and JavaScript tests; coverage reports now available at https://app.codecov.io/github/animint/animint2
+
+# Changes in version 2025.6.28 (PR#204) 
+
+- The geom_raster implementation has been removed.
+
+# Changes in version 2025.6.4 (PR#197)
+
+- `aes(tooltip = "...")` now renders fast, lightweight tooltips using D3.
 
 # Changes in version 2025.1.28
 

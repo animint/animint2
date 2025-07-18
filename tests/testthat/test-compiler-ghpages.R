@@ -104,6 +104,7 @@ test_that("animint2pages(chromote_sleep_seconds=NULL) does not create Capture.PN
 })
 
 test_that("animint2pages raises an error if no GitHub token is present", {
+  if (identical(Sys.getenv("R_COVR"), "true")) skip("Skip on covr: environment manipulation not supported")
   env.names <- c("GITHUB_PAT", "GITHUB_PAT_GITHUB_COM")
   env.old <- Sys.getenv(env.names)
   Sys.unsetenv(env.names)

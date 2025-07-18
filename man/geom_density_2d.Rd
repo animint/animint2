@@ -123,7 +123,7 @@ d <- ggplot(dsmall, aes(x, y))
 d + geom_density_2d(aes(colour = cut))
 
 # If we turn contouring off, we can use use geoms like tiles:
-d + stat_density_2d(geom = "raster", aes(fill = ..density..), contour = FALSE)
+d + stat_density_2d(geom = "tile", aes(fill = ..density..), contour = FALSE)
 # Or points:
 d + stat_density_2d(geom = "point", aes(size = ..density..), n = 20, contour = FALSE)
 }
