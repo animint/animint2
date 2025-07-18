@@ -1,3 +1,10 @@
+# Changes in version 2025.7.18
+
+## PR#201
+
+- `animint2pages()` default branch is gh-pages instead of main.
+- `update_gallery()` creates repos/* directories and removes errors.csv file if necessary.
+
 # Changes in version 2025.7.10 (PR#208)
 
 - Added Codecov integration for both R and JavaScript tests; coverage reports now available at https://app.codecov.io/github/animint/animint2
