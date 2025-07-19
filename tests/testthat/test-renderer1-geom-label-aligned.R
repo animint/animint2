@@ -175,22 +175,17 @@ test_that("Aligned labels in timeSeries do not collide after selection/deselecti
 })
 
 test_that("label_r sets correct rx and ry values", {
-  rect_node <- getNodeSet(
-    info$html,
-    '//g[@class="geom4_labelaligned_worldbankAnim"]//g[@class="PANEL1"]//g[@class="geom"]//rect'
-  )[[1]]
-  attrs <- xmlAttrs(rect_node)
-  expect_equal(as.numeric(attrs[["rx"]]), 5)
-  expect_equal(as.numeric(attrs[["ry"]]), 5)
+  rx <- getPropertyValue(info$html, '//g[@class="geom4_labelaligned_worldbankAnim"]//rect', "rx")
+  ry <- getPropertyValue(info$html, '//g[@class="geom4_labelaligned_worldbankAnim"]//rect', "ry")
+  expect_true(all(as.numeric(rx) == 5))
+  expect_true(all(as.numeric(ry) == 5))
 })
 
 test_that("labels have at least 3px vertical spacing", {
-  rects <- getNodeSet(info$html,
-    '//g[@class="geom2_labelaligned_lifeExpectancyPlot"]//rect')
-  positions <- lapply(rects, function(r) {
-    y <- as.numeric(xmlGetAttr(r, "y"))
-    h <- as.numeric(xmlGetAttr(r, "height"))
-    list(top = y, bottom = y + h)
+  y <- as.numeric(getPropertyValue(info$html, '//g[@class="geom2_labelaligned_lifeExpectancyPlot"]//rect', "y"))
+  h <- as.numeric(getPropertyValue(info$html, '//g[@class="geom2_labelaligned_lifeExpectancyPlot"]//rect', "height"))
+  positions <- lapply(seq_along(y), function(i) {
+    list(top = y[i], bottom = y[i] + h[i])
   })
   positions <- positions[order(sapply(positions, `[[`, "top"))]
   # Calculate vertical gaps: distance from bottom[i] to top[i+1]
@@ -312,12 +307,8 @@ Sys.sleep(1)
 test_that("All labels after Medium selections are within plot boundaries", {
   plot_xlim <- info$plots$orangeGrowth$layout$panel_ranges[[1]]$x.range
   plot_ylim <- info$plots$orangeGrowth$layout$panel_ranges[[1]]$y.range
-  label_positions <- getNodeSet(
-    info$html,
-    '//g[contains(@class, "geom2_labelaligned_orangeGrowth")]//g[@class="geom"]//text'
-  )
-  x_vals <- sapply(label_positions, function(node) as.numeric(xmlAttrs(node)[["x"]]))
-  y_vals <- sapply(label_positions, function(node) as.numeric(xmlAttrs(node)[["y"]]))
+  x_vals <- as.numeric(getPropertyValue(info$html, '//g[contains(@class, "geom2_labelaligned_orangeGrowth")]//text', "x"))
+  y_vals <- as.numeric(getPropertyValue(info$html, '//g[contains(@class, "geom2_labelaligned_orangeGrowth")]//text', "y"))
   expect_true(all(x_vals >= plot_xlim[1] & x_vals <= plot_xlim[2]))
   expect_true(all(y_vals >= plot_ylim[1] & y_vals <= plot_ylim[2]))
 })
@@ -338,18 +329,13 @@ test_that("No label overlaps occur after selecting Medium trees", {
 test_that("Font size shrinks for Medium labels after crowding (vs. initial)", {
   # XPath to target the <text> elements inside <g class="geom" id="MediumXXX">
   medium_label_text_xpath <- '//g[@class="geom2_labelaligned_orangeGrowth"]//g[starts-with(@id, "Medium")]//text'
-  initial_text_nodes <- getNodeSet(info$html, medium_label_text_xpath)
-  initial_font_sizes_num <- sapply(initial_text_nodes, function(node) {
-    as.numeric(gsub("px", "", xmlGetAttr(node, "font-size")))
-  })
-  # Ensure we found Medium labels
+  initial_font_sizes <- getPropertyValue(info$html, medium_label_text_xpath, "font-size")
+  initial_font_sizes_num <- as.numeric(gsub("px", "", initial_font_sizes))
   expect_true(length(initial_font_sizes_num) > 0, 
               info = "No Medium group labels found in initial plot")
   updated_html <- getHTML()
-  updated_text_nodes <- getNodeSet(updated_html, medium_label_text_xpath)
-  updated_font_sizes_num <- sapply(updated_text_nodes, function(node) {
-    as.numeric(gsub("px", "", xmlGetAttr(node, "font-size")))
-  })
+  updated_font_sizes <- getPropertyValue(updated_html, medium_label_text_xpath, "font-size")
+  updated_font_sizes_num <- as.numeric(gsub("px", "", updated_font_sizes))
   expect_true(all(updated_font_sizes_num < initial_font_sizes_num),
               info = paste("Font sizes did not decrease as expected:",
                           "Initial sizes:", paste(initial_font_sizes_num, collapse=", "),
@@ -368,10 +354,8 @@ test_that("label = 0 shows non-zero rect size", {
     '//g[@class="geom1_labelaligned_testPlot"]//rect'
   )
   expect_equal(length(rect.nodes), 1)
-  rect <- rect.nodes[[1]]
-  rect.attrs <- xmlAttrs(rect)
-  width <- as.numeric(rect.attrs[["width"]])
-  height <- as.numeric(rect.attrs[["height"]])
+  width <- as.numeric(getPropertyValue(info$html, '//g[@class="geom1_labelaligned_testPlot"]//rect', "width"))
+  height <- as.numeric(getPropertyValue(info$html, '//g[@class="geom1_labelaligned_testPlot"]//rect', "height"))
   expect_gt(width, 0)
   expect_gt(height, 0)
 })
