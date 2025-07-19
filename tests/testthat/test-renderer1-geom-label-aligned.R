@@ -23,6 +23,7 @@ wb.viz <- list(
       x = year, y = life.expectancy, group = country,
       color = country, key=country),
       size = 1.2,
+      data = wb,
       clickSelects = "country",
       showSelected = "country"
     ) +
@@ -54,7 +55,7 @@ wb.viz <- list(
       label = country, fill = country, key = country),
       data = wb,
       size=5,
-      alignment = "vertical", color = "#ffffd1", label_r = 9,
+      alignment = "vertical", color = "#ffffd1", label_r = 5,
       showSelected = "year",
       clickSelects = "country"
     ) +
@@ -92,10 +93,10 @@ test_that("label text content is correct", {
 })
 
 test_that("label size is correct", {
-  ts_size <- getStyleValue(info$html, '//g[@class="geom2_labelaligned_lifeExpectancyPlot"]//text', "font-size")
-  expect_equal(ts_size, rep(5, nrow(label_data_line)))
-  scatter_size <- getStyleValue(info$html, '//g[@class="geom4_labelaligned_worldbankAnim"]//text', "font-size")
-  expect_equal(scatter_size, rep(10, nrow(label_data_line)))
+  ts_size <- getPropertyValue(info$html, '//g[@class="geom2_labelaligned_lifeExpectancyPlot"]//text', "font-size")
+  expect_equal(ts_size, rep("10px", nrow(label_data_line)))
+  scatter_size <- getPropertyValue(info$html, '//g[@class="geom4_labelaligned_worldbankAnim"]//text', "font-size")
+  expect_equal(scatter_size, rep("5px", nrow(label_data_line)))
 })
 
 # Collision avoidance tests
@@ -138,7 +139,7 @@ test_that("Aligned labels in timeSeries respond to deselecting and reselecting w
   }
 
   # Deselect Brazil
-  clickID("plot_lifeExpectancyPlot_group_variable_Brazil")
+  clickID("plot_lifeExpectancyPlot_country_variable_Brazil")
   Sys.sleep(0.5)
   info$html_ts_1 <- getHTML()
   labels1 <- extract_labels_ts(info$html_ts_1)
@@ -146,7 +147,7 @@ test_that("Aligned labels in timeSeries respond to deselecting and reselecting w
   expect_true("India" %in% labels1)
 
   # Deselect India
-  clickID("plot_lifeExpectancyPlot_group_variable_India")
+  clickID("plot_lifeExpectancyPlot_country_variable_India")
   Sys.sleep(0.5)
   info$html_ts_2 <- getHTML()
   labels2 <- extract_labels_ts(info$html_ts_2)
@@ -154,7 +155,7 @@ test_that("Aligned labels in timeSeries respond to deselecting and reselecting w
   expect_false("India" %in% labels2)
 
   # Reselect Brazil
-  clickID("plot_lifeExpectancyPlot_group_variable_Brazil")
+  clickID("plot_lifeExpectancyPlot_country_variable_Brazil")
   Sys.sleep(0.5)
   info$html_ts_3 <- getHTML()
   labels3 <- extract_labels_ts(info$html_ts_3)
