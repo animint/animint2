@@ -33,7 +33,7 @@ test_that("animint2pages() returns list of meta-data", {
   ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-an-organization-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write)
   gh::gh("POST /orgs/animint-test/repos", name="animint2pages_test_repo")
   ## first run of animint2pages creates new data viz.
-  result_list <- animint2pages(viz, "animint2pages_test_repo", owner="animint-test")
+  result_list <- animint2pages(viz, "animint2pages_test_repo", owner="animint-test", chromote_sleep_seconds=3)
   result_list
   expect_match(result_list$owner_repo, "animint2pages_test_repo")
   expect_match(result_list$viz_url, "github.io/animint2pages_test_repo")
@@ -55,13 +55,14 @@ test_that("animint2pages() returns list of meta-data", {
     geom_point(aes(
       x, x),
       data=data.frame(x=1:5))
-  update_list <- animint2pages(viz.more, "animint2pages_test_repo", owner="animint-test")
+  update_list <- animint2pages(viz.more, "animint2pages_test_repo", owner="animint-test", chromote_sleep_seconds=3)
   tsv_files_updated <- get_tsv(update_list)
   expect_equal(length(tsv_files_updated), 2)
   expect_Capture(update_list)
 })
 
 test_that("animint2pages raises an error if no GitHub token is present", {
+  if (identical(Sys.getenv("R_COVR"), "true")) skip("Skip on covr: environment manipulation not supported")
   env.names <- c("GITHUB_PAT", "GITHUB_PAT_GITHUB_COM")
   env.old <- Sys.getenv(env.names)
   Sys.unsetenv(env.names)

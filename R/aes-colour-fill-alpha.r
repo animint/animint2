@@ -26,8 +26,8 @@
 #'
 #' # Fill aesthetic can also be used with a continuous variable
 #' m <- ggplot(faithfuld, aes(waiting, eruptions))
-#' m + geom_raster()
-#' m + geom_raster(aes(fill = density))
+#' m + geom_tile()
+#' m + geom_tile(aes(fill = density))
 #'
 #' # Some geoms don't use both aesthetics (i.e. geom_point or geom_line)
 #' b <- ggplot(economics, aes(x = date, y = unemploy))

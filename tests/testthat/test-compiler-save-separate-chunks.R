@@ -62,7 +62,6 @@ test_that("save separate chunks for geom_polygon", {
   out.dir <- file.path(getwd(), "FluView")
   unlink(out.dir, recursive = TRUE)
   animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
-  
   common.chunk <-
     list.files(path = out.dir, pattern = "geom.+polygon.+chunk_common.tsv", 
                full.names = TRUE)
@@ -82,7 +81,6 @@ test_that("save separate chunks for geom_polygon", {
   varied.data <- read.csv(varied.chunks[idx], sep = "\t", comment.char = "")
   expect_equal(nrow(varied.data), length(unique(FluView$USpolygons$group)))
   expect_true(all(c("fill", "group") %in% names(varied.data)))
-  
   unlink(out.dir, recursive = TRUE)
 })
 
@@ -113,7 +111,6 @@ test_that("save separate chunks for geom_point without specifying group", {
   out.dir <- file.path(getwd(), "FluView-point")
   unlink(out.dir, recursive = TRUE)
   animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
-  
   common.chunk <-
     list.files(path = out.dir, pattern = "geom.+point.+chunk_common.tsv", 
                full.names = TRUE)
@@ -127,9 +124,7 @@ test_that("save separate chunks for geom_point without specifying group", {
   varied.data <- read.csv(varied.chunks, sep = "\t", comment.char = "")
   expect_equal(nrow(varied.data), nrow(flu.points))
   expect_true(all(c("fill", "x", "y", "showSelected1") %in% names(varied.data)))
-  
   unlink(out.dir, recursive = TRUE)
-  
   ## force to split into chunks
   state.map <- p + 
     geom_point(aes(x = mean.long, y = mean.lat, fill = level),
@@ -144,7 +139,6 @@ test_that("save separate chunks for geom_point without specifying group", {
          stateMap = state.map,
          title = "FluView")
   animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
-  
   common.chunk <-
     list.files(path = out.dir, pattern = "geom.+point.+chunk_common.tsv", 
                full.names = TRUE)
@@ -164,7 +158,6 @@ test_that("save separate chunks for geom_point without specifying group", {
   varied.data <- read.csv(varied.chunks[idx], sep = "\t", comment.char = "")
   expect_equal(nrow(varied.data), nrow(USdots))
   expect_true(all(c("fill", "group") %in% names(varied.data)))
-    
   unlink(out.dir, recursive = TRUE)
 })
 
@@ -232,7 +225,6 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   out.dir <- file.path(getwd(), "WorldBank-all")
   unlink(out.dir, recursive=TRUE)
   info <- animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
-  
   ## multiple vars selected
   common.chunk <-
     list.files(path = out.dir, pattern = "geom2_text.+chunk_common.tsv", 
@@ -247,7 +239,6 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   varied.data <- read.csv(varied.chunks[1], sep = "\t", comment.char = "")
   expect_equal(nrow(varied.data), 1)
   expect_true(all(c("x", "y", "label", "key") %in% names(varied.data)))
-  
   ## single var selected
   common.chunk <-
     list.files(path = out.dir, pattern = "geom.+point.+chunk_common.tsv", 
@@ -261,8 +252,9 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   ## test common.chunk
   common.data <- read.csv(common.chunk, sep = "\t", comment.char = "")
   expect_equal(nrow(common.data), length(unique.country.vec))
-  common.must.have <- c("colour", "clickSelects", "key", "showSelectedlegendcolour", "fill", "group")
+  common.must.have <- c("colour", "clickSelects", "key", "fill", "group")
   expect_true(all(common.must.have %in% names(common.data)))
+  expect_equal(length(grep("showSelected",names(common.data))),1)
   ## choose first varied.chunk to test
   chunk.info <- info$geoms$geom1_point_scatter$chunks
   year.str <- names(chunk.info)[[1]]
@@ -276,7 +268,6 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   varied.must.have <-
     c("size", "x", "y", "tooltip", "group")
   expect_true(all(varied.must.have %in% names(varied.data)))
-  
   unlink(out.dir, recursive = TRUE)
 })
 
@@ -309,7 +300,6 @@ test_that("save separate chunks for non-spatial geoms with nest_order not being 
   out.dir <- file.path(getwd(), "breakpointError-single")
   unlink(out.dir, recursive = TRUE)
   animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
-  
   common.chunk <-
     list.files(path = out.dir, pattern = "geom.+segment.+chunk_common.tsv", 
                full.names = TRUE)
@@ -333,6 +323,5 @@ test_that("save separate chunks for non-spatial geoms with nest_order not being 
   expect_equal(nrow(varied.data), expected.rows)
   must.have <- c("x", "xend", "y", "yend", "group")
   expect_true(all(must.have %in% names(varied.data)))
-  
   unlink(out.dir, recursive = TRUE)
 })

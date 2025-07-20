@@ -141,7 +141,7 @@ ggplot(df, aes(x, y)) +
 
 # Equivalent fill scales do the same job for the fill aesthetic
 ggplot(faithfuld, aes(waiting, eruptions)) +
-  geom_raster(aes(fill = density)) +
+  geom_tile(aes(fill = density)) +
   scale_fill_gradientn(colours = terrain.colors(10))
 
 # Adjust colour choices with low and high

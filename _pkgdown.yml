@@ -296,3 +296,4 @@ reference:
   - transform_shape
   - translate_qplot_ggplot
   - translate_qplot_lattice
+  - update_gallery

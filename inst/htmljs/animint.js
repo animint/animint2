@@ -5,7 +5,7 @@
 // </script>
 // Constructor for animint Object.
 var animint = function (to_select, json_file) {
-
+  var steps = [];
   var default_axis_px = 16;
 
    function wait_until_then(timeout, condFun, readyFun) {
@@ -185,6 +185,31 @@ var animint = function (to_select, json_file) {
 
   var add_geom = function (g_name, g_info) {
     // Determine if data will be an object or an array.
+    // added geom properties in steps array
+    var geom = g_info.classed;
+    var title = g_info.params.title || g_info.classed;
+    var helpText = g_info.params.help || '';
+    var help_showSelected = g_info.params.help_showSelected || '';
+    var help_clickSelects = g_info.params.help_clickSelects || '';
+    var description = helpText;
+    if(g_info.params.hasOwnProperty("showSelected")){
+      if(description != "")description += '<br>';
+      description += 'Data are shown for the current selection of: ' + help_showSelected;
+    }
+    if(g_info.params.hasOwnProperty("clickSelects")){
+      if(description != "")description += '<br>';
+      description += 'Click to select: ' + help_clickSelects;
+    }
+    if(description == ""){
+      description = "No interactions available";
+    }
+    steps.push({  // this add the geom to the steps array for guided tour
+      element: '#' + viz_id + ' .' + geom,
+      popover: {
+        title: title,
+        description: description
+      }
+    });
     if(g_info.geom in data_object_geoms){
       g_info.data_is_object = true;
     }else{
@@ -1594,7 +1619,23 @@ var animint = function (to_select, json_file) {
     };
     doActions(enter);  // DO NOT DELETE!
     var has_tooltip = g_info.aes.hasOwnProperty("tooltip");
+    function positionTooltip(tooltip, content) {
+      var mouseX = 0, mouseY = 0;
+      if (d3.event) {
+        mouseX = d3.event.pageX;
+        mouseY = d3.event.pageY;
+      }
+      tooltip
+        .html(content)
+        .style("left", (mouseX + TOOLTIP_HORIZONTAL_OFFSET) + "px")
+        .style("top", (mouseY - TOOLTIP_VERTICAL_OFFSET) + "px")
+        .style("opacity", 1);
+    }
     if(has_clickSelects || has_tooltip || has_clickSelects_variable){
+      // Tooltip positioning constants
+      var TOOLTIP_HORIZONTAL_OFFSET = 10; // pixels right of mouse pointer
+      var TOOLTIP_VERTICAL_OFFSET = 28;   // pixels above mouse pointer
+
       var text_fun;
       if(has_tooltip){
         text_fun = function(d){
@@ -1610,11 +1651,27 @@ var animint = function (to_select, json_file) {
 	  return d["clickSelects.variable"] + " " + d["clickSelects.value"];
 	};
       }
-      // if elements have an existing title, remove it.
-      elements.selectAll("title").remove();
-      elements.append("svg:title")
-        .text(get_fun(text_fun))
-      ;
+      var tooltip = d3.select("#plot").select(".animint-tooltip").node() 
+    ? d3.select(".animint-tooltip")
+    : d3.select("#plot").append("div")
+        .attr("class", "animint-tooltip")
+        .style("opacity", 0);
+      // Add tooltip handlers
+      elements
+        .on("mouseover.tooltip", function(d) {
+          if (!d || typeof text_fun !== 'function') return;
+          var content = text_fun(d);
+          positionTooltip(tooltip, content);
+        })
+        .on("mouseout.tooltip", function() {
+          tooltip.style("opacity", 0)
+          .style("left", null)
+          .style("top", null)
+          .html(null);
+        })
+        .on("mousemove.tooltip", function() {
+          positionTooltip(tooltip, tooltip.html());
+        });
     }
     if(Selectors.hasOwnProperty(selector_name)){
       var milliseconds = Selectors[selector_name].duration;
@@ -1669,6 +1726,15 @@ var animint = function (to_select, json_file) {
       }
       return selected_values;
   };
+
+  // DEAD CODE FOR COVERAGE TESTING
+    function deadCodeForCoverage() {
+      // This function is never called and should show as uncovered in coverage reports.
+      var unused = 42;
+      if (unused === 43) {
+        console.log("This should never be printed.");
+      }
+    }
   
   // update scales for the plots that have update_axes option in
   // theme_animint
@@ -2094,12 +2160,26 @@ var animint = function (to_select, json_file) {
     ////////////////////////////////////////////
     // Widgets at bottom of page
     ////////////////////////////////////////////
+     // Function to start the tour
+     var element = d3.select('body');
     if(response.hasOwnProperty("source")){
       widget_td.append("a")
 	.attr("class","a_source_href")
 	.attr("href", response.source)
 	.text("source");
     }
+    widget_td
+      .append('button')
+      .attr('class', 'animint_start_tour')
+      .text('Start Tour')
+      .on('click', function () {
+        const driver = window.driver.js.driver;
+        const driverObj = driver({
+          showProgress: true,
+          steps: steps,
+        });
+        driverObj.drive();
+      });
     // loading table.
     var show_hide_table = widget_td.append("button")
       .text("Show download status table");
@@ -2241,8 +2321,14 @@ var animint = function (to_select, json_file) {
       .append("th")
       .text("Selected value(s)")
     ;
-      
-     // looping through and adding a row for each selector
+    // video link
+    if(response.hasOwnProperty("video")){
+      widget_td.append("a")
+	.attr("class","a_video_href")
+	.attr("href", response.video)
+	.text("video");
+    }
+    // looping through and adding a row for each selector
     for(s_name in Selectors) {
       var s_info = Selectors[s_name];
       // for .variable .value selectors, levels is undefined and we do
@@ -2527,5 +2613,4 @@ var animint = function (to_select, json_file) {
     }//if(window.location.hash)
   });
 };
-
 

@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
-
   <head>
-
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <title>Interactive animation</title>
     <script type="text/javascript" src="vendor/d3.v3.js"></script>
@@ -12,15 +10,14 @@
     <script type="text/javascript" src="vendor/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="vendor/selectize.min.js"></script>
     <link rel="stylesheet" type="text/css" href="vendor/selectize.css" />
+    <script type="text/javascript" src="vendor/driver.js.iife.js"></script>
+    <link rel="stylesheet" href="vendor/driver.css" />
   </head>
-
   <body>
-
     <div id="plot"> </div>
     <script>
       var plot = new animint("#plot","plot.json");
     </script>
-
   </body>
 
 </html>
