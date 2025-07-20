@@ -21,7 +21,7 @@
 #' @inheritParams geom_point
 #' @param label_r Radius of rounded corners. Defaults to 0.15 lines.
 #' @param alignment One of "vertical" (QP on Y axis) or "horizontal" (QP on X axis)
-#' @param min_distance Minimum distance between boxes in native units.
+#' @param min_distance Minimum distance between boxes in pixels.
 #' @param background_rect Disables text background rect if set to FALSE.
 #' @export
 #' @examples

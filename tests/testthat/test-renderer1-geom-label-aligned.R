@@ -341,21 +341,45 @@ test_that("Font size shrinks for Medium labels after crowding (vs. initial)", {
                           "Initial sizes:", paste(initial_font_sizes_num, collapse=", "),
                           "Updated sizes:", paste(updated_font_sizes_num, collapse=", ")))
 })
+# ─────────────────────────────────────────────────────────────────────────────
+test_data <- data.frame(
+  x = c(1, 2, 3),
+  y = c(1, 1, 1),
+  label = c("Bottom", "Middle", "Top"),
+  vjust = c(0, 0.5, 1)
+)
+viz <- list(
+  zeroLabelTest = ggplot() +
+    geom_label_aligned(
+      data = data.frame(x = 1, y = 1, label = 0),
+      aes(x, y, label = label)
+  ),
+  vjustTest = ggplot() +
+    geom_point(aes(x, y), data = test_data) +
+    geom_label_aligned(
+      aes(x, y, label = label, vjust = vjust),
+      data = test_data,
+      alignment = "horizontal"
+    ) +
+    ggtitle("Test of vjust values (0=bottom, 0.5=middle, 1=top)")
+)
+info <- animint2HTML(viz)
 
+# Test 1: Non-zero rect size for label=0
 test_that("label = 0 shows non-zero rect size", {
-  df <- data.frame(x = 1, y = 1, label = 0)
-  viz <- animint2::animint(
-    testPlot = ggplot() +
-      geom_label_aligned(data = df, aes(x, y, label = label))
-  )
-  info <- animint2HTML(viz)
-  rect.nodes <- getNodeSet(
-    info$html,
-    '//g[@class="geom1_labelaligned_testPlot"]//rect'
-  )
+  rect.nodes <- getNodeSet(info$html, '//g[@class="geom1_labelaligned_zeroLabelTest"]//rect')
   expect_equal(length(rect.nodes), 1)
-  width <- as.numeric(getPropertyValue(info$html, '//g[@class="geom1_labelaligned_testPlot"]//rect', "width"))
-  height <- as.numeric(getPropertyValue(info$html, '//g[@class="geom1_labelaligned_testPlot"]//rect', "height"))
+  width <- as.numeric(getPropertyValue(info$html, '//g[@class="geom1_labelaligned_zeroLabelTest"]//rect', "width"))
+  height <- as.numeric(getPropertyValue(info$html, '//g[@class="geom1_labelaligned_zeroLabelTest"]//rect', "height"))
   expect_gt(width, 0)
   expect_gt(height, 0)
+})
+
+# Test 2: vjust positioning
+test_that("vjust positions labels correctly for horizontal alignment", {
+  text_ys <- as.numeric(getPropertyValue(info$html, '//g[@class="geom3_labelaligned_vjustTest"]//text', "y"))
+  point_ys <- as.numeric(getPropertyValue(info$html, '//g[@class="geom2_point_vjustTest"]//circle', "cy"))
+  expect_gt(text_ys[1], point_ys[1])
+  expect_equal(text_ys[2], point_ys[2])
+  expect_lt(text_ys[3], point_ys[3])
 })

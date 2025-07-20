@@ -54,7 +54,7 @@ to the paired geom/stat.}
 
 \item{alignment}{One of "vertical" (QP on Y axis) or "horizontal" (QP on X axis)}
 
-\item{min_distance}{Minimum distance between boxes in native units.}
+\item{min_distance}{Minimum distance between boxes in pixels.}
 
 \item{background_rect}{Disables text background rect if set to FALSE.}
 
