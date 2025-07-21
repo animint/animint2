@@ -1502,7 +1502,7 @@ var animint = function (to_select, json_file) {
 
           eAppend = "g";
           eActions = function(groups) {
-            // Get transition duration
+            // Handle transitions seperately due to unique structure of geom_label_aligned
             var transitionDuration = 0;
             if (Selectors.hasOwnProperty(selector_name)) {
               transitionDuration = +Selectors[selector_name].duration || 0;
@@ -1512,12 +1512,15 @@ var animint = function (to_select, json_file) {
               // Select existing elements (if any)
               var rect = group.select("rect");
               var text = group.select("text");
+              var rectIsNew = false, textIsNew = false;
               // If elements don't exist, create them
-              if (rect.empty()) {rect = group.append("rect");}
-              if (text.empty()) {text = group.append("text");}
+              if (rect.empty()) {rect = group.append("rect"); rectIsNew = true;}
+              if (text.empty()) {text = group.append("text"); textIsNew = true;}
               // Apply transitions to both elements
-              if (transitionDuration > 0) {
+              if (!rectIsNew && transitionDuration > 0) {
                 rect = rect.transition().duration(transitionDuration);
+              }
+              if (!textIsNew && transitionDuration > 0) {
                 text = text.transition().duration(transitionDuration);
               }
               if (background_rect) {
@@ -1543,8 +1546,6 @@ var animint = function (to_select, json_file) {
                   .style("fill", get_fill)
                   .attr("rx", g_info.params.label_r || 0)
                   .attr("ry", g_info.params.label_r || 0);
-              } else {
-                rect.remove();
               }
               text
                 .attr("x", function(d) {
