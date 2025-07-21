@@ -1,19 +1,6 @@
 library(shiny)
 library(animint2)
 
-renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!requireNamespace("shiny")) message("Please install.packages('shiny')")
-  func <- shiny::exprToFunction(expr, env, quoted)
-  renderFunc <- function(shinysession, name, ...) {
-    val <- func()
-    tmp <- tempfile()
-    stuff <- animint2dir(val, out.dir = tmp, open.browser = FALSE)
-    shiny::addResourcePath("animintAssets", tmp)
-    list(jsonFile = "plot.json")
-  }
-  shiny::markRenderFunction(animint2::animintOutput, renderFunc) 
-}
-
 
 shinyServer(function(input, output) {
   

@@ -20,8 +20,6 @@ test_that("animint plot renders in a shiny app", {
   app_info <- start_shiny_app(app_dir, port)
   on.exit({
     app_info$proc$kill()
-    unlink("shiny_err.log")
-    unlink("shiny_out.log")
   }, add = TRUE)
   
   cat(app_info$url, "\n")
@@ -61,8 +59,6 @@ test_that("WorldBank shiny app functionality", {
   app_info <- start_shiny_app(worldbank_dir, port)
   on.exit({
     app_info$proc$kill()
-    unlink("shiny_err.log")
-    unlink("shiny_out.log")
   }, add = TRUE)
   
   cat("Navigating to: ", app_info$url, "\n")
@@ -122,8 +118,6 @@ test_that("animint plot renders in an interactive document", {
   app_info <- start_rmd_app(rmd_file, port)
   on.exit({
     app_info$proc$kill()
-    unlink("shiny_err.log")
-    unlink("shiny_out.log")
   }, add = TRUE)
   
   cat(app_info$url, "\n")

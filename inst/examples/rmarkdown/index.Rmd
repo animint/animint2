@@ -66,18 +66,7 @@ scatter <- scatter + theme_animint(width = 360, height = 360)
 In this example, the plot aesthetics are fixed, but we could integrate shiny's reactive components into animint's options such as the animation speed. 
 
 ```{r reactives}
-renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!requireNamespace("shiny")) message("Please install.packages('shiny')")
-  func <- shiny::exprToFunction(expr, env, quoted)
-  renderFunc <- function(shinysession, name, ...) {
-    val <- func()
-    tmp <- tempfile()
-    stuff <- animint2dir(val, out.dir = tmp, open.browser = FALSE)
-    shiny::addResourcePath("animintAssets", tmp)
-    list(jsonFile = "plot.json")
-  }
-  shiny::markRenderFunction(animint2::animintOutput, renderFunc) 
-}
+
 getPlotList <- reactive({
   # think of animint objects as a list of ggplots and specially named options
   list(# the plots we constructed earlier

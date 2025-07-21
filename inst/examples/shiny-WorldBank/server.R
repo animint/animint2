@@ -6,18 +6,6 @@ WorldBank$literacy <- WorldBank[["15.to.25.yr.female.literacy"]]
 WorldBank$latitude <- as.numeric(paste(WorldBank$latitude))
 WorldBank$longitude <- as.numeric(paste(WorldBank$longitude))
 
-renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!requireNamespace("shiny")) message("Please install.packages('shiny')")
-  func <- shiny::exprToFunction(expr, env, quoted)
-  renderFunc <- function(shinysession, name, ...) {
-    val <- func()
-    tmp <- tempfile()
-    stuff <- animint2dir(val, out.dir = tmp, open.browser = FALSE)
-    shiny::addResourcePath("animintAssets", tmp)
-    list(jsonFile = "plot.json")
-  }
-  shiny::markRenderFunction(animint2::animintOutput, renderFunc) 
-}
 
 # Map data processing (from first code)
 map_df <- animint2::map_data("world")
