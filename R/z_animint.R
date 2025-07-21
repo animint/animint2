@@ -200,12 +200,12 @@ parsePlot <- function(meta, plot, plot.name){
   options_list <- getWidthAndHeight(plot$theme)
   options_list <- setUpdateAxes(plot$theme, options_list)
   plot.info$options <- options_list
-  plot.info$attributes <- theme_attribute(plot$theme)
-
+  plot.info$attributes <- theme_attribute(plot$theme)  # Add this line
   list(
-    plot.info=plot.info,
-    ggplot=plot,
-    built=built)
+    plot.info = plot.info,
+    ggplot = plot,
+    built = built
+  )
 }
 
 

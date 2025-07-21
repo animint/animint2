@@ -7,7 +7,9 @@
 var animint = function (to_select, json_file) {
   var steps = [];
   var default_axis_px = 16;
-
+var element = d3.select(to_select);
+  this.element = element;
+  var viz_id = element.attr("id");
    function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
@@ -243,32 +245,43 @@ var animint = function (to_select, json_file) {
     // Save this geom and load it!
     update_geom(g_name, null);
   };
-  var span_array = ["rowspan","colspan"];
-   var add_plot = function (p_name, p_info, making_outer_table) {
-  var parent_of_plot;
-  if (making_outer_table) {
-  parent_of_plot = current_outer_tr.append("td");
-  const attributes = p_info.attributes || {};
-  if (attributes.rowspan) {
-    parent_of_plot.attr("rowspan", attributes.rowspan);
-  }
-  if (attributes.colspan) {
-    parent_of_plot.attr("colspan", attributes.colspan);
-  }
-} else {
-    parent_of_plot = element;
-  }
-  if ((p_info.attributes || {}).last_in_row) {
-    current_outer_tr = outer_table.append("tr");
-  }
-  var plot_table = parent_of_plot.append("table").style("display", "inline-block");
-  var plot_tr = plot_table.append("tr");
-  var tdLeft = plot_tr.append("td");
-  var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
-  var svg = tdLeft.append("svg")
-    .attr("id", p_info.plot_id)
-    .attr("height", p_info.options.height)
-    .attr("width", p_info.options.width);
+  
+  var max_columns = 2;
+var column_count = 0;
+var current_tr = plot_td.append("tr");
+var rowspans = [0, 0];
+
+  var add_plot = function (p_name, p_info) {
+    
+  // Start a new row if max columns reached, first plot, or last_in_row
+    if (column_count >= max_columns) {
+        current_tr = plot_td.append("tr");
+        column_count = 0;
+    }
+  var td = current_tr.append("td");
+    var attributes = p_info.attributes || {};
+    td.attr("rowspan", attributes.rowspan || 1)
+      .attr("colspan", attributes.colspan || 1);
+
+    // Inner table for plot and legend
+    var plot_table = td.append("table").style("display", "inline-block");
+    var plot_tr = plot_table.append("tr");
+    var tdLeft = plot_tr.append("td");
+    var tdRight = plot_tr.append("td").attr("class", p_name + "_legend");
+
+    // Set plot ID
+    if (viz_id === null) {
+      p_info.plot_id = p_name;
+    } else {
+      p_info.plot_id = viz_id + "_" + p_name;
+    }
+
+    // Append SVG for the plot
+    var svg = tdLeft.append("svg")
+      .attr("id", p_info.plot_id)
+      .attr("height", p_info.options.height)
+      .attr("width", p_info.options.width);
+ 
 
     // divvy up width/height based on the panel layout
     var nrows = Math.max.apply(null, p_info.layout.ROW);
@@ -279,6 +292,7 @@ var animint = function (to_select, json_file) {
     // Note axis names are "shared" across panels (just like the title)
     var xtitlepadding = 5 + measureText(p_info["xtitle"], default_axis_px).height;
     var ytitlepadding = 5 + measureText(p_info["ytitle"], default_axis_px).height;
+ 
 
     // 'margins' are fixed across panels and do not
     // include title/axis/label padding (since these are not
@@ -776,6 +790,23 @@ var animint = function (to_select, json_file) {
       ;
     }
     Plots[p_name].scales = scales;
+  if (attributes.rowspan && attributes.rowspan > 1)
+        td.attr("rowspan", attributes.rowspan);
+    if (attributes.colspan && attributes.colspan > 1)
+        td.attr("colspan", attributes.colspan);
+
+    // If rowspan, record to skip cells in future rows
+    if (attributes.rowspan && attributes.rowspan > 1) {
+        rowspans[column_count] = attributes.rowspan - 1;
+    }
+
+    column_count += (attributes.colspan || 1);
+
+// Create new row if max columns reached or last_in_row specified
+ if (attributes.last_in_row) {
+        current_tr = plot_td.append("tr");
+        column_count = 0;
+    }
   }; //end of add_plot()
 
   function update_legend_opacity(v_name){
@@ -2091,52 +2122,22 @@ var animint = function (to_select, json_file) {
 
   // Download the main description of the interactive plot.
   d3.json(json_file, function (error, response) {
-    if(response.hasOwnProperty("title")){
-      // This selects the title of the web page, outside of wherever
-      // the animint is defined, usually a <div> -- so it is OK to use
-      // global d3.select here.
+    if (error) throw error;
+    if (response.hasOwnProperty("title")) {
       d3.select("title").text(response.title);
     }
-    // Determine if we should create an outer table to arrange plots in a grid.
 
-    var customized_layout = false;
-    for (var p_name in response.plots) {
-      var attrs = response.plots[p_name].attributes;
-      if ("rowspan" in attrs || "colspan" in attrs || "last_in_row" in attrs) {
-        customized_layout = true;
-        break;
-      }
-    }
-      if (customized_layout) {
-      var outer_table = element.append("table");
-      var current_row = outer_table.append("tr");
-      for (var p_name in response.plots) {
-        var plot_info = response.plots[p_name];
-        var attrs = plot_info.attributes || {};
-        var td = current_row.append("td");
-        if ("rowspan" in attrs) td.attr("rowspan", attrs.rowspan);
-        if ("colspan" in attrs) td.attr("colspan", attrs.colspan);
-        add_plot(p_name, plot_info, td); // Make sure add_plot uses the passed td
-        add_legend(p_name, plot_info);
-        if (attrs.last_in_row) {
-          current_row = outer_table.append("tr");
-        }
-      }
-    } else {
-      for (var p_name in response.plots) {
-        add_plot(p_name, response.plots[p_name]);
-        add_legend(p_name, response.plots[p_name]);
-      }
-    }
+    // Add CSS styles
+    var css = document.createElement("style");
+    css.appendChild(document.createTextNode(styles.join(" ")));
+    document.head.appendChild(css);
 
-    // Add plots.
+    // Iterate through plots and add them to the table
     for (var p_name in response.plots) {
-      add_plot(p_name, response.plots[p_name],making_outer_table);
-      add_legend(p_name, response.plots[p_name]);
-      // Append style sheet to document head.
-      css.appendChild(document.createTextNode(styles.join(" ")));
-      document.head.appendChild(css);
+      add_plot(p_name, response.plots[p_name]);
+      add_legend(p_name, response.plots[p_name]);  // Existing legend function
     }
+    
     // Then add selectors and start downloading the first data subset.
     for (var s_name in response.selectors) {
       add_selector(s_name, response.selectors[s_name]);
@@ -2168,6 +2169,9 @@ var animint = function (to_select, json_file) {
 	.attr("href", response.source)
 	.text("source");
     }
+    var widget_tr = plot_widget_table.append("tr");
+    var widget_td = widget_tr.append("td")
+    .attr("colspan", 2)  
     widget_td
       .append('button')
       .attr('class', 'animint_start_tour')
@@ -2613,4 +2617,3 @@ var animint = function (to_select, json_file) {
     }//if(window.location.hash)
   });
 };
-

@@ -145,12 +145,14 @@ getWidthAndHeight <- function(theme){
   options_list
 }
 
-theme_attribute <- function(theme){
+theme_attribute <- function(theme) {
   options_list <- list()
-  for(attributes in c("rowspan", "colspan", "last_in_row")) {
-    arc <- paste0("animint.", attributes)
-    options_list[[attributes]] <- if(arc %in% names(theme)){
-      theme[[arc]]
+  for (attribute in c("rowspan", "colspan", "last_in_row")) {
+    attr_name <- paste0("animint.", attribute)
+    options_list[[attribute]] <- if (attr_name %in% names(theme)) {
+      theme[[attr_name]]
+    } else {
+      if (attribute %in% c("rowspan", "colspan")) 1 else FALSE
     }
   }
   options_list
