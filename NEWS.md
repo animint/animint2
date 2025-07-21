@@ -1,3 +1,7 @@
+# Changes in version 2025.7.21 (PR#203)
+
+- Added `geom_label_aligned`, a new geom that plots text labels with non-overlapping positioning along a specified alignment axis ("horizontal" or "vertical"). It uses quadratic programming to optimize label placement and includes options for spacing (min_distance), alignment, rounded background rectangles (label_r), disabling the background rectangle (background_rect = FALSE), etc.
+
 # Changes in version 2025.7.10 (PR#208)
 
 - Added Codecov integration for both R and JavaScript tests; coverage reports now available at https://app.codecov.io/github/animint/animint2
