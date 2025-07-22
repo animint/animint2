@@ -34,6 +34,9 @@ gg_wrap <- ggplot()+
   geom_label_aligned(aes(
     start.seconds, process_i-0.5, label=peaks),
     alignment = "horizontal",
+    size=40,
+    min_distance=5,
+    label_r=10,
     data=parallelPeaks)+
   facet_wrap( ~ design + Fun, labeller=label_both, ncol=1)+
   scale_y_continuous(

@@ -120,7 +120,7 @@ wb.viz <- list(
     geom_label_aligned(
       data = wb,
       aes(x = fertility.rate, y = life.expectancy, label = country, fill = country, key = country),
-      size=5,
+      size=15,
       alignment = "vertical", color = "#ffffd1", label_r = 9,
       showSelected = "year",
       clickSelects = "country"
