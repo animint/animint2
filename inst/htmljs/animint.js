@@ -245,10 +245,8 @@ var element = d3.select(to_select);
     // Save this geom and load it!
     update_geom(g_name, null);
   };
-  
 
 var current_tr = plot_td.append("tr");
-var rowspans = [0, 0];
 
   var add_plot = function (p_name, p_info) {
     // console.log(p_info);
@@ -2107,22 +2105,23 @@ var rowspans = [0, 0];
 
   // Download the main description of the interactive plot.
   d3.json(json_file, function (error, response) {
-    if (error) throw error;
-    if (response.hasOwnProperty("title")) {
+    if(response.hasOwnProperty("title")){
+      // This selects the title of the web page, outside of wherever
+      // the animint is defined, usually a <div> -- so it is OK to use
+      // global d3.select here.
       d3.select("title").text(response.title);
     }
 
-    // Add CSS styles
-    var css = document.createElement("style");
-    css.appendChild(document.createTextNode(styles.join(" ")));
-    document.head.appendChild(css);
 
-    // Iterate through plots and add them to the table
+     // Add plots.
     for (var p_name in response.plots) {
       add_plot(p_name, response.plots[p_name]);
+       add_legend(p_name, response.plots[p_name]);
+      // Append style sheet to document head.
+      css.appendChild(document.createTextNode(styles.join(" ")));
+      document.head.appendChild(css);
       add_legend(p_name, response.plots[p_name]);  // Existing legend function
     }
-    
     // Then add selectors and start downloading the first data subset.
     for (var s_name in response.selectors) {
       add_selector(s_name, response.selectors[s_name]);
