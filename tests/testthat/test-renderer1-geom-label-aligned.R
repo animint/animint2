@@ -177,8 +177,8 @@ test_that("Aligned labels in timeSeries do not collide after selection/deselecti
 test_that("label_r sets correct rx and ry values", {
   rx <- getPropertyValue(info$html, '//g[@class="geom4_labelaligned_worldbankAnim"]//rect', "rx")
   ry <- getPropertyValue(info$html, '//g[@class="geom4_labelaligned_worldbankAnim"]//rect', "ry")
-  expect_true(all(as.numeric(rx) == 5))
-  expect_true(all(as.numeric(ry) == 5))
+  expect_equal(as.numeric(rx), rep(5, length(rx)))
+  expect_equal(as.numeric(ry), rep(5, length(ry)))
 })
 
 test_that("labels have at least 3px vertical spacing", {
