@@ -246,23 +246,20 @@ var element = d3.select(to_select);
     update_geom(g_name, null);
   };
   
-  var max_columns = 2;
-var column_count = 0;
+  
 var current_tr = plot_td.append("tr");
 var rowspans = [0, 0];
 
   var add_plot = function (p_name, p_info) {
-    
-  // Start a new row if max columns reached, first plot, or last_in_row
-    if (column_count >= max_columns) {
-        current_tr = plot_td.append("tr");
-        column_count = 0;
-    }
+    // console.log(p_info);
+    if(!current_tr) {
+    current_tr = plot_td.append("tr");
+  }
   var td = current_tr.append("td");
-    var attributes = p_info.attributes || {};
-    td.attr("rowspan", attributes.rowspan || 1)
-      .attr("colspan", attributes.colspan || 1);
+  var attributes = p_info.attributes || {};
 
+  td.attr("rowspan", attributes.rowspan || 1)
+    .attr("colspan", attributes.colspan || 1);
     // Inner table for plot and legend
     var plot_table = td.append("table").style("display", "inline-block");
     var plot_tr = plot_table.append("tr");
@@ -790,23 +787,12 @@ var rowspans = [0, 0];
       ;
     }
     Plots[p_name].scales = scales;
-  if (attributes.rowspan && attributes.rowspan > 1)
-        td.attr("rowspan", attributes.rowspan);
-    if (attributes.colspan && attributes.colspan > 1)
-        td.attr("colspan", attributes.colspan);
-
-    // If rowspan, record to skip cells in future rows
-    if (attributes.rowspan && attributes.rowspan > 1) {
-        rowspans[column_count] = attributes.rowspan - 1;
-    }
-
-    column_count += (attributes.colspan || 1);
+    
 
 // Create new row if max columns reached or last_in_row specified
- if (attributes.last_in_row) {
-        current_tr = plot_td.append("tr");
-        column_count = 0;
-    }
+ if(attributes.last_in_row) {
+    current_tr = plot_td.append("tr");
+  }
   }; //end of add_plot()
 
   function update_legend_opacity(v_name){
