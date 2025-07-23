@@ -91,7 +91,9 @@ wb.facets <- animint(
       data=TS_FERT(min.years),
       vjust=1)+
     geom_path(aes(
-      fertility.rate, year, group=country, colour=Region),
+      fertility.rate, year,
+      key=country, group=country,
+      colour=Region),
       clickSelects="country",
       help="Time series of fertility rate, one line per country.",
       data=TS_FERT(not.na),
@@ -100,7 +102,10 @@ wb.facets <- animint(
       alpha_off=0.1)+
     ## MAP
     geom_polygon(aes(
-      x, y, group=group, fill=Region),
+      x, y,
+      key=group,
+      group=group,
+      fill=Region),
       title="World map",
       clickSelects="country",
       color="black",
@@ -139,7 +144,9 @@ wb.facets <- animint(
       not.na, "year", data.fun=TS,
       title="Grey rectangle year selector")+
     geom_line(aes(
-      year, life.expectancy, group=country, colour=Region),
+      year, life.expectancy,
+      key=country, group=country,
+      colour=Region),
       clickSelects="country",
       help="Time series of life expectancy, one line per country.",
       data=TS(not.na),
@@ -165,7 +172,7 @@ wb.facets <- animint(
       breaks=c(year.breaks, seq(25,85,by=10))
     ),
   time=list(variable="year", ms=2000),
-  duration=list(year=1000, country=1000),
+  duration=list(year=1000, country=1000, Region=1000),
   first=list(year=1975, country=c("United States", "Canada", "France", "Japan")),
   selector.types=list(country="multiple"),
   source="https://github.com/animint/animint2/blob/master/inst/examples/WorldBank-facets-map.R",
