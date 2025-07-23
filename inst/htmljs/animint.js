@@ -1536,7 +1536,7 @@ var animint = function (to_select, json_file) {
                     if (alignment == "vertical") {
                       return d.optimizedPos - d.boxHeight / 2;
                     } else {
-                      return d.scaledY - d.boxHeight * get_vjust(d);
+                      return d.scaledY - d.boxHeight * (1 - get_vjust(d));
                     }
                   })
                   .attr("width", function(d) { return d.boxWidth; })
@@ -1559,7 +1559,7 @@ var animint = function (to_select, json_file) {
                   if (alignment == "vertical") {
                     return d.optimizedPos;
                   } else {
-                    return d.scaledY - d.boxHeight * get_vjust(d) + d.boxHeight / 2 ;
+                    return d.scaledY - d.boxHeight * (1 - get_vjust(d)) + d.boxHeight / 2 ;
                   }
                 })
                 .attr("dominant-baseline", "middle")
