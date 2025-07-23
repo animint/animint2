@@ -57,7 +57,7 @@ map2wb <- c(
   "Virgin Islands"="Virgin Islands (U.S.)",
   Yemen="Yemen, Rep.")
 map_disp <- with(map_df, data.frame(
-  group, country=ifelse(Region %in% names(map2wb), map2wb[Region], Region)))
+  group, country=ifelse(region %in% names(map2wb), map2wb[region], region)))
 map_disp$Region <- country2Region[map_disp$country]
 map_names <- c(x="long", y="lat")
 for(new.var in names(map_names)){
@@ -75,43 +75,21 @@ wb.facets <- animint(
     theme_bw()+
     theme(panel.margin=grid::unit(0, "lines"))+
     theme_animint(width=1100, height=600)+
-    scale_x_continuous(
-      "",
-      breaks=c(year.breaks, 1:9))+
-    scale_y_continuous(
-      "",
-      breaks=c(year.breaks, seq(25,85,by=10)))+
-    ## TS
-    make_tallrect(
-      not.na, "year", data.fun=TS,
-      title="Grey rectangle year selector")+
-    geom_line(aes(
-      year, life.expectancy, group=country, colour=Region),
-      clickSelects="country",
-      help="Time series of life expectancy, one line per country.",
-      data=TS(not.na),
-      size=4,
-      alpha=1,
-      alpha_off=0.1)+
-    geom_label_aligned(aes(
-      year, life.expectancy, colour=Region, label=country),
-      showSelected="country",
-      clickSelects="country",
-      help="Names of selected countries.",
-      data=TS(min.years),
-      hjust=1)+
+    facet_grid(side ~ top, scales="free")+
     ## TS_FERT
     make_widerect(
       not.na, "year", data.fun=TS_FERT,
       title="Grey rectangle year selector")+
     geom_label_aligned(aes(
-      fertility.rate, year, colour=Region, label=country),
+      fertility.rate, year,
+      key=country,
+      colour=Region, label=country),
       showSelected="country",
       clickSelects="country",
       help="Names of selected countries.",
       alignment="horizontal",
       data=TS_FERT(min.years),
-      vjust=0)+
+      vjust=1)+
     geom_path(aes(
       fertility.rate, year, group=country, colour=Region),
       clickSelects="country",
@@ -120,6 +98,16 @@ wb.facets <- animint(
       size=4,
       alpha=1,
       alpha_off=0.1)+
+    ## MAP
+    geom_polygon(aes(
+      x, y, group=group, fill=Region),
+      title="World map",
+      clickSelects="country",
+      color="black",
+      color_off="transparent",
+      alpha=1,
+      alpha_off=0.3,
+      data=MAP(map_disp))+
     ## SCATTER
     geom_point(aes(
       fertility.rate, life.expectancy, colour=Region, size=population,
@@ -140,27 +128,45 @@ wb.facets <- animint(
       help="Names of selected countries.",
       chunk_vars=character(),
       data=SCATTER(not.na))+
-    scale_size_animint(breaks=10^(9:5))+
-    facet_grid(side ~ top, scales="free")+
     geom_text(aes(
       5, 85, label=paste0("year = ", year),
       key=1),
       showSelected="year",
       title="Selected year",
       data=SCATTER(years))+
-    ## MAP
-    geom_polygon(aes(
-      x, y, group=group, fill=Region),
-      title="World map",
+    ## TS
+    make_tallrect(
+      not.na, "year", data.fun=TS,
+      title="Grey rectangle year selector")+
+    geom_line(aes(
+      year, life.expectancy, group=country, colour=Region),
       clickSelects="country",
-      color="black",
-      color_off="transparent",
+      help="Time series of life expectancy, one line per country.",
+      data=TS(not.na),
+      size=4,
       alpha=1,
-      alpha_off=0.3,
-      data=MAP(map_disp)),
+      alpha_off=0.1)+
+    geom_label_aligned(aes(
+      year, life.expectancy,
+      key=country,
+      colour=Region, label=country),
+      showSelected="country",
+      clickSelects="country",
+      help="Names of selected countries.",
+      data=TS(min.years),
+      hjust=1)+
+    ## SCALES
+    scale_size_animint(breaks=10^(9:5))+
+    scale_x_continuous(
+      "",
+      breaks=c(year.breaks, 1:9))+
+    scale_y_continuous(
+      "",
+      breaks=c(year.breaks, seq(25,85,by=10))
+    ),
   time=list(variable="year", ms=2000),
-  duration=list(year=1000),
-  first=list(year=1975, country=c("United States", "Vietnam")),
+  duration=list(year=1000, country=1000),
+  first=list(year=1975, country=c("United States", "Canada", "France", "Japan")),
   selector.types=list(country="multiple"),
   source="https://github.com/animint/animint2/blob/master/inst/examples/WorldBank-facets-map.R",
   out.dir="WorldBank-facets-map",
