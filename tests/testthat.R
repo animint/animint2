@@ -7,7 +7,7 @@ source("helper-HTML.R")
 source("helper-plot-data.r")
 filter <- Sys.getenv("TEST_SUITE")
 gh.action <- Sys.getenv("GH_ACTION")
-collect.coverage <- Sys.getenv("COLLECT_COVERAGE", "FALSE") == "TRUE"
+collect.coverage <- Sys.getenv("COLLECT_COVERAGE", "FALSE") == "TRUE" && filter=="renderer"
 if(filter == ""){
   filter <- NULL
 }
