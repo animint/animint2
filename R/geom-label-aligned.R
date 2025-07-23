@@ -29,30 +29,37 @@
 #' data(BodyWeight, package = "nlme")
 #' # Extracting the last point of each rat's trajectory
 #' library(data.table)
-#' label_data <- data.table(BodyWeight)[Time == max(Time)]
+#' label_data <- data.table(BodyWeight)[Time == max(Time)][order(weight)]
+#' rfac=function(x)factor(paste(x), paste(label_data$Rat))
+#' BodyWeight$rat=rfac(BodyWeight$Rat)
+#' label_data$rat=rfac(label_data$Rat)
 #' library(animint2)
 #' viz <- animint(
 #'   bodyPlot = ggplot() +
 #'     theme_bw() +
-#'     theme_animint(width=800)+
+#'     theme_animint(width=1000)+
 #'     geom_line(aes(
-#'       x = Time, y = weight, group = Rat),
-#'       clickSelects="Rat",
+#'       x = Time, y = weight,
+#'       group = rat),
+#'       clickSelects="rat",
 #'       size=3,
 #'       data = BodyWeight) +
 #'     geom_line(aes(
-#'       x = Time, y = weight, group = Rat, colour = Rat),
-#'       clickSelects="Rat",
+#'       x = Time, y = weight,
+#'       group = rat, key = rat, colour = rat),
+#'       clickSelects="rat",
 #'       data = BodyWeight) +
 #'     geom_label_aligned(aes(
-#'       x = Time, y = weight, label = Rat, fill = Rat),
-#'       clickSelects="Rat",
+#'       x = Time + 1, y = weight,
+#'       key = rat, label = rat, fill = rat),
+#'       clickSelects="rat",
 #'       hjust = 0,
 #'       data = label_data) +
-#'     facet_grid(~Diet) +
-#'     ggtitle("Rat body weight over time by diet") +
+#'     facet_grid(~Diet, labeller=label_both) +
+#'     ggtitle("rat body weight over time by diet") +
 #'     xlab("Time (days)") +
-#'     ylab("Body Weight (grams)")
+#'     ylab("Body Weight (grams)"),
+#'   duration=list(rat=1000)
 #' )
 #' viz
 geom_label_aligned <- function
