@@ -216,6 +216,7 @@ Orange <- rbindlist(Orange_list)
 label_data <- Orange[, .SD[age == max(age)], by = Tree][
   , label := sprintf("Tree %d (%s)", Tree, growth_group)][
   , TreeFactor := as.factor(Tree)]
+growth_colors <- c(Fast = "#E41A1C", Medium = "#377EB8", Slow = "#4DAF4A")
 viz <- list(
   orangeGrowth = ggplot() +
     geom_line(
@@ -235,11 +236,11 @@ viz <- list(
       clickSelects = "Tree"
     ) +
     scale_color_manual(
-      values = c(Fast = "#E41A1C", Medium = "#377EB8", Slow = "#4DAF4A"),
+      values = growth_colors,
       name = "Growth Rate"
     ) +
     scale_fill_manual(
-      values = c(Fast = "#E41A1C", Medium = "#377EB8", Slow = "#4DAF4A"),
+      values = growth_colors,
       name = "Growth Rate"
     ) +
     ggtitle("Orange Tree Growth Patterns with Natural Overlap") +
