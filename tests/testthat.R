@@ -13,7 +13,6 @@ if(filter == ""){
   filter <- NULL
 }
 message(gh.action)
-
 if(!is.cran) {
   tests_init()
   # Start coverage if enabled
@@ -31,7 +30,7 @@ if(!is.cran) {
   tests_run(filter = "renderer")
   # Save coverage and cleanup
   if(coverage_active) {
-    stop_js_coverage()
+    message("JS coverage collection started")
   }
   tests_exit()
 }

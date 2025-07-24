@@ -32,17 +32,23 @@ PKG_TGZ=$(R CMD build animint2-release|grep building|sed "s/.*\(animint2.*.tar.g
 echo built $PKG_TGZ so now we INSTALL 
 R CMD INSTALL $PKG_TGZ
 echo "Running R CMD check --as-cran $PKG_TGZ"
-check_output=$(R CMD check --as-cran $PKG_TGZ 2>&1)
-check_status=$?
-echo "$check_output"
-# Check for WARNINGs or NOTEs in the output
-if echo "$check_output" | grep -q -E "WARNING|NOTE"; then
-    echo "CRAN check generated WARNINGs or NOTEs:"
+# temporary log file
+LOG_FILE=$(mktemp)
+trap 'rm -f "$LOG_FILE"' EXIT
+# Run check and capture output
+R CMD check --as-cran $PKG_TGZ 2>&1 | tee "$LOG_FILE"
+CHECK_STATUS=${PIPESTATUS[0]}
+# Check for WARNINGs or NOTEs
+if grep -q -E "WARNING|NOTE" "$LOG_FILE"; then
+    echo "::error:: CRAN check generated WARNINGs or NOTEs:"
+    grep -E "WARNING|NOTE" "$LOG_FILE"
     exit 1
 fi
 # Exit with original status if no WARNINGs/NOTEs but check failed
-if [ $check_status -ne 0 ]; then
-    echo "R CMD check failed with status $check_status"
-    exit $check_status
+if [ $CHECK_STATUS -ne 0 ]; then
+    echo "::error:: R CMD check failed with status $CHECK_STATUS"
+    echo "Full output:"
+    cat "$LOG_FILE"
+    exit $CHECK_STATUS
 fi
 echo "CRAN check completed successfully"
