@@ -1,23 +1,23 @@
 test_that("Simple rowspan layout works", {
-  base_data <- data.frame(x = 1:3, y = c(2, 4, 6))
+  plot_data <- data.frame(x = 1:3, y = c(2, 4, 6))
 
-  plot_list <- list(
-    First = ggplot(base_data, aes(x, y)) +
+  plot_collection <- list(
+    LeftPlot = ggplot(plot_data, aes(x, y)) +
       geom_point() +
-      ggtitle("first") +
+      ggtitle("left_plot") +
       theme_animint(rowspan = 2),
 
-    Second = ggplot(base_data, aes(x, y)) +
+    TopRightPlot = ggplot(plot_data, aes(x, y)) +
       geom_point() +
-      ggtitle("second") +
+      ggtitle("top_right_plot") +
       theme_animint(last_in_row = TRUE),
 
-    Third = ggplot(base_data, aes(x, y)) +
+    BottomRightPlot = ggplot(plot_data, aes(x, y)) +
       geom_point() +
-      ggtitle("third")
+      ggtitle("bottom_right_plot")
   )
 
-  html <- animint2HTML(plot_list)$html
+  html <- animint2HTML(plot_collection)$html
 
   # 3 plot tables should be rendered
   tables <- getNodeSet(html, "//table[@style='display: inline-block;']")
@@ -29,7 +29,7 @@ test_that("Simple rowspan layout works", {
 
   # Check that plot titles appear in HTML
   html_text <- saveXML(html)
-  expect_true(grepl("first", html_text))
-  expect_true(grepl("second", html_text))
-  expect_true(grepl("third", html_text))
+  expect_true(grepl("left_plot", html_text))
+  expect_true(grepl("top_right_plot", html_text))
+  expect_true(grepl("bottom_right_plot", html_text))
 })

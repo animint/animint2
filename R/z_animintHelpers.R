@@ -158,8 +158,6 @@ theme_attribute <- function(theme) {
   options_list
 }
 
-
-
 setUpdateAxes <- function(theme, options_list){
   update_axes <- "animint.update_axes"
   if(update_axes %in% names(theme)){

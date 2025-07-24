@@ -2112,7 +2112,6 @@ var current_tr = plot_td.append("tr");
       d3.select("title").text(response.title);
     }
 
-
      // Add plots.
     for (var p_name in response.plots) {
       add_plot(p_name, response.plots[p_name]);
