@@ -7,14 +7,14 @@ source("helper-HTML.R")
 source("helper-plot-data.r")
 filter <- Sys.getenv("TEST_SUITE")
 gh.action <- Sys.getenv("GH_ACTION")
-use.browser <- grepl("renderer", filter)
 collect.coverage <- Sys.getenv("COLLECT_COVERAGE", "FALSE") == "TRUE"
+is.cran <- Sys.getenv("TEST_SUITE") == "CRAN"
 if(filter == ""){
   filter <- NULL
 }
 message(gh.action)
 
-if(use.browser) {
+if(!is.cran) {
   tests_init()
   # Start coverage if enabled
   coverage_active <- FALSE
@@ -32,6 +32,6 @@ if(use.browser) {
   }
   tests_exit()
 } else {
-  # Non-browser tests
+  # cran tests
   tests_run(filter=filter)
 }
