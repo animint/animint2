@@ -25,13 +25,10 @@ if(!is.cran) {
     }
   }
   # Run tests
-  tests_run(filter=filter)
+  tests_run()
   # Save coverage and cleanup
   if(coverage_active) {
     stop_js_coverage()
   }
   tests_exit()
-} else {
-  # cran tests
-  tests_run(filter=filter)
 }
