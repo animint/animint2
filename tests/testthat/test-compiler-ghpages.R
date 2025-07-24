@@ -29,7 +29,13 @@ test_that("error for viz with no source", {
 ## actions.
 test_that("animint2pages() returns list of meta-data", {
   ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#delete-a-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write) gh api --method DELETE -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/OWNER/REPO
-  gh::gh("DELETE /repos/animint-test/animint2pages_test_repo")
+  tryCatch({
+    gh::gh("DELETE /repos/animint-test/animint2pages_test_repo")
+  }, http_error_404=function(e){
+    print(e) #in case it is already deleted.
+    ##<github_error/http_error_404/rlang_error/error/condition>
+    ##Error in `gh::gh("DELETE /repos/animint-test/animint2pages_test_repo")`: GitHub API error (404): Not Found
+  })
   ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-an-organization-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write)
   gh::gh("POST /orgs/animint-test/repos", name="animint2pages_test_repo")
   ## first run of animint2pages creates new data viz.
