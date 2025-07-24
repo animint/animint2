@@ -25,7 +25,10 @@ if(!is.cran) {
     }
   }
   # Run tests
-  tests_run()
+  message("\n=== Running COMPILER tests ===")
+  tests_run(filter = "compiler")
+  message("\n=== Running RENDERER tests ===")
+  tests_run(filter = "renderer")
   # Save coverage and cleanup
   if(coverage_active) {
     stop_js_coverage()
