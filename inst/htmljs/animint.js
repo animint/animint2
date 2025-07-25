@@ -7,7 +7,7 @@
 var animint = function (to_select, json_file) {
   var steps = [];
   var default_axis_px = 16;
-var element = d3.select(to_select);
+  var element = d3.select(to_select);
   this.element = element;
   var viz_id = element.attr("id");
    function wait_until_then(timeout, condFun, readyFun) {
@@ -268,7 +268,6 @@ var element = d3.select(to_select);
     }else{
       p_info.plot_id = viz_id + "_" + p_name;
     }
-
     // Append SVG for the plot
     var svg = tdLeft.append("svg")
       .attr("id", p_info.plot_id)
@@ -284,7 +283,7 @@ var element = d3.select(to_select);
     // Note axis names are "shared" across panels (just like the title)
     var xtitlepadding = 5 + measureText(p_info["xtitle"], default_axis_px).height;
     var ytitlepadding = 5 + measureText(p_info["ytitle"], default_axis_px).height;
- 
+
     // 'margins' are fixed across panels and do not
     // include title/axis/label padding (since these are not
     // fixed across panels). They do, however, account for
@@ -2106,14 +2105,14 @@ var element = d3.select(to_select);
       // global d3.select here.
       d3.select("title").text(response.title);
     }
-     // Add plots.
+    // Add plots.
     for (var p_name in response.plots) {
       add_plot(p_name, response.plots[p_name]);
       add_legend(p_name, response.plots[p_name]);
       // Append style sheet to document head.
       css.appendChild(document.createTextNode(styles.join(" ")));
       document.head.appendChild(css);
-      add_legend(p_name, response.plots[p_name]);  // Existing legend function
+      add_legend(p_name, response.plots[p_name]);
     }
     // Then add selectors and start downloading the first data subset.
     for (var s_name in response.selectors) {
