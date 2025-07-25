@@ -6,12 +6,10 @@ test_that("Simple rowspan layout works", {
       geom_point() +
       ggtitle("left_plot") +
       theme_animint(rowspan = 2),
-
     TopRightPlot = ggplot(plot_data, aes(x, y)) +
       geom_point() +
       ggtitle("top_right_plot") +
       theme_animint(last_in_row = TRUE),
-
     BottomRightPlot = ggplot(plot_data, aes(x, y)) +
       geom_point() +
       ggtitle("bottom_right_plot")

@@ -246,7 +246,7 @@ var element = d3.select(to_select);
     update_geom(g_name, null);
   };
 
-var current_tr = plot_td.append("tr");
+  var current_tr = plot_td.append("tr");
 
   var add_plot = function (p_name, p_info) {
     // console.log(p_info);
@@ -255,7 +255,6 @@ var current_tr = plot_td.append("tr");
   }
   var td = current_tr.append("td");
   var attributes = p_info.attributes || {};
-
   td.attr("rowspan", attributes.rowspan || 1)
     .attr("colspan", attributes.colspan || 1);
     // Inner table for plot and legend
@@ -263,11 +262,10 @@ var current_tr = plot_td.append("tr");
     var plot_tr = plot_table.append("tr");
     var tdLeft = plot_tr.append("td");
     var tdRight = plot_tr.append("td").attr("class", p_name + "_legend");
-
     // Set plot ID
     if (viz_id === null) {
       p_info.plot_id = p_name;
-    } else {
+    }else{
       p_info.plot_id = viz_id + "_" + p_name;
     }
 
@@ -276,7 +274,6 @@ var current_tr = plot_td.append("tr");
       .attr("id", p_info.plot_id)
       .attr("height", p_info.options.height)
       .attr("width", p_info.options.width);
- 
 
     // divvy up width/height based on the panel layout
     var nrows = Math.max.apply(null, p_info.layout.ROW);
@@ -288,7 +285,6 @@ var current_tr = plot_td.append("tr");
     var xtitlepadding = 5 + measureText(p_info["xtitle"], default_axis_px).height;
     var ytitlepadding = 5 + measureText(p_info["ytitle"], default_axis_px).height;
  
-
     // 'margins' are fixed across panels and do not
     // include title/axis/label padding (since these are not
     // fixed across panels). They do, however, account for
@@ -785,7 +781,6 @@ var current_tr = plot_td.append("tr");
       ;
     }
     Plots[p_name].scales = scales;
-
 // Create new row if max columns reached or last_in_row specified
  if(attributes.last_in_row) {
     current_tr = plot_td.append("tr");
@@ -2111,11 +2106,10 @@ var current_tr = plot_td.append("tr");
       // global d3.select here.
       d3.select("title").text(response.title);
     }
-
      // Add plots.
     for (var p_name in response.plots) {
       add_plot(p_name, response.plots[p_name]);
-       add_legend(p_name, response.plots[p_name]);
+      add_legend(p_name, response.plots[p_name]);
       // Append style sheet to document head.
       css.appendChild(document.createTextNode(styles.join(" ")));
       document.head.appendChild(css);
@@ -2600,3 +2594,4 @@ var current_tr = plot_td.append("tr");
     }//if(window.location.hash)
   });
 };
+
