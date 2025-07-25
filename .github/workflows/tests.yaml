@@ -55,13 +55,10 @@ jobs:
           if [ "$TEST_SUITE" == "CRAN" ]; then
             bash build.sh
           else
-            echo "Running testthat and collecting R coverage with covr for Codecov..."
-            Rscript -e "
-              library(covr)
-              test_dir('tests/testthat', reporter = 'progress')
-              cov <- package_coverage(type = 'tests')
-              codecov(coverage = cov, quiet = FALSE, flags = 'r')
-            "
+            echo "Running testthat..."
+            Rscript -e "source('tests/testthat.R', chdir = TRUE)"
+            echo "Saving R coverage..."
+            Rscript -e 'covr::codecov(quiet = FALSE, flags = "r")'
           fi
 
       - name: Convert JS coverage to Istanbul format
