@@ -16,21 +16,33 @@ message(gh.action)
 if(!is.cran) {
   tests_init()
   # Start coverage if enabled
-  coverage_active <- FALSE
   if(collect.coverage) {
+    message("Starting JS coverage collection...")
     coverage_active <- start_js_coverage()
-    if(coverage_active) {
-      message("JS coverage collection started")
-    }
   }
-  # Run tests
-  message("\n=== Running COMPILER tests ===")
-  tests_run(filter = "compiler")
-  message("\n=== Running RENDERER tests ===")
-  tests_run(filter = "renderer")
-  # Save coverage and cleanup
-  if(coverage_active) {
-    message("JS coverage collection started")
+  # Run tests with coverage tracking
+  if(collect.coverage) {
+    cov <- covr::environment_coverage({
+      message("\n=== Running COMPILER tests ===")
+      tests_run(filter = "compiler")
+      message("\n=== Running RENDERER tests ===")
+      tests_run(filter = "renderer")
+    })
+  } else {
+    message("\n=== Running COMPILER tests ===")
+    tests_run(filter = "compiler")
+    message("\n=== Running RENDERER tests ===")
+    tests_run(filter = "renderer")
+  }
+  # Save JS coverage
+  if(collect.coverage && exists("coverage_active") && coverage_active) {
+    stop_js_coverage()
+    message("JS coverage saved")
   }
   tests_exit()
+  # Save R coverage
+  if(collect.coverage) {
+    message("Uploading R coverage...")
+    covr::codecov(cov, quiet = FALSE, flags = "r")
+  }
 }

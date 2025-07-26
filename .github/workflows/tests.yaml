@@ -56,7 +56,7 @@ jobs:
             bash build.sh
           else
             echo "Running testthat with coverage collection..."
-            Rscript -e 'covr::codecov(file = "tests/testthat.R", quiet = FALSE, flags = "r")'
+            Rscript -e "source('tests/testthat.R', chdir = TRUE)"
           fi
 
       - name: Convert JS coverage to Istanbul format
