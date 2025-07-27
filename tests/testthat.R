@@ -15,16 +15,12 @@ if(filter == ""){
 message(gh.action)
 if(!is.cran) {
   tests_init()
-  # Start coverage if enabled
   if(collect.coverage) {
-    message("Starting JS coverage collection...")
-    coverage_active <- start_js_coverage()
-  }
-  if(collect.coverage) {
+    options(covr.record_tests = TRUE)
   message("Starting JS coverage collection...")
   coverage_active <- start_js_coverage()
   message("Running tests with R coverage...")
-  cov <- covr::record_tests({
+  cov <- covr::environment_coverage(env = globalenv(), code = {
     message("\n=== Running COMPILER tests ===")
     tests_run(filter = "compiler")
     message("\n=== Running RENDERER tests ===")
