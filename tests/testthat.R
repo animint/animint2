@@ -5,15 +5,10 @@ setwd("testthat")
 source("helper-functions.R")
 source("helper-HTML.R")
 source("helper-plot-data.r")
-filter <- Sys.getenv("TEST_SUITE")
 gh.action <- Sys.getenv("GH_ACTION")
-# collect.coverage <- Sys.getenv("COLLECT_COVERAGE", "FALSE") == "TRUE"
-if(filter == ""){
-  filter <- NULL
-}
+is_js_coverage <- Sys.getenv("TEST_SUITE") == "JS_coverage"
 message(gh.action)
 tests_init()
-is_js_coverage <- identical(Sys.getenv("TEST_SUITE"), "JS_coverage")
 # Start coverage if enabled
 coverage_active <- FALSE
 if(is_js_coverage) {

@@ -19,7 +19,6 @@ jobs:
       TEST_SUITE: ${{ matrix.test-suite }}
       GITHUB_PAT: ${{ secrets.PAT_GITHUB }}
       GH_ACTION: "ENABLED"
-      COLLECT_COVERAGE: "TRUE"
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
       - uses: actions/checkout@v3
@@ -59,7 +58,7 @@ jobs:
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
           else
             echo "Running testthat with R coverage collection..."
-            Rscript -e 'covr::codecov(quiet = FALSE, type = "tests", test_files = "tests/testthat.R")'
+            Rscript -e 'covr::codecov(quiet = FALSE, type = "tests", test_files = "tests/testthat.R", flags = "r")'
           fi
 
       - name: Convert JS coverage to Istanbul format
