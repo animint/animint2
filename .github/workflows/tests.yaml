@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test-suite: [ R_coverage, JS_coverage , CRAN ]
+        test-suite: [ R_coverage, JS_coverage, CRAN ]
 
     name: Test Suite ${{ matrix.test-suite }}
     env: 
@@ -54,7 +54,7 @@ jobs:
         run: |
           if [ "$TEST_SUITE" == "CRAN" ]; then
             bash build.sh
-          elif ["$TEST_SUITE" == "JS_coverage"]; then
+          elif [ "$TEST_SUITE" == "JS_coverage" ]; then
             echo "Running testthat with JS coverage collection..."
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
           else
