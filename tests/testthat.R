@@ -17,21 +17,25 @@ if(!is.cran) {
   tests_init()
   if(collect.coverage) {
     options(covr.record_tests = TRUE)
-  message("Starting JS coverage collection...")
-  coverage_active <- start_js_coverage()
-  message("Running tests with R coverage...")
-  cov <- covr::environment_coverage(env = globalenv(), code = {
+    message("Starting JS coverage collection...")
+    coverage_active <- start_js_coverage()
+    cov <- covr::package_coverage(
+      type = "none",
+      quiet = FALSE   # Show test output
+    )
+    # Run tests normally - they'll be recorded by covr
     message("\n=== Running COMPILER tests ===")
     tests_run(filter = "compiler")
     message("\n=== Running RENDERER tests ===")
     tests_run(filter = "renderer")
-  })
-} else {
-  message("\n=== Running COMPILER tests ===")
-  tests_run(filter = "compiler")
-  message("\n=== Running RENDERER tests ===")
-  tests_run(filter = "renderer")
-}
+    # Save coverage
+    cov <- covr::package_coverage()
+  } else {
+    message("\n=== Running COMPILER tests ===")
+    tests_run(filter = "compiler")
+    message("\n=== Running RENDERER tests ===")
+    tests_run(filter = "renderer")
+  }
   # Save JS coverage
   if(collect.coverage && exists("coverage_active") && coverage_active) {
     stop_js_coverage()
