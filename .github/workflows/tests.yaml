@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test-suite: [ combined, CRAN ]
+        test-suite: [ R_coverage, JS_coverage , CRAN ]
 
     name: Test Suite ${{ matrix.test-suite }}
     env: 
@@ -39,13 +39,13 @@ jobs:
         run: git config --global user.email toby.hocking@r-project.org
 
       - name: Setup Node.js
-        if: matrix.test-suite == 'combined'
+        if: matrix.test-suite == 'JS_coverage'
         uses: actions/setup-node@v3
         with:
           node-version: '18'
         
       - name: Install Node.js dependencies
-        if: matrix.test-suite == 'combined'
+        if: matrix.test-suite == 'JS_coverage'
         run: |
           npm install v8-to-istanbul
           echo "Node modules installed"
@@ -54,13 +54,16 @@ jobs:
         run: |
           if [ "$TEST_SUITE" == "CRAN" ]; then
             bash build.sh
-          else
-            echo "Running testthat with coverage collection..."
+          elif ["$TEST_SUITE" == "JS_coverage"]; then
+            echo "Running testthat with JS coverage collection..."
             Rscript -e "source('tests/testthat.R', chdir = TRUE)"
+          else
+            echo "Running testthat with R coverage collection..."
+            Rscript -e 'covr::codecov(quiet = FALSE, type = "tests", test_files = "tests/testthat.R")'
           fi
 
       - name: Convert JS coverage to Istanbul format
-        if: matrix.test-suite == 'combined'
+        if: matrix.test-suite == 'JS_coverage'
         run: |
           if [ -f "tests/testthat/js-coverage.json" ]; then
             echo "Converting JS coverage to LCOV format..."
@@ -71,7 +74,7 @@ jobs:
           fi
 
       - name: Upload JS coverage to Codecov
-        if: matrix.test-suite == 'combined'
+        if: matrix.test-suite == 'JS_coverage'
         run: |
           if [ -f "coverage-istanbul.json" ]; then
             curl -Os https://uploader.codecov.io/latest/linux/codecov
