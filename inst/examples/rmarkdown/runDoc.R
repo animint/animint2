@@ -1,1 +1,1 @@
-rmarkdown::run(system.file("examples/rmarkdown/index.Rmd", package = "animint2"))
+rmarkdown::run("inst/examples/rmarkdown/index.Rmd")
