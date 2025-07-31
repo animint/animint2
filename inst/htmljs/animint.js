@@ -1357,20 +1357,58 @@ var animint = function (to_select, json_file) {
       if (g_info.geom == "segment") {
 	g_info.style_list = line_style_list;
 	eActions = function (e) {
-          e.attr("x1", function (d) {
-            return scales.x(d["x"]);
-          })
-            .attr("x2", function (d) {
-              return scales.x(d["xend"]);
-            })
-            .attr("y1", function (d) {
-              return scales.y(d["y"]);
-            })
-            .attr("y2", function (d) {
-              return scales.y(d["yend"]);
-            })
-	};
-	eAppend = "line";
+    e.each(function(d) {
+      var line = d3.select(this);
+      if (g_info.is_abline) {
+        var slope = g_info.abline_params.slope;
+        var intercept = g_info.abline_params.intercept;
+        var xDomain = scales.x.domain();
+        var yDomain = scales.y.domain();
+        // calculate endpoints
+        var x1 = xDomain[0];
+        var y1 = slope * x1 + intercept;
+        var x2 = xDomain[1];
+        var y2 = slope * x2 + intercept;
+        // Clip to y domain
+        if (y1 < yDomain[0]) {
+          x1 = (yDomain[0] - intercept) / slope;
+          y1 = yDomain[0];
+        } else if (y1 > yDomain[1]) {
+          x1 = (yDomain[1] - intercept) / slope;
+          y1 = yDomain[1];
+        }
+        if (y2 < yDomain[0]) {
+          x2 = (yDomain[0] - intercept) / slope;
+          y2 = yDomain[0];
+        } else if (y2 > yDomain[1]) {
+          x2 = (yDomain[1] - intercept) / slope;
+          y2 = yDomain[1];
+        }
+        // Handle vertical lines (infinite slope)
+        if (!isFinite(slope)) {
+          x1 = x2 = intercept;
+          y1 = yDomain[0];
+          y2 = yDomain[1];
+        }
+        // Handle horizontal lines (zero slope)
+        if (slope === 0) {
+          y1 = y2 = intercept;
+          x1 = xDomain[0];
+          x2 = xDomain[1];
+        }
+        line.attr("x1", isFinite(x1) ? scales.x(x1) : 0)
+            .attr("y1", isFinite(y1) ? scales.y(y1) : 0)
+            .attr("x2", isFinite(x2) ? scales.x(x2) : 0)
+            .attr("y2", isFinite(y2) ? scales.y(y2) : 0);
+      } else {
+        line.attr("x1", scales.x(d.x))
+            .attr("y1", scales.y(d.y))
+            .attr("x2", scales.x(d.xend))
+            .attr("y2", scales.y(d.yend));
+      }
+    });
+  };
+  eAppend = "line";
       }
       if (g_info.geom == "linerange") {
 	g_info.style_list = line_style_list;
