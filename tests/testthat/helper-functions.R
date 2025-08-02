@@ -492,3 +492,34 @@ driverjs_get <- function(html=getHTML()){
   }
   out.list
 }
+
+check_aligned_box_collisions <- function(html_doc, xpath) {
+  box_groups <- getNodeSet(html_doc, xpath)
+  box_info <- lapply(box_groups, function(group) {
+    rect <- getNodeSet(group, './/rect')[[1]]
+    attrs <- xmlAttrs(rect)
+    list(
+      x = as.numeric(attrs["x"]),
+      y = as.numeric(attrs["y"]),
+      width = as.numeric(attrs["width"]),
+      height = as.numeric(attrs["height"])
+    )
+  })
+  has_overlap <- FALSE
+  first_overlap_msg <- NULL
+  for (i in 1:(length(box_info) - 1)) {
+    for (j in (i + 1):length(box_info)) {
+      box1 <- box_info[[i]]
+      box2 <- box_info[[j]]
+      x_overlap <- box1$x < (box2$x + box2$width) && (box1$x + box1$width) > box2$x
+      y_overlap <- box1$y < (box2$y + box2$height) && (box1$y + box1$height) > box2$y
+      if (x_overlap && y_overlap) {
+        has_overlap <- TRUE
+        first_overlap_msg <- paste("Overlap detected between boxes", i, "and", j)
+        break
+      }
+    }
+    if (has_overlap) break
+  }
+  expect_false(has_overlap, info = first_overlap_msg)
+}
