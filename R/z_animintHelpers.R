@@ -131,32 +131,28 @@ getUniqueAxisLabels <- function(plot.meta){
   return(plot.meta)
 }
 
-
-getWidthAndHeight <- function(theme){
+getThemeOptions <- function(theme, keys, default_values) {
   options_list <- list()
-  for(wh in c("width", "height")){
-    awh <- paste0("animint.", wh)
-    options_list[[wh]] <- if(awh %in% names(theme)){
-      theme[[awh]]
-    }else{
-      400
+  for (i in seq_along(keys)) {
+    key <- keys[i]
+    attr_name <- paste0("animint.", key)
+    options_list[[key]] <- if (attr_name %in% names(theme)) {
+      theme[[attr_name]]
+    } else {
+      default_values[[i]]
     }
   }
   options_list
+}
+
+getWidthAndHeight <- function(theme) {
+  getThemeOptions(theme, c("width", "height"), list(400, 400))
 }
 
 theme_attribute <- function(theme) {
-  options_list <- list()
-  for (attribute in c("rowspan", "colspan", "last_in_row")) {
-    attr_name <- paste0("animint.", attribute)
-    options_list[[attribute]] <- if (attr_name %in% names(theme)) {
-      theme[[attr_name]]
-    } else {
-      if (attribute %in% c("rowspan", "colspan")) 1 else FALSE
-    }
-  }
-  options_list
+  getThemeOptions(theme, c("rowspan", "colspan", "last_in_row"), list(1, 1, FALSE))
 }
+
 
 setUpdateAxes <- function(theme, options_list){
   update_axes <- "animint.update_axes"

@@ -34,7 +34,6 @@ test_that("HTML layout includes rowspan and colspan attributes", {
   all_plot_tables <- getNodeSet(html, "//table[@style='display: inline-block;']")
   expect_equal(length(all_plot_tables), 6)
 
-
   td_with_rowspan <- getNodeSet(html, "//td[@rowspan]")
   rowspan_values <- sapply(td_with_rowspan, xmlGetAttr, "rowspan")
   expect_true(any(rowspan_values == "2"), info = "Expect one or more cells with rowspan=2")

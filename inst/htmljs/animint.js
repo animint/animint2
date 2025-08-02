@@ -247,9 +247,7 @@ var animint = function (to_select, json_file) {
   };
 
   var current_tr = plot_td.append("tr");
-
   var add_plot = function (p_name, p_info) {
-    // console.log(p_info);
     if(!current_tr) {
     current_tr = plot_td.append("tr");
   }
@@ -262,13 +260,11 @@ var animint = function (to_select, json_file) {
     var plot_tr = plot_table.append("tr");
     var tdLeft = plot_tr.append("td");
     var tdRight = plot_tr.append("td").attr("class", p_name + "_legend");
-    // Set plot ID
     if (viz_id === null) {
       p_info.plot_id = p_name;
     }else{
       p_info.plot_id = viz_id + "_" + p_name;
     }
-    // Append SVG for the plot
     var svg = tdLeft.append("svg")
       .attr("id", p_info.plot_id)
       .attr("height", p_info.options.height)
