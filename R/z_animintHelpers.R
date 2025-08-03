@@ -173,6 +173,22 @@ hjust2anchor <- function(hjust){
   }
 }
 
+#' @param params Named list of layer parameters
+#' @return NULL if valid, stops with error if invalid showSelected variant found
+validateShowSelectedParams <- function(params) {
+  if (is.null(params) || length(params) == 0) {
+    return(NULL)
+  }
+  param_names <- names(params)
+  # Match parameters starting with "showSelected" but not equal to "showSelected"
+  invalid_showSelected <- param_names[grepl("showSelected.+", param_names)]
+  invalid_showSelected <- setdiff(invalid_showSelected, "showSelected")
+  
+  if (length(invalid_showSelected) > 0) {
+  stop("Use of clickSelects and showSelected as aesthetics has been deprecated. Please use as parameters", 
+       call. = FALSE)
+}}
+
 
 #' Get all parameters for a layer
 #'
@@ -180,6 +196,7 @@ hjust2anchor <- function(hjust){
 #' @return All parameters in the layer
 getLayerParams <- function(l){
   params <- c(l$geom_params, l$stat_params, l$aes_params, l$extra_params)
+  validateShowSelectedParams(params)
   if("chunk_vars" %in% names(params) && is.null(params[["chunk_vars"]])){
     params[["chunk_vars"]] <- character()
   }
