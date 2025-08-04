@@ -368,6 +368,55 @@ run_servr <- function(directory, port) {
   animint2:::start_servr(directory, port, tmpPath = find_test_path())
 }
 
+
+# Helper function to start Shiny app 
+
+start_shiny_app <- function(app_dir, port) {
+  if (!dir.exists(app_dir)) stop("App directory does not exist: ", app_dir)
+  app_url <- sprintf("http://127.0.0.1:%d", port)
+  proc <- callr::r_bg(function(app_dir, port) {
+    shiny::runApp(app_dir, port = port, launch.browser = FALSE)
+  }, args = list(app_dir = app_dir, port = port))
+  
+  start_time <- Sys.time()
+  app_started <- FALSE
+  while (Sys.time() - start_time < 30) {
+    if (!proc$is_alive()) stop("Shiny app failed")
+    con <- try(socketConnection("localhost", port, open = "r+", timeout = 5), silent = TRUE)
+    if (!inherits(con, "try-error")) {
+      close(con)
+      app_started <- TRUE
+      break
+    }
+    Sys.sleep(0.5)
+  }
+  if (!app_started) stop("Failed to start Shiny app after 30 seconds")
+  return(list(proc = proc, url = app_url))
+}
+
+start_rmd_app <- function(rmd_file, port) {
+  if (!file.exists(rmd_file)) stop("RMarkdown file does not exist: ", rmd_file)
+  app_url <- sprintf("http://127.0.0.1:%d", port)
+  proc <- callr::r_bg(function(rmd_file, port) {
+    rmarkdown::run(file = rmd_file, shiny_args = list(port = port, launch.browser = FALSE))
+  }, args = list(rmd_file = rmd_file, port = port))
+  
+  start_time <- Sys.time()
+  app_started <- FALSE
+  while (Sys.time() - start_time < 30) {
+    if (!proc$is_alive()) stop("RMarkdown app failed")
+    con <- try(socketConnection("localhost", port, open = "r+", timeout = 5), silent = TRUE)
+    if (!inherits(con, "try-error")) {
+      close(con)
+      app_started <- TRUE
+      break
+    }
+    Sys.sleep(0.5)
+  }
+  if (!app_started) stop("Failed to start RMarkdown app after 30 seconds")
+  return(list(proc = proc, url = app_url))
+}
+
 # --------------------------
 # Functions that are used in multiple places
 # --------------------------
