@@ -53,7 +53,7 @@ test_that("save separate chunks for geom_polygon", {
   state.map <- p + 
     geom_polygon(aes(x = long, y = lat, group = group, fill = level),
                  data = map_flu, 
-                 showSelected = "WEEKEND",                  
+                   showSelected = "WEEKEND",                  
                  colour = "black", size = 1)
   viz <-
     list(levelHeatmap = level.heatmap,
@@ -99,9 +99,9 @@ test_that("save separate chunks for geom_point without specifying group", {
   # the compiler will not break a geom into chunks if any of the resulting 
   # chunk tsv files is estimated to be less than 4KB.
   state.map <- p + 
-    geom_point(aes(x = mean.long, y = mean.lat, fill = level, key = region),
+    geom_point(aes(x = mean.long, y = mean.lat, fill = level),
                data = flu.points, 
-               showSelected = "WEEKEND",
+                   showSelected = "WEEKEND",
                color = "black",
                size = 10)
   viz <-
@@ -129,7 +129,7 @@ test_that("save separate chunks for geom_point without specifying group", {
   state.map <- p + 
     geom_point(aes(x = mean.long, y = mean.lat, fill = level),
                data = flu.points, 
-               showSelected = "WEEKEND",                
+                   showSelected = "WEEKEND",                
                color = "black",
                size = 10,
                chunk_vars = "WEEKEND",
@@ -283,11 +283,11 @@ signal <- ggplot()+
              data=breakpoints$signals, showSelected="samples")+
   geom_line(aes(position, signal), colour=signal.colors[["latent"]],
             data=breakpoints$imprecision)+
-  geom_segment(aes(first.base, mean, xend=last.base, yend=mean, key = segments),
+  geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
                colour=signal.colors[["estimate"]],
                    showSelected=c("segments", "samples"),
                data=breakpoints$segments)+
-  geom_vline(aes(xintercept=base, key = segments),
+  geom_vline(aes(xintercept=base),
              colour=signal.colors[["estimate"]],
                  showSelected=c("segments", "samples"),
              linetype="dashed",
