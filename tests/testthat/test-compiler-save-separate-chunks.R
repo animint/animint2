@@ -123,7 +123,7 @@ test_that("save separate chunks for geom_point without specifying group", {
   ## test the only one varied.chunk
   varied.data <- read.csv(varied.chunks, sep = "\t", comment.char = "")
   expect_equal(nrow(varied.data), nrow(flu.points))
-  expect_true(all(c("fill", "x", "y", "showSelected1") %in% names(varied.data)))
+  expect_true(all(c("fill", "x", "y", "showSelected") %in% names(varied.data)))
   unlink(out.dir, recursive = TRUE)
   ## force to split into chunks
   state.map <- p + 

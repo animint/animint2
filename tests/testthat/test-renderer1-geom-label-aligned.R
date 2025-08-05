@@ -265,7 +265,7 @@ chunk1 <- read.table(chunk1.tsv, sep = "\t", header = TRUE,
                      comment.char = "", quote = "")
 
 test_that("chunk1 contains expected columns", {
-  expected.cols <- c("fill", "x", "y", "label","id", "showSelected1", "showSelected", "clickSelects", "group")
+  expected.cols <- c("fill", "x", "y", "label","id", "showSelected", "clickSelects", "group")
   expect_identical(sort(names(chunk1)), sort(expected.cols))
 })
 
