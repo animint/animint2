@@ -315,7 +315,7 @@ test_that("save separate chunks for non-spatial geoms with nest_order not being 
   n.samples <- length(unique(breakpoints$segments$samples))
   expected.rows <- nrow(breakpoints$segments) / n.samples
   expect_equal(nrow(common.data), expected.rows)
-  common.must.have <- c("showSelected1", "group")
+  common.must.have <- c("showSelected", "group")
   expect_true(all(common.must.have %in% names(common.data)))
   # randomly choose an varied.chunk to test
   idx <- sample(no.chunks, 1)
