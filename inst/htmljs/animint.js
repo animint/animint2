@@ -124,7 +124,7 @@ var animint = function (to_select, json_file) {
   // and then measure the element
   // Inspired from http://jsfiddle.net/uzddx/2/
   var measureText = function(pText, pFontSize, pAngle, pStyle) {
-    if (!pText || pText.length === 0) return {height: 0, width: 0};
+    if (pText === undefined || pText === null || pText.length === 0) return {height: 0, width: 0};
     if (pAngle === null || isNaN(pAngle)) pAngle = 0;
 
     var container = element.append('svg');
@@ -1089,6 +1089,15 @@ var animint = function (to_select, json_file) {
       });
     };
 
+    var fontsize = 12;
+    var get_fontsize;
+    if (aes.hasOwnProperty("size")){
+      get_fontsize = get_attr("size")
+    }else if(g_info.params.hasOwnProperty("size")){
+      get_fontsize = function(d) { return g_info.params.size; };
+    }else{
+      get_fontsize = function(d) { return fontsize; };
+    }
     var size = 2;
     var get_size;
     if(aes.hasOwnProperty("size")){
@@ -1153,15 +1162,36 @@ var animint = function (to_select, json_file) {
       };
     }
     var get_colour_off_default = get_colour;
-
-    var fill = "black", fill_off = "black";
+    if (g_info.geom == "label_aligned") {
+      var fill = "white", fill_off = "white";
+    }else{
+      var fill = "black", fill_off = "black";
+    }
     var get_fill = function (d) {
       return fill;
     };
     var get_fill_off = function (d) {
       return fill_off;
     };
-    
+
+    var get_hjust;
+    var default_hjust = 0.5; // default center
+    if(aes.hasOwnProperty("hjust")){
+      get_hjust = get_attr("hjust");
+    }else if(g_info.params.hasOwnProperty("hjust")){
+      get_hjust = function(d){ return g_info.params.hjust; };
+    }else{
+      get_hjust = function(d){ return default_hjust; };
+    }
+    var get_vjust;
+    var default_vjust = 0.5; // default center
+    if(aes.hasOwnProperty("vjust")){
+      get_vjust = get_attr("vjust");
+    }else if(g_info.params.hasOwnProperty("vjust")){
+      get_vjust = function(d){ return g_info.params.vjust; };
+    }else{
+      get_vjust = function(d){ return default_vjust; };
+    }
     var angle = 0;
     var get_angle;
     if(aes.hasOwnProperty("angle")){
@@ -1442,6 +1472,118 @@ var animint = function (to_select, json_file) {
 	};
 	eAppend = "circle";
       }
+      // function to calculate the size of boxes in geom_label_aligned according to the inside text
+      var calcLabelBox = function(d) {
+        var textStyle = [
+            "font-family:" + (d.family || "sans-serif"),
+            "font-weight:" + (d.fontface == 2 ? "bold" : "normal"),
+            "font-style:" + (d.fontface == 3 ? "italic" : "normal")
+        ].join(";");
+        // Use d.size for font size (always current value)
+        var fontsize = d.size;
+        var textSize = measureText(d.label, fontsize, d.angle, textStyle);
+        d.boxWidth = textSize.width;
+        d.boxHeight = textSize.height;
+        d.scaledX = scales.x(d.x);
+        d.scaledY = scales.y(d.y);
+      }
+      if (g_info.geom == "label_aligned") {
+          // Get parameters
+          var alignment = g_info.params.alignment || "vertical";
+          var min_distance = g_info.params.min_distance || 0.1;
+          var background_rect = g_info.params.background_rect !== false; // Default true
+          // Set d.size and d.originalFontsize for each datum
+          data.forEach(function(d) {
+              if (typeof d.originalFontsize === "undefined") {
+                  d.size = get_fontsize(d);
+                  d.originalFontsize = d.size;
+              }
+              // Always reset to original before shrinking
+              d.size = d.originalFontsize;
+              calcLabelBox(d);
+          });
+          var plot_limits;
+          if (alignment === "vertical") {
+            var yRange = scales.y.range();
+            plot_limits = [Math.min.apply(null, yRange), Math.max.apply(null, yRange)];
+          } else {
+            var xRange = scales.x.range();
+            plot_limits = [Math.min.apply(null, xRange), Math.max.apply(null, xRange)];
+          }
+          // using quadprog.js for optimizing positions of colliding boxes
+          optimizeAlignedLabels(data, alignment, min_distance, plot_limits, function(d){return d.size;}, calcLabelBox);
+
+          eAppend = "g";
+          eActions = function(groups) {
+            // Handle transitions seperately due to unique structure of geom_label_aligned
+            var transitionDuration = 0;
+            if (Selectors.hasOwnProperty(selector_name)) {
+              transitionDuration = +Selectors[selector_name].duration || 0;
+            }
+            groups.each(function(d) {
+              var group = d3.select(this);
+              // Select existing elements (if any)
+              var rect = group.select("rect");
+              var text = group.select("text");
+              var rectIsNew = false, textIsNew = false;
+              // If elements don't exist, create them
+              if (rect.empty()) {rect = group.append("rect"); rectIsNew = true;}
+              if (text.empty()) {text = group.append("text"); textIsNew = true;}
+              // Apply transitions to both elements
+              if (!rectIsNew && transitionDuration > 0) {
+                rect = rect.transition().duration(transitionDuration);
+              }
+              if (!textIsNew && transitionDuration > 0) {
+                text = text.transition().duration(transitionDuration);
+              }
+              if (background_rect) {
+                rect
+                  .attr("x", function(d) { 
+                    if (alignment == "vertical") {
+                      return d.scaledX - d.boxWidth * get_hjust(d);
+                    } else {
+                      return d.optimizedPos - d.boxWidth / 2;
+                    }
+                  })
+                  .attr("y", function(d) {
+                    if (alignment == "vertical") {
+                      return d.optimizedPos - d.boxHeight / 2;
+                    } else {
+                      return d.scaledY - d.boxHeight * (1 - get_vjust(d));
+                    }
+                  })
+                  .attr("width", function(d) { return d.boxWidth; })
+                  .attr("height", function(d) { return d.boxHeight; })
+                  .style("opacity", get_alpha)
+                  .style("stroke", get_colour)
+                  .style("fill", get_fill)
+                  .attr("rx", g_info.params.label_r || 0)
+                  .attr("ry", g_info.params.label_r || 0);
+              }
+              text
+                .attr("x", function(d) {
+                  if (alignment == "vertical") {
+                    return d.scaledX - d.boxWidth * get_hjust(d) + d.boxWidth / 2;
+                  } else {
+                    return d.optimizedPos;
+                  }
+                })
+                .attr("y", function(d) {
+                  if (alignment == "vertical") {
+                    return d.optimizedPos;
+                  } else {
+                    return d.scaledY - d.boxHeight * (1 - get_vjust(d)) + d.boxHeight / 2 ;
+                  }
+                })
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", function(d) { return d.size + "px"; })
+                .style("text-anchor", "middle")
+                .style("fill", get_colour)
+                .text(function(d) { return d.label; });
+            });
+          };
+        }
+
       var rect_geoms = ["tallrect","widerect","rect"];
       if(rect_geoms.includes(g_info.geom)){
 	eAppend = "rect";
@@ -1530,6 +1672,7 @@ var animint = function (to_select, json_file) {
       size = g_info.params.size;
     }
     var styleActions = function(e){
+      if (g_info.geom == "label_aligned") return;  // Do NOT call styleActions(e) for geom_label_aligned
       g_info.style_list.forEach(function(s){
 	e.style(s, function(d) {
 	  var style_on_fun = style_on_funs[s];
@@ -1553,15 +1696,18 @@ var animint = function (to_select, json_file) {
     var select_style_default = ["opacity","stroke","fill"];
     g_info.select_style = select_style_default.filter(
       X => g_info.style_list.includes(X));
+    var styles_to_apply = (g_info.geom === "label_aligned") ? ["opacity"] : g_info.select_style;
+    // (Only apply opacity to geom_label_aligned 
+    // due to its structure difference -- to avoid double styling in both <g> and <text> inside <g>)
     var over_fun = function(e){
-      g_info.select_style.forEach(function(s){
+      styles_to_apply.forEach(function(s){
         e.style(s, function (d) {
           return style_on_funs[s](d);
         });
       });
     };
     var out_fun = function(e){
-      g_info.select_style.forEach(function(s){
+      styles_to_apply.forEach(function(s){
         e.style(s, function (d) {
           var select_on = style_on_funs[s](d);
           var select_off = style_off_funs[s](d);
