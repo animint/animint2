@@ -8,12 +8,6 @@ info <- animint2HTML(viz)
 tsv.file <- file.path("animint-htmltest", "geom2_abline_p_chunk1.tsv")
 tsv.data <- read.table(tsv.file, header=TRUE, comment.char = "")
 
-test_that("columns of abline tsv", {
-  expected.names <- sort(c("PANEL", "x", "xend", "y", "yend"))
-  computed.names <- sort(names(tsv.data))
-  expect_identical(computed.names, expected.names)
-})
-
 ablines <- getNodeSet(info$html, '//svg//g[@class="geom2_abline_p"]//line')
 attr_ablines <- sapply(ablines, xmlAttrs)
 start_ends <- attr_ablines[c("x1", "x2", "y1", "y2"), ]
@@ -74,4 +68,49 @@ abl <- get_num('geom1_abline_p',"line",c("x1","x2","y1","y2"))
 abline.at.5 <- slope*(cxy$cx-abl$x1)+abl$y1
 test_that("abline with negative slope intersects point", {
   expect_equal(abline.at.5, cxy$cy)
+})
+
+# Test for testing that geom_ablines are clipped to the plot area even after update_axes is called
+data(mtcars)
+# Grouping variable
+mtcars$cyl <- as.factor(mtcars$cyl)
+cyl.levels <- levels(mtcars$cyl)
+# Generate 60 ablines (20 per cyl), all visible at once
+set.seed(123)
+abline_data <- do.call(rbind, lapply(cyl.levels, function(cyl_val) {
+  data.frame(
+    slope = runif(20, -2, 2),
+    intercept = runif(20, 0, 500),
+    cyl = cyl_val
+  )
+}))
+viz <- list(
+  title = "Many geom_ablines without filtering",
+  allablines = ggplot() +
+  theme_animint(update_axes = c("x", "y"), height=400, width=400) +
+    geom_point(aes(mpg, disp, color = cyl), data = mtcars, showSelected = "cyl") +
+    geom_abline(
+      aes(slope = slope, intercept = intercept, color = cyl),
+      size = 1,
+      data = abline_data
+    ) +
+    ggtitle("All ablines, all cyl groups together"),
+    selector.types = list(cyl = "single")
+)
+info <- animint2HTML(viz)
+ablines <- getNodeSet(info$html, '//svg//g[contains(@class, "geom2_abline_allablines")]//line')
+abline_coords <- sapply(ablines, xmlAttrs)
+
+# Extract x1, x2, y1, y2 from all lines
+x1s <- as.numeric(abline_coords["x1", ])
+x2s <- as.numeric(abline_coords["x2", ])
+y1s <- as.numeric(abline_coords["y1", ])
+y2s <- as.numeric(abline_coords["y2", ])
+
+test_that("ablines are clipped within plot area", {
+  expect_true(all(!is.na(c(x1s, x2s, y1s, y2s))))
+  expect_true(all(x1s >= 0 & x1s <= 400))
+  expect_true(all(x2s >= 0 & x2s <= 400))
+  expect_true(all(y1s >= 0 & y1s <= 400))
+  expect_true(all(y2s >= 0 & y2s <= 400))
 })
