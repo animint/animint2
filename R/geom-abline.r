@@ -112,17 +112,16 @@ geom_abline <- function(mapping = NULL, data = NULL,
 #' @export
 GeomAbline <- gganimintproto("GeomAbline", Geom,
   draw_panel = function(data, panel_scales, coord) {
-    # Just convert to segment without calculations
     data$geom <- "segment"
     data$is_abline <- TRUE
     GeomSegment$draw_panel(unique(data), panel_scales, coord)
   },
   pre_process = function(g, g.data, ranges) {
     g$is_abline <- TRUE
-    # Store slope and intercept in abline_params
+    # Store ALL slope and intercept pairs in abline_params
     g$abline_params <- list(
-      slope = g.data$slope[1],
-      intercept = g.data$intercept[1]
+      slopes = g.data$slope,
+      intercepts = g.data$intercept
     )
     ## ggplot2 defaults to adding a group aes for ablines!
     ## Remove it since it is meaningless.

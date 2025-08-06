@@ -1355,13 +1355,13 @@ var animint = function (to_select, json_file) {
       }
       data_to_bind = data;
       if (g_info.geom == "segment") {
-	g_info.style_list = line_style_list;
-	eActions = function (e) {
-    e.each(function(d) {
+  g_info.style_list = line_style_list;
+  eActions = function (e) {
+    e.each(function(d, i) {
       var line = d3.select(this);
       if (g_info.is_abline) {
-        var slope = g_info.abline_params.slope;
-        var intercept = g_info.abline_params.intercept;
+        var slope = g_info.abline_params.slopes[i];
+        var intercept = g_info.abline_params.intercepts[i];
         var xDomain = scales.x.domain();
         var yDomain = scales.y.domain();
         // calculate endpoints
