@@ -204,8 +204,7 @@ parsePlot <- function(meta, plot, plot.name){
   list(
     plot.info = plot.info,
     ggplot = plot,
-    built = built
-  )
+    built = built)
 }
 
 

@@ -2254,7 +2254,6 @@ var animint = function (to_select, json_file) {
       // Append style sheet to document head.
       css.appendChild(document.createTextNode(styles.join(" ")));
       document.head.appendChild(css);
-      add_legend(p_name, response.plots[p_name]);
     }
     // Then add selectors and start downloading the first data subset.
     for (var s_name in response.selectors) {
