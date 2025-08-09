@@ -11,9 +11,9 @@ viz <-
                     clickSelects="country",
                     showSelected="year",
                     data=not.na)+
-       geom_text(aes(life.expectancy, fertility.rate, label=country),
+       geom_text(aes(life.expectancy, fertility.rate, label=country, key = country),
                  data=not.na,
-                     showSelected="country", showSelected2="year")+
+                     showSelected=c("country","year"))+
        scale_size_animint(breaks=10^(5:9))+
        make_text(WorldBank, 55, 9, "year"),
 
@@ -45,7 +45,7 @@ bad <-
                     clickSelects="country",
                       showSelected="year", 
                   data=not.na)+
-       geom_text(aes(life.expectancy, fertility.rate, label=country),
+       geom_text(aes(life.expectancy, fertility.rate, label=country, key = country),
                  data=not.na,
                      showSelected=c("country", "year"))+
        scale_size_animint(breaks=10^(5:9))+
