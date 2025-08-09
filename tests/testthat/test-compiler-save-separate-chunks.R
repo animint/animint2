@@ -99,7 +99,7 @@ test_that("save separate chunks for geom_point without specifying group", {
   # the compiler will not break a geom into chunks if any of the resulting 
   # chunk tsv files is estimated to be less than 4KB.
   state.map <- p + 
-    geom_point(aes(x = mean.long, y = mean.lat, fill = level, key = region),
+    geom_point(aes(x = mean.long, y = mean.lat, fill = level),
                data = flu.points, 
                    showSelected = "WEEKEND",
                color = "black",
@@ -123,11 +123,11 @@ test_that("save separate chunks for geom_point without specifying group", {
   ## test the only one varied.chunk
   varied.data <- read.csv(varied.chunks, sep = "\t", comment.char = "")
   expect_equal(nrow(varied.data), nrow(flu.points))
-  expect_true(all(c("fill", "x", "y", "showSelected") %in% names(varied.data)))
+  expect_true(all(c("fill", "x", "y", "showSelected1") %in% names(varied.data)))
   unlink(out.dir, recursive = TRUE)
   ## force to split into chunks
   state.map <- p + 
-    geom_point(aes(x = mean.long, y = mean.lat, fill = level, key = region),
+    geom_point(aes(x = mean.long, y = mean.lat, fill = level),
                data = flu.points, 
                    showSelected = "WEEKEND",                
                color = "black",
@@ -283,11 +283,11 @@ signal <- ggplot()+
              data=breakpoints$signals, showSelected="samples")+
   geom_line(aes(position, signal), colour=signal.colors[["latent"]],
             data=breakpoints$imprecision)+
-  geom_segment(aes(first.base, mean, xend=last.base, yend=mean, key = segments),
+  geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
                colour=signal.colors[["estimate"]],
                    showSelected=c("segments", "samples"),
                data=breakpoints$segments)+
-  geom_vline(aes(xintercept=base, key = segments),
+  geom_vline(aes(xintercept=base),
              colour=signal.colors[["estimate"]],
                  showSelected=c("segments", "samples"),
              linetype="dashed",
@@ -315,7 +315,7 @@ test_that("save separate chunks for non-spatial geoms with nest_order not being 
   n.samples <- length(unique(breakpoints$segments$samples))
   expected.rows <- nrow(breakpoints$segments) / n.samples
   expect_equal(nrow(common.data), expected.rows)
-  common.must.have <- c("showSelected", "group")
+  common.must.have <- c("showSelected1", "group")
   expect_true(all(common.must.have %in% names(common.data)))
   # randomly choose an varied.chunk to test
   idx <- sample(no.chunks, 1)
