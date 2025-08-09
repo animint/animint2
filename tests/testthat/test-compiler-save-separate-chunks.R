@@ -99,7 +99,7 @@ test_that("save separate chunks for geom_point without specifying group", {
   # the compiler will not break a geom into chunks if any of the resulting 
   # chunk tsv files is estimated to be less than 4KB.
   state.map <- p + 
-    geom_point(aes(x = mean.long, y = mean.lat, fill = level),
+    geom_point(aes(x = mean.long, y = mean.lat, fill = level, key = region),
                data = flu.points, 
                    showSelected = "WEEKEND",
                color = "black",
@@ -127,7 +127,7 @@ test_that("save separate chunks for geom_point without specifying group", {
   unlink(out.dir, recursive = TRUE)
   ## force to split into chunks
   state.map <- p + 
-    geom_point(aes(x = mean.long, y = mean.lat, fill = level),
+    geom_point(aes(x = mean.long, y = mean.lat, fill = level, key = region),
                data = flu.points, 
                    showSelected = "WEEKEND",                
                color = "black",
@@ -283,11 +283,11 @@ signal <- ggplot()+
              data=breakpoints$signals, showSelected="samples")+
   geom_line(aes(position, signal), colour=signal.colors[["latent"]],
             data=breakpoints$imprecision)+
-  geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
+  geom_segment(aes(first.base, mean, xend=last.base, yend=mean, key = segments),
                colour=signal.colors[["estimate"]],
                    showSelected=c("segments", "samples"),
                data=breakpoints$segments)+
-  geom_vline(aes(xintercept=base),
+  geom_vline(aes(xintercept=base, key = segments),
              colour=signal.colors[["estimate"]],
                  showSelected=c("segments", "samples"),
              linetype="dashed",
