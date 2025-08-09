@@ -202,9 +202,9 @@ parsePlot <- function(meta, plot, plot.name){
   plot.info$options <- options_list
   plot.info$attributes <- theme_attribute(plot$theme)  
   list(
-    plot.info = plot.info,
-    ggplot = plot,
-    built = built)
+    plot.info=plot.info,
+    ggplot=plot,
+    built=built)
 }
 
 
