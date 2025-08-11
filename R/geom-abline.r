@@ -126,7 +126,7 @@ GeomAbline <- gganimintproto("GeomAbline", Geom,
     ## ggplot2 defaults to adding a group aes for ablines!
     ## Remove it since it is meaningless.
     g$aes <- g$aes[names(g$aes)!="group"]
-    g.data <- g.data[! names(g.data) %in% c("slope", "intercept")]
+    ## Keep slope and intercept in g.data for TSV output
     g$geom <- "segment"
     return(list(g = g, g.data = g.data))
   },

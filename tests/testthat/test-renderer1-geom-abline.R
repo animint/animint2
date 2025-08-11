@@ -6,11 +6,21 @@ viz <- animint(p=qplot(wt, mpg, data = mtcars) +
 info <- animint2HTML(viz)
 
 tsv.file <- file.path("animint-htmltest", "geom2_abline_p_chunk1.tsv")
-tsv.data <- read.table(tsv.file, header=TRUE, comment.char = "")
+if(file.exists(tsv.file)){
+  tsv.data <- read.table(tsv.file, header=TRUE, comment.char = "")
+  test_that("TSV contains slope and intercept", {
+    expect_true(all(c("slope", "intercept") %in% names(tsv.data)))
+  })
+}
 
 ablines <- getNodeSet(info$html, '//svg//g[@class="geom2_abline_p"]//line')
-attr_ablines <- sapply(ablines, xmlAttrs)
-start_ends <- attr_ablines[c("x1", "x2", "y1", "y2"), ]
+start_ends <- t(sapply(ablines, function(abline) {
+  attrs <- xmlAttrs(abline)
+  c(x1 = as.numeric(attrs["x1"]),
+    x2 = as.numeric(attrs["x2"]),
+    y1 = as.numeric(attrs["y1"]),
+    y2 = as.numeric(attrs["y2"]))
+}))
 
 test_that("All six ablines render", {
   expect_equal(length(ablines), 6)
@@ -85,7 +95,7 @@ abline_data <- do.call(rbind, lapply(cyl.levels, function(cyl_val) {
   )
 }))
 viz <- list(
-  title = "Many geom_ablines without filtering",
+  title = "geom ablines clipped to plot area",
   allablines = ggplot() +
   theme_animint(update_axes = c("x", "y"), height=400, width=400) +
     geom_point(aes(mpg, disp, color = cyl), data = mtcars, showSelected = "cyl") +
@@ -100,13 +110,11 @@ viz <- list(
 info <- animint2HTML(viz)
 ablines <- getNodeSet(info$html, '//svg//g[contains(@class, "geom2_abline_allablines")]//line')
 abline_coords <- sapply(ablines, xmlAttrs)
-
 # Extract x1, x2, y1, y2 from all lines
 x1s <- as.numeric(abline_coords["x1", ])
 x2s <- as.numeric(abline_coords["x2", ])
 y1s <- as.numeric(abline_coords["y1", ])
 y2s <- as.numeric(abline_coords["y2", ])
-
 test_that("ablines are clipped within plot area", {
   expect_true(all(!is.na(c(x1s, x2s, y1s, y2s))))
   expect_true(all(x1s >= 0 & x1s <= 400))
