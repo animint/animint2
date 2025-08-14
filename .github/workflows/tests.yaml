@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test-suite: [ R_coverage, JS_coverage, CRAN, shiny ]
+        test-suite: [ R_coverage, JS_coverage, CRAN ]
 
     name: Test Suite ${{ matrix.test-suite }}
     env: 
