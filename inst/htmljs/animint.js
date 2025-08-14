@@ -1360,47 +1360,57 @@ var animint = function (to_select, json_file) {
     e.each(function(d, i) {
       var line = d3.select(this);
       if (g_info.is_abline) {
-        var slope = g_info.abline_params.slopes[i];
-        var intercept = g_info.abline_params.intercepts[i];
+        // Get slope/intercept - handle both single and multiple cases
+        var slope = d.abline_slope !== undefined ? d.abline_slope : 
+                   (g_info.abline_params.slopes[i] !== undefined ? 
+                    g_info.abline_params.slopes[i] : 
+                    g_info.abline_params.slopes);
+        var intercept = d.abline_intercept !== undefined ? d.abline_intercept : 
+                       (g_info.abline_params.intercepts[i] !== undefined ? 
+                        g_info.abline_params.intercepts[i] : 
+                        g_info.abline_params.intercepts);
+        // Ensure numeric values
+        slope = +slope;
+        intercept = +intercept;
         var xDomain = scales.x.domain();
         var yDomain = scales.y.domain();
-        // calculate endpoints
-        var x1 = xDomain[0];
-        var y1 = slope * x1 + intercept;
-        var x2 = xDomain[1];
-        var y2 = slope * x2 + intercept;
-        // Clip to y domain
-        if (y1 < yDomain[0]) {
-          x1 = (yDomain[0] - intercept) / slope;
-          y1 = yDomain[0];
-        } else if (y1 > yDomain[1]) {
-          x1 = (yDomain[1] - intercept) / slope;
-          y1 = yDomain[1];
-        }
-        if (y2 < yDomain[0]) {
-          x2 = (yDomain[0] - intercept) / slope;
-          y2 = yDomain[0];
-        } else if (y2 > yDomain[1]) {
-          x2 = (yDomain[1] - intercept) / slope;
-          y2 = yDomain[1];
-        }
-        // Handle vertical lines (infinite slope)
+        // Calculate endpoints with NaN checks
+        var x1 = xDomain[0], y1, x2 = xDomain[1], y2;
         if (!isFinite(slope)) {
-          x1 = x2 = intercept;
-          y1 = yDomain[0];
-          y2 = yDomain[1];
+          // Vertical line case
+          line.attr("x1", scales.x(intercept))
+              .attr("x2", scales.x(intercept))
+              .attr("y1", scales.y(yDomain[0]))
+              .attr("y2", scales.y(yDomain[1]));
+          return;
         }
-        // Handle horizontal lines (zero slope)
-        if (slope === 0) {
-          y1 = y2 = intercept;
-          x1 = xDomain[0];
-          x2 = xDomain[1];
+        y1 = slope * x1 + intercept;
+        y2 = slope * x2 + intercept;
+        // Clip to plot area with safety checks
+        if (isFinite(slope)) {
+          if (y1 < yDomain[0]) {
+            x1 = (yDomain[0] - intercept) / slope;
+            y1 = yDomain[0];
+          } else if (y1 > yDomain[1]) {
+            x1 = (yDomain[1] - intercept) / slope;
+            y1 = yDomain[1];
+          }
+          if (y2 < yDomain[0]) {
+            x2 = (yDomain[0] - intercept) / slope;
+            y2 = yDomain[0];
+          } else if (y2 > yDomain[1]) {
+            x2 = (yDomain[1] - intercept) / slope;
+            y2 = yDomain[1];
+          }
         }
+        
+        // Final rendering with NaN checks
         line.attr("x1", isFinite(x1) ? scales.x(x1) : 0)
             .attr("y1", isFinite(y1) ? scales.y(y1) : 0)
             .attr("x2", isFinite(x2) ? scales.x(x2) : 0)
             .attr("y2", isFinite(y2) ? scales.y(y2) : 0);
       } else {
+        // Regular segment case
         line.attr("x1", scales.x(d.x))
             .attr("y1", scales.y(d.y))
             .attr("x2", scales.x(d.xend))
