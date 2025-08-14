@@ -183,9 +183,9 @@ validateShowSelectedParams <- function(params) {
   # Match any parameter that starts with "showSelected" but is not "showSelected"
   invalid_showSelected <- param_names[grepl("^showSelected.+", param_names)]
   invalid_showSelected <- setdiff(invalid_showSelected, "showSelected")
-
   if (length(invalid_showSelected) > 0) {
-    stop("Use of clickSelects and showSelected as aesthetics has been deprecated. Please use them as parameters instead.",
+    stop(sprintf("Invalid parameter: %s. Please use geom(showSelected = character_vector_of_variable_names)",
+                 paste(invalid_showSelected, collapse = ", ")),
          call. = FALSE)
   }
 }

@@ -64,3 +64,4 @@ test_that("plot named time is NOT OK", {
     animint2dir(bad, open.browser=FALSE)
   }, "time option list needs ms, variable")
 })
+
