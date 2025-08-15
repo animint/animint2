@@ -7,7 +7,9 @@
 var animint = function (to_select, json_file) {
   var steps = [];
   var default_axis_px = 16;
-
+  var element = d3.select(to_select);
+  this.element = element;
+  var viz_id = element.attr("id");
    function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
@@ -243,15 +245,22 @@ var animint = function (to_select, json_file) {
     // Save this geom and load it!
     update_geom(g_name, null);
   };
+
+  var current_tr = plot_td.append("tr");
   var add_plot = function (p_name, p_info) {
-    // Each plot may have one or more legends. To make space for the
-    // legends, we put each plot in a table with one row and two
-    // columns: tdLeft and tdRight.
-    var plot_table = plot_td.append("table").style("display", "inline-block");
+    if(!current_tr) {
+    current_tr = plot_td.append("tr");
+  }
+  var td = current_tr.append("td");
+  var attributes = p_info.attributes || {};
+  td.attr("rowspan", attributes.rowspan || 1)
+    .attr("colspan", attributes.colspan || 1);
+    // Inner table for plot and legend
+    var plot_table = td.append("table").style("display", "inline-block");
     var plot_tr = plot_table.append("tr");
     var tdLeft = plot_tr.append("td");
-    var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
-    if(viz_id === null){
+    var tdRight = plot_tr.append("td").attr("class", p_name + "_legend");
+    if (viz_id === null) {
       p_info.plot_id = p_name;
     }else{
       p_info.plot_id = viz_id + "_" + p_name;
@@ -767,6 +776,10 @@ var animint = function (to_select, json_file) {
       ;
     }
     Plots[p_name].scales = scales;
+// Create new row if max columns reached or last_in_row specified
+ if(attributes.last_in_row) {
+    current_tr = plot_td.append("tr");
+  }
   }; //end of add_plot()
 
   function update_legend_opacity(v_name){
@@ -2273,6 +2286,9 @@ var animint = function (to_select, json_file) {
 	.attr("href", response.source)
 	.text("source");
     }
+    var widget_tr = plot_widget_table.append("tr");
+    var widget_td = widget_tr.append("td")
+    .attr("colspan", 2)  
     widget_td
       .append('button')
       .attr('class', 'animint_start_tour')
