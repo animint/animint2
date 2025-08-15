@@ -6,6 +6,10 @@
 }
 \description{
   Data about Flu outbreaks.
+  
+  TODO need source
+  
+  TODO need codebook
 }
 \usage{data("FluView")}
 \format{

@@ -8,7 +8,10 @@
   Data on montreal bike usage, paths, and accidents, 2009-2014.
 }
 \usage{data("montreal.bikes")}
-\format{A named list of four data.frames. counter.counts contains dates
+\format{
+  TODO add codebook
+  
+  A named list of four data.frames. counter.counts contains dates
   and counts of bikes at several locations in
   Montreal. counter.locations has the geographical coordinates of the
   counter locations. path.locations has the geographical coordinates of
