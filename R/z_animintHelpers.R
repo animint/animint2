@@ -175,18 +175,16 @@ hjust2anchor <- function(hjust){
 
 #' @param params Named list of layer parameters
 #' @return NULL if valid, stops with error if invalid showSelected variant found
-validateShowSelectedParams <- function(params) {
-  if (is.null(params) || length(params) == 0 || is.null(names(params))) {
-    return(NULL)
-  }
-  param_names <- names(params)
-  # Match any parameter that starts with "showSelected" but is not "showSelected"
-  invalid_showSelected <- param_names[grepl("^showSelected.+", param_names)]
-  invalid_showSelected <- setdiff(invalid_showSelected, "showSelected")
+error_for_showSelected_variants <- function(params) {
+  if (is.null(names(params))) return(NULL)
+  # Match any parameter that starts with "showSelected" but is not exactly "showSelected"
+  invalid_showSelected <- grep("^showSelected.+", names(params), value = TRUE)
   if (length(invalid_showSelected) > 0) {
-    stop(sprintf("Invalid parameter: %s. Please use geom(showSelected = character_vector_of_variable_names)",
-                 paste(invalid_showSelected, collapse = ", ")),
-         call. = FALSE)
+    stop(sprintf("Invalid parameter(s): %s. Please use geom(showSelected = character_vector_of_variable_names)",
+        paste(invalid_showSelected, collapse = ", ")
+      ),
+      call. = FALSE
+    )
   }
 }
 
@@ -196,7 +194,7 @@ validateShowSelectedParams <- function(params) {
 #' @return All parameters in the layer
 getLayerParams <- function(l){
   params <- c(l$geom_params, l$stat_params, l$aes_params, l$extra_params)
-  validateShowSelectedParams(params)
+  error_for_showSelected_variants(params)
   if("chunk_vars" %in% names(params) && is.null(params[["chunk_vars"]])){
     params[["chunk_vars"]] <- character()
   }

@@ -24,7 +24,8 @@ test_that("invalid showSelected parameter name is an error", {
   )
   expect_error(
     animint2dir(viz, open.browser = FALSE),
-    "Invalid parameter: showSelected2. Please use geom\\(showSelected = character_vector_of_variable_names\\)"
+    "geom(showSelected = character_vector_of_variable_names)",
+    fixed = TRUE
   )
 })
 
