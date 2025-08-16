@@ -113,38 +113,30 @@ geom_abline <- function(mapping = NULL, data = NULL,
 GeomAbline <- gganimintproto("GeomAbline", Geom,
   draw_panel = function(data, panel_scales, coord) {
     ranges <- coord$range(panel_scales)
-    data$x    <- ranges$x[1]
+    data$x <- ranges$x[1]
     data$xend <- ranges$x[2]
-    data$y    <- ranges$x[1] * data$slope + data$intercept
+    data$y <- ranges$x[1] * data$slope + data$intercept
     data$yend <- ranges$x[2] * data$slope + data$intercept
+    data$geom <- "segment"
+    data$is_abline <- TRUE
     GeomSegment$draw_panel(unique(data), panel_scales, coord)
   },
   pre_process = function(g, g.data, ranges) {
-    range.mats <- list()
-    for(xy in c("x","y")){
-      range.mats[[xy]] <- do.call(rbind, lapply(ranges, "[[", paste0(xy, ".range")))[g.data$PANEL,,drop=FALSE]
-    }
-    suffix.list <- c("","end")
-    for(idx in seq_along(suffix.list)){
-      suffix <- suffix.list[[idx]]
-      maybe.x <- range.mats$x[,idx]
-      maybe.y <- maybe.x*g.data$slope+g.data$intercept
-      inv <- function(y)(y-g.data$intercept)/g.data$slope
-      g.data[[paste0("x",suffix)]] <- ifelse(
-        maybe.y < range.mats$y[,1], inv(range.mats$y[,1]), ifelse(
-          maybe.y > range.mats$y[,2], inv(range.mats$y[,2]), maybe.x))
-      g.data[[paste0("y",suffix)]] <- ifelse(
-        maybe.y < range.mats$y[,1], range.mats$y[,1], ifelse(
-          maybe.y > range.mats$y[,2], range.mats$y[,2], maybe.y))
-    }
+    g$is_abline <- TRUE
+    if (!"slope" %in% names(g.data)) g.data$slope <- 1
+    if (!"intercept" %in% names(g.data)) g.data$intercept <- 0
+    # Store ALL slope and intercept pairs in abline_params
+    g$abline_params <- list(
+      slopes = as.numeric(g.data$slope),
+      intercepts = as.numeric(g.data$intercept)
+    )
     ## ggplot2 defaults to adding a group aes for ablines!
     ## Remove it since it is meaningless.
     g$aes <- g$aes[names(g$aes)!="group"]
-    g.data <- g.data[! names(g.data) %in% c("slope", "intercept")]
+    ## Keep slope and intercept in g.data for TSV output
     g$geom <- "segment"
     return(list(g = g, g.data = g.data))
   },
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
-  required_aes = c("slope", "intercept"),
   draw_key = draw_key_abline
 )

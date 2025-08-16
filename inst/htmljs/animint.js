@@ -1355,22 +1355,54 @@ var animint = function (to_select, json_file) {
       }
       data_to_bind = data;
       if (g_info.geom == "segment") {
-	g_info.style_list = line_style_list;
-	eActions = function (e) {
-          e.attr("x1", function (d) {
-            return scales.x(d["x"]);
-          })
-            .attr("x2", function (d) {
-              return scales.x(d["xend"]);
-            })
-            .attr("y1", function (d) {
-              return scales.y(d["y"]);
-            })
-            .attr("y2", function (d) {
-              return scales.y(d["yend"]);
-            })
-	};
-	eAppend = "line";
+  g_info.style_list = line_style_list;
+  if (g_info.is_abline) {
+    eActions = function(e) {
+      e.attr("x1", function(d){
+        var slope = d.slope !== undefined ? +d.slope : (g_info.abline_params && g_info.abline_params.slopes) ? g_info.abline_params.slopes[d.i] : 1;
+        var intercept = d.intercept !== undefined ? +d.intercept : (g_info.abline_params && g_info.abline_params.intercepts) ? g_info.abline_params.intercepts[d.i] : 0;
+        var xDomain = scales.x.domain();
+        var yDomain = scales.y.domain();
+        var x1 = xDomain[0];
+        var y1 = slope * x1 + intercept;
+        if (y1 < yDomain[0]) x1 = (yDomain[0] - intercept) / slope;
+        if (y1 > yDomain[1]) x1 = (yDomain[1] - intercept) / slope;        
+        return scales.x(x1);
+      })
+      .attr("x2", function(d) {
+        var slope = d.slope !== undefined ? +d.slope : (g_info.abline_params && g_info.abline_params.slopes) ? g_info.abline_params.slopes[d.i] : 1;
+        var intercept = d.intercept !== undefined ? +d.intercept : (g_info.abline_params && g_info.abline_params.intercepts) ? g_info.abline_params.intercepts[d.i] : 0;
+        var xDomain = scales.x.domain();
+        var yDomain = scales.y.domain();
+        var x2 = xDomain[1];
+        var y2 = slope * x2 + intercept;
+        if (y2 < yDomain[0]) x2 = (yDomain[0] - intercept) / slope;
+        if (y2 > yDomain[1]) x2 = (yDomain[1] - intercept) / slope;
+        return scales.x(x2);
+      })
+      .attr("y1", function(d) {
+        var slope = d.slope !== undefined ? +d.slope : (g_info.abline_params && g_info.abline_params.slopes) ? g_info.abline_params.slopes[d.i] : 1;
+        var intercept = d.intercept !== undefined ? +d.intercept : (g_info.abline_params && g_info.abline_params.intercepts) ? g_info.abline_params.intercepts[d.i] : 0;
+        var y1 = slope * scales.x.domain()[0] + intercept;
+        return scales.y(Math.max(scales.y.domain()[0], Math.min(scales.y.domain()[1], y1)));
+      })
+      .attr("y2", function(d) {
+        var slope = d.slope !== undefined ? +d.slope : (g_info.abline_params && g_info.abline_params.slopes) ? g_info.abline_params.slopes[d.i] : 1;
+        var intercept = d.intercept !== undefined ? +d.intercept : (g_info.abline_params && g_info.abline_params.intercepts) ? g_info.abline_params.intercepts[d.i] : 0;
+        var y2 = slope * scales.x.domain()[1] + intercept;
+        return scales.y(Math.max(scales.y.domain()[0], Math.min(scales.y.domain()[1], y2)));
+      });
+    };
+  } else {
+    // Regular segment case
+    eActions = function(e) {
+      e.attr("x1", toXY("x", "x"))
+        .attr("y1", toXY("y", "y"))
+        .attr("x2", toXY("x", "xend"))
+        .attr("y2", toXY("y", "yend"));
+    };
+  }
+  eAppend = "line";
       }
       if (g_info.geom == "linerange") {
 	g_info.style_list = line_style_list;

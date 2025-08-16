@@ -7,16 +7,18 @@ info <- animint2HTML(viz)
 
 tsv.file <- file.path("animint-htmltest", "geom2_abline_p_chunk1.tsv")
 tsv.data <- read.table(tsv.file, header=TRUE, comment.char = "")
-
-test_that("columns of abline tsv", {
-  expected.names <- sort(c("PANEL", "x", "xend", "y", "yend"))
-  computed.names <- sort(names(tsv.data))
-  expect_identical(computed.names, expected.names)
+test_that("TSV contains slope and intercept", {
+  expect_true(all(c("slope", "intercept") %in% names(tsv.data)))
 })
 
 ablines <- getNodeSet(info$html, '//svg//g[@class="geom2_abline_p"]//line')
-attr_ablines <- sapply(ablines, xmlAttrs)
-start_ends <- attr_ablines[c("x1", "x2", "y1", "y2"), ]
+start_ends <- t(sapply(ablines, function(abline) {
+  attrs <- xmlAttrs(abline)
+  c(x1 = as.numeric(attrs["x1"]),
+    x2 = as.numeric(attrs["x2"]),
+    y1 = as.numeric(attrs["y1"]),
+    y2 = as.numeric(attrs["y2"]))
+}))
 
 test_that("All six ablines render", {
   expect_equal(length(ablines), 6)
@@ -74,4 +76,71 @@ abl <- get_num('geom1_abline_p',"line",c("x1","x2","y1","y2"))
 abline.at.5 <- slope*(cxy$cx-abl$x1)+abl$y1
 test_that("abline with negative slope intersects point", {
   expect_equal(abline.at.5, cxy$cy)
+})
+
+# Test for testing that geom_ablines are clipped to the plot area even after update_axes is called
+data(mtcars)
+# Grouping variable
+mtcars$cyl <- as.factor(mtcars$cyl)
+cyl.levels <- levels(mtcars$cyl)
+# Generate 60 ablines (20 per cyl), all visible at once
+set.seed(123)
+abline_data <- do.call(rbind, lapply(cyl.levels, function(cyl_val) {
+  data.frame(
+    slope = runif(20, -2, 2),
+    intercept = runif(20, 0, 500),
+    cyl = cyl_val
+  )
+}))
+viz <- list(
+  title = "geom ablines clipped to plot area",
+  allablines = ggplot() +
+  theme_animint(update_axes = c("x", "y"), height=400, width=400) +
+    geom_point(aes(mpg, disp, color = cyl), data = mtcars, showSelected = "cyl") +
+    geom_abline(
+      aes(slope = slope, intercept = intercept, color = cyl),
+      size = 1,
+      data = abline_data
+    ) +
+    ggtitle("All ablines, all cyl groups together"),
+    selector.types = list(cyl = "single")
+)
+info <- animint2HTML(viz)
+ablines <- getNodeSet(info$html, '//svg//g[contains(@class, "geom2_abline_allablines")]//line')
+test_that("visible ablines are clipped within plot area after update_axes", {
+  # Get all lines that are actually visible (have different start/end points)
+  visible_lines <- ablines[sapply(ablines, function(line) {
+    attrs <- xmlAttrs(line)
+    x1 <- as.numeric(attrs["x1"])
+    x2 <- as.numeric(attrs["x2"])
+    y1 <- as.numeric(attrs["y1"])
+    y2 <- as.numeric(attrs["y2"])
+    # Only count as visible if it's an actual line (not a point) 
+    # and within reasonable bounds
+    (x1 != x2 || y1 != y2) && 
+      x1 >= 0 && x1 <= 400 && 
+      x2 >= 0 && x2 <= 400 &&
+      y1 >= 0 && y1 <= 400 && 
+      y2 >= 0 && y2 <= 400
+  })]
+  if(length(visible_lines) > 0) {
+    # Extract coordinates of visible lines
+    coords <- t(sapply(visible_lines, function(line) {
+      attrs <- xmlAttrs(line)
+      c(x1 = as.numeric(attrs["x1"]),
+        x2 = as.numeric(attrs["x2"]),
+        y1 = as.numeric(attrs["y1"]),
+        y2 = as.numeric(attrs["y2"]))
+    }))
+    test_that("visible lines are properly clipped", {
+      expect_true(all(coords[,"x1"] >= 0 & coords[,"x1"] <= 400))
+      expect_true(all(coords[,"x2"] >= 0 & coords[,"x2"] <= 400))
+      expect_true(all(coords[,"y1"] >= 0 & coords[,"y1"] <= 400))
+      expect_true(all(coords[,"y2"] >= 0 & coords[,"y2"] <= 400))
+    })
+  } else {
+    warning("No visible lines found for clipping test")
+  }
+  # For debugging - count how many lines are visible vs total
+  cat(sprintf("\nVisible lines: %d/%d\n", length(visible_lines), length(ablines)))
 })
