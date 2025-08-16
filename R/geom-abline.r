@@ -118,10 +118,12 @@ GeomAbline <- gganimintproto("GeomAbline", Geom,
   },
   pre_process = function(g, g.data, ranges) {
     g$is_abline <- TRUE
+    if (!"slope" %in% names(g.data)) g.data$slope <- 1
+    if (!"intercept" %in% names(g.data)) g.data$intercept <- 0
     # Store ALL slope and intercept pairs in abline_params
     g$abline_params <- list(
-      slopes = g.data$slope,
-      intercepts = g.data$intercept
+      slopes = as.numeric(g.data$slope),
+      intercepts = as.numeric(g.data$intercept)
     )
     ## ggplot2 defaults to adding a group aes for ablines!
     ## Remove it since it is meaningless.
