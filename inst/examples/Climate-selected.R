@@ -95,7 +95,7 @@ viz$scatterNow <- ggplot()+
              clickSelects="id", showSelected="time2",
              data=climate, alpha=dot.alpha)+
   geom_point(aes_string(x=var.names[[1]], y=var.names[[2]]),
-             showSelected2="id", showSelected="time2",
+             showSelected=c("id","time2"),
              data=climate, colour="black", fill=selected.color)
 for(var.name in var.names){
   long.name <- long.names[[var.name]]
@@ -140,7 +140,7 @@ viz$scatterHere <- ggplot()+
              data=climate, alpha=dot.alpha)
   ##+
   geom_point(aes_string(x=var.names[[1]], y=var.names[[2]]),
-             showSelected2="time2", showSelected="id",
+             showSelected=c("time2","id"),
              data=climate, color="black", fill="white")
 viz$width <-
   structure(as.list(rep(400, length(viz))),

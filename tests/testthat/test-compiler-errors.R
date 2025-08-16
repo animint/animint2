@@ -13,6 +13,22 @@ test_that("aes(showSelected=var1, showSelected2=var2) is an error", {
   }, "Use of clickSelects and showSelected as aesthetics has been deprecated. Please use as parameters")
 })
 
+test_that("invalid showSelected parameter name is an error", {
+  viz <- list(
+    petals = ggplot() +
+      geom_point(
+        aes(Petal.Width, Petal.Length),
+        showSelected2 = "Species",
+        data = iris
+      )
+  )
+  expect_error(
+    animint2dir(viz, open.browser = FALSE),
+    "geom(showSelected = character_vector_of_variable_names)",
+    fixed = TRUE
+  )
+})
+
 test_that("informative error for time option with no showSelected", {
   viz <- list(
     petals=ggplot()+
