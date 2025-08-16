@@ -112,6 +112,11 @@ geom_abline <- function(mapping = NULL, data = NULL,
 #' @export
 GeomAbline <- gganimintproto("GeomAbline", Geom,
   draw_panel = function(data, panel_scales, coord) {
+    ranges <- coord$range(panel_scales)
+    data$x <- ranges$x[1]
+    data$xend <- ranges$x[2]
+    data$y <- ranges$x[1] * data$slope + data$intercept
+    data$yend <- ranges$x[2] * data$slope + data$intercept
     data$geom <- "segment"
     data$is_abline <- TRUE
     GeomSegment$draw_panel(unique(data), panel_scales, coord)
