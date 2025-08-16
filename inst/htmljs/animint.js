@@ -1356,68 +1356,54 @@ var animint = function (to_select, json_file) {
       data_to_bind = data;
       if (g_info.geom == "segment") {
   g_info.style_list = line_style_list;
-  eActions = function (e) {
-    e.each(function(d, i) {
-      var line = d3.select(this);
-      if (g_info.is_abline) {
-        // Get slope/intercept - handle both single and multiple cases
-        var slope = d.abline_slope !== undefined ? d.abline_slope : 
-                   (g_info.abline_params.slopes[i] !== undefined ? 
-                    g_info.abline_params.slopes[i] : 
-                    g_info.abline_params.slopes);
-        var intercept = d.abline_intercept !== undefined ? d.abline_intercept : 
-                       (g_info.abline_params.intercepts[i] !== undefined ? 
-                        g_info.abline_params.intercepts[i] : 
-                        g_info.abline_params.intercepts);
-        // Ensure numeric values
-        slope = +slope;
-        intercept = +intercept;
+  if (g_info.is_abline) {
+    eActions = function(e) {
+      e.attr("x1", function(d){
+        var slope = d.slope !== undefined ? +d.slope : g_info.abline_params.slopes[d.i];
+        var intercept = d.intercept !== undefined ? +d.intercept : g_info.abline_params.intercepts[d.i];
         var xDomain = scales.x.domain();
         var yDomain = scales.y.domain();
-        // Calculate endpoints with NaN checks
-        var x1 = xDomain[0], y1, x2 = xDomain[1], y2;
-        if (!isFinite(slope)) {
-          // Vertical line case
-          line.attr("x1", scales.x(intercept))
-              .attr("x2", scales.x(intercept))
-              .attr("y1", scales.y(yDomain[0]))
-              .attr("y2", scales.y(yDomain[1]));
-          return;
-        }
-        y1 = slope * x1 + intercept;
-        y2 = slope * x2 + intercept;
-        // Clip to plot area with safety checks
-        if (isFinite(slope)) {
-          if (y1 < yDomain[0]) {
-            x1 = (yDomain[0] - intercept) / slope;
-            y1 = yDomain[0];
-          } else if (y1 > yDomain[1]) {
-            x1 = (yDomain[1] - intercept) / slope;
-            y1 = yDomain[1];
-          }
-          if (y2 < yDomain[0]) {
-            x2 = (yDomain[0] - intercept) / slope;
-            y2 = yDomain[0];
-          } else if (y2 > yDomain[1]) {
-            x2 = (yDomain[1] - intercept) / slope;
-            y2 = yDomain[1];
-          }
-        }
-        
-        // Final rendering with NaN checks
-        line.attr("x1", isFinite(x1) ? scales.x(x1) : 0)
-            .attr("y1", isFinite(y1) ? scales.y(y1) : 0)
-            .attr("x2", isFinite(x2) ? scales.x(x2) : 0)
-            .attr("y2", isFinite(y2) ? scales.y(y2) : 0);
-      } else {
-        // Regular segment case
-        line.attr("x1", scales.x(d.x))
-            .attr("y1", scales.y(d.y))
-            .attr("x2", scales.x(d.xend))
-            .attr("y2", scales.y(d.yend));
-      }
-    });
-  };
+        var x1 = xDomain[0];
+        var y1 = slope * x1 + intercept;
+        // Clip to plot area
+        if (y1 < yDomain[0]) x1 = (yDomain[0] - intercept) / slope;
+        if (y1 > yDomain[1]) x1 = (yDomain[1] - intercept) / slope;
+        return scales.x(x1);
+      })
+      .attr("x2", function(d) {
+        var slope = d.slope !== undefined ? +d.slope : g_info.abline_params.slopes[d.i];
+        var intercept = d.intercept !== undefined ? +d.intercept : g_info.abline_params.intercepts[d.i];
+        var xDomain = scales.x.domain();
+        var yDomain = scales.y.domain();
+        var x2 = xDomain[1];
+        var y2 = slope * x2 + intercept;
+        // Clip to plot area
+        if (y2 < yDomain[0]) x2 = (yDomain[0] - intercept) / slope;
+        if (y2 > yDomain[1]) x2 = (yDomain[1] - intercept) / slope;
+        return scales.x(x2);
+      })
+      .attr("y1", function(d) {
+        var slope = d.slope !== undefined ? +d.slope : g_info.abline_params.slopes[d.i];
+        var intercept = d.intercept !== undefined ? +d.intercept : g_info.abline_params.intercepts[d.i];
+        var y1 = slope * scales.x.domain()[0] + intercept;
+        return scales.y(Math.max(scales.y.domain()[0], Math.min(scales.y.domain()[1], y1)));
+      })
+      .attr("y2", function(d) {
+        var slope = d.slope !== undefined ? +d.slope : g_info.abline_params.slopes[d.i];
+        var intercept = d.intercept !== undefined ? +d.intercept : g_info.abline_params.intercepts[d.i];
+        var y2 = slope * scales.x.domain()[1] + intercept;
+        return scales.y(Math.max(scales.y.domain()[0], Math.min(scales.y.domain()[1], y2)));
+      });
+    };
+  } else {
+    // Regular segment case
+    eActions = function(e) {
+      e.attr("x1", toXY("x", "x"))
+        .attr("y1", toXY("y", "y"))
+        .attr("x2", toXY("x", "xend"))
+        .attr("y2", toXY("y", "yend"));
+    };
+  }
   eAppend = "line";
       }
       if (g_info.geom == "linerange") {

@@ -133,6 +133,5 @@ GeomAbline <- gganimintproto("GeomAbline", Geom,
     return(list(g = g, g.data = g.data))
   },
   default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
-  required_aes = c("slope", "intercept"),
   draw_key = draw_key_abline
 )
