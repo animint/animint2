@@ -1,4 +1,5 @@
 port <- 3147
+Sys.sleep(5)
 setwd(normalizePath(file.path("..", "..")))
 
 test_that("animint plot renders in a shiny app", {
