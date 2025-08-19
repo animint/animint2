@@ -22,10 +22,10 @@ message("\n=== Running COMPILER tests ===")
 tests_run(filter = "compiler")
 message("\n=== Running RENDERER tests ===")
 tests_run(filter = "renderer")
-message("\n=== Running SHINY tests ===")
-tests_run(filter = "shiny")
 # Save coverage and cleanup
 if(coverage_active) {
   stop_js_coverage()
 }
+message("\n=== Running SHINY tests ===")
+tests_run(filter = "shiny")
 tests_exit()

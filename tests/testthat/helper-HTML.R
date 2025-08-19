@@ -128,14 +128,13 @@ stop_js_coverage <- function() {
   tryCatch({
     cov <- remDr$Profiler$takePreciseCoverage()
     outfile <- "js-coverage.json"
-    animint_js_path <- file.path(getwd(), "animint-htmltest", "animint.js")
+    # Ensure the format matches what v8-to-istanbul expects
     coverage_data <- list(
       result = cov$result,
-      url = animint_js_path
+      url = "http://localhost:4848/animint-htmltest/animint.js"
     )
     jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
     message("JS coverage saved to ", normalizePath(outfile))
-    message("Source file path: ", animint_js_path)
     TRUE
   }, error = function(e) {
     warning("Failed to save JS coverage: ", e$message)
