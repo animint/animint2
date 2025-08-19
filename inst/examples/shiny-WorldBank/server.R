@@ -1,12 +1,10 @@
 library(shiny)
 library(animint2)
-library(maps)  # Add this line
+library(maps)
 data(WorldBank)
 WorldBank$literacy <- WorldBank[["15.to.25.yr.female.literacy"]]
 WorldBank$latitude <- as.numeric(paste(WorldBank$latitude))
 WorldBank$longitude <- as.numeric(paste(WorldBank$longitude))
-
-
 # Map data processing (from first code)
 map_df <- animint2::map_data("world")
 country2region <- with(unique(WorldBank[, c("region","country")]), structure(region, names=country))
@@ -41,15 +39,12 @@ map2wb <- c(
   Venezuela="Venezuela, RB",
   "Virgin Islands"="Virgin Islands (U.S.)",
   Yemen="Yemen, Rep.")
-
 map_disp <- with(map_df, data.frame(
   group, country=ifelse(region %in% names(map2wb), map2wb[region], region)))
 map_disp$region <- country2region[map_disp$country]
-
 is.discrete <- function(x){
   is.factor(x) || is.character(x) || is.logical(x)
 }
-
 # server.R
 shinyServer(function(input, output) {
   
@@ -62,8 +57,7 @@ shinyServer(function(input, output) {
     TS <- function(df)BOTH(df, "Years", input$y)
     SCATTER <- function(df)BOTH(df, input$x, input$y)
     TS2 <- function(df)BOTH(df, input$x, "Years")
-    MAP <- function(df)BOTH(df, "Years", "Years")  # Add MAP function
-    
+    MAP <- function(df)BOTH(df, "Years", "Years")
     y.na <- WorldBank[[input$y]]
     x.na <- WorldBank[[input$x]]
     not.na <- WorldBank[!(is.na(y.na) | is.na(x.na)),]
@@ -93,7 +87,6 @@ shinyServer(function(input, output) {
       old.01 <- (old.val-m)/(max(old.val)-m)
       map_disp[[new.var]] <- old.01*(last.year-first.year)+first.year
     }
-    
     gg <-
       ggplot()+
         theme_bw()+
@@ -183,7 +176,6 @@ shinyServer(function(input, output) {
           label=paste0("year = ", year)),
           showSelected="year",
           data=SCATTER(years))
-          
       if(is.discrete(not.na[[input$size]])){
         gg <- gg+scale_size_discrete()
       }else{

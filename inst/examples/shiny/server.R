@@ -1,7 +1,6 @@
 library(shiny)
 library(animint2)
 
-
 shinyServer(function(input, output) {
   
   getPlot <- reactive({

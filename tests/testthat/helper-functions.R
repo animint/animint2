@@ -405,7 +405,6 @@ start_app <- function(app_type = c("shiny", "rmd"), path, port) {
   if (!app_started) stop("Failed to start ", app_type, " app after 30 seconds")
   return(list(proc = proc, url = app_url))
 }
-
 # --------------------------
 # Functions that are used in multiple places
 # --------------------------

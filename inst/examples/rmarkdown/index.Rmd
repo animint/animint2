@@ -9,7 +9,6 @@ runtime: shiny
 
 ```{r embedded}
 setwd(normalizePath(file.path("..", "..", "..")))
-
 if (!dir.exists("inst/examples/shiny")) {
   stop("Working directory is not the repository root: ", getwd())
 }
@@ -66,7 +65,6 @@ scatter <- scatter + theme_animint(width = 360, height = 360)
 In this example, the plot aesthetics are fixed, but we could integrate shiny's reactive components into animint's options such as the animation speed. 
 
 ```{r reactives}
-
 getPlotList <- reactive({
   # think of animint objects as a list of ggplots and specially named options
   list(# the plots we constructed earlier
