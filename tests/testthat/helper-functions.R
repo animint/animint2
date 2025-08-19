@@ -388,6 +388,7 @@ start_app <- function(app_type = c("shiny", "rmd"), path, port) {
     },
     args = list(app_type = app_type, path = path, port = port)
   )
+  Sys.sleep(6)
   # Wait for startup
   start_time <- Sys.time()
   app_started <- FALSE
