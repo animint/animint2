@@ -1,12 +1,11 @@
 port <- 3147
-Sys.sleep(5)
 setwd(normalizePath(file.path("..", "..")))
 
 test_that("animint plot renders in a shiny app", {
   app_dir <- file.path("inst", "examples", "shiny")
   if (!dir.exists(app_dir)) skip("Shiny app directory not found")
  
-  app_info <- start_shiny_app(app_dir, port)
+  app_info <- start_app("shiny", app_dir, port)
   on.exit(app_info$proc$kill(), add = TRUE)
   remDr$navigate(app_info$url)
   Sys.sleep(20)
@@ -34,7 +33,7 @@ test_that("WorldBank shiny app functionality", {
   if (file.path(worldbank_dir, "app.R") == file.path(tempdir(), "app.R")) {
     skip("Tests skipped for mock app")
   }
-  app_info <- start_shiny_app(worldbank_dir, port)
+  app_info <- start_app("shiny", worldbank_dir, port)
   on.exit(app_info$proc$kill(), add = TRUE)
   remDr$navigate(app_info$url)
   Sys.sleep(10)
@@ -79,7 +78,7 @@ test_that("animint plot renders in an interactive document", {
   rmd_file <- file.path("inst", "examples", "rmarkdown", "index.Rmd")
   if (!file.exists(rmd_file)) skip("RMarkdown file not found")
  
-  app_info <- start_rmd_app(rmd_file, port)
+  app_info <- start_app("rmd", rmd_file, port)
   on.exit(app_info$proc$kill(), add = TRUE)
   remDr$navigate(app_info$url)
   Sys.sleep(30)

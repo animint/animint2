@@ -368,52 +368,40 @@ run_servr <- function(directory, port) {
   animint2:::start_servr(directory, port, tmpPath = find_test_path())
 }
 
-
 # Helper function to start Shiny app 
-
-start_shiny_app <- function(app_dir, port) {
-  if (!dir.exists(app_dir)) stop("App directory does not exist: ", app_dir)
+start_app <- function(app_type = c("shiny", "rmd"), path, port) {
+  app_type <- match.arg(app_type)
+  if (app_type == "shiny" && !dir.exists(path)) {
+    stop("App directory does not exist: ", path)
+  }
+  if (app_type == "rmd" && !file.exists(path)) {
+    stop("RMarkdown file does not exist: ", path)
+  }
   app_url <- sprintf("http://127.0.0.1:%d", port)
-  proc <- callr::r_bg(function(app_dir, port) {
-    shiny::runApp(app_dir, port = port, launch.browser = FALSE)
-  }, args = list(app_dir = app_dir, port = port))
-  
+  proc <- callr::r_bg(
+    function(app_type, path, port) {
+      if (app_type == "shiny") {
+        shiny::runApp(path, port = port, launch.browser = FALSE)
+      } else {
+        rmarkdown::run(file = path, shiny_args = list(port = port, launch.browser = FALSE))
+      }
+    },
+    args = list(app_type = app_type, path = path, port = port)
+  )
+  # Wait for startup
   start_time <- Sys.time()
   app_started <- FALSE
   while (Sys.time() - start_time < 30) {
-    if (!proc$is_alive()) stop("Shiny app failed")
-    con <- try(socketConnection("localhost", port, open = "r+", timeout = 5), silent = TRUE)
+    if (!proc$is_alive()) stop(app_type, " app failed")
+    con <- try(socketConnection("localhost", port, open = "r+", timeout = 5), silent = FALSE)
     if (!inherits(con, "try-error")) {
       close(con)
       app_started <- TRUE
       break
     }
-    Sys.sleep(0.5)
+    Sys.sleep(2)
   }
-  if (!app_started) stop("Failed to start Shiny app after 30 seconds")
-  return(list(proc = proc, url = app_url))
-}
-
-start_rmd_app <- function(rmd_file, port) {
-  if (!file.exists(rmd_file)) stop("RMarkdown file does not exist: ", rmd_file)
-  app_url <- sprintf("http://127.0.0.1:%d", port)
-  proc <- callr::r_bg(function(rmd_file, port) {
-    rmarkdown::run(file = rmd_file, shiny_args = list(port = port, launch.browser = FALSE))
-  }, args = list(rmd_file = rmd_file, port = port))
-  
-  start_time <- Sys.time()
-  app_started <- FALSE
-  while (Sys.time() - start_time < 30) {
-    if (!proc$is_alive()) stop("RMarkdown app failed")
-    con <- try(socketConnection("localhost", port, open = "r+", timeout = 5), silent = TRUE)
-    if (!inherits(con, "try-error")) {
-      close(con)
-      app_started <- TRUE
-      break
-    }
-    Sys.sleep(0.5)
-  }
-  if (!app_started) stop("Failed to start RMarkdown app after 30 seconds")
+  if (!app_started) stop("Failed to start ", app_type, " app after 30 seconds")
   return(list(proc = proc, url = app_url))
 }
 
