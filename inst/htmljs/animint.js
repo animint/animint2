@@ -259,8 +259,8 @@ var animint = function (to_select, json_file) {
     var plot_table = td.append("table").style("display", "inline-block");
     var plot_tr = plot_table.append("tr");
     var tdLeft = plot_tr.append("td");
-    var tdRight = plot_tr.append("td").attr("class", p_name + "_legend");
-    if (viz_id === null) {
+    var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
+    if(viz_id === null){
       p_info.plot_id = p_name;
     }else{
       p_info.plot_id = viz_id + "_" + p_name;
@@ -2286,9 +2286,6 @@ var animint = function (to_select, json_file) {
 	.attr("href", response.source)
 	.text("source");
     }
-    var widget_tr = plot_widget_table.append("tr");
-    var widget_td = widget_tr.append("td")
-    .attr("colspan", 2)  
     widget_td
       .append('button')
       .attr('class', 'animint_start_tour')
