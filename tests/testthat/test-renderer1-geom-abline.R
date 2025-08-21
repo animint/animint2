@@ -107,40 +107,29 @@ viz <- list(
 )
 info <- animint2HTML(viz)
 ablines <- getNodeSet(info$html, '//svg//g[contains(@class, "geom2_abline_allablines")]//line')
-test_that("visible ablines are clipped within plot area after update_axes", {
-  # Get all lines that are actually visible (have different start/end points)
-  visible_lines <- ablines[sapply(ablines, function(line) {
-    attrs <- xmlAttrs(line)
-    x1 <- as.numeric(attrs["x1"])
-    x2 <- as.numeric(attrs["x2"])
-    y1 <- as.numeric(attrs["y1"])
-    y2 <- as.numeric(attrs["y2"])
-    # Only count as visible if it's an actual line (not a point) 
-    # and within reasonable bounds
-    (x1 != x2 || y1 != y2) && 
-      x1 >= 0 && x1 <= 400 && 
-      x2 >= 0 && x2 <= 400 &&
-      y1 >= 0 && y1 <= 400 && 
-      y2 >= 0 && y2 <= 400
+
+get_line_coords <- function(line) {
+  sapply(c("x1", "x2", "y1", "y2"), function(a) as.numeric(xmlGetAttr(line, a)))
+}
+
+test_that("visible ablines are identified correctly after update_axes", {
+  visible_lines <<- ablines[sapply(ablines, function(line) {
+    coords <- get_line_coords(line)
+    (coords["x1"] != coords["x2"] || coords["y1"] != coords["y2"]) &&
+      all(coords >= 0 & coords <= 400)
   })]
-  if(length(visible_lines) > 0) {
-    # Extract coordinates of visible lines
-    coords <- t(sapply(visible_lines, function(line) {
-      attrs <- xmlAttrs(line)
-      c(x1 = as.numeric(attrs["x1"]),
-        x2 = as.numeric(attrs["x2"]),
-        y1 = as.numeric(attrs["y1"]),
-        y2 = as.numeric(attrs["y2"]))
-    }))
-    test_that("visible lines are properly clipped", {
-      expect_true(all(coords[,"x1"] >= 0 & coords[,"x1"] <= 400))
-      expect_true(all(coords[,"x2"] >= 0 & coords[,"x2"] <= 400))
-      expect_true(all(coords[,"y1"] >= 0 & coords[,"y1"] <= 400))
-      expect_true(all(coords[,"y2"] >= 0 & coords[,"y2"] <= 400))
-    })
-  } else {
-    warning("No visible lines found for clipping test")
-  }
-  # For debugging - count how many lines are visible vs total
   cat(sprintf("\nVisible lines: %d/%d\n", length(visible_lines), length(ablines)))
+  expect_gt(length(visible_lines), 0)
+})
+
+test_that("visible lines are properly clipped within plot area", {
+  if (length(visible_lines) > 0) {
+    coords <- t(sapply(visible_lines, get_line_coords))
+    expect_true(all(coords[, "x1"] >= 0 & coords[, "x1"] <= 400))
+    expect_true(all(coords[, "x2"] >= 0 & coords[, "x2"] <= 400))
+    expect_true(all(coords[, "y1"] >= 0 & coords[, "y1"] <= 400))
+    expect_true(all(coords[, "y2"] >= 0 & coords[, "y2"] <= 400))
+  } else {
+    skip("No visible lines found for clipping test")
+  }
 })
