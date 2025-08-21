@@ -7,9 +7,7 @@
 var animint = function (to_select, json_file) {
   var steps = [];
   var default_axis_px = 16;
-  var element = d3.select(to_select);
-  this.element = element;
-  var viz_id = element.attr("id");
+
    function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
@@ -246,9 +244,9 @@ var animint = function (to_select, json_file) {
     update_geom(g_name, null);
   };
 
-  var current_tr = plot_td.append("tr");
+  var current_tr = null;
   var add_plot = function (p_name, p_info) {
-    if(!current_tr) {
+    if(current_tr === null) {
     current_tr = plot_td.append("tr");
   }
   var td = current_tr.append("td");
@@ -778,7 +776,7 @@ var animint = function (to_select, json_file) {
     Plots[p_name].scales = scales;
 // Create new row if max columns reached or last_in_row specified
  if(attributes.last_in_row) {
-    current_tr = plot_td.append("tr");
+    current_tr = null;
   }
   }; //end of add_plot()
 
