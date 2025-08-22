@@ -141,3 +141,24 @@ stop_js_coverage <- function() {
     FALSE
   })
 }
+collect_shiny_js_coverage <- function() {
+  tryCatch({
+    cov <- remDr$Profiler$takePreciseCoverage()
+    outfile <- "shiny-js-coverage.json"
+    js_content <- remDr$Runtime$evaluate(
+      "Array.from(document.scripts).filter(s => s.textContent).map(s => s.textContent).join('\\n')"
+    )$result$value
+    temp_js_file <- tempfile(fileext = ".js")
+    writeLines(js_content, temp_js_file)
+    coverage_data <- list(
+      result = cov$result,
+      url = temp_js_file
+    )
+    jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
+    message("Shiny JS coverage saved to ", normalizePath(outfile))
+    TRUE
+  }, error = function(e) {
+    message("Shiny coverage collection failed: ", e$message)
+    FALSE
+  })
+}
