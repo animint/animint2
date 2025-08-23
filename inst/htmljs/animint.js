@@ -1364,29 +1364,25 @@ var animint = function (to_select, json_file) {
       (g_info.abline_params && g_info.abline_params.intercepts) ? g_info.abline_params.intercepts[d.i] : 0;
     return { slope, intercept };
   }
-  // helper: compute clipped x for a given y
-  function clipX(y, slope, intercept, xDomain) {
-    return (y - intercept) / slope;
+  // helper: compute clipped coordinate for one endpoint
+  function computeEndpoint(x, slope, intercept, xDomain, yDomain) {
+    var y = slope * x + intercept;
+    if (y < yDomain[0]) x = (yDomain[0] - intercept) / slope;
+    if (y > yDomain[1]) x = (yDomain[1] - intercept) / slope;
+    return { x, y };
   }
   // helper: compute abline endpoints
   function getAblineCoords(d, scales) {
     var { slope, intercept } = getLineParams(d);
     var xDomain = scales.x.domain();
     var yDomain = scales.y.domain();
-    // x1,y1
-    var x1 = xDomain[0];
-    var y1 = slope * x1 + intercept;
-    if (y1 < yDomain[0]) x1 = clipX(yDomain[0], slope, intercept, xDomain);
-    if (y1 > yDomain[1]) x1 = clipX(yDomain[1], slope, intercept, xDomain);
-    // x2,y2
-    var x2 = xDomain[1];
-    var y2 = slope * x2 + intercept;
-    if (y2 < yDomain[0]) x2 = clipX(yDomain[0], slope, intercept, xDomain);
-    if (y2 > yDomain[1]) x2 = clipX(yDomain[1], slope, intercept, xDomain);
+    // Compute both endpoints
+    var start = computeEndpoint(xDomain[0], slope, intercept, xDomain, yDomain);
+    var end = computeEndpoint(xDomain[1], slope, intercept, xDomain, yDomain);
     return {
-      x1: scales.x(x1),
+      x1: scales.x(start.x),
       y1: scales.y(Math.max(yDomain[0], Math.min(yDomain[1], slope * xDomain[0] + intercept))),
-      x2: scales.x(x2),
+      x2: scales.x(end.x),
       y2: scales.y(Math.max(yDomain[0], Math.min(yDomain[1], slope * xDomain[1] + intercept)))
     };
   }
