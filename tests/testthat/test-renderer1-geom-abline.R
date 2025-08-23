@@ -12,13 +12,8 @@ test_that("TSV contains slope and intercept", {
 })
 
 ablines <- getNodeSet(info$html, '//svg//g[@class="geom2_abline_p"]//line')
-start_ends <- t(sapply(ablines, function(abline) {
-  attrs <- xmlAttrs(abline)
-  c(x1 = as.numeric(attrs["x1"]),
-    x2 = as.numeric(attrs["x2"]),
-    y1 = as.numeric(attrs["y1"]),
-    y2 = as.numeric(attrs["y2"]))
-}))
+attr_ablines <- sapply(ablines, xmlAttrs)
+start_ends <- attr_ablines[c("x1", "x2", "y1", "y2"), ]
 
 test_that("All six ablines render", {
   expect_equal(length(ablines), 6)
@@ -125,10 +120,7 @@ test_that("visible ablines are identified correctly after update_axes", {
 test_that("visible lines are properly clipped within plot area", {
   if (length(visible_lines) > 0) {
     coords <- t(sapply(visible_lines, get_line_coords))
-    expect_true(all(coords[, "x1"] >= 0 & coords[, "x1"] <= 400))
-    expect_true(all(coords[, "x2"] >= 0 & coords[, "x2"] <= 400))
-    expect_true(all(coords[, "y1"] >= 0 & coords[, "y1"] <= 400))
-    expect_true(all(coords[, "y2"] >= 0 & coords[, "y2"] <= 400))
+    expect_true(all(coords >= 0 & coords <= 400), info = "All visible line coordinates should be within the plot area")
   } else {
     skip("No visible lines found for clipping test")
   }
