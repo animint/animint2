@@ -179,7 +179,7 @@ wb.facets <- animint(
   selector.types=list(pays="multiple"),
   source="https://github.com/animint/animint2/blob/master/inst/examples/BanqueMondiale.R",
   out.dir="BanqueMondiale-facets-map",
-  video="https://vimeo.com/1050117030",
+  video="https://youtu.be/O57kdpZZ03k",
   title="Données de la Banque Mondiale (séléction multiple, facet_grid, carte)")
 if(Sys.which("firefox")!="")options(browser="firefox")
 wb.facets
