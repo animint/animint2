@@ -103,17 +103,17 @@ viz <- list(
 )
 info <- animint2HTML(viz)
 ablines <- getNodeSet(info$html, '//svg//g[contains(@class, "geom2_abline_allablines")]//line')
+visible_lines <- ablines[sapply(ablines, function(line) {
+    coords <- get_line_coords(line)
+    (coords["x1"] != coords["x2"] || coords["y1"] != coords["y2"]) &&
+      all(coords >= 0 & coords <= 400)
+  })]
 
 get_line_coords <- function(line) {
   sapply(c("x1", "x2", "y1", "y2"), function(a) as.numeric(xmlGetAttr(line, a)))
 }
 
 test_that("visible ablines are identified correctly after update_axes", {
-  visible_lines <- ablines[sapply(ablines, function(line) {
-    coords <- get_line_coords(line)
-    (coords["x1"] != coords["x2"] || coords["y1"] != coords["y2"]) &&
-      all(coords >= 0 & coords <= 400)
-  })]
   cat(sprintf("\nVisible lines: %d/%d\n", length(visible_lines), length(ablines)))
   expect_gt(length(visible_lines), 0)
 })
