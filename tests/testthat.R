@@ -32,6 +32,6 @@ if(is_js_coverage) {
 }
 tests_run(filter = "shiny")
 if(is_js_coverage) {
-  collect_shiny_js_coverage()
+  stop_js_coverage("shiny")
 }
 tests_exit()

@@ -124,41 +124,36 @@ start_js_coverage <- function() {
   })
 }
 
-stop_js_coverage <- function() {
+stop_js_coverage <- function(context = c("static", "shiny"), outfile = NULL) {
+  context <- match.arg(context)
   tryCatch({
     cov <- remDr$Profiler$takePreciseCoverage()
-    outfile <- "js-coverage.json"
-    # Ensure the format matches what v8-to-istanbul expects
-    coverage_data <- list(
-      result = cov$result,
-      url = "http://localhost:4848/animint-htmltest/animint.js"
-    )
+    # Resolve source path based on context
+    if (context == "static") {
+      # Static: point to the known animint.js file
+      src <- normalizePath(file.path(getwd(), "animint-htmltest", "animint.js"), mustWork = FALSE)
+    } else {
+      # Shiny: extract JS from page and save to temp file
+      js_content <- remDr$Runtime$evaluate(
+        "Array.from(document.scripts).map(s => s.textContent || '').join('\\n')"
+      )$result$value
+      if (!nzchar(js_content)) {
+        warning("No JS content extracted from Shiny page")
+        return(FALSE)
+      }
+      src <- tempfile(fileext = ".js")
+      writeLines(js_content, src)
+    }
+    # Default output filenames
+    if (is.null(outfile)) {
+      outfile <- if (context == "static") "js-coverage.json" else "shiny-js-coverage.json"
+    }
+    coverage_data <- list(result = cov$result, url = src)
     jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
-    message("JS coverage saved to ", normalizePath(outfile))
+    message(sprintf("JS coverage (%s) saved to %s", context, normalizePath(outfile)))
     TRUE
   }, error = function(e) {
-    warning("Failed to save JS coverage: ", e$message)
-    FALSE
-  })
-}
-collect_shiny_js_coverage <- function() {
-  tryCatch({
-    cov <- remDr$Profiler$takePreciseCoverage()
-    outfile <- "shiny-js-coverage.json"
-    js_content <- remDr$Runtime$evaluate(
-      "Array.from(document.scripts).filter(s => s.textContent).map(s => s.textContent).join('\\n')"
-    )$result$value
-    temp_js_file <- tempfile(fileext = ".js")
-    writeLines(js_content, temp_js_file)
-    coverage_data <- list(
-      result = cov$result,
-      url = temp_js_file
-    )
-    jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
-    message("Shiny JS coverage saved to ", normalizePath(outfile))
-    TRUE
-  }, error = function(e) {
-    message("Shiny coverage collection failed: ", e$message)
+    warning(sprintf("Failed to save JS coverage (%s): %s", context, e$message))
     FALSE
   })
 }
