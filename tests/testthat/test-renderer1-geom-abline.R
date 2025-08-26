@@ -79,11 +79,12 @@ data(mtcars)
 mtcars$cyl <- as.factor(mtcars$cyl)
 cyl.levels <- levels(mtcars$cyl)
 # Generate 60 ablines (20 per cyl), all visible at once
-set.seed(123)
+slopes <- rep(c(-1, 0, 1), length.out = 20)
+intercepts <- seq(50, 450, length.out = 20)
 abline_data <- do.call(rbind, lapply(cyl.levels, function(cyl_val) {
   data.frame(
-    slope = runif(20, -2, 2),
-    intercept = runif(20, 0, 500),
+    slope = slopes,
+    intercept = intercepts,
     cyl = cyl_val
   )
 }))
@@ -108,7 +109,7 @@ get_line_coords <- function(line) {
 }
 
 test_that("visible ablines are identified correctly after update_axes", {
-  visible_lines <<- ablines[sapply(ablines, function(line) {
+  visible_lines <- ablines[sapply(ablines, function(line) {
     coords <- get_line_coords(line)
     (coords["x1"] != coords["x2"] || coords["y1"] != coords["y2"]) &&
       all(coords >= 0 & coords <= 400)
@@ -117,11 +118,7 @@ test_that("visible ablines are identified correctly after update_axes", {
   expect_gt(length(visible_lines), 0)
 })
 
-test_that("visible lines are properly clipped within plot area", {
-  if (length(visible_lines) > 0) {
-    coords <- t(sapply(visible_lines, get_line_coords))
-    expect_true(all(coords >= 0 & coords <= 400), info = "All visible line coordinates should be within the plot area")
-  } else {
-    skip("No visible lines found for clipping test")
-  }
+test_that("all lines are properly clipped within plot area", {
+  coords <- t(sapply(visible_lines, get_line_coords))
+  expect_true(all(coords >= 0 & coords <= 400), info = "All visible line coordinates should be within the plot area")
 })

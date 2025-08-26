@@ -1376,14 +1376,17 @@ var animint = function (to_select, json_file) {
     var { slope, intercept } = getLineParams(d);
     var xDomain = scales.x.domain();
     var yDomain = scales.y.domain();
+    function get_ab_y(x) {
+      return Math.max(yDomain[0], Math.min(yDomain[1], slope * x + intercept));
+    }
     // Compute both endpoints
     var start = computeEndpoint(xDomain[0], slope, intercept, xDomain, yDomain);
     var end = computeEndpoint(xDomain[1], slope, intercept, xDomain, yDomain);
     return {
       x1: scales.x(start.x),
-      y1: scales.y(Math.max(yDomain[0], Math.min(yDomain[1], slope * xDomain[0] + intercept))),
+      y1: scales.y(get_ab_y(xDomain[0])),
       x2: scales.x(end.x),
-      y2: scales.y(Math.max(yDomain[0], Math.min(yDomain[1], slope * xDomain[1] + intercept)))
+      y2: scales.y(get_ab_y(xDomain[1]))
     };
   }
   if (g_info.is_abline) {
