@@ -6,7 +6,6 @@ async function convertToIstanbul() {
   try {
     // Path configuration
     const coverageJsonPath = path.join('tests', 'testthat', 'js-coverage.json');
-    const shinyJsonPath = path.join('tests', 'testthat', 'shiny-js-coverage.json');
     const outputIstanbulPath = 'coverage-istanbul.json';
     const baseDir = path.join(__dirname, 'inst', 'htmljs');
 
@@ -50,23 +49,6 @@ async function convertToIstanbul() {
         console.log(`Processed coverage for: ${filePath}`);
       } catch (err) {
         console.error(`Error processing ${filePath}:`, err.message);
-      }
-    }
-     // Process Shiny coverage if exists
-    if (fs.existsSync(shinyJsonPath)) {
-      console.log(`Processing Shiny coverage: ${shinyJsonPath}`);
-      const shinyRaw = JSON.parse(fs.readFileSync(shinyJsonPath, 'utf8'));
-      const tempPath = shinyRaw.url;
-      if (fs.existsSync(tempPath)) {
-        const shinySource = fs.readFileSync(tempPath, 'utf8');
-        const converter = v8toIstanbul(tempPath, 0, { source: shinySource });
-        await converter.load();
-        converter.applyCoverage(shinyRaw.result);
-        const shinyFileCoverage = converter.toIstanbul();
-        Object.assign(istanbulCoverage, shinyFileCoverage);
-        console.log(`Processed Shiny coverage`);
-      } else {
-        console.error(`Shiny temp file not found: ${tempPath}`);
       }
     }
     // Save Istanbul coverage data
