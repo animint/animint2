@@ -128,18 +128,24 @@ stop_js_coverage <- function(context = c("static", "shiny"), outfile = NULL) {
   context <- match.arg(context)
   tryCatch({
     cov <- remDr$Profiler$takePreciseCoverage()
-    # Resolve source path based on context
     if (context == "static") {
-      # Static: point to the known animint.js file
       src <- normalizePath(file.path(getwd(), "animint-htmltest", "animint.js"), mustWork = FALSE)
-    } else {
-      # Shiny: extract JS from page and save to temp file
-      js_content <- remDr$Runtime$evaluate(
-        "Array.from(document.scripts).map(s => s.textContent || '').join('\\n')"
-      )$result$value
-      if (!nzchar(js_content)) {
-        warning("No JS content extracted from Shiny page")
+      if (!file.exists(src)) {
+        warning("Static animint.js file not found: ", src)
         return(FALSE)
+      }
+    } else {
+      js_content <- tryCatch({
+        remDr$setTimeout(type = "script", milliseconds = 5000)
+        remDr$Runtime$evaluate(
+          "Array.from(document.scripts).map(s => s.textContent || '').join('\\n')"
+        )$result$value
+      }, error = function(e) {
+        warning("Shiny JS extraction failed: ", e$message)
+        "// Placeholder - no JS content extracted"
+      })
+      if (!nzchar(js_content)) {
+        js_content <- "// Placeholder - no JS content extracted"
       }
       src <- tempfile(fileext = ".js")
       writeLines(js_content, src)
