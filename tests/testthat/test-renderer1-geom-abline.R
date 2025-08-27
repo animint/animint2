@@ -78,7 +78,7 @@ data(mtcars)
 # Grouping variable
 mtcars$cyl <- as.factor(mtcars$cyl)
 cyl.levels <- levels(mtcars$cyl)
-# Generate 60 ablines (20 per cyl), all visible at once
+# Generate 20 ablines per cyl (total 60 for 3 cyls)
 slopes <- rep(c(-1, 0, 1), length.out = 20)
 intercepts <- seq(50, 450, length.out = 20)
 abline_data <- do.call(rbind, lapply(cyl.levels, function(cyl_val) {
