@@ -6,6 +6,7 @@ async function convertToIstanbul() {
   try {
     // Path configuration
     const coverageJsonPath = path.join('tests', 'testthat', 'js-coverage.json');
+    const shinyJsonPath = path.join('tests', 'testthat', 'shiny-js-coverage.json');
     const outputIstanbulPath = 'coverage-istanbul.json';
     const baseDir = path.join(__dirname, 'inst', 'htmljs');
 
@@ -25,22 +26,14 @@ async function convertToIstanbul() {
       // Skip empty URLs
       if (!url) continue;
       // Extract the relative file path from the URL
-      let filePath = url.replace(/^http:\/\/localhost:\d+\/animint-htmltest\//, '');
+      const filePath = url.replace(/^http:\/\/localhost:\d+\/animint-htmltest\//, '');
       if (filePath.startsWith('vendor/')) {
         //Skip files under vendor/
         continue;
       }
-      // If it's already an absolute path and exists (e.g., temp file from Shiny), use it as-is
-      let fullPath = filePath;
-      if (path.isAbsolute(fullPath) && fs.existsSync(fullPath)) {
-        console.log(`Using absolute path: ${fullPath}`);
-      } else {
-        // Otherwise, resolve relative to baseDir
-        fullPath = path.join(baseDir, filePath);
-      }
+      const fullPath = path.join(baseDir, filePath);
       // Skip if path is empty or file doesn't exist
       if (!filePath || !fs.existsSync(fullPath)) {
-        console.warn(`Skipping non-existent path: ${fullPath}`);
         continue;
       }
       try {
@@ -57,6 +50,23 @@ async function convertToIstanbul() {
         console.log(`Processed coverage for: ${filePath}`);
       } catch (err) {
         console.error(`Error processing ${filePath}:`, err.message);
+      }
+    }
+     // Process Shiny coverage if exists
+    if (fs.existsSync(shinyJsonPath)) {
+      console.log(`Processing Shiny coverage: ${shinyJsonPath}`);
+      const shinyRaw = JSON.parse(fs.readFileSync(shinyJsonPath, 'utf8'));
+      const tempPath = shinyRaw.url;
+      if (fs.existsSync(tempPath)) {
+        const shinySource = fs.readFileSync(tempPath, 'utf8');
+        const converter = v8toIstanbul(tempPath, 0, { source: shinySource });
+        await converter.load();
+        converter.applyCoverage(shinyRaw.result);
+        const shinyFileCoverage = converter.toIstanbul();
+        Object.assign(istanbulCoverage, shinyFileCoverage);
+        console.log(`Processed Shiny coverage`);
+      } else {
+        console.error(`Shiny temp file not found: ${tempPath}`);
       }
     }
     // Save Istanbul coverage data

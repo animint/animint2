@@ -23,11 +23,15 @@ tests_run(filter = "compiler")
 message("\n=== Running RENDERER tests ===")
 tests_run(filter = "renderer")
 # Save coverage and cleanup
-if(coverage_active) {
-  if (is_shiny_test) {
-  stop_js_coverage('shiny')
-} else {
+if(is_js_coverage) {
   stop_js_coverage('static')
 }
+if(is_js_coverage) {
+  start_js_coverage()
+}
+message("\n=== Running SHINY tests ===")
+tests_run(filter = "shiny")
+if(is_js_coverage) {
+  stop_js_coverage('shiny')
 }
 tests_exit()

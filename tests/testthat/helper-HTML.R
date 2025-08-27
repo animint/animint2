@@ -125,7 +125,6 @@ start_js_coverage <- function() {
 }
 stop_js_coverage <- function(context = c("static", "shiny"),
                              outfile = "js-coverage.json") {
-
   context <- match.arg(context)
   tryCatch({
     cov <- remDr$Profiler$takePreciseCoverage()

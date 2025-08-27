@@ -1,7 +1,6 @@
 print("Running shiny tests...")
 port <- 3147
 setwd(normalizePath(file.path("..", "..")))
-is_shiny_test <- TRUE
 test_that("animint plot renders in a shiny app", {
   app_dir <- file.path("inst", "examples", "shiny")
   if (!dir.exists(app_dir)) skip("Shiny app directory not found")
@@ -52,7 +51,6 @@ test_that("WorldBank shiny app functionality", {
     "document.querySelector('div#animint svg')?.querySelectorAll('circle').length || 0"
   )$result$value
   expect_true(circles >= 1, info = "At least one circle should be rendered")
-  
   get_year <- function() {
     year <- remDr$Runtime$evaluate(
       "var nodes = document.querySelectorAll('svg text'); var t = Array.from(nodes).find(n => n.textContent.includes('year = ')); t ? t.textContent.replace('year = ', '') : ''"
