@@ -149,6 +149,7 @@ stop_js_coverage <- function(context = c("static", "shiny"),
     message("JS coverage saved to ", normalizePath(outfile))
     TRUE
   }, error = function(e) {
-    warning("Failed to save JS coverage: ", e$message) FALSE
+    warning("Failed to save JS coverage: ", e$message) 
+    FALSE
   })
 }
