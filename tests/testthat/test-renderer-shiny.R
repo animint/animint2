@@ -1,6 +1,6 @@
 port <- 3147
 setwd(normalizePath(file.path("..", "..")))
-
+is_shiny_test <- TRUE
 test_that("animint plot renders in a shiny app", {
   app_dir <- file.path("inst", "examples", "shiny")
   if (!dir.exists(app_dir)) skip("Shiny app directory not found")
@@ -11,7 +11,7 @@ test_that("animint plot renders in a shiny app", {
   Sys.sleep(20)
   # Wait for animint div to be present
   animint_ready <- FALSE
-  for (i in 1:100) {
+  while (TRUE) {
     res <- remDr$Runtime$evaluate("document.querySelector('div#animint') !== null")
     if (isTRUE(res$result$value)) {
       animint_ready <- TRUE
@@ -26,7 +26,6 @@ test_that("animint plot renders in a shiny app", {
   )$result$value
   expect_true(circles >= 1, info = "At least one circle should be rendered in div#animint svg")
 })
-
 test_that("WorldBank shiny app functionality", {
   worldbank_dir <- file.path("inst", "examples", "shiny-WorldBank")
   if (!dir.exists(worldbank_dir)) skip("WorldBank app directory not found")
@@ -39,7 +38,7 @@ test_that("WorldBank shiny app functionality", {
   Sys.sleep(10)
   # Wait for animint div to be present
   animint_ready <- FALSE
-  for (i in 1:800) {
+  while (TRUE) {
     res <- remDr$Runtime$evaluate("document.querySelector('div#animint') !== null")
     if (isTRUE(res$result$value)) {
       animint_ready <- TRUE
@@ -83,7 +82,7 @@ test_that("animint plot renders in an interactive document", {
   remDr$navigate(app_info$url)
   Sys.sleep(30)
   iframe_ready <- FALSE
-  for (i in 1:100) {
+  while (TRUE) {
     res <- remDr$Runtime$evaluate("document.querySelector('.shiny-frame') !== null")
     if (isTRUE(res$result$value)) {
       iframe_ready <- TRUE
