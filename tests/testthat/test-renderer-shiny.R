@@ -1,10 +1,10 @@
+print("Running shiny tests...")
 port <- 3147
 setwd(normalizePath(file.path("..", "..")))
 is_shiny_test <- TRUE
 test_that("animint plot renders in a shiny app", {
   app_dir <- file.path("inst", "examples", "shiny")
   if (!dir.exists(app_dir)) skip("Shiny app directory not found")
- 
   app_info <- start_app("shiny", app_dir, port)
   on.exit(app_info$proc$kill(), add = TRUE)
   remDr$navigate(app_info$url)
@@ -60,23 +60,19 @@ test_that("WorldBank shiny app functionality", {
     expect_true(nchar(year) > 0, info = "Year text should be present")
     return(year)
   }
-  
   old_year <- get_year()
   Sys.sleep(10)
   new_year <- get_year()
   expect_true(old_year != new_year, info = "Year should change after animation")
-  
   div_left <- remDr$Runtime$evaluate(
     "document.querySelector('#animint').getBoundingClientRect().left"
   )$result$value
   expect_true(is.numeric(div_left), info = "Div left position should be numeric")
 })
-
 test_that("animint plot renders in an interactive document", {
   if (!requireNamespace("rmarkdown")) skip("Package 'rmarkdown' not installed")
   rmd_file <- file.path("inst", "examples", "rmarkdown", "index.Rmd")
   if (!file.exists(rmd_file)) skip("RMarkdown file not found")
- 
   app_info <- start_app("rmd", rmd_file, port)
   on.exit(app_info$proc$kill(), add = TRUE)
   remDr$navigate(app_info$url)
@@ -91,17 +87,14 @@ test_that("animint plot renders in an interactive document", {
     Sys.sleep(0.1)
   }
   expect_true(iframe_ready, info = "Shiny iframe should be present")
-  
   circles <- remDr$Runtime$evaluate(
     "document.querySelector('.shiny-frame').contentDocument.querySelectorAll('svg circle').length"
   )$result$value
-  
   if (circles == 0) {
     animint_circles <- remDr$Runtime$evaluate(
       "document.querySelector('.shiny-frame').contentDocument.querySelectorAll('div#animint svg circle').length"
     )$result$value
     circles <- animint_circles
   }
-  
   expect_true(circles >= 1, info = "At least one circle should be rendered in iframe")
 })
