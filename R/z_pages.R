@@ -210,6 +210,7 @@ update_gallery <- function(gallery_path="~/R/gallery"){
       repo.png <- file.path(
         gallery_path, "repos", paste0(viz_owner_repo, ".png"))
       if(!file.exists(repo.png)){
+        dir.create(dirname(repo.png), showWarnings=FALSE, recursive=TRUE)
         download.file(viz_url("Capture.PNG"), repo.png)
       }
       local.json <- tempfile()
