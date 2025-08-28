@@ -5,79 +5,72 @@ const v8toIstanbul = require('v8-to-istanbul');
 async function convertToIstanbul() {
   try {
     // Path configuration
-    const coverageJsonPath = path.join('tests', 'testthat', 'js-coverage.json');
-    const shinyJsonPath = path.join('tests', 'testthat', 'shiny-js-coverage.json');
+    const staticPath = path.join('tests', 'testthat', 'js-coverage.json');
+    const shinyPath = path.join('tests', 'testthat', 'shiny-js-coverage.json');
     const outputIstanbulPath = 'coverage-istanbul.json';
     const baseDir = path.join(__dirname, 'inst', 'htmljs');
 
-    console.log(`Reading coverage data from: ${coverageJsonPath}`);
-    console.log(`Looking for source files in: ${baseDir}`);
-
-    // Check if input file exists
-    if (!fs.existsSync(coverageJsonPath)) {
-      console.error(`Error: Coverage file not found at ${coverageJsonPath}`);
-      process.exit(1);
-    }
-    const rawCoverage = JSON.parse(fs.readFileSync(coverageJsonPath, 'utf8'));
     const istanbulCoverage = {};
-    // Process each file's coverage
-    for (const scriptCoverage of rawCoverage.result) {
-      const url = scriptCoverage.url;
-      // Skip empty URLs
-      if (!url) continue;
-      // Extract the relative file path from the URL
-      const filePath = url.replace(/^http:\/\/localhost:\d+\/animint-htmltest\//, '');
-      if (filePath.startsWith('vendor/')) {
-        //Skip files under vendor/
-        continue;
+    // helper: process an array of V8 coverage entries
+    const processEntries = async (entries, resolvePathFn, label) => {
+      for (const entry of entries) {
+        const url = entry.url;
+        if (!url) continue;
+        // Resolve to a readable file path
+        const fullPath = resolvePathFn(url);
+        if (!fullPath || !fs.existsSync(fullPath)) {
+          console.warn(`[${label}] skipping missing: ${fullPath || url}`);
+          continue;
+        }
+        try {
+          const src = fs.readFileSync(fullPath, 'utf8');
+          const converter = v8toIstanbul(fullPath, 0, { source: src });
+          await converter.load();
+          // V8 coverage can be entry.functions or entry.result; prefer .functions
+          const v8Functions = entry.functions || entry.result || entry;
+          converter.applyCoverage(v8Functions);
+          const fileCov = converter.toIstanbul();
+          Object.assign(istanbulCoverage, fileCov);
+          console.log(`[${label}] processed: ${fullPath}`);
+        } catch (err) {
+          console.error(`[${label}] error processing ${fullPath}:`, err.message);
+        }
       }
-      const fullPath = path.join(baseDir, filePath);
-      // Skip if path is empty or file doesn't exist
-      if (!filePath || !fs.existsSync(fullPath)) {
-        continue;
-      }
-      try {
-        const scriptSource = fs.readFileSync(fullPath, 'utf8');
-        // Create converter for this file
-        const converter = v8toIstanbul(fullPath, 0, {
-          source: scriptSource
-        });
-        await converter.load();
-        converter.applyCoverage(scriptCoverage.functions);
-        // Get Istanbul coverage data for this file and merge it
-        const fileCoverage = converter.toIstanbul();
-        Object.assign(istanbulCoverage, fileCoverage);
-        console.log(`Processed coverage for: ${filePath}`);
-      } catch (err) {
-        console.error(`Error processing ${filePath}:`, err.message);
-      }
-    }
-     // Process Shiny coverage if exists
-    if (fs.existsSync(shinyJsonPath)) {
-      console.log(`Processing Shiny coverage: ${shinyJsonPath}`);
-      const shinyRaw = JSON.parse(fs.readFileSync(shinyJsonPath, 'utf8'));
-      const tempPath = shinyRaw.url;
-      if (fs.existsSync(tempPath)) {
-        const shinySource = fs.readFileSync(tempPath, 'utf8');
-        const converter = v8toIstanbul(tempPath, 0, { source: shinySource });
-        await converter.load();
-        converter.applyCoverage(shinyRaw.result);
-        const shinyFileCoverage = converter.toIstanbul();
-        Object.assign(istanbulCoverage, shinyFileCoverage);
-        console.log(`Processed Shiny coverage`);
-      } else {
-        console.error(`Shiny temp file not found: ${tempPath}`);
-      }
-    }
-    // Save Istanbul coverage data
-    if (Object.keys(istanbulCoverage).length > 0) {
-      fs.writeFileSync(outputIstanbulPath, JSON.stringify(istanbulCoverage, null, 2));
-      console.log(`Successfully converted coverage to ${outputIstanbulPath}`);
-
+    };
+    // 1) Static coverage
+    if (fs.existsSync(staticPath)) {
+      console.log(`Processing static coverage from ${staticPath}`);
+      const raw = JSON.parse(fs.readFileSync(staticPath, 'utf8'));
+      // Map http://localhost:PORT/animint-htmltest/... → inst/htmljs/...
+      const resolveStatic = (url) => {
+        const rel = url.replace(/^http:\/\/localhost:\d+\/animint-htmltest\//, '');
+        if (!rel || rel.startsWith('vendor/')) return null;
+        return path.join(baseDir, rel);
+      };
+      await processEntries(raw.result || [], resolveStatic, 'static');
     } else {
+      console.warn(`Static coverage not found at ${staticPath}`);
+    }
+    // 2) Shiny coverage
+    if (fs.existsSync(shinyPath)) {
+      console.log(`Processing Shiny coverage from ${shinyPath}`);
+      const shiny = JSON.parse(fs.readFileSync(shinyPath, 'utf8'));
+      // Shiny urls are absolute temp file paths; use as-is
+      const resolveShiny = (url) => (path.isAbsolute(url) ? url : null);
+      // If file is a single object {url, result}, normalize to array
+      const shinyEntries = Array.isArray(shiny.result)
+        ? shiny.result
+        : (shiny.result ? [{ url: shiny.url, functions: shiny.result }] : []);
+      await processEntries(shinyEntries, resolveShiny, 'shiny');
+    } else {
+      console.log(`No Shiny coverage at ${shinyPath} (skipping)`);
+    }
+    if (Object.keys(istanbulCoverage).length === 0) {
       console.error('No valid coverage data was processed');
       process.exit(1);
     }
+    fs.writeFileSync(outputIstanbulPath, JSON.stringify(istanbulCoverage, null, 2));
+    console.log(`Successfully converted coverage to ${outputIstanbulPath}`);
   } catch (err) {
     console.error('Error converting coverage:', err.message);
     process.exit(1);

@@ -123,22 +123,22 @@ start_js_coverage <- function() {
     FALSE
   })
 }
-stop_js_coverage <- function(context = c("static", "shiny"),
-                             outfile = "js-coverage.json") {
+stop_js_coverage <- function(context = c("static", "shiny"), outfile = NULL) {
   context <- match.arg(context)
+  outfile <- outfile %||% ifelse(context == "shiny", "shiny-js-coverage.json", "js-coverage.json")
   tryCatch({
     cov <- remDr$Profiler$takePreciseCoverage()
     if (context == "shiny") {
-      # Extract the JS that Shiny just executed
+      # Extract JS from browser and save to temp file
       js <- remDr$Runtime$evaluate(
-        "Array.from(document.scripts)
-             .map(s => s.textContent || '')
-             .join('\\n')" )$result$value
-      if (!nzchar(js)) stop("no <script> tags found")
+        "Array.from(document.scripts).map(s => s.textContent || '').join('\\n')"
+      )$result$value
+      if (!nzchar(js)) stop("No JS extracted from page!")
       tmp_js <- tempfile(fileext = ".js")
       writeLines(js, tmp_js)
       src_path <- tmp_js
     } else {
+      # Static file path
       src_path <- file.path(getwd(), "animint-htmltest", "animint.js")
     }
     jsonlite::write_json(
@@ -148,7 +148,7 @@ stop_js_coverage <- function(context = c("static", "shiny"),
     message("JS coverage saved to ", normalizePath(outfile))
     TRUE
   }, error = function(e) {
-    warning("Failed to save JS coverage: ", e$message) 
-    FALSE
+    warning("Failed to save JS coverage: ", e$message)
+    return(FALSE)
   })
 }
