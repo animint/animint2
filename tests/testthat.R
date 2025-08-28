@@ -30,7 +30,7 @@ message("\n=== Running SHINY tests ===")
 if(is_js_coverage) {
   start_js_coverage()
 }
-tests_run(filter = "shiny")
+testthat::test_file('test-shiny.R')
 if(is_js_coverage) {
   collect_shiny_js_coverage()
 }

@@ -10,7 +10,7 @@ test_that("animint plot renders in a shiny app", {
   Sys.sleep(20)
   # Wait for animint div to be present
   animint_ready <- FALSE
-  while (TRUE) {
+  for (i in 1:10) {
     res <- remDr$Runtime$evaluate("document.querySelector('div#animint') !== null")
     if (isTRUE(res$result$value)) {
       animint_ready <- TRUE
@@ -37,7 +37,7 @@ test_that("WorldBank shiny app functionality", {
   Sys.sleep(10)
   # Wait for animint div to be present
   animint_ready <- FALSE
-  while (TRUE) {
+  for (i in 1:10) {
     res <- remDr$Runtime$evaluate("document.querySelector('div#animint') !== null")
     if (isTRUE(res$result$value)) {
       animint_ready <- TRUE
@@ -76,7 +76,7 @@ test_that("animint plot renders in an interactive document", {
   remDr$navigate(app_info$url)
   Sys.sleep(30)
   iframe_ready <- FALSE
-  while (TRUE) {
+  for (i in 1:10) {
     res <- remDr$Runtime$evaluate("document.querySelector('.shiny-frame') !== null")
     if (isTRUE(res$result$value)) {
       iframe_ready <- TRUE
