@@ -7,7 +7,6 @@
 var animint = function (to_select, json_file) {
   var steps = [];
   var default_axis_px = 16;
-
    function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
@@ -243,7 +242,6 @@ var animint = function (to_select, json_file) {
     // Save this geom and load it!
     update_geom(g_name, null);
   };
-
   var current_tr = null;
   var add_plot = function (p_name, p_info) {
     if(current_tr === null) {

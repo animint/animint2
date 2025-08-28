@@ -153,7 +153,6 @@ theme_attribute <- function(theme) {
   getThemeOptions(theme, c("rowspan", "colspan", "last_in_row"), list(1, 1, FALSE))
 }
 
-
 setUpdateAxes <- function(theme, options_list){
   update_axes <- "animint.update_axes"
   if(update_axes %in% names(theme)){
