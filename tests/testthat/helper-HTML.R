@@ -123,32 +123,42 @@ start_js_coverage <- function() {
     FALSE
   })
 }
-stop_js_coverage <- function(context = c("static", "shiny"), outfile = NULL) {
-  context <- match.arg(context)
-  outfile <- outfile %||% ifelse(context == "shiny", "shiny-js-coverage.json", "js-coverage.json")
+
+stop_js_coverage <- function() {
   tryCatch({
     cov <- remDr$Profiler$takePreciseCoverage()
-    if (context == "shiny") {
-      # Extract JS from browser and save to temp file
-      js <- remDr$Runtime$evaluate(
-        "Array.from(document.scripts).map(s => s.textContent || '').join('\\n')"
-      )$result$value
-      if (!nzchar(js)) stop("No JS extracted from page!")
-      tmp_js <- tempfile(fileext = ".js")
-      writeLines(js, tmp_js)
-      src_path <- tmp_js
-    } else {
-      # Static file path
-      src_path <- file.path(getwd(), "animint-htmltest", "animint.js")
-    }
-    jsonlite::write_json(
-      list(result = cov$result, url = src_path),
-      outfile, auto_unbox = TRUE
+    outfile <- "js-coverage.json"
+    # Ensure the format matches what v8-to-istanbul expects
+    coverage_data <- list(
+      result = cov$result,
+      url = "http://localhost:4848/animint-htmltest/animint.js"
     )
+    jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
     message("JS coverage saved to ", normalizePath(outfile))
     TRUE
   }, error = function(e) {
     warning("Failed to save JS coverage: ", e$message)
-    return(FALSE)
+    FALSE
+  })
+}
+collect_shiny_js_coverage <- function() {
+  tryCatch({
+    cov <- remDr$Profiler$takePreciseCoverage()
+    outfile <- "shiny-js-coverage.json"
+    js_content <- remDr$Runtime$evaluate(
+      "Array.from(document.scripts).filter(s => s.textContent).map(s => s.textContent).join('\\n')"
+    )$result$value
+    temp_js_file <- tempfile(fileext = ".js")
+    writeLines(js_content, temp_js_file)
+    coverage_data <- list(
+      result = cov$result,
+      url = temp_js_file
+    )
+    jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
+    message("Shiny JS coverage saved to ", normalizePath(outfile))
+    TRUE
+  }, error = function(e) {
+    message("Shiny coverage collection failed: ", e$message)
+    FALSE
   })
 }
