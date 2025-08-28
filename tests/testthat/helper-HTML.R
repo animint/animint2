@@ -126,39 +126,30 @@ start_js_coverage <- function() {
 
 stop_js_coverage <- function() {
   tryCatch({
+    # Stop the profiler and get the coverage data
     cov <- remDr$Profiler$takePreciseCoverage()
-    outfile <- "js-coverage.json"
-    # Ensure the format matches what v8-to-istanbul expects
+    js_content <- remDr$Runtime$evaluate(
+      "Array.from(document.scripts).map(s => s.textContent || '').join('\\n')"
+    )$result$value
+    if (!nzchar(js_content)) {
+      warning("No JavaScript content was extracted from the page. Coverage may be incomplete.")
+      return(FALSE)
+    }
+    # Save the extracted JS to a temporary file for the converter
+    temp_js_file <- tempfile(fileext = ".js")
+    writeLines(js_content, temp_js_file)
+    # Point the coverage data to the temporary source file
     coverage_data <- list(
       result = cov$result,
-      url = "http://localhost:4848/animint-htmltest/animint.js"
+      url = temp_js_file
     )
+    # Always write to a single, standard output file
+    outfile <- "js-coverage.json"
     jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
     message("JS coverage saved to ", normalizePath(outfile))
     TRUE
   }, error = function(e) {
     warning("Failed to save JS coverage: ", e$message)
-    FALSE
-  })
-}
-collect_shiny_js_coverage <- function() {
-  tryCatch({
-    cov <- remDr$Profiler$takePreciseCoverage()
-    outfile <- "shiny-js-coverage.json"
-    js_content <- remDr$Runtime$evaluate(
-      "Array.from(document.scripts).filter(s => s.textContent).map(s => s.textContent).join('\\n')"
-    )$result$value
-    temp_js_file <- tempfile(fileext = ".js")
-    writeLines(js_content, temp_js_file)
-    coverage_data <- list(
-      result = cov$result,
-      url = temp_js_file
-    )
-    jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
-    message("Shiny JS coverage saved to ", normalizePath(outfile))
-    TRUE
-  }, error = function(e) {
-    message("Shiny coverage collection failed: ", e$message)
-    FALSE
+    return(FALSE)
   })
 }

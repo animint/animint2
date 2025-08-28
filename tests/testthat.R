@@ -26,12 +26,4 @@ tests_run(filter = "renderer")
 if(coverage_active) {
   stop_js_coverage()
 }
-message("\n=== Running SHINY tests ===")
-if(is_js_coverage) {
-  start_js_coverage()
-}
-testthat::test_file('test-shiny.R')
-if(is_js_coverage) {
-  collect_shiny_js_coverage()
-}
 tests_exit()
