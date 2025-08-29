@@ -13,16 +13,19 @@ test_that("Simple rowspan layout works", {
       geom_point() +
       ggtitle("bottom_right_plot")
   )
-  html <- animint2HTML(plot_collection)$html
+  info <- animint2HTML(plot_collection)
+  plot_content <- getNodeSet(info$html, '//td[@class="plot_content"]')
+  expect_equal(length(plot_content), 1)
+  content_children <- xmlChildren(plot_content[[1]])
+  expect_equal(length(content_children), 1) #only table
   # 3 plot tables should be rendered
-  tables <- getNodeSet(html, "//table[@style='display: inline-block;']")
+  tables <- getNodeSet(info$html, "//table[@style='display: inline-block;']")
   expect_equal(length(tables), 3)
-  # Check that at least one cell has rowspan=2
-  rowspan_cells <- getNodeSet(html, "//td[@rowspan='2']")
-  expect_true(length(rowspan_cells) >= 1)
+  # Check that one cell has rowspan=2
+  rowspan_cells <- getNodeSet(info$html, "//td[@rowspan='2']")
+  expect_equal(length(rowspan_cells), 1)
   # Check that plot titles appear in HTML
-  html_text <- saveXML(html)
-  expect_true(grepl("left_plot", html_text))
-  expect_true(grepl("top_right_plot", html_text))
-  expect_true(grepl("bottom_right_plot", html_text))
+  title_elements <- getNodeSet(info$html, "//text[@class='plottitle']")
+  title_vec <- sapply(title_elements, xmlValue)
+  expect_identical(title_vec, c("left_plot", "top_right_plot", "bottom_right_plot"))
 })
