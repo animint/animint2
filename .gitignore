@@ -10,5 +10,5 @@
 *ANIMINT_TEST_FOO
 *pids.txt
 *~
-.vscode/settings.jsonnode_modules/
-node_modules/
+.vscode/settings.json
+/node_modules

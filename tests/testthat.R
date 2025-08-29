@@ -5,33 +5,25 @@ setwd("testthat")
 source("helper-functions.R")
 source("helper-HTML.R")
 source("helper-plot-data.r")
-filter <- Sys.getenv("TEST_SUITE")
 gh.action <- Sys.getenv("GH_ACTION")
-use.browser <- grepl("renderer", filter)
-collect.coverage <- Sys.getenv("COLLECT_COVERAGE", "FALSE") == "TRUE"
-if(filter == ""){
-  filter <- NULL
-}
+is_js_coverage <- Sys.getenv("TEST_SUITE") == "JS_coverage"
 message(gh.action)
-
-if(use.browser) {
-  tests_init()
-  # Start coverage if enabled
-  coverage_active <- FALSE
-  if(collect.coverage) {
-    coverage_active <- start_js_coverage()
-    if(coverage_active) {
-      message("JS coverage collection started")
-    }
-  }
-  # Run tests
-  tests_run(filter=filter)
-  # Save coverage and cleanup
+tests_init()
+# Start coverage if enabled
+coverage_active <- FALSE
+if(is_js_coverage) {
+  coverage_active <- start_js_coverage()
   if(coverage_active) {
-    stop_js_coverage()
+    message("JS coverage collection started")
   }
-  tests_exit()
-} else {
-  # Non-browser tests
-  tests_run(filter=filter)
 }
+# Run tests
+message("\n=== Running COMPILER tests ===")
+tests_run(filter = "compiler")
+message("\n=== Running RENDERER tests ===")
+tests_run(filter = "renderer")
+# Save coverage and cleanup
+if(coverage_active) {
+  stop_js_coverage()
+}
+tests_exit()

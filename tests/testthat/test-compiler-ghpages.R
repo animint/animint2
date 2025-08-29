@@ -36,7 +36,13 @@ expect_no_Capture <- function(L){
 ## actions.
 reset_test_repo <- function(){
   ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#delete-a-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write) gh api --method DELETE -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/OWNER/REPO
-  gh::gh("DELETE /repos/animint-test/animint2pages_test_repo")
+  tryCatch({
+    gh::gh("DELETE /repos/animint-test/animint2pages_test_repo")
+  }, http_error_404=function(e){
+    print(e) #in case it is already deleted.
+    ##<github_error/http_error_404/rlang_error/error/condition>
+    ##Error in `gh::gh("DELETE /repos/animint-test/animint2pages_test_repo")`: GitHub API error (404): Not Found
+  })
   ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-an-organization-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write)
   gh::gh("POST /orgs/animint-test/repos", name="animint2pages_test_repo")
   Sys.sleep(3)
@@ -103,6 +109,7 @@ test_that("animint2pages(chromote_sleep_seconds=NULL) does not create Capture.PN
   expect_Capture(update_list)
 })
 
+# This test is skipped under covr coverage collection due to environment manipulation.
 test_that("animint2pages raises an error if no GitHub token is present", {
   if (identical(Sys.getenv("R_COVR"), "true")) skip("Skip on covr: environment manipulation not supported")
   env.names <- c("GITHUB_PAT", "GITHUB_PAT_GITHUB_COM")
