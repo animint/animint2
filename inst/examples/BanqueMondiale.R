@@ -1,3 +1,4 @@
+## Traduction de la vérsion anglaise https://github.com/animint/animint2/blob/master/inst/examples/WorldBank-facets-map.R
 library(animint2)
 data(BanqueMondiale, package="animint2fr")
 not.na <- subset(BanqueMondiale, !(is.na(espérance.de.vie) | is.na(taux.de.fertilité)))
