@@ -150,7 +150,7 @@ getWidthAndHeight <- function(theme) {
 }
 
 theme_attribute <- function(theme) {
-  getThemeOptions(theme, c("rowspan", "colspan", "last_in_row"), list(1, 1, FALSE))
+  getThemeOptions(theme, c("rowspan", "colspan", "last_in_row"), list(0, 0, FALSE))
 }
 
 setUpdateAxes <- function(theme, options_list){

@@ -150,6 +150,7 @@ var animint = function (to_select, json_file) {
   var plot_widget_table = element.append("table");
   var plot_td = plot_widget_table.append("tr").append("td");
   plot_td.attr("class","plot_content");
+  var plot_table = plot_td.append("table").style("display", "inline-block");
   var widget_td = plot_widget_table.append("tr").append("td");
   var Widgets = {};
   this.Widgets = Widgets;
@@ -244,16 +245,23 @@ var animint = function (to_select, json_file) {
   };
   var current_tr = null;
   var add_plot = function (p_name, p_info) {
+  var attributes = p_info.attributes || {};
     if(current_tr === null) {
-    current_tr = plot_td.append("tr");
+    current_tr = plot_table.append("tr");
   }
   var td = current_tr.append("td");
-  var attributes = p_info.attributes || {};
-  td.attr("rowspan", attributes.rowspan || 1)
-    .attr("colspan", attributes.colspan || 1);
-    // Inner table for plot and legend
-    var plot_table = td.append("table").style("display", "inline-block");
-    var plot_tr = plot_table.append("tr");
+  if( attributes.rowspan > 0){
+  td.attr("rowspan", attributes.rowspan);
+  }
+   if(attributes.colspan > 0){
+  td.attr("colspan", attributes.colspan);
+   }
+   var plot_inner_table = td.append("table").style("display", "inline-block");
+   var plot_tr = plot_inner_table.append("tr");
+   // Reset row when explicitly marked as last in row
+   if(attributes.last_in_row){
+      current_tr = null;
+    }
     var tdLeft = plot_tr.append("td");
     var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
     if(viz_id === null){
@@ -772,10 +780,6 @@ var animint = function (to_select, json_file) {
       ;
     }
     Plots[p_name].scales = scales;
-// Create new row if max columns reached or last_in_row specified
- if(attributes.last_in_row) {
-    current_tr = null;
-  }
   }; //end of add_plot()
 
   function update_legend_opacity(v_name){
@@ -2762,4 +2766,3 @@ var animint = function (to_select, json_file) {
     }//if(window.location.hash)
   });
 };
-
