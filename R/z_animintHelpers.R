@@ -980,7 +980,9 @@ saveChunks <- function(x, meta){
   if(is.data.frame(x)){
     this.i <- meta$chunk.i
     csv.name <- sprintf("%s_chunk%d.tsv", meta$g$classed, this.i)
-    data.table::fwrite(x, file.path(meta$out.dir, csv.name), quote=FALSE,
+  # Ensure fields are quoted so that embedded newlines or tabs in
+  # string fields do not break the TSV format when read by d3.tsv.
+    data.table::fwrite(x, file.path(meta$out.dir, csv.name), quote=TRUE,
                 row.names=FALSE, sep="\t")
     meta$chunk.i <- meta$chunk.i + 1L
     this.i

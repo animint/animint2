@@ -456,7 +456,7 @@ Geom <- gganimintproto("Geom",
         some.lines <- rbind(head(g.data), tail(g.data))
         write.table(some.lines, tmp,
                     col.names=FALSE,
-                    quote=FALSE, row.names=FALSE, sep="\t")
+                    quote=TRUE, row.names=FALSE, sep="\t")
         bytes <- file.info(tmp)$size
         bytes.per.line <- bytes/nrow(some.lines)
         bad.chunk <- function(){
@@ -625,7 +625,7 @@ Geom <- gganimintproto("Geom",
       tsv.name <- sprintf("%s_chunk_common.tsv", g$classed)
       tsv.path <- file.path(meta$out.dir, tsv.name)
       write.table(data.or.null$common, tsv.path,
-                  quote = FALSE, row.names = FALSE,
+                  quote = TRUE, row.names = FALSE,
                   sep = "\t")
       data.or.null$varied
     }
