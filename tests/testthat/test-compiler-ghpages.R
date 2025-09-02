@@ -92,7 +92,7 @@ test_that("animint2pages(chromote_sleep_seconds=NULL) does not create Capture.PN
   github_url <- paste0("https://github.com/", result_list$owner_repo, ".git")
   gert::git_clone(github_url, new_clone)
   branch_name <- gert::git_branch(new_clone)
-  expect_identical(branch_name, "gh-pages")
+  expect_identical(branch_name, "gh-pages", info=paste(branch_name, "should be gh-pages"))
   cat("FOO", file=file.path(new_clone, "Capture.PNG"))
   gert::git_add("Capture.PNG", repo=new_clone)
   gert::git_commit(message="add Capture.PNG", repo=new_clone)
