@@ -15,7 +15,7 @@ var animint = function (to_select, json_file) {
     if (xhr.status === 200) {
       var data = JSON.parse(xhr.responseText);
       for (var p_name in data.plots) {
-        let attributes = data.plots[p_name].attributes;
+        let attributes = data.plots[p_name].span;
         if(attributes.rowspan > 0 || attributes.colspan > 0 || attributes.last_in_row) {
           grid_layout = true;
           break;
@@ -266,7 +266,7 @@ var animint = function (to_select, json_file) {
   }
   var add_plot = function (p_name, p_info) {
   if(grid_layout) {
-  var attributes = p_info.attributes || {};
+  var attributes = p_info.span || {};
   if(current_tr === null) {
     current_tr = plot_table.append("tr");
   }
