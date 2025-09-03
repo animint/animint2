@@ -152,3 +152,29 @@ test_that("tooltip div exists with href elements", {
   opacity <- getStyleValue(info$html, tooltip.xpath, "opacity")
   expect_identical(opacity, "0")
 })
+
+# testing newline character in tooltip
+viz <- list(
+  p1 = ggplot() +
+    geom_point(aes(x, x, tooltip = x, color = x, id = x),
+               size = 5,
+               data = data.frame(x = c("one line", "two\nlines", "three\nlines\nhere")))
+)
+info2 <- animint2HTML(viz)
+tooltip.xpath <- '//div[@class="animint-tooltip"]'
+test_that("tooltips support newline character", {
+  # Get bounding box of the second point (id = "two\nlines")
+  circle_position <- get_element_bbox("circle.geom:nth-child(2)")
+  # Hover over the circle to trigger tooltip
+  remDr$Input$dispatchMouseEvent(
+    type = "mouseMoved",
+    x = circle_position$center_x,
+    y = circle_position$center_y
+  )
+  Sys.sleep(0.3)
+  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
+  tooltip_inner <- paste(sapply(xmlChildren(tooltip_div), saveXML), collapse = "")
+  cat("Tooltip innerHTML:\n", tooltip_inner, "\n")
+  # inner HTML should be exactly "two<br/>lines"
+  expect_equal(trimws(tooltip_inner), "two<br/>lines")
+})
