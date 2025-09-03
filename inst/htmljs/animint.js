@@ -1355,22 +1355,57 @@ var animint = function (to_select, json_file) {
       }
       data_to_bind = data;
       if (g_info.geom == "segment") {
-	g_info.style_list = line_style_list;
-	eActions = function (e) {
-          e.attr("x1", function (d) {
-            return scales.x(d["x"]);
-          })
-            .attr("x2", function (d) {
-              return scales.x(d["xend"]);
-            })
-            .attr("y1", function (d) {
-              return scales.y(d["y"]);
-            })
-            .attr("y2", function (d) {
-              return scales.y(d["yend"]);
-            })
-	};
-	eAppend = "line";
+  g_info.style_list = line_style_list;
+  // helper: get slope and intercept for datum
+  function getLineParams(d) {
+    var slope = d.slope !== undefined ? +d.slope :
+      (g_info.abline_params && g_info.abline_params.slopes) ? g_info.abline_params.slopes[d.i] : 1;
+    var intercept = d.intercept !== undefined ? +d.intercept :
+      (g_info.abline_params && g_info.abline_params.intercepts) ? g_info.abline_params.intercepts[d.i] : 0;
+    return { slope, intercept };
+  }
+  // helper: compute clipped coordinate for one endpoint
+  function computeEndpoint(x, slope, intercept, xDomain, yDomain) {
+    var y = slope * x + intercept;
+    if (y < yDomain[0]) x = (yDomain[0] - intercept) / slope;
+    if (y > yDomain[1]) x = (yDomain[1] - intercept) / slope;
+    return { x, y };
+  }
+  // helper: compute abline endpoints
+  function getAblineCoords(d, scales) {
+    var { slope, intercept } = getLineParams(d);
+    var xDomain = scales.x.domain();
+    var yDomain = scales.y.domain();
+    function get_ab_y(x) {
+      return Math.max(yDomain[0], Math.min(yDomain[1], slope * x + intercept));
+    }
+    // Compute both endpoints
+    var start = computeEndpoint(xDomain[0], slope, intercept, xDomain, yDomain);
+    var end = computeEndpoint(xDomain[1], slope, intercept, xDomain, yDomain);
+    return {
+      x1: scales.x(start.x),
+      y1: scales.y(get_ab_y(xDomain[0])),
+      x2: scales.x(end.x),
+      y2: scales.y(get_ab_y(xDomain[1]))
+    };
+  }
+  if (g_info.is_abline) {
+    eActions = function(e) {
+      e.attr("x1", d => getAblineCoords(d, scales).x1)
+       .attr("y1", d => getAblineCoords(d, scales).y1)
+       .attr("x2", d => getAblineCoords(d, scales).x2)
+       .attr("y2", d => getAblineCoords(d, scales).y2);
+    };
+  } else {
+    // Regular segment case
+    eActions = function(e) {
+      e.attr("x1", toXY("x", "x"))
+        .attr("y1", toXY("y", "y"))
+        .attr("x2", toXY("x", "xend"))
+        .attr("y2", toXY("y", "yend"));
+    };
+  }
+  eAppend = "line";
       }
       if (g_info.geom == "linerange") {
 	g_info.style_list = line_style_list;

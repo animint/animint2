@@ -138,9 +138,9 @@ initial_commit <- function(local_clone, repo, viz_url, title) {
     all_branches <- df_or_vec
     current_master <- df_or_vec
   }
-  # do not attempt to rename a branch to "main" when a branch with that name already exists
-  if (current_master != "main" && !"main" %in% all_branches) {
-    gert::git_branch_move(branch = current_master, new_branch = "main", repo = repo)
+  # do not attempt to rename a branch to "gh-pages" when a branch with that name already exists
+  if (current_master != "gh-pages" && !"gh-pages" %in% all_branches) {
+    gert::git_branch_move(branch = current_master, new_branch = "gh-pages", repo = repo)
   }
   gert::git_push(repo = repo, remote = "origin", set_upstream = TRUE)
 }
@@ -209,7 +209,10 @@ update_gallery <- function(gallery_path="~/R/gallery"){
         viz_owner_repo, filename)
       repo.png <- file.path(
         gallery_path, "repos", paste0(viz_owner_repo, ".png"))
+      repo.dir <- dirname(repo.png)
+      dir.create(repo.dir, showWarnings = FALSE)
       if(!file.exists(repo.png)){
+        dir.create(dirname(repo.png), showWarnings=FALSE, recursive=TRUE)
         download.file(viz_url("Capture.PNG"), repo.png)
       }
       local.json <- tempfile()
@@ -245,9 +248,15 @@ update_gallery <- function(gallery_path="~/R/gallery"){
     })
   }
   (meta.dt <- rbindlist(meta.dt.list))
-  (error.dt <- rbindlist(error.dt.list))
   fwrite(meta.dt, meta.csv)
-  fwrite(error.dt, file.path(gallery_path, "error.csv"))
+  error.csv <- file.path(gallery_path, "error.csv")
+  if(length(error.dt.list)){
+    (error.dt <- rbindlist(error.dt.list))
+    fwrite(error.dt, error.csv)
+  }else{
+    error.dt <- NULL
+    if(file.exists(error.csv))file.remove(error.csv)
+  }
   rmarkdown::render(file.path(gallery_path, "index.Rmd"))
   to_add <- c(
     "*.csv",
