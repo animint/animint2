@@ -274,7 +274,7 @@ var animint = function (to_select, json_file) {
   if( attributes.rowspan > 0){
   td.attr("rowspan", attributes.rowspan);
   }
-   if(attributes.colspan > 0){
+  if(attributes.colspan > 0){
   td.attr("colspan", attributes.colspan);
    }
    var plot_inner_table = td.append("table").style("display", "inline-block");
