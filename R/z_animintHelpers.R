@@ -131,7 +131,9 @@ getUniqueAxisLabels <- function(plot.meta){
   return(plot.meta)
 }
 
-getThemeOptions <- function(theme, keys, default_values) {
+getThemeOptions <- function(theme, ...) {
+  defaults <- list(...)
+  keys <- names(defaults)
   options_list <- list()
   for (i in seq_along(keys)) {
     key <- keys[i]
@@ -139,18 +141,18 @@ getThemeOptions <- function(theme, keys, default_values) {
     options_list[[key]] <- if (attr_name %in% names(theme)) {
       theme[[attr_name]]
     } else {
-      default_values[[i]]
+      defaults[[i]]
     }
   }
   options_list
 }
 
 getWidthAndHeight <- function(theme) {
-  getThemeOptions(theme, c("width", "height"), list(400, 400))
+  getThemeOptions(theme, width=400, height=400)
 }
 
-theme_attribute <- function(theme) {
-  getThemeOptions(theme, c("rowspan", "colspan", "last_in_row"), list(0, 0, FALSE))
+get_span <- function(theme) {
+  getThemeOptions(theme, rowspan=NA, colspan=NA, last_in_row=NA)
 }
 
 setUpdateAxes <- function(theme, options_list){

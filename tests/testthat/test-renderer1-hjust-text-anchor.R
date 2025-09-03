@@ -78,10 +78,10 @@ info <- animint2HTML(viz)
 test_that("plot_content//table by default", {
   plot_content <- getNodeSet(info$html, '//td[@class="plot_content"]')
   expect_equal(length(plot_content), 1)
-  plot_tables <- getNodeSet(info$html, '//td[@class="plot_content"]//table')
-  expect_equal(length(plot_tables), 4)
+  plot_tables <- getNodeSet(info$html, '//td[@class="plot_content"]/table')
+  expect_equal(length(plot_tables), 2)
   children <- xmlChildren(plot_content[[1]])
-  expect_equal(length(children), 1)
+  expect_equal(length(children), 2)
 })
 
 test_that("unspecified hjust means text-anchor: middle (other hjust=0)", {

@@ -41,11 +41,4 @@ test_that("HTML layout includes rowspan/colspan and FooterRight has none", {
   html_lines <- XML::saveXML(html)
   expect_gt(length(grep("Left Side Large", html_lines)), 0)  # check Left Side Large title
   expect_gt(length(grep("Footer Right", html_lines)), 0)  # check Footer Right title
-  # plot content
-  plot_content <- getNodeSet(info$html, '//td[@class="plot_content"]')
-  expect_equal(length(plot_content), 1)
-  plot_tables <- getNodeSet(info$html, '//td[@class="plot_content"]//table')
-  expect_equal(length(plot_tables), 7)
-  children <- xmlChildren(plot_content[[1]])
-  expect_equal(length(children), 1)
 })

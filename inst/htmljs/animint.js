@@ -7,6 +7,23 @@
 var animint = function (to_select, json_file) {
   var steps = [];
   var default_axis_px = 16;
+  var grid_layout = false;
+  function loadGridLayoutSync() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', json_file, false);
+    xhr.send();
+    if (xhr.status === 200) {
+      var data = JSON.parse(xhr.responseText);
+      for (var p_name in data.plots) {
+        let attributes = data.plots[p_name].attributes;
+        if(attributes.rowspan > 0 || attributes.colspan > 0 || attributes.last_in_row) {
+          grid_layout = true;
+          break;
+        }
+      }
+    }
+  };
+   loadGridLayoutSync(); // Load it immediately
    function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
@@ -150,7 +167,6 @@ var animint = function (to_select, json_file) {
   var plot_widget_table = element.append("table");
   var plot_td = plot_widget_table.append("tr").append("td");
   plot_td.attr("class","plot_content");
-  var plot_table = plot_td.append("table").style("display", "inline-block");
   var widget_td = plot_widget_table.append("tr").append("td");
   var Widgets = {};
   this.Widgets = Widgets;
@@ -244,9 +260,14 @@ var animint = function (to_select, json_file) {
     update_geom(g_name, null);
   };
   var current_tr = null;
+  var plot_table = null;
+  if(grid_layout){
+     plot_table = plot_td.append("table").style("display", "inline-block");
+  }
   var add_plot = function (p_name, p_info) {
+  if(grid_layout) {
   var attributes = p_info.attributes || {};
-    if(current_tr === null) {
+  if(current_tr === null) {
     current_tr = plot_table.append("tr");
   }
   var td = current_tr.append("td");
@@ -262,6 +283,10 @@ var animint = function (to_select, json_file) {
    if(attributes.last_in_row){
       current_tr = null;
     }
+  }else{
+    plot_table = plot_td.append("table").style("display", "inline-block");
+    var plot_tr = plot_table.append("tr");
+  }
     var tdLeft = plot_tr.append("td");
     var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
     if(viz_id === null){
