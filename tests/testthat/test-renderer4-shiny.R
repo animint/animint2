@@ -7,7 +7,7 @@ test_that("animint plot renders in a shiny app", {
   app_info <- start_app("shiny", app_dir, port)
   on.exit(app_info$proc$kill(), add = TRUE)
   remDr$navigate(app_info$url)
-  Sys.sleep(20)
+  Sys.sleep(10)
   # Wait for animint div to be present
   animint_ready <- FALSE
   for (i in 1:10) {
@@ -74,7 +74,7 @@ test_that("animint plot renders in an interactive document", {
   app_info <- start_app("rmd", rmd_file, port)
   on.exit(app_info$proc$kill(), add = TRUE)
   remDr$navigate(app_info$url)
-  Sys.sleep(30)
+  Sys.sleep(10)
   iframe_ready <- FALSE
   for (i in 1:10) {
     res <- remDr$Runtime$evaluate("document.querySelector('.shiny-frame') !== null")

@@ -126,30 +126,45 @@ start_js_coverage <- function() {
 
 stop_js_coverage <- function() {
   tryCatch({
-    # Stop the profiler and get the coverage data
     cov <- remDr$Profiler$takePreciseCoverage()
-    js_content <- remDr$Runtime$evaluate(
-      "Array.from(document.scripts).map(s => s.textContent || '').join('\\n')"
-    )$result$value
-    if (!nzchar(js_content)) {
-      warning("No JavaScript content was extracted from the page. Coverage may be incomplete.")
+    results <- cov$result
+    keep <- vapply(results, function(entry) {
+      grepl("animint", entry$url, ignore.case = TRUE)
+    }, logical(1))
+    results <- results[keep]
+    if (length(results) == 0) {
+      warning("No animint/shinyAnimint JS coverage was collected.")
       return(FALSE)
     }
-    # Save the extracted JS to a temporary file for the converter
-    temp_js_file <- tempfile(fileext = ".js")
-    writeLines(js_content, temp_js_file)
-    # Point the coverage data to the temporary source file
-    coverage_data <- list(
-      result = cov$result,
-      url = temp_js_file
-    )
-    # Always write to a single, standard output file
+    out_dir <- file.path("coverage-js")
+    dir.create(out_dir, showWarnings = FALSE)
+    for (i in seq_along(results)) {
+      url <- results[[i]]$url
+      script <- remDr$Runtime$evaluate(
+        sprintf("
+          (function() {
+            var s = document.querySelector('script[src=\"%s\"]');
+            if (s) {
+              return fetch(s.src).then(r => r.text());
+            }
+            return '';
+          })()
+        ", url)
+      )$result$value
+      if (nzchar(script)) {
+        fname <- if (grepl("shinyAnimint", url)) "shinyAnimint.js" else "animint.js"
+        local_file <- file.path(out_dir, fname)
+        writeLines(script, local_file)
+        results[[i]]$url <- normalizePath(local_file)
+      }
+    }
     outfile <- "js-coverage.json"
-    jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
+    jsonlite::write_json(list(result = results), outfile,
+                         auto_unbox = TRUE, pretty = TRUE)
     message("JS coverage saved to ", normalizePath(outfile))
     TRUE
   }, error = function(e) {
     warning("Failed to save JS coverage: ", e$message)
-    return(FALSE)
+    FALSE
   })
 }
