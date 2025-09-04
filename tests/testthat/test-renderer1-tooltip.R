@@ -174,7 +174,11 @@ test_that("tooltips support newline character", {
   Sys.sleep(0.3)
   tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
   tooltip_inner <- paste(sapply(xmlChildren(tooltip_div), saveXML), collapse = "")
-  cat("Tooltip innerHTML:\n", tooltip_inner, "\n")
   # inner HTML should be exactly "two<br/>lines"
   expect_equal(trimws(tooltip_inner), "two<br/>lines")
+  # Move mouse away to clean up
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
+  # Verify that tooltip hides correctly after mouseout
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
 })
