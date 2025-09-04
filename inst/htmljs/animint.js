@@ -2296,9 +2296,9 @@ var animint = function (to_select, json_file) {
           break;
         }
     } 
-      if(grid_layout){
-       plot_table = plot_td.append("table").style("display", "inline-block");
-      }
+    if(grid_layout){
+      plot_table = plot_td.append("table").style("display", "inline-block");
+    }
     // Add plots.
     for (var p_name in response.plots) {
       add_plot(p_name, response.plots[p_name], grid_layout);
