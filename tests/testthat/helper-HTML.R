@@ -126,41 +126,31 @@ start_js_coverage <- function() {
 
 stop_js_coverage <- function() {
   tryCatch({
-    cov <- remDr$Profiler$takePreciseCoverage()
-    results <- cov$result
-    keep <- vapply(results, function(entry) {
-      grepl("animint", entry$url, ignore.case = TRUE)
-    }, logical(1))
-    results <- results[keep]
-    if (length(results) == 0) {
-      warning("No animint/shinyAnimint JS coverage was collected.")
-      return(FALSE)
-    }
-    out_dir <- file.path("coverage-js")
-    dir.create(out_dir, showWarnings = FALSE)
-    for (i in seq_along(results)) {
-      url <- results[[i]]$url
-      script <- remDr$Runtime$evaluate(
-        sprintf("
-          (function() {
-            var s = document.querySelector('script[src=\"%s\"]');
-            if (s) {
-              return fetch(s.src).then(r => r.text());
-            }
-            return '';
-          })()
-        ", url)
-      )$result$value
-      if (nzchar(script)) {
-        fname <- if (grepl("shinyAnimint", url)) "shinyAnimint.js" else "animint.js"
-        local_file <- file.path(out_dir, fname)
-        writeLines(script, local_file)
-        results[[i]]$url <- normalizePath(local_file)
-      }
+    cov <- remDr$Profiler$takePreciseCoverage()    
+    # Try to extract dynamic JS first (for Shiny tests)
+    js_content <- remDr$Runtime$evaluate(
+      "Array.from(document.scripts).filter(s => s.textContent && s.textContent.includes('animint')).map(s => s.textContent).join('\\n')"
+    )$result$value
+    if (nzchar(js_content)) {
+      # Dynamic JS found (Shiny case)
+      temp_js_file <- tempfile(fileext = ".js")
+      writeLines(js_content, temp_js_file)
+      coverage_data <- list(
+        result = cov$result,
+        url = temp_js_file
+      )
+      message("Dynamic JS coverage collected (Shiny)")
+    } else {
+      # No dynamic JS, use static file (renderer case)
+      static_js_path <- file.path(getwd(), "animint-htmltest", "animint.js")
+      coverage_data <- list(
+        result = cov$result,
+        url = normalizePath(static_js_path)
+      )
+      message("Static JS coverage collected (renderer)")
     }
     outfile <- "js-coverage.json"
-    jsonlite::write_json(list(result = results), outfile,
-                         auto_unbox = TRUE, pretty = TRUE)
+    jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
     message("JS coverage saved to ", normalizePath(outfile))
     TRUE
   }, error = function(e) {
