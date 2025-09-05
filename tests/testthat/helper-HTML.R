@@ -128,23 +128,22 @@ stop_js_coverage <- function() {
   tryCatch({
     cov <- remDr$Profiler$takePreciseCoverage()
     results <- cov$result
-    # Only keep animint + shinyAnimint scripts
-    results <- Filter(function(x) grepl("animint", x$url, ignore.case = TRUE), results)
+    # Filter to only the main animint.js script
+    results <- Filter(function(x) grepl("animint.js", x$url), results)
     if (length(results) == 0) {
-      warning("No animint/shinyAnimint coverage collected.")
+      warning("No animint.js coverage collected.")
       return(FALSE)
     }
+    # Get the single, true path to animint.js
+    local_path <- normalizePath(system.file("htmljs", "animint.js", package = "animint2"))
+    # Update all relevant entries to point to this one local file
     for (i in seq_along(results)) {
-      url <- results[[i]]$url
-      if (grepl("shinyAnimint", url, ignore.case = TRUE)) {
-        results[[i]]$url <- normalizePath(system.file("shiny", "shinyAnimint.js", package = "animint2"))
-      } else if (grepl("animint", url, ignore.case = TRUE)) {
-        results[[i]]$url <- normalizePath(system.file("htmljs", "animint.js", package = "animint2"))
-      }
+      results[[i]]$url <- local_path
     }
-    out_file <- file.path("tests", "testthat", "js-coverage.json")
-    jsonlite::write_json(list(result = results), out_file, auto_unbox = TRUE, pretty = TRUE)
-    message("JS coverage saved to ", normalizePath(out_file))
+    # Write to a single output file
+    outfile <- "js-coverage.json"
+    jsonlite::write_json(list(result = results), outfile, auto_unbox = TRUE, pretty = TRUE)
+    message("JS coverage saved to ", normalizePath(outfile))
     TRUE
   }, error = function(e) {
     warning("Failed to save JS coverage: ", e$message)
