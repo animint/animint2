@@ -123,14 +123,14 @@ html_dependency_d3 <- function() {
 
 html_dependency_animint <- function() {
   htmltools::htmlDependency(name = "animint",
-                 version = NULL,
+                 version = packageVersion("animint2"),
                  src = system.file("htmljs", package = "animint2"),
                  script = "animint.js")
 }
 
 html_dependency_shinyAnimint <- function() {
   htmltools::htmlDependency(name = "shinyAnimint",
-                 version = NULL,
+                 version = packageVersion("animint2"),
                  src = system.file("shiny", package = "animint2"),
                  script = "shinyAnimint.js")
 }
