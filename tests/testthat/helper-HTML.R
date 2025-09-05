@@ -126,32 +126,25 @@ start_js_coverage <- function() {
 
 stop_js_coverage <- function() {
   tryCatch({
-    cov <- remDr$Profiler$takePreciseCoverage()    
-    # Try to extract dynamic JS first (for Shiny tests)
-    js_content <- remDr$Runtime$evaluate(
-      "Array.from(document.scripts).filter(s => s.textContent && s.textContent.includes('animint')).map(s => s.textContent).join('\\n')"
-    )$result$value
-    if (nzchar(js_content)) {
-      # Dynamic JS found (Shiny case)
-      temp_js_file <- tempfile(fileext = ".js")
-      writeLines(js_content, temp_js_file)
-      coverage_data <- list(
-        result = cov$result,
-        url = temp_js_file
-      )
-      message("Dynamic JS coverage collected (Shiny)")
-    } else {
-      # No dynamic JS, use static file (renderer case)
-      static_js_path <- file.path(getwd(), "animint-htmltest", "animint.js")
-      coverage_data <- list(
-        result = cov$result,
-        url = normalizePath(static_js_path)
-      )
-      message("Static JS coverage collected (renderer)")
+    cov <- remDr$Profiler$takePreciseCoverage()
+    results <- cov$result
+    # Only keep animint + shinyAnimint scripts
+    results <- Filter(function(x) grepl("animint", x$url, ignore.case = TRUE), results)
+    if (length(results) == 0) {
+      warning("No animint/shinyAnimint coverage collected.")
+      return(FALSE)
     }
-    outfile <- "js-coverage.json"
-    jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
-    message("JS coverage saved to ", normalizePath(outfile))
+    for (i in seq_along(results)) {
+      url <- results[[i]]$url
+      if (grepl("shinyAnimint", url, ignore.case = TRUE)) {
+        results[[i]]$url <- normalizePath(system.file("shiny", "shinyAnimint.js", package = "animint2"))
+      } else if (grepl("animint", url, ignore.case = TRUE)) {
+        results[[i]]$url <- normalizePath(system.file("htmljs", "animint.js", package = "animint2"))
+      }
+    }
+    out_file <- file.path("tests", "testthat", "js-coverage.json")
+    jsonlite::write_json(list(result = results), out_file, auto_unbox = TRUE, pretty = TRUE)
+    message("JS coverage saved to ", normalizePath(out_file))
     TRUE
   }, error = function(e) {
     warning("Failed to save JS coverage: ", e$message)
