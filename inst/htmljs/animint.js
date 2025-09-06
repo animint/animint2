@@ -7,7 +7,7 @@
 var animint = function (to_select, json_file) {
   var steps = [];
   var default_axis_px = 16;
-
+  var grid_layout = false;
    function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
@@ -243,12 +243,31 @@ var animint = function (to_select, json_file) {
     // Save this geom and load it!
     update_geom(g_name, null);
   };
-  var add_plot = function (p_name, p_info) {
-    // Each plot may have one or more legends. To make space for the
-    // legends, we put each plot in a table with one row and two
-    // columns: tdLeft and tdRight.
-    var plot_table = plot_td.append("table").style("display", "inline-block");
+  var current_tr = null;
+  var plot_table = null;
+  var add_plot = function (p_name, p_info, grid_layout) {
+  if(grid_layout) {
+  var attributes = p_info.span || {};
+  if(current_tr === null) {
+    current_tr = plot_table.append("tr");
+  }
+  var td = current_tr.append("td");
+  if( attributes.rowspan > 0){
+  td.attr("rowspan", attributes.rowspan);
+  }
+  if(attributes.colspan > 0){
+  td.attr("colspan", attributes.colspan);
+   }
+   var plot_inner_table = td.append("table").style("display", "inline-block");
+   var plot_tr = plot_inner_table.append("tr");
+   // Reset row when explicitly marked as last in row
+   if(attributes.last_in_row){
+      current_tr = null;
+    }
+  }else{
+    plot_table = plot_td.append("table").style("display", "inline-block");
     var plot_tr = plot_table.append("tr");
+  }
     var tdLeft = plot_tr.append("td");
     var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
     if(viz_id === null){
@@ -2270,9 +2289,20 @@ var animint = function (to_select, json_file) {
       // global d3.select here.
       d3.select("title").text(response.title);
     }
+    // checking for layout structure
+    for(var p_name in response.plots) {
+      let attributes = response.plots[p_name].span;
+        if(attributes.rowspan > 0 || attributes.colspan > 0 || attributes.last_in_row) {
+          grid_layout = true;
+          break;
+        }
+    } 
+    if(grid_layout){
+      plot_table = plot_td.append("table").style("display", "inline-block");
+    }
     // Add plots.
     for (var p_name in response.plots) {
-      add_plot(p_name, response.plots[p_name]);
+      add_plot(p_name, response.plots[p_name], grid_layout);
       add_legend(p_name, response.plots[p_name]);
       // Append style sheet to document head.
       css.appendChild(document.createTextNode(styles.join(" ")));
@@ -2754,4 +2784,3 @@ var animint = function (to_select, json_file) {
     }//if(window.location.hash)
   });
 };
-

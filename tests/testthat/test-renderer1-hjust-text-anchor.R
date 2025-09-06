@@ -8,7 +8,6 @@ grad.desc <- function(
   y <- seq(rg[2], rg[4], length = len)
   contour <- expand.grid(x = x, y = y)
   contour$z <- as.vector(outer(x, y, FUN))
-  
   nms = names(formals(FUN))
   grad = if (is.null(gr)) {
     deriv(as.expression(body(FUN)), nms, function.arg = TRUE)
@@ -19,7 +18,6 @@ grad.desc <- function(
       res
     }
   }
-  
   xy <- init
   newxy <- xy - gamma * attr(grad(xy[1], xy[2]), 'gradient')
   z <- FUN(newxy[1], newxy[2])
@@ -48,7 +46,6 @@ objective2 <- subset(objective, iteration == iteration2)
 
 grad.desc.viz <- function(hjust) {
   objective2$hjust <- hjust
-  
   contour.plot <- ggplot() + 
     geom_contour(data = contour, aes(x = x, y = y, z = z, colour = ..level..), size = .5) + 
     scale_colour_continuous(name = "z value") + 
@@ -61,7 +58,6 @@ grad.desc.viz <- function(hjust) {
     scale_y_continuous(expand = c(0, 0)) + 
     ggtitle("contour of function value") + 
     theme_animint(width = 600, height = 600)
-  
   objective.plot <- ggplot() +
     geom_line(data = objective2, aes(x = iteration, y = z), colour = "red") + 
     geom_point(data = objective2, aes(x = iteration, y = z), colour = "red") + 
@@ -71,7 +67,6 @@ grad.desc.viz <- function(hjust) {
                                      label = iteration), showSelected = "iteration2", hjust = hjust) + 
     ggtitle("objective value vs. iteration") + 
     theme_animint(width = 600, height = 600)
-  
   viz <- list(contour = contour.plot, objective = objective.plot, 
               time = list(variable = "iteration2", ms = 2000), 
               title = "Demonstration of Gradient Descent Algorithm")
@@ -79,6 +74,15 @@ grad.desc.viz <- function(hjust) {
 
 viz <- grad.desc.viz(hjust = 0)
 info <- animint2HTML(viz)
+
+test_that("plot_content//table by default", {
+  plot_content <- getNodeSet(info$html, '//td[@class="plot_content"]')
+  expect_equal(length(plot_content), 1)
+  plot_tables <- getNodeSet(info$html, '//td[@class="plot_content"]/table')
+  expect_equal(length(plot_tables), 2)
+  children <- xmlChildren(plot_content[[1]])
+  expect_equal(length(children), 2)
+})
 
 test_that("unspecified hjust means text-anchor: middle (other hjust=0)", {
   style.value <-
