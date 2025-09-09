@@ -76,7 +76,9 @@ test_that("animint2pages(chromote_sleep_seconds=3) creates Capture.PNG", {
 
 test_that("animint2pages(chromote_sleep_seconds=NULL) does not create Capture.PNG", {
   reset_test_repo()
+  Sys.sleep(3)
   result_list <- animint2pages(viz, "animint2pages_test_repo", owner="animint-test", chromote_sleep_seconds=NULL)
+  Sys.sleep(3)
   expect_match(result_list$owner_repo, "animint2pages_test_repo")
   expect_match(result_list$viz_url, "github.io/animint2pages_test_repo")
   expect_match(result_list$gh_pages_url, "animint2pages_test_repo/tree/gh-pages")
@@ -92,7 +94,7 @@ test_that("animint2pages(chromote_sleep_seconds=NULL) does not create Capture.PN
   github_url <- paste0("https://github.com/", result_list$owner_repo, ".git")
   gert::git_clone(github_url, new_clone)
   branch_name <- gert::git_branch(new_clone)
-  expect_identical(branch_name, "gh-pages")
+  expect_identical(branch_name, "gh-pages", info=paste(branch_name, "should be gh-pages"))
   cat("FOO", file=file.path(new_clone, "Capture.PNG"))
   gert::git_add("Capture.PNG", repo=new_clone)
   gert::git_commit(message="add Capture.PNG", repo=new_clone)
@@ -103,7 +105,9 @@ test_that("animint2pages(chromote_sleep_seconds=NULL) does not create Capture.PN
     geom_point(aes(
       x, x),
       data=data.frame(x=1:5))
+  Sys.sleep(3)
   update_list <- animint2pages(viz.more, "animint2pages_test_repo", owner="animint-test", chromote_sleep_seconds=NULL)
+  Sys.sleep(3)
   tsv_files_updated <- get_tsv(update_list)
   expect_equal(length(tsv_files_updated), 2)
   expect_Capture(update_list)
