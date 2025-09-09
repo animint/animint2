@@ -1,28 +1,46 @@
+expect_name <- function(x,N)expect_identical(xmlName(x),N)
+expect_svg <- function(td,N){
+  expect_name(td, "td")
+  node_list <- getNodeSet(bottom_right_td, "//svg")
+  svg_node <- node_list[[1]]
+  svg_id <- xmlAttrs(svg_node)[["id"]]
+  expect_identical(svg_id, paste0("plot_",N))
+}
 test_that("Simple rowspan layout works", {
   plot_data <- data.frame(x = 1:3, y = c(2, 4, 6))
   plot_collection <- list(
-    LeftPlot = ggplot(plot_data, aes(x, y)) +
+    Left = ggplot(plot_data, aes(x, y)) +
       geom_point() +
-      theme_animint(rowspan = 2) +
-      ggtitle("left_plot")  ,
-    TopRightPlot = ggplot(plot_data, aes(x, y)) +
+      theme_animint(rowspan = 2, height=800) +
+      ggtitle("Left")  ,
+    TopRight = ggplot(plot_data, aes(x, y)) +
       geom_point() +
       theme_animint(last_in_row = TRUE) +
-      ggtitle("top_right_plot") ,
-    BottomRightPlot = ggplot(plot_data, aes(x, y)) +
+      ggtitle("TopRight") ,
+    BottomRight = ggplot(plot_data, aes(x, y)) +
       geom_point() +
-      ggtitle("bottom_right_plot")
+      ggtitle("BottomRight")
   )
   info <- animint2HTML(plot_collection)
-  html <- info$html
-  all_svgs <- getNodeSet(html, "//svg")
-  expect_equal(length(all_svgs), 3)  # 3 plots
-  rowspan_cells <- getNodeSet(html, "//td[@rowspan='2']")
-  expect_equal(length(rowspan_cells), 1)  # 1 rowspan
-  colspan_cells <- getNodeSet(html, "//td[@colspan]")
-  expect_equal(length(colspan_cells), 0)  # no colspan
-  html_text <- saveXML(html)
-  expect_true(grepl("left_plot", html_text))  # has left
-  expect_true(grepl("top_right_plot", html_text))  # has top right
-  expect_true(grepl("bottom_right_plot", html_text))  # has bottom right
+  td_plot_content <- getNodeSet(info$html, "//td[@class='plot_content']")
+  expect_equal(length(td_plot_content), 1)
+  td_children <- xmlChildren(td_plot_content[[1]])
+  expect_equal(length(td_children), 1)
+  grid_layout_table <- td_children[[1]]
+  expect_name(grid_layout_table, "table")
+  table_children <- xmlChildren(grid_layout_table)
+  expect_equal(length(table_children), 2)
+  ## First row should have two tds.
+  first_tr <- table_children[[1]]
+  expect_name(first_tr, "tr")
+  first_td_list <- xmlChildren(first_tr)
+  expect_equal(length(first_td_list), 2)
+  expect_svg(first_td_list[[1]], "Left")
+  expect_svg(first_td_list[[2]], "TopRight")
+  ## second row should have one td.
+  second_tr <- table_children[[2]]
+  expect_name(second_tr, "tr")
+  second_td_list <- xmlChildren(second_tr)
+  expect_equal(length(second_td_list), 1)
+  expect_svg(second_td_list[[1]], "BottomRight")
 })
