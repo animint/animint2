@@ -1,12 +1,19 @@
-expect_name <- function(x,N)expect_identical(xmlName(x),N)
-expect_svg <- function(td,N){
-  expect_name(td, "td")
-  node_list <- getNodeSet(bottom_right_td, "//svg")
-  svg_node <- node_list[[1]]
-  svg_id <- xmlAttrs(svg_node)[["id"]]
-  expect_identical(svg_id, paste0("plot_",N))
-}
 test_that("Simple rowspan layout works", {
+  expect_name <- function(x,N)expect_identical(xmlName(x),N)
+  expect_svg <- function(td,N,...){
+    check_list <- list(...)
+    expect_name(td, "td")
+    td_attrs <- xmlAttrs(td)
+    for(at in names(check_list)){
+      expect_identical(td_attrs[[at]], check_list[[at]])
+    }
+    tab <- xmlChildren(td)[[1]]
+    tr <- xmlChildren(tab)[[1]]
+    plot_td <- xmlChildren(tr)[[1]]
+    svg_node <- xmlChildren(plot_td)[[1]]
+    svg_id <- xmlAttrs(svg_node)[["id"]]
+    expect_identical(svg_id, paste0("plot_",N))
+  }
   plot_data <- data.frame(x = 1:3, y = c(2, 4, 6))
   plot_collection <- list(
     Left = ggplot(plot_data, aes(x, y)) +
@@ -35,7 +42,7 @@ test_that("Simple rowspan layout works", {
   expect_name(first_tr, "tr")
   first_td_list <- xmlChildren(first_tr)
   expect_equal(length(first_td_list), 2)
-  expect_svg(first_td_list[[1]], "Left")
+  expect_svg(first_td_list[[1]], "Left", rowspan="2")
   expect_svg(first_td_list[[2]], "TopRight")
   ## second row should have one td.
   second_tr <- table_children[[2]]
