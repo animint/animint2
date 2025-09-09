@@ -8,7 +8,8 @@ var animint = function (to_select, json_file) {
   var steps = [];
   var default_axis_px = 16;
   var grid_layout = false;
-   function wait_until_then(timeout, condFun, readyFun) {
+  var grid_layout_table;
+  function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
       if(condFun()) {
@@ -243,31 +244,29 @@ var animint = function (to_select, json_file) {
     // Save this geom and load it!
     update_geom(g_name, null);
   };
-  var current_tr = null;
-  var plot_table = null;
   var add_plot = function (p_name, p_info, grid_layout) {
-  if(grid_layout) {
-  var attributes = p_info.span || {};
-  if(current_tr === null) {
-    current_tr = plot_table.append("tr");
-  }
-  var td = current_tr.append("td");
-  if( attributes.rowspan > 0){
-  td.attr("rowspan", attributes.rowspan);
-  }
-  if(attributes.colspan > 0){
-  td.attr("colspan", attributes.colspan);
-   }
-   var plot_inner_table = td.append("table").style("display", "inline-block");
-   var plot_tr = plot_inner_table.append("tr");
-   // Reset row when explicitly marked as last in row
-   if(attributes.last_in_row){
-      current_tr = null;
+    var grid_layout_tr = null;
+    var plot_table;
+    if(grid_layout) {
+      var attributes = p_info.span || {};
+      if(grid_layout_tr === null) {
+	grid_layout_tr = grid_layout_table.append("tr");
+      }
+      var grid_layout_td = grid_layout_tr.append("td");
+      if(attributes.rowspan > 0){
+	grid_layout_td.attr("rowspan", attributes.rowspan);
+      }
+      if(attributes.colspan > 0){
+	grid_layout_td.attr("colspan", attributes.colspan);
+      }
+      plot_table = grid_layout_td.append("table")
+      if(attributes.last_in_row){
+	grid_layout_tr = null;
+      }
+    }else{
+      plot_table = plot_td.append("table").style("display", "inline-block");
     }
-  }else{
-    plot_table = plot_td.append("table").style("display", "inline-block");
     var plot_tr = plot_table.append("tr");
-  }
     var tdLeft = plot_tr.append("td");
     var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
     if(viz_id === null){
@@ -279,7 +278,7 @@ var animint = function (to_select, json_file) {
       .attr("id", p_info.plot_id)
       .attr("height", p_info.options.height)
       .attr("width", p_info.options.width);
-
+    
     // divvy up width/height based on the panel layout
     var nrows = Math.max.apply(null, p_info.layout.ROW);
     var ncols = Math.max.apply(null, p_info.layout.COL);
@@ -2295,9 +2294,9 @@ var animint = function (to_select, json_file) {
           grid_layout = true;
           break;
         }
-    } 
+    }
     if(grid_layout){
-      plot_table = plot_td.append("table").style("display", "inline-block");
+      grid_layout_table = plot_td.append("table")
     }
     // Add plots.
     for (var p_name in response.plots) {
