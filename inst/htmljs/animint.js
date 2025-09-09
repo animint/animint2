@@ -1815,8 +1815,9 @@ var animint = function (to_select, json_file) {
         mouseX = d3.event.pageX;
         mouseY = d3.event.pageY;
       }
+      var safeHtml = String(content).replace(/\n/g, '<br/>');
       tooltip
-        .html(content)
+        .html(safeHtml)
         .style("left", (mouseX + TOOLTIP_HORIZONTAL_OFFSET) + "px")
         .style("top", (mouseY - TOOLTIP_VERTICAL_OFFSET) + "px")
         .style("opacity", 1);

@@ -2,6 +2,10 @@
 
 - Multiple ggplots may now be arranged on the page via `theme_animint()` options `colspan=2`, `rowspan=2`, `last_in_row=TRUE` (meaning next ggplot occurs in next row). Backwards-compatible since old arrangement code is used when none of these options is present.
 
+# Changes in version 2025.9.6 (PR#220)
+
+- `aes(tooltip)`: Fixed an issue where tooltips containing newline characters (e.g. `"two\nlines"`) caused rendering failures when combined with other aesthetics such as `aes(color=...)`. The problem was due to TSV export with `quote=FALSE`, which broke parsing when fields contained newlines. The TSV writer now uses `quote="auto"`, ensuring fields with `\n` are preserved correctly. On the rendering side, newline characters in tooltips are converted to `<br/>`, so multi-line tooltips are now properly supported.
+
 # Changes in version 2025.8.16 (PR#214)
 
 - `geom_abline()`: Fixed an issue where lines extended beyond plot boundaries when update_axes was called. The clipping logic has now been moved from the pre_process function on the R side to the renderer side, ensuring that geom_abline lines are correctly clipped to the plot boundaries during update_axes.
