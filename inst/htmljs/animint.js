@@ -244,24 +244,24 @@ var animint = function (to_select, json_file) {
     // Save this geom and load it!
     update_geom(g_name, null);
   };
+  var grid_layout_tr = null; //static between add_plot calls.
   var add_plot = function (p_name, p_info, grid_layout) {
-    var grid_layout_tr = null;
     var plot_table;
     if(grid_layout) {
-      var attributes = p_info.span || {};
+      var grid_info = p_info.span || {};
       if(grid_layout_tr === null) {
-	grid_layout_tr = grid_layout_table.append("tr");
+        grid_layout_tr = grid_layout_table.append("tr");
       }
       var grid_layout_td = grid_layout_tr.append("td");
-      if(attributes.rowspan > 0){
-	grid_layout_td.attr("rowspan", attributes.rowspan);
+      if(grid_info.rowspan > 0){
+        grid_layout_td.attr("rowspan", grid_info.rowspan);
       }
-      if(attributes.colspan > 0){
-	grid_layout_td.attr("colspan", attributes.colspan);
+      if(grid_info.colspan > 0){
+        grid_layout_td.attr("colspan", grid_info.colspan);
       }
       plot_table = grid_layout_td.append("table")
-      if(attributes.last_in_row){
-	grid_layout_tr = null;
+      if(grid_info.last_in_row){
+        grid_layout_tr = null;
       }
     }else{
       plot_table = plot_td.append("table").style("display", "inline-block");
