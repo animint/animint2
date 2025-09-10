@@ -75,7 +75,7 @@ test_that("tooltip shows correct content for rect", {
   expect_match(tooltip_text, "187 not NA in 1975")
   # Verify that tooltip opacity is now 1 (tooltip shown)
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
-  expect_identical(opacity, "1")
+  expect_gt(as.numeric(opacity), 0)
   # Move mouse away to clean up
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
   Sys.sleep(0.2)
@@ -100,7 +100,7 @@ test_that("tooltip shows correct content for point", {
   expect_match(tooltip_text, "China population 916395000")
   # Verify that tooltip opacity is now 1 (tooltip shown)
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
-  expect_identical(opacity, "1")
+  expect_gt(as.numeric(opacity), 0)
   # Move mouse away to clean up
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
   Sys.sleep(0.2)
@@ -126,7 +126,7 @@ test_that("tooltip shows correct content for geom_text", {
   expect_match(tooltip_text, "China")
   # Verify that tooltip opacity is now 1 (tooltip shown)
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
-  expect_identical(opacity, "1")
+  expect_gt(as.numeric(opacity), 0)
   # Move mouse away to clean up
   remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
   # Verify that tooltip hides correctly after mouseout

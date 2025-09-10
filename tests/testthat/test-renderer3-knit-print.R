@@ -240,3 +240,54 @@ test_that("clicking top plot closes driver", {
   expect_identical(djs.start1.top.list, expected.driver.empty)
 })
 
+## tooltip tests 10 sept 2025.
+tooltip.xpath <- '//div[@id="breakpoints"]//div[@class="animint-tooltip"]'
+click_center("breakpoints")
+test_that(".animint-tooltip breakpoints exists and is hidden initially", {
+  opacity <- getStyleValue(html, tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
+})
+test_that("breakpoints tooltip shows correct content on hover interaction", {
+  # Get segment selector position
+  sel_position <- get_element_bbox('g[class*=\"geom5_vline\"] line')
+  # Hover over the rect
+  remDr$Input$dispatchMouseEvent(
+    type = "mouseMoved",
+    x = sel_position$left,
+    y = sel_position$top
+  )
+  Sys.sleep(0.5)
+  # Verify tooltip is visible and shows correct content
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_gt(as.numeric(opacity), 0)
+  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
+  expect_equal(xmlValue(tooltip_div), "segments 1")
+  # Simulate mouseout
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
+})
+
+tooltip.xpath <- '//div[@id="plot1top"]//div[@class="animint-tooltip"]'
+click_center("plot1top")
+test_that(".animint-tooltip plot1top exists and is hidden initially", {
+  opacity <- getStyleValue(html, tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
+})
+test_that("plot1top tooltip shows correct content on hover interaction", {
+  # Get segment selector position
+  sel_position <- get_element_bbox('g[class*=\"geom1_point\"] circle')
+  sel_position <- get_element_bbox('g[class*=\"geom1_point_q\"] circle')
+  # Hover over the rect
+  remDr$Input$dispatchMouseEvent(
+    type = "mouseMoved",
+    x = sel_position$center_x,
+    y = sel_position$center_y
+  )
+  Sys.sleep(0.5)
+  # Verify tooltip is visible and shows correct content
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_gt(as.numeric(opacity), 0)
+  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
+  expect_equal(xmlValue(tooltip_div), "tooltip in first plot 1")
+  # Simulate mouseout
+  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
+})

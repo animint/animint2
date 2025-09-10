@@ -1820,7 +1820,7 @@ var animint = function (to_select, json_file) {
         .html(safeHtml)
         .style("left", (mouseX + TOOLTIP_HORIZONTAL_OFFSET) + "px")
         .style("top", (mouseY - TOOLTIP_VERTICAL_OFFSET) + "px")
-        .style("opacity", 1);
+        .style("opacity", 0.7);
     }
     if(has_clickSelects || has_tooltip || has_clickSelects_variable){
       // Tooltip positioning constants
@@ -1842,11 +1842,11 @@ var animint = function (to_select, json_file) {
 	  return d["clickSelects.variable"] + " " + d["clickSelects.value"];
 	};
       }
-      var tooltip = d3.select("#plot").select(".animint-tooltip").node() 
-    ? d3.select(".animint-tooltip")
-    : d3.select("#plot").append("div")
-        .attr("class", "animint-tooltip")
-        .style("opacity", 0);
+      var tooltip = d3.select(to_select).select(".animint-tooltip").node()
+	  ? d3.select(".animint-tooltip")
+	  : d3.select(to_select).append("div")
+          .attr("class", "animint-tooltip")
+          .style("opacity", 0);
       // Add tooltip handlers
       elements
         .on("mouseover.tooltip", function(d) {
