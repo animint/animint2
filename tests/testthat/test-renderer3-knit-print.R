@@ -241,57 +241,34 @@ test_that("clicking top plot closes driver", {
 })
 
 ## tooltip tests 10 sept 2025.
-tooltip.xpath <- '//div[@id="breakpoints"]//div[@class="animint-tooltip"]'
-click_center("breakpoints")
-test_that(".animint-tooltip breakpoints exists and is hidden initially", {
-  opacity <- getStyleValue(html, tooltip.xpath, "opacity")
-  expect_identical(opacity, "0")
-})
 test_that("absolute position is loaded from animint.css", {
   position_style <- runtime_evaluate('window.getComputedStyle(document.getElementsByClassName("animint-tooltip")[0])["position"]')
   expect_identical(position_style, "absolute")
 })
-test_that("breakpoints tooltip shows correct content on hover interaction", {
-  # Get segment selector position
-  sel_position <- get_element_bbox('g[class*=\"geom5_vline\"] line')
-  # Hover over the rect
-  remDr$Input$dispatchMouseEvent(
-    type = "mouseMoved",
-    x = sel_position$center_x,
-    y = sel_position$center_y
-  )
-  Sys.sleep(1)
-  # Verify tooltip is visible and shows correct content
-  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
-  expect_gt(as.numeric(opacity), 0)
-  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
-  expect_equal(xmlValue(tooltip_div), "segments 1")
-  # Simulate mouseout
-  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
-})
 
-tooltip.xpath <- '//div[@id="plot1top"]//div[@class="animint-tooltip"]'
-click_center("plot1top")
-test_that(".animint-tooltip plot1top exists and is hidden initially", {
-  opacity <- getStyleValue(html, tooltip.xpath, "opacity")
-  expect_identical(opacity, "0")
-})
-test_that("plot1top tooltip shows correct content on hover interaction", {
-  # Get segment selector position
-  sel_position <- get_element_bbox('g[class*=\"geom1_point\"] circle')
-  sel_position <- get_element_bbox('g[class*=\"geom1_point_q\"] circle')
-  # Hover over the rect
-  remDr$Input$dispatchMouseEvent(
-    type = "mouseMoved",
-    x = sel_position$center_x,
-    y = sel_position$center_y
-  )
-  Sys.sleep(1)
-  # Verify tooltip is visible and shows correct content
-  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
-  expect_gt(as.numeric(opacity), 0)
-  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
-  expect_equal(xmlValue(tooltip_div), "tooltip in first plot 1")
-  # Simulate mouseout
-  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
-})
+test_tooltip <- function(div_id, g_class, svg_el, div_content){
+  tooltip.xpath <- sprintf(
+    '//div[@id="%s"]//div[@class="animint-tooltip"]', div_id)
+  click_center(div_id)
+  test_that(paste(div_id, ".animint-tooltip exists and is hidden initially"), {
+    opacity <- getStyleValue(html, tooltip.xpath, "opacity")
+    expect_identical(opacity, "0")
+  })
+  test_that(paste(div_id, "tooltip shows correct content on hover interaction"), {
+    sel_position <- get_element_bbox(sprintf(
+      'g[class*=\"%s\"] %s', g_class, svg_el))
+    remDr$Input$dispatchMouseEvent(
+      type = "mouseMoved",
+      x = sel_position$center_x,
+      y = sel_position$center_y)
+    Sys.sleep(1)
+    opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+    expect_gt(as.numeric(opacity), 0)
+    tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
+    expect_equal(xmlValue(tooltip_div), div_content)
+    remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
+  })
+}
+test_tooltip("breakpoints", "geom5_vline", "line", "segments 1")
+test_tooltip("plot1top", "geom1_point_q", "circle", "tooltip in first plot 1")
+
