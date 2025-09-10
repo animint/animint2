@@ -1,6 +1,6 @@
-# Changes in version 2025.9.9 (PR#153)
+# Changes in version 2025.9.10 (PR#223)
 
-- Multiple ggplots may now be arranged on the page via `theme_animint()` options `colspan=2`, `rowspan=2`, `last_in_row=TRUE` (meaning next ggplot occurs in next row). Backwards-compatible since old arrangement code is used when none of these options is present.
+- `geom_label_aligned()` and `aes(tooltip)` now work in Rmd docs rendered to HTML.
 
 # Changes in version 2025.9.6 (PR#220)
 
@@ -9,6 +9,10 @@
 # Changes in version 2025.8.16 (PR#214)
 
 - `geom_abline()`: Fixed an issue where lines extended beyond plot boundaries when update_axes was called. The clipping logic has now been moved from the pre_process function on the R side to the renderer side, ensuring that geom_abline lines are correctly clipped to the plot boundaries during update_axes.
+
+# Changes in version 2025.7.21 (PR#203)
+
+- Added `geom_label_aligned`, a new geom that plots text labels with non-overlapping positioning along a specified alignment axis ("horizontal" or "vertical"). It uses quadratic programming to optimize label placement and includes options for spacing (min_distance), alignment, rounded background rectangles (label_r), disabling the background rectangle (background_rect = FALSE), etc.
 
 # Changes in version 2025.7.21 (PR#203)
 
