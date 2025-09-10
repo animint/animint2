@@ -246,6 +246,8 @@ click_center("breakpoints")
 test_that(".animint-tooltip breakpoints exists and is hidden initially", {
   opacity <- getStyleValue(html, tooltip.xpath, "opacity")
   expect_identical(opacity, "0")
+})
+test_that("absolute position is loaded from animint.css", {
   position_style <- runtime_evaluate('window.getComputedStyle(document.getElementsByClassName("animint-tooltip")[0])["position"]')
   expect_identical(position_style, "absolute")
 })
