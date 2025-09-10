@@ -246,6 +246,8 @@ click_center("breakpoints")
 test_that(".animint-tooltip breakpoints exists and is hidden initially", {
   opacity <- getStyleValue(html, tooltip.xpath, "opacity")
   expect_identical(opacity, "0")
+  position_style <- runtime_evaluate('window.getComputedStyle(document.getElementsByClassName("animint-tooltip")[0])["position"]')
+  expect_identical(position_style, "absolute")
 })
 test_that("breakpoints tooltip shows correct content on hover interaction", {
   # Get segment selector position
