@@ -255,10 +255,10 @@ test_that("breakpoints tooltip shows correct content on hover interaction", {
   # Hover over the rect
   remDr$Input$dispatchMouseEvent(
     type = "mouseMoved",
-    x = sel_position$left,
-    y = sel_position$top
+    x = sel_position$center_x,
+    y = sel_position$center_y
   )
-  Sys.sleep(0.5)
+  Sys.sleep(1)
   # Verify tooltip is visible and shows correct content
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_gt(as.numeric(opacity), 0)
@@ -284,7 +284,7 @@ test_that("plot1top tooltip shows correct content on hover interaction", {
     x = sel_position$center_x,
     y = sel_position$center_y
   )
-  Sys.sleep(0.5)
+  Sys.sleep(1)
   # Verify tooltip is visible and shows correct content
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_gt(as.numeric(opacity), 0)
