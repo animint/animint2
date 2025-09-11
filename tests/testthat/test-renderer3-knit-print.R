@@ -262,9 +262,9 @@ test_tooltip <- function(div_id, g_class, svg_el, div_content){
     opacity <- getStyleValue(html, tooltip.xpath, "opacity")
     expect_identical(opacity, "0")
   })
+  sel_position <- get_element_bbox(sprintf(
+    'g[class*=\"%s\"] %s', g_class, svg_el))
   test_that(paste(div_id, "tooltip shows correct content on hover interaction"), {
-    sel_position <- get_element_bbox(sprintf(
-      'g[class*=\"%s\"] %s', g_class, svg_el))
     remDr$Input$dispatchMouseEvent(
       type = "mouseMoved",
       x = sel_position$center_x,
@@ -276,7 +276,28 @@ test_tooltip <- function(div_id, g_class, svg_el, div_content){
     expect_equal(xmlValue(tooltip_div), div_content)
     remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
   })
+  sel_position
 }
-test_tooltip("breakpoints", "geom6_vline", "line", "segments 1")
+seg1_pos <- test_tooltip("breakpoints", "geom6_vline", "line", "segments 1")
+
+test_that("clicking segments does not alter tooltip in other plot", {
+  remDr$Input$dispatchMouseEvent(
+    type = "mouseMoved",
+    x = seg1_pos$center_x,
+    y = seg1_pos$center_y)
+  clickID("select_segments_1")
+  seg9_pos <- get_element_bbox('line#select_segments_9')
+  remDr$Input$dispatchMouseEvent(
+    type = "mouseMoved",
+    x = seg9_pos$center_x,
+    y = seg9_pos$center_y)
+  (tip_nodes <- getNodeSet(getHTML(), tooltip.xpath))
+  computed.value <- sapply(tip_nodes, xmlValue)
+  expect_identical(computed.value, c("", "segments 9"))
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity[1], "0")
+  expect_gt(as.numeric(opacity[2]), 0)
+})
+
 test_tooltip("plot1top", "geom1_point_q", "circle", "tooltip in first plot 1")
 

@@ -71,9 +71,11 @@ animint(
                linetype="dashed",
                data=breakpoints$breaks),
   error=ggplot()+
-    geom_vline(aes(xintercept=segments),
-               clickSelects="segments",
-               data=only.segments, lwd=17, alpha=1/2)+
+    geom_vline(aes(
+      xintercept=segments,
+      id=paste0("select_segments_",segments)),
+      clickSelects="segments",
+      data=only.segments, lwd=17, alpha=1/2)+
     geom_line(aes(segments, error, group=bases.per.probe),
               clickSelects="bases.per.probe",
               data=only.error, lwd=4),
