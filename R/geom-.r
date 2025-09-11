@@ -259,9 +259,24 @@ Geom <- gganimintproto("Geom",
         sel.row <- selector.df[sel.i,]
         value.col <- paste(sel.row$value.col)
         selector.name <- paste(sel.row$selector.name)
-        ## If this selector was defined by .variable .value aes, then we
-        ## will not generate selectize widgets.
-        meta$selectors[[selector.name]]$is.variable.value <- is.variable.value
+        ## If this selector was defined by .variable .value aes for ALL
+        ## geoms that reference it, then we will not generate selectize
+        ## widgets. Previously we overwrote this flag for each geom,
+        ## causing ordering-dependent behavior. Here we conservatively
+        ## set it to TRUE only when all seen geoms set it to TRUE (AND
+        ## across geoms). If this is the first geom seen for this
+        ## selector, record its value.
+        if(is.null(meta$selectors[[selector.name]])){
+          meta$selectors[[selector.name]] <- list()
+        }
+        prev_flag <- meta$selectors[[selector.name]]$is.variable.value
+        if(is.null(prev_flag)){
+          meta$selectors[[selector.name]]$is.variable.value <- is.variable.value
+        }else{
+          meta$selectors[[selector.name]]$is.variable.value <- (
+            is.logical(prev_flag) && prev_flag && is.variable.value
+          )
+        }
         ## If this selector has no defined type yet, we define it once
         ## and for all here, so we can use it later for chunk
         ## separation.
