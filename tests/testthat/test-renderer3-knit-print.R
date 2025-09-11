@@ -255,11 +255,11 @@ test_that("absolute position is loaded from animint.css", {
 })
 
 test_tooltip <- function(div_id, g_class, svg_el, div_content){
-  tooltip.xpath <- sprintf(
+  id.tooltip.xpath <- sprintf(
     '//div[@id="%s"]//div[@class="animint-tooltip"]', div_id)
   click_center(div_id)
   test_that(paste(div_id, ".animint-tooltip exists and is hidden initially"), {
-    opacity <- getStyleValue(html, tooltip.xpath, "opacity")
+    opacity <- getStyleValue(html, id.tooltip.xpath, "opacity")
     expect_identical(opacity, "0")
   })
   sel_position <- get_element_bbox(sprintf(
@@ -270,9 +270,9 @@ test_tooltip <- function(div_id, g_class, svg_el, div_content){
       x = sel_position$center_x,
       y = sel_position$center_y)
     Sys.sleep(1)
-    opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+    opacity <- getStyleValue(getHTML(), id.tooltip.xpath, "opacity")
     expect_gt(as.numeric(opacity), 0)
-    tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
+    tooltip_div <- getNodeSet(getHTML(), id.tooltip.xpath)[[1]]
     expect_equal(xmlValue(tooltip_div), div_content)
     remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
   })
@@ -291,10 +291,11 @@ test_that("clicking segments does not alter tooltip in other plot", {
     type = "mouseMoved",
     x = seg9_pos$center_x,
     y = seg9_pos$center_y)
-  (tip_nodes <- getNodeSet(getHTML(), tooltip.xpath))
+  all.tooltip.xpath <- '//div[@class="animint-tooltip"]'
+  (tip_nodes <- getNodeSet(getHTML(), all.tooltip.xpath))
   computed.value <- sapply(tip_nodes, xmlValue)
   expect_identical(computed.value, c("", "", "", "segments 9"))
-  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  opacity <- getStyleValue(getHTML(), all.tooltip.xpath, "opacity")
   expect_equal(as.numeric(opacity), c(0,0,0,0.7))
 })
 
