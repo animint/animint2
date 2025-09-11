@@ -25,10 +25,18 @@ test_that("knit_print.animint renders five x axis titles", {
   expect_identical(value.vec, expected.vec)
 })
 
+test_that("knit_print.animint renders geom_label_aligned", {
+  nodes <- getNodeSet(html, "//g[@class='geom2_labelaligned_signal']//text")
+  computed.vec <- sapply(nodes, xmlValue)
+  expected.vec <- as.character(breakpoints$imprecision$position)
+  data(breakpoints)
+  expect_identical(sort(computed.vec), sort(expected.vec))
+})
+
 test_that("segments and breakpoints are rendered", {
-  seg.list <- getNodeSet(html, '//g[@class="geom3_segment_signal"]//line')
+  seg.list <- getNodeSet(html, '//g[@class="geom4_segment_signal"]//line')
   expect_equal(length(seg.list), 6)
-  break.list <- getNodeSet(html, '//g[@class="geom4_vline_signal"]//line')
+  break.list <- getNodeSet(html, '//g[@class="geom5_vline_signal"]//line')
   expect_equal(length(break.list), 5)
 })
 
@@ -269,6 +277,6 @@ test_tooltip <- function(div_id, g_class, svg_el, div_content){
     remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
   })
 }
-test_tooltip("breakpoints", "geom5_vline", "line", "segments 1")
+test_tooltip("breakpoints", "geom6_vline", "line", "segments 1")
 test_tooltip("plot1top", "geom1_point_q", "circle", "tooltip in first plot 1")
 
