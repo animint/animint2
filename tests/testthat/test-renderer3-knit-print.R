@@ -293,10 +293,9 @@ test_that("clicking segments does not alter tooltip in other plot", {
     y = seg9_pos$center_y)
   (tip_nodes <- getNodeSet(getHTML(), tooltip.xpath))
   computed.value <- sapply(tip_nodes, xmlValue)
-  expect_identical(computed.value, c("", "segments 9"))
+  expect_identical(computed.value, c("", "", "", "segments 9"))
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
-  expect_identical(opacity[1], "0")
-  expect_gt(as.numeric(opacity[2]), 0)
+  expect_equal(as.numeric(opacity), c(0,0,0,0.7))
 })
 
 test_tooltip("plot1top", "geom1_point_q", "circle", "tooltip in first plot 1")
