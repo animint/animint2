@@ -8,15 +8,11 @@
 
 # Changes in version 2025.8.16 (PR#214)
 
-- `geom_abline()`: Fixed an issue where lines extended beyond plot boundaries when update_axes was called. The clipping logic has now been moved from the pre_process function on the R side to the renderer side, ensuring that geom_abline lines are correctly clipped to the plot boundaries during update_axes.
+- `geom_abline()`: Fixed an issue where lines extended beyond plot boundaries when `update_axes()` was called. The clipping logic has now been moved from `pre_process()` on the R side to the renderer side, ensuring that `<line>` elements are correctly clipped to the plot boundaries during `update_axes()`.
 
 # Changes in version 2025.7.21 (PR#203)
 
-- Added `geom_label_aligned`, a new geom that plots text labels with non-overlapping positioning along a specified alignment axis ("horizontal" or "vertical"). It uses quadratic programming to optimize label placement and includes options for spacing (min_distance), alignment, rounded background rectangles (label_r), disabling the background rectangle (background_rect = FALSE), etc.
-
-# Changes in version 2025.7.21 (PR#203)
-
-- Added `geom_label_aligned`, a new geom that plots text labels with non-overlapping positioning along a specified alignment axis ("horizontal" or "vertical"). It uses quadratic programming to optimize label placement and includes options for spacing (min_distance), alignment, rounded background rectangles (label_r), disabling the background rectangle (background_rect = FALSE), etc.
+- Added `geom_label_aligned()`, a new geom that plots text labels with non-overlapping positioning along a specified alignment axis ("horizontal" or "vertical"). It uses quadratic programming to optimize label placement and includes options for spacing (`min_distance`), alignment, rounded background rectangles (`label_r`), disabling the background rectangle (`background_rect = FALSE`), etc.
 
 # Changes in version 2025.7.18 (PR#201)
 
