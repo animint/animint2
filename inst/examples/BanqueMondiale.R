@@ -179,7 +179,7 @@ wb.facets <- animint(
     ),
   time=list(variable="année", ms=2000),
   duration=list(année=1000, pays=1000, région=1000),
-  first=list(année=1975, pays=c("United States", "Canada", "France", "Japan")),
+  first=list(année=1975, pays=c("Royaume-Uni", "Canada", "France", "Japon")),
   selector.types=list(pays="multiple"),
   source="https://github.com/animint/animint2/blob/master/inst/examples/BanqueMondiale.R",
   out.dir="BanqueMondiale-facets-map",
