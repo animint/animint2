@@ -7,8 +7,9 @@
 var animint = function (to_select, json_file) {
   var steps = [];
   var default_axis_px = 16;
-
-   function wait_until_then(timeout, condFun, readyFun) {
+  var grid_layout = false;
+  var grid_layout_table;
+  function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
       if(condFun()) {
@@ -243,11 +244,28 @@ var animint = function (to_select, json_file) {
     // Save this geom and load it!
     update_geom(g_name, null);
   };
-  var add_plot = function (p_name, p_info) {
-    // Each plot may have one or more legends. To make space for the
-    // legends, we put each plot in a table with one row and two
-    // columns: tdLeft and tdRight.
-    var plot_table = plot_td.append("table").style("display", "inline-block");
+  var grid_layout_tr = null; //static between add_plot calls.
+  var add_plot = function (p_name, p_info, grid_layout) {
+    var plot_table;
+    if(grid_layout) {
+      var grid_info = p_info.span || {};
+      if(grid_layout_tr === null) {
+        grid_layout_tr = grid_layout_table.append("tr");
+      }
+      var grid_layout_td = grid_layout_tr.append("td");
+      if(grid_info.rowspan > 0){
+        grid_layout_td.attr("rowspan", grid_info.rowspan);
+      }
+      if(grid_info.colspan > 0){
+        grid_layout_td.attr("colspan", grid_info.colspan);
+      }
+      plot_table = grid_layout_td.append("table")
+      if(grid_info.last_in_row){
+        grid_layout_tr = null;
+      }
+    }else{
+      plot_table = plot_td.append("table").style("display", "inline-block");
+    }
     var plot_tr = plot_table.append("tr");
     var tdLeft = plot_tr.append("td");
     var tdRight = plot_tr.append("td").attr("class", p_name+"_legend");
@@ -260,7 +278,7 @@ var animint = function (to_select, json_file) {
       .attr("id", p_info.plot_id)
       .attr("height", p_info.options.height)
       .attr("width", p_info.options.width);
-
+    
     // divvy up width/height based on the panel layout
     var nrows = Math.max.apply(null, p_info.layout.ROW);
     var ncols = Math.max.apply(null, p_info.layout.COL);
@@ -1355,22 +1373,57 @@ var animint = function (to_select, json_file) {
       }
       data_to_bind = data;
       if (g_info.geom == "segment") {
-	g_info.style_list = line_style_list;
-	eActions = function (e) {
-          e.attr("x1", function (d) {
-            return scales.x(d["x"]);
-          })
-            .attr("x2", function (d) {
-              return scales.x(d["xend"]);
-            })
-            .attr("y1", function (d) {
-              return scales.y(d["y"]);
-            })
-            .attr("y2", function (d) {
-              return scales.y(d["yend"]);
-            })
-	};
-	eAppend = "line";
+  g_info.style_list = line_style_list;
+  // helper: get slope and intercept for datum
+  function getLineParams(d) {
+    var slope = d.slope !== undefined ? +d.slope :
+      (g_info.abline_params && g_info.abline_params.slopes) ? g_info.abline_params.slopes[d.i] : 1;
+    var intercept = d.intercept !== undefined ? +d.intercept :
+      (g_info.abline_params && g_info.abline_params.intercepts) ? g_info.abline_params.intercepts[d.i] : 0;
+    return { slope, intercept };
+  }
+  // helper: compute clipped coordinate for one endpoint
+  function computeEndpoint(x, slope, intercept, xDomain, yDomain) {
+    var y = slope * x + intercept;
+    if (y < yDomain[0]) x = (yDomain[0] - intercept) / slope;
+    if (y > yDomain[1]) x = (yDomain[1] - intercept) / slope;
+    return { x, y };
+  }
+  // helper: compute abline endpoints
+  function getAblineCoords(d, scales) {
+    var { slope, intercept } = getLineParams(d);
+    var xDomain = scales.x.domain();
+    var yDomain = scales.y.domain();
+    function get_ab_y(x) {
+      return Math.max(yDomain[0], Math.min(yDomain[1], slope * x + intercept));
+    }
+    // Compute both endpoints
+    var start = computeEndpoint(xDomain[0], slope, intercept, xDomain, yDomain);
+    var end = computeEndpoint(xDomain[1], slope, intercept, xDomain, yDomain);
+    return {
+      x1: scales.x(start.x),
+      y1: scales.y(get_ab_y(xDomain[0])),
+      x2: scales.x(end.x),
+      y2: scales.y(get_ab_y(xDomain[1]))
+    };
+  }
+  if (g_info.is_abline) {
+    eActions = function(e) {
+      e.attr("x1", d => getAblineCoords(d, scales).x1)
+       .attr("y1", d => getAblineCoords(d, scales).y1)
+       .attr("x2", d => getAblineCoords(d, scales).x2)
+       .attr("y2", d => getAblineCoords(d, scales).y2);
+    };
+  } else {
+    // Regular segment case
+    eActions = function(e) {
+      e.attr("x1", toXY("x", "x"))
+        .attr("y1", toXY("y", "y"))
+        .attr("x2", toXY("x", "xend"))
+        .attr("y2", toXY("y", "yend"));
+    };
+  }
+  eAppend = "line";
       }
       if (g_info.geom == "linerange") {
 	g_info.style_list = line_style_list;
@@ -1762,8 +1815,9 @@ var animint = function (to_select, json_file) {
         mouseX = d3.event.pageX;
         mouseY = d3.event.pageY;
       }
+      var safeHtml = String(content).replace(/\n/g, '<br/>');
       tooltip
-        .html(content)
+        .html(safeHtml)
         .style("left", (mouseX + TOOLTIP_HORIZONTAL_OFFSET) + "px")
         .style("top", (mouseY - TOOLTIP_VERTICAL_OFFSET) + "px")
         .style("opacity", 1);
@@ -2234,9 +2288,20 @@ var animint = function (to_select, json_file) {
       // global d3.select here.
       d3.select("title").text(response.title);
     }
+    // checking for layout structure
+    for(var p_name in response.plots) {
+      let attributes = response.plots[p_name].span;
+        if(attributes.rowspan > 0 || attributes.colspan > 0 || attributes.last_in_row) {
+          grid_layout = true;
+          break;
+        }
+    }
+    if(grid_layout){
+      grid_layout_table = plot_td.append("table")
+    }
     // Add plots.
     for (var p_name in response.plots) {
-      add_plot(p_name, response.plots[p_name]);
+      add_plot(p_name, response.plots[p_name], grid_layout);
       add_legend(p_name, response.plots[p_name]);
       // Append style sheet to document head.
       css.appendChild(document.createTextNode(styles.join(" ")));
@@ -2718,4 +2783,3 @@ var animint = function (to_select, json_file) {
     }//if(window.location.hash)
   });
 };
-

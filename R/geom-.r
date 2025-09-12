@@ -469,9 +469,8 @@ Geom <- gganimintproto("Geom",
         ## chunks if there are any that are too small.
         tmp <- tempfile()
         some.lines <- rbind(head(g.data), tail(g.data))
-        write.table(some.lines, tmp,
-                    col.names=FALSE,
-                    quote=FALSE, row.names=FALSE, sep="\t")
+        data.table::fwrite(some.lines, file=tmp,
+                    col.names=FALSE,row.names=FALSE, sep="\t")
         bytes <- file.info(tmp)$size
         bytes.per.line <- bytes/nrow(some.lines)
         bad.chunk <- function(){
@@ -639,9 +638,8 @@ Geom <- gganimintproto("Geom",
       g$columns$common <- as.list(names(data.or.null$common))
       tsv.name <- sprintf("%s_chunk_common.tsv", g$classed)
       tsv.path <- file.path(meta$out.dir, tsv.name)
-      write.table(data.or.null$common, tsv.path,
-                  quote = FALSE, row.names = FALSE,
-                  sep = "\t")
+      data.table::fwrite(data.or.null$common,file= tsv.path,
+                  row.names = FALSE,sep = "\t")
       data.or.null$varied
     }
 
