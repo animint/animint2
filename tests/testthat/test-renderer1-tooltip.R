@@ -26,6 +26,7 @@ viz <- animint(
       ymin=8, ymax=10,
       tooltip=paste(countries, "not NA in", year),
       key=year),
+      alpha=0.5,
       showSelected="year",
       data=years, color="yellow")+
     geom_rect(aes(
@@ -33,12 +34,7 @@ viz <- animint(
       ymin=2, ymax=2.5,
       key=year),
       showSelected="year",
-      data=years, color="orange")+
-    geom_text(aes(
-      55, 9, label=paste("year =", year),
-      key=year),
-      showSelected="year",
-      data=years),
+      data=years, color="orange"),
   bar=ggplot()+
     theme_animint(height=2400)+
     geom_bar(aes(
@@ -67,10 +63,7 @@ test_that("animint-tooltip div exists with correct initial state", {
 })
 
 test_that("tooltip shows correct content for rect", {
-  # Get rect position on viewport
-  rect_position <- get_element_bbox('#plot_scatter rect.geom')
-  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = rect_position$left, y = rect_position$top)
-  Sys.sleep(0.3)
+  mouseMoved('#plot_scatter rect.geom')
   tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
   tooltip_text <- xmlValue(tooltip_div)
   # Verify tooltip contains expected content
@@ -78,24 +71,15 @@ test_that("tooltip shows correct content for rect", {
   # Verify that tooltip opacity is now 1 (tooltip shown)
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_gt(as.numeric(opacity), 0)
-  # Move mouse away to clean up
-  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
-  Sys.sleep(0.2)
   # Verify that tooltip hides correctly after mouseout
+  mouseMoved()
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_identical(opacity, "0")
 })
 
 test_that("tooltip shows correct content for point", {
   # Get circle position on viewport
-  circle_position <- get_element_bbox('circle#China')
-  # Hover over center of the circle
-  remDr$Input$dispatchMouseEvent(
-    type = "mouseMoved",
-    x = circle_position$center_x,
-    y = circle_position$center_y
-  )
-  Sys.sleep(0.3)
+  mouseMoved('circle#China')
   tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
   tooltip_text <- xmlValue(tooltip_div)
   # Verify tooltip contains expected content
@@ -103,10 +87,8 @@ test_that("tooltip shows correct content for point", {
   # Verify that tooltip opacity is now 1 (tooltip shown)
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_gt(as.numeric(opacity), 0)
-  # Move mouse away to clean up
-  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
-  Sys.sleep(0.2)
   # Verify that tooltip hides correctly after mouseout
+  mouseMoved()
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_identical(opacity, "0")
 })
@@ -115,13 +97,7 @@ test_that("tooltip shows correct content for geom_text", {
   clickID('China') # Select the circle corresponding to China for highlighting text
   Sys.sleep(0.2)
   # Get text position on viewport
-  text_position <- get_element_bbox('text#text_China')
-  remDr$Input$dispatchMouseEvent(
-    type = "mouseMoved",
-    x = text_position$center_x,
-    y = text_position$center_y
-  )
-  Sys.sleep(0.2)
+  mouseMoved('text#text_China')
   tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
   tooltip_text <- xmlValue(tooltip_div) 
   # Verify tooltip contains expected content
@@ -129,9 +105,8 @@ test_that("tooltip shows correct content for geom_text", {
   # Verify that tooltip opacity is now 1 (tooltip shown)
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_gt(as.numeric(opacity), 0)
-  # Move mouse away to clean up
-  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
   # Verify that tooltip hides correctly after mouseout
+  mouseMoved()
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_identical(opacity, "0")
 })
@@ -148,7 +123,6 @@ ex_plot <- ggplot() +
   geom_point(aes(fertility.rate, life.expectancy, color = region,
                  tooltip = country, href = "https://github.com"),
              data = WorldBank1975)
-
 viz <- list(ex = ex_plot)
 info <- animint2HTML(viz)
 
@@ -163,29 +137,56 @@ test_that("tooltip div exists with href elements", {
 # testing newline character in tooltip
 viz <- list(
   p1 = ggplot() +
-    geom_point(aes(x, x, tooltip = x, color = x, id = x),
-               size = 5,
-               data = data.frame(x = c("one line", "two\nlines", "three\nlines\nhere")))
+    geom_point(aes(
+      x, "0", tooltip = x,
+      id = id),
+      size = 5,
+      clickSelects="x",
+      data = data.frame(
+        id=paste0("blackpoint", 1:3),
+        x = c("one line", "two\nlines", "three\nlines\nhere")))+
+    geom_point(aes(
+      x, x, tooltip = x, color = x,
+      id = id),
+      size = 5,
+      clickSelects="x",
+      data = data.frame(
+        id=paste0("colorpoint", 1:3),
+        x = c("one line", "two\nlines", "three\nlines\nhere")))
 )
-info2 <- animint2HTML(viz)
+info <- animint2HTML(viz)
 tooltip.xpath <- '//div[@class="animint-tooltip"]'
-test_that("tooltips support newline character", {
-  # Get bounding box of the second point (id = "two\nlines")
-  circle_position <- get_element_bbox("circle.geom:nth-child(2)")
-  # Hover over the circle to trigger tooltip
-  remDr$Input$dispatchMouseEvent(
-    type = "mouseMoved",
-    x = circle_position$center_x,
-    y = circle_position$center_y
-  )
-  Sys.sleep(0.3)
+get_tooltip_html <- function(){
   tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
-  tooltip_inner <- paste(sapply(xmlChildren(tooltip_div), saveXML), collapse = "")
-  # inner HTML should be exactly "two<br/>lines"
-  expect_equal(trimws(tooltip_inner), "two<br/>lines")
-  # Move mouse away to clean up
-  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
-  # Verify that tooltip hides correctly after mouseout
+  trimws(paste(sapply(xmlChildren(tooltip_div), saveXML), collapse = ""))
+}
+test_that("tooltips support newline character", {
+  mouseMoved("circle#colorpoint2")
+  tooltip_inner <- get_tooltip_html()
+  expect_equal(tooltip_inner, "two<br/>lines")
+  mouseMoved()
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_identical(opacity, "0")
+})
+
+test_that("tooltip disappears after click to de-select", {
+  mouseMoved("circle#colorpoint3")
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_gt(as.numeric(opacity), 0)
+  tooltip_inner <- get_tooltip_html()
+  expect_equal(tooltip_inner, "three<br/>lines<br/>here")
+  clickID("colorpoint3")
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
+})
+
+test_that("tooltip stays visible after click to select", {
+  mouseMoved("#blackpoint3")
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_gt(as.numeric(opacity), 0)
+  tooltip_inner <- get_tooltip_html()
+  expect_equal(tooltip_inner, "three<br/>lines<br/>here")
+  clickID("blackpoint3")
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_gt(as.numeric(opacity), 0)
 })
