@@ -1,3 +1,7 @@
+# Changes in version 2025.9.11 (PR#224)
+
+- Bugfix when `meke_tallrect()` is last geom, now selection menu renders. Thanks @suhaani-agarwal for the PR.
+
 # Changes in version 2025.9.9 (PR#153)
 
 - Multiple ggplots may now be arranged on the page via `theme_animint()` options `colspan=2`, `rowspan=2`, `last_in_row=TRUE` (meaning next ggplot occurs in next row). Backwards-compatible since old arrangement code is used when none of these options is present.
