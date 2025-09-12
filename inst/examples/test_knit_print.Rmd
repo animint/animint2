@@ -17,10 +17,13 @@ knit_meta()
 ```{r plot-1-top}
 library(animint2)
 dat <- data.frame(x = 1:10, y = 1:10, label = rep(c("a178", "b934"), 5))
-animint(q = qplot(
-  x, y, data = dat, colour = label,
-  help="first plot",
-  xlab = "first plot with color legend"))
+animint(q = ggplot()+geom_point(aes(
+  x, y,
+  tooltip = paste("tooltip in first plot", x),
+  colour = label),
+  data = dat,
+  help="first plot")+
+  scale_x_continuous("first plot with color legend"))
 ```
 
 Clicking on the plot above should not affect the plot below.
@@ -51,6 +54,11 @@ animint(
   signal=ggplot()+
     geom_point(aes(position, signal), showSelected="bases.per.probe",
                data=breakpoints$signals)+
+    geom_label_aligned(aes(
+      position, signal, label=position),
+      color=signal.colors[["latent"]],
+      data=breakpoints$imprecision,
+      alignment="horizontal")+
     geom_line(aes(position, signal), colour=signal.colors[["latent"]],
               data=breakpoints$imprecision)+
     geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
@@ -63,9 +71,11 @@ animint(
                linetype="dashed",
                data=breakpoints$breaks),
   error=ggplot()+
-    geom_vline(aes(xintercept=segments),
-               clickSelects="segments",
-               data=only.segments, lwd=17, alpha=1/2)+
+    geom_vline(aes(
+      xintercept=segments,
+      id=paste0("select_segments_",segments)),
+      clickSelects="segments",
+      data=only.segments, lwd=17, alpha=1/2)+
     geom_line(aes(segments, error, group=bases.per.probe),
               clickSelects="bases.per.probe",
               data=only.error, lwd=4),

@@ -287,6 +287,6 @@ Collate:
     'z_scales.R'
     'z_theme_animint.R'
     'z_transformShape.R'
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Config/Needs/website: tidyverse/tidytemplate
 VignetteBuilder: knitr

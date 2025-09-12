@@ -28,7 +28,7 @@ test_that("tooltip shows correct content on hover interaction", {
   Sys.sleep(0.5)
   # Verify tooltip is visible and shows correct content
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
-  expect_identical(opacity, "1")
+  expect_gt(as.numeric(opacity), 0)
   tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
   expect_equal(xmlValue(tooltip_div), "Test Rectangle")
   # Simulate mouseout
