@@ -4,15 +4,15 @@
 
 # Changes in version 2025.9.6 (PR#220)
 
-- `aes(tooltip)`: Fixed an issue where tooltips containing newline characters (e.g. `"two\nlines"`) caused rendering failures when combined with other aesthetics such as `aes(color=...)`. The problem was due to TSV export with `quote=FALSE`, which broke parsing when fields contained newlines. The TSV writer now uses `quote="auto"`, ensuring fields with `\n` are preserved correctly. On the rendering side, newline characters in tooltips are converted to `<br/>`, so multi-line tooltips are now properly supported.
+- `aes(tooltip)`: Fixed an issue where tooltips containing newline characters (e.g. `"two\nlines"`) caused rendering failures when combined with other aesthetics such as `aes(color=...)`. The problem was due to TSV export with `quote=FALSE`, which broke parsing when fields contained newlines. The TSV writer now uses `quote="auto"`, ensuring fields with `\n` are preserved correctly. On the rendering side, newline characters in tooltips are converted to `<br/>`, so multi-line tooltips are now properly supported. Thanks @suhaani-agarwal for the PR.
 
 # Changes in version 2025.8.16 (PR#214)
 
-- `geom_abline()`: Fixed an issue where lines extended beyond plot boundaries when `update_axes()` was called. The clipping logic has now been moved from `pre_process()` on the R side to the renderer side, ensuring that `<line>` elements are correctly clipped to the plot boundaries during `update_axes()`.
+- `geom_abline()`: Fixed an issue where lines extended beyond plot boundaries when `update_axes()` was called. The clipping logic has now been moved from `pre_process()` on the R side to the renderer side, ensuring that `<line>` elements are correctly clipped to the plot boundaries during `update_axes()`. Thanks @suhaani-agarwal for the PR.
 
 # Changes in version 2025.7.21 (PR#203)
 
-- Added `geom_label_aligned()`, a new geom that plots text labels with non-overlapping positioning along a specified alignment axis ("horizontal" or "vertical"). It uses quadratic programming to optimize label placement and includes options for spacing (`min_distance`), alignment, rounded background rectangles (`label_r`), disabling the background rectangle (`background_rect = FALSE`), etc.
+- Added `geom_label_aligned()`, a new geom that plots text labels with non-overlapping positioning along a specified alignment axis ("horizontal" or "vertical"). It uses quadratic programming to optimize label placement and includes options for spacing (`min_distance`), alignment, rounded background rectangles (`label_r`), disabling the background rectangle (`background_rect = FALSE`), etc. Thanks @suhaani-agarwal for the PR.
 
 # Changes in version 2025.7.18 (PR#201)
 
@@ -21,15 +21,15 @@
 
 # Changes in version 2025.7.10 (PR#208)
 
-- Added Codecov integration for both R and JavaScript tests; coverage reports now available at https://app.codecov.io/github/animint/animint2
+- Added Codecov integration for both R and JavaScript tests; [coverage reports now available](https://app.codecov.io/github/animint/animint2). Thanks @suhaani-agarwal for the PR.
 
 # Changes in version 2025.6.28 (PR#204) 
 
-- The geom_raster implementation has been removed.
+- `geom_raster()` has been removed. Thanks to @biplab-sutradhar for the PR.
 
 # Changes in version 2025.6.4 (PR#197)
 
-- `aes(tooltip = "...")` now renders fast, lightweight tooltips using D3.
+- `aes(tooltip = "...")` now renders fast, lightweight tooltips using D3. Thanks @suhaani-agarwal for the PR.
 
 # Changes in version 2025.1.28
 
