@@ -1,3 +1,7 @@
+# Changes in version 2025.9.12 (PR#226)
+
+- Tooltip is hidden after clicking to de-select.
+
 # Changes in version 2025.9.11 (PR#224)
 
 - Bugfix when `meke_tallrect()` is last geom, now selection menu renders. Thanks @suhaani-agarwal for the PR.
