@@ -190,3 +190,25 @@ test_that("tooltip stays visible after click to select", {
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_gt(as.numeric(opacity), 0)
 })
+
+test_that("tooltip disappears after click black", {
+  mouseMoved("#blackpoint3")
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_gt(as.numeric(opacity), 0)
+  tooltip_inner <- get_tooltip_html()
+  expect_equal(tooltip_inner, "three<br/>lines<br/>here")
+  clickID("blackpoint3")
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_identical(opacity, "0")
+})
+
+test_that("tooltip re-appears after moving in black", {
+  mouseMoved("#blackpoint3")
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_gt(as.numeric(opacity), 0)
+  tooltip_inner <- get_tooltip_html()
+  expect_equal(tooltip_inner, "three<br/>lines<br/>here")
+  clickID("blackpoint3")
+  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
+  expect_gt(as.numeric(opacity), 0)
+})
