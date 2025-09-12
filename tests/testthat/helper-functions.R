@@ -417,6 +417,23 @@ get_element_bbox <- function(selector) {
   runtime_evaluate(script)
 }
 
+mouseMoved <- function(selector=NULL){
+  position <- if(is.null(selector)){
+    list(center_x=0, center_y=0)
+  }else if(is.list(selector)){
+    selector
+  }else if(is.character(selector)){
+    get_element_bbox(selector)
+  }else stop("unrecognized selector")
+  remDr$Input$dispatchMouseEvent(
+    type = "mouseMoved",
+    x = position$center_x,
+    y = position$center_y
+  )
+  Sys.sleep(0.3)
+  position
+}
+
 driverjs_click_class <- function(class_name,list_num=0){
   runtime_evaluate_helper(
     class_name = class_name,
