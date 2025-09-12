@@ -135,25 +135,21 @@ test_that("tooltip div exists with href elements", {
 })
 
 # testing newline character in tooltip
+newline.data <- data.frame(
+  i=1:3,
+  x = c("one line", "two\nlines", "three\nlines\nhere"))
 viz <- list(
-  p1 = ggplot() +
+  p1 = ggplot(newline.data) +
     geom_point(aes(
       x, "0", tooltip = x,
-      id = id),
+      id = paste0("blackpoint",i)),
       size = 5,
-      clickSelects="x",
-      data = data.frame(
-        id=paste0("blackpoint", 1:3),
-        x = c("one line", "two\nlines", "three\nlines\nhere")))+
+      clickSelects="x")+
     geom_point(aes(
       x, x, tooltip = x, color = x,
-      id = id),
+      id = paste0("colorpoint",i)),
       size = 5,
-      clickSelects="x",
-      data = data.frame(
-        id=paste0("colorpoint", 1:3),
-        x = c("one line", "two\nlines", "three\nlines\nhere")))
-)
+      clickSelects="x"))
 info <- animint2HTML(viz)
 tooltip.xpath <- '//div[@class="animint-tooltip"]'
 get_tooltip_html <- function(){
