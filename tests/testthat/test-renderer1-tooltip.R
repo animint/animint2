@@ -208,3 +208,5 @@ test_that("tooltip re-appears after moving in black", {
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_gt(as.numeric(opacity), 0)
 })
+
+mouseMoved() # otherwise we get an off-by-one error in test-renderer2-param-off.R:203:3'): rect default is black/transparent stroke
