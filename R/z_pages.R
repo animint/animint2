@@ -213,7 +213,7 @@ update_gallery <- function(gallery_path="~/R/gallery"){
       dir.create(repo.dir, showWarnings = FALSE)
       if(!file.exists(repo.png)){
         dir.create(dirname(repo.png), showWarnings=FALSE, recursive=TRUE)
-        download.file(viz_url("Capture.PNG"), repo.png)
+        download.file(viz_url("Capture.PNG"), repo.png, method="curl")
       }
       local.json <- tempfile()
       download.file(viz_url("plot.json"), local.json)
