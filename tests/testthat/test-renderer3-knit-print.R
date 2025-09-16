@@ -25,10 +25,18 @@ test_that("knit_print.animint renders five x axis titles", {
   expect_identical(value.vec, expected.vec)
 })
 
+test_that("knit_print.animint renders geom_label_aligned", {
+  nodes <- getNodeSet(html, "//g[@class='geom2_labelaligned_signal']//text")
+  computed.vec <- sapply(nodes, xmlValue)
+  expected.vec <- as.character(breakpoints$imprecision$position)
+  data(breakpoints)
+  expect_identical(sort(computed.vec), sort(expected.vec))
+})
+
 test_that("segments and breakpoints are rendered", {
-  seg.list <- getNodeSet(html, '//g[@class="geom3_segment_signal"]//line')
+  seg.list <- getNodeSet(html, '//g[@class="geom4_segment_signal"]//line')
   expect_equal(length(seg.list), 6)
-  break.list <- getNodeSet(html, '//g[@class="geom4_vline_signal"]//line')
+  break.list <- getNodeSet(html, '//g[@class="geom5_vline_signal"]//line')
   expect_equal(length(break.list), 5)
 })
 
@@ -239,4 +247,46 @@ djs.start1.top.list <- driverjs_get()
 test_that("clicking top plot closes driver", {
   expect_identical(djs.start1.top.list, expected.driver.empty)
 })
+
+## tooltip tests 10 sept 2025.
+test_that("absolute position is loaded from animint.css", {
+  position_style <- runtime_evaluate('window.getComputedStyle(document.getElementsByClassName("animint-tooltip")[0])["position"]')
+  expect_identical(position_style, "absolute")
+})
+
+test_tooltip <- function(div_id, g_class, svg_el, div_content){
+  id.tooltip.xpath <- sprintf(
+    '//div[@id="%s"]//div[@class="animint-tooltip"]', div_id)
+  click_center(div_id)
+  test_that(paste(div_id, ".animint-tooltip exists and is hidden initially"), {
+    opacity <- getStyleValue(html, id.tooltip.xpath, "opacity")
+    expect_identical(opacity, "0")
+  })
+  sel_position <- mouseMoved(sprintf('g[class*=\"%s\"] %s', g_class, svg_el))
+  test_that(paste(div_id, "tooltip shows correct content on hover interaction"), {
+    opacity <- getStyleValue(getHTML(), id.tooltip.xpath, "opacity")
+    expect_gt(as.numeric(opacity), 0)
+    tooltip_div <- getNodeSet(getHTML(), id.tooltip.xpath)[[1]]
+    expect_equal(xmlValue(tooltip_div), div_content)
+    mouseMoved()
+    opacity <- getStyleValue(getHTML(), id.tooltip.xpath, "opacity")
+    expect_identical(opacity, "0")
+  })
+  sel_position
+}
+seg1_pos <- test_tooltip("breakpoints", "geom6_vline", "line", "segments 1")
+
+test_that("clicking segments does not alter tooltip in other plot", {
+  mouseMoved(seg1_pos)
+  clickID("select_segments_1")
+  mouseMoved('line#select_segments_9')
+  all.tooltip.xpath <- '//div[@class="animint-tooltip"]'
+  (tip_nodes <- getNodeSet(getHTML(), all.tooltip.xpath))
+  computed.value <- sapply(tip_nodes, xmlValue)
+  expect_identical(computed.value, c("", "", "", "segments 9"))
+  opacity <- getStyleValue(getHTML(), all.tooltip.xpath, "opacity")
+  expect_equal(as.numeric(opacity), c(0,0,0,0.7))
+})
+
+test_tooltip("plot1top", "geom1_point_q", "circle", "tooltip in first plot 1")
 

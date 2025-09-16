@@ -21,8 +21,8 @@ min.années <- do.call(rbind, lapply(by.pays, subset, année == min(année)))
 min.années$année <- 1959.5
 année.breaks <- seq(1960,2010,by=10)
 map_df <- animint2::map_data("world")
-pays2région <- with(unique(not.na[, c("région","pays")]), structure(région, names=pays))
-unique(subset(map_disp, is.na(région))$pays)
+country2région <- with(unique(not.na[, c("région","country")]), structure(région, names=country))
+country2pays <- with(unique(not.na[, c("pays","country")]), structure(pays, names=country))
 map2wb <- c(
   Antigua="Antigua and Barbuda",
   Brunei="Brunei Darussalam",
@@ -57,9 +57,9 @@ map2wb <- c(
   Venezuela="Venezuela, RB",
   "Virgin Islands"="Virgin Islands (U.S.)",
   Yemen="Yemen, Rep.")
-map_df$pays <- with(map_df, ifelse(
+map_df$country <- with(map_df, ifelse(
   region %in% names(map2wb), map2wb[region], region))
-map_df$région <- pays2région[map_df$pays]
+map_df$région <- country2région[map_df$country]
 map_names <- c(x="long", y="lat")
 for(new.var in names(map_names)){
   old.var <- map_names[[new.var]]
@@ -69,8 +69,11 @@ for(new.var in names(map_names)){
   map_df[[new.var]] <- old.01*(dern.année-prem.année)+prem.année
 }
 map_disp <- subset(map_df, !is.na(région))
+map_disp$pays <- country2pays[map_disp$country]
+unique(subset(map_disp, is.na(région))$country)
+unique(subset(map_disp, is.na(pays))$country)
 
-unot <- function(DFu, DFref)unique(subset(DFu, !pays %in% DFref$pays)$pays)
+unot <- function(DFu, DFref)unique(subset(DFu, !country %in% DFref$country)$country)
 unot(map_disp, not.na)
 dput(unot(not.na, map_disp))
 wb.facets <- animint(
@@ -176,7 +179,7 @@ wb.facets <- animint(
     ),
   time=list(variable="année", ms=2000),
   duration=list(année=1000, pays=1000, région=1000),
-  first=list(année=1975, pays=c("United States", "Canada", "France", "Japan")),
+  first=list(année=1975, pays=c("Royaume-Uni", "Canada", "France", "Japon")),
   selector.types=list(pays="multiple"),
   source="https://github.com/animint/animint2/blob/master/inst/examples/BanqueMondiale.R",
   out.dir="BanqueMondiale-facets-map",

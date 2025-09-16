@@ -1,18 +1,30 @@
+# Changes in version 2025.9.12 (PR#226)
+
+- Tooltip is hidden after clicking to de-select.
+
+# Changes in version 2025.9.11 (PR#224)
+
+- Bugfix when `meke_tallrect()` is last geom, now selection menu renders. Thanks @suhaani-agarwal for the PR.
+
+# Changes in version 2025.9.10 (PR#223)
+
+- `geom_label_aligned()` and `aes(tooltip)` now work in Rmd docs rendered to HTML.
+
 # Changes in version 2025.9.9 (PR#153)
 
-- Multiple ggplots may now be arranged on the page via `theme_animint()` options `colspan=2`, `rowspan=2`, `last_in_row=TRUE` (meaning next ggplot occurs in next row). Backwards-compatible since old arrangement code is used when none of these options is present.
+- Multiple ggplots may now be arranged on the page via `theme_animint()` options `colspan=2`, `rowspan=2`, `last_in_row=TRUE` (meaning next ggplot occurs in next row). Backwards-compatible since old arrangement code is used when none of these options is present. Thanks to @biplab-sutradhar for contributions to the PR.
 
 # Changes in version 2025.9.6 (PR#220)
 
-- `aes(tooltip)`: Fixed an issue where tooltips containing newline characters (e.g. `"two\nlines"`) caused rendering failures when combined with other aesthetics such as `aes(color=...)`. The problem was due to TSV export with `quote=FALSE`, which broke parsing when fields contained newlines. The TSV writer now uses `quote="auto"`, ensuring fields with `\n` are preserved correctly. On the rendering side, newline characters in tooltips are converted to `<br/>`, so multi-line tooltips are now properly supported.
+- `aes(tooltip)`: Fixed an issue where tooltips containing newline characters (e.g. `"two\nlines"`) caused rendering failures when combined with other aesthetics such as `aes(color=...)`. The problem was due to TSV export with `quote=FALSE`, which broke parsing when fields contained newlines. The TSV writer now uses `quote="auto"`, ensuring fields with `\n` are preserved correctly. On the rendering side, newline characters in tooltips are converted to `<br/>`, so multi-line tooltips are now properly supported. Thanks @suhaani-agarwal for the PR.
 
 # Changes in version 2025.8.16 (PR#214)
 
-- `geom_abline()`: Fixed an issue where lines extended beyond plot boundaries when update_axes was called. The clipping logic has now been moved from the pre_process function on the R side to the renderer side, ensuring that geom_abline lines are correctly clipped to the plot boundaries during update_axes.
+- `geom_abline()`: Fixed an issue where lines extended beyond plot boundaries when `update_axes()` was called. The clipping logic has now been moved from `pre_process()` on the R side to the renderer side, ensuring that `<line>` elements are correctly clipped to the plot boundaries during `update_axes()`. Thanks @suhaani-agarwal for the PR.
 
 # Changes in version 2025.7.21 (PR#203)
 
-- Added `geom_label_aligned`, a new geom that plots text labels with non-overlapping positioning along a specified alignment axis ("horizontal" or "vertical"). It uses quadratic programming to optimize label placement and includes options for spacing (min_distance), alignment, rounded background rectangles (label_r), disabling the background rectangle (background_rect = FALSE), etc.
+- Added `geom_label_aligned()`, a new geom that plots text labels with non-overlapping positioning along a specified alignment axis ("horizontal" or "vertical"). It uses quadratic programming to optimize label placement and includes options for spacing (`min_distance`), alignment, rounded background rectangles (`label_r`), disabling the background rectangle (`background_rect = FALSE`), etc. Thanks @suhaani-agarwal for the PR.
 
 # Changes in version 2025.7.18 (PR#201)
 
@@ -21,15 +33,15 @@
 
 # Changes in version 2025.7.10 (PR#208)
 
-- Added Codecov integration for both R and JavaScript tests; coverage reports now available at https://app.codecov.io/github/animint/animint2
+- Added Codecov integration for both R and JavaScript tests; [coverage reports now available](https://app.codecov.io/github/animint/animint2). Thanks @suhaani-agarwal for the PR.
 
 # Changes in version 2025.6.28 (PR#204) 
 
-- The geom_raster implementation has been removed.
+- `geom_raster()` has been removed. Thanks to @biplab-sutradhar for the PR.
 
 # Changes in version 2025.6.4 (PR#197)
 
-- `aes(tooltip = "...")` now renders fast, lightweight tooltips using D3.
+- `aes(tooltip = "...")` now renders fast, lightweight tooltips using D3. Thanks @suhaani-agarwal for the PR.
 
 # Changes in version 2025.1.28
 

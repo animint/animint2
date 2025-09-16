@@ -99,22 +99,12 @@ clickID("arclength174")
 html.click2 <- getHTML()
 
 test_that("tallrect displays correct tooltip", {
-  # Get tallrect position on the viewport
-  tallrect_position <- get_element_bbox("g.geom3_tallrect_path rect#arclength101")
-  #hover over the tallrect
-  remDr$Input$dispatchMouseEvent(
-    type = "mouseMoved",
-    x = tallrect_position$left,
-    y = tallrect_position$top
-  )
-  Sys.sleep(0.5)
+  mouseMoved("g.geom3_tallrect_path rect#arclength101")
   # Checking tooltip content
   tooltip_text <- xmlValue(getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]])
   expect_match(tooltip_text, "arclength")
   expect_match(tooltip_text, "\\d+\\.\\d+") # Check for numeric value
-  # Clean up - move mouse away
-  remDr$Input$dispatchMouseEvent(type = "mouseMoved", x = 0, y = 0)
-  Sys.sleep(0.5)
+  mouseMoved()
 })
 
 viz.time <- viz.no.time

@@ -148,6 +148,12 @@ var animint = function (to_select, json_file) {
   dirs.pop(); //if a directory path exists, remove the JSON file from dirs
   var element = d3.select(to_select);
   this.element = element;
+  var tooltip = element.append("div")
+      .attr("class", "animint-tooltip")
+      .style("opacity", 0);
+  var hide_tooltip = function() {
+    tooltip.style("opacity", 0);
+  };
   var viz_id = element.attr("id");
   var plot_widget_table = element.append("table");
   var plot_td = plot_widget_table.append("tr").append("td");
@@ -1820,13 +1826,12 @@ var animint = function (to_select, json_file) {
         .html(safeHtml)
         .style("left", (mouseX + TOOLTIP_HORIZONTAL_OFFSET) + "px")
         .style("top", (mouseY - TOOLTIP_VERTICAL_OFFSET) + "px")
-        .style("opacity", 1);
+        .style("opacity", 0.7);
     }
     if(has_clickSelects || has_tooltip || has_clickSelects_variable){
       // Tooltip positioning constants
       var TOOLTIP_HORIZONTAL_OFFSET = 10; // pixels right of mouse pointer
       var TOOLTIP_VERTICAL_OFFSET = 28;   // pixels above mouse pointer
-
       var text_fun;
       if(has_tooltip){
         text_fun = function(d){
@@ -1842,11 +1847,6 @@ var animint = function (to_select, json_file) {
 	  return d["clickSelects.variable"] + " " + d["clickSelects.value"];
 	};
       }
-      var tooltip = d3.select("#plot").select(".animint-tooltip").node() 
-    ? d3.select(".animint-tooltip")
-    : d3.select("#plot").append("div")
-        .attr("class", "animint-tooltip")
-        .style("opacity", 0);
       // Add tooltip handlers
       elements
         .on("mouseover.tooltip", function(d) {
@@ -1854,12 +1854,7 @@ var animint = function (to_select, json_file) {
           var content = text_fun(d);
           positionTooltip(tooltip, content);
         })
-        .on("mouseout.tooltip", function() {
-          tooltip.style("opacity", 0)
-          .style("left", null)
-          .style("top", null)
-          .html(null);
-        })
+        .on("mouseout.tooltip", hide_tooltip)
         .on("mousemove.tooltip", function() {
           positionTooltip(tooltip, tooltip.html());
         });
@@ -2084,6 +2079,7 @@ var animint = function (to_select, json_file) {
 	s_info.selected.push(value);
       }else{
 	// found, remove from selection.
+	hide_tooltip()
 	s_info.selected.splice(i_value, 1);
       }
     }

@@ -14,7 +14,7 @@ jobs:
       matrix:
         test-suite: [ R_coverage, JS_coverage, CRAN ]
 
-    name: Test Suite ${{ matrix.test-suite }}
+    name: ${{ matrix.test-suite }}
     env: 
       TEST_SUITE: ${{ matrix.test-suite }}
       GITHUB_PAT: ${{ secrets.PAT_GITHUB }}
