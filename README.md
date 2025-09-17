@@ -16,9 +16,17 @@ Animint2 is an R package for generating and sharing animated interactive data vi
 
 <a href="https://rcdata.nau.edu/genomic-ml/WorldBank-facets/"><img src="man/figures/world_bank_screencast.gif" alt="A screencast of an interactive data visualization displaying fertility data from the World Bank. The user types in the selection menu and clicks on the legend, which causes changes in the visualization. GIF."></a> <!-- If you're familiar with Markdown, you may be wondering why I've elected to use HTML here instead of using the conventional ![alt text](source). It's cuz R's pkgdown package renders the alt text as both alt text and a fig caption. That's redundant. Using <img> ensures that it comes out the way we want. -->
 
-Play around with [this interactive data visualization of data from the World Bank](https://rcdata.nau.edu/genomic-ml/WorldBank-facets/), or [a more recent version which also includes a world map](https://tdhock.github.io/2025-01-WorldBank-facets-map/). For more examples, see these galleries, which have screenshots along with links to the interactive data viz, and source code:
+Try interacting with
+
+* [this interactive data visualization of data from the World Bank](https://rcdata.nau.edu/genomic-ml/WorldBank-facets/), or
+* [a more recent version which also includes a world map](https://tdhock.github.io/2025-01-WorldBank-facets-map/), or
+* [its French translation](https://tdhock.github.io/2025-08-BanqueMondiale-facets-map/)!
+
+For more examples, see these galleries, which have screenshots along with links to the interactive data viz, and source code:
+
 * [NAU rcdata animint gallery](https://rcdata.nau.edu/genomic-ml/animint-gallery/) has 50+ big data viz examples dating back to animint's inception in 2014.
 * [GitHub Pages animint gallery](https://animint.github.io/gallery) is a newer collection of animints that have been published using the `animint2pages` function.
+* [La galerie en français pour animint2](https://animint.github.io/gallery-fr/) is the French version of the gallery!
 
 To learn how to generate your own interactive data visualizations, go to the official [Animint2 Manual](https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html). If you encounter problems, please see the [animint2 wiki](https://github.com/animint/animint2/wiki) or [report them](https://github.com/animint/animint2/issues).
 
