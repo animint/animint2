@@ -1,3 +1,8 @@
+# Changes in version 2025.9.16
+
+- `animint2pages()` gains arguments `chromote_width` and `chromote_height`, both dimensions in pixels of browser window used to create `Capture.PNG`, new defaults 3000x2000 should be large enough to handle most typical data viz (previous default width was not on Ubuntu).
+- `update_gallery()` uses `method="curl"` when downloading `Capture.PNG` (this fixes previous default method which resulted in PNG with errors).
+
 # Changes in version 2025.9.12 (PR#226)
 
 - Tooltip is hidden after clicking to de-select.
