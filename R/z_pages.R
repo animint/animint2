@@ -193,15 +193,23 @@ update_gallery <- function(gallery_path="~/R/gallery"){
   commit.POSIXct <- title <- NULL
   ## Above to avoid CRAN NOTE.
   repos.txt <- file.path(gallery_path, "repos.txt")
-  repos.dt <- fread(repos.txt,header=FALSE,col.names="viz_owner_repo")
+  repos.dt <- fread(
+    repos.txt, header=FALSE, col.names="viz_owner_repo"
+  )[viz_owner_repo != ""]
   meta.csv <- file.path(gallery_path, "meta.csv")
-  if(file.exists(meta.csv)){
-    old.meta <- fread(meta.csv)
-    todo.meta <- repos.dt[!old.meta, on="viz_owner_repo"]
-  }else{
-    old.meta <- NULL
-    todo.meta <- repos.dt
+  get_png <- function(owner_repo){
+    file.path(gallery_path, "repos", paste0(owner_repo, ".png"))
   }
+  repo.png.vec <- get_png(repos.dt$viz_owner_repo)
+  old.meta <- if(file.exists(meta.csv)){
+    fread(meta.csv)
+  }else{
+    data.table(viz_owner_repo=character())
+  }
+  missing.meta <- !repos.dt$viz_owner_repo %in% old.meta$viz_owner_repo
+  missing.png <- !file.exists(repo.png.vec)
+  todo.meta <- repos.dt[missing.png | missing.meta]
+  old.keep <- old.meta[repos.dt, on="viz_owner_repo", nomatch=0L]
   meta.dt.list <- list(old.meta)
   error.dt.list <- list()
   add.POSIXct <- Sys.time()
@@ -210,13 +218,17 @@ update_gallery <- function(gallery_path="~/R/gallery"){
       viz_url <- function(filename)sprintf(
         "https://raw.githubusercontent.com/%s/refs/heads/gh-pages/%s",
         viz_owner_repo, filename)
-      repo.png <- file.path(
-        gallery_path, "repos", paste0(viz_owner_repo, ".png"))
+      repo.png <- get_png(viz_owner_repo)
       repo.dir <- dirname(repo.png)
       dir.create(repo.dir, showWarnings = FALSE)
       if(!file.exists(repo.png)){
         dir.create(dirname(repo.png), showWarnings=FALSE, recursive=TRUE)
         download.file(viz_url("Capture.PNG"), repo.png, method="curl")
+        png_first_line <- suppressWarnings(readLines(repo.png, n=1))
+        if(identical(png_first_line, "404: Not Found")){
+          unlink(repo.png)
+          stop("Capture.PNG download returned 404: Not Found")
+        }
       }
       local.json <- tempfile()
       download.file(viz_url("plot.json"), local.json)
