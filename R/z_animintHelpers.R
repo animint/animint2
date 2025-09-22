@@ -256,7 +256,6 @@ checkForNonIdentityAndSS <- function(stat.type, has.show, is.show, l,
     show.names <- aes_names[is.show]
     data.has.show <- show.names %in% g_data_names
     signal <- if(all(data.has.show))warning else stop
-    print(l)
     signal(
       "showSelected does not work with ",
       stat.type,
