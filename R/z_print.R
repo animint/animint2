@@ -31,77 +31,7 @@ print.animint <- function(x, ...){
 ##' @param ... ggplots and options
 ##' @return list of class animint
 ##' @author Toby Dylan Hocking
-##' @examples
-##'
-##' if(require('data.table'))setDTthreads(1)#for CRAN.
-##' library(animint2)
-##' ## Simple hello world example (1 selector: word).
-##' animint(ggplot()+geom_text(aes(
-##'   word, word, label=word, color=word),
-##'   data=data.frame(word=c("Hello","world!"))))
-##'
-##' ## More complex Hello World (2 selectors: number, language).
-##' hello_df = data.frame(
-##'   language=c("en","en","fr","fr"),
-##'   word=c("Hello","world!","Bonjour","monde !"),
-##'   number=factor(c(1,2,1,2)))
-##' animint(ggplot()+geom_text(aes(
-##'   number, "message", label=word, color=number),
-##'   showSelected="language", data=hello_df)+
-##' geom_text(aes(
-##'   number, "select language", label=language),
-##'   clickSelects="language",
-##'   data=data.frame(number=factor(1:2), language=c("en","fr"))))
-##'
-##' ## More complex World Bank example (3 selectors: country, region, year).
-##' data(WorldBank, package="animint2")
-##' years <- unique(WorldBank[, "year", drop=FALSE])
-##' y1960 <- subset(WorldBank, year==1960)
-##' animint(
-##'   title="Linked scatterplot and time series", #web page title.
-##'   time=list(variable="year",ms=3000), #variable and time delay used for animation.
-##'   duration=list(year=1000), #smooth transition duration in milliseconds.
-##'   selector.types=list(country="multiple"), #single/multiple selection for each variable.
-##'   first=list( #selected values to show when viz is first rendered.
-##'     country=c("Canada", "Japan"),
-##'     year=1970),
-##'   ## ggplots are rendered together for an interactive data viz.
-##'   ts=ggplot()+
-##'     theme_animint(width=500)+
-##'     make_tallrect(WorldBank, "year")+
-##'     geom_text(aes(
-##'       year, life.expectancy, label=country),
-##'       showSelected="country",
-##'       clickSelects="country",
-##'       hjust=1,
-##'       data=y1960)+
-##'     scale_x_continuous(limits=c(1950, NA))+
-##'     geom_line(aes(
-##'       year, life.expectancy, group=country, color=region),
-##'       clickSelects="country",
-##'       data=WorldBank,
-##'       size=4,
-##'       alpha=0.55),
-##'   scatter=ggplot()+
-##'     geom_point(aes(
-##'       fertility.rate, life.expectancy,
-##'       key=country, colour=region, size=population),
-##'       chunk_vars=character(),
-##'       showSelected="year",
-##'       clickSelects="country",
-##'       data=WorldBank)+
-##'     geom_text(aes(
-##'       fertility.rate, life.expectancy,
-##'       key=country,
-##'       label=country),
-##'       showSelected=c("country", "year"),
-##'       chunk_vars=character(),
-##'       data=WorldBank)+
-##'     geom_text(aes(
-##'       5, 80, key=1, label=paste("year =", year)),
-##'       showSelected="year",
-##'       data=years)+
-##'     scale_size_animint(pixel.range=c(2,20), breaks=10^(4:9)))
+##' @example inst/examples/animint.R
 animint <- function(...){
   L <- list(...)
   # Check if argument list is empty
