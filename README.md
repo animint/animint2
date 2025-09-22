@@ -66,7 +66,10 @@ The `animint2` package is a work in progress. If you spot any bugs or unexpected
 
 ## Other galleries
 
-Toby Hocking's [gallery-change-point](https://tdhock.github.io/gallery-change-point/) repository contains data visualizations related to change-point detection algorithms.
+Toby Hocking maintains repositories on specific subjects:
+
+* [gallery-ml](https://tdhock.github.io/gallery-ml/) contains data visualizations related to machine learning algorithms.
+* [gallery-change-point](https://tdhock.github.io/gallery-change-point/) contains data visualizations related to change-point detection algorithms.
 
 [Vatsal-Rajput](https://github.com/Vatsal-Rajput/Vatsal-Animint-Gallery/tree/gh-pages) created a small gallery with a different index.Rmd file.
 
