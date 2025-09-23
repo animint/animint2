@@ -28,7 +28,8 @@ For more examples, see these galleries, which have screenshots along with links 
 * [GitHub Pages animint gallery](https://animint.github.io/gallery) is a newer collection of animints that have been published using the `animint2pages` function.
 * [La galerie en français pour animint2](https://animint.github.io/gallery-fr/) is the French version of the gallery!
 
-To learn how to generate your own interactive data visualizations, go to the official [Animint2 Manual](https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html). If you encounter problems, please see the [animint2 wiki](https://github.com/animint/animint2/wiki) or [report them](https://github.com/animint/animint2/issues).
+To learn how to generate your own interactive data visualizations, go to the official [Animint2 Manual](https://animint-manual-en.netlify.app) (newly rendered using quarto since Sept 2025).
+If you encounter problems, please see the [animint2 wiki](https://github.com/animint/animint2/wiki) or [report them](https://github.com/animint/animint2/issues).
 
 [![codecov](https://codecov.io/gh/animint/animint2/branch/main/graph/badge.svg)](https://codecov.io/gh/animint/animint2)
 
