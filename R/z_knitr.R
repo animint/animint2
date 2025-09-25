@@ -43,24 +43,21 @@ knit_print.animint <- function(x, options, ...) {
 new_animint <- function(attrs, json.file) {
   jsonFile <- paste0('"', json.file, '"')
   nms <- names(attrs)
-  attrz <- paste(nms, shQuote(attrs), sep = '=', collapse = ' ')
+  div_attrz <- paste(nms, shQuote(attrs), sep = '=', collapse = ' ')
   idx <- which(nms == 'id')
   classx <- which(nms == 'class')
-  if (length(idx)) {
-    prefix <- '"#'
-    nm <- attrs[[idx]]
+  nm <- attrs[[idx]]
+  prefix <- if (length(idx)) {
+    '#'
   } else if (length(classx)) {
-    prefix <- '".'
-    nm <- attrs[[idx]]
-  }  else warning('Unknown attribute')
+    '.'
+  } else warning('Unknown attribute')
   # using chunk labels is problematic for JS variable names is problematic since '-', '.', etc are illegal
   escaped <- gsub("[-.]", "_", nm)
   selectr <- paste0(prefix, escaped)
-  paste0('<p></p>\n<div ', attrz,
-         '></div>\n<script>var ', escaped,
-         ' = new animint(', selectr,
-         '", ', jsonFile,
-         ');</script>')
+  sprintf(
+    '<div %s></div>\n<script>var %s = new animint("%s",%s);</script>',
+    div_attrz, escaped, selectr, jsonFile)
 }
 
 #' Shiny ui output function
