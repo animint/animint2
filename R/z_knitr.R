@@ -55,7 +55,9 @@ new_animint <- function(attrs, json.file) {
   # using chunk labels is problematic for JS variable names is problematic since '-', '.', etc are illegal
   escaped <- gsub("[-.]", "_", nm)
   selectr <- paste0(prefix, escaped)
-  sprintf(
+  if(knitr::is_latex_output())sprintf(
+    "\\includegraphics[height=2in]{Ch02/Ch02-viz-scatter.png}"
+  ) else sprintf(
     '<div %s></div>\n<script>var %s = new animint("%s",%s);</script>',
     div_attrz, escaped, selectr, jsonFile)
 }
