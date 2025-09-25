@@ -794,7 +794,6 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     ## group for deciding common data.
     built$group <- NULL
   }
-
   ## Remove columns with all NA values
   ## so that common.not.na is not empty
   ## due to the plot's alpha, stroke or other columns
@@ -833,10 +832,9 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
       return(NULL)
     }
   }
-
-  setDF(built)
-  built.by.group <- split(built, built$group)
-  group.tab <- table(built[, c("group", chunk.vars)])
+  ##setDF(built)
+  ##built.by.group <- split(built, built$group)
+  group.tab <- table(built[, c("group", chunk.vars), with=FALSE])
   each.group.same.size <- apply(group.tab, 1, function(group.size.vec){
     group.size <- group.size.vec[1]
     if(all(group.size == group.size.vec)){
@@ -849,6 +847,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   })
 
   checkCommon <- function(col.name){
+    print(col.name)
     for(group.name in names(built.by.group)){
       data.vec <- built.by.group[[group.name]][[col.name]]
       if(group.size <- each.group.same.size[[group.name]]){
@@ -870,10 +869,34 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     }
     TRUE
   }
-
+  checkCommon <- function(col.name){
+    join_dt[, {
+      data.vec <- .SD[[col.name]]
+      if(group.size){
+        not.same.value <- data.vec != data.vec[1:group.size]
+        if(any(not.same.value, na.rm=TRUE)){
+          ## if any data values are different, then this is not a
+          ## common column.
+          FALSE
+        }
+      }else{
+        ## this group has different sizes in different chunks, so the
+        ## only way that we can make common data is if there is only
+        ## value.
+        if(all(data.vec != data.vec[1])){
+          FALSE
+        }
+      }
+    }, by=.(group,group.size)]
+  }
+  join_dt <- data.table(group=unique(built$group), group.size = each.group.same.size)[built,on="group"]
+  browser()
+  ## a common column must be the same for all group across all showSelected values.
+  only_one <- built[, lapply(.SD, function(x)length(unique(x)) == 1), by=group]
+  only_one[, lapply(.SD, function(one_val)each.group.same.size==0 & !one_val), .SDcols=!"group"]
   all.col.names <- names(built)
   col.name.vec <- all.col.names[!all.col.names %in% chunk.vars]
-  is.common <- sapply(col.name.vec, checkCommon)
+  is.common <- sapply(col.name.vec, checkCommon)#TODO slow!!
 
   ## TODO: another criterion could be used to save disk space even if
   ## there is only 1 chunk.
@@ -881,7 +904,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   if(is.common[["group"]] && 2 <= n.common && n.common < length(is.common)){
     common.cols <- names(is.common)[is.common]
     group.info.list <- list()
-    for(group.name in names(built.by.group)){
+    for(group.name in names(built.by.group)){#TODO slow!!
       one.group <- built.by.group[[group.name]]
       group.size <- each.group.same.size[[group.name]]
       if(group.size == 0){
@@ -909,6 +932,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     }else{
       group.info.common
     }
+    browser()
     varied.df.list <- split_recursive(na.omit(built), chunk.vars)
     varied.cols <- c("group", names(is.common)[!is.common])
     varied.data <- varied.chunk(varied.df.list, varied.cols)
