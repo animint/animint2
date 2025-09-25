@@ -55,11 +55,13 @@ new_animint <- function(attrs, json.file) {
   # using chunk labels is problematic for JS variable names is problematic since '-', '.', etc are illegal
   escaped <- gsub("[-.]", "_", nm)
   selectr <- paste0(prefix, escaped)
+  pngFile <- sub("/plot.json", ".png", jsonFile)
   if(knitr::is_latex_output())sprintf(
-    "\\includegraphics[height=2in]{Ch02/Ch02-viz-scatter.png}"
+    "\\includegraphics[height=\\textwidth]{%s}", pngFile
   ) else sprintf(
     '<div %s></div>\n<script>var %s = new animint("%s",%s);</script>',
     div_attrz, escaped, selectr, jsonFile)
+  ## <div id="Ch01vizKeeling"></div><script>var Ch01vizKeeling = new animint("#Ch01vizKeeling","Ch01vizKeeling/plot.json");</script>
 }
 
 #' Shiny ui output function
