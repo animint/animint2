@@ -9,6 +9,8 @@ unlink(folder, recursive = TRUE)
 doc.Rmd <- file.path(folder, "doc.Rmd")
 dir.create(folder, recursive = TRUE, showWarnings = FALSE)
 file.copy(screenshot.Rmd, doc.Rmd, overwrite=TRUE)
+
+options(animint2.chromote_sleep_seconds=5)
 rmarkdown::render(doc.Rmd)
 Capture.PNG <- file.path(folder, "unnamedchunk1", "Capture.PNG")
 
@@ -23,4 +25,11 @@ test_that("tex file contains include", {
   doc.lines <- readLines(doc.tex)
   include <- grep("includegraphics[width=\\textwidth]", doc.lines, fixed=TRUE, value=TRUE)
   expect_match(include, Capture.PNG, fixed=TRUE)
+})
+
+options(animint2.chromote_sleep_seconds=NULL)
+test_that("error for knit without option set", {
+  expect_error({
+    rmarkdown::render(doc.Rmd)
+  }, "LaTeX failed to compile", fixed=TRUE)
 })

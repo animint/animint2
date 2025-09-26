@@ -5,7 +5,6 @@ output:
 ---
 
 ```{r}
-options(animint2.chromote_sleep_seconds=5)
 animint(
   ggplot()+
     geom_point(aes(
