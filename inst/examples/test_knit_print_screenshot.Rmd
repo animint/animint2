@@ -1,0 +1,14 @@
+---
+output:
+  pdf_document:
+    keep_tex: true
+---
+
+```{r}
+options(animint2.chromote_sleep_seconds=5)
+animint(
+  ggplot()+
+    geom_point(aes(
+      x, x),
+      data=data.frame(x=1)))
+```
