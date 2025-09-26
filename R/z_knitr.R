@@ -16,7 +16,7 @@ knit_print.animint <- function(x, options, ...) {
     "\\includegraphics[height=\\textwidth]{%s/Capture.PNG}", out.dir
   ) else sprintf(
     ## <div id="Ch01vizKeeling"></div><script>var Ch01vizKeeling = new animint("#Ch01vizKeeling","Ch01vizKeeling/plot.json");</script>
-    '<div id="%s"></div>\n<script>var %s = new animint("#%s","%s/plot.json");</script>', viz_id, viz_id, viz_id, out.dir
+    '<div id="%s"></div>\n<script>var %s = new animint("#%s","%s/plot.json");</script>', viz_id, viz_id, viz_id, viz_id
   )
   # if this is the first plot, place scripts just before the plot
   # there has to be a better way to do this, but this will do for now -- http://stackoverflow.com/questions/14308240/how-to-add-javascript-in-the-head-of-a-html-knitr-document
@@ -31,7 +31,7 @@ knit_print.animint <- function(x, options, ...) {
 <link rel="stylesheet" type="text/css" href="%s/vendor/selectize.css" />
 <script type="text/javascript" src="%s/vendor/driver.js.iife.js"></script>
 <link rel="stylesheet" href="%s/vendor/driver.css" />
-%s', out.dir, out.dir, out.dir, out.dir, out.dir, out.dir, out.dir, out.dir, out.dir, res)
+%s', viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, res)
   }
   knitr::asis_output(res, meta = list(animint = structure("", class = "animint")))
 }
