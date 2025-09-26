@@ -1,29 +1,22 @@
 #' Insert an interactive animation into an R markdown document using a customized print method.
 #' @param x named list of ggplots and option lists to pass to \code{animint2dir}.
-#' @param options knitr options.
-#' @param ... placeholder.
+#' @param options knitr chunk options.
+#' @param ... ignored.
 #' @importFrom knitr knit_print
 #' @references https://github.com/yihui/knitr/blob/master/vignettes/knit_print.Rmd
 #' @author Carson Sievert
 #' @export
 knit_print.animint <- function(x, options, ...) {
-  if (!requireNamespace("knitr")) warning("Please install.packages('knitr')")
-  # This function should be evaluated in knitr's output directory
   output.dir <- knitr::opts_knit$get()[["output.dir"]]
-  ## sink()
-  ## print(output.dir)
-  old.wd <- setwd(output.dir)
-  on.exit(setwd(old.wd))
-  # the current knitr chunk 'label' defines a directory to place the animints 
-  # hopefully this regular expression is safe enough to workaround bad chunk names
-  # http://stackoverflow.com/questions/8959243/r-remove-non-alphanumeric-symbols-from-a-string
-  out.dir <- gsub("[^[:alnum:]]", "", options$label)
+  # the current knitr chunk 'label' defines a directory to place the animints
+  viz_id <- gsub("[^[:alnum:]]", "", options$label)
+  out.dir <- file.path(output.dir, viz_id)
   animint2dir(x, out.dir = out.dir, open.browser = FALSE)
   res <- if(knitr::is_latex_output())sprintf(
     "\\includegraphics[height=\\textwidth]{%s/Capture.PNG}", out.dir
   ) else sprintf(
     ## <div id="Ch01vizKeeling"></div><script>var Ch01vizKeeling = new animint("#Ch01vizKeeling","Ch01vizKeeling/plot.json");</script>
-    '<div id="%s"></div>\n<script>var %s = new animint("#%s","%s/plot.json");</script>', out.dir, out.dir, out.dir, out.dir
+    '<div id="%s"></div>\n<script>var %s = new animint("#%s","%s/plot.json");</script>', viz_id, viz_id, viz_id, out.dir
   )
   # if this is the first plot, place scripts just before the plot
   # there has to be a better way to do this, but this will do for now -- http://stackoverflow.com/questions/14308240/how-to-add-javascript-in-the-head-of-a-html-knitr-document
