@@ -13,7 +13,7 @@ knit_print.animint <- function(x, options, ...) {
   out.dir <- file.path(output.dir, viz_id)
   animint2dir(x, out.dir = out.dir, open.browser = FALSE)
   res <- if(knitr::is_latex_output())sprintf(
-    "\\includegraphics[height=\\textwidth]{%s/Capture.PNG}", out.dir
+    "\\includegraphics[width=\\textwidth]{%s/Capture.PNG}", out.dir
   ) else sprintf(
     ## <div id="Ch01vizKeeling"></div><script>var Ch01vizKeeling = new animint("#Ch01vizKeeling","Ch01vizKeeling/plot.json");</script>
     '<div id="%s"></div>\n<script>var %s = new animint("#%s","%s/plot.json");</script>', viz_id, viz_id, viz_id, viz_id
