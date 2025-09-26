@@ -17,9 +17,14 @@ knit_print.animint <- function(x, options, ...) {
   # the current knitr chunk 'label' defines a directory to place the animints 
   # hopefully this regular expression is safe enough to workaround bad chunk names
   # http://stackoverflow.com/questions/8959243/r-remove-non-alphanumeric-symbols-from-a-string
-  dir <- gsub("[^[:alnum:]]", "", options$label)
-  animint2dir(x, out.dir = dir, json.file = 'plot.json', open.browser = FALSE)
-  res <- new_animint(list(id = dir), json.file = file.path(dir, 'plot.json'))
+  out.dir <- gsub("[^[:alnum:]]", "", options$label)
+  animint2dir(x, out.dir = out.dir, open.browser = FALSE)
+  res <- if(knitr::is_latex_output())sprintf(
+    "\\includegraphics[height=\\textwidth]{%s/Capture.PNG}", out.dir
+  ) else sprintf(
+    ## <div id="Ch01vizKeeling"></div><script>var Ch01vizKeeling = new animint("#Ch01vizKeeling","Ch01vizKeeling/plot.json");</script>
+    '<div id="%s"></div>\n<script>var %s = new animint("#%s","%s/plot.json");</script>', out.dir, out.dir, out.dir, out.dir
+  )
   # if this is the first plot, place scripts just before the plot
   # there has to be a better way to do this, but this will do for now -- http://stackoverflow.com/questions/14308240/how-to-add-javascript-in-the-head-of-a-html-knitr-document
   if (length(knitr::knit_meta(class = "animint", clean = FALSE)) == 0) {
@@ -33,35 +38,9 @@ knit_print.animint <- function(x, options, ...) {
 <link rel="stylesheet" type="text/css" href="%s/vendor/selectize.css" />
 <script type="text/javascript" src="%s/vendor/driver.js.iife.js"></script>
 <link rel="stylesheet" href="%s/vendor/driver.css" />
-%s', dir, dir, dir, dir, dir, dir, dir, dir, dir, res)
+%s', out.dir, out.dir, out.dir, out.dir, out.dir, out.dir, out.dir, out.dir, out.dir, res)
   }
   knitr::asis_output(res, meta = list(animint = structure("", class = "animint")))
-}
-
-# Helper function to create the HTML needed to embed animint plots 
-# Note htmltools provides a better of doing this, but trying to avoid yet another dependency
-new_animint <- function(attrs, json.file) {
-  jsonFile <- paste0('"', json.file, '"')
-  nms <- names(attrs)
-  div_attrz <- paste(nms, shQuote(attrs), sep = '=', collapse = ' ')
-  idx <- which(nms == 'id')
-  classx <- which(nms == 'class')
-  nm <- attrs[[idx]]
-  prefix <- if (length(idx)) {
-    '#'
-  } else if (length(classx)) {
-    '.'
-  } else warning('Unknown attribute')
-  # using chunk labels is problematic for JS variable names is problematic since '-', '.', etc are illegal
-  escaped <- gsub("[-.]", "_", nm)
-  selectr <- paste0(prefix, escaped)
-  pngFile <- sub("/plot.json", ".png", jsonFile)
-  if(knitr::is_latex_output())sprintf(
-    "\\includegraphics[height=\\textwidth]{%s}", pngFile
-  ) else sprintf(
-    '<div %s></div>\n<script>var %s = new animint("%s",%s);</script>',
-    div_attrz, escaped, selectr, jsonFile)
-  ## <div id="Ch01vizKeeling"></div><script>var Ch01vizKeeling = new animint("#Ch01vizKeeling","Ch01vizKeeling/plot.json");</script>
 }
 
 #' Shiny ui output function
