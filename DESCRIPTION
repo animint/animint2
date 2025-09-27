@@ -109,7 +109,8 @@ Suggests:
     svglite,
     ggplot2,
     chromote,
-    magick
+    magick,
+    callr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
