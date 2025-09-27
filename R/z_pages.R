@@ -16,9 +16,6 @@
 #' @param required_opts Character vector of plot.list element names
 #'   which are checked (stop with an error if not present). Use
 #'   required_opts=NULL to skip check.
-#' @param chromote_sleep_seconds if numeric, chromote will be used to take a screenshot of the data viz, pausing this number of seconds to wait for rendering (experimental).
-#' @param chromote_width width of chromote window in pixels, default 3000 should be sufficient for most data viz, but can be increased if your data viz screenshot appears cropped too small.
-#' @param chromote_height height of chromote window in pixels, default 2000 should be sufficient for most data viz, but can be increased if your data viz screenshot appears cropped too small.
 #' @param ... Additional options passed onto \code{animint2dir}.
 #'
 #' @return The function returns the initialized GitHub repository object.
@@ -39,7 +36,7 @@
 #' }
 #' 
 #' @export
-animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), chromote_sleep_seconds=NULL, chromote_width=3000, chromote_height=2000, ...) {
+animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "Commit from animint2pages", private = FALSE, required_opts = c("title","source"), ...) {
   for(opt in required_opts){
     if(!opt %in% names(plot.list)){
       stop(sprintf("plot.list does not contain option named %s, which is required by animint2pages", opt))
@@ -52,29 +49,6 @@ animint2pages <- function(plot.list, github_repo, owner=NULL, commit_message = "
     }
   }
   res <- animint2dir(plot.list, open.browser = FALSE, ...)
-  if(requireNamespace("chromote") && requireNamespace("magick") && is.numeric(chromote_sleep_seconds)) {
-    chrome.session <- chromote::ChromoteSession$new(
-      width=chromote_width, height=chromote_height)
-    #Find available port and start server
-    portNum <- servr::random_port()
-    normDir <- normalizePath(res$out.dir, winslash = "/", mustWork = TRUE)
-    start_servr(serverDirectory = normDir, port = portNum, tmpPath = normDir)
-    Sys.sleep(chromote_sleep_seconds)
-    url <- sprintf("http://localhost:%d", portNum)
-    chrome.session$Page$navigate(url)
-    screenshot_path <- file.path(res$out.dir, "Capture.PNG")
-    screenshot_full <- file.path(res$out.dir, "Capture_full.PNG")
-    Sys.sleep(chromote_sleep_seconds)
-    ## Capture screenshot
-    chrome.session$screenshot(screenshot_full, selector = ".plot_content")
-    image_raw <- magick::image_read(screenshot_full)
-    image_trimmed <- magick::image_trim(image_raw)
-    magick::image_write(image_trimmed, screenshot_path)
-    unlink(screenshot_full)
-    chrome.session$close()
-    # Stop the server
-    stop_servr(normDir)
-  }
   all_files <- Sys.glob(file.path(res$out.dir, "*"))
   file_info <- file.info(all_files)
   to_post <- all_files[!(file_info$size == 0 | grepl("~$", all_files))]
