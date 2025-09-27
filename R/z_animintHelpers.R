@@ -832,8 +832,6 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
       return(NULL)
     }
   }
-  ##setDF(built)
-  ##built.by.group <- split(built, built$group)
   group.tab <- table(built[, c("group", chunk.vars), with=FALSE])
   each.group.same.size <- apply(group.tab, 1, function(group.size.vec){
     group.size <- group.size.vec[1]
@@ -845,9 +843,10 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
       0
     }
   })
-  checkCommon <- function(col.name){
-  }
-  join_dt <- data.table(group=unique(built$group), group.size = each.group.same.size)[built,on="group"]
+  join_dt <- data.table(
+    group = unique(built$group),
+    group.size = each.group.same.size
+  )[built, on="group"]
   ## a common column must be the same for all group across all showSelected values.
   all.col.names <- names(built)
   col.name.vec <- all.col.names[!all.col.names %in% chunk.vars]
