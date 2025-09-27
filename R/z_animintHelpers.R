@@ -845,68 +845,30 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
       0
     }
   })
-
   checkCommon <- function(col.name){
-    print(col.name)
-    for(group.name in names(built.by.group)){
-      data.vec <- built.by.group[[group.name]][[col.name]]
-      if(group.size <- each.group.same.size[[group.name]]){
-        not.same.value <- data.vec != data.vec[1:group.size]
-        if(any(not.same.value, na.rm=TRUE)){
-          ## if any data values are different, then this is not a
-          ## common column.
-          return(FALSE)
-        }
-      }else{
-        ## this group has different sizes in different chunks, so the
-        ## only way that we can make common data is if there is only
-        ## value.
-        value.tab <- table(data.vec)
-        if(length(value.tab) != 1){
-          return(FALSE)
-        }
-      }
-    }
-    TRUE
-  }
-  checkCommon <- function(col.name){
-    join_dt[, {
-      data.vec <- .SD[[col.name]]
-      if(group.size){
-        not.same.value <- data.vec != data.vec[1:group.size]
-        if(any(not.same.value, na.rm=TRUE)){
-          ## if any data values are different, then this is not a
-          ## common column.
-          FALSE
-        }
-      }else{
-        ## this group has different sizes in different chunks, so the
-        ## only way that we can make common data is if there is only
-        ## value.
-        if(all(data.vec != data.vec[1])){
-          FALSE
-        }
-      }
-    }, by=.(group,group.size)]
   }
   join_dt <- data.table(group=unique(built$group), group.size = each.group.same.size)[built,on="group"]
   browser()
   ## a common column must be the same for all group across all showSelected values.
-  only_one <- built[, lapply(.SD, function(x)length(unique(x)) == 1), by=group]
-  only_one[, lapply(.SD, function(one_val)each.group.same.size==0 & !one_val), .SDcols=!"group"]
   all.col.names <- names(built)
   col.name.vec <- all.col.names[!all.col.names %in% chunk.vars]
-  is.common <- sapply(col.name.vec, checkCommon)#TODO slow!!
-
+  common_dt <- data.table(col.name=col.name.vec)[, {
+    join_dt[, {
+      data.vec <- .SD[[col.name]]
+      check.vec <- if(group.size)data.vec[1:group.size] else data.vec[1]
+      .(ok=all(data.vec == check.vec))
+    }, by=.(group,group.size)][
+    , .(ok=all(ok))]
+  }, by=col.name]
+  is.common <- common_dt[, structure(ok, names=col.name)]
   ## TODO: another criterion could be used to save disk space even if
   ## there is only 1 chunk.
   n.common <- sum(is.common)
   if(is.common[["group"]] && 2 <= n.common && n.common < length(is.common)){
     common.cols <- names(is.common)[is.common]
     group.info.list <- list()
-    for(group.name in names(built.by.group)){#TODO slow!!
-      one.group <- built.by.group[[group.name]]
-      group.size <- each.group.same.size[[group.name]]
+    join_dt[, {
+      ## TODO
       if(group.size == 0){
         group.size <- 1
       }
@@ -918,7 +880,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
       group.i <- which.min(colSums(is.na.mat))
       offset <- (group.i-1)*group.size
       group.info.list[[group.name]] <- group.common[(1:group.size)+offset, ]
-    }
+    }, by=.(group, group.size), .SDcols=common.cols]
     group.info.common <- do.call(rbind, group.info.list)
     common.unique <- unique(group.info.common)
     ## For geom_polygon and geom_path we may have two rows that should
