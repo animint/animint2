@@ -13,10 +13,10 @@ file.copy(screenshot.Rmd, doc.Rmd, overwrite=TRUE)
 options(animint2.chromote_sleep_seconds=5)
 rmarkdown::render(doc.Rmd)
 Capture.PNG <- file.path(folder, "unnamedchunk1", "Capture.PNG")
+doc.pdf <- file.path(folder, "doc.pdf")
 
 test_that("PNG and PDF files exist", {
   expect_gt(file.size(Capture.PNG), 0)
-  doc.pdf <- file.path(folder, "doc.pdf")
   expect_gt(file.size(doc.pdf), 0)
 })
 
@@ -28,8 +28,10 @@ test_that("tex file contains include", {
 })
 
 options(animint2.chromote_sleep_seconds=NULL)
-test_that("error for knit without option set", {
-  expect_error({
-    rmarkdown::render(doc.Rmd)
-  }, "LaTeX failed to compile", fixed=TRUE)
+unlink(Capture.PNG)
+unlink(doc.pdf)
+test_that("no PNG without option set but yes PDF", {
+  rmarkdown::render(doc.Rmd)
+  expect_false(file.exists(Capture.PNG))
+  expect_gt(file.size(doc.pdf), 0)
 })
