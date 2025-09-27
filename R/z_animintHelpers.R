@@ -784,7 +784,7 @@ getTextSize <- function(element.name, theme){
 ##' @importFrom stats na.omit
 ##' @import data.table
 getCommonChunk <- function(built, chunk.vars, aes.list){
-  group <- NULL
+  group <- col.name <- group.size <- ok <- NULL
   ## Above to avoid CRAN NOTE.
   if(length(chunk.vars) == 0){
     return(NULL)
@@ -794,7 +794,6 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     ## group for deciding common data.
     built$group <- NULL
   }
-
   ## Remove columns with all NA values
   ## so that common.not.na is not empty
   ## due to the plot's alpha, stroke or other columns
@@ -833,10 +832,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
       return(NULL)
     }
   }
-
-  setDF(built)
-  built.by.group <- split(built, built$group)
-  group.tab <- table(built[, c("group", chunk.vars)])
+  group.tab <- table(built[, c("group", chunk.vars), with=FALSE])
   each.group.same.size <- apply(group.tab, 1, function(group.size.vec){
     group.size <- group.size.vec[1]
     if(all(group.size == group.size.vec)){
@@ -847,56 +843,39 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
       0
     }
   })
-
-  checkCommon <- function(col.name){
-    for(group.name in names(built.by.group)){
-      data.vec <- built.by.group[[group.name]][[col.name]]
-      if(group.size <- each.group.same.size[[group.name]]){
-        not.same.value <- data.vec != data.vec[1:group.size]
-        if(any(not.same.value, na.rm=TRUE)){
-          ## if any data values are different, then this is not a
-          ## common column.
-          return(FALSE)
-        }
-      }else{
-        ## this group has different sizes in different chunks, so the
-        ## only way that we can make common data is if there is only
-        ## value.
-        value.tab <- table(data.vec)
-        if(length(value.tab) != 1){
-          return(FALSE)
-        }
-      }
-    }
-    TRUE
-  }
-
+  join_dt <- data.table(
+    group = unique(built$group),
+    group.size = each.group.same.size
+  )[built, on="group"]
+  ## a common column must be the same for all group across all showSelected values.
   all.col.names <- names(built)
   col.name.vec <- all.col.names[!all.col.names %in% chunk.vars]
-  is.common <- sapply(col.name.vec, checkCommon)
-
+  common_dt <- data.table(col.name=col.name.vec)[, {
+    join_dt[, {
+      data.vec <- .SD[[col.name]]
+      check.vec <- if(group.size)data.vec[1:group.size] else data.vec[1]
+      .(ok=all(data.vec == check.vec, na.rm=TRUE))
+    }, by=.(group,group.size)][
+    , .(ok=all(ok, na.rm=TRUE))]
+  }, by=col.name]
+  is.common <- common_dt[, structure(ok, names=col.name)]
   ## TODO: another criterion could be used to save disk space even if
   ## there is only 1 chunk.
   n.common <- sum(is.common)
   if(is.common[["group"]] && 2 <= n.common && n.common < length(is.common)){
     common.cols <- names(is.common)[is.common]
-    group.info.list <- list()
-    for(group.name in names(built.by.group)){
-      one.group <- built.by.group[[group.name]]
-      group.size <- each.group.same.size[[group.name]]
-      if(group.size == 0){
-        group.size <- 1
-      }
-      group.common <- one.group[, common.cols]
+    group.info.common <- join_dt[, {
       ## Instead of just taking the first chunk for this group (which
       ## may have NA), look for the chunk which has the fewest NA.
-      is.na.vec <- apply(is.na(group.common), 1, any)
+      is.na.vec <- apply(is.na(.SD), 1, any)
       is.na.mat <- matrix(is.na.vec, group.size)
       group.i <- which.min(colSums(is.na.mat))
       offset <- (group.i-1)*group.size
-      group.info.list[[group.name]] <- group.common[(1:group.size)+offset, ]
-    }
-    group.info.common <- do.call(rbind, group.info.list)
+      .SD[(1:group.size)+offset]
+    }, by=.(
+      group,
+      group.size=ifelse(group.size==0, 1, group.size)
+    ), .SDcols=setdiff(common.cols,'group')][, common.cols, with=FALSE]
     common.unique <- unique(group.info.common)
     ## For geom_polygon and geom_path we may have two rows that should
     ## both be kept (the start and the end of each group may be the
