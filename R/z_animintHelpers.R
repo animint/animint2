@@ -784,7 +784,7 @@ getTextSize <- function(element.name, theme){
 ##' @importFrom stats na.omit
 ##' @import data.table
 getCommonChunk <- function(built, chunk.vars, aes.list){
-  group <- ..common.cols <- col.name <- group.size <- ok <- NULL
+  group <- col.name <- group.size <- ok <- NULL
   ## Above to avoid CRAN NOTE.
   if(length(chunk.vars) == 0){
     return(NULL)
@@ -875,7 +875,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     }, by=.(
       group,
       group.size=ifelse(group.size==0, 1, group.size)
-    ), .SDcols=setdiff(common.cols,'group')][, ..common.cols]
+    ), .SDcols=setdiff(common.cols,'group')][, common.cols, with=FALSE]
     common.unique <- unique(group.info.common)
     ## For geom_polygon and geom_path we may have two rows that should
     ## both be kept (the start and the end of each group may be the
