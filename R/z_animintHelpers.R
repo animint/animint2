@@ -848,7 +848,6 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   checkCommon <- function(col.name){
   }
   join_dt <- data.table(group=unique(built$group), group.size = each.group.same.size)[built,on="group"]
-  browser()
   ## a common column must be the same for all group across all showSelected values.
   all.col.names <- names(built)
   col.name.vec <- all.col.names[!all.col.names %in% chunk.vars]
@@ -866,22 +865,18 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   n.common <- sum(is.common)
   if(is.common[["group"]] && 2 <= n.common && n.common < length(is.common)){
     common.cols <- names(is.common)[is.common]
-    group.info.list <- list()
-    join_dt[, {
-      ## TODO
-      if(group.size == 0){
-        group.size <- 1
-      }
-      group.common <- one.group[, common.cols]
+    group.info.common <- join_dt[, {
       ## Instead of just taking the first chunk for this group (which
       ## may have NA), look for the chunk which has the fewest NA.
-      is.na.vec <- apply(is.na(group.common), 1, any)
+      is.na.vec <- apply(is.na(.SD), 1, any)
       is.na.mat <- matrix(is.na.vec, group.size)
       group.i <- which.min(colSums(is.na.mat))
       offset <- (group.i-1)*group.size
-      group.info.list[[group.name]] <- group.common[(1:group.size)+offset, ]
-    }, by=.(group, group.size), .SDcols=common.cols]
-    group.info.common <- do.call(rbind, group.info.list)
+      .SD[(1:group.size)+offset]
+    }, by=.(
+      group,
+      group.size=ifelse(group.size==0, 1, group.size)
+    ), .SDcols=setdiff(common.cols,'group')]
     common.unique <- unique(group.info.common)
     ## For geom_polygon and geom_path we may have two rows that should
     ## both be kept (the start and the end of each group may be the
@@ -894,7 +889,6 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     }else{
       group.info.common
     }
-    browser()
     varied.df.list <- split_recursive(na.omit(built), chunk.vars)
     varied.cols <- c("group", names(is.common)[!is.common])
     varied.data <- varied.chunk(varied.df.list, varied.cols)
