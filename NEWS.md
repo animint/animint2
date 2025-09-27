@@ -1,3 +1,7 @@
+# Changes in version 2025.9.27 (PR#238)
+
+- Remove `checkCommon()` internal function, which was too slow for computing common chunk tsv file, when there were a large number of groups. Now using data table by group, which is faster and prints progress.
+
 # Changes in version 2025.9.16
 
 - `animint2pages()` gains arguments `chromote_width` and `chromote_height`, both dimensions in pixels of browser window used to create `Capture.PNG`, new defaults 3000x2000 should be large enough to handle most typical data viz (previous default width was not on Ubuntu).
