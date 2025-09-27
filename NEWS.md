@@ -1,3 +1,7 @@
+# Changes in version 2025.9.27 (PR#238)
+
+- Remove `checkCommon()` internal function, which was too slow for computing common chunk tsv file, when there were a large number of groups. Now using data table by group, which is faster and prints progress.
+
 # Changes in version 2025.9.26 (PR#236)
 
 - `animint2pages()` arguments `chromote_*` move to `animint2dir()` so that we can create `Capture.PNG` in the context of `knit_print.animint()`, for pdf output.
