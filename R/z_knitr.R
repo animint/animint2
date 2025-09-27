@@ -1,25 +1,23 @@
 #' Insert an interactive animation into an R markdown document using a customized print method.
 #' @param x named list of ggplots and option lists to pass to \code{animint2dir}.
-#' @param options knitr options.
-#' @param ... placeholder.
+#' @param options knitr chunk options.
+#' @param ... ignored.
 #' @importFrom knitr knit_print
 #' @references https://github.com/yihui/knitr/blob/master/vignettes/knit_print.Rmd
 #' @author Carson Sievert
 #' @export
 knit_print.animint <- function(x, options, ...) {
-  if (!requireNamespace("knitr")) warning("Please install.packages('knitr')")
-  # This function should be evaluated in knitr's output directory
   output.dir <- knitr::opts_knit$get()[["output.dir"]]
-  ## sink()
-  ## print(output.dir)
-  old.wd <- setwd(output.dir)
-  on.exit(setwd(old.wd))
-  # the current knitr chunk 'label' defines a directory to place the animints 
-  # hopefully this regular expression is safe enough to workaround bad chunk names
-  # http://stackoverflow.com/questions/8959243/r-remove-non-alphanumeric-symbols-from-a-string
-  dir <- gsub("[^[:alnum:]]", "", options$label)
-  animint2dir(x, out.dir = dir, json.file = 'plot.json', open.browser = FALSE)
-  res <- new_animint(list(id = dir), json.file = file.path(dir, 'plot.json'))
+  # the current knitr chunk 'label' defines a directory to place the animints
+  viz_id <- gsub("[^[:alnum:]]", "", options$label)
+  out.dir <- file.path(output.dir, viz_id)
+  animint2dir(x, out.dir = out.dir, open.browser = FALSE)
+  res <- if(knitr::is_latex_output())sprintf(
+    "\\IfFileExists{%s/Capture.PNG}{\\includegraphics[width=\\textwidth]{%s/Capture.PNG}}{}", out.dir, out.dir
+  ) else sprintf(
+    ## <div id="Ch01vizKeeling"></div><script>var Ch01vizKeeling = new animint("#Ch01vizKeeling","Ch01vizKeeling/plot.json");</script>
+    '<div id="%s"></div>\n<script>var %s = new animint("#%s","%s/plot.json");</script>', viz_id, viz_id, viz_id, viz_id
+  )
   # if this is the first plot, place scripts just before the plot
   # there has to be a better way to do this, but this will do for now -- http://stackoverflow.com/questions/14308240/how-to-add-javascript-in-the-head-of-a-html-knitr-document
   if (length(knitr::knit_meta(class = "animint", clean = FALSE)) == 0) {
@@ -33,34 +31,9 @@ knit_print.animint <- function(x, options, ...) {
 <link rel="stylesheet" type="text/css" href="%s/vendor/selectize.css" />
 <script type="text/javascript" src="%s/vendor/driver.js.iife.js"></script>
 <link rel="stylesheet" href="%s/vendor/driver.css" />
-%s', dir, dir, dir, dir, dir, dir, dir, dir, dir, res)
+%s', viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, res)
   }
   knitr::asis_output(res, meta = list(animint = structure("", class = "animint")))
-}
-
-# Helper function to create the HTML needed to embed animint plots 
-# Note htmltools provides a better of doing this, but trying to avoid yet another dependency
-new_animint <- function(attrs, json.file) {
-  jsonFile <- paste0('"', json.file, '"')
-  nms <- names(attrs)
-  attrz <- paste(nms, shQuote(attrs), sep = '=', collapse = ' ')
-  idx <- which(nms == 'id')
-  classx <- which(nms == 'class')
-  if (length(idx)) {
-    prefix <- '"#'
-    nm <- attrs[[idx]]
-  } else if (length(classx)) {
-    prefix <- '".'
-    nm <- attrs[[idx]]
-  }  else warning('Unknown attribute')
-  # using chunk labels is problematic for JS variable names is problematic since '-', '.', etc are illegal
-  escaped <- gsub("[-.]", "_", nm)
-  selectr <- paste0(prefix, escaped)
-  paste0('<p></p>\n<div ', attrz,
-         '></div>\n<script>var ', escaped,
-         ' = new animint(', selectr,
-         '", ', jsonFile,
-         ');</script>')
 }
 
 #' Shiny ui output function

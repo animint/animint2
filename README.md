@@ -74,4 +74,4 @@ Toby Hocking maintains repositories on specific subjects:
 
 [Vatsal-Rajput](https://github.com/Vatsal-Rajput/Vatsal-Animint-Gallery/tree/gh-pages) created a small gallery with a different index.Rmd file.
 
-[nhintruong](https://nhintruong.github.io/gallery_repo/) created a gallery with several example adapted from the animation package, like [the wiki page](https://github.com/tdhock/animint/wiki/Ports-of-animation-examples).
+[nhintruong](https://nhintruong.github.io/gallery_repo/) created a gallery with several examples adapted from the animation package, like [the wiki page](https://github.com/tdhock/animint/wiki/Ports-of-animation-examples).

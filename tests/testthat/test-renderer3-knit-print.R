@@ -1,8 +1,10 @@
 acontext("knitting multiple animint plots in a single Rmd")
 knitr::knit_meta() #clear knitr 'metadata'
 # Rmd.file <- "~/R/animint/inst/examples/test_knit_print.Rmd" ## Do we need this???
-Rmd.file <- system.file("examples", "test_knit_print.Rmd", 
-                        package = "animint2")
+Rmd.file <- system.file(
+  "examples", "test_knit_print.Rmd",
+  package = "animint2",
+  mustWork = TRUE)
 index.file <- file.path("animint-htmltest", "index.Rmd")
 
 file.copy(Rmd.file, index.file, overwrite=TRUE)

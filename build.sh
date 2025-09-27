@@ -31,12 +31,13 @@ EOF
 PKG_TGZ=$(R CMD build animint2-release|grep building|sed "s/.*\(animint2.*.tar.gz\).*/\1/")
 echo built $PKG_TGZ so now we INSTALL 
 R CMD INSTALL $PKG_TGZ
-echo "Running R CMD check --as-cran $PKG_TGZ"
+RCMD="R CMD check"
+echo "Running $RCMD $PKG_TGZ"
 # temporary log file
 LOG_FILE=$(mktemp)
 trap 'rm -f "$LOG_FILE"' EXIT
 # Run check and capture output
-R CMD check --as-cran $PKG_TGZ 2>&1 | tee "$LOG_FILE"
+$RCMD $PKG_TGZ 2>&1 | tee "$LOG_FILE"
 CHECK_STATUS=${PIPESTATUS[0]}
 # Check for WARNINGs or NOTEs
 if grep -q -E "WARNING|NOTE" "$LOG_FILE"; then
