@@ -11,9 +11,6 @@ animint2pages(
   commit_message = "Commit from animint2pages",
   private = FALSE,
   required_opts = c("title", "source"),
-  chromote_sleep_seconds = NULL,
-  chromote_width = 3000,
-  chromote_height = 2000,
   ...
 )
 }
@@ -34,12 +31,6 @@ repository should be private or not (default FALSE).}
 \item{required_opts}{Character vector of plot.list element names
 which are checked (stop with an error if not present). Use
 required_opts=NULL to skip check.}
-
-\item{chromote_sleep_seconds}{if numeric, chromote will be used to take a screenshot of the data viz, pausing this number of seconds to wait for rendering (experimental).}
-
-\item{chromote_width}{width of chromote window in pixels, default 3000 should be sufficient for most data viz, but can be increased if your data viz screenshot appears cropped too small.}
-
-\item{chromote_height}{height of chromote window in pixels, default 2000 should be sufficient for most data viz, but can be increased if your data viz screenshot appears cropped too small.}
 
 \item{...}{Additional options passed onto \code{animint2dir}.}
 }

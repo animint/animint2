@@ -229,8 +229,6 @@ storeLayer <- function(meta, g, g.data.varied){
 #' @param out.dir directory to store html/js/csv files. If it exists
 #'   already, it will be removed before writing the new
 #'   directory/files.
-#' @param json.file character string that names the JSON file with
-#'   metadata associated with the plot.
 #' @param open.browser logical (default TRUE if interactive), should R
 #'   open a browser? If TRUE, we look at the animint.browser option to
 #'   determine how. If it is set to "browseURL" then we use a file URL
@@ -240,15 +238,22 @@ storeLayer <- function(meta, g, g.data.varied){
 #' @param css.file character string for non-empty css file to
 #'   include. Provided file will be copied to the output directory as
 #'   styles.css
+#' @param chromote_sleep_seconds if numeric, chromote will be used to take a screenshot of the data viz, pausing this number of seconds to wait for rendering (experimental). Defaults to option \code{animint2.chromote_sleep_seconds}.
+#' @param chromote_width width of chromote window in pixels, default 3000 should be sufficient for most data viz, but can be increased if your data viz screenshot appears cropped too small.
+#' @param chromote_height height of chromote window in pixels, default 2000 should be sufficient for most data viz, but can be increased if your data viz screenshot appears cropped too small.
 #' @return invisible list of ggplots in list format.
 #' @export
 #' @import RJSONIO
 #' @importFrom utils browseURL head packageVersion str tail
 #'   write.table
 #' @example inst/examples/animint2dir.R
-animint2dir <- function(plot.list, out.dir = NULL,
-                        json.file = "plot.json", open.browser = interactive(),
-                        css.file = "") {
+animint2dir <- function
+(plot.list, out.dir = NULL,
+  open.browser = interactive(),
+  css.file = "",
+  chromote_sleep_seconds=getOption("animint2.chromote_sleep_seconds"),
+  chromote_width=3000, chromote_height=2000
+){
   if(is.null(out.dir)){
     out.dir <- tempfile()
   }
@@ -652,7 +657,7 @@ animint2dir <- function(plot.list, out.dir = NULL,
     }
   }
   json <- RJSONIO::toJSON(export.data)
-  cat(json, file = file.path(out.dir, json.file))
+  cat(json, file = file.path(out.dir, "plot.json"))
   if (open.browser) {
     if (identical(getOption("animint.browser"),"browseURL")) {
       u <- normalizePath(file.path(out.dir, "index.html"))
@@ -672,6 +677,26 @@ animint2dir <- function(plot.list, out.dir = NULL,
       plot_i$ggplot$layers[[layer_i]]$mapping <-
         plot_i$ggplot$layers[[layer_i]]$orig_mapping
     }
+  }
+  if(is.numeric(chromote_sleep_seconds) && requireNamespace("chromote", quietly=TRUE) && requireNamespace("magick", quietly=TRUE)) {
+    chrome.session <- chromote::ChromoteSession$new(
+      width=chromote_width, height=chromote_height)
+    portNum <- servr::random_port()
+    normDir <- normalizePath(out.dir, winslash = "/", mustWork = TRUE)
+    start_servr(serverDirectory = normDir, port = portNum, tmpPath = normDir)
+    Sys.sleep(chromote_sleep_seconds)
+    url <- sprintf("http://localhost:%d", portNum)
+    chrome.session$Page$navigate(url)
+    screenshot_path <- file.path(out.dir, "Capture.PNG")
+    screenshot_full <- file.path(out.dir, "Capture_full.PNG")
+    Sys.sleep(chromote_sleep_seconds)
+    chrome.session$screenshot(screenshot_full, selector = ".plot_content")
+    image_raw <- magick::image_read(screenshot_full)
+    image_trimmed <- magick::image_trim(image_raw)
+    magick::image_write(image_trimmed, screenshot_path)
+    unlink(screenshot_full)
+    chrome.session$close()
+    stop_servr(normDir)
   }
   invisible(meta)
   ### An invisible copy of the R list that was exported to JSON.
