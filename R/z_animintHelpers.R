@@ -854,9 +854,9 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     join_dt[, {
       data.vec <- .SD[[col.name]]
       check.vec <- if(group.size)data.vec[1:group.size] else data.vec[1]
-      .(ok=all(data.vec == check.vec))
+      .(ok=all(data.vec == check.vec, na.rm=TRUE))
     }, by=.(group,group.size)][
-    , .(ok=all(ok))]
+    , .(ok=all(ok, na.rm=TRUE))]
   }, by=col.name]
   is.common <- common_dt[, structure(ok, names=col.name)]
   ## TODO: another criterion could be used to save disk space even if
