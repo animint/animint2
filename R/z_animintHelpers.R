@@ -876,7 +876,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     }, by=.(
       group,
       group.size=ifelse(group.size==0, 1, group.size)
-    ), .SDcols=setdiff(common.cols,'group')]
+    ), .SDcols=setdiff(common.cols,'group')][, ..common.cols]
     common.unique <- unique(group.info.common)
     ## For geom_polygon and geom_path we may have two rows that should
     ## both be kept (the start and the end of each group may be the
