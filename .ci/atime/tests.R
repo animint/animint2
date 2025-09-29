@@ -1,4 +1,5 @@
 test.list <- atime::atime_test_list(
+  ## Adapted from https://github.com/animint/animint2/issues/235#issuecomment-3342083861
   "getCommonChunk improved in #238"=atime::atime_test(
     expr=animint2:::getCommonChunk(built, "showSelected", list(group="group")),
     setup={
