@@ -18,4 +18,6 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: install package
+        run: R CMD INSTALL .
       - uses: Anirban166/Autocomment-atime-results@v1.4.3
