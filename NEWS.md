@@ -1,3 +1,7 @@
+# Changes in version 2025.9.30 (PR#239)
+
+- `getCommonChunk()` has new atime performance test.
+
 # Changes in version 2025.9.27 (PR#238)
 
 - Remove `checkCommon()` internal function, which was too slow for computing common chunk tsv file, when there were a large number of groups. Now using data table by group, which is faster and prints progress.

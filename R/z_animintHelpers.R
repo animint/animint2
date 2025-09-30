@@ -182,8 +182,6 @@ hjust2anchor <- function(hjust){
   }
 }
 
-#' @param params Named list of layer parameters
-#' @return NULL if valid, stops with error if invalid showSelected variant found
 error_for_showSelected_variants <- function(params) {
   if (is.null(names(params))) return(NULL)
   # Match any parameter that starts with "showSelected" but is not exactly "showSelected"
