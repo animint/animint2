@@ -23,3 +23,4 @@ test-compiler-gist.R
 ^package-lock\.json$
 ^node_modules/
 ^v8-to-istanbul\.js$
+.ci
