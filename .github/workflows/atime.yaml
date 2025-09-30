@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/iterative/cml:0-dvc2-base1
     env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      repo_token: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_PAT: ${{ secrets.PAT_GITHUB_PR }}
+      repo_token: ${{ secrets.PAT_GITHUB_PR }}
     steps:
       - uses: actions/checkout@v3
       - uses: r-lib/actions/setup-r@v2
