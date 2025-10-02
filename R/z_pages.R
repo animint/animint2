@@ -175,16 +175,17 @@ update_gallery <- function(gallery_path="~/R/gallery"){
     file.path(gallery_path, "repos", paste0(owner_repo, ".png"))
   }
   repo.png.vec <- get_png(repos.dt$viz_owner_repo)
-  old.meta <- if(file.exists(meta.csv)){
-    fread(meta.csv)
+  if(file.exists(meta.csv)){
+    old.meta <- fread(meta.csv)
+    old.keep <- old.meta[repos.dt, on="viz_owner_repo", nomatch=0L]
   }else{
-    data.table(viz_owner_repo=character())
+    old.meta <- data.table()
+    old.keep <- data.table()
   }
   missing.meta <- !repos.dt$viz_owner_repo %in% old.meta$viz_owner_repo
   missing.png <- !file.exists(repo.png.vec)
   todo.meta <- repos.dt[missing.png | missing.meta]
-  old.keep <- old.meta[repos.dt, on="viz_owner_repo", nomatch=0L]
-  meta.dt.list <- list(old.meta)
+  meta.dt.list <- list(old.keep)
   error.dt.list <- list()
   add.POSIXct <- Sys.time()
   for(viz_owner_repo in todo.meta[["viz_owner_repo"]]){
