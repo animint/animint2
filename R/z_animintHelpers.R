@@ -830,67 +830,43 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
       return(NULL)
     }
   }
-  group.tab <- table(built[, c("group", chunk.vars), with=FALSE])
-  each.group.same.size <- apply(group.tab, 1, function(group.size.vec){
-    group.size <- group.size.vec[1]
-    if(all(group.size == group.size.vec)){
-      ## groups are all this size.
-      group.size
-    }else{
-      ## groups not the same size.
-      0
-    }
-  })
-  join_dt <- data.table(
-    group = unique(built$group),
-    group.size = each.group.same.size
-  )[built, on="group"]
-  ## a common column must be the same for all group across all showSelected values.
   all.col.names <- names(built)
-  col.name.vec <- all.col.names[!all.col.names %in% chunk.vars]
-  common_dt <- data.table(col.name=col.name.vec)[, {
-    join_dt[, {
-      data.vec <- .SD[[col.name]]
-      check.vec <- if(group.size)data.vec[1:group.size] else data.vec[1]
-      .(ok=all(data.vec == check.vec, na.rm=TRUE))
-    }, by=.(group,group.size)][
-    , .(ok=all(ok, na.rm=TRUE))]
+  col.name.vec <- setdiff(all.col.names,c("group",chunk.vars))
+  common_value_dt <- data.table(col.name=col.name.vec)[, {
+    built[, {
+      group_dt <- .SD[, list(value_list=list(get(col.name))), by=chunk.vars]
+      lvec <- sapply(group_dt$value_list, length)
+      value.vec <- unlist(group_dt$value_list)
+      if(all(lvec[1]==lvec)){
+        group.size <- lvec[1]
+        m <- matrix(value.vec, group.size)
+        min.na.vec <- apply(m,1,function(x)x[!is.na(x)][1])
+        if(length(unique(min.na.vec))==1){
+          min.na.vec <- min.na.vec[1]
+        }
+        is.common <- all(m==min.na.vec,na.rm=TRUE)
+        if(anyNA(min.na.vec))is.common <- FALSE #TODO maybe could relax?
+        data.table(common=list(min.na.vec), is.common)
+      }else if(length(unique(value.vec))==1){
+        data.table(common=list(value.vec[1]), is.common=TRUE)
+      }else{
+        data.table(common=list(), is.common=FALSE)
+      }
+    }, by=group]
   }, by=col.name]
-  is.common <- common_dt[, structure(ok, names=col.name)]
-  ## TODO: another criterion could be used to save disk space even if
-  ## there is only 1 chunk.
-  n.common <- sum(is.common)
-  if(is.common[["group"]] && 2 <= n.common && n.common < length(is.common)){
-    common.cols <- names(is.common)[is.common]
-    group.info.common <- join_dt[, {
-      ## Instead of just taking the first chunk for this group (which
-      ## may have NA), look for the chunk which has the fewest NA.
-      is.na.vec <- apply(is.na(.SD), 1, any)
-      is.na.mat <- matrix(is.na.vec, group.size)
-      group.i <- which.min(colSums(is.na.mat))
-      offset <- (group.i-1)*group.size
-      .SD[(1:group.size)+offset]
-    }, by=.(
-      group,
-      group.size=ifelse(group.size==0, 1, group.size)
-    ), .SDcols=setdiff(common.cols,'group')][, common.cols, with=FALSE]
-    common.unique <- unique(group.info.common)
-    ## For geom_polygon and geom_path we may have two rows that should
-    ## both be kept (the start and the end of each group may be the
-    ## same if the shape is closed), so we define common.data as all
-    ## of the rows (common.not.na) in that case, and just the unique
-    ## data per group (common.unique) in the other case.
-    data.per.group <- table(common.unique$group)
-    common.data <- if(all(data.per.group == 1)){
-      common.unique
-    }else{
-      group.info.common
-    }
+  common_var_dt <- common_value_dt[, .(
+    all.common=all(is.common)
+  ), by=col.name]
+  common_var_list <- split(common_var_dt, common_var_dt$all.common)
+  common.cols <- c("group",common_var_list[["TRUE"]]$col.name)
+  if(1 < length(common.cols)){
+    only_common_dt <- common_value_dt[col.name %in% common.cols]
+    common_wide <- dcast(only_common_dt, group ~ col.name, value.var="common")
+    common.data <- common_wide[, lapply(.SD, unlist), by=group]
     varied.df.list <- split_recursive(na.omit(built), chunk.vars)
-    varied.cols <- c("group", names(is.common)[!is.common])
+    varied.cols <- c("group", common_var_list[["FALSE"]]$col.name)
     varied.data <- varied.chunk(varied.df.list, varied.cols)
-    return(list(common=na.omit(common.data),
-                varied=varied.data))
+    list(common=na.omit(common.data), varied=varied.data)
   }
 }
 

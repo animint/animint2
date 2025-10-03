@@ -581,25 +581,25 @@ Geom <- gganimintproto("Geom",
     }
 
     ## Some geoms should be split into separate groups if there are NAs.
-    if(any(is.na(g.data)) && "group" %in% names(g$aes)){
-      sp.cols <- unlist(c(chunk.cols, g$nest_order))
-      order.args <- list()
-      for(sp.col in sp.cols){
-        order.args[[sp.col]] <- g.data[[sp.col]]
-      }
-      ord <- do.call(order, order.args)
-      g.data <- g.data[ord,]
-      is.missing <- apply(is.na(g.data), 1, any)
-      diff.vec <- diff(is.missing)
-      new.group.vec <- c(FALSE, diff.vec == 1)
-      for(chunk.col in sp.cols){
-        one.col <- g.data[[chunk.col]]
-        is.diff <- c(FALSE, one.col[-1] != one.col[-length(one.col)])
-        new.group.vec[is.diff] <- TRUE
-      }
-      subgroup.vec <- cumsum(new.group.vec)
-      g.data$group <- subgroup.vec
-    }
+    ## if(any(is.na(g.data)) && "group" %in% names(g$aes)){
+    ##   sp.cols <- unlist(c(chunk.cols, g$nest_order))
+    ##   order.args <- list()
+    ##   for(sp.col in sp.cols){
+    ##     order.args[[sp.col]] <- g.data[[sp.col]]
+    ##   }
+    ##   ord <- do.call(order, order.args)
+    ##   g.data <- g.data[ord,]
+    ##   is.missing <- apply(is.na(g.data), 1, any)
+    ##   diff.vec <- diff(is.missing)
+    ##   new.group.vec <- c(FALSE, diff.vec == 1)
+    ##   for(chunk.col in sp.cols){
+    ##     one.col <- g.data[[chunk.col]]
+    ##     is.diff <- c(FALSE, one.col[-1] != one.col[-length(one.col)])
+    ##     new.group.vec[is.diff] <- TRUE
+    ##   }
+    ##   subgroup.vec <- cumsum(new.group.vec)
+    ##   g.data$group <- subgroup.vec
+    ## }
 
     ## Find infinite values and replace with range min/max.
     for(xy in c("x", "y")){
