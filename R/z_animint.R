@@ -235,9 +235,6 @@ storeLayer <- function(meta, g, g.data.varied){
 #'   (be sure to configure your browser to allow access to local
 #'   files, as some browsers block this by default). Otherwise
 #'   (default) we use \code{servr::httd(out.dir)}.
-#' @param css.file character string for non-empty css file to
-#'   include. Provided file will be copied to the output directory as
-#'   styles.css
 #' @param chromote_sleep_seconds if numeric, chromote will be used to take a screenshot of the data viz, pausing this number of seconds to wait for rendering (experimental). Defaults to option \code{animint2.chromote_sleep_seconds}.
 #' @param chromote_width width of chromote window in pixels, default 3000 should be sufficient for most data viz, but can be increased if your data viz screenshot appears cropped too small.
 #' @param chromote_height height of chromote window in pixels, default 2000 should be sufficient for most data viz, but can be increased if your data viz screenshot appears cropped too small.
@@ -250,7 +247,6 @@ storeLayer <- function(meta, g, g.data.varied){
 animint2dir <- function
 (plot.list, out.dir = NULL,
   open.browser = interactive(),
-  css.file = "",
   chromote_sleep_seconds=getOption("animint2.chromote_sleep_seconds"),
   chromote_width=3000, chromote_height=2000
 ){
@@ -274,21 +270,6 @@ animint2dir <- function
   ## First, copy html/js/json files to out.dir.
   src.dir <- system.file("htmljs",package="animint2")
   to.copy <- Sys.glob(file.path(src.dir, "*"))
-  if(file.exists(paste0(out.dir, "styles.css")) | css.file != "default.file"){
-    to.copy <- to.copy[!grepl("styles.css", to.copy, fixed=TRUE)]
-  }
-  if(css.file!=""){
-    # if css filename is provided, copy that file to the out directory as "styles.css"
-    to.copy <- to.copy[!grepl("styles.css", to.copy, fixed=TRUE)]
-    if(!file.exists(css.file)){
-      stop(paste("css.file", css.file, "does not exist. Please check that the file name and path are specified correctly."))
-    } else {
-      file.copy(css.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
-    }
-  } else {
-    style.file <- system.file("htmljs", "styles.css", package = "animint2")
-    file.copy(style.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
-  }
   file.copy(to.copy, out.dir, overwrite=TRUE, recursive=TRUE)
 
   ## Store the animation information (time, var, ms) in a separate list
