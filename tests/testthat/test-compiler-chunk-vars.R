@@ -207,7 +207,7 @@ test_that("should not make common chunk", {
     panel_group(c(0,1,NA), rnorm(3), "A", "left"),
     panel_group(c(NA,1,2), rnorm(3), "B", "left"),
     panel_group(c(0,NA,2), rnorm(3), "C", "left"),
-    panel_group(2, rnorm(1), "A", "mid"),
+    panel_group(3:4, rnorm(1), "A", "mid"),
     panel_group(2:3, rnorm(2), "B", "mid"),
     panel_group(4:5, rnorm(2), "A", "right"))
   viz <- animint(
@@ -230,8 +230,8 @@ test_that("x included in common chunk for path", {
     panel_group(c(0,1,NA), rnorm(3), "A", "left"),
     panel_group(c(0,NA,2), rnorm(3), "B", "left"),
     panel_group(c(NA,1,2), rnorm(3), "C", "left"),
-    panel_group(c(3,NA), rnorm(2), "A", "mid"),
-    panel_group(c(3,4),  rnorm(2), "B", "mid"),
+    panel_group(c(3,NA,5), rnorm(3), "A", "mid"),
+    panel_group(c(3,4,5),  rnorm(3), "B", "mid"),
     panel_group(c(5,6),  rnorm(2), "A", "right"))
   viz <- animint(
     lines=ggplot()+
@@ -305,7 +305,7 @@ test_that("x not included in common chunk (missing value in right)", {
     panel_group(c(NA,1,2), rnorm(3), "C", "left"),
     panel_group(c(3,4), rnorm(2), "A", "mid"),
     panel_group(c(3,4), rnorm(2), "B", "mid"),
-    panel_group(c(NA,6), rnorm(2), "A", "right"))
+    panel_group(c(5,NA,6), rnorm(3), "A", "right"))
   viz <- animint(
     lines=ggplot()+
       geom_path(aes(
