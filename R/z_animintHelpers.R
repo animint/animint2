@@ -832,6 +832,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   }
   all.col.names <- names(built)
   col.name.vec <- setdiff(all.col.names,c("group",chunk.vars))
+  setkeyv(built, c("group", chunk.vars))
   common_value_dt <- data.table(col.name=col.name.vec)[, {
     built[, {
       group_dt <- .SD[, list(value_list=list(get(col.name))), by=chunk.vars]
@@ -845,7 +846,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
           min.na.vec <- min.na.vec[1]
         }
         is.common <- all(m==min.na.vec,na.rm=TRUE)
-        if(anyNA(min.na.vec))is.common <- FALSE #TODO maybe could relax?
+        ##if(anyNA(min.na.vec))is.common <- FALSE #TODO maybe could relax?
         data.table(common=list(min.na.vec), is.common)
       }else if(length(unique(value.vec))==1){
         data.table(common=list(value.vec[1]), is.common=TRUE)
@@ -858,18 +859,23 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     all.common=all(is.common)
   ), by=col.name]
   common_var_list <- split(common_var_dt, common_var_dt$all.common)
-  common.cols <- c("group",common_var_list[["TRUE"]]$col.name)
-  if(1 < length(common.cols)){
+  common.only <- common_var_list[["TRUE"]]$col.name
+  if(0 < length(common.only) && length(common.only) < length(col.name.vec)){
+    common.cols <- c("group", common.only)
+    varied.only <- common_var_list[["FALSE"]]$col.name
+    varied.cols <- c("group", "na_group", "row_in_group", varied.only)
     only_common_dt <- common_value_dt[col.name %in% common.cols]
     common_wide <- dcast(only_common_dt, group ~ col.name, value.var="common")
     common.data <- common_wide[, lapply(.SD, unlist), by=group]
-    varied.df.list <- split_recursive(na.omit(built), chunk.vars)
-    varied.cols <- c("group", common_var_list[["FALSE"]]$col.name)
+    sparse.info <- data.table(
+      built,
+      na_group=cumsum(apply(is.na(built[, varied.only, with=FALSE]), 1, any))
+    )[, row_in_group := 1:.N, by=c("group",chunk.vars)]
+    varied.df.list <- split_recursive(na.omit(sparse.info), chunk.vars)
     varied.data <- varied.chunk(varied.df.list, varied.cols)
-    list(common=na.omit(common.data), varied=varied.data)
+    list(common=common.data, varied=varied.data)
   }
 }
-
 
 ##' Extract subset for each data.frame in a list of data.frame
 ##' @param dt.or.list a data.table or a list of data.table.
@@ -879,7 +885,8 @@ varied.chunk <- function(dt.or.list, cols){
   group <- NULL
   ## Above to avoid CRAN NOTE.
   if(is.data.table(dt.or.list)){
-    dt <- dt.or.list[, cols, with=FALSE, drop=FALSE]
+    keep <- intersect(cols, names(dt.or.list))
+    dt <- dt.or.list[, keep, with=FALSE, drop=FALSE]
     u.dt <- unique(dt)
     group.counts <- u.dt[, .N, by = group]
     setDF(if(all(group.counts$N == 1)){
@@ -900,7 +907,6 @@ varied.chunk <- function(dt.or.list, cols){
 split_recursive <- function(x, vars){
   if(length(vars)==0)return(x)
   if(is.data.frame(x)){
-
     ## Remove columns with all NA values
     ## so that x is not empty due to
     ## the plot's alpha, stroke or other columns
@@ -912,11 +918,16 @@ split_recursive <- function(x, vars){
         x
       }
     })]
-
     # rows with NA should not be saved
     x <- na.omit(x)
     if(length(vars) == 1){
-      split(x, by = vars, keep.by = FALSE, drop = TRUE)
+      list.of.dt <- split(x, by = vars, keep.by = FALSE, drop = TRUE)
+      for(dt.i in seq_along(list.of.dt)){
+        DT <- list.of.dt[[dt.i]]
+        if(length(unique(DT$na_group))==1)DT[, let(
+          na_group = NULL, row_in_group=NULL)]
+      }
+      list.of.dt
     }else{
       use <- vars[1]
       rest <- vars[-1]
@@ -943,8 +954,9 @@ saveChunks <- function(x, meta){
     csv.name <- sprintf("%s_chunk%d.tsv", meta$g$classed, this.i)
     # Ensure fields are quoted so that embedded newlines or tabs in
     # string fields do not break the TSV format when read by d3.tsv.
-    data.table::fwrite(x, file.path(meta$out.dir, csv.name),
-                row.names=FALSE, sep="\t")
+    data.table::fwrite(
+      x, file.path(meta$out.dir, csv.name),
+      row.names=FALSE, sep="\t")
     meta$chunk.i <- meta$chunk.i + 1L
     this.i
   }else if(is.list(x)){

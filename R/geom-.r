@@ -642,7 +642,6 @@ Geom <- gganimintproto("Geom",
                   row.names = FALSE,sep = "\t")
       data.or.null$varied
     }
-
     list(g=g, g.data.varied=g.data.varied, timeValues=AnimationInfo$timeValues)
   }
 )

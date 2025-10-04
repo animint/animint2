@@ -298,14 +298,14 @@ test_that("x not included in common chunk (mid has one group with 2 rows and ano
   expect_identical(sort(names(chunk1.dt)), c("group","x","y"))
 })
 
-test_that("x not included in common chunk (missing value in right)", {
+test_that("x included in common chunk (missing value in right)", {
   line_dt <- rbind(
     panel_group(c(0,1,NA), rnorm(3), "A", "left"),
     panel_group(c(0,NA,2), rnorm(3), "B", "left"),
     panel_group(c(NA,1,2), rnorm(3), "C", "left"),
     panel_group(c(3,4), rnorm(2), "A", "mid"),
     panel_group(c(3,4), rnorm(2), "B", "mid"),
-    panel_group(c(5,NA,6), rnorm(3), "A", "right"))
+    panel_group(c(5,NA,6,7), rnorm(4), "A", "right"))
   viz <- animint(
     lines=ggplot()+
       geom_path(aes(
@@ -316,9 +316,9 @@ test_that("x not included in common chunk (missing value in right)", {
   info <- animint2dir(viz, open.browser = FALSE)
   common.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk_common.tsv")
   common.dt <- fread(common.tsv)
-  expect_identical(sort(names(common.dt)), c("colour","group","showSelected2"))
+  expect_identical(sort(names(common.dt)), c("colour","group","showSelected2","x"))
   chunk1.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk1.tsv")
   chunk1.dt <- fread(chunk1.tsv)
-  expect_identical(sort(names(chunk1.dt)), c("group","x","y"))
+  expect_identical(sort(names(chunk1.dt)), c("group","y"))
 })
 
