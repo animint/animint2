@@ -849,12 +849,19 @@ var animint = function (to_select, json_file) {
       var common_one_group = common_by_group[group_id];
       var common_i = 0;
       for(var varied_i=0; varied_i < varied_one_group.length; varied_i++){
-	// there are two cases: each group of varied data is of length
-	// 1, or of length of the common data.
-	if(common_one_group.length == varied_one_group.length){
-	  common_i = varied_i;
-	}
 	var varied_obj = varied_one_group[varied_i];
+	// there are three cases about which common data to use:
+	if(varied_one_group.length == common_one_group.length){
+	  // each group of varied data has same length as common data.
+	  common_i = varied_i;
+	}else if(varied_one_group.length == 1){
+	  // varied data is of length 1.
+	  common_i = 0;
+	}else{
+	  // there were NA so length is smaller than common data, and
+	  // we have row_in_group to tell us what common data to use.
+	  common_i = varied_obj.row_in_group-1;
+	}
 	var common_obj = common_one_group[common_i];
 	for(col in common_obj){
 	  if(col != "group"){
@@ -1310,15 +1317,29 @@ var animint = function (to_select, json_file) {
 
       // we need to use a path for each group.
       var keyed_data = {}, one_group, group_id, k;
+      var by_na_group, na_group_id, one_na_group;
       for(group_id in data){
 	one_group = data[group_id];
 	one_row = one_group[0];
-	if(one_row.hasOwnProperty("key")){
-	  k = one_row.key;
+	if(one_row.hasOwnProperty("na_group")){
+	  by_na_group = d3.nest().key(function(d){ return d.na_group; }).map(one_group);
+	  for(na_group_id in by_na_group){
+	    one_na_group = by_na_group[na_group_id];
+	    if(one_row.hasOwnProperty("key")){
+	      k = one_row.key;
+	    }else{
+	      k = na_group_id;
+	    }
+	    keyed_data[k] = one_na_group;
+	  }
 	}else{
-	  k = group_id;
+	  if(one_row.hasOwnProperty("key")){
+	    k = one_row.key;
+	  }else{
+	    k = group_id;
+	  }
+	  keyed_data[k] = one_group;
 	}
-	keyed_data[k] = one_group;
       }
       var kv_array = d3.entries(d3.keys(keyed_data));
       var kv = kv_array.map(function (d) {

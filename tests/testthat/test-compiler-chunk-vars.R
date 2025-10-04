@@ -37,7 +37,6 @@ test_that("produce informative errors for bad chunk_vars", {
   expect_error({
     animint2dir(viz, open.browser=FALSE)
   }, "invalid chunk_vars species; possible showSelected variables: Species")
-
   viz <- list(iris=ggplot()+
                 geom_point(aes(Petal.Width, Sepal.Length),
                            showSelected="Species",
