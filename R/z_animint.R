@@ -731,7 +731,7 @@ getLegendList <- function(plistextra){
     }else{
       "legend"
     }
-    if(guide.type=="colourbar")guide.type <- "legend"
+    if(identical(guide.type,"colourbar"))guide.type <- "legend"
     guides.args[[aes.name]] <- guide.type
   }
   guides.result <- do.call(guides, guides.args)
