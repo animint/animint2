@@ -1,3 +1,7 @@
+# Changes in version 2025.10.3 (PR#240)
+
+- `guide_legend(override.aes)` works in a plot with both color and fill legends.
+
 # Changes in version 2025.9.30 (PR#239)
 
 - `getCommonChunk()` has new atime performance test.
