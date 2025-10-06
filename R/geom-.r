@@ -298,7 +298,15 @@ Geom <- gganimintproto("Geom",
         ## We also store all the values of this selector in this layer,
         ## so we can accurately set levels after all geoms have been
         ## compiled.
-        value.vec <- unique(g.data[[value.col]])
+        ## For .variable/.value selectors, filter data to only rows
+        ## matching the current selector name before extracting values.
+        data.for.values <- if(is.variable.value){
+          variable.col <- paste(aes.row$variable)
+          g.data[g.data[[variable.col]] == selector.name, ]
+        }else{
+          g.data
+        }
+        value.vec <- unique(data.for.values[[value.col]])
         key <- paste(g$classed, row.i, sel.i)
         meta$selector.values[[selector.name]][[key]] <-
           list(values=paste(value.vec), update=g$classed)

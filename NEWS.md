@@ -1,3 +1,7 @@
+# Changes in version 2025.10.4
+
+- Fixed issue #233: .variable/.value selectors now correctly extract unique values only from rows matching the selector's variable value, not from all rows in the layer. This prevents spurious values from appearing in dropdown menus (e.g., polynomial degree selector showing value 10 when data only has 0-9).
+
 # Changes in version 2025.10.3 (PR#240)
 
 - `guide_legend(override.aes)` works in a plot with both color and fill legends.
