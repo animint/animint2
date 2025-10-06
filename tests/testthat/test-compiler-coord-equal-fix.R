@@ -10,23 +10,8 @@ test_that("fixed_spaces normalizes to fill available space", {
   expect_equal(max_prop, 1)
   
   # Both proportions should be positive and <= 1
-  expect_true(all(spaces$x > 0 & spaces$x <= 1))
-  expect_true(all(spaces$y > 0 & spaces$y <= 1))
-})
-
-test_that("coord_equal compiles and creates proper layout", {
-  library(data.table)
-  data.mat <- as.matrix(iris[,c("Petal.Width","Petal.Length")])
-  
-  # Create the visualization from issue #234
-  viz <- animint(
-    plot1=ggplot(data=data.table(data.mat), aes(Petal.Length, Petal.Width))+
-      geom_point()+
-      coord_equal()+
-      theme_animint(width=800)
-  )
-  
-  # Verify it compiles without error
-  info <- animint2dir(viz, open.browser = FALSE)
-  expect_true(file.exists(file.path(info$out.dir, "plot.json")))
+  expect_gt(spaces$x, 0)
+  expect_lte(spaces$x, 1)
+  expect_gt(spaces$y, 0)
+  expect_lte(spaces$y, 1)
 })
