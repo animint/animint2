@@ -831,7 +831,9 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     }
   }
   all.col.names <- names(built)
-  col.name.vec <- setdiff(all.col.names,c("group",chunk.vars))
+  sparse.cols <- c("na_group","row_in_group")
+  never.in.common <- c("group",sparse.cols,chunk.vars)
+  col.name.vec <- setdiff(all.col.names,never.in.common)
   setkeyv(built, c("group", chunk.vars))
   common_value_dt <- data.table(col.name=col.name.vec)[, {
     built[, {
@@ -857,22 +859,15 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   }, by=col.name]
   common_var_dt <- common_value_dt[, .(
     all.common=all(is.common)
-  ), by=col.name]
-  common_var_list <- split(common_var_dt, common_var_dt$all.common)
-  common.only <- common_var_list[["TRUE"]]$col.name
-  if(0 < length(common.only) && length(common.only) < length(col.name.vec)){
-    common.cols <- c("group", common.only)
-    varied.only <- common_var_list[["FALSE"]]$col.name
-    varied.cols <- c("group", "na_group", "row_in_group", varied.only)
-    only_common_dt <- common_value_dt[col.name %in% common.cols]
+  ), keyby=col.name]
+  common.cols <- common_var_dt[all.common==TRUE, col.name]
+  if(1 < length(common.cols) && length(common.cols) < length(col.name.vec)){
+    only_common_dt <- common_value_dt[col.name %in% c("group", common.cols)]
     common_wide <- dcast(only_common_dt, group ~ col.name, value.var="common")
     common.data <- common_wide[, lapply(.SD, unlist), by=group]
-    sparse.info <- data.table(
-      built,
-      na_group=cumsum(apply(is.na(built[, varied.only, with=FALSE]), 1, any))
-    )[, row_in_group := 1:.N, by=c("group",chunk.vars)]
-    varied.df.list <- split_recursive(na.omit(sparse.info), chunk.vars)
-    varied.data <- varied.chunk(varied.df.list, varied.cols)
+    varied.df.list <- split_recursive(built, chunk.vars)
+    varied.cols <- intersect(names(built), common_var_dt[all.common==FALSE, c(col.name,sparse.cols)])
+    varied.data <- varied.chunk(varied.df.list, c("group", only[["FALSE"]]))
     list(common=common.data, varied=varied.data)
   }
 }
@@ -918,16 +913,8 @@ split_recursive <- function(x, vars){
         x
       }
     })]
-    # rows with NA should not be saved
-    x <- na.omit(x)
     if(length(vars) == 1){
-      list.of.dt <- split(x, by = vars, keep.by = FALSE, drop = TRUE)
-      for(dt.i in seq_along(list.of.dt)){
-        DT <- list.of.dt[[dt.i]]
-        if(length(unique(DT$na_group))==1)DT[, let(
-          na_group = NULL, row_in_group=NULL)]
-      }
-      list.of.dt
+      split(x, by = vars, keep.by = FALSE, drop = TRUE)
     }else{
       use <- vars[1]
       rest <- vars[-1]
@@ -952,10 +939,15 @@ saveChunks <- function(x, meta){
   if(is.data.frame(x)){
     this.i <- meta$chunk.i
     csv.name <- sprintf("%s_chunk%d.tsv", meta$g$classed, this.i)
-    # Ensure fields are quoted so that embedded newlines or tabs in
-    # string fields do not break the TSV format when read by d3.tsv.
+    ## Some geoms should be split into separate groups if there are NAs.
+    setDT(x)
+    if(length(unique(x$na_group))==1)x[, let(
+        na_group = NULL, row_in_group=NULL)]
+    # fwrite defaults ensure fields are quoted so that embedded
+    # newlines or tabs in string fields do not break the TSV format
+    # when read by d3.tsv.
     data.table::fwrite(
-      x, file.path(meta$out.dir, csv.name),
+      na.omit(x), file.path(meta$out.dir, csv.name),
       row.names=FALSE, sep="\t")
     meta$chunk.i <- meta$chunk.i + 1L
     this.i
