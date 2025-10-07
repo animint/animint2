@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 # Changes in version 2025.10.9 (PR#242)
 
 - Improve common chunk detection, output `na_group` and `row_in_group` when there are missing values.
+=======
+# Changes in version 2025.10.6 (Issue #232)
+
+- Added validation for selector names to prevent browser rendering failures. Selector names (from data values used in `clickSelects` and `showSelected`) cannot contain CSS special characters like `#`, `@`, `!`, `$`, etc., as these interfere with JavaScript DOM selectors and cause blank visualizations in the browser. The compiler now stops with a clear error message identifying problematic selector names, helping users fix data issues before attempting to render.
+>>>>>>> 32e15c5d (Add validation for selector names to prevent browser rendering failures(#232).)
 
 # Changes in version 2025.10.3 (PR#240)
 
