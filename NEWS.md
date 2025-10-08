@@ -1,6 +1,6 @@
-# Changes in version 2025.10.5 (Issue #227)
+# Changes in version 2025.10.5 (PR#244)
 
-- Fixed legend rendering for `fill=NA` aesthetic. Previously, legend symbols would incorrectly show solid fill when `fill=NA` was specified. Now `fill=NA` is properly converted to "transparent" before legend compilation, ensuring legend symbols appear hollow as expected. This makes `fill=NA` behave identically to `fill="transparent"`.
+- `geom(fill=NA)` now works like `geom(fill="transparent")`.
 
 # Changes in version 2025.10.3 (PR#240)
 
