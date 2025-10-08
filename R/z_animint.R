@@ -130,7 +130,7 @@ parsePlot <- function(meta, plot, plot.name){
   for (xy in c("x", "y")) {
     s <- function(tmp) sprintf(tmp, xy)
     # one axis name per plot (ie, a xtitle/ytitle is shared across panels)
-    plot.info[[s("%stitle")]] <- if(is.blank(s("axis.title.%s"))){
+    axis_title_raw <- if(is.blank(s("axis.title.%s"))){
       ""
     } else {
       scale.i <- which(plot$scales$find(xy))
@@ -143,6 +143,8 @@ parsePlot <- function(meta, plot, plot.name){
         lab.or.null
       }
     }
+    # Convert newlines to <br/> for multi-line axis titles (Issue #221)
+    plot.info[[s("%stitle")]] <- convertNewlinesToBreaks(axis_title_raw)
     ## panel text size.
     plot.info[[s("strip_text_%ssize")]] <- getTextSize(
       s("strip.text.%s"), theme.pars)
@@ -187,12 +189,13 @@ parsePlot <- function(meta, plot, plot.name){
   # grab the unique axis labels (makes rendering simpler)
   plot.info <- getUniqueAxisLabels(plot.info)
 
-  # grab plot title if present
-  plot.info$title <- if(is(theme.pars$plot.title, "blank")){
+  # grab plot title if present and convert newlines (Issue #221)
+  plot_title_raw <- if(is(theme.pars$plot.title, "blank")){
     ""
   }else{
     plot$labels$title
   }
+  plot.info$title <- convertNewlinesToBreaks(plot_title_raw)
   plot.info$title_size <- getTextSize("plot.title", theme.pars)
 
   ## Set plot width and height from animint.* options if they are
@@ -744,7 +747,8 @@ getLegendList <- function(plistextra){
     gdefs <- guides_merge(gdefs)
     gdefs <- guides_geom(gdefs, layers, default_mapping)
   } else (zeroGrob())
-  names(gdefs) <- sapply(gdefs, function(i) i$title)
+  # Use sanitized titles as names (convert newlines to spaces) to avoid JSON parsing issues (Issue #221)
+  names(gdefs) <- sapply(gdefs, function(i) gsub("\n", " ", i$title, fixed = TRUE))
 
   ## adding the variable used to each LegendList
   for(leg in seq_along(gdefs)) {
