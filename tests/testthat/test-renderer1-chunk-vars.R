@@ -63,13 +63,16 @@ test_that("xy common but color varied", {
     selector.types=list(panel="single"),
     lines=ggplot()+
       geom_path(aes(
-        x, y, group=g, color=panel),
+        x, y, group=g, color=panel, id=paste0(panel,"_",g)),
         data=line_dt,
         chunk_vars="panel",
         showSelected="panel"))
   info <- animint2HTML(viz)
   path.list <- getNodeSet(info$html, "//g[@class='geom1_path_lines']//path")
   expect_equal(length(path.list), 2)
+  A_left_bbox <- get_element_bbox("#A_left")
+  expect_gt(A_left_bbox$width, 0)
+  expect_gt(A_left_bbox$height, 0)
   common.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk_common.tsv")
   common.dt <- fread(common.tsv)
   expect_equal(nrow(common.dt), 4)

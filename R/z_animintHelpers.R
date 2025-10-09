@@ -868,10 +868,11 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     common.not.na <- na.omit(common.data)
     groups.not.na <- unique(common.not.na[, .(group)])
     built.not.na <- built[groups.not.na]
-    varied.df.list <- split_recursive(na.omit(built.not.na), chunk.vars)
     varied.cols <- intersect(
       names(built),
       common_var_dt[all.common==FALSE, c(col.name,sparse.cols)])
+    varied.to.split <- na.omit(built.not.na)
+    varied.df.list <- split_recursive(varied.to.split, chunk.vars)
     varied.data <- varied.chunk(varied.df.list, c("group", varied.cols))
     list(common=common.not.na, varied=varied.data)
   }
@@ -887,13 +888,10 @@ varied.chunk <- function(dt.or.list, cols){
   if(is.data.table(dt.or.list)){
     keep <- intersect(cols, names(dt.or.list))
     dt <- dt.or.list[, keep, with=FALSE, drop=FALSE]
-    u.dt <- unique(dt)
-    group.counts <- u.dt[, .N, by = group]
-    setDF(if(all(group.counts$N == 1)){
-      u.dt
-    }else{
-      dt
-    })
+    if(length(grep("^[xy]", keep))==0){
+      dt <- dt[row_in_group==1]
+    }
+    dt
   } else{
     lapply(dt.or.list, varied.chunk, cols)
   }
