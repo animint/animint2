@@ -888,7 +888,7 @@ varied.chunk <- function(dt.or.list, cols){
   if(is.data.table(dt.or.list)){
     keep <- intersect(cols, names(dt.or.list))
     dt <- dt.or.list[, keep, with=FALSE, drop=FALSE]
-    if(length(grep("^[xy]", keep))==0){
+    if(length(grep("^[xy]", keep))==0 && "row_in_group" %in% names(dt)){
       dt <- dt[row_in_group==1]
     }
     dt
