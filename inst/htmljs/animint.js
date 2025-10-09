@@ -847,7 +847,12 @@ var animint = function (to_select, json_file) {
     for(group_id in varied_by_group){
       var varied_one_group = varied_by_group[group_id];
       var common_one_group = common_by_group[group_id];
-      var group_size = Math.max(varied_one_group.length, common_one_group.length);
+      var group_size;
+      if(varied_one_group.length>1){
+	group_size = varied_one_group.length;
+      }else{
+	group_size = common_one_group.length;
+      }
       for(var out_i=0; out_i < group_size; out_i++){
 	// there are three cases about which common data to use:
 	var common_i, varied_i;
