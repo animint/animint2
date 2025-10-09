@@ -1319,27 +1319,18 @@ var animint = function (to_select, json_file) {
       var keyed_data = {}, one_group, group_id, k;
       var by_na_group, na_group_id, one_na_group;
       for(group_id in data){
-	one_group = data[group_id];
-	one_row = one_group[0];
-	if(one_row.hasOwnProperty("na_group")){
-	  by_na_group = d3.nest().key(function(d){ return d.na_group; }).map(one_group);
-	  for(na_group_id in by_na_group){
-	    one_na_group = by_na_group[na_group_id];
-	    if(one_row.hasOwnProperty("key")){
-	      k = one_row.key;
-	    }else{
-	      k = na_group_id;
-	    }
-	    keyed_data[k] = one_na_group;
-	  }
-	}else{
-	  if(one_row.hasOwnProperty("key")){
-	    k = one_row.key;
-	  }else{
-	    k = group_id;
-	  }
-	  keyed_data[k] = one_group;
-	}
+        one_group = data[group_id];
+        one_row = one_group[0];
+        if(one_row.hasOwnProperty("na_group")){
+          by_na_group = d3.nest().key(function(d){ return d.na_group; }).map(one_group);
+          for(na_group_id in by_na_group){
+            one_na_group = by_na_group[na_group_id];
+            k = group_id + "_" + na_group_id;
+            keyed_data[k] = one_na_group;
+          }
+        }else{
+          keyed_data[group_id] = one_group;
+        }
       }
       var kv_array = d3.entries(d3.keys(keyed_data));
       var kv = kv_array.map(function (d) {

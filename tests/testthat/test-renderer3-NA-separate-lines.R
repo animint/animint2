@@ -1,4 +1,5 @@
 acontext("NA separate lines")
+library(data.table)
 
 data(txhousing)
 
@@ -19,6 +20,7 @@ viz <- animint(
     geom_path(aes(
       x = date, y = median, group = city),
       showSelected="city",
+      chunk_vars="city",
       data=txhousing),
   first=list(city="San Marcos")
 )
@@ -62,6 +64,7 @@ viz <- animint(
     geom_path(aes(
       x = date, y = median, group=1),
       showSelected="city",
+      chunk_vars="city",
       data=txhousing),
   first=list(city="San Marcos")
 )
@@ -110,6 +113,7 @@ viz <- animint(
     geom_path(aes(
       x = date, y = median),
       showSelected="city",
+      chunk_vars="city",
       data=txhousing),
   first=list(city="San Marcos")
 )
