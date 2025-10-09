@@ -16,13 +16,11 @@ test_that("selector name with # causes error in clickSelects", {
         clickSelects = c(regularization = "parameter")
       )
   )
-  
   expect_error(
     animint2dir(viz, open.browser = FALSE),
     "Invalid character\\(s\\) in selector name\\(s\\)",
     info = "Selector names with '#' should cause an error"
   )
-  
   expect_error(
     animint2dir(viz, open.browser = FALSE),
     "# nearest neighbors",
@@ -44,13 +42,11 @@ test_that("selector name with @ causes error in clickSelects", {
         clickSelects = c(regularization = "parameter")
       )
   )
-  
   expect_error(
     animint2dir(viz, open.browser = FALSE),
     "Invalid character\\(s\\) in selector name\\(s\\)",
     info = "Selector names with '@' should cause an error"
   )
-  
   expect_error(
     animint2dir(viz, open.browser = FALSE),
     "model@version",
@@ -70,7 +66,6 @@ test_that("selector name with ! causes error", {
         clickSelects = c(model = "parameter")
       )
   )
-  
   expect_error(
     animint2dir(viz, open.browser = FALSE),
     "Invalid character\\(s\\) in selector name\\(s\\)",
@@ -90,8 +85,6 @@ test_that("valid selector names work with clickSelects", {
         clickSelects = c(regularization = "parameter")
       )
   )
-  
-  # Should NOT error
   info <- animint2dir(viz, open.browser = FALSE)
   expect_true(TRUE, info = "Valid selector names should not cause errors")
 })
@@ -108,8 +101,6 @@ test_that("selector names with spaces work", {
         clickSelects = c(regularization = "parameter")
       )
   )
-  
-  # Should NOT error - spaces are fine
   info <- animint2dir(viz, open.browser = FALSE)
   expect_true(TRUE, info = "Selector names with spaces should work")
 })
@@ -126,13 +117,10 @@ test_that("multiple values with invalid characters all reported", {
         clickSelects = c(regularization = "parameter")
       )
   )
-  
   error_msg <- tryCatch(
     animint2dir(viz, open.browser = FALSE),
     error = function(e) as.character(e$message)
   )
-  
-  # Should catch both bad selector names
   expect_match(error_msg, "Invalid character", info = "Should report invalid characters")
   expect_match(error_msg, "#bad|!worse", info = "Should mention at least one problematic selector")
 })
