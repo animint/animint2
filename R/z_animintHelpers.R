@@ -946,7 +946,7 @@ saveChunks <- function(x, meta){
     csv.name <- sprintf("%s_chunk%d.tsv", meta$g$classed, this.i)
     ## Some geoms should be split into separate groups if there are NAs.
     setDT(x)
-    if(length(unique(x$na_group))==1)x[, let(
+    if(all(x$na_group==0))x[, let(
         na_group = NULL, row_in_group=NULL)]
     # fwrite defaults ensure fields are quoted so that embedded
     # newlines or tabs in string fields do not break the TSV format

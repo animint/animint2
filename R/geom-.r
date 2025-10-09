@@ -582,7 +582,7 @@ Geom <- gganimintproto("Geom",
     if(g$geom %in% data.object.geoms){
       ## Some geoms should be split into separate groups if there are NAs.
       setDT(g.data)
-      g.data <- g.data[, let(
+      g.data[, let(
         row_in_group = 1:.N, 
         na_group = cumsum(apply(is.na(.SD), 1, any))
       ), by=c("group",chunk.cols)]

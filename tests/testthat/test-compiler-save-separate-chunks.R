@@ -78,9 +78,9 @@ test_that("save separate chunks for geom_polygon", {
   expect_identical(sort(names(common.data)), sort(c("x", "y", "group")))
   ## randomly choose n varied.chunk to test
   idx <- sample(no.chunks, 1)
-  varied.data <- read.csv(varied.chunks[idx], sep = "\t", comment.char = "")
+  varied.data <- fread(varied.chunks[idx])
   expect_equal(nrow(varied.data), length(unique(FluView$USpolygons$group)))
-  expect_identical(sort(names(varied.data)), sort(c("fill", "group")))
+  expect_identical(sort(names(varied.data)), c("fill", "group"))
   unlink(out.dir, recursive = TRUE)
 })
 

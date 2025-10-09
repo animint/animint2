@@ -851,12 +851,12 @@ var animint = function (to_select, json_file) {
       for(var varied_i=0; varied_i < varied_one_group.length; varied_i++){
 	var varied_obj = varied_one_group[varied_i];
 	// there are three cases about which common data to use:
-	if(varied_one_group.length == common_one_group.length){
+	if(varied_one_group.length==1 || common_one_group.length==1){
+	  // varied or common data has length 1.
+	  common_i = 0;
+	}else if(varied_one_group.length == common_one_group.length){
 	  // each group of varied data has same length as common data.
 	  common_i = varied_i;
-	}else if(varied_one_group.length == 1){
-	  // varied data is of length 1.
-	  common_i = 0;
 	}else{
 	  // there were NA so length is smaller than common data, and
 	  // we have row_in_group to tell us what common data to use.
