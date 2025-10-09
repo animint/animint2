@@ -866,8 +866,9 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
     common_wide <- dcast(only_common_dt, group ~ col.name, value.var="common")
     common.data <- common_wide[, lapply(.SD, unlist), by=group]
     common.not.na <- na.omit(common.data)
-    built.not.na <- built[ common.not.na[, .(group)] ]
-    varied.df.list <- split_recursive(built.not.na, chunk.vars)
+    groups.not.na <- unique(common.not.na[, .(group)])
+    built.not.na <- built[groups.not.na]
+    varied.df.list <- split_recursive(na.omit(built.not.na), chunk.vars)
     varied.cols <- intersect(
       names(built),
       common_var_dt[all.common==FALSE, c(col.name,sparse.cols)])

@@ -1,4 +1,4 @@
-## new common chunk tests.
+library(data.table)
 panel_group <- function(x, y, panel, g)data.table(x, y, panel, g)
 
 test_that("common chunk has x and colour not PANEL", {
@@ -17,7 +17,7 @@ test_that("common chunk has x and colour not PANEL", {
         chunk_vars="panel",
         showSelected="panel")+
       facet_grid(. ~ panel))
-  info <- animint2dir(viz, open.browser = FALSE)
+  info <- animint2HTML(viz)
   common.tsv <- file.path(info$out.dir, "geom1_line_lines_chunk_common.tsv")
   common.dt <- fread(common.tsv)
   expect_identical(sort(names(common.dt)), c("colour","group","showSelected2","x"))
@@ -41,7 +41,7 @@ test_that("common chunk has x and colour", {
         data=line_dt,
         chunk_vars="panel",
         showSelected="panel"))
-  info <- animint2dir(viz, open.browser = FALSE)
+  info <- animint2HTML(viz)
   common.tsv <- file.path(info$out.dir, "geom1_line_lines_chunk_common.tsv")
   common.dt <- fread(common.tsv)
   expect_identical(sort(names(common.dt)), c("colour","group","showSelected2","x"))
@@ -65,7 +65,7 @@ test_that("common chunk has colour", {
         data=line_dt,
         chunk_vars="panel",
         showSelected="panel"))
-  info <- animint2dir(viz, open.browser = FALSE)
+  info <- animint2HTML(viz)
   common.tsv <- file.path(info$out.dir, "geom1_line_lines_chunk_common.tsv")
   common.dt <- fread(common.tsv)
   expect_identical(sort(names(common.dt)), c("colour","group","showSelected2"))
@@ -76,10 +76,10 @@ test_that("common chunk has colour", {
 
 test_that("should not make common chunk", {
   line_dt <- rbind(
-    panel_group(c(0,1,NA), rnorm(3), "A", "left"),
+    panel_group(c(0,1,NA,2,3), rnorm(5), "A", "left"),
     panel_group(c(NA,1,2), rnorm(3), "B", "left"),
     panel_group(c(0,NA,2), rnorm(3), "C", "left"),
-    panel_group(3:4, rnorm(1), "A", "mid"),
+    panel_group(3:4, rnorm(2), "A", "mid"),
     panel_group(2:3, rnorm(2), "B", "mid"),
     panel_group(4:5, rnorm(2), "A", "right"))
   viz <- animint(
@@ -89,12 +89,12 @@ test_that("should not make common chunk", {
         data=line_dt,
         chunk_vars="panel",
         showSelected="panel"))
-  info <- animint2dir(viz, open.browser = FALSE)
+  info <- animint2HTML(viz)
   common.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk_common.tsv")
   expect_false(file.exists(common.tsv))
   chunk1.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk1.tsv")
   chunk1.dt <- fread(chunk1.tsv)
-  expect_identical(sort(names(chunk1.dt)), c("group","x","y"))
+  expect_identical(sort(names(chunk1.dt)), c("group","na_group","row_in_group","x","y"))
 })
 
 test_that("x included in common chunk for path", {
@@ -112,13 +112,14 @@ test_that("x included in common chunk for path", {
         data=line_dt,
         chunk_vars="panel",
         showSelected="panel"))
-  info <- animint2dir(viz, open.browser = FALSE)
+  info <- animint2HTML(viz)
   common.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk_common.tsv")
   common.dt <- fread(common.tsv)
   expect_identical(sort(names(common.dt)), c("colour","group","showSelected2","x"))
   chunk1.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk1.tsv")
   chunk1.dt <- fread(chunk1.tsv)
-  expect_identical(sort(names(chunk1.dt)), c("group","y"))
+  expect_equal(nrow(chunk1.dt), 6)
+  expect_identical(sort(names(chunk1.dt)), c("group","na_group","row_in_group","y"))
 })
 
 ## TODO fix this test.
@@ -137,7 +138,7 @@ test_that("x included in common chunk for path", {
 ##         data=line_dt,
 ##         chunk_vars="panel",
 ##         showSelected="panel"))
-##   info <- animint2dir(viz, open.browser = FALSE)
+##   info <- animint2HTML(viz)
 ##   common.tsv <- file.path(info$out.dir, "geom1_line_lines_chunk_common.tsv")
 ##   common.dt <- fread(common.tsv)
 ##   expect_identical(sort(names(common.dt)), c("colour","group","showSelected2","x"))
@@ -161,13 +162,16 @@ test_that("x not included in common chunk (mid has one group with 2 rows and ano
         data=line_dt,
         chunk_vars="panel",
         showSelected="panel"))
-  info <- animint2dir(viz, open.browser = FALSE)
+  info <- animint2HTML(viz)
   common.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk_common.tsv")
   common.dt <- fread(common.tsv)
   expect_identical(sort(names(common.dt)), c("colour","group","showSelected2"))
   chunk1.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk1.tsv")
   chunk1.dt <- fread(chunk1.tsv)
-  expect_identical(sort(names(chunk1.dt)), c("group","na_group","row_in_group","x","y"))
+  expect_identical(sort(names(chunk1.dt)), c("group","x","y"))
+  chunk2.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk2.tsv")
+  chunk2.dt <- fread(chunk2.tsv)
+  expect_identical(sort(names(chunk2.dt)), c("group","na_group","row_in_group","x","y"))
 })
 
 test_that("x included in common chunk (missing value in right)", {

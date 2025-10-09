@@ -75,7 +75,9 @@ test_that("geom2 common chunk with group=1 and color common", {
   geom1.tsv <- file.path("animint-htmltest", "geom1_path_ggdata_chunk1.tsv")
   geom1.dt <- fread(geom1.tsv)
   expect_equal(sum(is.na(geom1.dt)), 0)
-  group_num <- geom1.dt[clickSelects=="San Marcos"]$group[1]
+  plot.json <- file.path("animint-htmltest", "plot.json")
+  json.list <- RJSONIO::fromJSON(plot.json)
+  group_num <- json.list$geoms$geom2_path_selected$chunks[["San Marcos"]]
   geom.tsv <- sprintf("animint-htmltest/geom2_path_selected_chunk%d.tsv", group_num)
   geom.dt <- fread(geom.tsv)
   expect_identical(sort(names(geom.dt)), c("group", "na_group", "row_in_group", "y"))
@@ -122,7 +124,9 @@ test_that("geom2 common chunk with no group and color common", {
   geom1.tsv <- file.path("animint-htmltest", "geom1_path_ggdata_chunk1.tsv")
   geom1.dt <- fread(geom1.tsv)
   expect_equal(sum(is.na(geom1.dt)), 0)
-  group_num <- geom1.dt[clickSelects=="San Marcos"]$group[1]
+  plot.json <- file.path("animint-htmltest", "plot.json")
+  json.list <- RJSONIO::fromJSON(plot.json)
+  group_num <- json.list$geoms$geom2_path_selected$chunks[["San Marcos"]]
   geom.tsv <- sprintf("animint-htmltest/geom2_path_selected_chunk%d.tsv", group_num)
   geom.dt <- fread(geom.tsv)
   expect_identical(sort(names(geom.dt)), c("group", "na_group", "row_in_group", "y"))
@@ -171,7 +175,9 @@ test_that("geom2 no common chunk with group=1 and only x common", {
   geom1.tsv <- file.path("animint-htmltest", "geom1_path_ggdata_chunk1.tsv")
   geom1.dt <- fread(geom1.tsv)
   expect_equal(sum(is.na(geom1.dt)), 0)
-  group_num <- geom1.dt[clickSelects=="San Marcos"]$group[1]
+  plot.json <- file.path("animint-htmltest", "plot.json")
+  json.list <- RJSONIO::fromJSON(plot.json)
+  group_num <- json.list$geoms$geom2_path_selected$chunks[["San Marcos"]]
   geom.tsv <- sprintf("animint-htmltest/geom2_path_selected_chunk%d.tsv", group_num)
   geom.dt <- fread(geom.tsv)
   expect_identical(sort(names(geom.dt)), c("colour", "group", "na_group", "row_in_group", "showSelected2", "x", "y"))
