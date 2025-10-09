@@ -93,6 +93,7 @@ bytes.used <- function(file.vec, apparent.size = FALSE){
     rep(NA_integer_, length(file.vec))
   })
 }
+bytes.used <- function(file.vec, ...)file.size(file.vec)
 
 test.paths <-
   c(tempfile=tempfile(),

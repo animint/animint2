@@ -49,8 +49,35 @@ test_that("color common but xy varied", {
   expect_identical(sort(names(common.dt)), c("colour","group","showSelected2"))
   chunk1.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk1.tsv")
   chunk1.dt <- fread(chunk1.tsv)
-  expect_identical(sort(names(chunk1.dt)), c("group","PANEL","y"))
+  expect_identical(sort(names(chunk1.dt)), c("group","na_group","PANEL","row_in_group","x","y"))
   expect_equal(nrow(chunk1.dt), 4)
+})
+
+test_that("xy common but color varied", {
+  line_dt <- rbind(
+    panel_group(1:2, 7:8, "A", "left"),
+    panel_group(1:2, 7:8, "B", "left"),
+    panel_group(3:4, 5:6, "A", "right")
+  )[, constant := "foo"]
+  viz <- animint(
+    selector.types=list(panel="single"),
+    lines=ggplot()+
+      geom_path(aes(
+        x, y, group=g, color=panel),
+        data=line_dt,
+        chunk_vars="panel",
+        showSelected="panel"))
+  info <- animint2HTML(viz)
+  path.list <- getNodeSet(info$html, "//g[@class='geom1_path_lines']//path")
+  expect_equal(length(path.list), 2)
+  common.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk_common.tsv")
+  common.dt <- fread(common.tsv)
+  expect_equal(nrow(common.dt), 4)
+  expect_identical(sort(names(common.dt)), c("group","x","y"))
+  chunk1.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk1.tsv")
+  chunk1.dt <- fread(chunk1.tsv)
+  expect_identical(sort(names(chunk1.dt)), c("colour","group"))
+  expect_equal(nrow(chunk1.dt), 2)
 })
 
 test_that("common x for constant y", {
