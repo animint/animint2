@@ -847,28 +847,33 @@ var animint = function (to_select, json_file) {
     for(group_id in varied_by_group){
       var varied_one_group = varied_by_group[group_id];
       var common_one_group = common_by_group[group_id];
-      var common_i = 0;
-      for(var varied_i=0; varied_i < varied_one_group.length; varied_i++){
-	var varied_obj = varied_one_group[varied_i];
+      var group_size = Math.max(varied_one_group.length, common_one_group.length);
+      for(var out_i=0; out_i < group_size; out_i++){
 	// there are three cases about which common data to use:
-	if(varied_one_group.length==1 || common_one_group.length==1){
+	var common_i, varied_i;
+	// there are two cases about which varied data to use:
+	if(varied_one_group.length==1){
+	  varied_i = 0;
+	}else{
+	  varied_i = out_i;
+	}
+	var varied_obj = varied_one_group[varied_i];
+	if(common_one_group.length==1){
 	  // varied or common data has length 1.
 	  common_i = 0;
-	}else if(varied_one_group.length == common_one_group.length){
-	  // each group of varied data has same length as common data.
-	  common_i = varied_i;
-	}else{
+	}else if(varied_obj.hasOwnProperty("row_in_group")){
 	  // there were NA so length is smaller than common data, and
 	  // we have row_in_group to tell us what common data to use.
 	  common_i = varied_obj.row_in_group-1;
+	}else{
+	  // each group of varied data has same length as common data.
+	  common_i = out_i;
 	}
 	var common_obj = common_one_group[common_i];
-	for(col in common_obj){
-	  if(col != "group"){
-	    varied_obj[col] = common_obj[col];
-	  }
-	}
-	new_varied_chunk.push(varied_obj);
+	var new_obj = {};
+	Object.assign(new_obj, common_obj);
+	Object.assign(new_obj, varied_obj);
+	new_varied_chunk.push(new_obj);
       }
     }
     return new_varied_chunk;

@@ -79,7 +79,7 @@ test_that("xy common but color varied", {
   expect_identical(sort(names(common.dt)), c("group","x","y"))
   chunk1.tsv <- file.path(info$out.dir, "geom1_path_lines_chunk1.tsv")
   chunk1.dt <- fread(chunk1.tsv)
-  expect_identical(sort(names(chunk1.dt)), c("colour","group"))
+  expect_identical(sort(names(chunk1.dt)), c("colour","group","id"))
   expect_equal(nrow(chunk1.dt), 2)
 })
 
