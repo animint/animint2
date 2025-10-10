@@ -847,21 +847,38 @@ var animint = function (to_select, json_file) {
     for(group_id in varied_by_group){
       var varied_one_group = varied_by_group[group_id];
       var common_one_group = common_by_group[group_id];
-      var common_i = 0;
-      for(var varied_i=0; varied_i < varied_one_group.length; varied_i++){
-	// there are two cases: each group of varied data is of length
-	// 1, or of length of the common data.
-	if(common_one_group.length == varied_one_group.length){
-	  common_i = varied_i;
+      var group_size;
+      if(varied_one_group.length>1){
+	group_size = varied_one_group.length;
+      }else{
+	group_size = common_one_group.length;
+      }
+      for(var out_i=0; out_i < group_size; out_i++){
+	// there are three cases about which common data to use:
+	var common_i, varied_i;
+	// there are two cases about which varied data to use:
+	if(varied_one_group.length==1){
+	  varied_i = 0;
+	}else{
+	  varied_i = out_i;
 	}
 	var varied_obj = varied_one_group[varied_i];
-	var common_obj = common_one_group[common_i];
-	for(col in common_obj){
-	  if(col != "group"){
-	    varied_obj[col] = common_obj[col];
-	  }
+	if(common_one_group.length==1){
+	  // varied or common data has length 1.
+	  common_i = 0;
+	}else if(varied_obj.hasOwnProperty("row_in_group")){
+	  // there were NA so length is smaller than common data, and
+	  // we have row_in_group to tell us what common data to use.
+	  common_i = varied_obj.row_in_group-1;
+	}else{
+	  // each group of varied data has same length as common data.
+	  common_i = out_i;
 	}
-	new_varied_chunk.push(varied_obj);
+	var common_obj = common_one_group[common_i];
+	var new_obj = {};
+	Object.assign(new_obj, common_obj);
+	Object.assign(new_obj, varied_obj);
+	new_varied_chunk.push(new_obj);
       }
     }
     return new_varied_chunk;
@@ -1310,27 +1327,36 @@ var animint = function (to_select, json_file) {
 
       // we need to use a path for each group.
       var keyed_data = {}, one_group, group_id, k;
+      var by_na_group, na_group_id, one_na_group;
       for(group_id in data){
-	one_group = data[group_id];
-	one_row = one_group[0];
-	if(one_row.hasOwnProperty("key")){
-	  k = one_row.key;
-	}else{
-	  k = group_id;
-	}
-	keyed_data[k] = one_group;
+        one_group = data[group_id];
+        one_row = one_group[0];
+        if(one_row.hasOwnProperty("na_group")){
+          by_na_group = d3.nest().key(function(d){ return d.na_group; }).map(one_group);
+          for(na_group_id in by_na_group){
+            one_na_group = by_na_group[na_group_id];
+            k = group_id + "_" + na_group_id;
+            keyed_data[k] = one_na_group;
+          }
+        }else{
+          keyed_data[group_id] = one_group;
+        }
       }
       var kv_array = d3.entries(d3.keys(keyed_data));
-      var kv = kv_array.map(function (d) {
+      get_one_row = function(group_info) {
+        var one_group = keyed_data[group_info.value];
+        var one_row = one_group[0];
+	return one_row;
+      };
+      var kv = kv_array.map(function (group_info) {
         //d[aes.group] = d.value;
-
         // Need to store the clickSelects value that will
         // be passed to the selector when we click on this
         // item.
-        d.clickSelects = keyed_data[d.value][0].clickSelects;
-        return d;
+	var one_row = get_one_row(group_info);
+        Object.assign(group_info, one_row);
+        return group_info;
       });
-
       // line, path, and polygon use d3.svg.line(),
       // ribbon uses d3.svg.area()
       // we have to define lineThing accordingly.
@@ -1348,28 +1374,10 @@ var animint = function (to_select, json_file) {
 	fill = "none";
 	fill_off = "none";
       }
-      // select the correct group before returning anything.
-      key_fun = function(group_info){
-	return group_info.value;
-      };
       data_to_bind = kv;
-      get_one_row = function(group_info) {
-        var one_group = keyed_data[group_info.value];
-        var one_row = one_group[0];
-	return one_row;
-      };
       eActions = function (e) {
         e.attr("d", function (d) {
-          var one_group = keyed_data[d.value];
-          // filter NaN since they make the whole line disappear!
-	  var no_na = one_group.filter(function(d){
-            if(g_info.geom == "ribbon"){
-              return !isNaN(d.x) && !isNaN(d.ymin) && !isNaN(d.ymax);
-            }else{
-              return !isNaN(d.x) && !isNaN(d.y);
-            }
-          });
-          return lineThing(no_na);
+          return lineThing(keyed_data[d.value]);
         })
       };
       eAppend = "path";
