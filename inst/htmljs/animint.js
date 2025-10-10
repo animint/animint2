@@ -1343,16 +1343,20 @@ var animint = function (to_select, json_file) {
         }
       }
       var kv_array = d3.entries(d3.keys(keyed_data));
-      var kv = kv_array.map(function (d) {
+      get_one_row = function(group_info) {
+        var one_group = keyed_data[group_info.value];
+        var one_row = one_group[0];
+	return one_row;
+      };
+      var kv = kv_array.map(function (group_info) {
         //d[aes.group] = d.value;
-
         // Need to store the clickSelects value that will
         // be passed to the selector when we click on this
         // item.
-        d.clickSelects = keyed_data[d.value][0].clickSelects;
-        return d;
+	var one_row = get_one_row(group_info);
+        Object.assign(group_info, one_row);
+        return group_info;
       });
-
       // line, path, and polygon use d3.svg.line(),
       // ribbon uses d3.svg.area()
       // we have to define lineThing accordingly.
@@ -1370,28 +1374,10 @@ var animint = function (to_select, json_file) {
 	fill = "none";
 	fill_off = "none";
       }
-      // select the correct group before returning anything.
-      key_fun = function(group_info){
-	return group_info.value;
-      };
       data_to_bind = kv;
-      get_one_row = function(group_info) {
-        var one_group = keyed_data[group_info.value];
-        var one_row = one_group[0];
-	return one_row;
-      };
       eActions = function (e) {
         e.attr("d", function (d) {
-          var one_group = keyed_data[d.value];
-          // filter NaN since they make the whole line disappear!
-	  var no_na = one_group.filter(function(d){
-            if(g_info.geom == "ribbon"){
-              return !isNaN(d.x) && !isNaN(d.ymin) && !isNaN(d.ymax);
-            }else{
-              return !isNaN(d.x) && !isNaN(d.y);
-            }
-          });
-          return lineThing(no_na);
+          return lineThing(keyed_data[d.value]);
         })
       };
       eAppend = "path";
