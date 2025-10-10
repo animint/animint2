@@ -826,8 +826,6 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   g_chunk <- c("group", chunk.vars)
   setkeyv(built, g_chunk)
   group_size_dt <- built[, .(size=.N), by=c("group",chunk.vars)]
-  ## first_ss_dt <- built[, .SD[1], by=group, .SDcols=chunk.vars]
-  ## setkeyv(first_ss_dt, g_chunk)
   ss_count_dt <- group_size_dt[, .(
     showSelected_values=.N,
     min_size=min(size),
@@ -835,28 +833,24 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   ), by=group]
   groups_in_several_ss <- ss_count_dt[showSelected_values>1]
   if(nrow(groups_in_several_ss)==0)return(NULL)
-  common_value_dt <- data.table(col.name=col.name.vec)[, {
-    built[, {
-      group_dt <- .SD[, list(value_list=list(get(col.name))), by=chunk.vars]
-      lvec <- sapply(group_dt$value_list, length)
-      value.vec <- unlist(group_dt$value_list)
-      if(all(lvec[1]==lvec)){
-        group.size <- lvec[1]
-        m <- matrix(value.vec, group.size)
-        min.na.vec <- apply(m,1,function(x)x[!is.na(x)][1])
-        if(length(unique(min.na.vec))==1){
-          min.na.vec <- min.na.vec[1]
-        }
-        is.common <- all(m==min.na.vec,na.rm=TRUE)
-        ##if(anyNA(min.na.vec))is.common <- FALSE #TODO maybe could relax?
-        data.table(common=list(min.na.vec), is.common)
-      }else if(length(unique(value.vec))==1){
-        data.table(common=list(value.vec[1]), is.common=TRUE)
-      }else{
-        data.table(common=list(), is.common=FALSE)
-      }
-    }, by=group]
-  }, by=col.name]
+  all_same_size <- ss_count_dt[min_size==max_size]
+  diff_sizes <- ss_count_dt[min_size<max_size]
+  all_same_common <- built[all_same_size, {
+    data.table(col.name=col.name.vec)[, {
+      m <- matrix(get(col.name), min_size)
+      min.na.vec <- apply(m,1,function(x)na.omit(x)[1])
+      is.common <- all(m==min.na.vec, na.rm=TRUE)
+      data.table(common=list(min.na.vec), is.common)
+    }, by=col.name]
+  }, by=.EACHI]
+  diff_size_common <- built[diff_sizes, {
+    data.table(col.name=col.name.vec)[, {
+      value.vec <- get(col.name)
+      values <- unique(value.vec)
+      data.table(common=list(values), is.common=length(values)==1)
+    }, by=col.name]
+  }, by=.EACHI]
+  common_value_dt <- rbind(all_same_common, diff_size_common)
   common_var_dt <- common_value_dt[, .(
     all.common=all(is.common)
   ), keyby=col.name]
