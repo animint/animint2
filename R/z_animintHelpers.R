@@ -782,7 +782,7 @@ getTextSize <- function(element.name, theme){
 ##' @importFrom stats na.omit
 ##' @import data.table
 getCommonChunk <- function(built, chunk.vars, aes.list){
-  group <- col.name <- group.size <- ok <- NULL
+  group <- col.name <- group.size <- ok <- all.common <- NULL
   ## Above to avoid CRAN NOTE.
   if(length(chunk.vars) == 0){
     return(NULL)
@@ -796,27 +796,16 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   ## so that common.not.na is not empty
   ## due to the plot's alpha, stroke or other columns
   built <- as.data.table(built)
-  ## convert 'built' from df to dt to improve speed
-  built <- built[, lapply(.SD, function(x) {
-    if (all(is.na(x))) {
-      NULL
-    } else {
-        x
-    }
-  })]
-
   ## Treat factors as characters, to avoid having them be coerced to
   ## integer later.
   changeCols <- names(Filter(is.factor, built))
   if(length(changeCols)){
     built <- built[, (changeCols) := lapply(.SD, as.character), .SDcols = changeCols]
   }
-
   ## If there is only one chunk, then there is no point of making a
   ## common data file.
   chunk.rows.tab <- built[, .N, by = chunk.vars]
   if(nrow(chunk.rows.tab) == 1) return(NULL)
-
   ## If there is no group column, and all the chunks are the same
   ## size, then add one based on the row number.
   if(! "group" %in% names(built)){
@@ -834,7 +823,18 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   sparse.cols <- c("na_group","row_in_group")
   never.in.common <- c("group",sparse.cols,chunk.vars)
   col.name.vec <- setdiff(all.col.names,never.in.common)
-  setkeyv(built, c("group", chunk.vars))
+  g_chunk <- c("group", chunk.vars)
+  setkeyv(built, g_chunk)
+  group_size_dt <- built[, .(size=.N), by=c("group",chunk.vars)]
+  ## first_ss_dt <- built[, .SD[1], by=group, .SDcols=chunk.vars]
+  ## setkeyv(first_ss_dt, g_chunk)
+  ss_count_dt <- group_size_dt[, .(
+    showSelected_values=.N,
+    min_size=min(size),
+    max_size=max(size)
+  ), by=group]
+  groups_in_several_ss <- ss_count_dt[showSelected_values>1]
+  if(nrow(groups_in_several_ss)==0)return(NULL)
   common_value_dt <- data.table(col.name=col.name.vec)[, {
     built[, {
       group_dt <- .SD[, list(value_list=list(get(col.name))), by=chunk.vars]
@@ -883,7 +883,7 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
 ##' @param cols cols that each data.frame would keep.
 ##' @return list of data.frame.
 varied.chunk <- function(dt.or.list, cols){
-  group <- NULL
+  group <- row_in_group <- NULL
   ## Above to avoid CRAN NOTE.
   if(is.data.table(dt.or.list)){
     keep <- intersect(cols, names(dt.or.list))
