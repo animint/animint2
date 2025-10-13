@@ -130,17 +130,46 @@ var animint = function (to_select, json_file) {
     // do we need to set the class so that styling is applied?
     //.attr('class', classname);
 
-    container.append('text')
+    var textElement = container.append('text')
       .attr({x: -1000, y: -1000})
       .attr("transform", "rotate(" + pAngle + ")")
       .attr("style", pStyle)
-      .attr("font-size", pFontSize)
-      .text(pText);
-
-    var bbox = container.node().getBBox();
-    container.remove();
-
-    return {height: bbox.height, width: bbox.width};
+      .attr("font-size", pFontSize);
+    
+    // Check if text contains <br/> tags (multi-line)
+    var textStr = String(pText || '');
+    var lines = textStr.split('<br/>');
+    
+    if (lines.length > 1) {
+      // Multi-line text: create tspan elements to measure properly
+      var lineHeight = 1.2; // em units
+      lines.forEach(function(line, i) {
+        textElement.append('tspan')
+          .attr('x', -1000)
+          .attr('dy', i === 0 ? 0 : lineHeight + 'em')
+          .text(line);
+      });
+      
+      var bbox = container.node().getBBox();
+      container.remove();
+      
+      // Calculate total height for multi-line text
+      // Extract font size as number (e.g., "11px" -> 11)
+      var fontSize = parseFloat(pFontSize);
+      if (isNaN(fontSize)) fontSize = 11; // default
+      
+      // Total height = number of lines * fontSize * lineHeight
+      var calculatedHeight = lines.length * fontSize * lineHeight;
+      
+      // Use the maximum of calculated height and bbox height to ensure adequate spacing
+      return {height: Math.max(bbox.height, calculatedHeight), width: bbox.width};
+    } else {
+      // Single line
+      textElement.text(pText);
+      var bbox = container.node().getBBox();
+      container.remove();
+      return {height: bbox.height, width: bbox.width};
+    }
   };
 
   /**

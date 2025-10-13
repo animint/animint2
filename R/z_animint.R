@@ -747,8 +747,6 @@ getLegendList <- function(plistextra){
     gdefs <- guides_merge(gdefs)
     gdefs <- guides_geom(gdefs, layers, default_mapping)
   } else (zeroGrob())
-  # Use sanitized titles as names (convert newlines to spaces) to avoid JSON parsing issues (Issue #221)
-  names(gdefs) <- sapply(gdefs, function(i) gsub("\n", " ", i$title, fixed = TRUE))
 
   ## adding the variable used to each LegendList
   for(leg in seq_along(gdefs)) {
@@ -828,6 +826,9 @@ getLegendList <- function(plistextra){
     }
   }
   legend.list <- lapply(gdefs, getLegend)
+  # Use the 'class' field from getLegend output for legend key names (Issue #221)
+  # This ensures JSON keys don't contain newlines or other special characters
+  names(legend.list) <- sapply(legend.list, function(i) i$class)
   ## Add a flag to specify whether or not there is both a color and a
   ## fill legend to display. If so, we need to draw the interior of
   ## the points in the color legend as the same color.

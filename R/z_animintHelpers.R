@@ -745,9 +745,10 @@ getLegend <- function(mb){
   }else{
     # Convert newlines to <br/> for multi-line legend title (Issue #221)
     legend_title <- convertNewlinesToBreaks(mb$title)
-    # For the 'class' field (used as JSON key), keep original title without <br/>
-    # to avoid JSON parsing issues with special characters
-    legend_class <- if(mb$is.discrete) mb$selector else mb$title
+    # For the 'class' field (used as JSON key), sanitize newlines to spaces
+    # to avoid JSON parsing issues with control characters (Issue #221)
+    safe_title <- gsub("\n", " ", mb$title, fixed = TRUE)
+    legend_class <- if(mb$is.discrete) mb$selector else safe_title
     list(guide = guidetype,
          geoms = unlist(mb$geom.legend.list),
          title = legend_title,
