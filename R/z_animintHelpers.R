@@ -717,6 +717,8 @@ getLegend <- function(mb){
     names(data) <- paste0(geom, names(data))# aesthetics by geom
     names(data) <- gsub(paste0(geom, "."), "", names(data), fixed=TRUE) # label isn't geom-specific
     data$label <- paste(data$label) # otherwise it is AsIs.
+    # Convert newlines to <br/> for multi-line legend labels (Issue #221)
+    data$label <- convertNewlinesToBreaks(data$label)
     data
   }
   dataframes <- mapply(function(i, j) cleanData(i$data, mb$key, j, i$params),
@@ -741,10 +743,15 @@ getLegend <- function(mb){
   if(guidetype=="none"){
     NULL
   }else{
+    # Convert newlines to <br/> for multi-line legend title (Issue #221)
+    legend_title <- convertNewlinesToBreaks(mb$title)
+    # For the 'class' field (used as JSON key), keep original title without <br/>
+    # to avoid JSON parsing issues with special characters
+    legend_class <- if(mb$is.discrete) mb$selector else mb$title
     list(guide = guidetype,
          geoms = unlist(mb$geom.legend.list),
-         title = mb$title,
-         class = if(mb$is.discrete)mb$selector else mb$title,
+         title = legend_title,
+         class = legend_class,
          selector = mb$selector,
          is_discrete= mb$is.discrete,
          legend_type = mb$legend_type,
@@ -940,6 +947,10 @@ split_recursive <- function(x, vars){
 ##' @author Toby Dylan Hocking
 saveChunks <- function(x, meta){
   if(is.data.frame(x)){
+    # Convert newlines to <br/> in label column for multi-line text (Issue #221)
+    if("label" %in% names(x)){
+      x$label <- convertNewlinesToBreaks(x$label)
+    }
     this.i <- meta$chunk.i
     csv.name <- sprintf("%s_chunk%d.tsv", meta$g$classed, this.i)
     ## Some geoms should be split into separate groups if there are NAs.

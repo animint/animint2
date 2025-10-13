@@ -279,6 +279,7 @@ Collate:
     'utilities-table.r'
     'uu_zxx.r'
     'uu_zzz.r'
+    'z_multiline.R'
     'z_animint.R'
     'z_animintHelpers.R'
     'z_facets.R'
