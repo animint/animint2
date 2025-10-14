@@ -1,3 +1,7 @@
+# Changes in version 2025.10.10 (PR#251)
+
+- Remove unused `css.file` parameter from `animint2dir()` function. This parameter was never functional due to a buggy condition check and was not tested. The removal simplifies the codebase by 24 lines while maintaining backward compatibility.
+
 # Changes in version 2025.10.9 (PR#242)
 
 - Improve common chunk detection, output `na_group` and `row_in_group` when there are missing values.
