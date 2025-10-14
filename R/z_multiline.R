@@ -59,11 +59,10 @@ convertNewlinesToBreaks <- function(text) {
   
   # Validate input type
   if (!is.character(text) && !is.factor(text)) {
-    warning(
-      "convertNewlinesToBreaks expects character or factor input, got ",
-      class(text)[1],
-      ". Converting to character."
-    )
+    warning(sprintf(
+      "convertNewlinesToBreaks expects character or factor input, got %s. Converting to character.",
+      class(text)[1]
+    ))
     text <- as.character(text)
   }
   
