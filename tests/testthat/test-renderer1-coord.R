@@ -33,24 +33,14 @@ test_that("coord_fixed with shrinking y-axis", {
   expect_equal(diffs[1], diffs[2], tolerance = 1e-3)
 })
 
-test_that("coord_equal", {
-  info_default <- animint2HTML(animint(plot = p + coord_equal()))
+test_that("xaxis width increases with coord_equal", {
+  p_equal <- p + coord_equal()
+  animint2HTML(animint(p_equal))
   bbox_default <- get_element_bbox("g.xaxis")
-  svg_default <- getNodeSet(info_default$html, "//svg[@id='plot_plot']")[[1]]
-  width_default <- xmlAttrs(svg_default)[["width"]]
-  info_big <- animint2HTML(animint(
-    plot = p +
-      coord_equal()+
-      theme_animint(width=1000)))
+  animint2HTML(animint(p_equal+theme_animint(width=1000)))
   bbox_big <- get_element_bbox("g.xaxis")
-  svg_big <- getNodeSet(info_big$html, "//svg[@id='plot_plot']")[[1]]
-  width_big <- xmlAttrs(svg_big)[["width"]]
-  x.axes <- getNodeSet(info$html, "//g[contains(@class, 'xaxis')]")
-  y.axes <- getNodeSet(info$html, "//g[contains(@class, 'yaxis')]")
-  xdiff <- getTickDiff(x.axes[[1]])
-  ydiff <- getTickDiff(y.axes[[1]], axis = "y")
-  diffs <- normDiffs(xdiff, ydiff)
-  expect_equal(diffs[1], diffs[2], tolerance = 1e-3)
+  ratio <- bbox_big$width/bbox_default$width
+  expect_gt(ratio, 2)
 })
 
 test_that("coord_fixed with shrinking x-axis", {
