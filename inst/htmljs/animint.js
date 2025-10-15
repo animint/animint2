@@ -432,12 +432,21 @@ var animint = function (to_select, json_file) {
     } else {
       var aspect = 1;
     }
+    // FIX for issue #234: Remove Math.min() that was shrinking proportions.
+    // The R side already normalized properly, so we just apply the aspect ratio.
     var wp = p_info.layout.width_proportion.map(function(x){
-      return x * Math.min(1, aspect);
+      return x * aspect;
     })
     var hp = p_info.layout.height_proportion.map(function(x){
-      return x * Math.min(1, 1/aspect);
+      return x * (1/aspect);
     })
+    // Normalize so at least one dimension fills the space
+    var all_props = wp.concat(hp);
+    var max_prop = Math.max.apply(null, all_props);
+    if (max_prop > 0) {
+      wp = wp.map(function(x) { return x / max_prop; });
+      hp = hp.map(function(x) { return x / max_prop; });
+    }
 
     // track the proportion of the graph that should be 'blank'
     // this is mainly used to implement coord_fixed()

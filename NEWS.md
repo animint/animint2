@@ -2,6 +2,10 @@
 
 - Improve common chunk detection, output `na_group` and `row_in_group` when there are missing values.
 
+# Changes in version 2025.10.4 (Issue #234)
+
+- Fixed `coord_equal()` and `coord_fixed()` to properly fill available plotting space. Previously, plots with fixed aspect ratios were unnecessarily shrunk due to incorrect normalization in the `fixed_spaces()` function. The fix changes from using `min(z, 1)` to normalizing by the maximum value across both dimensions, ensuring at least one dimension fills the available space while maintaining the correct aspect ratio.
+
 # Changes in version 2025.10.3 (PR#240)
 
 - `guide_legend(override.aes)` works in a plot with both color and fill legends.
