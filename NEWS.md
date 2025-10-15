@@ -1,3 +1,7 @@
+# Changes in version 2025.10.9 (PR#242)
+
+- Improve common chunk detection, output `na_group` and `row_in_group` when there are missing values.
+
 # Changes in version 2025.10.5 (PR#244)
 
 - `geom(fill=NA)` now works like `geom(fill="transparent")`.
