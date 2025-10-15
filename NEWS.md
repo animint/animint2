@@ -1,6 +1,6 @@
 # Changes in version 2025.10.10 (PR#251)
 
-- Remove unused `css.file` parameter from `animint2dir()` function. This parameter was never functional due to a buggy condition check and was not tested. The removal simplifies the codebase by 24 lines while maintaining backward compatibility.
+-  `animint2dir()` no longer has `css.file` argument which was never tested. Style customizations should be done using `theme()`.
 
 # Changes in version 2025.10.9 (PR#242)
 
