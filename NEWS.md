@@ -1,3 +1,7 @@
+# Changes in version 2025.10.10 (PR#251)
+
+-  `animint2dir()` no longer has `css.file` argument which was never tested. Style customizations should be done using `theme()`.
+
 # Changes in version 2025.10.9 (PR#242)
 
 - Improve common chunk detection, output `na_group` and `row_in_group` when there are missing values.
