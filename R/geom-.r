@@ -579,26 +579,14 @@ Geom <- gganimintproto("Geom",
     if("group" %in% names(g$aes) && g$geom %in% data.object.geoms){
       g$nest_order <- c(g$nest_order, "group")
     }
-
-    ## Some geoms should be split into separate groups if there are NAs.
-    if(any(is.na(g.data)) && "group" %in% names(g$aes)){
-      sp.cols <- unlist(c(chunk.cols, g$nest_order))
-      order.args <- list()
-      for(sp.col in sp.cols){
-        order.args[[sp.col]] <- g.data[[sp.col]]
-      }
-      ord <- do.call(order, order.args)
-      g.data <- g.data[ord,]
-      is.missing <- apply(is.na(g.data), 1, any)
-      diff.vec <- diff(is.missing)
-      new.group.vec <- c(FALSE, diff.vec == 1)
-      for(chunk.col in sp.cols){
-        one.col <- g.data[[chunk.col]]
-        is.diff <- c(FALSE, one.col[-1] != one.col[-length(one.col)])
-        new.group.vec[is.diff] <- TRUE
-      }
-      subgroup.vec <- cumsum(new.group.vec)
-      g.data$group <- subgroup.vec
+    if(g$geom %in% data.object.geoms){
+      ## Some geoms should be split into separate groups if there are NAs.
+      setDT(g.data)
+      g.data[, let(
+        row_in_group = 1:.N, 
+        na_group = cumsum(apply(is.na(.SD), 1, any))
+      ), by=c("group",chunk.cols)]
+      setDF(g.data)
     }
 
     ## Find infinite values and replace with range min/max.
@@ -638,11 +626,11 @@ Geom <- gganimintproto("Geom",
       g$columns$common <- as.list(names(data.or.null$common))
       tsv.name <- sprintf("%s_chunk_common.tsv", g$classed)
       tsv.path <- file.path(meta$out.dir, tsv.name)
-      data.table::fwrite(data.or.null$common,file= tsv.path,
-                  row.names = FALSE,sep = "\t")
+      data.table::fwrite(
+        data.or.null$common,file= tsv.path,
+        row.names = FALSE,sep = "\t")
       data.or.null$varied
     }
-
     list(g=g, g.data.varied=g.data.varied, timeValues=AnimationInfo$timeValues)
   }
 )

@@ -1,14 +1,30 @@
-# Animint2
+`animint2` is a fork of `ggplot2` with 
+
+* web-based output, 
+* and interactivity specified in R code, 
+* using common column names across data sets.
+
+It supports 
+
+* multiple selection variables across multiple linked plots, 
+* each with multiple layers/geoms (each with its own data set), 
+* multiple interactive legends per plot, 
+* multiple panels/facets per plot, 
+* tooltips, animation, a guided tour, large data sets, and
+* rendering from R code chunks in Rmd files, on GitHub Pages, or on any other web server (no special web server required)
+
+Examples can be seen in the [Gallery](https://animint.github.io/gallery/) and manual, [Animated interactive data visualization using animint2 in R](https://animint-manual-en.netlify.app/).
+Slides in [English](https://docs.google.com/presentation/d/1QDwo9x4OM7UKAXffJrny6nSfeytFR0kO5NB-NQEspcE/edit?usp=sharing) and [French](https://docs.google.com/presentation/d/1WpRZs9qz9wm1yik_MLj8tIJyWuL5-IBPYKLhOHZ9X4Y/edit?usp=sharing) for a 30-60 minute presentation about animint2!
+[Abstract](https://github.com/animint/animint2/wiki/Presentations#30-60-minute-talk),
+[Video of presentation in French at Toulouse-Dataviz](https://www.youtube.com/watch?v=Em6AVJi37zo).
+
+[![codecov](https://codecov.io/gh/animint/animint2/branch/main/graph/badge.svg)](https://codecov.io/gh/animint/animint2)
 
 <a href="https://github.com/tdhock/animint2/actions/workflows/tests.yaml">
 	<img src="https://github.com/tdhock/animint2/actions/workflows/tests.yaml/badge.svg" 
 	     alt="A badge verifying if this package has passed all its tests.">
 </a>
 <!-- Feel free to change the HTML block above this comment into Markdown. It's just in HTML cuz I couldn't be arsed to figure out how to correctly combine an image and a link in Github-flavored Markdown. -->
-
-Slides in [English](https://docs.google.com/presentation/d/1QDwo9x4OM7UKAXffJrny6nSfeytFR0kO5NB-NQEspcE/edit?usp=sharing) and [French](https://docs.google.com/presentation/d/1WpRZs9qz9wm1yik_MLj8tIJyWuL5-IBPYKLhOHZ9X4Y/edit?usp=sharing) for a 30-60 minute presentation about animint2!
-[Abstract](https://github.com/animint/animint2/wiki/Presentations#30-60-minute-talk),
-[Video of presentation in French at Toulouse-Dataviz](https://www.youtube.com/watch?v=Em6AVJi37zo).
 
 ## About
 
@@ -30,8 +46,6 @@ For more examples, see these galleries, which have screenshots along with links 
 
 To learn how to generate your own interactive data visualizations, go to the official [Animint2 Manual](https://animint-manual-en.netlify.app) (newly rendered using quarto since Sept 2025).
 If you encounter problems, please see the [animint2 wiki](https://github.com/animint/animint2/wiki) or [report them](https://github.com/animint/animint2/issues).
-
-[![codecov](https://codecov.io/gh/animint/animint2/branch/main/graph/badge.svg)](https://codecov.io/gh/animint/animint2)
 
 ## Installation
 

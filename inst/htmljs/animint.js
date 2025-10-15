@@ -24,20 +24,20 @@ var animint = function (to_select, json_file) {
   function convert_R_types(resp_array, types){
     return resp_array.map(function (d) {
       for (var v_name in d) {
-      	if(!is_interactive_aes(v_name)){
+              if(!is_interactive_aes(v_name)){
           var r_type = types[v_name];
           if (r_type == "integer") {
             d[v_name] = parseInt(d[v_name]);
           } else if (r_type == "numeric") {
             d[v_name] = parseFloat(d[v_name]);
           } else if (r_type == "factor" || r_type == "rgb" 
-		     || r_type == "linetype" || r_type == "label" 
-		     || r_type == "character") {
+                     || r_type == "linetype" || r_type == "label"
+                     || r_type == "character") {
             // keep it as a character
           } else if (r_type == "character" & v_name == "outliers") {
             d[v_name] = parseFloat(d[v_name].split(" @ "));
           } 
-      	}
+              }
       }
       return d;
     });
@@ -314,21 +314,21 @@ var animint = function (to_select, json_file) {
       ystart: 0,
       yend: 0,
       graph: {
-	width: 0,
-	height: 0
+        width: 0,
+        height: 0
       },
       margin: margin,
       xlab: {
-	x: 0,
-	y: 0
+        x: 0,
+        y: 0
       },
       ylab: {
-	x: 0,
-	y: 0
+        x: 0,
+        y: 0
       },
       title: {
-	x: 0,
-	y: 0
+        x: 0,
+        y: 0
       }
     };
 
@@ -351,16 +351,16 @@ var animint = function (to_select, json_file) {
     var axispaddingy = 5;
     if(p_info.hasOwnProperty("ylabs") && p_info.ylabs.length){
       axispaddingy += Math.max.apply(null, p_info.ylabs.map(function(entry){
-	// + 5 to give a little extra space to avoid bad axis labels
-	// in shiny.
-	return measureText(entry, p_info.ysize).width + 5;
+        // + 5 to give a little extra space to avoid bad axis labels
+        // in shiny.
+        return measureText(entry, p_info.ysize).width + 5;
       }));
     }
     var axispaddingx = 30; // distance between tick marks and x axis name.
     if(p_info.hasOwnProperty("xlabs") && p_info.xlabs.length){
       // TODO: throw warning if text height is large portion of plot height?
       axispaddingx += Math.max.apply(null, p_info.xlabs.map(function(entry){
-	     return measureText(entry, p_info.xsize, p_info.xangle).height;
+             return measureText(entry, p_info.xsize, p_info.xangle).height;
       }));
       // TODO: carefully calculating this gets complicated with rotating xlabs
       //margin.right += 5;
@@ -386,25 +386,25 @@ var animint = function (to_select, json_file) {
       current_row = p_info.layout.ROW[layout_i] - 1;
       current_col = p_info.layout.COL[layout_i] - 1;
       if(row_strip_heights[current_row] === undefined){
-	row_strip_heights[current_row] = [];
+        row_strip_heights[current_row] = [];
       }
       if(col_strip_widths[current_col] === undefined){
-	col_strip_widths[current_col] = [];
+        col_strip_widths[current_col] = [];
       }
       row_strip_heights[current_row].push(strip_heights[layout_i]);
       col_strip_widths[current_col].push(strip_widths[layout_i]);
       if (p_info.layout.COL[layout_i] == 1) {
-	n_xaxes += p_info.layout.AXIS_X[layout_i];
+        n_xaxes += p_info.layout.AXIS_X[layout_i];
       }
       if (p_info.layout.ROW[layout_i] == 1) {
-	n_yaxes += p_info.layout.AXIS_Y[layout_i];
+        n_yaxes += p_info.layout.AXIS_Y[layout_i];
       }
     }
     function cumsum_array(array_of_arrays){
       var cumsum = [], max_value, cumsum_value = 0;
       for(var i=0; i<array_of_arrays.length; i++){
-	cumsum_value += d3.max(array_of_arrays[i]);
-	cumsum[i] = cumsum_value;
+        cumsum_value += d3.max(array_of_arrays[i]);
+        cumsum[i] = cumsum_value;
       }
       return cumsum;
     }
@@ -416,11 +416,11 @@ var animint = function (to_select, json_file) {
     // the *entire graph* height/width
     var graph_width = p_info.options.width - 
         ncols * (margin.left + margin.right) -
-	strip_width -
+        strip_width -
         n_yaxes * axispaddingy - ytitlepadding;
     var graph_height = p_info.options.height - 
         nrows * (margin.top + margin.bottom) -
-	strip_height -
+        strip_height -
         titlepadding - n_xaxes * axispaddingx - xtitlepadding;
 
     // Impose the pixelated aspect ratio of the graph upon the width/height
@@ -521,10 +521,10 @@ var animint = function (to_select, json_file) {
       };
 
       if(axis["xticks"]){
-	axislabs(axis.x, axis.xlab, "x");
+        axislabs(axis.x, axis.xlab, "x");
       }
       if(axis["yticks"]){
-	axislabs(axis.y, axis.ylab, "y");
+        axislabs(axis.y, axis.ylab, "y");
       }
 
       // compute the current panel height/width
@@ -540,9 +540,9 @@ var animint = function (to_select, json_file) {
       // new row), change some parameters:
       var new_row = current_col <= p_info.layout.COL[layout_i - 1]
       if (new_row) {
-	n_yaxes = 0;
-	graph_width_cum = (graph_width_blank / 2) * graph_width;
-	graph_height_cum += graph_height * hp[layout_i-1];
+        n_yaxes = 0;
+        graph_width_cum = (graph_width_blank / 2) * graph_width;
+        graph_height_cum += graph_height * hp[layout_i-1];
       }
       n_xaxes += draw_x;
       n_yaxes += draw_y;
@@ -569,16 +569,16 @@ var animint = function (to_select, json_file) {
       // get the x position of the y-axis title (and add padding) when
       // rendering the first plot.
       if (layout_i === 0) {
-	var ytitle_x = (plotdim.xstart - axispaddingy - ytitlepadding / 2);
-	var xtitle_left = plotdim.xstart;
-	var ytitle_top = plotdim.ystart;
+        var ytitle_x = (plotdim.xstart - axispaddingy - ytitlepadding / 2);
+        var xtitle_left = plotdim.xstart;
+        var ytitle_top = plotdim.ystart;
       }
       // get the y position of the x-axis title when drawing the last
       // panel.
       if (layout_i === (npanels - 1)) {
-	var xtitle_y = (plotdim.yend + axispaddingx);
-	var xtitle_right = plotdim.xend;
-	var ytitle_bottom = plotdim.yend;
+        var xtitle_y = (plotdim.yend + axispaddingx);
+        var xtitle_right = plotdim.xend;
+        var ytitle_bottom = plotdim.yend;
       }
 
       var draw_strip = function(strip, side) {
@@ -590,19 +590,19 @@ var animint = function (to_select, json_file) {
           x = plotdim.xend;
           y = (plotdim.ystart + plotdim.yend) / 2;
           rotate = 90;
-	  stripElement = rightStrip;
+          stripElement = rightStrip;
           strip_text_xy = "y";
         }else{ //top
-	  x = (plotdim.xstart + plotdim.xend) / 2;
+          x = (plotdim.xstart + plotdim.xend) / 2;
           y = plotdim.ystart;
-	  rotate = 0;
-	  stripElement = topStrip;
+          rotate = 0;
+          stripElement = topStrip;
           strip_text_xy = "x";
-	}
-	var trans_text = "translate(" + x + "," + y + ")";
-	var rot_text = "rotate(" + rotate + ")";
+        }
+        var trans_text = "translate(" + x + "," + y + ")";
+        var rot_text = "rotate(" + rotate + ")";
         var strip_text_size = "strip_text_"+strip_text_xy+"size";
-	stripElement
+        stripElement
           .selectAll("." + side + "Strips")
           .data(strip)
           .enter()
@@ -613,7 +613,7 @@ var animint = function (to_select, json_file) {
         // NOTE: there could be multiple strips per panel
         // TODO: is there a better way to manage spacing?
           .attr("transform", trans_text + rot_text)
-	;
+        ;
       }
       draw_strip([p_info.strips.top[layout_i]], "top");
       draw_strip([p_info.strips.right[layout_i]], "right");
@@ -637,23 +637,23 @@ var animint = function (to_select, json_file) {
             return xaxislabs[xaxisvals.indexOf(d)].toString();
           })
           .orient("bottom")
-	;
+        ;
   var axis_panel = "xaxis" + "_" + panel_i;
-	var xaxis_g = svg.append("g")
+        var xaxis_g = svg.append("g")
           .attr("class", "xaxis axis " + axis_panel)
           .attr("transform", "translate(0," + plotdim.yend + ")")
           .call(xaxis);
-	if(axis["xline"] == false){
-	  var axis_path = xaxis_g.select("path.domain");
-	  axis_path.remove();
-	}
-	xaxis_g.selectAll("text")
-	  .style("text-anchor", p_info.xanchor)
-	  .style("font-size", p_info.xsize)
-	  .attr("transform", "rotate(" + p_info.xangle + " 0 9)");
+        if(axis["xline"] == false){
+          var axis_path = xaxis_g.select("path.domain");
+          axis_path.remove();
+        }
+        xaxis_g.selectAll("text")
+          .style("text-anchor", p_info.xanchor)
+          .style("font-size", p_info.xsize)
+          .attr("transform", "rotate(" + p_info.xangle + " 0 9)");
       }
       if(draw_y){
-	var yaxis = d3.svg.axis()
+        var yaxis = d3.svg.axis()
           .scale(scales[panel_i].y)
           .tickValues(yaxisvals)
           .tickFormat(function (d) {
@@ -661,29 +661,29 @@ var animint = function (to_select, json_file) {
           })
           .orient("left");
   var axis_panel = "yaxis" + "_" + panel_i;
-	var yaxis_g = svg.append("g")
+        var yaxis_g = svg.append("g")
           .attr("class", "yaxis axis " + axis_panel)
           .attr("transform", "translate(" + (plotdim.xstart) + ",0)")
           .call(yaxis);
-	if(axis["yline"] == false){
-	  var axis_path = yaxis_g.select("path.domain");
-	  axis_path.remove();
-	}
+        if(axis["yline"] == false){
+          var axis_path = yaxis_g.select("path.domain");
+          axis_path.remove();
+        }
   yaxis_g.selectAll(".tick text")
     .style("font-size", p_info.ysize);
       }
 
       if(!axis.xline) {
-    	styles.push("#"+p_name+" #xaxis"+" path{stroke:none;}");
+            styles.push("#"+p_name+" #xaxis"+" path{stroke:none;}");
       }
       if(!axis.xticks) {
-    	styles.push("#"+p_name+" #xaxis .tick"+" line{stroke:none;}");
+            styles.push("#"+p_name+" #xaxis .tick"+" line{stroke:none;}");
       }
       if(!axis.yline) {
-    	styles.push("#"+p_name+" #yaxis"+" path{stroke:none;}");
+            styles.push("#"+p_name+" #yaxis"+" path{stroke:none;}");
       }
       if(!axis.yticks) {
-    	styles.push("#"+p_name+" #yaxis .tick"+" line{stroke:none;}");
+            styles.push("#"+p_name+" #yaxis .tick"+" line{stroke:none;}");
       }
       
       // creating g element for background, grid lines, and border
@@ -709,18 +709,18 @@ var animint = function (to_select, json_file) {
       
       // drawing the grid lines
       ["grid_minor", "grid_major"].forEach(function(grid_class){
-	var grid_background = p_info[grid_class];
+        var grid_background = p_info[grid_class];
         // if grid lines are defined
         if(grid_background.hasOwnProperty("size")) {
           var grid = background.append("g")
               .attr("class", grid_class);
-	  ["x","y"].forEach(function(scale_var){
-	    var const_var;
-	    if(scale_var == "x"){
-	      const_var = "y";
-	    }else{
-	      const_var = "x";
-	    }
+          ["x","y"].forEach(function(scale_var){
+            var const_var;
+            if(scale_var == "x"){
+              const_var = "y";
+            }else{
+              const_var = "x";
+            }
             grid.append("g")
               .attr("class", scale_var)
               .selectAll("line")
@@ -730,19 +730,19 @@ var animint = function (to_select, json_file) {
               .attr(const_var + "1", plotdim[const_var + "start"])
               .attr(const_var + "2", plotdim[const_var + "end"])
               .attr(scale_var + "1", function(d) {
-		return scales[panel_i][scale_var](d);
-	      })
+                return scales[panel_i][scale_var](d);
+              })
               .attr(scale_var + "2", function(d) {
-		return scales[panel_i][scale_var](d);
-	      })
+                return scales[panel_i][scale_var](d);
+              })
               .style("stroke", grid_background.colour)
               .style("stroke-linecap", grid_background.lineend)
               .style("stroke-width", grid_background.size)
               .style("stroke-dasharray", linetypesize2dasharray(
-		grid_background.linetype, grid_background.size))
-	    ;
-	  });
-	}
+                grid_background.linetype, grid_background.size))
+            ;
+          });
+        }
       });
       
       // drawing border
@@ -766,28 +766,28 @@ var animint = function (to_select, json_file) {
     // After drawing all backgrounds, we can draw the axis labels.
     if(p_info["ytitle"]){
       svg.append("text")
-	.text(p_info["ytitle"])
-	.attr("class", "ytitle")
-	.style("text-anchor", "middle")
-	.style("font-size", default_axis_px + "px")
-	.attr("transform", "translate(" + 
-	      ytitle_x +
-	      "," +
-	      (ytitle_top + ytitle_bottom)/2 + 
-	      ")rotate(270)")
+        .text(p_info["ytitle"])
+        .attr("class", "ytitle")
+        .style("text-anchor", "middle")
+        .style("font-size", default_axis_px + "px")
+        .attr("transform", "translate(" +
+              ytitle_x +
+              "," +
+              (ytitle_top + ytitle_bottom)/2 +
+              ")rotate(270)")
       ;
     }
     if(p_info["xtitle"]){
       svg.append("text")
-	.text(p_info["xtitle"])
-	.attr("class", "xtitle")
-	.style("text-anchor", "middle")
-	.style("font-size", default_axis_px + "px")
-	.attr("transform", "translate(" + 
-	      (xtitle_left + xtitle_right)/2 +
-	      "," + 
-	      xtitle_y + 
-	      ")")
+        .text(p_info["xtitle"])
+        .attr("class", "xtitle")
+        .style("text-anchor", "middle")
+        .style("font-size", default_axis_px + "px")
+        .attr("transform", "translate(" +
+              (xtitle_left + xtitle_right)/2 +
+              "," +
+              xtitle_y +
+              ")")
       ;
     }
     Plots[p_name].scales = scales;
@@ -807,20 +807,20 @@ var animint = function (to_select, json_file) {
       // legend_update_fun is evaluated in the context of the
       // td.legend_entry_label.
       s_info.legend_update_fun = function(d){
-	var i_value = s_info.selected.indexOf(this.textContent);
-	if(i_value == -1){
-	  return 0.5;
-	}else{
-	  return 1;
-	}
+        var i_value = s_info.selected.indexOf(this.textContent);
+        if(i_value == -1){
+          return 0.5;
+        }else{
+          return 1;
+        }
       }
     }else{
       s_info.legend_update_fun = function(d){
-	if(this.textContent == s_info.selected){
-	  return 1;
-	}else{
-	  return 0.5;
-	}
+        if(this.textContent == s_info.selected){
+          return 1;
+        }else{
+          return 0.5;
+        }
       }
     }
     s_info.legend_tds = 
@@ -847,21 +847,38 @@ var animint = function (to_select, json_file) {
     for(group_id in varied_by_group){
       var varied_one_group = varied_by_group[group_id];
       var common_one_group = common_by_group[group_id];
-      var common_i = 0;
-      for(var varied_i=0; varied_i < varied_one_group.length; varied_i++){
-	// there are two cases: each group of varied data is of length
-	// 1, or of length of the common data.
-	if(common_one_group.length == varied_one_group.length){
-	  common_i = varied_i;
-	}
-	var varied_obj = varied_one_group[varied_i];
-	var common_obj = common_one_group[common_i];
-	for(col in common_obj){
-	  if(col != "group"){
-	    varied_obj[col] = common_obj[col];
-	  }
-	}
-	new_varied_chunk.push(varied_obj);
+      var group_size;
+      if(varied_one_group.length>1){
+        group_size = varied_one_group.length;
+      }else{
+        group_size = common_one_group.length;
+      }
+      for(var out_i=0; out_i < group_size; out_i++){
+        // there are three cases about which common data to use:
+        var common_i, varied_i;
+        // there are two cases about which varied data to use:
+        if(varied_one_group.length==1){
+          varied_i = 0;
+        }else{
+          varied_i = out_i;
+        }
+        var varied_obj = varied_one_group[varied_i];
+        if(common_one_group.length==1){
+          // varied or common data has length 1.
+          common_i = 0;
+        }else if(varied_obj.hasOwnProperty("row_in_group")){
+          // there were NA so length is smaller than common data, and
+          // we have row_in_group to tell us what common data to use.
+          common_i = varied_obj.row_in_group-1;
+        }else{
+          // each group of varied data has same length as common data.
+          common_i = out_i;
+        }
+        var common_obj = common_one_group[common_i];
+        var new_obj = {};
+        Object.assign(new_obj, common_obj);
+        Object.assign(new_obj, varied_obj);
+        new_varied_chunk.push(new_obj);
       }
     }
     return new_varied_chunk;
@@ -879,9 +896,9 @@ var animint = function (to_select, json_file) {
       }
       var value = Selectors[v_name].selected;
       if(chunk_id.hasOwnProperty(value)){
-	       chunk_id = chunk_id[value];
+               chunk_id = chunk_id[value];
       }else{
-	       chunk_id = null; // no data to show in this subset.
+               chunk_id = null; // no data to show in this subset.
       }
     });
     if(chunk_id == null){
@@ -898,14 +915,14 @@ var animint = function (to_select, json_file) {
       var svg = SVGs[g_name];
       var loading = svg.append("text")
         .attr("class", "loading"+tsv_name)
-	      .text("Downloading "+tsv_name+"...")
-	      .attr("font-size", 9)
-	      //.attr("x", svg.attr("width")/2)
+              .text("Downloading "+tsv_name+"...")
+              .attr("font-size", 9)
+              //.attr("x", svg.attr("width")/2)
         .attr("y", 10)
         .style("fill", "red");
       download_chunk(g_info, tsv_name, function(chunk){
-      	loading.remove();
-	draw_panels(g_info, chunk, selector_name);
+              loading.remove();
+        draw_panels(g_info, chunk, selector_name);
       });
     }
   };
@@ -935,7 +952,7 @@ var animint = function (to_select, json_file) {
     }
     if(typeof(chunk_id) == "string"){
       download_chunk(g_info, tsv_name, function(chunk){
-	download_next(g_name);
+        download_next(g_name);
       })
     }else{
       download_next(g_name);
@@ -947,9 +964,9 @@ var animint = function (to_select, json_file) {
     if(g_info.download_status.hasOwnProperty(tsv_name)){
       var chunk;
       if(g_info.data_is_object){
-	chunk = {};
+        chunk = {};
       }else{
-	chunk = [];
+        chunk = [];
       }
       funAfter(chunk);
       return; // do not download twice.
@@ -962,27 +979,27 @@ var animint = function (to_select, json_file) {
       g_info.download_status[tsv_name] = "processing";
       response = convert_R_types(response, g_info.types);
       wait_until_then(500, function(){
-	if(g_info.common_tsv) {
+        if(g_info.common_tsv) {
           return g_info.data.hasOwnProperty(g_info.common_tsv);
-	}else{
-	  return true;
-	}
+        }else{
+          return true;
+        }
       }, function(){
-	if(g_info.common_tsv) {
+        if(g_info.common_tsv) {
           // copy data from common tsv to varied tsv
           response = copy_chunk(g_info, response);
-	}
-	var nest = d3.nest();
-	g_info.nest_order.forEach(function (v_name) {
+        }
+        var nest = d3.nest();
+        g_info.nest_order.forEach(function (v_name) {
           nest.key(function (d) {
             return d[v_name];
           });
-	});
-	var chunk = nest.map(response);
-	g_info.data[tsv_name] = chunk;
-	g_info.tr.select("td.downloaded").text(d3.keys(g_info.data).length);
-	g_info.download_status[tsv_name] = "saved";
-	funAfter(chunk);
+        });
+        var chunk = nest.map(response);
+        g_info.data[tsv_name] = chunk;
+        g_info.tr.select("td.downloaded").text(d3.keys(g_info.data).length);
+        g_info.download_status[tsv_name] = "saved";
+        funAfter(chunk);
       });
     });
   }//download_chunk.
@@ -1004,40 +1021,40 @@ var animint = function (to_select, json_file) {
       var selected, values;
       var new_arrays = [];
       if(0 < aes_name.indexOf(".variable")){ 
-	selected_arrays.forEach(function(old_array){
-	  var some_data = chunk;
-	  old_array.forEach(function(value){
+        selected_arrays.forEach(function(old_array){
+          var some_data = chunk;
+          old_array.forEach(function(value){
             if(some_data.hasOwnProperty(value)) {
               some_data = some_data[value];
             } else {
               some_data = {};
             }
-	  })
-	  values = d3.keys(some_data);
-	  values.forEach(function(s_name){
-	    var selected = Selectors[s_name].selected;
-	    var new_array = old_array.concat(s_name).concat(selected);
-	    new_arrays.push(new_array);
-	  })
-	})
+          })
+          values = d3.keys(some_data);
+          values.forEach(function(s_name){
+            var selected = Selectors[s_name].selected;
+            var new_array = old_array.concat(s_name).concat(selected);
+            new_arrays.push(new_array);
+          })
+        })
       }else{//not .variable aes:
-	if(aes_name == "PANEL"){
-	  selected = PANEL;
-	}else{
+        if(aes_name == "PANEL"){
+          selected = PANEL;
+        }else{
           var s_name = g_info.aes[aes_name];
           selected = Selectors[s_name].selected;
-	}
-	if(isArray(selected)){ 
-	  values = selected; //multiple selection.
-	}else{
-	  values = [selected]; //single selection.
-	}
-	values.forEach(function(value){
-	  selected_arrays.forEach(function(old_array){
-	    var new_array = old_array.concat(value);
-	    new_arrays.push(new_array);
-	  })
-	})
+        }
+        if(isArray(selected)){
+          values = selected; //multiple selection.
+        }else{
+          values = [selected]; //single selection.
+        }
+        values.forEach(function(value){
+          selected_arrays.forEach(function(old_array){
+            var new_array = old_array.concat(value);
+            new_arrays.push(new_array);
+          })
+        })
       }
       selected_arrays = new_arrays;
     });
@@ -1056,21 +1073,21 @@ var animint = function (to_select, json_file) {
         if (some_data.hasOwnProperty(value)) {
           some_data = some_data[value];
         } else {
-	  if(g_info.data_is_object){
-	    some_data = {};
-	  }else{
+          if(g_info.data_is_object){
+            some_data = {};
+          }else{
             some_data = [];
-	  }
+          }
         }
       });
       if(g_info.data_is_object){
-	if(isArray(some_data) && some_data.length){
-	  data["0"] = some_data;
-	}else{
-	  for(k in some_data){
+        if(isArray(some_data) && some_data.length){
+          data["0"] = some_data;
+        }else{
+          for(k in some_data){
             data[k] = some_data[k];
           }
-	}
+        }
       }else{//some_data is an array.
         data = data.concat(some_data);
       }
@@ -1090,13 +1107,13 @@ var animint = function (to_select, json_file) {
     // data (not one group), in both cases.
     var get_fun = function(fun){
       return function(input){
-	var d = get_one_row(input);
-	return fun(d);
+        var d = get_one_row(input);
+        return fun(d);
       };
     };
     var get_attr = function(attr_name){
       return get_fun(function(d){
-	return d[attr_name];
+        return d[attr_name];
       });
     };
 
@@ -1115,7 +1132,7 @@ var animint = function (to_select, json_file) {
       get_size = get_attr("size");
     }else{
       get_size = function(d){
-	return size;
+        return size;
       };
     }
     var get_style_on_stroke_width = get_size;
@@ -1127,7 +1144,7 @@ var animint = function (to_select, json_file) {
       get_stroke_width = get_attr("stroke");
     }else{
       get_stroke_width = function(d){
-	return stroke_width;
+        return stroke_width;
       };
     }
     
@@ -1137,7 +1154,7 @@ var animint = function (to_select, json_file) {
       get_linetype = get_attr("linetype");
     }else{
       get_linetype = function(d){
-	return linetype;
+        return linetype;
       };
     }
     var get_dasharray = function(d){
@@ -1155,7 +1172,7 @@ var animint = function (to_select, json_file) {
       get_alpha_off = get_attr("alpha");
     } else {
       get_alpha = function(d){
-	return alpha;
+        return alpha;
       };
     }
     
@@ -1169,7 +1186,7 @@ var animint = function (to_select, json_file) {
       get_colour_off = get_colour;
     }else{
       get_colour = function (d) {
-	return colour;
+        return colour;
       };
     }
     var get_colour_off_default = get_colour;
@@ -1209,7 +1226,7 @@ var animint = function (to_select, json_file) {
       get_angle = get_attr("angle");
     }else{
       get_angle = function(d){
-	return angle;
+        return angle;
       };
     }
     var get_rotate = function(d){
@@ -1229,11 +1246,11 @@ var animint = function (to_select, json_file) {
     var get_text_anchor;
     if(g_info.aes.hasOwnProperty("hjust")) {
       get_text_anchor = function(d){
-	return d["anchor"];
+        return d["anchor"];
       }
     }else{
       get_text_anchor = function(d){
-	return text_anchor;
+        return text_anchor;
       }
     }
 
@@ -1267,8 +1284,8 @@ var animint = function (to_select, json_file) {
       //     // we need to use a path for each group.
       //     var kv = d3.entries(d3.keys(data));
       //     kv = kv.map(function(d){
-      // 	d[aes.group] = d.value;
-      // 	return d;
+      //         d[aes.group] = d.value;
+      //         return d;
       //     });
       // }
 
@@ -1310,27 +1327,36 @@ var animint = function (to_select, json_file) {
 
       // we need to use a path for each group.
       var keyed_data = {}, one_group, group_id, k;
+      var by_na_group, na_group_id, one_na_group;
       for(group_id in data){
-	one_group = data[group_id];
-	one_row = one_group[0];
-	if(one_row.hasOwnProperty("key")){
-	  k = one_row.key;
-	}else{
-	  k = group_id;
-	}
-	keyed_data[k] = one_group;
+        one_group = data[group_id];
+        one_row = one_group[0];
+        if(one_row.hasOwnProperty("na_group")){
+          by_na_group = d3.nest().key(function(d){ return d.na_group; }).map(one_group);
+          for(na_group_id in by_na_group){
+            one_na_group = by_na_group[na_group_id];
+            k = group_id + "_" + na_group_id;
+            keyed_data[k] = one_na_group;
+          }
+        }else{
+          keyed_data[group_id] = one_group;
+        }
       }
       var kv_array = d3.entries(d3.keys(keyed_data));
-      var kv = kv_array.map(function (d) {
+      get_one_row = function(group_info) {
+        var one_group = keyed_data[group_info.value];
+        var one_row = one_group[0];
+        return one_row;
+      };
+      var kv = kv_array.map(function (group_info) {
         //d[aes.group] = d.value;
-
         // Need to store the clickSelects value that will
         // be passed to the selector when we click on this
         // item.
-        d.clickSelects = keyed_data[d.value][0].clickSelects;
-        return d;
+        var one_row = get_one_row(group_info);
+        Object.assign(group_info, one_row);
+        return group_info;
       });
-
       // line, path, and polygon use d3.svg.line(),
       // ribbon uses d3.svg.area()
       // we have to define lineThing accordingly.
@@ -1345,37 +1371,19 @@ var animint = function (to_select, json_file) {
           .y(toXY("y", "y"));
       }
       if(["line","path"].includes(g_info.geom)){
-	fill = "none";
-	fill_off = "none";
+        fill = "none";
+        fill_off = "none";
       }
-      // select the correct group before returning anything.
-      key_fun = function(group_info){
-	return group_info.value;
-      };
       data_to_bind = kv;
-      get_one_row = function(group_info) {
-        var one_group = keyed_data[group_info.value];
-        var one_row = one_group[0];
-	return one_row;
-      };
       eActions = function (e) {
         e.attr("d", function (d) {
-          var one_group = keyed_data[d.value];
-          // filter NaN since they make the whole line disappear!
-	  var no_na = one_group.filter(function(d){
-            if(g_info.geom == "ribbon"){
-              return !isNaN(d.x) && !isNaN(d.ymin) && !isNaN(d.ymax);
-            }else{
-              return !isNaN(d.x) && !isNaN(d.y);
-            }
-          });
-          return lineThing(no_na);
+          return lineThing(keyed_data[d.value]);
         })
       };
       eAppend = "path";
     }else{
       get_one_row = function(d){
-	return d;
+        return d;
       }
       data_to_bind = data;
       if (g_info.geom == "segment") {
@@ -1432,8 +1440,8 @@ var animint = function (to_select, json_file) {
   eAppend = "line";
       }
       if (g_info.geom == "linerange") {
-	g_info.style_list = line_style_list;
-	eActions = function (e) {
+        g_info.style_list = line_style_list;
+        eActions = function (e) {
           e.attr("x1", function (d) {
             return scales.x(d["x"]);
           })
@@ -1446,45 +1454,45 @@ var animint = function (to_select, json_file) {
             .attr("y2", function (d) {
               return scales.y(d["ymin"]);
             })
-	  ;
-	};
-	eAppend = "line";
+          ;
+        };
+        eAppend = "line";
       }
       if (g_info.geom == "vline") {
-	g_info.style_list = line_style_list;
-	eActions = function (e) {
+        g_info.style_list = line_style_list;
+        eActions = function (e) {
           e.attr("x1", toXY("x", "xintercept"))
             .attr("x2", toXY("x", "xintercept"))
             .attr("y1", scales.y.range()[0])
             .attr("y2", scales.y.range()[1])
-	  ;
-	};
-	eAppend = "line";
+          ;
+        };
+        eAppend = "line";
       }
       if (g_info.geom == "hline") {
-	g_info.style_list = line_style_list;
-	eActions = function (e) {
+        g_info.style_list = line_style_list;
+        eActions = function (e) {
           e.attr("y1", toXY("y", "yintercept"))
             .attr("y2", toXY("y", "yintercept"))
             .attr("x1", scales.x.range()[0])
             .attr("x2", scales.x.range()[1])
-	  ;
-	};
-	eAppend = "line";
+          ;
+        };
+        eAppend = "line";
       }
       if (g_info.geom == "text") {
-	size = 12;//default
-	get_colour = function(d){
-	  return "none";
-	};
-	get_colour_off = function(d) {
-	  return "none";
-	};
-	fill_comes_from = "colour";
-	fill_off_comes_from = "colour_off";
-	g_info.style_list = [
-	  "opacity","fill"];
-	eActions = function (e) {
+        size = 12;//default
+        get_colour = function(d){
+          return "none";
+        };
+        get_colour_off = function(d) {
+          return "none";
+        };
+        fill_comes_from = "colour";
+        fill_off_comes_from = "colour_off";
+        g_info.style_list = [
+          "opacity","fill"];
+        eActions = function (e) {
           e.attr("x", toXY("x", "x"))
             .attr("y", toXY("y", "y"))
             .attr("font-size", get_size)
@@ -1493,30 +1501,30 @@ var animint = function (to_select, json_file) {
             .text(function (d) {
               return d.label;
             })
-	  ;
-	};
-	eAppend = "text";
+          ;
+        };
+        eAppend = "text";
       }
       if (g_info.geom == "point") {
-	// point is special because it takes SVG fill from ggplot
-	// colour, if fill is not specified.
-	if(!(
-	  g_info.params.hasOwnProperty("fill") ||
-	    aes.hasOwnProperty("fill")
-	)){
-	  fill_comes_from = "colour";
-	}
-	if(!g_info.params.hasOwnProperty("fill_off")){
-	  fill_off_comes_from = "colour_off";
-	}
-	get_style_on_stroke_width = get_stroke_width;//not size.
-	eActions = function (e) {
+        // point is special because it takes SVG fill from ggplot
+        // colour, if fill is not specified.
+        if(!(
+          g_info.params.hasOwnProperty("fill") ||
+            aes.hasOwnProperty("fill")
+        )){
+          fill_comes_from = "colour";
+        }
+        if(!g_info.params.hasOwnProperty("fill_off")){
+          fill_off_comes_from = "colour_off";
+        }
+        get_style_on_stroke_width = get_stroke_width;//not size.
+        eActions = function (e) {
           e.attr("cx", toXY("x", "x"))
             .attr("cy", toXY("y", "y"))
             .attr("r", get_size)
-	  ;
-	};
-	eAppend = "circle";
+          ;
+        };
+        eAppend = "circle";
       }
       // function to calculate the size of boxes in geom_label_aligned according to the inside text
       var calcLabelBox = function(d) {
@@ -1632,45 +1640,45 @@ var animint = function (to_select, json_file) {
 
       var rect_geoms = ["tallrect","widerect","rect"];
       if(rect_geoms.includes(g_info.geom)){
-	eAppend = "rect";
-	if (g_info.geom == "tallrect") {
-	  eActions = function (e) {
+        eAppend = "rect";
+        if (g_info.geom == "tallrect") {
+          eActions = function (e) {
             e.attr("x", toXY("x", "xmin"))
               .attr("width", function (d) {
-		return scales.x(d["xmax"]) - scales.x(d["xmin"]);
+                return scales.x(d["xmax"]) - scales.x(d["xmin"]);
               })
               .attr("y", scales.y.range()[1])
               .attr("height", scales.y.range()[0] - scales.y.range()[1])
-	    ;
-	  };
-	}
-	if (g_info.geom == "widerect") {
-	  eActions = function (e) {
+            ;
+          };
+        }
+        if (g_info.geom == "widerect") {
+          eActions = function (e) {
             e.attr("y", toXY("y", "ymax"))
               .attr("height", function (d) {
-		return scales.y(d["ymin"]) - scales.y(d["ymax"]);
+                return scales.y(d["ymin"]) - scales.y(d["ymax"]);
               })
               .attr("x", scales.x.range()[0])
               .attr("width", scales.x.range()[1] - scales.x.range()[0])
-	    ;
-	  };
-	}
-	if (g_info.geom == "rect") {
-	  alpha_off = alpha;
-	  colour_off = "transparent";
-	  get_colour_off_default = get_colour_off;
-	  eActions = function (e) {
+            ;
+          };
+        }
+        if (g_info.geom == "rect") {
+          alpha_off = alpha;
+          colour_off = "transparent";
+          get_colour_off_default = get_colour_off;
+          eActions = function (e) {
             e.attr("x", toXY("x", "xmin"))
               .attr("width", function (d) {
-		return Math.abs(scales.x(d.xmax) - scales.x(d.xmin));
+                return Math.abs(scales.x(d.xmax) - scales.x(d.xmin));
               })
               .attr("y", toXY("y", "ymax"))
               .attr("height", function (d) {
-		return Math.abs(scales.y(d.ymin) - scales.y(d.ymax));
+                return Math.abs(scales.y(d.ymin) - scales.y(d.ymax));
               })
-	    ;
-	  };
-	}
+            ;
+          };
+        }
       }
     }
     // set params after geom-specific code, because each geom may have
@@ -1720,10 +1728,10 @@ var animint = function (to_select, json_file) {
     var styleActions = function(e){
       if (g_info.geom == "label_aligned") return;  // Do NOT call styleActions(e) for geom_label_aligned
       g_info.style_list.forEach(function(s){
-	e.style(s, function(d) {
-	  var style_on_fun = style_on_funs[s];
-	  return style_on_fun(d);
-	});
+        e.style(s, function(d) {
+          var style_on_fun = style_on_funs[s];
+          return style_on_fun(d);
+        });
       });
     };
     var style_on_funs = {
@@ -1759,12 +1767,12 @@ var animint = function (to_select, json_file) {
           var select_off = style_off_funs[s](d);
           if(has_clickSelects){
             return ifSelectedElse(
-	      d.clickSelects,
-	      g_info.aes.clickSelects,
+              d.clickSelects,
+              g_info.aes.clickSelects,
               select_on, select_off);
           }else if(has_clickSelects_variable){
             return ifSelectedElse(
-	      d["clickSelects.value"],
+              d["clickSelects.value"],
               d["clickSelects.variable"],
               select_on, select_off);
           }
@@ -1779,7 +1787,7 @@ var animint = function (to_select, json_file) {
         .append("svg:"+eAppend);
     }else{
       enter = enter.append(eAppend)
-	.attr("class", "geom");
+        .attr("class", "geom");
     }
     var moreActions = function(e){};
     if (has_clickSelects || has_clickSelects_variable) {
@@ -1793,16 +1801,16 @@ var animint = function (to_select, json_file) {
         })
       ;
       if(has_clickSelects){
-	elements.on("click", function (d) {
+        elements.on("click", function (d) {
             var s_name = g_info.aes.clickSelects;
             update_selector(s_name, d.clickSelects);
-	});
+        });
       }else{
-	elements.on("click", function(d){
-	  var s_name = d["clickSelects.variable"];
-	  var s_value = d["clickSelects.value"];
-	  update_selector(s_name, s_value);
-	});
+        elements.on("click", function(d){
+          var s_name = d["clickSelects.variable"];
+          var s_value = d["clickSelects.value"];
+          update_selector(s_name, s_value);
+        });
       }
     }
     // Set attributes of only the entering elements. This is needed to
@@ -1835,17 +1843,17 @@ var animint = function (to_select, json_file) {
       var text_fun;
       if(has_tooltip){
         text_fun = function(d){
-	  return d.tooltip;
-	};
+          return d.tooltip;
+        };
       }else if(has_clickSelects){
-	text_fun = function(d){
+        text_fun = function(d){
           var v_name = g_info.aes.clickSelects;
           return v_name + " " + d.clickSelects;
-	};
+        };
       }else{ //clickSelects_variable
-	text_fun = function(d){
-	  return d["clickSelects.variable"] + " " + d["clickSelects.value"];
-	};
+        text_fun = function(d){
+          return d["clickSelects.variable"] + " " + d["clickSelects.value"];
+        };
       }
       // Add tooltip handlers
       elements
@@ -2076,11 +2084,11 @@ var animint = function (to_select, json_file) {
       var i_value = s_info.selected.indexOf(value);
       if(i_value == -1){
         // not found, add to selection.
-	s_info.selected.push(value);
+        s_info.selected.push(value);
       }else{
-	// found, remove from selection.
-	hide_tooltip()
-	s_info.selected.splice(i_value, 1);
+        // found, remove from selection.
+        hide_tooltip()
+        s_info.selected.splice(i_value, 1);
       }
     }
     // update_selector_url()
@@ -2089,12 +2097,12 @@ var animint = function (to_select, json_file) {
     if(isArray(s_info.levels)){
       // the jquery ids
       if(s_info.type == "single") {
-	var selected_ids = v_name.concat("___", value);
+        var selected_ids = v_name.concat("___", value);
       } else {
-	var selected_ids = [];
-	for(i in s_info.selected) {
+        var selected_ids = [];
+        for(i in s_info.selected) {
           selected_ids[i] = v_name.concat("___", s_info.selected[i]);
-	}
+        }
       }
       // from
       // https://github.com/brianreavis/selectize.js/blob/master/docs/api.md:
@@ -2163,7 +2171,7 @@ var animint = function (to_select, json_file) {
       var l_info = p_info.legend[legend_key];
       // the table that contains one row for each legend element.
       var legend_table = tdRight.append("table")
-	.attr("class", "legend")
+        .attr("class", "legend")
       ;
       var legend_class = legend_class_name(l_info["class"]);
       var legend_id = p_info.plot_id + "_" + legend_class;
@@ -2171,11 +2179,11 @@ var animint = function (to_select, json_file) {
       // TODO: variable and value should be set in the compiler! What
       // if label is different from the data value?
       for(var entry_i=0; entry_i < l_info.entries.length; entry_i++){
-	var entry = l_info.entries[entry_i];
-	entry.variable = l_info.selector;
-	entry.value = entry.label;
-	entry.id = safe_name(legend_id + "_" + entry["label"]);
-  	entry.text_size = l_info.text_size;
+        var entry = l_info.entries[entry_i];
+        entry.variable = l_info.selector;
+        entry.value = entry.label;
+        entry.id = safe_name(legend_id + "_" + entry["label"]);
+          entry.text_size = l_info.text_size;
       }
       var legend_rows = legend_table.selectAll("tr")
         .data(l_info.entries)
@@ -2185,32 +2193,32 @@ var animint = function (to_select, json_file) {
       // that shows the same thing, so there should be no duplicate
       // id.
         .attr("id", function(d) { return d["id"]; })
-	.attr("class", legend_class)
+        .attr("class", legend_class)
       ;
       if(l_info.selector != null){
-	legend_rows
-	  .on("click", function(d) { 
+        legend_rows
+          .on("click", function(d) {
             update_selector(d.variable, d.value);
-	  })
-	  .attr("title", function(d) {
+          })
+          .attr("title", function(d) {
             return "Toggle " + d.value;
-	  })
-	  .attr("style", "cursor:pointer")
-	;
+          })
+          .attr("style", "cursor:pointer")
+        ;
       }
       var first_tr = legend_table.insert("tr", "tr");
       var first_th = first_tr.append("th")
-	.attr("align", "left")
-	.attr("colspan", 2)
+        .attr("align", "left")
+        .attr("colspan", 2)
         .text(l_info.title)
         .attr("class", legend_class)
         .style("font-size", l_info.title_size)
       ;
       var legend_svgs = legend_rows.append("td")
         .append("svg")
-  	    .attr("id", function(d){return d["id"]+"_svg";})
-  	    .attr("height", 14)
-  	    .attr("width", 20);
+              .attr("id", function(d){return d["id"]+"_svg";})
+              .attr("height", 14)
+              .attr("width", 20);
       var pointscale = d3.scale.linear().domain([0,7]).range([1,4]);
       // scale points so they are visible in the legend. (does not
       // affect plot scaling)
@@ -2221,9 +2229,9 @@ var animint = function (to_select, json_file) {
         // aesthetics that would draw a rect
         legend_svgs.append("rect")
           .attr("x", 2)
-	        .attr("y", 2)
-	        .attr("width", 10)
-	        .attr("height", 10)
+                .attr("y", 2)
+                .attr("width", 10)
+                .attr("height", 10)
           .style("stroke-width", function(d){return d["polygonsize"]||1;})
           .style("stroke-dasharray", function(d){
             return linetypesize2dasharray(d["polygonlinetype"], d["size"]||2);
@@ -2235,12 +2243,12 @@ var animint = function (to_select, json_file) {
       if(l_info.geoms.indexOf("text")>-1){
         // aesthetics that would draw a rect
         legend_svgs.append("text")
-	        .attr("x", 10)
-	        .attr("y", 14)
-          	.style("fill", function(d){return d["textcolour"]||1;})
-	        .style("text-anchor", "middle")
-          	.attr("font-size", function(d){return d["textsize"]||1;})
-	        .text("a");
+                .attr("x", 10)
+                .attr("y", 14)
+                  .style("fill", function(d){return d["textcolour"]||1;})
+                .style("text-anchor", "middle")
+                  .attr("font-size", function(d){return d["textsize"]||1;})
+                .text("a");
       }
       if(l_info.geoms.indexOf("path")>-1){
         // aesthetics that would draw a line
@@ -2268,11 +2276,11 @@ var animint = function (to_select, json_file) {
           .style("opacity", function(d){return d["pointalpha"]||1;});
       }
       legend_rows.append("td")
-	.attr("align", "left") // TODO: right for numbers?
-	.attr("class", "legend_entry_label")
-	.attr("id", function(d){ return d["id"]+"_label"; })
-  	.style("font-size", function(d){ return d["text_size"]})
-	.text(function(d){ return d["label"];});
+        .attr("align", "left") // TODO: right for numbers?
+        .attr("class", "legend_entry_label")
+        .attr("id", function(d){ return d["id"]+"_label"; })
+          .style("font-size", function(d){ return d["text_size"]})
+        .text(function(d){ return d["label"];});
     }
   }
 
@@ -2330,9 +2338,9 @@ var animint = function (to_select, json_file) {
      var element = d3.select('body');
     if(response.hasOwnProperty("source")){
       widget_td.append("a")
-	.attr("class","a_source_href")
-	.attr("href", response.source)
-	.text("source");
+        .attr("class","a_source_href")
+        .attr("href", response.source)
+        .text("source");
     }
     widget_td
       .append('button')
@@ -2402,9 +2410,9 @@ var animint = function (to_select, json_file) {
       Animation.variable = response.time.variable;
       Animation.sequence = response.time.sequence;
       Widgets["play_pause"] = first_th.append("button")
-	.text("Play")
+        .text("Play")
         .attr("id", "play_pause")
-	.on("click", function(){
+        .on("click", function(){
           if(this.textContent == "Play"){
             Animation.play();
           }else{
@@ -2418,10 +2426,10 @@ var animint = function (to_select, json_file) {
       var second_tr = time_table.append("tr");
       second_tr.append("td").text("updates");
       second_tr.append("td").append("input")
-	.attr("id", "updates_ms")
-	.attr("type", "text")
-	.attr("value", Animation.ms)
-	.on("change", function(){
+        .attr("id", "updates_ms")
+        .attr("type", "text")
+        .attr("value", Animation.ms)
+        .on("change", function(){
           Animation.pause(false);
           Animation.ms = this.value;
           Animation.play();
@@ -2490,9 +2498,9 @@ var animint = function (to_select, json_file) {
     // video link
     if(response.hasOwnProperty("video")){
       widget_td.append("a")
-	.attr("class","a_video_href")
-	.attr("href", response.video)
-	.text("video");
+        .attr("class","a_video_href")
+        .attr("href", response.video)
+        .text("video");
     }
     // looping through and adding a row for each selector
     for(s_name in Selectors) {
@@ -2503,56 +2511,55 @@ var animint = function (to_select, json_file) {
       // TODO: why does it take so long to initialize the selectize
       // widget when there are many (>1000) values?
       if(isArray(s_info.levels)){
-	// If there were no geoms that specified clickSelects for this
-	// selector, then there is no way to select it other than the
-	// selectize widgets (and possibly legends). So in this case
-	// we show the selectize widgets by default.
-	var selector_widgets_hidden = 
-	  show_hide_selector_widgets.text() == toggle_message;
-	var has_no_clickSelects = 
-	  !Selectors[s_name].hasOwnProperty("clickSelects")
-	var has_no_legend = 
-	  !Selectors[s_name].hasOwnProperty("legend")
-	if(selector_widgets_hidden && has_no_clickSelects && has_no_legend){
-	  var node = show_hide_selector_widgets.node();
-	  show_or_hide_fun.apply(node);
-	}
-	// removing "." from name so it can be used in ids
-	var s_name_id = legend_class_name(s_name);
+        // If there were no geoms that specified clickSelects for this
+        // selector, then there is no way to select it other than the
+        // selectize widgets (and possibly legends). So in this case
+        // we show the selectize widgets by default.
+        var selector_widgets_hidden =
+          show_hide_selector_widgets.text() == toggle_message;
+        var has_no_clickSelects =
+          !Selectors[s_name].hasOwnProperty("clickSelects")
+        var has_no_legend =
+          !Selectors[s_name].hasOwnProperty("legend")
+        if(selector_widgets_hidden && has_no_clickSelects && has_no_legend){
+          var node = show_hide_selector_widgets.node();
+          show_or_hide_fun.apply(node);
+        }
+        // removing "." from name so it can be used in ids
+        var s_name_id = legend_class_name(s_name);
 
-	// adding a row for each selector
-	var selector_widget_row = selector_table
+        // adding a row for each selector
+        var selector_widget_row = selector_table
           .append("tr")
           .attr("class", function() { return s_name_id + "_selector_widget"; })
-	;
-	selector_widget_row.append("td").text(s_name);
-	// adding the selector
-	var selector_widget_select = selector_widget_row
+        ;
+        selector_widget_row.append("td").text(s_name);
+        // adding the selector
+        var selector_widget_select = selector_widget_row
           .append("td")
           .append("select")
           .attr("class", function() { return s_name_id + "_input"; })
           .attr("placeholder", function() { return "Toggle " + s_name; });
-	// adding an option for each level of the variable
-	selector_widget_select.selectAll("option")
+        // adding an option for each level of the variable
+        selector_widget_select.selectAll("option")
           .data(s_info.levels)
           .enter()
           .append("option")
           .attr("value", function(d) { return d; })
           .text(function(d) { return d; });
-	// making sure that the first option is blank
-	selector_widget_select
+        // making sure that the first option is blank
+        selector_widget_select
           .insert("option")
           .attr("value", "")
           .text(function() { return "Toggle " + s_name; });
-	
-	// calling selectize
-	var selectize_selector = to_select + ' .' + s_name_id + "_input";
-	if(s_info.type == "single") {
+        // calling selectize
+        var selectize_selector = to_select + ' .' + s_name_id + "_input";
+        if(s_info.type == "single") {
           // setting up array of selector and options
           var selector_values = [];
           for(i in s_info.levels) {
             selector_values[i] = {
-              id: s_name.concat("___", s_info.levels[i]), 
+              id: s_name.concat("___", s_info.levels[i]),
               text: s_info.levels[i]
             };
           }
@@ -2571,22 +2578,22 @@ var animint = function (to_select, json_file) {
               maxItems: 1, 
               allowEmptyOption: true,
               onChange: function(value) {
-		// extracting the name and the level to update
-		var selector_name = value.split("___")[0];
-		var selected_level = value.split("___")[1];
-		// updating the selector
-		update_selector(selector_name, selected_level);
+                // extracting the name and the level to update
+                var selector_name = value.split("___")[0];
+                var selected_level = value.split("___")[1];
+                // updating the selector
+                update_selector(selector_name, selected_level);
               }
             })
           ;
-	} else { // multiple selection:
+        } else { // multiple selection:
           // setting up array of selector and options
           var selector_values = [];
           if(typeof s_info.levels == "object") {
             for(i in s_info.levels) {
               selector_values[i] = {
-		id: s_name.concat("___", s_info.levels[i]), 
-		text: s_info.levels[i]
+                id: s_name.concat("___", s_info.levels[i]),
+                text: s_info.levels[i]
               };
             }
           } else {
@@ -2613,8 +2620,8 @@ var animint = function (to_select, json_file) {
               maxItems: s_info.levels.length, 
               allowEmptyOption: true,
               onChange: function(value) { 
-		// if nothing is selected, remove what is currently selected
-		if(value == null) {
+                // if nothing is selected, remove what is currently selected
+                if(value == null) {
                   // extracting the selector ids from the options
                   var the_ids = Object.keys($(this)[0].options);
                   // the name of the appropriate selector
@@ -2625,7 +2632,7 @@ var animint = function (to_select, json_file) {
                   old_selections.forEach(function(element) {
                     update_selector(selector_name, element);
                   });
-		} else { // value is not null:
+                } else { // value is not null:
                   // grabbing the name of the selector from the selected value
                   var selector_name = value[0].split("___")[0];
                   // identifying the levels that should be selected
@@ -2655,12 +2662,12 @@ var animint = function (to_select, json_file) {
                       update_selector(selector_name, element);
                     })
                   ;
-		}//value==null
+                }//value==null
               }//onChange
             })//selectize
           ;
-	}//single or multiple selection.
-	selectized_array[s_name] = $temp[0].selectize;
+        }//single or multiple selection.
+        selectized_array[s_name] = $temp[0].selectize;
       }//levels, is.variable.value
     } // close for loop through selector widgets
     // If this is an animation, then start downloading all the rest of
@@ -2678,17 +2685,17 @@ var animint = function (to_select, json_file) {
       }
       Animation.timer = null;
       Animation.play = function(){
-	if(Animation.timer == null){ // only play if not already playing.
-    	  // as shown on http://bl.ocks.org/mbostock/3808234
-    	  Animation.timer = setInterval(update_next_animation, Animation.ms);
-    	  Widgets["play_pause"].text("Pause");
-	}
+        if(Animation.timer == null){ // only play if not already playing.
+              // as shown on http://bl.ocks.org/mbostock/3808234
+              Animation.timer = setInterval(update_next_animation, Animation.ms);
+              Widgets["play_pause"].text("Pause");
+        }
       };
       Animation.play_after_visible = false;
       Animation.pause = function(play_after_visible){
         Animation.play_after_visible = play_after_visible;
         clearInterval(Animation.timer);
-	Animation.timer = null;
+        Animation.timer = null;
         Widgets["play_pause"].text("Play");
       };
       var s_info = Selectors[Animation.variable];
@@ -2696,12 +2703,12 @@ var animint = function (to_select, json_file) {
       s_info.update.forEach(function(g_name){
         var g_info = Geoms[g_name];
         if(g_info.chunk_order.length == 1 &&
-	   g_info.chunk_order[0] == Animation.variable){
-	  g_info.seq_i = Animation.sequence.indexOf(s_info.selected);
-	  g_info.seq_count = 0;
-	  Animation.done_geoms[g_name] = 0;
-	  download_next(g_name);
-	}
+           g_info.chunk_order[0] == Animation.variable){
+          g_info.seq_i = Animation.sequence.indexOf(s_info.selected);
+          g_info.seq_count = 0;
+          Animation.done_geoms[g_name] = 0;
+          download_next(g_name);
+        }
       });
       Animation.play();
       all_geom_names = d3.keys(response.geoms);
@@ -2743,7 +2750,7 @@ var animint = function (to_select, json_file) {
         var re = /\{(.*?)\}/;
         selector_values = re.exec(selector_values)[1];
         var array_values = selector_values.split(',');
-	if(Selectors.hasOwnProperty(selector_nam)){
+        if(Selectors.hasOwnProperty(selector_nam)){
           var s_info = Selectors[selector_nam]
           if(s_info.type=="single"){//TODO fix
             array_values.forEach(function(element) {
@@ -2755,26 +2762,26 @@ var animint = function (to_select, json_file) {
             // the levels that need to have selections turned on
             array_values
               .filter(function(n) {
-		return old_selections.indexOf(n) == -1;
+                return old_selections.indexOf(n) == -1;
               })
               .forEach(function(element) {
-		wait_until_then(100, check_func, update_selector,selector_nam,element)
-		if(response.time){
+                wait_until_then(100, check_func, update_selector,selector_nam,element)
+                if(response.time){
                   Animation.pause(true)
-		}
+                }
               });
             old_selections
               .filter(function(n) {
-		return array_values.indexOf(n) == -1;
+                return array_values.indexOf(n) == -1;
               })
               .forEach(function(element) {
-		wait_until_then(100, check_func, update_selector,selector_nam,element)
-		if(response.time){
+                wait_until_then(100, check_func, update_selector,selector_nam,element)
+                if(response.time){
                   Animation.pause(true)
-		}
+                }
               });     
           }//if(single) else multiple selection
-	}//if(Selectors.hasOwnProperty(selector_nam))
+        }//if(Selectors.hasOwnProperty(selector_nam))
       })//frag_array.forEach
     }//if(window.location.hash)
   });
