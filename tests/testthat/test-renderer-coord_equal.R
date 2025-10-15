@@ -39,8 +39,7 @@ test_that("coord_equal fills available space (issue #234)", {
   
   # Test that at least ONE dimension is close to requested size (500)
   max_dimension <- max(svg.width, svg.height)
-  expect_gt(max_dimension, 450, 
-            info="At least one dimension should fill available space")
+  expect_gt(max_dimension, 450)
   
   # Both dimensions should be positive
   expect_gt(svg.width, 0)
