@@ -35,7 +35,7 @@ There are no visual regression tests that need to be checked before merging a PR
 
 ## PRs from forks
 
-Please submit your first PR from your fork. In that PR, please add yourself to DESCRIPTION as a contributor, and after that you will be invited to join `@animint/developers` which gives you permission to create new branches in this repo. Never push to master in this repo. Instead please create a new branch in this repo (instead of your fork). 
+Please submit your first PR from your fork. In PRs from forks, it is normal to see failure for test cases related to GitHub Pages (because they needs permission only available in PRs from branches in this repo). In your first PR, please add yourself to DESCRIPTION as a contributor, and after that you will be invited to join `@animint/developers` which gives you permission to create new branches in this repo. Never push to master in this repo. Instead please create a new branch in this repo (instead of your fork).
 
 ## Style
 
