@@ -8,7 +8,6 @@ animint2dir(
   plot.list,
   out.dir = NULL,
   open.browser = interactive(),
-  css.file = "",
   chromote_sleep_seconds = getOption("animint2.chromote_sleep_seconds"),
   chromote_width = 3000,
   chromote_height = 2000
@@ -27,10 +26,6 @@ determine how. If it is set to "browseURL" then we use a file URL
 (be sure to configure your browser to allow access to local
 files, as some browsers block this by default). Otherwise
 (default) we use \code{servr::httd(out.dir)}.}
-
-\item{css.file}{character string for non-empty css file to
-include. Provided file will be copied to the output directory as
-styles.css}
 
 \item{chromote_sleep_seconds}{if numeric, chromote will be used to take a screenshot of the data viz, pausing this number of seconds to wait for rendering (experimental). Defaults to option \code{animint2.chromote_sleep_seconds}.}
 
