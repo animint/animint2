@@ -8,10 +8,11 @@ Please file an issue and tag
 
 ## Avoid AI code generation
 
-In your PRs, please avoid including code from Github Copilot or other AI code generation software. These tools create several problems:
+In your PRs, please avoid including code from Github Copilot or other AI code generation software. These tools create several problems, because generated code is often
 
-* generated code is often copied from other projects which may have incompatible licenses.
-* generated code is often irrelevant / incorrect.
+* irrelevant / incorrect.
+* too complex / repetitive / confusing.
+* copied from other projects which may have incompatible licenses.
 
 ## Easy to review PRs
 
