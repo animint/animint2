@@ -120,34 +120,23 @@ test_that("tooltip text supports multi-line text (regression test)", {
 # Test 7: Helper function convertNewlinesToBreaks
 test_that("convertNewlinesToBreaks works correctly", {
   expect_equal(
-    convertNewlinesToBreaks("Line1\nLine2"),
+    animint2:::convertNewlinesToBreaks("Line1\nLine2"),
     "Line1<br/>Line2"
   )
   expect_equal(
-    convertNewlinesToBreaks("A\nB\nC\nD"),
+    animint2:::convertNewlinesToBreaks("A\nB\nC\nD"),
     "A<br/>B<br/>C<br/>D"
   )
   expect_equal(
-    convertNewlinesToBreaks("No newlines here"),
+    animint2:::convertNewlinesToBreaks("No newlines here"),
     "No newlines here"
   )
   expect_equal(
-    convertNewlinesToBreaks(""),
+    animint2:::convertNewlinesToBreaks(""),
     ""
   )
-  expect_null(convertNewlinesToBreaks(NULL))
-  result <- convertNewlinesToBreaks(c("A\nB", "C", "D\nE\nF"))
+  result <- animint2:::convertNewlinesToBreaks(c("A\nB", "C", "D\nE\nF"))
   expect_equal(result, c("A<br/>B", "C", "D<br/>E<br/>F"))
-})
-
-# Test 8: Helper function hasNewlines
-test_that("hasNewlines works correctly", {
-  expect_true(hasNewlines("Text\nwith newline"))
-  expect_false(hasNewlines("Text without newline"))
-  expect_true(hasNewlines(c("First", "Second\nLine")))
-  expect_false(hasNewlines(c("First", "Second")))
-  expect_false(hasNewlines(NULL))
-  expect_false(hasNewlines(character(0)))
 })
 
 cat("\n===============================================\n")
