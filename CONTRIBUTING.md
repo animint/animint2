@@ -28,7 +28,7 @@ Only after that test fails, resulting in red X in the PR, then please push the n
 If your first push in the branch was not a test case that fails, but you pushed a test case later, then it is difficult for reviewers to verify that your test case is sufficient for testing the changes/fixes to the code. To make your PR easier to review, please demonstrate that the test case is sufficient, by following these steps:
 
 * First push a commit which reverts the changes/fixes to the code (but keeps the test cases which should fail, resulting in a red X).
-* Then push a commit which restores the changes/fixes to the code (the build should turn green.
+* Then push a commit which restores the changes/fixes to the code (which should result in a passing build with green check).
 
 See [our chromote documentation](https://github.com/animint/animint2/wiki/Chromote-testing-documentation) about how to setup remote-controlled web browser testing on your local machine.
 There are no visual regression tests that need to be checked before merging a PR, but it is a good idea to look at what is rendered in the remote-controlled web browser window when testing on your local machine.
