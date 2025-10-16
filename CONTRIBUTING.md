@@ -33,6 +33,10 @@ If your first push in the branch was not a test case that fails, but you pushed 
 See [our chromote documentation](https://github.com/animint/animint2/wiki/Chromote-testing-documentation) about how to setup remote-controlled web browser testing on your local machine.
 There are no visual regression tests that need to be checked before merging a PR, but it is a good idea to look at what is rendered in the remote-controlled web browser window when testing on your local machine.
 
+## PRs from forks
+
+Please submit your first PR from your fork. In that PR, please add yourself to DESCRIPTION as a contributor, and after that you will be invited to join `@animint/developers` which gives you permission to create new branches in this repo. Never push to master in this repo. Instead please create a new branch in this repo (instead of your fork). 
+
 ## Style
 
 * avoid the R programming "mistakes" listed in [Toby Hocking's R General Usage Rubric](https://docs.google.com/document/d/1W6-HdQLgHayOFXaQtscO5J5yf05G7E6KeXyiBJFcT7A/edit?tab=t.0#heading=h.pekgvy78tviz).
