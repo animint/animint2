@@ -41,7 +41,7 @@ Try interacting with
 For more examples, see these galleries, which have screenshots along with links to the interactive data viz, and source code:
 
 * [NAU rcdata animint gallery](https://rcdata.nau.edu/genomic-ml/animint-gallery/) has 50+ big data viz examples dating back to animint's inception in 2014.
-* [GitHub Pages animint gallery](https://animint.github.io/gallery) is a newer collection of animints that have been published using the `animint2pages` function.
+* [GitHub Pages animint gallery](https://animint.github.io/gallery) is a newer collection of 50+ animints that have been published using `animint2pages()`.
 * [La galerie en français pour animint2](https://animint.github.io/gallery-fr/) is the French version of the gallery!
 
 To learn how to generate your own interactive data visualizations, go to the official [Animint2 Manual](https://animint-manual-en.netlify.app) (newly rendered using quarto since Sept 2025).
