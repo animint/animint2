@@ -35,8 +35,9 @@ There are no visual regression tests that need to be checked before merging a PR
 
 ## Style
 
+* avoid the R programming "mistakes" listed in [Toby Hocking's R General Usage Rubric](https://docs.google.com/document/d/1W6-HdQLgHayOFXaQtscO5J5yf05G7E6KeXyiBJFcT7A/edit?tab=t.0#heading=h.pekgvy78tviz).
 * avoid line breaks in function definitions and `test_that` blocks.
-* if there are repeated blocks of similar code in test cases, please create a function. Recent examples include `get_element_bbox()` and `mouseMoved()` in [helper-functions.R](https://github.com/animint/animint2/blob/master/tests/testthat/helper-functions.R).
+* if there are repeated blocks of similar code in test cases, please create a function (not a loop, which can be confusing in a test case). Recent examples include `get_element_bbox()` and `mouseMoved()` in [helper-functions.R](https://github.com/animint/animint2/blob/master/tests/testthat/helper-functions.R).
 * use `sprintf("some %s strings",value)` instead of `paste("some",value,"strings")`, see [Writing good messages in potools developrs vignette](https://cran.r-project.org/web/packages/potools/vignettes/developers.html).
 * for internal functions, please do not write documentation, and please avoid code for checking types of arguments.
 * Whenever possible, JavaScript code should use D3 data-bind instead of basic for loop.
