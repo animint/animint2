@@ -130,83 +130,17 @@ var animint = function (to_select, json_file) {
     // do we need to set the class so that styling is applied?
     //.attr('class', classname);
 
-    var textElement = container.append('text')
+    container.append('text')
       .attr({x: -1000, y: -1000})
       .attr("transform", "rotate(" + pAngle + ")")
       .attr("style", pStyle)
-      .attr("font-size", pFontSize);
-    
-    // Check if text contains <br/> tags (multi-line)
-    var textStr = String(pText || '');
-    var lines = textStr.split('<br/>');
-    
-    if (lines.length > 1) {
-      // Multi-line text: create tspan elements to measure properly
-      var lineHeight = 1.2; // em units
-      lines.forEach(function(line, i) {
-        textElement.append('tspan')
-          .attr('x', -1000)
-          .attr('dy', i === 0 ? 0 : lineHeight + 'em')
-          .text(line);
-      });
-      
-      var bbox = container.node().getBBox();
-      container.remove();
-      
-      // Calculate total height for multi-line text
-      // Extract font size as number (e.g., "11px" -> 11)
-      var fontSize = parseFloat(pFontSize);
-      if (isNaN(fontSize)) fontSize = 11; // default
-      
-      // Total height = number of lines * fontSize * lineHeight
-      var calculatedHeight = lines.length * fontSize * lineHeight;
-      
-      // Use the maximum of calculated height and bbox height to ensure adequate spacing
-      return {height: Math.max(bbox.height, calculatedHeight), width: bbox.width};
-    } else {
-      // Single line
-      textElement.text(pText);
-      var bbox = container.node().getBBox();
-      container.remove();
-      return {height: bbox.height, width: bbox.width};
-    }
-  };
+      .attr("font-size", pFontSize)
+      .text(pText);
 
-  /**
-   * Set multi-line text on SVG text elements
-   * Converts <br/> tags to <tspan> elements for proper SVG rendering
-   * @param {d3.selection} textElement - The D3 selection of <text> elements
-   * @param {string|function} text - Text string or function returning text
-   */
-  var setMultilineText = function(textElement, text) {
-    textElement.each(function(d) {
-      var textStr = typeof text === 'function' ? text(d) : text;
-      if (!textStr) return;
-      
-      var lines = String(textStr).split('<br/>');
-      var el = d3.select(this);
-      
-      // Clear existing content
-      el.text('');
-      
-      if (lines.length === 1) {
-        // Single line: use simple .text()
-        el.text(lines[0]);
-      } else {
-        // Multi-line: use <tspan> elements
-        var lineHeight = 1.2; // em units
-        var y = el.attr('y') || 0;
-        var x = el.attr('x') || 0;
-        var dy = 0;
-        
-        lines.forEach(function(line, i) {
-          el.append('tspan')
-            .attr('x', x)
-            .attr('dy', i === 0 ? 0 : lineHeight + 'em')
-            .text(line);
-        });
-      }
-    });
+    var bbox = container.node().getBBox();
+    container.remove();
+
+    return {height: bbox.height, width: bbox.width};
   };
 
   var nest_by_group = d3.nest().key(function(d){ return d.group; });
@@ -404,16 +338,14 @@ var animint = function (to_select, json_file) {
     if (p_info.title === undefined) titlepadding = 0;
     plotdim.title.x = p_info.options.width / 2;
     plotdim.title.y = titlepadding;
-    var titleText = svg.append("text")
+    svg.append("text")
+      .text(p_info.title)
       .attr("class", "plottitle")
       .attr("font-family", "sans-serif")
       .attr("font-size", p_info.title_size)
-      .attr("x", plotdim.title.x)
-      .attr("y", plotdim.title.y)
-      .attr("transform", "translate(0,0)")
+      .attr("transform", "translate(" + plotdim.title.x + "," + 
+        plotdim.title.y + ")")
       .style("text-anchor", "middle");
-    // Use multi-line text helper for plot titles (Issue #221)
-    setMultilineText(titleText, p_info.title);
 
     // grab max text size over axis labels and facet strip labels
     var axispaddingy = 5;
@@ -833,25 +765,30 @@ var animint = function (to_select, json_file) {
     } //end of for(layout_i
     // After drawing all backgrounds, we can draw the axis labels.
     if(p_info["ytitle"]){
-      var ytitleText = svg.append("text")
-	.attr("class", "ytitle")
-	.attr("x", ytitle_x)
-	.attr("y", (ytitle_top + ytitle_bottom)/2)
-	.attr("transform", "translate(0,0)rotate(270," + ytitle_x + "," + (ytitle_top + ytitle_bottom)/2 + ")")
-	.style("text-anchor", "middle")
-	.style("font-size", default_axis_px + "px");
-      // Use multi-line text helper for y-axis title (Issue #221)
-      setMultilineText(ytitleText, p_info["ytitle"]);
+      svg.append("text")
+        .text(p_info["ytitle"])
+        .attr("class", "ytitle")
+        .style("text-anchor", "middle")
+        .style("font-size", default_axis_px + "px")
+        .attr("transform", "translate(" +
+              ytitle_x +
+              "," +
+              (ytitle_top + ytitle_bottom)/2 +
+              ")rotate(270)")
+      ;
     }
     if(p_info["xtitle"]){
-      var xtitleText = svg.append("text")
-	.attr("class", "xtitle")
-	.attr("x", (xtitle_left + xtitle_right)/2)
-	.attr("y", xtitle_y)
-	.style("text-anchor", "middle")
-	.style("font-size", default_axis_px + "px");
-      // Use multi-line text helper for x-axis title (Issue #221)
-      setMultilineText(xtitleText, p_info["xtitle"]);
+      svg.append("text")
+        .text(p_info["xtitle"])
+        .attr("class", "xtitle")
+        .style("text-anchor", "middle")
+        .style("font-size", default_axis_px + "px")
+        .attr("transform", "translate(" +
+              (xtitle_left + xtitle_right)/2 +
+              "," +
+              xtitle_y +
+              ")")
+      ;
     }
     Plots[p_name].scales = scales;
   }; //end of add_plot()
@@ -1560,13 +1497,13 @@ var animint = function (to_select, json_file) {
             .attr("y", toXY("y", "y"))
             .attr("font-size", get_size)
             .style("text-anchor", get_text_anchor)
-            .attr("transform", get_rotate);
-          // Use multi-line text helper for geom_text labels (Issue #221)
-          setMultilineText(e, function (d) {
+            .attr("transform", get_rotate)
+            .text(function (d) {
               return d.label;
-            });
-	};
-	eAppend = "text";
+            })
+          ;
+        };
+        eAppend = "text";
       }
       if (g_info.geom == "point") {
         // point is special because it takes SVG fill from ggplot
@@ -2271,20 +2208,11 @@ var animint = function (to_select, json_file) {
       }
       var first_tr = legend_table.insert("tr", "tr");
       var first_th = first_tr.append("th")
-	.attr("align", "left")
-	.attr("colspan", 2)
+        .attr("align", "left")
+        .attr("colspan", 2)
+        .text(l_info.title)
         .attr("class", legend_class)
-        .style("font-size", l_info.title_size);
-      // Use multi-line text helper for legend title (Issue #221)
-      // Create a temporary span to set multi-line text
-      var tempSpan = first_th.append("span");
-      if (l_info.title && l_info.title.indexOf('<br/>') > -1) {
-        // Multi-line title: replace <br/> with actual line breaks in HTML
-        first_th.html(l_info.title.replace(/<br\/>/g, '<br/>'));
-      } else {
-        first_th.text(l_info.title);
-      }
-      first_th.select("span").remove(); // Clean up temp span if any
+        .style("font-size", l_info.title_size)
       ;
       var legend_svgs = legend_rows.append("td")
         .append("svg")

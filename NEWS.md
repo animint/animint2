@@ -6,10 +6,6 @@
 
 - Improve common chunk detection, output `na_group` and `row_in_group` when there are missing values.
 
-# Changes in version 2025.10.8 (PR#221)
-
-- `ggtitle()`, `xlab()`, `ylab()`, `scale_*_discrete(name=...)`, and `geom_text()` now support multi-line text using `\n` newline characters. Previously only tooltips supported this feature.
-
 # Changes in version 2025.10.3 (PR#240)
 
 - `guide_legend(override.aes)` works in a plot with both color and fill legends.
