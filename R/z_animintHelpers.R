@@ -215,37 +215,6 @@ getLayerParams <- function(l){
   params
 }
 
-
-#' Filter out columns that do not need to be copied
-#'
-#' @param g Geom with columns
-#' @param s.aes Selector aesthetics
-#' @return Character vector of columns not to be copied
-colsNotToCopy <- function(g, s.aes){
-  group.not.specified <- ! "group" %in% names(g$aes)
-  n.groups <- length(unique(NULL))
-  need.group <- c("violin", "step", "hex")
-  group.meaningless <- g$geom %in% c(
-    "abline", "blank",
-    ##"crossbar", "pointrange", #documented as unsupported
-    ## "rug", "dotplot", "quantile", "smooth", "boxplot",
-    ## "bin2d", "map"
-    "errorbar", "errorbarh",
-    ##"bar", "histogram", #?
-    "hline", "vline",
-    "jitter", "linerange",
-    "point",
-    "rect", "segment")
-  dont.need.group <- ! g$geom %in% need.group
-  remove.group <- group.meaningless ||
-    group.not.specified && 1 < n.groups && dont.need.group
-  do.not.copy <- c(
-    if(remove.group)"group")
-
-  do.not.copy
-}
-
-
 ## Generate error for non-Identity Stat + showSelected
 checkForNonIdentityAndSS <- function(stat.type, has.show, is.show, l,
                                      g_classed, g_data_names,
@@ -847,12 +816,22 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
         data.table(common=list(), is.common=FALSE)
       }
     }, by=group]
-  }, by=col.name]
+  }, keyby=col.name]
   common_var_dt <- common_value_dt[, .(
     all.common=all(is.common)
   ), keyby=col.name]
   common.cols <- common_var_dt[all.common==TRUE, col.name]
-  if(1 < length(common.cols) && length(common.cols) < length(col.name.vec)){
+  intermediate.common.ok <- (
+    1 < length(common.cols)
+  )&&(
+    length(common.cols) < length(col.name.vec)
+  )
+  one.common.ok <- (
+    length(common.cols)==1
+  )&&(
+    any(common_value_dt[common.cols, sapply(common, length)]>1)
+  )
+  if(one.common.ok || intermediate.common.ok){
     only_common_dt <- common_value_dt[col.name %in% c("group", common.cols)]
     common_wide <- dcast(only_common_dt, group ~ col.name, value.var="common")
     common.data <- common_wide[, lapply(.SD, unlist), by=group]

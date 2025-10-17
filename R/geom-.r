@@ -158,7 +158,7 @@ Geom <- gganimintproto("Geom",
   ## AnimationInfo- animation list
   ## ID- number starting from 1
   ## returns- list representing a layer, with corresponding aesthetics, ranges, and groups.
-  export_animint = function(l, d, meta, layer_name, ggplot, built, AnimationInfo) {
+  export_animint = function(l, g.data, meta, layer_name, ggplot, built, AnimationInfo) {
     xminv <- y <- xmaxv <- chunks.for <- NULL
     ## above to avoid NOTE on CRAN check.
     g <- list(geom=strsplit(layer_name, "_")[[1]][2])
@@ -218,13 +218,6 @@ Geom <- gganimintproto("Geom",
     ## Separate .variable/.value selectors
     s.aes <- selectSSandCS(g$aes)
     meta$selector.aes[[g$classed]] <- s.aes
-
-    ## Do not copy group unless it is specified in aes, and do not copy
-    ## showSelected variables which are specified multiple times.
-    do.not.copy <- colsNotToCopy(g, s.aes)
-    copy.cols <- ! names(d) %in% do.not.copy
-
-    g.data <- d[copy.cols]
 
     is.ss <- names(g$aes) %in% s.aes$showSelected$one
     show.vars <- g$aes[is.ss]
