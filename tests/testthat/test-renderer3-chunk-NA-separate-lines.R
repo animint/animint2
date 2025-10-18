@@ -171,7 +171,7 @@ viz <- animint(
 )
 info <- animint2HTML(viz)
 
-test_that("geom2 no common chunk with group=1 and only x common", {
+test_that("geom2 common chunk ok with group=1 and only x common", {
   geom1.tsv <- file.path("animint-htmltest", "geom1_path_ggdata_chunk1.tsv")
   geom1.dt <- fread(geom1.tsv)
   expect_equal(sum(is.na(geom1.dt)), 0)
@@ -180,12 +180,14 @@ test_that("geom2 no common chunk with group=1 and only x common", {
   group_num <- json.list$geoms$geom2_path_selected$chunks[["San Marcos"]]
   geom.tsv <- sprintf("animint-htmltest/geom2_path_selected_chunk%d.tsv", group_num)
   geom.dt <- fread(geom.tsv)
-  expect_identical(sort(names(geom.dt)), c("colour", "group", "na_group", "row_in_group", "showSelected2", "x", "y"))
+  expect_identical(sort(names(geom.dt)), c("colour", "group", "na_group", "row_in_group", "showSelected2", "y"))
   geom2.tsv <- file.path("animint-htmltest", "geom2_path_selected_chunk1.tsv")
-  geom2.data <- read.table(geom2.tsv, sep="\t", header=TRUE)
-  expect_identical(sort(names(geom2.data)), c("colour", "group", "showSelected2", "x", "y"))
+  geom2.data <- fread(geom2.tsv)
+  expect_identical(sort(names(geom2.data)), c("colour", "group", "showSelected2", "y"))
   common.tsv <- file.path("animint-htmltest", "geom2_path_selected_chunk_common.tsv")
-  expect_false(file.exists(common.tsv))
+  common.data <- fread(common.tsv)
+  common.expected <- txdt[city=="San Marcos", .(group=1, x=date)]
+  expect_equal(common.data, common.expected)
 })
 
 test_that("three <path> rendered for highlighted San Marcos with group=1 and only x common", {
