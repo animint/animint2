@@ -910,7 +910,7 @@ saveChunks <- function(x, meta){
         all(value==value[1])
       })
       if(all(is.constant)).SD[1] else .SD
-    }, by=group]
+    }, by="group"]
     # fwrite defaults ensure fields are quoted so that embedded
     # newlines or tabs in string fields do not break the TSV format
     # when read by d3.tsv.
