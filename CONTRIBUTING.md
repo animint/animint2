@@ -39,10 +39,16 @@ Please submit your first PR from your fork. In PRs from forks, it is normal to s
 
 ## Style
 
-* avoid the R programming "mistakes" listed in [Toby Hocking's R General Usage Rubric](https://docs.google.com/document/d/1W6-HdQLgHayOFXaQtscO5J5yf05G7E6KeXyiBJFcT7A/edit?tab=t.0#heading=h.pekgvy78tviz).
+### R
+
+* avoid "mistakes" listed in [Toby Hocking's R General Usage Rubric](https://docs.google.com/document/d/1W6-HdQLgHayOFXaQtscO5J5yf05G7E6KeXyiBJFcT7A/edit?tab=t.0#heading=h.pekgvy78tviz).
 * avoid line breaks in function definitions and `test_that` blocks.
 * if there are repeated blocks of similar code in test cases, please create a function (not a loop, which can be confusing in a test case). Recent examples include `get_element_bbox()` and `mouseMoved()` in [helper-functions.R](https://github.com/animint/animint2/blob/master/tests/testthat/helper-functions.R).
 * use `sprintf("some %s strings",value)` instead of `paste("some",value,"strings")`, see [Writing good messages in potools developrs vignette](https://cran.r-project.org/web/packages/potools/vignettes/developers.html).
 * for internal functions, please do not write documentation, and please avoid code for checking types of arguments.
-* Whenever possible, JavaScript code should use D3 data-bind instead of basic for loop.
 * only use `return()` in R code for early exit (avoid using at end of function for normal return).
+
+### JavaScript
+
+* Please avoid using tabs for white space, and use 8 spaces instead.
+* Whenever possible, JavaScript code should use D3 data-bind instead of basic for loop.
