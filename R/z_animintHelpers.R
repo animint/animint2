@@ -215,37 +215,6 @@ getLayerParams <- function(l){
   params
 }
 
-
-#' Filter out columns that do not need to be copied
-#'
-#' @param g Geom with columns
-#' @param s.aes Selector aesthetics
-#' @return Character vector of columns not to be copied
-colsNotToCopy <- function(g, s.aes){
-  group.not.specified <- ! "group" %in% names(g$aes)
-  n.groups <- length(unique(NULL))
-  need.group <- c("violin", "step", "hex")
-  group.meaningless <- g$geom %in% c(
-    "abline", "blank",
-    ##"crossbar", "pointrange", #documented as unsupported
-    ## "rug", "dotplot", "quantile", "smooth", "boxplot",
-    ## "bin2d", "map"
-    "errorbar", "errorbarh",
-    ##"bar", "histogram", #?
-    "hline", "vline",
-    "jitter", "linerange",
-    "point",
-    "rect", "segment")
-  dont.need.group <- ! g$geom %in% need.group
-  remove.group <- group.meaningless ||
-    group.not.specified && 1 < n.groups && dont.need.group
-  do.not.copy <- c(
-    if(remove.group)"group")
-
-  do.not.copy
-}
-
-
 ## Generate error for non-Identity Stat + showSelected
 checkForNonIdentityAndSS <- function(stat.type, has.show, is.show, l,
                                      g_classed, g_data_names,
@@ -782,15 +751,10 @@ getTextSize <- function(element.name, theme){
 ##' @importFrom stats na.omit
 ##' @import data.table
 getCommonChunk <- function(built, chunk.vars, aes.list){
-  group <- col.name <- group.size <- ok <- all.common <- size <- showSelected_values <- NULL
+  group <- col.name <- group.size <- ok <- all.common <- size <- showSelected_values <- common <- NULL
   ## Above to avoid CRAN NOTE.
   if(length(chunk.vars) == 0){
     return(NULL)
-  }
-  if(! "group" %in% names(aes.list)){
-    ## user did not specify group, so do not use any ggplot2-computed
-    ## group for deciding common data.
-    built$group <- NULL
   }
   ## Remove columns with all NA values
   ## so that common.not.na is not empty
@@ -806,19 +770,6 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   ## common data file.
   chunk.rows.tab <- built[, .N, by = chunk.vars]
   if(nrow(chunk.rows.tab) == 1) return(NULL)
-  ## If there is no group column, and all the chunks are the same
-  ## size, then add one based on the row number.
-  if(! "group" %in% names(built)){
-    chunk.rows <- chunk.rows.tab[1]$N
-    same.size <- chunk.rows == chunk.rows.tab$N
-    built <- data.table::setorderv(built, chunk.vars)
-    if(all(same.size)){
-      built <- built[, group := rep(1:chunk.rows, length.out = .N)]
-    }else{
-      ## do not save a common chunk file.
-      return(NULL)
-    }
-  }
   all.col.names <- names(built)
   sparse.cols <- c("na_group","row_in_group")
   never.in.common <- c("group",sparse.cols,chunk.vars)
@@ -856,12 +807,22 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
         data.table(common=list(), is.common=FALSE)
       }
     }, by=group]
-  }, by=col.name]
+  }, keyby=col.name]
   common_var_dt <- common_value_dt[, .(
     all.common=all(is.common)
   ), keyby=col.name]
   common.cols <- common_var_dt[all.common==TRUE, col.name]
-  if(1 < length(common.cols) && length(common.cols) < length(col.name.vec)){
+  intermediate.common.ok <- (
+    1 < length(common.cols)
+  )&&(
+    length(common.cols) < length(col.name.vec)
+  )
+  one.common.ok <- (
+    length(common.cols)==1
+  )&&(
+    any(common_value_dt[common.cols, sapply(common, length)]>1)
+  )
+  if(one.common.ok || intermediate.common.ok){
     only_common_dt <- common_value_dt[col.name %in% c("group", common.cols)]
     common_wide <- dcast(only_common_dt, group ~ col.name, value.var="common")
     common.data <- common_wide[, lapply(.SD, unlist), by=group]
@@ -887,11 +848,7 @@ varied.chunk <- function(dt.or.list, cols){
   ## Above to avoid CRAN NOTE.
   if(is.data.table(dt.or.list)){
     keep <- intersect(cols, names(dt.or.list))
-    dt <- dt.or.list[, keep, with=FALSE, drop=FALSE]
-    if(length(grep("^[xy]", keep))==0 && "row_in_group" %in% names(dt)){
-      dt <- dt[row_in_group==1]
-    }
-    dt
+    dt.or.list[, keep, with=FALSE, drop=FALSE]
   } else{
     lapply(dt.or.list, varied.chunk, cols)
   }
@@ -945,7 +902,18 @@ saveChunks <- function(x, meta){
     ## Some geoms should be split into separate groups if there are NAs.
     setDT(x)
     if("na_group" %in% names(x) && all(x$na_group==0))x[, let(
-        na_group = NULL, row_in_group=NULL)]
+      na_group = NULL, row_in_group=NULL)]
+    check.constant <- setdiff(names(x), c("group","na_group"))
+    if("group" %in% names(x)){
+      ## simplify if possible.
+      x <- x[, {
+        is.constant <- sapply(check.constant, function(name){
+          value <- .SD[[name]]
+          all(value==value[1])
+        })
+        if(all(is.constant)).SD[1] else .SD
+      }, by="group"]
+    }
     # fwrite defaults ensure fields are quoted so that embedded
     # newlines or tabs in string fields do not break the TSV format
     # when read by d3.tsv.
