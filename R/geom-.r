@@ -615,14 +615,15 @@ Geom <- gganimintproto("Geom",
     ## separately to reduce disk usage.
     data.or.null <- getCommonChunk(g.data, chunk.cols, g$aes)
     g.data.varied <- if(is.null(data.or.null)){
+      if(length(unique(g.data$group))==1)g.data$group <- NULL
       split_recursive(na.omit(g.data), chunk.cols)
     }else{
       g$columns$common <- as.list(names(data.or.null$common))
       tsv.name <- sprintf("%s_chunk_common.tsv", g$classed)
       tsv.path <- file.path(meta$out.dir, tsv.name)
       data.table::fwrite(
-        data.or.null$common,file= tsv.path,
-        row.names = FALSE,sep = "\t")
+        data.or.null$common, file = tsv.path,
+        row.names = FALSE, sep = "\t")
       data.or.null$varied
     }
     list(g=g, g.data.varied=g.data.varied, timeValues=AnimationInfo$timeValues)

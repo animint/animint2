@@ -904,18 +904,21 @@ saveChunks <- function(x, meta){
     if("na_group" %in% names(x) && all(x$na_group==0))x[, let(
       na_group = NULL, row_in_group=NULL)]
     check.constant <- setdiff(names(x), c("group","na_group"))
-    out <- x[, {
-      is.constant <- sapply(check.constant, function(name){
-        value <- .SD[[name]]
-        all(value==value[1])
-      })
-      if(all(is.constant)).SD[1] else .SD
-    }, by="group"]
+    if("group" %in% names(x)){
+      ## simplify if possible.
+      x <- x[, {
+        is.constant <- sapply(check.constant, function(name){
+          value <- .SD[[name]]
+          all(value==value[1])
+        })
+        if(all(is.constant)).SD[1] else .SD
+      }, by="group"]
+    }
     # fwrite defaults ensure fields are quoted so that embedded
     # newlines or tabs in string fields do not break the TSV format
     # when read by d3.tsv.
     data.table::fwrite(
-      na.omit(out), file.path(meta$out.dir, csv.name),
+      na.omit(x), file.path(meta$out.dir, csv.name),
       row.names=FALSE, sep="\t")
     meta$chunk.i <- meta$chunk.i + 1L
     this.i
