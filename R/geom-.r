@@ -572,16 +572,17 @@ Geom <- gganimintproto("Geom",
     if("group" %in% names(g$aes) && g$geom %in% data.object.geoms){
       g$nest_order <- c(g$nest_order, "group")
     }
-    if(g$geom %in% data.object.geoms){
-      ## Some geoms should be split into separate groups if there are NAs.
-      setDT(g.data)
-      g.data[, let(
-        row_in_group = 1:.N, 
-        na_group = cumsum(apply(is.na(.SD), 1, any))
-      ), by=c("group",chunk.cols)]
-      setDF(g.data)
+    ## If user did not specify aes(group), then use group=1.
+    if(! "group" %in% names(g$aes)){
+      g.data$group <- 1
     }
-
+    ## Some geoms should be split into separate groups if there are NAs.
+    setDT(g.data)
+    g.data[, let(
+      row_in_group = 1:.N,
+      na_group = cumsum(apply(is.na(.SD), 1, any))
+    ), by=c("group",chunk.cols)]
+    setDF(g.data)
     ## Find infinite values and replace with range min/max.
     for(xy in c("x", "y")){
       range.name <- paste0(xy, ".range")

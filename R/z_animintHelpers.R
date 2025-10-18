@@ -756,11 +756,6 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   if(length(chunk.vars) == 0){
     return(NULL)
   }
-  if(! "group" %in% names(aes.list)){
-    ## user did not specify group, so do not use any ggplot2-computed
-    ## group for deciding common data.
-    built$group <- NULL
-  }
   ## Remove columns with all NA values
   ## so that common.not.na is not empty
   ## due to the plot's alpha, stroke or other columns
@@ -775,10 +770,6 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   ## common data file.
   chunk.rows.tab <- built[, .N, by = chunk.vars]
   if(nrow(chunk.rows.tab) == 1) return(NULL)
-  ## If there is no group column, then add one.
-  if(! "group" %in% names(built)){
-    built[, group := 1]
-  }
   all.col.names <- names(built)
   sparse.cols <- c("na_group","row_in_group")
   never.in.common <- c("group",sparse.cols,chunk.vars)
@@ -857,11 +848,7 @@ varied.chunk <- function(dt.or.list, cols){
   ## Above to avoid CRAN NOTE.
   if(is.data.table(dt.or.list)){
     keep <- intersect(cols, names(dt.or.list))
-    dt <- dt.or.list[, keep, with=FALSE, drop=FALSE]
-    if(length(grep("^[xy]", keep))==0 && "row_in_group" %in% names(dt)){
-      dt <- dt[row_in_group==1]
-    }
-    dt
+    dt.or.list[, keep, with=FALSE, drop=FALSE]
   } else{
     lapply(dt.or.list, varied.chunk, cols)
   }
@@ -915,12 +902,20 @@ saveChunks <- function(x, meta){
     ## Some geoms should be split into separate groups if there are NAs.
     setDT(x)
     if("na_group" %in% names(x) && all(x$na_group==0))x[, let(
-        na_group = NULL, row_in_group=NULL)]
+      na_group = NULL, row_in_group=NULL)]
+    check.constant <- setdiff(names(x), c("group","na_group"))
+    out <- x[, {
+      is.constant <- sapply(check.constant, function(name){
+        value <- .SD[[name]]
+        all(value==value[1])
+      })
+      if(all(is.constant)).SD[1] else .SD
+    }, by=group]
     # fwrite defaults ensure fields are quoted so that embedded
     # newlines or tabs in string fields do not break the TSV format
     # when read by d3.tsv.
     data.table::fwrite(
-      na.omit(x), file.path(meta$out.dir, csv.name),
+      na.omit(out), file.path(meta$out.dir, csv.name),
       row.names=FALSE, sep="\t")
     meta$chunk.i <- meta$chunk.i + 1L
     this.i

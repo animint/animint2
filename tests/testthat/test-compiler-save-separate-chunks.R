@@ -98,16 +98,15 @@ flu.points <- ldply(unique(state_flu$WEEKEND), function(we) {
 test_that("save separate chunks for geom_point without specifying group", {
   # the compiler will not break a geom into chunks if any of the resulting 
   # chunk tsv files is estimated to be less than 4KB.
-  state.map <- p + 
-    geom_point(aes(x = mean.long, y = mean.lat, fill = level),
-               data = flu.points, 
-                   showSelected = "WEEKEND",
-               color = "black",
-               size = 10)
-  viz <-
-    list(levelHeatmap = level.heatmap,
-         stateMap = state.map,
-         title = "FluView")
+  viz <- animint(
+    levelHeatmap = level.heatmap,
+    stateMap = p + geom_point(aes(
+      x = mean.long, y = mean.lat, fill = level),
+      data = flu.points,
+      showSelected = "WEEKEND",
+      color = "black",
+      size = 10),
+    title = "FluView")
   out.dir <- file.path(getwd(), "FluView-point")
   unlink(out.dir, recursive = TRUE)
   animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
@@ -128,16 +127,16 @@ test_that("save separate chunks for geom_point without specifying group", {
   ## force to split into chunks
   state.map <- p + 
     geom_point(aes(x = mean.long, y = mean.lat, fill = level),
-               data = flu.points, 
+               data = flu.points,
                    showSelected = "WEEKEND",                
                color = "black",
                size = 10,
                chunk_vars = "WEEKEND",
                validate_params = FALSE)
-  viz <-
-    list(levelHeatmap = level.heatmap,
-         stateMap = state.map,
-         title = "FluView")
+  viz <- animint(
+    levelHeatmap = level.heatmap,
+    stateMap = state.map,
+    title = "FluView")
   animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
   common.chunk <-
     list.files(path = out.dir, pattern = "geom.+point.+chunk_common.tsv", 
