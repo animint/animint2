@@ -1,3 +1,7 @@
+# Changes in version 2025.10.21 (PR#221)
+
+- Multi-line text support: `\n` now works in plot titles, axis titles, legend titles, and `geom_text()` labels. Created `R/z_multiline.R` with helper to convert `\n` to `<br/>` during R compilation. JavaScript renderer converts `<br/>` to SVG `<tspan>` elements for proper multi-line display.
+
 # Changes in version 2025.10.17 (PR#255)
 
 - `getCommonChunk()` uses default group=1 (previously 1:N which was slower).
