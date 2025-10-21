@@ -188,7 +188,7 @@ GeomText <- gganimintproto("GeomText", Geom,
       rot = data$angle,
       gp = gpar(
         col = alpha(data$colour, data$alpha),
-        fontsize = data$size * .pt,
+        fontsize = data$size,
         fontfamily = data$family,
         fontface = data$fontface,
         lineheight = data$lineheight

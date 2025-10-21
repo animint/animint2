@@ -1,3 +1,9 @@
+# Changes in version 2025.10.17 (PR#255)
+
+- `getCommonChunk()` uses default group=1 (previously 1:N which was slower).
+- `getCommonChunk()` works for `geom_point()` and other geoms which do not use `aes(group)` for display (previously common data was only returned for geoms path/polygon/ribbon).
+- `getCommonChunk()` returns common data if there is only one common variable, as long as it has at least one group with more than one row (previously at least two common variables were required).
+
 # Changes in version 2025.10.10 (PR#251)
 
 -  `animint2dir()` no longer has `css.file` argument which was never tested. Style customizations should be done using `theme()`.
