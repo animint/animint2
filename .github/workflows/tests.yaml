@@ -37,7 +37,7 @@ jobs:
           Rscript -e "library(covr); cov <- covr::package_coverage(path='.', type='tests'); covr::to_lcov(cov, file='r-coverage.lcov')"
 
       - name: Upload R coverage artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: r-coverage
           path: r-coverage.lcov
@@ -91,7 +91,7 @@ jobs:
           fi
 
       - name: Upload JS coverage artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: js-coverage
           path: coverage-istanbul.json
@@ -132,13 +132,13 @@ jobs:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
       - name: Download R coverage artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: r-coverage
           path: ./artifacts
 
       - name: Download JS coverage artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: js-coverage
           path: ./artifacts
