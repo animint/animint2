@@ -207,7 +207,7 @@ GeomText <- gganimintproto("GeomText", Geom,
       if(any(not.supported)){
         bad.vjust <- unique(vjust.vec[not.supported])
         print(bad.vjust)
-        warning("animint only supports vjust=0")
+        warning("geom_text currently only supports vjust=0")
       }
     }
     if ("hjust" %in% names(g$params)) {
