@@ -680,11 +680,9 @@ getLegend <- function(mb){
     if (nd != nk) warning("key and data have different number of rows")
     if (!".label" %in% names(key)) return(data.frame()); # if there are no labels, return an empty df.
     data$`.label` <- key$`.label`
-    # Convert colour and fill to RGB BEFORE removing NA columns
-    # This ensures fill=NA gets converted to "transparent" and is not removed
+    data <- data[, which(colSums(!is.na(data)) > 0)] # remove cols that are entirely na
     if("colour" %in% names(data)) data[["colour"]] <- toRGB(data[["colour"]]) # color hex values
     if("fill" %in% names(data)) data[["fill"]] <- toRGB(data[["fill"]]) # fill hex values
-    data <- data[, which(colSums(!is.na(data)) > 0)] # remove cols that are entirely na
     names(data) <- paste0(geom, names(data))# aesthetics by geom
     names(data) <- gsub(paste0(geom, "."), "", names(data), fixed=TRUE) # label isn't geom-specific
     data$label <- paste(data$label) # otherwise it is AsIs.

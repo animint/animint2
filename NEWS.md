@@ -12,10 +12,6 @@
 
 - Improve common chunk detection, output `na_group` and `row_in_group` when there are missing values.
 
-# Changes in version 2025.10.5 (PR#244)
-
-- `geom(fill=NA)` now works like `geom(fill="transparent")`.
-
 # Changes in version 2025.10.3 (PR#240)
 
 - `guide_legend(override.aes)` works in a plot with both color and fill legends.
