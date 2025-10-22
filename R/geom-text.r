@@ -207,7 +207,7 @@ GeomText <- gganimintproto("GeomText", Geom,
       if(any(not.supported)){
         bad.vjust <- unique(vjust.vec[not.supported])
         print(bad.vjust)
-        warning("geom_text currently only supports vjust=0")
+        warning("geom_text currently only supports vjust=0, but you may want to try geom_label_aligned, which supports vjust values 0, 0.5, and 1")
       }
     }
     if ("hjust" %in% names(g$params)) {
