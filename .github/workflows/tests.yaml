@@ -34,12 +34,12 @@ jobs:
       - name: Run R tests and write lcov
         run: |
           echo "Generating R test coverage lcov file"
-          Rscript -e "if (!requireNamespace('covr', quietly=TRUE)) install.packages('covr'); library(covr); cov <- covr::package_coverage(path='.', type='tests'); covr:::to_lcov(cov, file='r-coverage.lcov')"
+          Rscript -e "if (!requireNamespace('covr', quietly=TRUE)) install.packages('covr'); library(covr); cov <- covr::package_coverage(path='.', type='tests'); covr::to_cobertura(cov, file='r-coverage.xml')"
       - name: Upload R coverage artifact
         uses: actions/upload-artifact@v4
         with:
           name: r-coverage
-          path: r-coverage.lcov
+          path: r-coverage.xml
 
   js-tests:
     runs-on: ubuntu-latest
@@ -147,11 +147,11 @@ jobs:
 
       - name: Upload to Codecov
         run: |
-          if [ -f "artifacts/r-coverage.lcov" ] && [ -f "artifacts/coverage-istanbul.json" ]; then
+          if [ -f "artifacts/r-coverage.xml" ] && [ -f "artifacts/coverage-istanbul.json" ]; then
             echo "Uploading both R and JS coverage to Codecov"
             curl -Os https://uploader.codecov.io/latest/linux/codecov
             chmod +x codecov
-            ./codecov -f artifacts/r-coverage.lcov -f artifacts/coverage-istanbul.json -t $CODECOV_TOKEN --flags "r,javascript"
+            ./codecov -f artifacts/r-coverage.xml -f artifacts/coverage-istanbul.json -t $CODECOV_TOKEN --flags "r,javascript"
           else
             echo "Missing one or both coverage files. Abort upload." >&2
             exit 1
