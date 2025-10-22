@@ -47,10 +47,22 @@ map_df <- if(requireNamespace("rmapshaper")){
       data=compare_dt)+
     facet_grid(type + rows ~ ., labeller=label_both)
   gg
+<<<<<<< Updated upstream
   gg+coord_cartesian(xlim=c(-20, 0),ylim=c(10, 40))+
     geom_text(aes(
       long, lat, label=region),
       data=compare_dt)
+=======
+  ## zoom to Western Sahara.
+  group_means <- compare_dt[
+  , lapply(.SD, mean)
+  , by=.(region,group)
+  , .SDcols=c("lat","long")]
+  gg+coord_cartesian(xlim=c(-20, 0),ylim=c(10, 40))+
+    geom_text(aes(
+      long, lat, label=region),
+      data=group_means)
+>>>>>>> Stashed changes
   as.data.frame(compare_dt[type=="simple"])
 }else{
   world_map
