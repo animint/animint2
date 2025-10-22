@@ -395,6 +395,12 @@ var animint = function (to_select, json_file) {
     var titlepadding = measureText(p_info.title, p_info.title_size).height;
     // why are we giving the title padding if it is undefined?
     if (p_info.title === undefined) titlepadding = 0;
+    
+    // Add extra margin below title for multiline text to prevent overlap
+    // with plot area. The measureText already accounts for multiline height,
+    // but we need additional bottom margin.
+    var titleBottomMargin = 5; // pixels of space below title
+    
     plotdim.title.x = p_info.options.width / 2;
     plotdim.title.y = titlepadding;
     var titleText = svg.append("text")
@@ -409,6 +415,9 @@ var animint = function (to_select, json_file) {
     setMultilineText(titleText, p_info.title);
 
     // grab max text size over axis labels and facet strip labels
+    // Use consistent base spacing for both axes (distance from ticks to axis title)
+    var axis_label_base_spacing = 30;
+    
     var axispaddingy = 5;
     if(p_info.hasOwnProperty("ylabs") && p_info.ylabs.length){
       axispaddingy += Math.max.apply(null, p_info.ylabs.map(function(entry){
@@ -417,7 +426,7 @@ var animint = function (to_select, json_file) {
         return measureText(entry, p_info.ysize).width + 5;
       }));
     }
-    var axispaddingx = 30; // distance between tick marks and x axis name.
+    var axispaddingx = axis_label_base_spacing; // distance between tick marks and x axis name.
     if(p_info.hasOwnProperty("xlabs") && p_info.xlabs.length){
       // TODO: throw warning if text height is large portion of plot height?
       axispaddingx += Math.max.apply(null, p_info.xlabs.map(function(entry){
@@ -482,7 +491,7 @@ var animint = function (to_select, json_file) {
     var graph_height = p_info.options.height - 
         nrows * (margin.top + margin.bottom) -
         strip_height -
-        titlepadding - n_xaxes * axispaddingx - xtitlepadding;
+        titlepadding - titleBottomMargin - n_xaxes * axispaddingx - xtitlepadding;
 
     // Impose the pixelated aspect ratio of the graph upon the width/height
     // proportions calculated by the compiler. This has to be done on the
@@ -620,7 +629,7 @@ var animint = function (to_select, json_file) {
       var strip_h = cum_height_per_row[current_row-1];
       plotdim.ystart = current_row * plotdim.margin.top +
         (current_row - 1) * plotdim.margin.bottom +
-        graph_height_cum + titlepadding + strip_h;
+        graph_height_cum + titlepadding + titleBottomMargin + strip_h;
       // room for xaxis title should be distributed evenly across
       // panels to preserve aspect ratio
       plotdim.yend = plotdim.ystart + plotdim.graph.height;
