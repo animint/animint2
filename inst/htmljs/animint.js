@@ -125,10 +125,10 @@ var animint = function (to_select, json_file) {
   var measureText = function(pText, pFontSize, pAngle, pStyle) {
     if (pText === undefined || pText === null || pText.length === 0) return {height: 0, width: 0};
     if (pAngle === null || isNaN(pAngle)) pAngle = 0;
-
+    
+    // Create temporary container to measure text
     var container = element.append('svg');
     var textElement = container.append('text')
-      .attr({x: -1000, y: -1000})
       .attr("transform", "rotate(" + pAngle + ")")
       .attr("style", pStyle)
       .attr("font-size", pFontSize);
@@ -138,35 +138,23 @@ var animint = function (to_select, json_file) {
     var lines = textStr.split('<br/>');
     
     if (lines.length > 1) {
-      // Multi-line text: create tspan elements to measure properly
-      var lineHeight = 1.2; // em units
-      lines.forEach(function(line, i) {
-        textElement.append('tspan')
-          .attr('x', -1000)
-          .attr('dy', i === 0 ? 0 : lineHeight + 'em')
-          .text(line);
-      });
-      
-      var bbox = container.node().getBBox();
-      container.remove();
-      
-      // Calculate total height for multi-line text
-      var fontSize = parseFloat(pFontSize);
-      if (isNaN(fontSize)) fontSize = 11; // default
-      
-      // Total height = number of lines * fontSize * lineHeight
-      var calculatedHeight = lines.length * fontSize * lineHeight;
-      
-      // Use the maximum of calculated height and bbox height to ensure adequate spacing
-      return {height: Math.max(bbox.height, calculatedHeight), width: bbox.width};
+      // Multi-line: use setMultilineText helper to render properly
+      setMultilineText(textElement, pText);
     } else {
-      // Single line
+      // Single line: simple text rendering
       textElement.text(pText);
-      var bbox = container.node().getBBox();
-      container.remove();
-      return {height: bbox.height, width: bbox.width};
     }
+    
+    // Get bounding box after rendering
+    var bbox = container.node().getBBox();
+    
+    // Clean up temporary element
+    container.remove();
+    
+    // Return measured dimensions
+    return {height: bbox.height, width: bbox.width};
   };
+
 
   /**
    * Set multi-line text on SVG text elements
