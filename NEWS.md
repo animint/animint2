@@ -1,3 +1,7 @@
+# Changes in version 2025.10.22 (PR#266)
+
+- `geom_text(vjust!=0)` warning mentions vjust support in `geom_label_aligned()`.
+
 # Changes in version 2025.10.21 (PR#221)
 
 - Multi-line text support: `\n` now works in plot titles, axis titles, legend titles, and `geom_text()` labels. Created `R/z_multiline.R` with helper to convert `\n` to `<br/>` during R compilation. JavaScript renderer converts `<br/>` to SVG `<tspan>` elements for proper multi-line display.
@@ -227,7 +231,7 @@
 
 # Changes in 2022.5.25
 
-- Add ability to rotate geom_text labels, following ggplot2's semantics of rotation direction. 
+- Add ability to rotate geom_text labels, following ggplot2\'s semantics of rotation direction. 
 
 # Changes in 2022.5.24
 
