@@ -4,9 +4,7 @@ library(animint2)
 
 test_that("multiline plot title stays above plot area", {
   skip_if_not_installed("chromote")
-  
   data <- data.frame(x = 1:5, y = 1:5)
-  
   viz <- list(
     plot1 = ggplot(data, aes(x, y)) +
       geom_point() +
@@ -37,9 +35,7 @@ test_that("multiline plot title stays above plot area", {
 
 test_that("multiline axis labels have consistent spacing", {
   skip_if_not_installed("chromote")
-  
   data <- data.frame(x = 1:5, y = 1:5)
-  
   viz <- list(
     plot1 = ggplot(data, aes(x, y)) +
       geom_point() +
@@ -77,7 +73,6 @@ test_that("multiline axis labels have consistent spacing", {
 
 test_that("multiline labels match single-line spacing baseline", {
   skip_if_not_installed("chromote")
-  
   # Test 1: Single-line labels
   viz_single <- list(
     plot1 = ggplot(data.frame(x=1:5, y=1:5), aes(x, y)) +
@@ -85,9 +80,7 @@ test_that("multiline labels match single-line spacing baseline", {
       xlab("X Label") +
       ylab("Y Label")
   )
-  
   info_single <- animint2HTML(viz_single)
-  
   # Test 2: Multi-line labels  
   viz_multi <- list(
     plot1 = ggplot(data.frame(x=1:5, y=1:5), aes(x, y)) +
