@@ -1,3 +1,7 @@
+# Changes in version 2025.10.23 (PR#233)
+
+- Selector dropdowns now show only values from rows matching their variable. When using `.variable/.value` selectors (e.g., `showSelected=c(regularization="parameter")`), each selector extracts unique values only from rows where the variable column matches the selector name, preventing spurious entries.
+
 # Changes in version 2025.10.22 (PR#266)
 
 - `geom_text(vjust!=0)` warning mentions vjust support in `geom_label_aligned()`.
