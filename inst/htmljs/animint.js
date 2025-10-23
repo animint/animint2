@@ -137,13 +137,8 @@ var animint = function (to_select, json_file) {
     var textStr = String(pText || '');
     var lines = textStr.split('<br/>');
     
-    if (lines.length > 1) {
-      // Multi-line: use setMultilineText helper to render properly
-      setMultilineText(textElement, pText);
-    } else {
-      // Single line: simple text rendering
-      textElement.text(pText);
-    }
+    // Always use setMultilineText for consistent rendering
+    setMultilineText(textElement, pText);
     
     // Get bounding box after rendering
     var bbox = container.node().getBBox();
@@ -161,34 +156,29 @@ var animint = function (to_select, json_file) {
    * Converts <br/> tags to <tspan> elements for proper SVG rendering
    */
   var setMultilineText = function(textElement, text) {
-    textElement.each(function(d) {
-      var textStr = typeof text === 'function' ? text(d) : text;
-      if (!textStr) return;
-      
-      var lines = String(textStr).split('<br/>');
-      var el = d3.select(this);
-      
-      // Clear existing content
-      el.text('');
-      
-      if (lines.length === 1) {
-        // Single line: use simple .text()
-        el.text(lines[0]);
-      } else {
-        // Multi-line: use <tspan> elements
-        var lineHeight = 1.2; // em units
-        var y = el.attr('y') || 0;
-        var x = el.attr('x') || 0;
-        
-        lines.forEach(function(line, i) {
-          el.append('tspan')
-            .attr('x', x)
-            .attr('dy', i === 0 ? 0 : lineHeight + 'em')
-            .text(line);
-        });
-      }
-    });
-  };
+                textElement.each(function(d) {
+                        var textStr = typeof text === 'function' ? text(d) : text;
+                        if (!textStr) return;
+
+                        var lines = String(textStr).split('<br/>');
+                        var el = d3.select(this);
+
+                        // Clear existing content
+                        el.text('');
+
+                        // Always use <tspan> elements for consistent rendering
+                        var lineHeight = 1.2; // em units
+                        var y = el.attr('y') || 0;
+                        var x = el.attr('x') || 0;
+
+                        lines.forEach(function(line, i) {
+                                el.append('tspan')
+                                        .attr('x', x)
+                                        .attr('dy', i === 0 ? 0 : lineHeight + 'em')
+                                        .text(line);
+                        });
+                });
+        };
 
   var nest_by_group = d3.nest().key(function(d){ return d.group; });
   var dirs = json_file.split("/");
@@ -1800,7 +1790,7 @@ var animint = function (to_select, json_file) {
       "stroke": get_colour_off,
       "fill": get_fill_off
     };
-    // TODO cleanup.
+       // TODO cleanup.
     var select_style_default = ["opacity","stroke","fill"];
     g_info.select_style = select_style_default.filter(
       X => g_info.style_list.includes(X));
