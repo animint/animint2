@@ -9,28 +9,22 @@ test_that("variable/value selectors filter values by variable", {
   linear_data <- data.frame(
     regularization = "polynomial degree",
     parameter = degree_expected,
-    mse = runif(10),
-    model = "Linear",
-    stringsAsFactors = FALSE
-  )
+    mse = runif(10))
   neighbor_expected <- 1:10
   knn_data <- data.frame(
     regularization = "number of neighbors",
     parameter = neighbor_expected,
-    mse = runif(10),
-    model = "KNN",
-    stringsAsFactors = FALSE
-  )
+    mse = runif(10))
   combined_data <- rbind(linear_data, knn_data)
-  viz <- list(
-    plot1 = ggplot() +
+  viz <- animint(
+    pointShow = ggplot() +
       geom_point(
-        aes(x=parameter, y=mse, color=model),
+        aes(parameter, mse, color=regularization),
         data=combined_data,
-        showSelected=c(regularization="parameter"),
-        size=5
-      )
-  )
+        showSelected=c(regularization="parameter")),
+    selectize=list(
+      "number of neighbors"=TRUE,
+      "polynomial degree"=TRUE))
   info <- animint2dir(viz, open.browser=FALSE)
   degree_values <- info$selector.values[["polynomial degree"]][[1]]$values
   expect_identical(degree_values, paste(degree_expected))
