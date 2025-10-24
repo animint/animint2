@@ -64,7 +64,7 @@ Authors@R: c(
      comment="Animint2 GSoC 2025"),
     person("Gaurav", "Chaudhary",
      role="ctb",
-     comment="Remove unused css.file parameter"))
+     comment="Remove unused css.file parameter; fix issue #233 selector values"))
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
  on a web page. The 2018 Journal of Computational and 

@@ -1,3 +1,7 @@
+# Changes in version 2025.10.23 (PR#233)
+
+- When using named clickSelects or showSelected, selectize menus no longer display too many values.
+
 # Changes in version 2025.10.22 (PR#266)
 
 - `geom_text(vjust!=0)` warning mentions vjust support in `geom_label_aligned()`.
