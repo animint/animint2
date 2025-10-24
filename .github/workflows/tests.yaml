@@ -145,14 +145,18 @@ jobs:
       - name: Show downloaded files
         run: ls -la artifacts || true
 
-      - name: Upload to Codecov
+      - name: Upload R coverage to Codecov
         run: |
-          if [ -f "artifacts/r-coverage.xml" ] && [ -f "artifacts/coverage-istanbul.json" ]; then
-            echo "Uploading both R and JS coverage to Codecov"
+          if [ -f "artifacts/r-coverage.xml" ]; then
+            echo "Uploading R coverage..."
             curl -Os https://uploader.codecov.io/latest/linux/codecov
             chmod +x codecov
-            ./codecov -f artifacts/r-coverage.xml -f artifacts/coverage-istanbul.json -t $CODECOV_TOKEN --flags "r,javascript"
-          else
-            echo "Missing one or both coverage files. Abort upload." >&2
-            exit 1
+            ./codecov -f artifacts/r-coverage.xml -t $CODECOV_TOKEN --flag "r"
+          fi
+
+      - name: Upload JS coverage to Codecov
+        run: |
+          if [ -f "artifacts/coverage-istanbul.json" ]; then
+            echo "Uploading JS coverage..."
+            ./codecov -f artifacts/coverage-istanbul.json -t $CODECOV_TOKEN --flag "javascript"
           fi
