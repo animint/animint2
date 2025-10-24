@@ -1,7 +1,7 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2025.10.17
-URL: https://animint.github.io/animint2/
+Version: 2025.10.22
+URL: https://animint.github.io/animint2
 BugReports: https://github.com/animint/animint2/issues
 Authors@R: c(
     person("Toby", "Hocking",
@@ -64,7 +64,7 @@ Authors@R: c(
      comment="Animint2 GSoC 2025"),
     person("Gaurav", "Chaudhary",
      role="ctb",
-     comment="Remove unused css.file parameter"))
+     comment="Remove unused css.file parameter; fix issue #233 selector values"))
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
  on a web page. The 2018 Journal of Computational and 
