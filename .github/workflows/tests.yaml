@@ -40,7 +40,8 @@ jobs:
         run: |
           echo "Normalizing paths in r-coverage.xml"
           if [ -f "r-coverage.xml" ]; then
-            sed -i "s|${GITHUB_WORKSPACE}/||g" r-coverage.xml || true
+            # Remove file:// prefixes, Windows backslashes, and any common CI workspace prefixes
+            sed -i -E "s|file:///{0,3}||g; s|\\\\|/|g; s|/home/runner/work/[^/]*/[^/]*/||g; s|/home/runner/work/[^/]*/||g; s|${GITHUB_WORKSPACE}/||g" r-coverage.xml || true
             echo "First 20 lines of r-coverage.xml:" && head -n 20 r-coverage.xml || true
           else
             echo "r-coverage.xml not found" >&2
@@ -103,7 +104,9 @@ jobs:
         run: |
           echo "Normalizing JS coverage paths in coverage-istanbul.json"
           if [ -f "coverage-istanbul.json" ]; then
-            node -e "const fs=require('fs'); const gw=process.env.GITHUB_WORKSPACE||process.cwd(); const p='coverage-istanbul.json'; const cov=JSON.parse(fs.readFileSync(p)); const out={}; Object.keys(cov).forEach(k=>{ let nk=k; if(nk.startsWith(gw+'/')) nk=nk.slice(gw.length+1); else if(nk.startsWith('file://')){ nk=nk.replace('file://',''); if(nk.startsWith(gw+'/')) nk=nk.slice(gw.length+1);} out[nk]=cov[k]; }); fs.writeFileSync(p, JSON.stringify(out)); console.log('normalized', Object.keys(out).slice(0,3));"
+            node -e "const fs=require('fs'), path=require('path'); const gw=process.env.GITHUB_WORKSPACE||process.cwd(); const repoName=path.basename(gw); const p='coverage-istanbul.json'; const cov=JSON.parse(fs.readFileSync(p)); const out={}; Object.keys(cov).forEach(k=>{ let nk=k; if(typeof nk!=='string') nk=String(nk); nk=nk.replace(/^file:\/\/+/, ''); nk=nk.replace(/\\\\/g, '/'); // strip any path up to repoName
+            const idx=nk.indexOf('/'+repoName+'/'); if(idx!==-1) nk=nk.slice(idx+repoName.length+2); // remove leading /repoName/
+            nk=nk.replace(new RegExp('^.*/'+repoName+'/', 'g'), ''); nk=nk.replace(new RegExp('^.*/home/runner/work/[^/]*/[^/]*/'), ''); nk=nk.replace(/^\//, ''); out[nk]=cov[k]; }); fs.writeFileSync(p, JSON.stringify(out)); console.log('normalized keys:', Object.keys(out).slice(0,5));"
           else
             echo "coverage-istanbul.json not found" >&2
           fi
@@ -164,6 +167,36 @@ jobs:
       - name: Show downloaded files
         run: ls -la artifacts || true
 
+      - name: Debug coverage artifacts (sizes & sample paths)
+        run: |
+          echo "Artifacts list:"
+          ls -la artifacts || true
+          echo
+          echo "Disk usage:"; du -h artifacts || true
+
+          if [ -f "artifacts/r-coverage.xml" ]; then
+            echo "\n---- r-coverage.xml (first 120 lines) ----"
+            head -n 120 artifacts/r-coverage.xml || true
+            echo "\n---- r-coverage.xml sample filenames ----"
+            grep -oP 'filename="[^\"]+"' artifacts/r-coverage.xml | sed -E 's/filename="(.*)"/\1/' | head -n 50 || true
+          elif [ -f "artifacts/r-coverage.lcov" ]; then
+            echo "\n---- r-coverage.lcov (first 120 lines) ----"
+            head -n 120 artifacts/r-coverage.lcov || true
+            echo "\n---- r-coverage.lcov sample SF entries ----"
+            grep -oP '^SF:.*' artifacts/r-coverage.lcov | sed 's|^SF:||' | head -n 50 || true
+          else
+            echo "No R coverage artifact found to inspect" >&2
+          fi
+
+          if [ -f "artifacts/coverage-istanbul.json" ]; then
+            echo "\n---- coverage-istanbul.json size and sample keys ----"
+            python3 -c "import json; j=json.load(open('artifacts/coverage-istanbul.json')); keys=list(j.keys()); print('entries:', len(keys)); print('\n'.join(keys[:40]))"
+          else
+            echo "No JS coverage artifact found to inspect" >&2
+          fi
+
+      
+
       - name: Upload combined coverage to Codecov
         run: |
           echo "Preparing to upload combined coverage"
@@ -184,4 +217,8 @@ jobs:
           echo "Uploading both files: $R_COV and $JS_COV"
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
-          ./codecov -f "$R_COV" -f "$JS_COV" -t $CODECOV_TOKEN
+          echo "Running Codecov uploader and saving output to codecov.log"
+          ./codecov -f "$R_COV" -f "$JS_COV" -t $CODECOV_TOKEN > codecov.log 2>&1 || true
+          echo "Uploader exit code: $?"
+          echo "--- codecov.log (first 400 lines) ---"
+          sed -n '1,400p' codecov.log || true
