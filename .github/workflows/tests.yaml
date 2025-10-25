@@ -40,8 +40,10 @@ jobs:
         run: |
           echo "Normalizing paths in r-coverage.xml"
           if [ -f "r-coverage.xml" ]; then
-            # Remove file:// prefixes, Windows backslashes, and any common CI workspace prefixes
-            sed -i -E "s|file:///{0,3}||g; s|\\\\|/|g; s|/home/runner/work/[^/]*/[^/]*/||g; s|/home/runner/work/[^/]*/||g; s|${GITHUB_WORKSPACE}/||g" r-coverage.xml || true
+            # Set sources to repo root so filenames (which are repo-relative) resolve correctly
+            perl -0777 -pe "s|<sources>.*?</sources>|<sources><source>.</source></sources>|s" -i r-coverage.xml || true
+            # Normalize any backslashes that might appear in attributes
+            sed -i 's|\\\\|/|g' r-coverage.xml || true
             echo "First 20 lines of r-coverage.xml:" && head -n 20 r-coverage.xml || true
           else
             echo "r-coverage.xml not found" >&2
@@ -105,8 +107,10 @@ jobs:
           echo "Normalizing JS coverage paths in coverage-istanbul.json"
           if [ -f "coverage-istanbul.json" ]; then
             node -e "const fs=require('fs'), path=require('path'); const gw=process.env.GITHUB_WORKSPACE||process.cwd(); const repoName=path.basename(gw); const p='coverage-istanbul.json'; const cov=JSON.parse(fs.readFileSync(p)); const out={}; Object.keys(cov).forEach(k=>{ let nk=k; if(typeof nk!=='string') nk=String(nk); nk=nk.replace(/^file:\/\/+/, ''); nk=nk.replace(/\\\\/g, '/'); // strip any path up to repoName
-            const idx=nk.indexOf('/'+repoName+'/'); if(idx!==-1) nk=nk.slice(idx+repoName.length+2); // remove leading /repoName/
-            nk=nk.replace(new RegExp('^.*/'+repoName+'/', 'g'), ''); nk=nk.replace(new RegExp('^.*/home/runner/work/[^/]*/[^/]*/'), ''); nk=nk.replace(/^\//, ''); out[nk]=cov[k]; }); fs.writeFileSync(p, JSON.stringify(out)); console.log('normalized keys:', Object.keys(out).slice(0,5));"
+              nk = nk.replace(/^\.\//, ''); nk = nk.replace(/^\//, ''); // remove leading 'repoName/' if present
+              if(nk.startsWith(repoName + '/')) nk = nk.slice(repoName.length + 1);
+              // strip any path up to '/repoName/' occurrences
+              nk = nk.replace(new RegExp('^.*/' + repoName + '/'), ''); nk = nk.replace(new RegExp('^.*/home/runner/work/[^/]*/[^/]*/'), ''); nk = nk.replace(/^\//, ''); out[nk]=cov[k]; }); fs.writeFileSync(p, JSON.stringify(out)); console.log('normalized keys:', Object.keys(out).slice(0,5));"
           else
             echo "coverage-istanbul.json not found" >&2
           fi
@@ -194,8 +198,6 @@ jobs:
           else
             echo "No JS coverage artifact found to inspect" >&2
           fi
-
-      
 
       - name: Upload combined coverage to Codecov
         run: |
