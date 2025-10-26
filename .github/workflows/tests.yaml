@@ -156,74 +156,42 @@ jobs:
     env:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
+      - name: Checkout repository (needed so Codecov can find source files)
+        uses: actions/checkout@v3
+
       - name: Download R coverage artifact
         uses: actions/download-artifact@v4
         with:
           name: r-coverage
-          path: ./artifacts
+          path: ./
 
       - name: Download JS coverage artifact
         uses: actions/download-artifact@v4
         with:
           name: js-coverage
-          path: ./artifacts
+          path: ./
 
-      - name: Checkout repository (needed so Codecov can find source files)
-        uses: actions/checkout@v3
-
-      - name: Show downloaded files
-        run: ls -la artifacts || true
-
-      - name: Debug coverage artifacts (sizes & sample paths)
+      - name: Verify files and paths
         run: |
-          echo "Artifacts list:"
-          ls -la artifacts || true
-          echo
-          echo "Disk usage:"; du -h artifacts || true
+          echo "=== Current directory structure ==="
+          ls -la
+          echo "=== Coverage file verification ==="
+          [ -f "r-coverage.xml" ] && echo "✓ R coverage found" || echo "✗ R coverage missing"
+          [ -f "coverage-istanbul.json" ] && echo "✓ JS coverage found" || echo "✗ JS coverage missing"
+          echo "=== Source directory check ==="
+          [ -d "R" ] && echo "✓ R directory exists" || echo "✗ R directory missing"
+          [ -d "inst/htmljs" ] && echo "✓ JS source directory exists" || echo "✗ JS source directory missing"
 
-          if [ -f "artifacts/r-coverage.xml" ]; then
-            echo "\n---- r-coverage.xml (first 120 lines) ----"
-            head -n 120 artifacts/r-coverage.xml || true
-            echo "\n---- r-coverage.xml sample filenames ----"
-            grep -oP 'filename="[^\"]+"' artifacts/r-coverage.xml | sed -E 's/filename="(.*)"/\1/' | head -n 50 || true
-          elif [ -f "artifacts/r-coverage.lcov" ]; then
-            echo "\n---- r-coverage.lcov (first 120 lines) ----"
-            head -n 120 artifacts/r-coverage.lcov || true
-            echo "\n---- r-coverage.lcov sample SF entries ----"
-            grep -oP '^SF:.*' artifacts/r-coverage.lcov | sed 's|^SF:||' | head -n 50 || true
-          else
-            echo "No R coverage artifact found to inspect" >&2
-          fi
-
-          if [ -f "artifacts/coverage-istanbul.json" ]; then
-            echo "\n---- coverage-istanbul.json size and sample keys ----"
-            python3 -c "import json; j=json.load(open('artifacts/coverage-istanbul.json')); keys=list(j.keys()); print('entries:', len(keys)); print('\n'.join(keys[:40]))"
-          else
-            echo "No JS coverage artifact found to inspect" >&2
-          fi
-
-      - name: Upload combined coverage to Codecov
+      - name: Upload to Codecov
         run: |
-          echo "Preparing to upload combined coverage"
-          R_COV=""
-          if [ -f "artifacts/r-coverage.xml" ]; then
-            R_COV=artifacts/r-coverage.xml
-          elif [ -f "artifacts/r-coverage.lcov" ]; then
-            R_COV=artifacts/r-coverage.lcov
-          fi
-          JS_COV=artifacts/coverage-istanbul.json
-
-          if [ -z "$R_COV" ] || [ ! -f "$JS_COV" ]; then
-            echo "Missing one or both coverage files: R=$R_COV JS=$JS_COV" >&2
-            ls -la artifacts || true
-            exit 1
-          fi
-
-          echo "Uploading both files: $R_COV and $JS_COV"
+          echo "Uploading coverage files..."
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
-          echo "Running Codecov uploader and saving output to codecov.log"
-          ./codecov -f "$R_COV" -f "$JS_COV" -t $CODECOV_TOKEN > codecov.log 2>&1 || true
-          echo "Uploader exit code: $?"
-          echo "--- codecov.log (first 400 lines) ---"
-          sed -n '1,400p' codecov.log || true
+          
+          if [ -f "r-coverage.xml" ] && [ -f "coverage-istanbul.json" ]; then
+            ./codecov -f "r-coverage.xml" -f "coverage-istanbul.json" -t $CODECOV_TOKEN
+          else
+            echo "Missing coverage files:"
+            ls -la *.xml *.json 2>/dev/null || true
+            exit 1
+          fi
