@@ -32,7 +32,7 @@ jobs:
 
       - name: Run R tests and generate coverage
         run: |
-          Rscript -e "if (!requireNamespace('covr', quietly=TRUE)) install.packages('covr'); cov <- covr::package_coverage(type='tests'); covr::to_cobertura(cov, file='r-coverage.xml')"
+          Rscript -e "if (!requireNamespace('covr', quietly=TRUE)) install.packages('covr'); cov <- covr::package_coverage(type='tests', test_files = "tests/testthat.R"); covr::to_cobertura(cov, file='r-coverage.xml')"
 
       - name: Normalize R coverage paths
         run: |
