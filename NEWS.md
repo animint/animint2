@@ -1,3 +1,7 @@
+# Changes in version 2025.10.27 (PR#269)
+
+- `geom_point()` default shape changed from 19 to 21 to enable both color and fill aesthetics for more consistent static rendering.
+
 # Changes in version 2025.10.23 (PR#233)
 
 - When using named clickSelects or showSelected, selectize menus no longer display too many values.
