@@ -50,22 +50,5 @@ animint <- function(...){
   if(length(rep.names)){
     stop("Duplicate named arguments are passed to animint. Duplicate argument names found: ", paste(rep.names, collapse=","))
   }
-  for(list.name in names(L)){
-    p <- L[[list.name]]
-    if(is.ggplot(p)){
-      for(layer_i in seq_along(p$layers)){
-        layer <- p$layers[[layer_i]]
-        if(inherits(layer$geom, "GeomPoint")){
-          if(!is.null(layer$aes_params$shape) && is.numeric(layer$aes_params$shape) && layer$aes_params$shape != 21){
-            warning(sprintf("animint2 web rendering only supports shape=21, but shape=%s was specified", layer$aes_params$shape), call.=FALSE)
-          }
-          if("shape" %in% names(layer$mapping)){
-            warning("animint2 web rendering only supports shape=21. Mapping shape aesthetic may not render correctly", call.=FALSE)
-          }
-        }
-      }
-    }
-  }
   structure(L, class="animint")
 }
-
