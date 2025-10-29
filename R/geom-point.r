@@ -95,7 +95,7 @@ geom_point <- function(mapping = NULL, data = NULL,
                        na.rm = FALSE,
                        show.legend = NA,
                        inherit.aes = TRUE) {
-  if(!is.null(list(...)$shape) && list(...)$shape!=21)warning("animint2 web rendering only supports shape=21")
+  if(!is.null(list(...)$shape) && !is.na(list(...)$shape) && list(...)$shape!=21)warning("animint2 web rendering only supports shape=21")
   layer(
     data = data,
     mapping = mapping,
