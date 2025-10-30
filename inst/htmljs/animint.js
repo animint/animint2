@@ -228,6 +228,9 @@ var animint = function (to_select, json_file) {
     g_info.tr.append("td").attr("class", "chunk");
     g_info.tr.append("td").attr("class", "downloaded").text(0);
     g_info.tr.append("td").text(g_info.total);
+    g_info.tr.append("td").attr("class", "total_MB").text("0.00");
+    g_info.tr.append("td").attr("class", "mean_MB").text("0.00");
+    g_info.tr.append("td").attr("class", "rows").text("0");
     g_info.tr.append("td").attr("class", "status").text("initialized");
 
     // load chunk tsv
@@ -1008,6 +1011,37 @@ var animint = function (to_select, json_file) {
   // data, and then calling draw_geom to actually draw it.
   var draw_geom = function(g_info, chunk, selector_name, PANEL){
     g_info.tr.select("td.status").text("displayed");
+    
+    // Calculate sizes for this geom
+    var total_bytes = 0;
+    var total_rows = 0;
+    var chunk_count = 0;
+    for(var chunk_id in g_info.data){
+      var chunk_data = g_info.data[chunk_id];
+      if(chunk_data){
+        if(Array.isArray(chunk_data)){
+          total_rows += chunk_data.length;
+          var chunk_string = JSON.stringify(chunk_data);
+          total_bytes += chunk_string.length;
+          chunk_count++;
+        }else if(typeof chunk_data === 'object'){
+          for(var key in chunk_data){
+            if(Array.isArray(chunk_data[key])){
+              total_rows += chunk_data[key].length;
+            }
+          }
+          var chunk_string = JSON.stringify(chunk_data);
+          total_bytes += chunk_string.length;
+          chunk_count++;
+        }
+      }
+    }
+    var total_MB = (total_bytes / 1048576).toFixed(2);
+    var mean_MB = chunk_count > 0 ? (total_bytes / chunk_count / 1048576).toFixed(2) : "0.00";
+    g_info.tr.select("td.total_MB").text(total_MB);
+    g_info.tr.select("td.mean_MB").text(mean_MB);
+    g_info.tr.select("td.rows").text(total_rows);
+    
     var svg = SVGs[g_info.classed];
     // derive the plot name from the geometry name
     var g_names = g_info.classed.split("_");
@@ -2375,6 +2409,9 @@ var animint = function (to_select, json_file) {
     tr.append("th").attr("class", "chunk").text("selected chunk");
     tr.append("th").attr("class", "downloaded").text("downloaded");
     tr.append("th").attr("class", "total").text("total");
+    tr.append("th").attr("class", "total_MB").text("total_MB");
+    tr.append("th").attr("class", "mean_MB").text("mean_MB");
+    tr.append("th").attr("class", "rows").text("rows");
     tr.append("th").attr("class", "status").text("status");
     
     // Add geoms and construct nest operators.
