@@ -1,3 +1,7 @@
+# Changes in version 2025.10.31 (PR#270)
+
+- `geom_point()` now warns when shape parameter is set to a value other than 21, since animint2 web rendering only supports shape=21 for proper display of both color and fill aesthetics.
+
 # Changes in version 2025.10.27 (PR#269)
 
 - `geom_point()` default shape changed from 19 to 21 to enable both color and fill aesthetics for more consistent static rendering.

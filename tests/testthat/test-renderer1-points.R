@@ -6,4 +6,7 @@ test_that("geom_point warns for shape != 21", {
   expect_silent(
     animint(p = ggplot() + geom_point(aes(Sepal.Length, Sepal.Width), data=iris, shape=21))
   )
+  expect_silent(
+    animint(p = ggplot() + geom_point(aes(Sepal.Length, Sepal.Width), data=iris))
+  )
 })
