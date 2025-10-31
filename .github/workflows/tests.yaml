@@ -34,8 +34,12 @@ jobs:
       - name: Normalize R coverage paths
         run: |
           if [ -f "r-coverage.xml" ]; then
-            perl -0777 -pe "s|<sources>.*?</sources>|<sources><source>.</source></sources>|s" -i r-coverage.xml
-            sed -i 's|\\\\|/|g' r-coverage.xml
+            Rscript -e "
+            content <- paste(readLines('r-coverage.xml', warn = FALSE), collapse='\n')
+            content <- gsub('<sources>.*?</sources>', '<sources><source>.</source></sources>', content)
+            content <- gsub('\\\\\\\\', '/', content)
+            writeLines(content, 'r-coverage.xml')
+            "
           fi
 
       - name: Upload R coverage artifact
