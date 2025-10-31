@@ -1,3 +1,8 @@
+# Changes in version 2025.10.31 (PR#260)
+
+- Ensures R and JS coverage reports are uploaded together to prevent partial coverage data
+- Upload only occurs when both test suites pass, avoiding skewed coverage comparisons
+
 # Changes in version 2025.10.27 (PR#269)
 
 - `geom_point()` default shape changed from 19 to 21 to enable both color and fill aesthetics for more consistent static rendering.
