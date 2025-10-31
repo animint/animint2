@@ -2400,8 +2400,8 @@ var animint = function (to_select, json_file) {
     tr.append("th").attr("class", "chunk").text("selected chunk");
     tr.append("th").attr("class", "downloaded").text("downloaded");
     tr.append("th").attr("class", "total").text("total");
-    tr.append("th").attr("class", "total_MB").text("total_MB");
-    tr.append("th").attr("class", "mean_MB").text("mean_MB");
+    tr.append("th").attr("class", "total_MB").text("total MB");
+    tr.append("th").attr("class", "mean_MB").text("mean MB");
     tr.append("th").attr("class", "rows").text("rows");
     tr.append("th").attr("class", "status").text("status");
     
