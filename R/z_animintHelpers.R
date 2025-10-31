@@ -607,6 +607,49 @@ checkSingleShowSelectedValue <- function(selectors){
 }
 
 
+#' Validate selector names for CSS compatibility
+#' @param selectors selectors to validate
+#' @return \code{NULL}. Throws error if invalid characters found.
+checkSelectorNames <- function(selectors){
+  selector.names <- names(selectors)
+  
+  ## Characters that are invalid in CSS selectors and cause issues in browser
+  ## CSS selector special characters: # . : [ ] , + > ~ ( ) @ ! $ % ^ & * = | \ / ' " ` ? < >
+  ## Most problematic: # (hash/id selector), . (class selector), : (pseudo-class)
+  ## We check for these common problematic characters
+  invalid.chars <- c("#", "!", "@", "$", "%", "^", "&", "*", "=", "|", "\\", "/", "'", "\"", "`", "?", "<", ">", "(", ")", "[", "]")
+  
+  ## Check each selector name for invalid characters
+  has.invalid <- sapply(selector.names, function(name) {
+    any(sapply(invalid.chars, function(char) {
+      grepl(char, name, fixed = TRUE)
+    }))
+  })
+  
+  if(any(has.invalid)){
+    invalid.names <- selector.names[has.invalid]
+    ## Find which character(s) are problematic for each name
+    problematic <- sapply(invalid.names, function(name) {
+      found.chars <- invalid.chars[sapply(invalid.chars, function(char) {
+        grepl(char, name, fixed = TRUE)
+      })]
+      paste0("'", found.chars, "'", collapse = ", ")
+    })
+    
+    invalid.list <- paste0("  - '", invalid.names, "' contains ", problematic, collapse = "\n")
+    error.msg <- paste0(
+      "Invalid character(s) in selector name(s). ",
+      "Selector names cannot contain special characters that interfere with CSS selectors.\n",
+      "The following selector(s) contain invalid characters:\n",
+      invalid.list,
+      "\n\nPlease remove or replace these characters in your variable names."
+    )
+    
+    stop(error.msg)
+  }
+}
+
+
 #' Set plot width and height for all plots
 #' @param meta meta object with all information
 #' @param AllPlotsInfo plot info list
