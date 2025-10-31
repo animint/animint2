@@ -95,6 +95,10 @@ geom_point <- function(mapping = NULL, data = NULL,
                        na.rm = FALSE,
                        show.legend = NA,
                        inherit.aes = TRUE) {
+  shape <- list(...)$shape
+  if(isTRUE(shape != 21)){
+    warning("animint2 web rendering only supports shape=21")
+  }
   layer(
     data = data,
     mapping = mapping,
