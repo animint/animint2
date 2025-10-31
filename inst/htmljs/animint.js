@@ -225,18 +225,31 @@ var animint = function (to_select, json_file) {
     // Add a row to the loading table.
     g_info.tr = Widgets["loading"].append("tr");
     g_info.tr.append("td").text(g_name);
-    g_info.tr.append("td").attr("class", "chunk");
-    g_info.tr.append("td").attr("class", "downloaded").text(0);
-    g_info.tr.append("td").text(g_info.total);
-    g_info.td_total_MB = g_info.tr.append("td").attr("class", "total_MB");
-    g_info.td_mean_MB = g_info.tr.append("td").attr("class", "mean_MB");
-    g_info.td_rows = g_info.tr.append("td").attr("class", "rows");
-    g_info.tr.append("td").attr("class", "status").text("initialized");
+    g_info.td_files = g_info.tr.append("td").attr("class", "files").style("text-align", "right");
+    g_info.td_MB = g_info.tr.append("td").attr("class", "MB").style("text-align", "right");
+    g_info.td_rows = g_info.tr.append("td").attr("class", "rows").style("text-align", "right");
     
     // Initialize size tracking
     g_info.total_bytes = 0;
     g_info.total_rows = 0;
     g_info.downloaded_chunks = 0;
+    
+    // Calculate total possible bytes and rows from chunk_info
+    g_info.possible_bytes = 0;
+    g_info.possible_rows = 0;
+    g_info.total_possible_chunks = g_info.total;
+    if(g_info.chunk_info){
+      var tsv_count = 0;
+      for(var chunk_name in g_info.chunk_info){
+        if(chunk_name.endsWith('.tsv')){
+          g_info.possible_bytes += g_info.chunk_info[chunk_name].bytes;
+          g_info.possible_rows += g_info.chunk_info[chunk_name].rows;
+          tsv_count++;
+        }
+      }
+      // chunk_info includes the common chunk, so total_possible_chunks should include it
+      g_info.total_possible_chunks = tsv_count;
+    }
 
     // load chunk tsv
     g_info.data = {};
@@ -251,6 +264,21 @@ var animint = function (to_select, json_file) {
       d3.tsv(common_path, function (error, response) {
         var converted = convert_R_types(response, g_info.types);
         g_info.data[common_tsv] = nest_by_group.map(converted);
+        // Track common chunk download for size information
+        if(g_info.chunk_info && g_info.chunk_info[common_tsv]){
+          var info = g_info.chunk_info[common_tsv];
+          g_info.total_bytes += info.bytes;
+          g_info.total_rows += info.rows;
+          g_info.downloaded_chunks += 1;
+          // Update display
+          var downloaded_count = g_info.downloaded_chunks;
+          var total_count = g_info.total_possible_chunks;
+          var downloaded_MB = (g_info.total_bytes / 1e6).toFixed(2);
+          var possible_MB = (g_info.possible_bytes / 1e6).toFixed(2);
+          g_info.td_files.text(downloaded_count + " / " + total_count);
+          g_info.td_MB.text(downloaded_MB + " / " + possible_MB);
+          g_info.td_rows.text(g_info.total_rows + " / " + g_info.possible_rows);
+        }
       });
     } else {
       g_info.common_tsv = null;
@@ -1005,7 +1033,6 @@ var animint = function (to_select, json_file) {
         });
         var chunk = nest.map(response);
         g_info.data[tsv_name] = chunk;
-        g_info.tr.select("td.downloaded").text(d3.keys(g_info.data).length);
         g_info.download_status[tsv_name] = "saved";
         
         // Update size information after download
@@ -1015,12 +1042,16 @@ var animint = function (to_select, json_file) {
           g_info.total_rows += info.rows;
           g_info.downloaded_chunks += 1;
           
-          // Update display
-          var total_MB = (g_info.total_bytes / 1048576).toFixed(2);
-          var mean_MB = (g_info.total_bytes / g_info.downloaded_chunks / 1048576).toFixed(2);
-          g_info.td_total_MB.text(total_MB);
-          g_info.td_mean_MB.text(mean_MB);
-          g_info.td_rows.text(g_info.total_rows);
+          // Update display with "downloaded / total" format
+          var downloaded_count = g_info.downloaded_chunks;
+          var total_count = g_info.total_possible_chunks;
+          g_info.td_files.text(downloaded_count + " / " + total_count);
+          
+          var downloaded_MB = (g_info.total_bytes / 1048576).toFixed(2);
+          var possible_MB = (g_info.possible_bytes / 1048576).toFixed(2);
+          g_info.td_MB.text(downloaded_MB + " / " + possible_MB);
+          
+          g_info.td_rows.text(g_info.total_rows + " / " + g_info.possible_rows);
         }
         
         funAfter(chunk);
@@ -1031,8 +1062,6 @@ var animint = function (to_select, json_file) {
   // update_geom is responsible for obtaining a chunk of downloaded
   // data, and then calling draw_geom to actually draw it.
   var draw_geom = function(g_info, chunk, selector_name, PANEL){
-    g_info.tr.select("td.status").text("displayed");
-    
     var svg = SVGs[g_info.classed];
     // derive the plot name from the geometry name
     var g_names = g_info.classed.split("_");
@@ -2397,13 +2426,9 @@ var animint = function (to_select, json_file) {
     Widgets["loading"] = loading;
     var tr = loading.append("tr");
     tr.append("th").text("geom");
-    tr.append("th").attr("class", "chunk").text("selected chunk");
-    tr.append("th").attr("class", "downloaded").text("downloaded");
-    tr.append("th").attr("class", "total").text("total");
-    tr.append("th").attr("class", "total_MB").text("total MB");
-    tr.append("th").attr("class", "mean_MB").text("mean MB");
-    tr.append("th").attr("class", "rows").text("rows");
-    tr.append("th").attr("class", "status").text("status");
+    tr.append("th").attr("class", "files").style("text-align", "right").text("files");
+    tr.append("th").attr("class", "MB").style("text-align", "right").text("MB");
+    tr.append("th").attr("class", "rows").style("text-align", "right").text("rows");
     
     // Add geoms and construct nest operators.
     for (var g_name in response.geoms) {
