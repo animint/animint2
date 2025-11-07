@@ -1,3 +1,8 @@
+# Changes in version 2025.11.7 (PR#261)
+
+- Fixed multiline text spacing: plot titles no longer overlap with plot area, and X/Y axis label spacing is now consistent.
+- Fixed axis titles to scale correctly with `theme(text=element_text(size=X))` (issue #64).
+
 # Changes in version 2025.10.31 (PR#271)
 
 - `geom_point()` now warns when shape parameter is set to a value other than 21, since animint2 web rendering only supports shape=21 for proper display of both color and fill aesthetics.
