@@ -329,9 +329,10 @@ var animint = function (to_select, json_file) {
     var npanels = Math.max.apply(null, panel_names);
 
     // Note axis names are "shared" across panels (just like the title)
-    var xtitlepadding = 5 + measureText(p_info["xtitle"], default_axis_px).height;
-    var ytitlepadding = 5 + measureText(p_info["ytitle"], default_axis_px).height;
-
+    var xtitle_size = p_info["xtitle_size"] || (default_axis_px + "pt");
+    var ytitle_size = p_info["ytitle_size"] || (default_axis_px + "pt");
+    var xtitlepadding = 5 + measureText(p_info["xtitle"], xtitle_size).height;
+    var ytitlepadding = 5 + measureText(p_info["ytitle"], ytitle_size).height;
     // 'margins' are fixed across panels and do not
     // include title/axis/label padding (since these are not
     // fixed across panels). They do, however, account for
@@ -819,7 +820,7 @@ var animint = function (to_select, json_file) {
         .attr("y", (ytitle_top + ytitle_bottom)/2)
         .attr("transform", "translate(0,0)rotate(270," + ytitle_x + "," + (ytitle_top + ytitle_bottom)/2 + ")")
         .style("text-anchor", "middle")
-        .style("font-size", default_axis_px + "px");
+        .style("font-size", ytitle_size);
       // Use multi-line text helper for y-axis title (Issue #221)
       setMultilineText(ytitleText, p_info["ytitle"]);
     }
@@ -829,7 +830,7 @@ var animint = function (to_select, json_file) {
         .attr("x", (xtitle_left + xtitle_right)/2)
         .attr("y", xtitle_y)
         .style("text-anchor", "middle")
-        .style("font-size", default_axis_px + "px");
+        .style("font-size", xtitle_size);
       // Use multi-line text helper for x-axis title (Issue #221)
       setMultilineText(xtitleText, p_info["xtitle"]);
     }

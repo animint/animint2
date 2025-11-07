@@ -145,6 +145,8 @@ parsePlot <- function(meta, plot, plot.name){
     }
     # Convert newlines to <br/> for multi-line axis titles (Issue #221)
     plot.info[[s("%stitle")]] <- convertNewlinesToBreaks(axis_title_raw)
+    ## axis title size.
+    plot.info[[s("%stitle_size")]] <- getTextSize(s("axis.title.%s"), theme.pars)
     ## panel text size.
     plot.info[[s("strip_text_%ssize")]] <- getTextSize(
       s("strip.text.%s"), theme.pars)
