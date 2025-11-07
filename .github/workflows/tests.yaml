@@ -6,20 +6,58 @@ on:
     branches: [main, master]
 
 jobs:
-  R-CMD-check:
+  r-tests:
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        test-suite: [ R_coverage, JS_coverage, CRAN ]
-
-    name: ${{ matrix.test-suite }}
-    env: 
-      TEST_SUITE: ${{ matrix.test-suite }}
+    name: R coverage tests
+    env:
+      TEST_SUITE: R_coverage
       GITHUB_PAT: ${{ secrets.PAT_GITHUB }}
       GH_ACTION: "ENABLED"
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: install and update texlive
+        run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt update -y -qq
+      - run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt install tidy texlive texlive-fonts-extra -y
+      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
+
+      - name: install package
+        run: R CMD INSTALL .
+
+      - name: git config user.name
+        run: git config --global user.name "GitHub Actions"
+
+      - name: git config user.email
+        run: git config --global user.email toby.hocking@r-project.org
+
+      - name: Run R tests and generate coverage
+        run: |
+          Rscript -e "if (!requireNamespace('covr', quietly=TRUE)) install.packages('covr'); cov <- covr::package_coverage(type='tests', test_files = "tests/testthat.R"); covr::to_cobertura(cov, file='r-coverage.xml')"
+
+      - name: Normalize R coverage paths
+        run: |
+          if [ -f "r-coverage.xml" ]; then
+            Rscript -e "
+            content <- paste(readLines('r-coverage.xml', warn = FALSE), collapse='\n')
+            content <- gsub('<sources>.*?</sources>', '<sources><source>.</source></sources>', content)
+            content <- gsub('\\\\\\\\', '/', content)
+            writeLines(content, 'r-coverage.xml')
+            "
+          fi
+
+      - name: Upload R coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: r-coverage
+          path: r-coverage.xml
+
+  js-tests:
+    runs-on: ubuntu-latest
+    name: JS coverage tests
+    env:
+      TEST_SUITE: JS_coverage
+      GITHUB_PAT: ${{ secrets.PAT_GITHUB }}
+      GH_ACTION: "ENABLED"
     steps:
       - uses: actions/checkout@v3
       - name: install and update texlive
@@ -38,48 +76,84 @@ jobs:
         run: git config --global user.email toby.hocking@r-project.org
 
       - name: Setup Node.js
-        if: matrix.test-suite == 'JS_coverage'
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-        
       - name: Install Node.js dependencies
-        if: matrix.test-suite == 'JS_coverage'
+        run: npm install v8-to-istanbul
+
+      - name: Run JS tests and convert coverage
         run: |
-          npm install v8-to-istanbul
-          echo "Node modules installed"
-      
-      - name: run tests
-        run: |
-          if [ "$TEST_SUITE" == "CRAN" ]; then
-            bash build.sh
-          elif [ "$TEST_SUITE" == "JS_coverage" ]; then
-            echo "Running testthat with JS coverage collection..."
-            Rscript -e "source('tests/testthat.R', chdir = TRUE)"
-          else
-            echo "Running testthat with R coverage collection..."
-            Rscript -e 'covr::codecov(quiet = FALSE, type = "tests", test_files = "tests/testthat.R", flags = "r")'
-          fi
+          Rscript -e "source('tests/testthat.R', chdir = TRUE)"
 
       - name: Convert JS coverage to Istanbul format
-        if: matrix.test-suite == 'JS_coverage'
         run: |
           if [ -f "tests/testthat/js-coverage.json" ]; then
-            echo "Converting JS coverage to LCOV format..."
+            echo "Converting JS coverage to Istanbul format..."
             node v8-to-istanbul.js
           else
             echo "No JS coverage file found"
             exit 1
           fi
 
-      - name: Upload JS coverage to Codecov
-        if: matrix.test-suite == 'JS_coverage'
+      - name: Upload JS coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: js-coverage
+          path: coverage-istanbul.json
+
+  CRAN:
+    runs-on: ubuntu-latest
+    name: CRAN checks
+    env:
+      TEST_SUITE: CRAN
+      GITHUB_PAT: ${{ secrets.PAT_GITHUB }}
+      GH_ACTION: "ENABLED"
+    steps:
+      - uses: actions/checkout@v3
+      - name: install and update texlive
+        run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt update -y -qq
+      - run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt install tidy texlive texlive-fonts-extra -y
+      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
+
+      - name: install package
+        run: R CMD INSTALL .
+
+      - name: git config user.name
+        run: git config --global user.name "GitHub Actions"
+
+      - name: git config user.email
+        run: git config --global user.email toby.hocking@r-project.org
+
+      - name: run CRAN build
+        run: bash build.sh
+
+  upload-coverage:
+    runs-on: ubuntu-latest
+    name: Upload combined coverage to Codecov
+    needs: [r-tests, js-tests]
+    if: always()
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    steps:
+      - name: Checkout repository (needed so Codecov can find source files)
+        uses: actions/checkout@v3
+
+      - name: Download R coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: r-coverage
+          path: ./
+
+      - name: Download JS coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: js-coverage
+          path: ./
+
+      - name: Upload to Codecov
         run: |
-          if [ -f "coverage-istanbul.json" ]; then
-            curl -Os https://uploader.codecov.io/latest/linux/codecov
-            chmod +x codecov
-            ./codecov -f coverage-istanbul.json -t ${{ secrets.CODECOV_TOKEN }} --flags javascript
-          else
-            echo "No coverage file found"
-            exit 1
-          fi
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -f "r-coverage.xml" -f "coverage-istanbul.json" -t $CODECOV_TOKEN
