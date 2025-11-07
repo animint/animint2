@@ -150,35 +150,28 @@ var animint = function (to_select, json_file) {
     return {height: bbox.height, width: bbox.width};
   };
 
+// Set multi-line text on SVG text elements.
+// Converts <br/> tags to <tspan> elements for proper SVG rendering.
+var setMultilineText = function(textElement, text) {
+  textElement.each(function(d) {
+    var textStr = typeof text === 'function' ? text(d) : text;
+    if (!textStr) return;
+    var lines = String(textStr).split('<br/>');
+    var el = d3.select(this);
+    el.text('');
+    // Line height: 1.2em is standard SVG spacing between text lines
+    var lineHeight = 1.2;
+    var y = el.attr('y') || 0;
+    var x = el.attr('x') || 0;
+    lines.forEach(function(line, i) {
+      el.append('tspan')
+        .attr('x', x)
+        .attr('dy', i === 0 ? 0 : lineHeight + 'em')
+        .text(line);
+    });
+  });
+};
 
-  /**
-   * Set multi-line text on SVG text elements
-   * Converts <br/> tags to <tspan> elements for proper SVG rendering
-   */
-  var setMultilineText = function(textElement, text) {
-                textElement.each(function(d) {
-                        var textStr = typeof text === 'function' ? text(d) : text;
-                        if (!textStr) return;
-
-                        var lines = String(textStr).split('<br/>');
-                        var el = d3.select(this);
-
-                        // Clear existing content
-                        el.text('');
-
-                        // Always use <tspan> elements for consistent rendering
-                        var lineHeight = 1.2; // em units
-                        var y = el.attr('y') || 0;
-                        var x = el.attr('x') || 0;
-
-                        lines.forEach(function(line, i) {
-                                el.append('tspan')
-                                        .attr('x', x)
-                                        .attr('dy', i === 0 ? 0 : lineHeight + 'em')
-                                        .text(line);
-                        });
-                });
-        };
 
   var nest_by_group = d3.nest().key(function(d){ return d.group; });
   var dirs = json_file.split("/");
