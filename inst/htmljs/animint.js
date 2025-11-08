@@ -822,6 +822,7 @@ var setMultilineText = function(textElement, text) {
         .attr("class", "xtitle")
         .attr("x", (xtitle_left + xtitle_right)/2)
         .attr("y", xtitle_y)
+        .attr("transform", "translate(0,0)")
         .style("text-anchor", "middle")
         .style("font-size", xtitle_size);
       // Use multi-line text helper for x-axis title (Issue #221)
