@@ -379,9 +379,8 @@ var setMultilineText = function(textElement, text) {
       .attr("class", "plottitle")
       .attr("font-family", "sans-serif")
       .attr("font-size", p_info.title_size)
-      .attr("x", plotdim.title.x)
-      .attr("y", plotdim.title.y)
-      .attr("transform", "translate(0,0)")
+      .attr("transform", "translate(" + plotdim.title.x + "," + 
+        plotdim.title.y + ")")
       .style("text-anchor", "middle");
     // Use multi-line text helper for plot titles (Issue #221)
     setMultilineText(titleText, p_info.title);
@@ -809,22 +808,26 @@ var setMultilineText = function(textElement, text) {
     if(p_info["ytitle"]){
       var ytitleText = svg.append("text")
         .attr("class", "ytitle")
-        .attr("x", ytitle_x)
-        .attr("y", (ytitle_top + ytitle_bottom)/2)
-        .attr("transform", "translate(0,0)rotate(270," + ytitle_x + "," + (ytitle_top + ytitle_bottom)/2 + ")")
         .style("text-anchor", "middle")
-        .style("font-size", ytitle_size);
+        .style("font-size", ytitle_size)
+        .attr("transform", "translate(" +
+              ytitle_x +
+              "," +
+              (ytitle_top + ytitle_bottom)/2 +
+              ")rotate(270)");
       // Use multi-line text helper for y-axis title (Issue #221)
       setMultilineText(ytitleText, p_info["ytitle"]);
     }
     if(p_info["xtitle"]){
       var xtitleText = svg.append("text")
         .attr("class", "xtitle")
-        .attr("x", (xtitle_left + xtitle_right)/2)
-        .attr("y", xtitle_y)
-        .attr("transform", "translate(0,0)")
         .style("text-anchor", "middle")
-        .style("font-size", xtitle_size);
+        .style("font-size", xtitle_size)
+        .attr("transform", "translate(" +
+              (xtitle_left + xtitle_right)/2 +
+              "," +
+              xtitle_y +
+              ")");
       // Use multi-line text helper for x-axis title (Issue #221)
       setMultilineText(xtitleText, p_info["xtitle"]);
     }
