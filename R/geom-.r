@@ -158,7 +158,7 @@ Geom <- gganimintproto("Geom",
   ## AnimationInfo- animation list
   ## ID- number starting from 1
   ## returns- list representing a layer, with corresponding aesthetics, ranges, and groups.
-  export_animint = function(l, d, meta, layer_name, ggplot, built, AnimationInfo) {
+  export_animint = function(l, g.data, meta, layer_name, ggplot, built, AnimationInfo) {
     xminv <- y <- xmaxv <- chunks.for <- NULL
     ## above to avoid NOTE on CRAN check.
     g <- list(geom=strsplit(layer_name, "_")[[1]][2])
@@ -218,13 +218,6 @@ Geom <- gganimintproto("Geom",
     ## Separate .variable/.value selectors
     s.aes <- selectSSandCS(g$aes)
     meta$selector.aes[[g$classed]] <- s.aes
-
-    ## Do not copy group unless it is specified in aes, and do not copy
-    ## showSelected variables which are specified multiple times.
-    do.not.copy <- colsNotToCopy(g, s.aes)
-    copy.cols <- ! names(d) %in% do.not.copy
-
-    g.data <- d[copy.cols]
 
     is.ss <- names(g$aes) %in% s.aes$showSelected$one
     show.vars <- g$aes[is.ss]
@@ -298,7 +291,15 @@ Geom <- gganimintproto("Geom",
         ## We also store all the values of this selector in this layer,
         ## so we can accurately set levels after all geoms have been
         ## compiled.
-        value.vec <- unique(g.data[[value.col]])
+        ## For .variable/.value selectors, filter data to only rows
+        ## matching the current selector name before extracting values.
+        data.for.values <- if(is.variable.value){
+          variable.col <- paste(aes.row$variable)
+          g.data[g.data[[variable.col]] == selector.name, ]
+        }else{
+          g.data
+        }
+        value.vec <- unique(data.for.values[[value.col]])
         key <- paste(g$classed, row.i, sel.i)
         meta$selector.values[[selector.name]][[key]] <-
           list(values=paste(value.vec), update=g$classed)
@@ -579,16 +580,17 @@ Geom <- gganimintproto("Geom",
     if("group" %in% names(g$aes) && g$geom %in% data.object.geoms){
       g$nest_order <- c(g$nest_order, "group")
     }
-    if(g$geom %in% data.object.geoms){
-      ## Some geoms should be split into separate groups if there are NAs.
-      setDT(g.data)
-      g.data[, let(
-        row_in_group = 1:.N, 
-        na_group = cumsum(apply(is.na(.SD), 1, any))
-      ), by=c("group",chunk.cols)]
-      setDF(g.data)
+    ## If user did not specify aes(group), then use group=1.
+    if(! "group" %in% names(g$aes)){
+      g.data$group <- 1
     }
-
+    ## Some geoms should be split into separate groups if there are NAs.
+    setDT(g.data)
+    g.data[, let(
+      row_in_group = 1:.N,
+      na_group = cumsum(apply(is.na(.SD), 1, any))
+    ), by=c("group",chunk.cols)]
+    setDF(g.data)
     ## Find infinite values and replace with range min/max.
     for(xy in c("x", "y")){
       range.name <- paste0(xy, ".range")
@@ -621,14 +623,15 @@ Geom <- gganimintproto("Geom",
     ## separately to reduce disk usage.
     data.or.null <- getCommonChunk(g.data, chunk.cols, g$aes)
     g.data.varied <- if(is.null(data.or.null)){
+      if(length(unique(g.data$group))==1)g.data$group <- NULL
       split_recursive(na.omit(g.data), chunk.cols)
     }else{
       g$columns$common <- as.list(names(data.or.null$common))
       tsv.name <- sprintf("%s_chunk_common.tsv", g$classed)
       tsv.path <- file.path(meta$out.dir, tsv.name)
       data.table::fwrite(
-        data.or.null$common,file= tsv.path,
-        row.names = FALSE,sep = "\t")
+        data.or.null$common, file = tsv.path,
+        row.names = FALSE, sep = "\t")
       data.or.null$varied
     }
     list(g=g, g.data.varied=g.data.varied, timeValues=AnimationInfo$timeValues)

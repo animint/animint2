@@ -187,7 +187,7 @@ viz <- list(
 test_that("aes(vjust!=0) raises warning", {
   expect_warning({
     animint2HTML(viz)
-  }, "animint only supports vjust=0")
+  }, "geom_text currently only supports vjust=0")
 })
 
 viz <- list(
@@ -237,13 +237,13 @@ viz.0.7 <- list(
 test_that("geom_text(vjust!=0) raises warning", {
   expect_warning({
     animint2HTML(viz.1)
-  }, "animint only supports vjust=0")
+  }, "geom_text currently only supports vjust=0")
   expect_warning({
     animint2HTML(viz.0.5)
-  }, "animint only supports vjust=0")
+  }, "geom_text currently only supports vjust=0")
   expect_warning({
     animint2HTML(viz.0.7)
-  }, "animint only supports vjust=0")
+  }, "geom_text currently only supports vjust=0")
 })
 
 viz <- list(

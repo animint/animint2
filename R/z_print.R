@@ -52,4 +52,3 @@ animint <- function(...){
   }
   structure(L, class="animint")
 }
-

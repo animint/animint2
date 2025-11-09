@@ -1,0 +1,25 @@
+name: Check for Tabs in animint.js
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  check-tabs:
+    runs-on: ubuntu-latest
+    name: Check animint.js for tabs
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Check for tabs in animint.js
+        run: |
+          if grep -P '\t' inst/htmljs/animint.js; then
+            echo "Error: Tab characters found in inst/htmljs/animint.js"
+            echo "Please use 8 spaces for indentation instead of tabs"
+            exit 1
+          else
+            echo "Success: No tab characters found in inst/htmljs/animint.js"
+          fi
+

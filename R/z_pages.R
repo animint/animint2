@@ -177,7 +177,8 @@ update_gallery <- function(gallery_path="~/R/gallery"){
   repo.png.vec <- get_png(repos.dt$viz_owner_repo)
   if(file.exists(meta.csv)){
     old.meta <- fread(meta.csv)
-    old.keep <- old.meta[repos.dt, on="viz_owner_repo", nomatch=0L]
+    old.keep <- old.meta[
+      repos.dt, on="viz_owner_repo", nomatch=0L, mult="first"]
   }else{
     old.meta <- data.table()
     old.keep <- data.table()

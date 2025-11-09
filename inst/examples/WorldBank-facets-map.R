@@ -20,7 +20,53 @@ last.year <- max(not.na$year)
 min.years <- do.call(rbind, lapply(by.country, subset, year == min(year)))
 min.years$year <- 1959.5
 year.breaks <- seq(1960,2010,by=10)
-map_df <- animint2::map_data("world")
+world_map <- animint2::map_data("world")
+map_names <- c(x="long", y="lat")
+map_df <- if(requireNamespace("rmapshaper")){
+  ## https://cloud.r-project.org/web/packages/sf/vignettes/sf1.html section "sfg: simple feature geometry" explains st_polygon represents a single polygon.
+  library(data.table)
+  (map_dt <- data.table(world_map))
+  (poly_dt <- map_dt[, .(original=sf::st_sfc(
+    sf::st_polygon(list(cbind(long, lat)))
+  )), by=.(region,group)][
+    ## https://datascience.blog.wzb.eu/2021/03/15/simplifying-geospatial-features-in-r-with-sf-and-rmapshaper explains that this simplification respects boundaries between adjacent polygons.
+  , simple := rmapshaper::ms_simplify(original, keep_shapes=TRUE, keep=0.01)
+  ][])
+  sapply(poly_dt[,.(original,simple)], sapply, function(x)nrow(x[[1]]))
+  compare_dt <- data.table(type=c("original","simple"))[, {
+    poly_dt[
+    , as.data.table(.SD[[type]][[1]][[1]])
+    , by=.(region, group)]
+  }, by=type][, rows := .N, by=type]
+  gg <- ggplot()+
+    geom_polygon(aes(
+      long, lat,
+      group=group),
+      color="black",
+      fill="grey50",
+      data=compare_dt)+
+    facet_grid(type + rows ~ ., labeller=label_both)
+  gg
+<<<<<<< Updated upstream
+  gg+coord_cartesian(xlim=c(-20, 0),ylim=c(10, 40))+
+    geom_text(aes(
+      long, lat, label=region),
+      data=compare_dt)
+=======
+  ## zoom to Western Sahara.
+  group_means <- compare_dt[
+  , lapply(.SD, mean)
+  , by=.(region,group)
+  , .SDcols=c("lat","long")]
+  gg+coord_cartesian(xlim=c(-20, 0),ylim=c(10, 40))+
+    geom_text(aes(
+      long, lat, label=region),
+      data=group_means)
+>>>>>>> Stashed changes
+  as.data.frame(compare_dt[type=="simple"])
+}else{
+  world_map
+}
 country2Region <- with(unique(not.na[, c("Region","country")]), structure(Region, names=country))
 map2wb <- c(
   Antigua="Antigua and Barbuda",
@@ -59,7 +105,6 @@ map2wb <- c(
 map_disp <- with(map_df, data.frame(
   group, country=ifelse(region %in% names(map2wb), map2wb[region], region)))
 map_disp$Region <- country2Region[map_disp$country]
-map_names <- c(x="long", y="lat")
 for(new.var in names(map_names)){
   old.var <- map_names[[new.var]]
   old.val <- map_df[[old.var]]
