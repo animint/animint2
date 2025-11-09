@@ -1,4 +1,4 @@
-acontext("Invalid selector character validation")
+context("Invalid selector character validation")
 
 # Test that selector names with special characters cause errors
 # Note: Selector names come from the VALUES in the data when using .variable/.value pattern

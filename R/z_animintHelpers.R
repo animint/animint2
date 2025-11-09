@@ -651,29 +651,23 @@ checkSelectorNames <- function(selectors){
   invalid.chars <- c("#", "!", "@", "$", "%", "^", "&", "*", "=", "|", "\\", "/", "'", "\"", "`", "?", "<", ">", "(", ")", "[", "]")
   
   ## Check each selector name for invalid characters
-  has.invalid <- sapply(selector.names, function(name) {
-    any(sapply(invalid.chars, function(char) {
-      grepl(char, name, fixed = TRUE)
-    }))
-  })
+  ## Check if any invalid character appears in each selector name
+  has.invalid <- vapply(selector.names, function(name) {
+    any(vapply(invalid.chars, grepl, logical(1), x = name, fixed = TRUE))
+  }, logical(1))
   
   if(any(has.invalid)){
     invalid.names <- selector.names[has.invalid]
     ## Find which character(s) are problematic for each name
     problematic <- sapply(invalid.names, function(name) {
-      found.chars <- invalid.chars[sapply(invalid.chars, function(char) {
-        grepl(char, name, fixed = TRUE)
-      })]
+      found.chars <- invalid.chars[sapply(invalid.chars, grepl, name, fixed = TRUE)]
       paste0("'", found.chars, "'", collapse = ", ")
     })
     
-    invalid.list <- paste0("  - '", invalid.names, "' contains ", problematic, collapse = "\n")
-    error.msg <- paste0(
-      "Invalid character(s) in selector name(s). ",
-      "Selector names cannot contain special characters that interfere with CSS selectors.\n",
-      "The following selector(s) contain invalid characters:\n",
-      invalid.list,
-      "\n\nPlease remove or replace these characters in your variable names."
+    invalid.list <- paste(sprintf("  - '%s' contains %s", invalid.names, problematic), collapse = "\n")
+    error.msg <- sprintf(
+      "Invalid character(s) in selector name(s). Selector names cannot contain special characters that interfere with CSS selectors.\nThe following selector(s) contain invalid characters:\n%s\n\nPlease remove or replace these characters in your variable names.",
+      invalid.list
     )
     
     stop(error.msg)
