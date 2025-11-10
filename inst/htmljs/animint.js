@@ -273,8 +273,8 @@ var animint = function (to_select, json_file) {
           // Update display
           var downloaded_count = g_info.downloaded_chunks;
           var total_count = g_info.total_possible_chunks;
-          var downloaded_MB = (g_info.total_bytes / 1e6).toFixed(2);
-          var possible_MB = (g_info.possible_bytes / 1e6).toFixed(2);
+          var downloaded_MB = (g_info.total_bytes / 1048576).toFixed(2);
+          var possible_MB = (g_info.possible_bytes / 1048576).toFixed(2);
           g_info.td_files.text(downloaded_count + " / " + total_count);
           g_info.td_MB.text(downloaded_MB + " / " + possible_MB);
           g_info.td_rows.text(g_info.total_rows + " / " + g_info.possible_rows);
