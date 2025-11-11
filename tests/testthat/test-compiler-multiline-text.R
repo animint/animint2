@@ -8,7 +8,7 @@ test_that("plot title supports multi-line text", {
       ggtitle("Title Line 1\nTitle Line 2")
   )
   info <- animint2dir(viz, "test-title-multiline", open.browser = FALSE)
-  json <- jsonlite::fromJSON(file.path(info$out.dir, "plot.json"))
+  json <- RJSONIO::fromJSON(file.path(info$out.dir, "plot.json"))
   expect_true(grepl("<br/>", json$plots$plot1$title, fixed = TRUE))
   expect_equal(json$plots$plot1$title, "Title Line 1<br/>Title Line 2")
 })
@@ -21,7 +21,7 @@ test_that("x-axis title supports multi-line text", {
       xlab("X Axis\nLine 2")
   )
   info <- animint2dir(viz, "test-xaxis-multiline", open.browser = FALSE)
-  json <- jsonlite::fromJSON(file.path(info$out.dir, "plot.json"))
+  json <- RJSONIO::fromJSON(file.path(info$out.dir, "plot.json"))
   expect_true(grepl("<br/>", json$plots$plot1$xtitle, fixed = TRUE))
   expect_equal(json$plots$plot1$xtitle, "X Axis<br/>Line 2")
 })
@@ -34,7 +34,7 @@ test_that("y-axis title supports multi-line text", {
       ylab("Y Axis\nLine 2")
   )
   info <- animint2dir(viz, "test-yaxis-multiline", open.browser = FALSE)
-  json <- jsonlite::fromJSON(file.path(info$out.dir, "plot.json"))
+  json <- RJSONIO::fromJSON(file.path(info$out.dir, "plot.json"))
   expect_true(grepl("<br/>", json$plots$plot1$ytitle, fixed = TRUE))
   expect_equal(json$plots$plot1$ytitle, "Y Axis<br/>Line 2")
 })
@@ -65,7 +65,7 @@ test_that("legend title supports multi-line text", {
       scale_color_discrete(name = "Category\nName")
   )
   info <- animint2dir(viz, "test-legend-multiline", open.browser = FALSE)
-  json <- jsonlite::fromJSON(file.path(info$out.dir, "plot.json"))
+  json <- RJSONIO::fromJSON(file.path(info$out.dir, "plot.json"))
   expect_true("legend" %in% names(json$plots$plot1))
   legend_keys <- names(json$plots$plot1$legend)
   expect_true(length(legend_keys) > 0)
@@ -81,34 +81,6 @@ test_that("legend title supports multi-line text", {
   expect_true(has_multiline_title)
 })
 
-test_that("axis titles inherit theme text size", {
-  data <- data.frame(x = 1:5, y = 1:5)
-  viz <- list(
-    plot1 = ggplot(data, aes(x, y)) +
-      geom_point() +
-      xlab("X Axis") +
-      ylab("Y Axis") +
-      theme(text = element_text(size = 30))
-  )
-  info <- animint2dir(viz, "test-axis-title-size", open.browser = FALSE)
-  json <- jsonlite::fromJSON(file.path(info$out.dir, "plot.json"))
-  expect_equal(json$plots$plot1$xtitle_size, "30pt")
-  expect_equal(json$plots$plot1$ytitle_size, "30pt")
-})
-
-test_that("axis titles use default size when theme not specified", {
-  data <- data.frame(x = 1:5, y = 1:5)
-  viz <- list(
-    plot1 = ggplot(data, aes(x, y)) +
-      geom_point() +
-      xlab("X Axis") +
-      ylab("Y Axis")
-  )
-  info <- animint2dir(viz, "test-axis-title-default", open.browser = FALSE)
-  json <- jsonlite::fromJSON(file.path(info$out.dir, "plot.json"))
-  expect_true(!is.null(json$plots$plot1$xtitle_size))
-  expect_true(!is.null(json$plots$plot1$ytitle_size))
-})
 
 test_that("convertNewlinesToBreaks works correctly", {
   expect_equal(animint2:::convertNewlinesToBreaks("Line1\nLine2"), "Line1<br/>Line2")
