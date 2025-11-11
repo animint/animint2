@@ -1,7 +1,5 @@
 context("Invalid selector character validation")
 
-# Test that selector names with special characters cause errors
-# Note: Selector names come from the VALUES in the data when using .variable/.value pattern
 test_that("selector name with # causes error in clickSelects", {
   viz <- list(
     plot1 = ggplot() +
@@ -10,7 +8,7 @@ test_that("selector name with # causes error in clickSelects", {
         data = data.frame(
           Sepal.Length = 1:10,
           Petal.Length = rnorm(10),
-          regularization = "# nearest neighbors",  # This VALUE becomes the selector name
+          regularization = "# nearest neighbors",
           parameter = 1:10
         ),
         clickSelects = c(regularization = "parameter")
@@ -18,13 +16,8 @@ test_that("selector name with # causes error in clickSelects", {
   )
   expect_error(
     animint2dir(viz, open.browser = FALSE),
-    "Invalid character\\(s\\) in selector name\\(s\\)",
-    info = "Selector names with '#' should cause an error"
-  )
-  expect_error(
-    animint2dir(viz, open.browser = FALSE),
-    "# nearest neighbors",
-    info = "Error message should mention the problematic selector name"
+    "  - '# nearest neighbors' contains '#'",
+    fixed = TRUE
   )
 })
 
@@ -36,7 +29,7 @@ test_that("selector name with @ causes error in clickSelects", {
         data = data.frame(
           Sepal.Length = 1:10,
           Petal.Length = rnorm(10),
-          regularization = "model@version1",  # This VALUE becomes selector name
+          regularization = "model@version1",
           parameter = 1:10
         ),
         clickSelects = c(regularization = "parameter")
@@ -44,13 +37,8 @@ test_that("selector name with @ causes error in clickSelects", {
   )
   expect_error(
     animint2dir(viz, open.browser = FALSE),
-    "Invalid character\\(s\\) in selector name\\(s\\)",
-    info = "Selector names with '@' should cause an error"
-  )
-  expect_error(
-    animint2dir(viz, open.browser = FALSE),
-    "model@version",
-    info = "Error message should mention the problematic selector"
+    "  - 'model@version1' contains '@'",
+    fixed = TRUE
   )
 })
 
@@ -68,8 +56,8 @@ test_that("selector name with ! causes error", {
   )
   expect_error(
     animint2dir(viz, open.browser = FALSE),
-    "Invalid character\\(s\\) in selector name\\(s\\)",
-    info = "Selector names with '!' should cause an error"
+    "  - 'model!important' contains '!'",
+    fixed = TRUE
   )
 })
 
@@ -79,14 +67,14 @@ test_that("valid selector names work with clickSelects", {
       geom_point(
         aes(x=1:10, y=rnorm(10)),
         data = data.frame(
-          regularization = "polynomial_degree",  # Valid name
+          regularization = "polynomial_degree",
           parameter = 0:9
         ),
         clickSelects = c(regularization = "parameter")
       )
   )
   info <- animint2dir(viz, open.browser = FALSE)
-  expect_true(TRUE, info = "Valid selector names should not cause errors")
+  expect_true("polynomial_degree" %in% names(info$selectors))
 })
 
 test_that("selector names with spaces work", {
@@ -95,14 +83,14 @@ test_that("selector names with spaces work", {
       geom_point(
         aes(x=1:10, y=rnorm(10)),
         data = data.frame(
-          regularization = "nearest neighbors",  # spaces are OK
+          regularization = "nearest neighbors",
           parameter = 1:10
         ),
         clickSelects = c(regularization = "parameter")
       )
   )
   info <- animint2dir(viz, open.browser = FALSE)
-  expect_true(TRUE, info = "Selector names with spaces should work")
+  expect_true("nearest neighbors" %in% names(info$selectors))
 })
 
 test_that("multiple values with invalid characters all reported", {
@@ -111,16 +99,15 @@ test_that("multiple values with invalid characters all reported", {
       geom_point(
         aes(x=1:10, y=rnorm(10)),
         data = data.frame(
-          regularization = rep(c("#bad", "!worse"), 5),  # Both have invalid chars
+          regularization = rep(c("#bad", "!worse"), 5),
           parameter = 1:10
         ),
         clickSelects = c(regularization = "parameter")
       )
   )
-  error_msg <- tryCatch(
+  expect_error(
     animint2dir(viz, open.browser = FALSE),
-    error = function(e) as.character(e$message)
+    "  - '#bad' contains '#'",
+    fixed = TRUE
   )
-  expect_match(error_msg, "Invalid character", info = "Should report invalid characters")
-  expect_match(error_msg, "#bad|!worse", info = "Should mention at least one problematic selector")
 })
