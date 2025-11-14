@@ -105,10 +105,14 @@ test_that("multiple values with invalid characters all reported", {
         clickSelects = c(regularization = "parameter")
       )
   )
-  err <- tryCatch(
+  expect_error(
     animint2dir(viz, open.browser = FALSE),
-    error = function(e) conditionMessage(e)
+    "  - '#bad' contains '#'",
+    fixed = TRUE
   )
-  expect_true(grepl("  - '#bad' contains '#'", err, fixed = TRUE))
-  expect_true(grepl("  - '!worse' contains '!'", err, fixed = TRUE))
+  expect_error(
+    animint2dir(viz, open.browser = FALSE),
+    "  - '!worse' contains '!'",
+    fixed = TRUE
+  )
 })
