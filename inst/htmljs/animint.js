@@ -1999,10 +1999,23 @@ var animint = function (to_select, json_file) {
           .orient(orientation)
           .tickValues(tick_vals);
     // update existing axis
-    var xyaxis_g = element.select("#plot_"+p_name).select("."+axes+"axis_"+panel_i)
+    var xyaxis_sel = element.select("#plot_"+p_name).select("."+axes+"axis_"+panel_i);
+    var font_size = Plots[p_name][axes+"size"];
+    var xyaxis_g = xyaxis_sel
           .transition()
           .duration(1000)
-          .call(xyaxis);
+          .call(xyaxis)
+          .each("end", function(){
+            // Fix for issue #273: preserve font-size after axis update
+            // Apply font-size after transition completes
+            if(axes == "x"){
+              d3.select(this).selectAll("text")
+                .style("font-size", font_size);
+            }else{
+              d3.select(this).selectAll(".tick text")
+                .style("font-size", font_size);
+            }
+          });
   }
 
   // Update major/minor grids once axes ticks have been updated
