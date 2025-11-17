@@ -107,12 +107,6 @@ test_that("multiple values with invalid characters all reported", {
   )
   expect_error(
     animint2dir(viz, open.browser = FALSE),
-    "  - '#bad' contains '#'",
-    fixed = TRUE
-  )
-  expect_error(
-    animint2dir(viz, open.browser = FALSE),
-    "  - '!worse' contains '!'",
-    fixed = TRUE
+    "- '#bad' contains '#'.*- '!worse' contains '!'"
   )
 })
