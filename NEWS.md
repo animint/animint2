@@ -1,3 +1,7 @@
+# Changes in version 2025.11.17 (PR#274)
+
+- `update_axes()`: Fixed issue #273 where axis tick text font-size was inconsistent between plots with and without `update_axes`. Previously, plots using `theme_animint(update_axes="x")` would lose `theme(axis.text = element_text(size=...))` styling after axis updates. Now font-size is preserved by applying it after the axis transition completes using D3's `.each("end", callback)` pattern.
+
 # Changes in version 2025.10.31 (PR#271)
 
 - `geom_point()` now warns when shape parameter is set to a value other than 21, since animint2 web rendering only supports shape=21 for proper display of both color and fill aesthetics.

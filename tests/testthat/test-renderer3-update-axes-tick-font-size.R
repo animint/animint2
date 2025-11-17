@@ -19,8 +19,8 @@ test_that("x-axis tick text font-size is consistent with and without update_axes
   with_update_xpath <- '//svg[@id="plot_withUpdateX"]//g[@class="xaxis axis xaxis_1"]//g[@class="tick major"]//text'
   no_update_font_size <- getStyleValue(info$html, no_update_xpath, "font-size")
   with_update_font_size <- getStyleValue(info$html, with_update_xpath, "font-size")
-  expect_true(length(no_update_font_size) > 0)
-  expect_true(length(with_update_font_size) > 0)
+  expect_gt(length(no_update_font_size), 0)
+  expect_gt(length(with_update_font_size), 0)
   no_update_size_unique <- unique(no_update_font_size)
   with_update_size_unique <- unique(with_update_font_size)
   expect_equal(length(no_update_size_unique), 1)

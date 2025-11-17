@@ -8,6 +8,9 @@ Authors@R: c(
      email="toby.hocking@r-project.org",
      role=c("aut", "cre"),
      comment="Original animint code"),
+    person("Gaurav", "Chaudhary",
+     role="ctb",
+     comment="Remove unused css.file parameter; fix issue #233 selector values; fix issue #273 update_axes tick font-size"),
     person("Biplab", "Sutradhar",
      role = "ctb",
      comment = "Updated animist.js to use class for source links"),
@@ -61,10 +64,7 @@ Authors@R: c(
      comment="Animint2 GSoC 2024"),
     person("Suhaani", "Agarwal",
      role="aut",
-     comment="Animint2 GSoC 2025"),
-    person("Gaurav", "Chaudhary",
-     role="ctb",
-     comment="Remove unused css.file parameter; fix issue #233 selector values"))
+     comment="Animint2 GSoC 2025"))
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
  on a web page. The 2018 Journal of Computational and 
