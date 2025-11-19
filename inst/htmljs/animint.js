@@ -2013,12 +2013,9 @@ var animint = function (to_select, json_file) {
     var xyaxis_g = xyaxis_sel
           .transition()
           .duration(1000)
-          .call(xyaxis)
-          .each("end", function(){
-            // Fix for issue #273: preserve axis text styling after update
-            // Apply same styling as initial axis rendering
-            apply_axis_text_styles(d3.select(this), axes, Plots[p_name]);
-          });
+          .call(xyaxis);
+    // Fix for issue #273: preserve axis text styling after update
+    apply_axis_text_styles(xyaxis_sel, axes, Plots[p_name]);
   }
 
   // Update major/minor grids once axes ticks have been updated
