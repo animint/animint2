@@ -688,10 +688,7 @@ var setMultilineText = function(textElement, text) {
           var axis_path = xaxis_g.select("path.domain");
           axis_path.remove();
         }
-        xaxis_g.selectAll("text")
-          .style("text-anchor", p_info.xanchor)
-          .style("font-size", p_info.xsize)
-          .attr("transform", "rotate(" + p_info.xangle + " 0 9)");
+        apply_axis_text_styles(xaxis_g, "x", p_info);
       }
       if(draw_y){
         var yaxis = d3.svg.axis()
@@ -710,8 +707,7 @@ var setMultilineText = function(textElement, text) {
           var axis_path = yaxis_g.select("path.domain");
           axis_path.remove();
         }
-  yaxis_g.selectAll(".tick text")
-    .style("font-size", p_info.ysize);
+        apply_axis_text_styles(yaxis_g, "y", p_info);
       }
 
       if(!axis.xline) {
@@ -1972,6 +1968,20 @@ var setMultilineText = function(textElement, text) {
       }
     }
   
+  // Helper function to apply axis text styling
+  // Used by both axis initialization and update_axes to ensure consistency
+  function apply_axis_text_styles(axis_g, axes, p_info){
+    if(axes == "x"){
+      axis_g.selectAll("text")
+        .style("text-anchor", p_info.xanchor)
+        .style("font-size", p_info.xsize)
+        .attr("transform", "rotate(" + p_info.xangle + " 0 9)");
+    }else{
+      axis_g.selectAll(".tick text")
+        .style("font-size", p_info.ysize);
+    }
+  }
+
   // update scales for the plots that have update_axes option in
   // theme_animint
   function update_scales(p_name, axes, v_name, value){
@@ -2041,10 +2051,13 @@ var setMultilineText = function(textElement, text) {
           .orient(orientation)
           .tickValues(tick_vals);
     // update existing axis
-    var xyaxis_g = element.select("#plot_"+p_name).select("."+axes+"axis_"+panel_i)
+    var xyaxis_sel = element.select("#plot_"+p_name).select("."+axes+"axis_"+panel_i);
+    var xyaxis_g = xyaxis_sel
           .transition()
           .duration(1000)
           .call(xyaxis);
+    // Fix for issue #273: preserve axis text styling after update
+    apply_axis_text_styles(xyaxis_sel, axes, Plots[p_name]);
   }
 
   // Update major/minor grids once axes ticks have been updated
