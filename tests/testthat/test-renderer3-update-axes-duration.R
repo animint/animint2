@@ -1,6 +1,6 @@
 acontext("update_axes respects selector duration - Issue #276")
 # Test that update_axes uses the selector's duration option instead of hardcoded 1000ms
-# This test verifies tick values change, which confirms update_axes is being called
+# This follows the same pattern as test-renderer3-update-axes.R
 mtcars$cyl <- as.factor(mtcars$cyl)
 viz_duration <- list(
   scatter = ggplot() +
@@ -11,11 +11,12 @@ viz_duration <- list(
 )
 info <- animint2HTML(viz_duration)
 
-# Get initial tick positions
-rect_path_x <- '//svg[@id="plot_scatter"]//g[contains(@class, "xaxis")]'
-rect_path_y <- '//svg[@id="plot_scatter"]//g[contains(@class, "yaxis")]'
-initial_x_ticks <- getTickDiff(info$html, axis="x")
-initial_y_ticks <- getTickDiff(info$html, axis="y")
+# Get initial tick positions using same pattern as test-renderer3-update-axes.R
+rect_path <- "//svg[@id='plot_scatter']//g[contains(@class, '%saxis')]"
+x_axis_node <- getNodeSet(info$html, sprintf(rect_path, "x"))[[1]]
+y_axis_node <- getNodeSet(info$html, sprintf(rect_path, "y"))[[1]]
+original_tick_diff_x <- getTickDiff(x_axis_node, axis="x")
+original_tick_diff_y <- getTickDiff(y_axis_node, axis="y")
 
 # Click to change selector
 clickID("plot_scatter_cyl_variable_8")
@@ -23,16 +24,15 @@ Sys.sleep(0.5)
 html_updated <- getHTML()
 
 # Get updated tick positions
-updated_x_ticks <- getTickDiff(html_updated, axis="x")
-updated_y_ticks <- getTickDiff(html_updated, axis="y")
+x_axis_node_updated <- getNodeSet(html_updated, sprintf(rect_path, "x"))[[1]]
+y_axis_node_updated <- getNodeSet(html_updated, sprintf(rect_path, "y"))[[1]]
+updated_tick_diff_x <- getTickDiff(x_axis_node_updated, axis="x")
+updated_tick_diff_y <- getTickDiff(y_axis_node_updated, axis="y")
 
 test_that("update_axes uses selector duration for transitions", {
-  # Verify ticks changed (confirms update_axes was called)
-  expect_true(!identical(initial_x_ticks, updated_x_ticks),
+  # Verify ticks changed (confirms update_axes was called with correct duration)
+  expect_true(unequal(updated_tick_diff_x, original_tick_diff_x, tolerance=0.01),
               info="X-axis ticks should change when selector changes")
-  expect_true(!identical(initial_y_ticks, updated_y_ticks),
+  expect_true(unequal(updated_tick_diff_y, original_tick_diff_y, tolerance=0.01),
               info="Y-axis ticks should change when selector changes")
-  # The JavaScript fix ensures .duration(Selectors[v_name].duration) is used
-  # instead of hardcoded .duration(1000)
-  # Manual testing in browser would show 2000ms transition vs 1000ms
 })
