@@ -1,6 +1,5 @@
 acontext("update_axes respects selector duration - Issue #276")
 data(WorldBank, package="animint2")
-# Create test data with clear axis range differences
 WorldBank$year.fac <- factor(WorldBank$year)
 viz_custom_duration <- list(
   scatter = ggplot() +
@@ -8,13 +7,7 @@ viz_custom_duration <- list(
                showSelected="year.fac",
                data=WorldBank) +
     theme_animint(update_axes=c("x", "y")),
-  ts = ggplot() +
-    geom_tallrect(aes(xmin=as.numeric(year.fac)-0.5, xmax=as.numeric(year.fac)+0.5),
-                  clickSelects="year.fac",
-                  alpha=0.5,
-                  data=WorldBank),
   duration=list(year.fac=2000),
-  first=list(year.fac="1975"),
   selector.types=list(year.fac="single")
 )
 info <- animint2HTML(viz_custom_duration)
@@ -27,7 +20,7 @@ get_axis_transform <- function(html, plot_id, axis_class){
 html_before <- getHTML()
 xaxis_before <- get_axis_transform(html_before, "scatter", "xaxis")
 yaxis_before <- get_axis_transform(html_before, "scatter", "yaxis")
-clickID("plot_ts_year.fac_variable_1980")
+clickID("plot_scatter_year.fac_variable_1980")
 Sys.sleep(1.2)
 html_at_1200ms <- getHTML()
 xaxis_at_1200ms <- get_axis_transform(html_at_1200ms, "scatter", "xaxis")
