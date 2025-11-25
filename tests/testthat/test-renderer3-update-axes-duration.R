@@ -1,22 +1,21 @@
 acontext("update_axes respects selector duration - Issue #276")
 data(WorldBank, package="animint2")
-WorldBank1975 <- subset(WorldBank, year == 1975)
+# Create test data with clear axis range differences
+WorldBank$year.fac <- factor(WorldBank$year)
 viz_custom_duration <- list(
   scatter = ggplot() +
-    geom_point(aes(life.expectancy, fertility.rate, color=region),
-               showSelected="year",
+    geom_point(aes(life.expectancy, fertility.rate, color=year.fac),
+               showSelected="year.fac",
                data=WorldBank) +
     theme_animint(update_axes=c("x", "y")),
   ts = ggplot() +
-    geom_line(aes(year, life.expectancy, group=country, color=region),
-              clickSelects="country",
-              data=WorldBank) +
-    geom_tallrect(aes(xmin=year-0.5, xmax=year+0.5),
-                  clickSelects="year",
+    geom_tallrect(aes(xmin=as.numeric(year.fac)-0.5, xmax=as.numeric(year.fac)+0.5),
+                  clickSelects="year.fac",
                   alpha=0.5,
                   data=WorldBank),
-  duration=list(year=2000),
-  first=list(year=1975, country="United States")
+  duration=list(year.fac=2000),
+  first=list(year.fac="1975"),
+  selector.types=list(year.fac="single")
 )
 info <- animint2HTML(viz_custom_duration)
 get_axis_transform <- function(html, plot_id, axis_class){
@@ -28,7 +27,7 @@ get_axis_transform <- function(html, plot_id, axis_class){
 html_before <- getHTML()
 xaxis_before <- get_axis_transform(html_before, "scatter", "xaxis")
 yaxis_before <- get_axis_transform(html_before, "scatter", "yaxis")
-clickID("year1980")
+clickID("plot_ts_year.fac_variable_1980")
 Sys.sleep(1.2)
 html_at_1200ms <- getHTML()
 xaxis_at_1200ms <- get_axis_transform(html_at_1200ms, "scatter", "xaxis")

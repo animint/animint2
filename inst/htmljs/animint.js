@@ -2012,7 +2012,7 @@ var animint = function (to_select, json_file) {
     var xyaxis_sel = element.select("#plot_"+p_name).select("."+axes+"axis_"+panel_i);
     // Fix for issue #276: use selector's duration instead of hardcoded 1000ms
     var milliseconds = 0; // default: no transition when no duration specified
-    if(Selectors.hasOwnProperty(v_name) && Selectors[v_name].duration){
+    if(Selectors.hasOwnProperty(v_name) && Selectors[v_name].hasOwnProperty("duration")){
       milliseconds = Selectors[v_name].duration;
     }
     var xyaxis_g = xyaxis_sel
