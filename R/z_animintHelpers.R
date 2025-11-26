@@ -643,34 +643,18 @@ checkSingleShowSelectedValue <- function(selectors){
 #' @return \code{NULL}. Throws error if invalid characters found.
 checkSelectorNames <- function(selectors){
   selector.names <- names(selectors)
-  
   ## Characters that are invalid in CSS selectors and cause issues in browser
-  ## CSS selector special characters: # . : [ ] , + > ~ ( ) @ ! $ % ^ & * = | \ / ' " ` ? < >
-  ## Most problematic: # (hash/id selector), . (class selector), : (pseudo-class)
-  ## We check for these common problematic characters
-  invalid.chars <- c("#", "!", "@", "$", "%", "^", "&", "*", "=", "|", "\\", "/", "'", "\"", "`", "?", "<", ">", "(", ")", "[", "]")
-  
-  ## Check each selector name for invalid characters
-  ## Check if any invalid character appears in each selector name
-  has.invalid <- vapply(selector.names, function(name) {
-    any(vapply(invalid.chars, grepl, logical(1), x = name, fixed = TRUE))
-  }, logical(1))
-  
+  ## ] must be first in character class, [ can be anywhere after
+  invalid.pattern <- "[][#!@$%^&*=|/'\"`?<>()\\\\]"
+  has.invalid <- grepl(invalid.pattern, selector.names)
   if(any(has.invalid)){
     invalid.names <- selector.names[has.invalid]
-    ## Find which character(s) are problematic for each name
-    problematic <- sapply(invalid.names, function(name) {
-      found.chars <- invalid.chars[sapply(invalid.chars, grepl, name, fixed = TRUE)]
-      paste0("'", found.chars, "'", collapse = ", ")
-    })
-    
-    invalid.list <- paste(sprintf("  - '%s' contains %s", invalid.names, problematic), collapse = "\n")
-    error.msg <- sprintf(
-      "Invalid character(s) in selector name(s). Selector names cannot contain special characters that interfere with CSS selectors.\nThe following selector(s) contain invalid characters:\n%s\n\nPlease remove or replace these characters in your variable names.",
-      invalid.list
-    )
-    
-    stop(error.msg)
+    stop(
+      "Invalid character(s) in selector name(s).\n",
+      "Selector names cannot contain special characters that interfere with CSS selectors.\n",
+      "The following selector(s) contain invalid characters:\n",
+      paste("-", invalid.names, collapse="\n"),
+      "\n\nPlease remove or replace these characters in your variable names.")
   }
 }
 
