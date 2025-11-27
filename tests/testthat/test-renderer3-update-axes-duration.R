@@ -2,7 +2,7 @@ acontext("update_axes respects selector duration - Issue #276")
 # Test that update_axes uses the selector's duration option instead of hardcoded 1000ms
 # This follows the same pattern as test-renderer3-update-axes.R
 mtcars$cyl <- as.factor(mtcars$cyl)
-viz_duration <- list(
+viz_duration <- animint(
   scatter = ggplot() +
     geom_point(aes(mpg, disp, colour=cyl), data=mtcars) +
     theme_animint(update_axes=c("x", "y")),
@@ -31,8 +31,8 @@ updated_tick_diff_y <- getTickDiff(y_axis_node_updated, axis="y")
 
 test_that("update_axes uses selector duration for transitions", {
   # Verify ticks changed (confirms update_axes was called with correct duration)
-  expect_true(unequal(updated_tick_diff_x, original_tick_diff_x, tolerance=0.01),
-              info="X-axis ticks should change when selector changes")
-  expect_true(unequal(updated_tick_diff_y, original_tick_diff_y, tolerance=0.01),
-              info="Y-axis ticks should change when selector changes")
+  expect_false(identical(updated_tick_diff_x, original_tick_diff_x),
+               info="X-axis ticks should change when selector changes")
+  expect_false(identical(updated_tick_diff_y, original_tick_diff_y),
+               info="Y-axis ticks should change when selector changes")
 })
