@@ -1,6 +1,12 @@
+# Changes in version 2025.11.7 (PR#261)
+
+- Fixed multiline text spacing: plot titles no longer overlap with plot area, and X/Y axis label spacing is now consistent.
+- Fixed axis titles to scale correctly with `theme(text=element_text(size=X))` (issue #64).
+
 # Changes in version 2025.11.17 (PR#274)
 
 - `update_axes`: Fixed issue #273 where axis tick text font-size was inconsistent between plots with and without `update_axes`. Previously, plots using `theme_animint(update_axes="x")` would lose `theme(axis.text = element_text(size=...))` styling after axis updates.
+
 
 # Changes in version 2025.10.31 (PR#271)
 
@@ -17,6 +23,10 @@
 # Changes in version 2025.10.22 (PR#266)
 
 - `geom_text(vjust!=0)` warning mentions vjust support in `geom_label_aligned()`.
+
+# Changes in version 2025.10.21 (PR#221)
+
+- Multi-line text support: `\n` now works in plot titles, axis titles, legend titles, and `geom_text()` labels. Created `R/z_multiline.R` with helper to convert `\n` to `<br/>` during R compilation. JavaScript renderer converts `<br/>` to SVG `<tspan>` elements for proper multi-line display.
 
 # Changes in version 2025.10.17 (PR#255)
 
@@ -243,7 +253,7 @@
 
 # Changes in 2022.5.25
 
-- Add ability to rotate geom_text labels, following ggplot2's semantics of rotation direction. 
+- Add ability to rotate geom_text labels, following ggplot2\'s semantics of rotation direction. 
 
 # Changes in 2022.5.24
 
