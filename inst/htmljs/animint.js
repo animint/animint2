@@ -155,7 +155,8 @@ var animint = function (to_select, json_file) {
 var setMultilineText = function(textElement, text) {
   textElement.each(function(d) {
     var textStr = typeof text === 'function' ? text(d) : text;
-    if (!textStr) return;
+    // Check for null/undefined, but allow falsy values like 0 or ""
+    if (textStr === null || textStr === undefined) return;
     var lines = String(textStr).split('<br/>');
     var el = d3.select(this);
     el.text('');
@@ -163,11 +164,17 @@ var setMultilineText = function(textElement, text) {
     var lineHeight = 1.2;
     var y = el.attr('y') || 0;
     var x = el.attr('x') || 0;
+    // Get dominant-baseline from parent, if any
+    var dominantBaseline = el.attr('dominant-baseline');
     lines.forEach(function(line, i) {
-      el.append('tspan')
+      var tspan = el.append('tspan')
         .attr('x', x)
         .attr('dy', i === 0 ? 0 : lineHeight + 'em')
         .text(line);
+      // Inherit dominant-baseline from parent text element if set
+      if (dominantBaseline) {
+        tspan.attr('dominant-baseline', dominantBaseline);
+      }
     });
   });
 };
@@ -374,14 +381,16 @@ var setMultilineText = function(textElement, text) {
     var titleBottomMargin = 5; // pixels of space below title
     
     plotdim.title.x = p_info.options.width / 2;
-    plotdim.title.y = titlepadding;
+    // Position title at top margin, let it extend downward
+    plotdim.title.y = margin.top;
     var titleText = svg.append("text")
       .attr("class", "plottitle")
       .attr("font-family", "sans-serif")
       .attr("font-size", p_info.title_size)
       .attr("transform", "translate(" + plotdim.title.x + "," + 
         plotdim.title.y + ")")
-      .style("text-anchor", "middle");
+      .style("text-anchor", "middle")
+      .attr("dominant-baseline", "hanging");
     // Use multi-line text helper for plot titles (Issue #221)
     setMultilineText(titleText, p_info.title);
 
