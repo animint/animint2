@@ -30,7 +30,17 @@ test_that("coord_fixed with shrinking y-axis", {
   xdiff <- getTickDiff(x.axes[[1]])
   ydiff <- getTickDiff(y.axes[[1]], axis = "y")
   diffs <- normDiffs(xdiff, ydiff, ratio5)
-  expect_equal(diffs[1], diffs[2], tolerance = 1, scale = 1)
+  expect_equal(diffs[1], diffs[2], tolerance = 1e-3)
+})
+
+test_that("xaxis width increases with coord_equal", {
+  p_equal <- p + coord_equal()
+  animint2HTML(animint(p_equal))
+  bbox_default <- get_element_bbox("g.xaxis")
+  animint2HTML(animint(p_equal+theme_animint(width=1000)))
+  bbox_big <- get_element_bbox("g.xaxis")
+  ratio <- bbox_big$width/bbox_default$width
+  expect_gt(ratio, 2)
 })
 
 test_that("coord_fixed with shrinking x-axis", {
@@ -42,5 +52,5 @@ test_that("coord_fixed with shrinking x-axis", {
   xdiff <- getTickDiff(x.axes[[1]])
   ydiff <- getTickDiff(y.axes[[1]], axis = "y")
   diffs <- normDiffs(xdiff, ydiff, ratio10)
-  expect_equal(diffs[1], diffs[2], tolerance = 1, scale = 1)
+  expect_equal(diffs[1], diffs[2], tolerance = 1e-3)
 })
