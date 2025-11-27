@@ -32,6 +32,6 @@ updated_tick_diff_y <- getTickDiff(y_axis_node_updated, axis="y")
 test_that("update_axes uses selector duration for transitions", {
   # Verify ticks changed (confirms update_axes was called with correct duration)
   # Use numeric comparison - tick differences should change when selector changes
-  expect_gt(abs(updated_tick_diff_x[2] - original_tick_diff_x[2]), 0.01)
-  expect_gt(abs(updated_tick_diff_y[2] - original_tick_diff_y[2]), 0.01)
+  expect_gt(abs(updated_tick_diff_x - original_tick_diff_x), 0.01)
+  expect_gt(abs(updated_tick_diff_y - original_tick_diff_y), 0.01)
 })
