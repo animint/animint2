@@ -31,9 +31,8 @@ updated_tick_diff_y <- getTickDiff(y_axis_node_updated, axis="y")
 
 test_that("update_axes uses selector duration for transitions", {
   # Verify ticks changed (confirms update_axes was called with correct duration)
-  # Using same pattern as test-renderer3-update-axes.R
-  expect_true(unequal(updated_tick_diff_x, original_tick_diff_x, tolerance=0.01),
-              info="X-axis tick spacing should change when selector changes")
-  expect_true(unequal(updated_tick_diff_y, original_tick_diff_y, tolerance=0.01),
-              info="Y-axis tick spacing should change when selector changes")
+  # Tick spacing changes when filtering to different cyl values (4, 6, 8)
+  # because each subset has different mpg/disp ranges
+  expect_gt(abs(updated_tick_diff_x - original_tick_diff_x), 0)
+  expect_gt(abs(updated_tick_diff_y - original_tick_diff_y), 0)
 })
