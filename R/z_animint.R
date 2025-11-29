@@ -212,8 +212,21 @@ storeLayer <- function(meta, g, g.data.varied){
   ## Save each variable chunk to a separate tsv file.
   meta$chunk.i <- 1L
   meta$g <- g
+  # Initialize chunk_info only if it doesn't exist (common chunk may have been saved)
+  if(!exists("chunk_info", envir=meta)) {
+    meta$chunk_info <- list()
+  }
   g$chunks <- saveChunks(g.data.varied, meta)
   g$total <- length(unlist(g$chunks))
+  
+  ## Add chunk size information to geom - filter to only this geom's chunks
+  g$chunk_info <- list()
+  geom_prefix <- paste0(g$classed, "_chunk")
+  for(chunk_name in names(meta$chunk_info)) {
+    if(startsWith(chunk_name, geom_prefix)) {
+      g$chunk_info[[chunk_name]] <- meta$chunk_info[[chunk_name]]
+    }
+  }
 
   ## Finally save to the master geom list.
   meta$geoms[[g$classed]] <- g
