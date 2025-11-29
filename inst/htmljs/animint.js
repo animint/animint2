@@ -251,6 +251,12 @@ var animint = function (to_select, json_file) {
       g_info.total_possible_chunks = tsv_count;
     }
 
+    // Set initial display values
+    var possible_MB = (g_info.possible_bytes / 1048576).toFixed(2);
+    g_info.td_files.text("0 / " + g_info.total_possible_chunks);
+    g_info.td_MB.text("0.00 / " + possible_MB);
+    g_info.td_rows.text("0 / " + g_info.possible_rows);
+
     // load chunk tsv
     g_info.data = {};
     g_info.download_status = {};
@@ -2435,6 +2441,7 @@ var animint = function (to_select, json_file) {
         }
       });
     var loading = widget_td.append("table")
+      .attr("id", "download_status")
       .style("display", "none");
     Widgets["loading"] = loading;
     var tr = loading.append("tr");
