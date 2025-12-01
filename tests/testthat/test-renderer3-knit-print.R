@@ -15,14 +15,14 @@ remDr$refresh()
 Sys.sleep(3)
 html <- getHTML()
 
-test_that("knit_print.animint renders five x axis titles", {
+test_that("knit_print.animint renders x axis titles", {
   nodes <- getNodeSet(html, "//text[@class='xtitle']")
   value.vec <- sapply(nodes, xmlValue)
   expected.vec <-
     c("first plot with color legend",
       "second plot with color legend",
       "non-interactive plot",
-      "position",
+      "position", "position",
       "segments")
   expect_identical(value.vec, expected.vec)
 })

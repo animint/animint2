@@ -51,6 +51,10 @@ only.segments <- subset(only.error,bases.per.probe==bases.per.probe[1])
 signal.colors <- c(estimate="#0adb0a",
                    latent="#0098ef")
 animint(
+  signalUP=ggplot()+
+    theme_animint(update_axes="y")+
+    geom_point(aes(position, signal), showSelected="bases.per.probe",
+               data=breakpoints$signals),
   signal=ggplot()+
     geom_point(aes(position, signal), showSelected="bases.per.probe",
                data=breakpoints$signals)+
