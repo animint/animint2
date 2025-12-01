@@ -22,8 +22,9 @@ test_that("knit_print.animint renders x axis titles", {
     c("first plot with color legend",
       "second plot with color legend",
       "non-interactive plot",
-      "position", "position",
-      "segments")
+      "position",
+      "segments",
+      "position")
   expect_identical(value.vec, expected.vec)
 })
 
