@@ -79,5 +79,9 @@ animint(
     geom_line(aes(segments, error, group=bases.per.probe),
               clickSelects="bases.per.probe",
               data=only.error, lwd=4),
+  signalUP=ggplot()+
+    theme_animint(update_axes="y")+
+    geom_point(aes(position, signal), showSelected="bases.per.probe",
+               data=breakpoints$signals),
   first=list(segments=6))
 ```
