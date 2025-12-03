@@ -1,6 +1,7 @@
 # Changes in version 2025.12.2 (PR#283)
 
 - `update_axes`: Fixed issue #281 where plots did not render in Rmd.
+- URL hash handling: Removed old `window.location.hash` parsing code from `animint.js` (issue #280).
 
 # Changes in version 2025.11.17 (PR#274)
 
