@@ -396,13 +396,12 @@ var setMultilineText = function(textElement, text) {
 
     // grab max text size over axis labels and facet strip labels
     // Use consistent base spacing for both axes (distance from ticks to axis title)
-    var axis_label_base_spacing = 30;
+    var axis_label_base_spacing = 5;
     
-    var axispaddingy = 5;
+    var axispaddingy = axis_label_base_spacing;
     if(p_info.hasOwnProperty("ylabs") && p_info.ylabs.length){
       axispaddingy += Math.max.apply(null, p_info.ylabs.map(function(entry){
-        // + 5 to give a little extra space to avoid bad axis labels
-        // in shiny.
+        // + 5 to give a little extra space, consistent with x-axis.
         return measureText(entry, p_info.ysize).width + 5;
       }));
     }
@@ -410,7 +409,8 @@ var setMultilineText = function(textElement, text) {
     if(p_info.hasOwnProperty("xlabs") && p_info.xlabs.length){
       // TODO: throw warning if text height is large portion of plot height?
       axispaddingx += Math.max.apply(null, p_info.xlabs.map(function(entry){
-             return measureText(entry, p_info.xsize, p_info.xangle).height;
+        // + 5 to give a little extra space, consistent with y-axis.
+        return measureText(entry, p_info.xsize, p_info.xangle).height + 5;
       }));
       // TODO: carefully calculating this gets complicated with rotating xlabs
       //margin.right += 5;
@@ -626,7 +626,7 @@ var setMultilineText = function(textElement, text) {
       // get the y position of the x-axis title when drawing the last
       // panel.
       if (layout_i === (npanels - 1)) {
-        var xtitle_y = (plotdim.yend + axispaddingx);
+        var xtitle_y = (plotdim.yend + axispaddingx + xtitlepadding / 2);
         var xtitle_right = plotdim.xend;
         var ytitle_bottom = plotdim.yend;
       }
