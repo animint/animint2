@@ -2069,7 +2069,7 @@ var animint = function (to_select, json_file) {
           .orient(orientation)
           .tickValues(tick_vals);
     // update existing axis
-    var xyaxis_sel = element.select("#plot_"+p_name).select("."+axes+"axis_"+panel_i);
+    var xyaxis_sel = element.select("#"+viz_id+"_"+p_name).select("."+axes+"axis_"+panel_i);
     var xyaxis_g = xyaxis_sel
           .transition()
           .duration(1000)
@@ -2081,7 +2081,7 @@ var animint = function (to_select, json_file) {
   // Update major/minor grids once axes ticks have been updated
   function update_grids(p_name, axes, panel_i, grid_vals, scales){
     // Select panel to update
-    var bgr = element.select("#plot_"+p_name).select(".bgr"+panel_i);
+    var bgr = element.select("#"+viz_id+"_"+p_name).select(".bgr"+panel_i);
     // Update major and minor grid lines
     ["minor", "major"].forEach(function(grid_class, j){
       var lines = bgr.select(".grid_"+grid_class).select("."+axes);
