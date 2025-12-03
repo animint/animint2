@@ -1036,26 +1036,21 @@ var animint = function (to_select, json_file) {
         var chunk = nest.map(response);
         g_info.data[tsv_name] = chunk;
         g_info.download_status[tsv_name] = "saved";
-        
         // Update size information after download
         if(g_info.chunk_info && g_info.chunk_info[tsv_name]){
           var info = g_info.chunk_info[tsv_name];
           g_info.total_bytes += info.bytes;
           g_info.total_rows += info.rows;
           g_info.downloaded_chunks += 1;
-          
           // Update display with "downloaded / total" format
           var downloaded_count = g_info.downloaded_chunks;
           var total_count = g_info.total_possible_chunks;
           g_info.td_files.text(downloaded_count + " / " + total_count);
-          
           var downloaded_MB = (g_info.total_bytes / 1048576).toFixed(2);
           var possible_MB = (g_info.possible_bytes / 1048576).toFixed(2);
           g_info.td_MB.text(downloaded_MB + " / " + possible_MB);
-          
           g_info.td_rows.text(g_info.total_rows + " / " + g_info.possible_rows);
         }
-        
         funAfter(chunk);
       });
     });
