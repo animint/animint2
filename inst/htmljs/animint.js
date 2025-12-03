@@ -2008,18 +2008,18 @@ var animint = function (to_select, json_file) {
           .scale(Plots[p_name]["scales"][panel_i][axes])
           .orient(orientation)
           .tickValues(tick_vals);
-      // update existing axis
-      var xyaxis_sel = element.select("#"+viz_id+"_"+p_name).select("."+axes+"axis_"+panel_i);
-      // Fix for issue #276: use selector's duration instead of hardcoded 1000ms
-      var milliseconds = 0;
-      if(Selectors.hasOwnProperty(v_name) &&
-         Selectors[v_name].hasOwnProperty("duration")){
-        milliseconds = Selectors[v_name].duration;
-      }
-      var xyaxis_g = xyaxis_sel
-        .transition()
-        .duration(milliseconds)
-        .call(xyaxis);
+    // update existing axis
+    var xyaxis_sel = element.select("#"+viz_id+"_"+p_name).select("."+axes+"axis_"+panel_i);
+    // Fix for issue #276: use selector's duration instead of hardcoded 1000ms
+    var milliseconds = 0;
+    if(Selectors.hasOwnProperty(v_name) &&
+       Selectors[v_name].hasOwnProperty("duration")){
+      milliseconds = Selectors[v_name].duration;
+    }
+    var xyaxis_g = xyaxis_sel
+          .transition()
+          .duration(milliseconds)
+          .call(xyaxis);
     // Fix for issue #273: preserve axis text styling after update
     apply_axis_text_styles(xyaxis_sel, axes, Plots[p_name]);
   }
