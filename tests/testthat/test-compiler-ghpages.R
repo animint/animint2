@@ -22,7 +22,7 @@ test_that("error for viz with no source", {
   }, "plot.list does not contain option named source, which is required by animint2pages")
 })
 
-get_tsv <- function(L)Sys.glob(file.path(L$local_clone, "*tsv"))
+get_tsv <- function(L)Sys.glob(file.path(L$local_clone, "*chunk[0-9]*.tsv"))  # exclude common tsv
 expect_Capture <- function(L){
   expect_gt(file.size(file.path(L$local_clone,"Capture.PNG")), 0)
 }
