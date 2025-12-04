@@ -2009,11 +2009,9 @@ var animint = function (to_select, json_file) {
           .orient(orientation)
           .tickValues(tick_vals);
     // update existing axis
-    var xyaxis_sel = element.select("#"+viz_id+"_"+p_name).select("."+axes+"axis_"+panel_i);
-    // Fix for issue #276: use selector's duration instead of hardcoded 1000ms
+    var xyaxis_sel = element.select("#"+Plots[p_name].plot_id).select("."+axes+"axis_"+panel_i);
     var milliseconds = 0;
-    if(Selectors.hasOwnProperty(v_name) &&
-       Selectors[v_name].hasOwnProperty("duration")){
+    if(v_name && Selectors.hasOwnProperty(v_name) && Selectors[v_name].hasOwnProperty("duration")){
       milliseconds = Selectors[v_name].duration;
     }
     var xyaxis_g = xyaxis_sel
@@ -2027,7 +2025,7 @@ var animint = function (to_select, json_file) {
   // Update major/minor grids once axes ticks have been updated
   function update_grids(p_name, axes, panel_i, grid_vals, scales){
     // Select panel to update
-    var bgr = element.select("#"+viz_id+"_"+p_name).select(".bgr"+panel_i);
+    var bgr = element.select("#"+Plots[p_name].plot_id).select(".bgr"+panel_i);
     // Update major and minor grid lines
     ["minor", "major"].forEach(function(grid_class, j){
       var lines = bgr.select(".grid_"+grid_class).select("."+axes);
