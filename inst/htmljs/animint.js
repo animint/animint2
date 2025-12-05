@@ -1964,7 +1964,7 @@ var animint = function (to_select, json_file) {
           // We update the current selection of the plot every time
           // and use it to index the correct domain
           var curr_select = axis_domains[xyaxis].curr_select;
-          if(axis_domains[xyaxis].selectors.indexOf(v_name) > -1){
+          if(v_name && axis_domains[xyaxis].selectors.indexOf(v_name) > -1){
             curr_select[v_name] = value;
             var str = use_panel+".";
             for(selec in curr_select){
@@ -2344,8 +2344,10 @@ var animint = function (to_select, json_file) {
           if(!isArray(selectors)){
             selectors = [selectors];
           }
-          update_scales(p_name, xy, selectors[0],
-            response.selectors[selectors[0]].selected);
+          if(selectors.length > 0 && selectors[0] && response.selectors.hasOwnProperty(selectors[0])){
+            update_scales(p_name, xy, selectors[0],
+              response.selectors[selectors[0]].selected);
+          }
         }
       }
     }
