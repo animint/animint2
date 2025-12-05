@@ -127,13 +127,22 @@ start_js_coverage <- function() {
 stop_js_coverage <- function() {
   tryCatch({
     cov <- remDr$Profiler$takePreciseCoverage()
+    results <- cov$result
+    # Filter to only the main animint.js script
+    results <- Filter(function(x) grepl("animint.js", x$url), results)
+    if (length(results) == 0) {
+      warning("No animint.js coverage collected.")
+      return(FALSE)
+    }
+    # Get the single, true path to animint.js
+    local_path <- normalizePath(system.file("htmljs", "animint.js", package = "animint2"))
+    # Update all relevant entries to point to this one local file
+    for (i in seq_along(results)) {
+      results[[i]]$url <- local_path
+    }
+    # Write to a single output file
     outfile <- "js-coverage.json"
-    # Ensure the format matches what v8-to-istanbul expects
-    coverage_data <- list(
-      result = cov$result,
-      url = "http://localhost:4848/animint-htmltest/animint.js"
-    )
-    jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
+    jsonlite::write_json(list(result = results), outfile, auto_unbox = TRUE, pretty = TRUE)
     message("JS coverage saved to ", normalizePath(outfile))
     TRUE
   }, error = function(e) {
