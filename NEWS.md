@@ -1,3 +1,11 @@
+# Changes in version 2025.12.3 (PR#282)
+
+- URL hash handling: Removed old `window.location.hash` parsing code from `animint.js` (issue #280).
+
+# Changes in version 2025.12.2 (PR#283)
+
+- `update_axes`: Fixed issue #281 where plots did not render in Rmd.
+
 # Changes in version 2025.11.17 (PR#274)
 
 - `update_axes`: Fixed issue #273 where axis tick text font-size was inconsistent between plots with and without `update_axes`. Previously, plots using `theme_animint(update_axes="x")` would lose `theme(axis.text = element_text(size=...))` styling after axis updates.
