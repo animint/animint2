@@ -607,6 +607,27 @@ checkSingleShowSelectedValue <- function(selectors){
 }
 
 
+#' Validate selector names for CSS compatibility
+#' @param selectors selectors to validate
+#' @return \code{NULL}. Throws error if invalid characters found.
+checkSelectorNames <- function(selectors){
+  selector.names <- names(selectors)
+  ## Characters that are invalid in CSS selectors and cause issues in browser
+  ## ] must be first in character class, [ can be anywhere after
+  invalid.pattern <- "[][#!@$%^&*=|/'\"`?<>()\\\\]"
+  has.invalid <- grepl(invalid.pattern, selector.names)
+  if(any(has.invalid)){
+    invalid.names <- selector.names[has.invalid]
+    stop(
+      "Invalid character(s) in selector name(s).\n",
+      "Selector names cannot contain special characters that interfere with CSS selectors.\n",
+      "The following selector(s) contain invalid characters:\n",
+      paste("-", invalid.names, collapse="\n"),
+      "\n\nPlease remove or replace these characters in your variable names.")
+  }
+}
+
+
 #' Set plot width and height for all plots
 #' @param meta meta object with all information
 #' @param AllPlotsInfo plot info list
