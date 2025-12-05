@@ -125,23 +125,60 @@ var animint = function (to_select, json_file) {
   var measureText = function(pText, pFontSize, pAngle, pStyle) {
     if (pText === undefined || pText === null || pText.length === 0) return {height: 0, width: 0};
     if (pAngle === null || isNaN(pAngle)) pAngle = 0;
-
+    
+    // Create temporary container to measure text
     var container = element.append('svg');
-    // do we need to set the class so that styling is applied?
-    //.attr('class', classname);
-
-    container.append('text')
-      .attr({x: -1000, y: -1000})
+    var textElement = container.append('text')
       .attr("transform", "rotate(" + pAngle + ")")
       .attr("style", pStyle)
-      .attr("font-size", pFontSize)
-      .text(pText);
-
+      .attr("font-size", pFontSize);
+    
+    // Check if text contains <br/> tags (multi-line)
+    var textStr = String(pText || '');
+    var lines = textStr.split('<br/>');
+    
+    // Always use setMultilineText for consistent rendering
+    setMultilineText(textElement, pText);
+    
+    // Get bounding box after rendering
     var bbox = container.node().getBBox();
+    
+    // Clean up temporary element
     container.remove();
-
+    
+    // Return measured dimensions
     return {height: bbox.height, width: bbox.width};
   };
+
+// Set multi-line text on SVG text elements.
+// Converts <br/> tags to <tspan> elements for proper SVG rendering.
+var setMultilineText = function(textElement, text) {
+  textElement.each(function(d) {
+    var textStr = typeof text === 'function' ? text(d) : text;
+    // Check for null/undefined, but allow falsy values like 0 or ""
+    if (textStr === null || textStr === undefined) return;
+    var lines = String(textStr).split('<br/>');
+    var el = d3.select(this);
+    el.text('');
+    // Line height: 1.2em is standard SVG spacing between text lines
+    var lineHeight = 1.2;
+    var y = el.attr('y') || 0;
+    var x = el.attr('x') || 0;
+    // Get dominant-baseline from parent, if any
+    var dominantBaseline = el.attr('dominant-baseline');
+    lines.forEach(function(line, i) {
+      var tspan = el.append('tspan')
+        .attr('x', x)
+        .attr('dy', i === 0 ? 0 : lineHeight + 'em')
+        .text(line);
+      // Inherit dominant-baseline from parent text element if set
+      if (dominantBaseline) {
+        tspan.attr('dominant-baseline', dominantBaseline);
+      }
+    });
+  });
+};
+
 
   var nest_by_group = d3.nest().key(function(d){ return d.group; });
   var dirs = json_file.split("/");
@@ -292,9 +329,10 @@ var animint = function (to_select, json_file) {
     var npanels = Math.max.apply(null, panel_names);
 
     // Note axis names are "shared" across panels (just like the title)
-    var xtitlepadding = 5 + measureText(p_info["xtitle"], default_axis_px).height;
-    var ytitlepadding = 5 + measureText(p_info["ytitle"], default_axis_px).height;
-
+    var xtitle_size = p_info["xtitle_size"] || (default_axis_px + "pt");
+    var ytitle_size = p_info["ytitle_size"] || (default_axis_px + "pt");
+    var xtitlepadding = 5 + measureText(p_info["xtitle"], xtitle_size).height;
+    var ytitlepadding = 5 + measureText(p_info["ytitle"], ytitle_size).height;
     // 'margins' are fixed across panels and do not
     // include title/axis/label padding (since these are not
     // fixed across panels). They do, however, account for
@@ -336,31 +374,43 @@ var animint = function (to_select, json_file) {
     var titlepadding = measureText(p_info.title, p_info.title_size).height;
     // why are we giving the title padding if it is undefined?
     if (p_info.title === undefined) titlepadding = 0;
+    
+    // Add extra margin below title for multiline text to prevent overlap
+    // with plot area. The measureText already accounts for multiline height,
+    // but we need additional bottom margin.
+    var titleBottomMargin = 5; // pixels of space below title
+    
     plotdim.title.x = p_info.options.width / 2;
-    plotdim.title.y = titlepadding;
-    svg.append("text")
-      .text(p_info.title)
+    // Position title at top margin, let it extend downward
+    plotdim.title.y = margin.top;
+    var titleText = svg.append("text")
       .attr("class", "plottitle")
       .attr("font-family", "sans-serif")
       .attr("font-size", p_info.title_size)
       .attr("transform", "translate(" + plotdim.title.x + "," + 
         plotdim.title.y + ")")
-      .style("text-anchor", "middle");
+      .style("text-anchor", "middle")
+      .attr("dominant-baseline", "hanging");
+    // Use multi-line text helper for plot titles (Issue #221)
+    setMultilineText(titleText, p_info.title);
 
     // grab max text size over axis labels and facet strip labels
-    var axispaddingy = 5;
+    // Use consistent base spacing for both axes (distance from ticks to axis title)
+    var axis_label_base_spacing = 5;
+    
+    var axispaddingy = axis_label_base_spacing;
     if(p_info.hasOwnProperty("ylabs") && p_info.ylabs.length){
       axispaddingy += Math.max.apply(null, p_info.ylabs.map(function(entry){
-        // + 5 to give a little extra space to avoid bad axis labels
-        // in shiny.
+        // + 5 to give a little extra space, consistent with x-axis.
         return measureText(entry, p_info.ysize).width + 5;
       }));
     }
-    var axispaddingx = 30; // distance between tick marks and x axis name.
+    var axispaddingx = axis_label_base_spacing; // distance between tick marks and x axis name.
     if(p_info.hasOwnProperty("xlabs") && p_info.xlabs.length){
       // TODO: throw warning if text height is large portion of plot height?
       axispaddingx += Math.max.apply(null, p_info.xlabs.map(function(entry){
-             return measureText(entry, p_info.xsize, p_info.xangle).height;
+        // + 5 to give a little extra space, consistent with y-axis.
+        return measureText(entry, p_info.xsize, p_info.xangle).height + 5;
       }));
       // TODO: carefully calculating this gets complicated with rotating xlabs
       //margin.right += 5;
@@ -421,7 +471,7 @@ var animint = function (to_select, json_file) {
     var graph_height = p_info.options.height - 
         nrows * (margin.top + margin.bottom) -
         strip_height -
-        titlepadding - n_xaxes * axispaddingx - xtitlepadding;
+        titlepadding - titleBottomMargin - n_xaxes * axispaddingx - xtitlepadding;
 
     // Impose the pixelated aspect ratio of the graph upon the width/height
     // proportions calculated by the compiler. This has to be done on the
@@ -559,7 +609,7 @@ var animint = function (to_select, json_file) {
       var strip_h = cum_height_per_row[current_row-1];
       plotdim.ystart = current_row * plotdim.margin.top +
         (current_row - 1) * plotdim.margin.bottom +
-        graph_height_cum + titlepadding + strip_h;
+        graph_height_cum + titlepadding + titleBottomMargin + strip_h;
       // room for xaxis title should be distributed evenly across
       // panels to preserve aspect ratio
       plotdim.yend = plotdim.ystart + plotdim.graph.height;
@@ -576,7 +626,7 @@ var animint = function (to_select, json_file) {
       // get the y position of the x-axis title when drawing the last
       // panel.
       if (layout_i === (npanels - 1)) {
-        var xtitle_y = (plotdim.yend + axispaddingx);
+        var xtitle_y = (plotdim.yend + axispaddingx + xtitlepadding / 2);
         var xtitle_right = plotdim.xend;
         var ytitle_bottom = plotdim.yend;
       }
@@ -761,30 +811,30 @@ var animint = function (to_select, json_file) {
     } //end of for(layout_i
     // After drawing all backgrounds, we can draw the axis labels.
     if(p_info["ytitle"]){
-      svg.append("text")
-        .text(p_info["ytitle"])
+      var ytitleText = svg.append("text")
         .attr("class", "ytitle")
         .style("text-anchor", "middle")
-        .style("font-size", default_axis_px + "px")
+        .style("font-size", ytitle_size)
         .attr("transform", "translate(" +
               ytitle_x +
               "," +
               (ytitle_top + ytitle_bottom)/2 +
-              ")rotate(270)")
-      ;
+              ")rotate(270)");
+      // Use multi-line text helper for y-axis title (Issue #221)
+      setMultilineText(ytitleText, p_info["ytitle"]);
     }
     if(p_info["xtitle"]){
-      svg.append("text")
-        .text(p_info["xtitle"])
+      var xtitleText = svg.append("text")
         .attr("class", "xtitle")
         .style("text-anchor", "middle")
-        .style("font-size", default_axis_px + "px")
+        .style("font-size", xtitle_size)
         .attr("transform", "translate(" +
               (xtitle_left + xtitle_right)/2 +
               "," +
               xtitle_y +
-              ")")
-      ;
+              ")");
+      // Use multi-line text helper for x-axis title (Issue #221)
+      setMultilineText(xtitleText, p_info["xtitle"]);
     }
     Plots[p_name].scales = scales;
   }; //end of add_plot()
@@ -1493,10 +1543,11 @@ var animint = function (to_select, json_file) {
             .attr("y", toXY("y", "y"))
             .attr("font-size", get_size)
             .style("text-anchor", get_text_anchor)
-            .attr("transform", get_rotate)
-            .text(function (d) {
-              return d.label;
-            })
+            .attr("transform", get_rotate);
+          // Use multi-line text helper for geom_text labels (Issue #221)
+          setMultilineText(e, function (d) {
+            return d.label;
+          })
           ;
         };
         eAppend = "text";
@@ -1742,7 +1793,7 @@ var animint = function (to_select, json_file) {
       "stroke": get_colour_off,
       "fill": get_fill_off
     };
-    // TODO cleanup.
+       // TODO cleanup.
     var select_style_default = ["opacity","stroke","fill"];
     g_info.select_style = select_style_default.filter(
       X => g_info.style_list.includes(X));
@@ -2223,10 +2274,15 @@ var animint = function (to_select, json_file) {
       var first_th = first_tr.append("th")
         .attr("align", "left")
         .attr("colspan", 2)
-        .text(l_info.title)
         .attr("class", legend_class)
-        .style("font-size", l_info.title_size)
-      ;
+        .style("font-size", l_info.title_size);
+      // Use multi-line text helper for legend title (Issue #221)
+      if (l_info.title && l_info.title.indexOf('<br/>') > -1) {
+        // Multi-line title: replace <br/> with actual line breaks in HTML
+        first_th.html(l_info.title.replace(/<br\/>/g, '<br/>'));
+      } else {
+        first_th.text(l_info.title);
+      }
       var legend_svgs = legend_rows.append("td")
         .append("svg")
               .attr("id", function(d){return d["id"]+"_svg";})

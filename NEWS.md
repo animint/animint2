@@ -10,6 +10,11 @@
 
 - `update_axes`: Fixed issue #273 where axis tick text font-size was inconsistent between plots with and without `update_axes`. Previously, plots using `theme_animint(update_axes="x")` would lose `theme(axis.text = element_text(size=...))` styling after axis updates.
 
+# Changes in version 2025.11.7 (PR#261)
+
+- Fixed multiline text spacing: plot titles no longer overlap with plot area, and X/Y axis label spacing is now consistent.
+- Fixed axis titles to scale correctly with `theme(text=element_text(size=X))` (issue #64).
+
 # Changes in version 2025.10.31 (PR#271)
 
 - `geom_point()` now warns when shape parameter is set to a value other than 21, since animint2 web rendering only supports shape=21 for proper display of both color and fill aesthetics.
@@ -25,6 +30,10 @@
 # Changes in version 2025.10.22 (PR#266)
 
 - `geom_text(vjust!=0)` warning mentions vjust support in `geom_label_aligned()`.
+
+# Changes in version 2025.10.21 (PR#221)
+
+- Multi-line text support: `\n` now works in plot titles, axis titles, legend titles, and `geom_text()` labels. Created `R/z_multiline.R` with helper to convert `\n` to `<br/>` during R compilation. JavaScript renderer converts `<br/>` to SVG `<tspan>` elements for proper multi-line display.
 
 # Changes in version 2025.10.17 (PR#255)
 
@@ -129,7 +138,7 @@
 
 # Changes in version 2025.1.24 (PR#164)
 
-- New Start Tour widget at the bottom of each data viz, which highlights what interactions are possible with each geom. Use `geom_*(title="title for geom in tour", help="details about what this geom is supposed to represent)` to change what is displayed for each geom during the tour. Powered by https://driverjs.com/
+- New Start Tour widget at the bottom of each data viz, which highlights what interactions are possible with each geom. Use `geom_*(title="title for geom in tour", help="details about what this geom is supposed to represent)` to change what is displayed for each geom during the tour. Powered by [https://driverjs.com/](https://driverjs.com/)
 
 # Changes in version 2025.1.21 (PR#181)
 
@@ -209,7 +218,7 @@
   be the URL of data viz source code, used to display a link below the
   rendered viz.
 - New function `update_gallery("path/to/gallery_repo")` for updating
-  galleries such as https://animint.github.io/gallery/
+  galleries such as [https://animint.github.io/gallery/](https://animint.github.io/gallery/)
 - Bugfix: geom_text renders color as svg fill style (was rendering as
   stroke style, a regression introduced by the initial implementation
   of `fill_off`).
@@ -251,7 +260,7 @@
 
 # Changes in 2022.5.25
 
-- Add ability to rotate geom_text labels, following ggplot2's semantics of rotation direction. 
+- Add ability to rotate geom_text labels, following ggplot2\'s semantics of rotation direction. 
 
 # Changes in 2022.5.24
 
