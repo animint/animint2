@@ -1964,7 +1964,7 @@ var animint = function (to_select, json_file) {
           // We update the current selection of the plot every time
           // and use it to index the correct domain
           var curr_select = axis_domains[xyaxis].curr_select;
-          if(v_name && axis_domains[xyaxis].selectors.indexOf(v_name) > -1){
+          if(axis_domains[xyaxis].selectors.indexOf(v_name) > -1){
             curr_select[v_name] = value;
             var str = use_panel+".";
             for(selec in curr_select){
@@ -2009,8 +2009,7 @@ var animint = function (to_select, json_file) {
           .orient(orientation)
           .tickValues(tick_vals);
     // update existing axis
-    var plot_id = Plots[p_name] && Plots[p_name].plot_id ? Plots[p_name].plot_id : ("plot_"+p_name);
-    var xyaxis_sel = element.select("#"+plot_id).select("."+axes+"axis_"+panel_i);
+    var xyaxis_sel = element.select("#"+viz_id+"_"+p_name).select("."+axes+"axis_"+panel_i);
     var milliseconds = 0;
     if(v_name && Selectors.hasOwnProperty(v_name) && Selectors[v_name].hasOwnProperty("duration")){
       milliseconds = Selectors[v_name].duration;
@@ -2026,8 +2025,7 @@ var animint = function (to_select, json_file) {
   // Update major/minor grids once axes ticks have been updated
   function update_grids(p_name, axes, panel_i, grid_vals, scales){
     // Select panel to update
-    var plot_id = Plots[p_name] && Plots[p_name].plot_id ? Plots[p_name].plot_id : ("plot_"+p_name);
-    var bgr = element.select("#"+plot_id).select(".bgr"+panel_i);
+    var bgr = element.select("#"+viz_id+"_"+p_name).select(".bgr"+panel_i);
     // Update major and minor grid lines
     ["minor", "major"].forEach(function(grid_class, j){
       var lines = bgr.select(".grid_"+grid_class).select("."+axes);
@@ -2344,10 +2342,8 @@ var animint = function (to_select, json_file) {
           if(!isArray(selectors)){
             selectors = [selectors];
           }
-          if(selectors.length > 0 && selectors[0] && response.selectors.hasOwnProperty(selectors[0])){
-            update_scales(p_name, xy, selectors[0],
-              response.selectors[selectors[0]].selected);
-          }
+          update_scales(p_name, xy, selectors[0],
+            response.selectors[selectors[0]].selected);
         }
       }
     }
@@ -2758,5 +2754,52 @@ var animint = function (to_select, json_file) {
       status_array=status_array.slice(1)
       return status_array.every(function(elem){ return elem === "displayed"});           
     }
+    if(window.location.hash) {
+      var fragment=window.location.hash;
+      fragment=fragment.slice(1);
+      fragment=decodeURI(fragment)
+      var frag_array=fragment.split(/(.*?})/);
+      frag_array=frag_array.filter(function(x){ return x!=""})
+      frag_array.forEach(function(selector_string){ 
+        var selector_hash=selector_string.split("=");
+        var selector_nam=selector_hash[0];
+        var selector_values=selector_hash[1];
+        var re = /\{(.*?)\}/;
+        selector_values = re.exec(selector_values)[1];
+        var array_values = selector_values.split(',');
+        if(Selectors.hasOwnProperty(selector_nam)){
+          var s_info = Selectors[selector_nam]
+          if(s_info.type=="single"){//TODO fix
+            array_values.forEach(function(element) {
+              wait_until_then(100, check_func, update_selector,selector_nam,element)
+              if(response.time)Animation.pause(true)
+            });   
+          }else{
+            var old_selections = Selectors[selector_nam].selected;
+            // the levels that need to have selections turned on
+            array_values
+              .filter(function(n) {
+                return old_selections.indexOf(n) == -1;
+              })
+              .forEach(function(element) {
+                wait_until_then(100, check_func, update_selector,selector_nam,element)
+                if(response.time){
+                  Animation.pause(true)
+                }
+              });
+            old_selections
+              .filter(function(n) {
+                return array_values.indexOf(n) == -1;
+              })
+              .forEach(function(element) {
+                wait_until_then(100, check_func, update_selector,selector_nam,element)
+                if(response.time){
+                  Animation.pause(true)
+                }
+              });     
+          }//if(single) else multiple selection
+        }//if(Selectors.hasOwnProperty(selector_nam))
+      })//frag_array.forEach
+    }//if(window.location.hash)
   });
 };
