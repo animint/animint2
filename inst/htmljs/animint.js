@@ -2436,7 +2436,7 @@ var animint = function (to_select, json_file) {
         }
       });
     var loading = widget_td.append("table")
-      .attr("id", "download_status")
+      .attr("id", viz_id + "_download_status")
       .style("display", "none");
     Widgets["loading"] = loading;
     var tr = loading.append("tr");
