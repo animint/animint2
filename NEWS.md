@@ -12,7 +12,7 @@
 
 # Changes in version 2025.12.4 (PR#272)
 
-- Download status table now displays three new columns: `total_MB` (total disk space used by all downloaded chunks), `mean_MB` (average chunk size), and `rows` (total number of data rows). Chunk sizes are calculated in R using `file.size()` and exported via plot.json for efficient display updates after each chunk download.
+- Download status table now shows `files`, `disk`, and `rows` columns in "downloaded / total" format. Row counts display with comma separators for readability. Disk sizes show KiB or MiB units (using binary 1024 divisor, consistent with `man du`). Chunk sizes are calculated in R using `file.size()` and exported via plot.json.
 
 # Changes in version 2025.10.31 (PR#271)
 

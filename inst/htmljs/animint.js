@@ -9,6 +9,33 @@ var animint = function (to_select, json_file) {
   var default_axis_px = 16;
   var grid_layout = false;
   var grid_layout_table;
+  
+  // Helper function to format numbers with commas (e.g., 4321 -> "4,321")
+  function formatWithCommas(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  
+  // Helper function to format bytes as KiB or MiB with appropriate precision
+  // Uses binary units (1024) consistent with "man du" documentation
+  function formatBytes(bytes) {
+    if (bytes === 0) return "0";
+    var kib = bytes / 1024;
+    if (kib < 1024) {
+      // Less than 1 MiB, show in KiB
+      if (kib < 10) {
+        return kib.toFixed(2) + " KiB";
+      } else if (kib < 100) {
+        return kib.toFixed(1) + " KiB";
+      } else {
+        return Math.round(kib) + " KiB";
+      }
+    } else {
+      // 1 MiB or more, show in MiB
+      var mib = kib / 1024;
+      return mib.toFixed(2) + " MiB";
+    }
+  }
+  
   function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
@@ -226,7 +253,7 @@ var animint = function (to_select, json_file) {
     g_info.tr = Widgets["loading"].append("tr");
     g_info.tr.append("td").text(g_name);
     g_info.td_files = g_info.tr.append("td").attr("class", "files").style("text-align", "right");
-    g_info.td_MB = g_info.tr.append("td").attr("class", "MB").style("text-align", "right");
+    g_info.td_disk = g_info.tr.append("td").attr("class", "disk").style("text-align", "right");
     g_info.td_rows = g_info.tr.append("td").attr("class", "rows").style("text-align", "right");
     
     // Initialize size tracking
@@ -252,10 +279,9 @@ var animint = function (to_select, json_file) {
     }
 
     // Set initial display values
-    var possible_MB = (g_info.possible_bytes / 1048576).toFixed(2);
     g_info.td_files.text("0 / " + g_info.total_possible_chunks);
-    g_info.td_MB.text("0.00 / " + possible_MB);
-    g_info.td_rows.text("0 / " + g_info.possible_rows);
+    g_info.td_disk.text("0 / " + formatBytes(g_info.possible_bytes));
+    g_info.td_rows.text("0 / " + formatWithCommas(g_info.possible_rows));
 
     // load chunk tsv
     g_info.data = {};
@@ -279,11 +305,9 @@ var animint = function (to_select, json_file) {
           // Update display
           var downloaded_count = g_info.downloaded_chunks;
           var total_count = g_info.total_possible_chunks;
-          var downloaded_MB = (g_info.total_bytes / 1048576).toFixed(2);
-          var possible_MB = (g_info.possible_bytes / 1048576).toFixed(2);
           g_info.td_files.text(downloaded_count + " / " + total_count);
-          g_info.td_MB.text(downloaded_MB + " / " + possible_MB);
-          g_info.td_rows.text(g_info.total_rows + " / " + g_info.possible_rows);
+          g_info.td_disk.text(formatBytes(g_info.total_bytes) + " / " + formatBytes(g_info.possible_bytes));
+          g_info.td_rows.text(formatWithCommas(g_info.total_rows) + " / " + formatWithCommas(g_info.possible_rows));
         }
       });
     } else {
@@ -1046,10 +1070,8 @@ var animint = function (to_select, json_file) {
           var downloaded_count = g_info.downloaded_chunks;
           var total_count = g_info.total_possible_chunks;
           g_info.td_files.text(downloaded_count + " / " + total_count);
-          var downloaded_MB = (g_info.total_bytes / 1048576).toFixed(2);
-          var possible_MB = (g_info.possible_bytes / 1048576).toFixed(2);
-          g_info.td_MB.text(downloaded_MB + " / " + possible_MB);
-          g_info.td_rows.text(g_info.total_rows + " / " + g_info.possible_rows);
+          g_info.td_disk.text(formatBytes(g_info.total_bytes) + " / " + formatBytes(g_info.possible_bytes));
+          g_info.td_rows.text(formatWithCommas(g_info.total_rows) + " / " + formatWithCommas(g_info.possible_rows));
         }
         funAfter(chunk);
       });
@@ -2442,7 +2464,7 @@ var animint = function (to_select, json_file) {
     var tr = loading.append("tr");
     tr.append("th").text("geom");
     tr.append("th").attr("class", "files").style("text-align", "right").text("files");
-    tr.append("th").attr("class", "MB").style("text-align", "right").text("MB");
+    tr.append("th").attr("class", "disk").style("text-align", "right").text("disk");
     tr.append("th").attr("class", "rows").style("text-align", "right").text("rows");
     
     // Add geoms and construct nest operators.
