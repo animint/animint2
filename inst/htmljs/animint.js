@@ -36,6 +36,23 @@ var animint = function (to_select, json_file) {
     }
   }
   
+  // Helper function to update download status display after a chunk is downloaded
+  // Used by both common chunk and regular chunk download handlers
+  function updateDownloadStatus(g_info, tsv_name) {
+    if(g_info.chunk_info && g_info.chunk_info[tsv_name]){
+      var info = g_info.chunk_info[tsv_name];
+      g_info.total_bytes += info.bytes;
+      g_info.total_rows += info.rows;
+      g_info.downloaded_chunks += 1;
+      // Update display with "downloaded / total" format
+      var downloaded_count = g_info.downloaded_chunks;
+      var total_count = g_info.total_possible_chunks;
+      g_info.td_files.text(downloaded_count + " / " + total_count);
+      g_info.td_disk.text(formatBytes(g_info.total_bytes) + " / " + formatBytes(g_info.possible_bytes));
+      g_info.td_rows.text(formatWithCommas(g_info.total_rows) + " / " + formatWithCommas(g_info.possible_rows));
+    }
+  }
+  
   function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
@@ -297,18 +314,7 @@ var animint = function (to_select, json_file) {
         var converted = convert_R_types(response, g_info.types);
         g_info.data[common_tsv] = nest_by_group.map(converted);
         // Track common chunk download for size information
-        if(g_info.chunk_info && g_info.chunk_info[common_tsv]){
-          var info = g_info.chunk_info[common_tsv];
-          g_info.total_bytes += info.bytes;
-          g_info.total_rows += info.rows;
-          g_info.downloaded_chunks += 1;
-          // Update display
-          var downloaded_count = g_info.downloaded_chunks;
-          var total_count = g_info.total_possible_chunks;
-          g_info.td_files.text(downloaded_count + " / " + total_count);
-          g_info.td_disk.text(formatBytes(g_info.total_bytes) + " / " + formatBytes(g_info.possible_bytes));
-          g_info.td_rows.text(formatWithCommas(g_info.total_rows) + " / " + formatWithCommas(g_info.possible_rows));
-        }
+        updateDownloadStatus(g_info, common_tsv);
       });
     } else {
       g_info.common_tsv = null;
@@ -1061,18 +1067,7 @@ var animint = function (to_select, json_file) {
         g_info.data[tsv_name] = chunk;
         g_info.download_status[tsv_name] = "saved";
         // Update size information after download
-        if(g_info.chunk_info && g_info.chunk_info[tsv_name]){
-          var info = g_info.chunk_info[tsv_name];
-          g_info.total_bytes += info.bytes;
-          g_info.total_rows += info.rows;
-          g_info.downloaded_chunks += 1;
-          // Update display with "downloaded / total" format
-          var downloaded_count = g_info.downloaded_chunks;
-          var total_count = g_info.total_possible_chunks;
-          g_info.td_files.text(downloaded_count + " / " + total_count);
-          g_info.td_disk.text(formatBytes(g_info.total_bytes) + " / " + formatBytes(g_info.possible_bytes));
-          g_info.td_rows.text(formatWithCommas(g_info.total_rows) + " / " + formatWithCommas(g_info.possible_rows));
-        }
+        updateDownloadStatus(g_info, tsv_name);
         funAfter(chunk);
       });
     });
