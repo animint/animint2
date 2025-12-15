@@ -28,17 +28,18 @@ test_that("download status table displays correct content format", {
   
   # Should have cells for: geom name, files (1 / 1), disk (KiB/MiB), rows (with commas)
   # Files column should show "downloaded / total" format
-  files_pattern <- "^\\d+ / \\d+$"
+  files_pattern <- "^[0-9]+ / [0-9]+$"
   files_cells <- grep(files_pattern, cell_text, value = TRUE)
   expect_true(length(files_cells) > 0, "Should have files column with 'downloaded / total' format")
   
   # Disk column should show bytes with KiB or MiB units
-  disk_pattern <- "\\d+(\\.\\d+)? (KiB|MiB) / \\d+(\\.\\d+)? (KiB|MiB)"
+  disk_pattern <- "[0-9]+(\\.[0-9]+)? (KiB|MiB) / [0-9]+(\\.[0-9]+)? (KiB|MiB)"
   disk_cells <- grep(disk_pattern, cell_text, value = TRUE)
   expect_true(length(disk_cells) > 0, "Should have disk column with KiB/MiB units")
   
   # Rows column should show numbers (may have commas for large numbers)
-  rows_pattern <- "^[\\d,]+ / [\\d,]+$"
+  # Pattern allows digits with optional commas: 150 or 10,066
+  rows_pattern <- "^[0-9,]+ / [0-9,]+$"
   rows_cells <- grep(rows_pattern, cell_text, value = TRUE)
   expect_true(length(rows_cells) > 0, "Should have rows column with numeric format")
 })
