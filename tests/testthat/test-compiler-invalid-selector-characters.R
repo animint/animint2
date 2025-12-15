@@ -18,13 +18,7 @@ test_that("selector name with # causes error in clickSelects", {
   )
   expect_error(
     animint2dir(viz, open.browser = FALSE),
-    "Invalid character\\(s\\) in selector name\\(s\\)",
-    info = "Selector names with '#' should cause an error"
-  )
-  expect_error(
-    animint2dir(viz, open.browser = FALSE),
-    "# nearest neighbors",
-    info = "Error message should mention the problematic selector name"
+    "Invalid character\\(s\\) in selector name\\(s\\).*# nearest neighbors"
   )
 })
 
@@ -44,13 +38,7 @@ test_that("selector name with @ causes error in clickSelects", {
   )
   expect_error(
     animint2dir(viz, open.browser = FALSE),
-    "Invalid character\\(s\\) in selector name\\(s\\)",
-    info = "Selector names with '@' should cause an error"
-  )
-  expect_error(
-    animint2dir(viz, open.browser = FALSE),
-    "model@version",
-    info = "Error message should mention the problematic selector"
+    "Invalid character\\(s\\) in selector name\\(s\\).*model@version1"
   )
 })
 
