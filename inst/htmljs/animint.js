@@ -1567,7 +1567,7 @@ var animint = function (to_select, json_file) {
           eActions = function(groups) {
             // Handle transitions seperately due to unique structure of geom_label_aligned
             var transitionDuration = 0;
-            if (Selectors.hasOwnProperty(selector_name)) {
+            if (Selectors[selector_name]) {
               transitionDuration = +Selectors[selector_name].duration || 0;
             }
             groups.each(function(d) {
@@ -1863,7 +1863,7 @@ var animint = function (to_select, json_file) {
           positionTooltip(tooltip, tooltip.html());
         });
     }
-    if(Selectors.hasOwnProperty(selector_name)){
+    if(Selectors[selector_name]){
       var milliseconds = Selectors[selector_name].duration;
       elements = elements.transition().duration(milliseconds);
     }
@@ -2084,7 +2084,7 @@ var animint = function (to_select, json_file) {
   }
 
   var update_selector = function (v_name, value) {
-    if(!Selectors.hasOwnProperty(v_name)){
+    if(!Selectors[v_name]){
       return;
     }
     value = value + "";
