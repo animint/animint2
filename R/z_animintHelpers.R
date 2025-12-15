@@ -618,12 +618,7 @@ checkSelectorNames <- function(selectors){
   has.invalid <- grepl(invalid.pattern, selector.names)
   if(any(has.invalid)){
     invalid.names <- selector.names[has.invalid]
-    stop(
-      "Invalid character(s) in selector name(s).\n",
-      "Selector names cannot contain special characters that interfere with CSS selectors.\n",
-      "The following selector(s) contain invalid characters:\n",
-      paste("-", invalid.names, collapse="\n"),
-      "\n\nPlease remove or replace these characters in your variable names.")
+    stop(sprintf("Invalid character(s) in selector name(s).\nSelector names cannot contain special characters that interfere with CSS selectors.\nThe following selector(s) contain invalid characters:\n%s\n\nPlease remove or replace these characters in your variable names.", paste("-", invalid.names, collapse="\n")))
   }
 }
 
