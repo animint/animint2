@@ -2084,9 +2084,6 @@ var animint = function (to_select, json_file) {
   }
 
   var update_selector = function (v_name, value) {
-    if(!Selectors[v_name]){
-      return;
-    }
     value = value + "";
     var s_info = Selectors[v_name];
     if(s_info.type == "single"){
