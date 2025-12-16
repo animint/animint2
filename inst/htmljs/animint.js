@@ -1567,7 +1567,7 @@ var animint = function (to_select, json_file) {
           eActions = function(groups) {
             // Handle transitions seperately due to unique structure of geom_label_aligned
             var transitionDuration = 0;
-            transitionDuration = +Selectors[selector_name].duration || 0;
+            transitionDuration = Selectors[selector_name].duration || 0;
             groups.each(function(d) {
               var group = d3.select(this);
               // Select existing elements (if any)
