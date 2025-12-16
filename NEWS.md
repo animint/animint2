@@ -1,3 +1,7 @@
+# Changes in version 2025.12.4 (PR#284)
+
+- issue #278 Removed unnecessary hasOwnProperty selector checks in `animint.js`.
+
 # Changes in version 2025.12.3 (PR#282)
 
 - URL hash handling: Removed old `window.location.hash` parsing code from `animint.js` (issue #280).
