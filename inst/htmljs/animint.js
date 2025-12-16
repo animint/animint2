@@ -268,16 +268,14 @@ var animint = function (to_select, json_file) {
     }
     // Add a row to the loading table.
     g_info.tr = Widgets["loading"].append("tr");
-    g_info.tr.append("td").text(g_name);
-    g_info.td_files = g_info.tr.append("td").attr("class", "files").style("text-align", "right");
-    g_info.td_disk = g_info.tr.append("td").attr("class", "disk").style("text-align", "right");
-    g_info.td_rows = g_info.tr.append("td").attr("class", "rows").style("text-align", "right");
-    
+    g_info.tr.append("td").text(g_name).style("border", "1px solid #ddd").style("padding", "4px");
+    g_info.td_files = g_info.tr.append("td").attr("class", "files").style("text-align", "right").style("border", "1px solid #ddd").style("padding", "4px");
+    g_info.td_disk = g_info.tr.append("td").attr("class", "disk").style("text-align", "right").style("border", "1px solid #ddd").style("padding", "4px");
+    g_info.td_rows = g_info.tr.append("td").attr("class", "rows").style("text-align", "right").style("border", "1px solid #ddd").style("padding", "4px");
     // Initialize size tracking
     g_info.total_bytes = 0;
     g_info.total_rows = 0;
     g_info.downloaded_chunks = 0;
-    
     // Calculate total possible bytes and rows from chunk_info
     g_info.possible_bytes = 0;
     g_info.possible_rows = 0;
@@ -2454,13 +2452,15 @@ var animint = function (to_select, json_file) {
       });
     var loading = widget_td.append("table")
       .attr("id", viz_id + "_download_status")
-      .style("display", "none");
+      .style("display", "none")
+      .style("border-collapse", "collapse")
+      .style("border", "1px solid #ddd");
     Widgets["loading"] = loading;
     var tr = loading.append("tr");
-    tr.append("th").text("geom");
-    tr.append("th").attr("class", "files").style("text-align", "right").text("files");
-    tr.append("th").attr("class", "disk").style("text-align", "right").text("disk");
-    tr.append("th").attr("class", "rows").style("text-align", "right").text("rows");
+    tr.append("th").text("geom").style("border", "1px solid #ddd").style("padding", "4px");
+    tr.append("th").attr("class", "files").style("text-align", "right").style("border", "1px solid #ddd").style("padding", "4px").text("files");
+    tr.append("th").attr("class", "disk").style("text-align", "right").style("border", "1px solid #ddd").style("padding", "4px").text("disk");
+    tr.append("th").attr("class", "rows").style("text-align", "right").style("border", "1px solid #ddd").style("padding", "4px").text("rows");
     
     // Add geoms and construct nest operators.
     for (var g_name in response.geoms) {
