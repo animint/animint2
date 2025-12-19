@@ -18,7 +18,13 @@ test_that("selector name with # causes error in clickSelects", {
   )
   expect_error(
     animint2dir(viz, open.browser = FALSE),
-    "Invalid character\\(s\\) in selector name\\(s\\).*# nearest neighbors"
+    "Invalid character(s) in selector name(s).
+Selector names cannot contain special characters that interfere with CSS selectors.
+The following selector(s) contain invalid characters:
+- # nearest neighbors
+
+Please remove or replace these characters in your variable names.",
+    fixed = TRUE
   )
 })
 
@@ -38,7 +44,13 @@ test_that("selector name with @ causes error in clickSelects", {
   )
   expect_error(
     animint2dir(viz, open.browser = FALSE),
-    "Invalid character\\(s\\) in selector name\\(s\\).*model@version1"
+    "Invalid character(s) in selector name(s).
+Selector names cannot contain special characters that interfere with CSS selectors.
+The following selector(s) contain invalid characters:
+- model@version1
+
+Please remove or replace these characters in your variable names.",
+    fixed = TRUE
   )
 })
 
@@ -56,8 +68,13 @@ test_that("selector name with ! causes error", {
   )
   expect_error(
     animint2dir(viz, open.browser = FALSE),
-    "Invalid character\\(s\\) in selector name\\(s\\)",
-    info = "Selector names with '!' should cause an error"
+    "Invalid character(s) in selector name(s).
+Selector names cannot contain special characters that interfere with CSS selectors.
+The following selector(s) contain invalid characters:
+- model!important
+
+Please remove or replace these characters in your variable names.",
+    fixed = TRUE
   )
 })
 
@@ -105,10 +122,9 @@ test_that("multiple values with invalid characters all reported", {
         clickSelects = c(regularization = "parameter")
       )
   )
-  error_msg <- tryCatch(
+  expect_error(
     animint2dir(viz, open.browser = FALSE),
-    error = function(e) as.character(e$message)
+    "Invalid character(s) in selector name(s).\nSelector names cannot contain special characters that interfere with CSS selectors.\nThe following selector(s) contain invalid characters:\n- #bad\n- !worse\n\nPlease remove or replace these characters in your variable names.",
+    fixed = TRUE
   )
-  expect_match(error_msg, "Invalid character", info = "Should report invalid characters")
-  expect_match(error_msg, "#bad|!worse", info = "Should mention at least one problematic selector")
 })
