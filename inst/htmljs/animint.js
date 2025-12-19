@@ -36,6 +36,11 @@ var animint = function (to_select, json_file) {
     }
   }
   
+  // Helper function to apply consistent border and padding styles to table cells
+  function applyCellStyles(cell) {
+    return cell.style("border", "1px solid #ddd").style("padding", "4px");
+  }
+
   // Helper function to update download status display after a chunk is downloaded
   // Used by both common chunk and regular chunk download handlers
   function updateDownloadStatus(g_info, tsv_name) {
@@ -268,10 +273,10 @@ var animint = function (to_select, json_file) {
     }
     // Add a row to the loading table.
     g_info.tr = Widgets["loading"].append("tr");
-    g_info.tr.append("td").text(g_name).style("border", "1px solid #ddd").style("padding", "4px");
-    g_info.td_files = g_info.tr.append("td").attr("class", "files").style("text-align", "right").style("border", "1px solid #ddd").style("padding", "4px");
-    g_info.td_disk = g_info.tr.append("td").attr("class", "disk").style("text-align", "right").style("border", "1px solid #ddd").style("padding", "4px");
-    g_info.td_rows = g_info.tr.append("td").attr("class", "rows").style("text-align", "right").style("border", "1px solid #ddd").style("padding", "4px");
+    applyCellStyles(g_info.tr.append("td").text(g_name));
+    g_info.td_files = applyCellStyles(g_info.tr.append("td").attr("class", "files").style("text-align", "right"));
+    g_info.td_disk = applyCellStyles(g_info.tr.append("td").attr("class", "disk").style("text-align", "right"));
+    g_info.td_rows = applyCellStyles(g_info.tr.append("td").attr("class", "rows").style("text-align", "right"));
     // Initialize size tracking
     g_info.total_bytes = 0;
     g_info.total_rows = 0;
@@ -2457,10 +2462,10 @@ var animint = function (to_select, json_file) {
       .style("border", "1px solid #ddd");
     Widgets["loading"] = loading;
     var tr = loading.append("tr");
-    tr.append("th").text("geom").style("border", "1px solid #ddd").style("padding", "4px");
-    tr.append("th").attr("class", "files").style("text-align", "right").style("border", "1px solid #ddd").style("padding", "4px").text("files");
-    tr.append("th").attr("class", "disk").style("text-align", "right").style("border", "1px solid #ddd").style("padding", "4px").text("disk");
-    tr.append("th").attr("class", "rows").style("text-align", "right").style("border", "1px solid #ddd").style("padding", "4px").text("rows");
+    applyCellStyles(tr.append("th").text("geom"));
+    applyCellStyles(tr.append("th").attr("class", "files").style("text-align", "right")).text("files");
+    applyCellStyles(tr.append("th").attr("class", "disk").style("text-align", "right")).text("disk");
+    applyCellStyles(tr.append("th").attr("class", "rows").style("text-align", "right")).text("rows");
     
     // Add geoms and construct nest operators.
     for (var g_name in response.geoms) {
