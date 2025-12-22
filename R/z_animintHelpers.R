@@ -1066,3 +1066,40 @@ selectSSandCS <- function(aesthetics_list){
   ## TODO: how to handle showSelected$ignored in prev animint code??
   return(aes.list)
 }
+
+checkFacetVariables <- function(plot){
+  facet <- plot$facet
+  if(is.null(facet)) return(invisible())
+  facet_class <- class(facet)[1]
+  facet_vars <- character(0)
+  if(facet_class == "wrap" && length(facet$facets) > 0){
+    facet_vars <- names(facet$facets)
+    facet_vars <- facet_vars[facet_vars != "."]
+  }else if(facet_class == "grid"){
+    row_vars <- names(facet$rows)
+    col_vars <- names(facet$cols)
+    facet_vars <- c(row_vars, col_vars)
+    facet_vars <- facet_vars[facet_vars != "."]
+  }
+  if(length(facet_vars) == 0) return(invisible())
+  all_data_vars <- character(0)
+  for(layer in plot$layers){
+    if(length(layer$data) > 0){
+      all_data_vars <- c(all_data_vars, names(layer$data))
+    }
+  }
+  if(length(plot$data) > 0){
+    all_data_vars <- c(all_data_vars, names(plot$data))
+  }
+  all_data_vars <- unique(all_data_vars)
+  missing_vars <- setdiff(facet_vars, all_data_vars)
+  if(length(missing_vars) > 0){
+    stop(sprintf(
+      "Facet variable%s not found in data: %s\nAvailable columns: %s\nUse string notation like facet_wrap(\"var\") instead of formula notation facet_wrap(. ~ var)",
+      if(length(missing_vars) > 1) "s" else "",
+      paste(missing_vars, collapse = ", "),
+      paste(all_data_vars, collapse = ", ")
+    ))
+  }
+  invisible()
+}
