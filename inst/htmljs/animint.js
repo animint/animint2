@@ -1567,7 +1567,9 @@ var animint = function (to_select, json_file) {
           eActions = function(groups) {
             // Handle transitions seperately due to unique structure of geom_label_aligned
             var transitionDuration = 0;
-            transitionDuration = Selectors[selector_name].duration || 0;
+            if(Selectors[selector_name]){
+              transitionDuration = Selectors[selector_name].duration || 0;
+            }
             groups.each(function(d) {
               var group = d3.select(this);
               // Select existing elements (if any)
@@ -1861,8 +1863,10 @@ var animint = function (to_select, json_file) {
           positionTooltip(tooltip, tooltip.html());
         });
     }
-    var milliseconds = Selectors[selector_name].duration;
-    elements = elements.transition().duration(milliseconds);
+    if(Selectors[selector_name]){
+      var milliseconds = Selectors[selector_name].duration;
+      elements = elements.transition().duration(milliseconds);
+    }
     if(g_info.aes.hasOwnProperty("id")){
       elements.attr("id", get_attr("id"));
     }
@@ -2080,8 +2084,11 @@ var animint = function (to_select, json_file) {
   }
 
   var update_selector = function (v_name, value) {
-    value = value + "";
     var s_info = Selectors[v_name];
+    if(!s_info){
+      return;
+    }
+    value = value + "";
     if(s_info.type == "single"){
       // value is the new selection.
       s_info.selected = value;
@@ -2524,9 +2531,9 @@ var animint = function (to_select, json_file) {
         var selector_widgets_hidden =
           show_hide_selector_widgets.text() == toggle_message;
         var has_no_clickSelects =
-          !Selectors[s_name].hasOwnProperty("clickSelects")
+          !Selectors[s_name].clickSelects
         var has_no_legend =
-          !Selectors[s_name].hasOwnProperty("legend")
+          !Selectors[s_name].legend
         if(selector_widgets_hidden && has_no_clickSelects && has_no_legend){
           var node = show_hide_selector_widgets.node();
           show_or_hide_fun.apply(node);

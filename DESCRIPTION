@@ -64,7 +64,7 @@ Authors@R: c(
      comment="Animint2 GSoC 2025"),
     person("Gaurav", "Chaudhary",
      role="ctb",
-     comment="Remove unused css.file parameter; fix issue #233 selector values; fix issue #273 update_axes tick font-size"),
+     comment="Remove unused css.file parameter; fix issue #233 selector values; fix issue #273 update_axes tick font-size; Collaborated on fixing issue #278 hasOwnProperty checks in animint.js"),
     person("Harshit","Gangwar",
      role="ctb",
      comment="Removed unnecessary hasOwnProperty checks in animint.js; fix issue #278 animint.js Selectors does not need hasOwnProperty checks"))
