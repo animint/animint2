@@ -30,13 +30,13 @@ var animint = function (to_select, json_file) {
             d[v_name] = parseInt(d[v_name]);
           } else if (r_type == "numeric") {
             d[v_name] = parseFloat(d[v_name]);
+          } else if (r_type == "character" && v_name == "outliers") {
+            d[v_name] = d[v_name].split(" @ ").map(parseFloat);
           } else if (r_type == "factor" || r_type == "rgb" 
                      || r_type == "linetype" || r_type == "label"
                      || r_type == "character") {
             // keep it as a character
-          } else if (r_type == "character" & v_name == "outliers") {
-            d[v_name] = parseFloat(d[v_name].split(" @ "));
-          } 
+          }  
               }
       }
       return d;
