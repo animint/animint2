@@ -10,8 +10,6 @@ test_that("JS parsing logic fails to create an array of all outliers", {
   tmp <- file.path(tempdir(), "proof_fail")
   animint2dir(viz, out.dir = tmp, open.browser = FALSE)
   r_string <- "100 @ 200"
-  broken_js_parse <- as.numeric(strsplit(r_string, " @ ")[[1]][1]) 
-  expected_logic <- c(100, 200)
-  expect_equal(length(broken_js_parse), length(expected_logic), 
-               info = "Failure: Current JS only parses the first outlier and loses the rest!")
+  parsed_outliers <- as.numeric(strsplit(r_string, " @ ")[[1]])
+  expect_equal(parsed_outliers, c(100, 200))
 })
