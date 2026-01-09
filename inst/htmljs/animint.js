@@ -31,7 +31,7 @@ var animint = function (to_select, json_file) {
           } else if (r_type == "numeric") {
             d[v_name] = parseFloat(d[v_name]);
           } else if (r_type == "character" && v_name == "outliers") {
-            d[v_name] = d[v_name].split(" @ ").map(parseFloat);
+            d[v_name] = d[v_name].split(" @ ").map(x => parseFloat(x));
           } else if (r_type == "factor" || r_type == "rgb" 
                      || r_type == "linetype" || r_type == "label"
                      || r_type == "character") {
