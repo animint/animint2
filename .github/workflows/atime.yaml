@@ -21,6 +21,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: r-lib/actions/setup-r@v2
       - uses: r-lib/actions/setup-r-dependencies@v2
+      - name: install RJSONIO for testing old package versions
+        run: Rscript -e "install.packages('RJSONIO', repos='https://cloud.r-project.org')"
       - name: install package
         run: R CMD INSTALL .
       - uses: Anirban166/Autocomment-atime-results@v1.4.3

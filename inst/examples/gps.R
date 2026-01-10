@@ -61,7 +61,7 @@ if(!file.exists(ile_de_france.json)){
     ile_de_france.json)
   download.file(u, ile_de_france.json)
 }
-##ile_de_france.list <- RJSONIO::fromJSON(ile_de_france.json)
+##ile_de_france.list <- jsonlite::fromJSON(ile_de_france.json)
 ile_de_france.sf <- geojsonsf::geojson_sf(ile_de_france.json)
 names(ile_de_france.sf)
 class(ile_de_france.sf)
