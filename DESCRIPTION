@@ -88,6 +88,7 @@ Imports:
     data.table (>= 1.9.8),
     methods
 Suggests:
+    jsonlite,
     gert, gitcreds, gh,
     sp,
     gistr (>= 0.2),
