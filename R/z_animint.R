@@ -643,7 +643,7 @@ animint2dir <- function
   convert_for_json <- function(x) {
     if (is.list(x)) {
       lapply(x, convert_for_json)
-    } else if (is.atomic(x) && !is.null(names(x)) && is.character(x)) {
+    } else if (is.atomic(x) && !is.null(names(x))) {
       as.list(x)
     } else {
       x
