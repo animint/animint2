@@ -650,7 +650,7 @@ animint2dir <- function
     }
   }
   export.data <- convert_for_json(export.data)
-  json <- jsonlite::toJSON(export.data, auto_unbox = TRUE, force = TRUE)
+  json <- jsonlite::toJSON(export.data, auto_unbox = TRUE, force = TRUE, null = "null")
   cat(json, file = file.path(out.dir, "plot.json"))
   if (open.browser) {
     if (identical(getOption("animint.browser"),"browseURL")) {
