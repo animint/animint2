@@ -58,7 +58,12 @@ parsePlot <- function(meta, plot, plot.name){
     class(L$mapping) <- "list"
 
     ## If any legends are specified, add showSelected aesthetic
+    ## Also updates legend$selector to NULL if user opts out (#140)
     L <- addShowSelectedForLegend(meta, plot.info$legend, L)
+    if(!is.null(L$legend)){
+      plot.info$legend <- L$legend
+      L$legend <- NULL
+    }
 
     ## Check if showSelected and clickSelects have been used as aesthetics
     ## If yes, raise error
