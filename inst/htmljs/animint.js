@@ -1136,18 +1136,18 @@ var animint = function (to_select, json_file) {
     // stroke_width for geom_point
     var stroke_width = 1;  // default
 
-    // If color_off is used, make stroke more visible
+    // Make stroke more visible when color_off is used
     if(aes.hasOwnProperty("color_off")){
-      stroke_width = 2;
-    }
+        stroke_width = 2;
+    } 
 
     var get_stroke_width;
     if(aes.hasOwnProperty("stroke")){
-      get_stroke_width = get_attr("stroke");
+        get_stroke_width = get_attr("stroke");
     }else{
-      get_stroke_width = function(d){
-      return stroke_width;
-     };
+        get_stroke_width = function(d){
+        return stroke_width;
+      };
     }
     
     var linetype = "solid";
