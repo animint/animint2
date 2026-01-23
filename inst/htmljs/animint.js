@@ -1134,14 +1134,20 @@ var animint = function (to_select, json_file) {
     var get_style_on_stroke_width = get_size;
     
     // stroke_width for geom_point
-    var stroke_width = 1;  // by default ggplot2 has 0.5, animint has 1
+    var stroke_width = 1;  // default
+
+    // If color_off is used, make stroke more visible
+    if(aes.hasOwnProperty("color_off")){
+      stroke_width = 2;
+    }
+
     var get_stroke_width;
     if(aes.hasOwnProperty("stroke")){
       get_stroke_width = get_attr("stroke");
     }else{
       get_stroke_width = function(d){
-        return stroke_width;
-      };
+      return stroke_width;
+     };
     }
     
     var linetype = "solid";
