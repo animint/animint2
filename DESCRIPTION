@@ -95,6 +95,7 @@ Suggests:
     covr,
     RColorBrewer,
     htmltools,
+    markdown,
     rmarkdown,
     testthat,
     XML,

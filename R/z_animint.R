@@ -637,11 +637,14 @@ animint2dir <- function
       export.data[[export.name]] <- meta[[export.name]]
     }
   }
-  ## Convert named vectors to lists for jsonlite compatibility (issue #193)
-  ## RJSONIO converts named vectors to JSON objects, jsonlite converts to arrays
-  ## This helper ensures jsonlite produces the same output as RJSONIO
+  ## Convert R objects for jsonlite compatibility (issue #193).
+  ## RJSONIO serializes data.frames column-wise and named vectors as
+  ## objects; jsonlite serializes data.frames row-wise and drops vector
+  ## names. This helper converts both so jsonlite output matches RJSONIO.
   convert_for_json <- function(x) {
-    if (is.list(x)) {
+    if (is.data.frame(x)) {
+      lapply(as.list(x), identity)
+    } else if (is.list(x)) {
       lapply(x, convert_for_json)
     } else if (is.atomic(x) && !is.null(names(x))) {
       as.list(x)
