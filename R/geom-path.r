@@ -167,7 +167,7 @@ GeomPath <- gganimintproto("GeomPath", Geom,
     if (nrow(munched) < 2) return(zeroGrob())
 
     # Work out whether we should use lines or segments
-    attr <- plyr::ddply(munched, "group", function(df) {
+    attr <- ddply(munched, "group", function(df) {
       linetype <- unique(df$linetype)
       data.frame(
         solid = identical(linetype, 1) || identical(linetype, "solid"),
@@ -284,12 +284,12 @@ geom_step <- function(mapping = NULL, data = NULL, stat = "identity",
 #' @include geom-path.r
 GeomStep <- gganimintproto("GeomStep", GeomPath,
   draw_panel = function(data, panel_scales, coord, direction = "hv") {
-    data <- plyr::ddply(data, "group", stairstep, direction = direction)
+    data <- ddply(data, "group", stairstep, direction = direction)
     GeomPath$draw_panel(data, panel_scales, coord)
   },
   pre_process = function(g, g.data, ...) {
     datanames <- names(g.data)
-    g.data <- plyr::ddply(g.data, "group", function(df) stairstep(df))
+    g.data <- ddply(g.data, "group", function(df) stairstep(df))
     g$geom <- "path"
     return(list(g = g, g.data = g.data))
   }

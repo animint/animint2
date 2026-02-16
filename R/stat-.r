@@ -83,7 +83,7 @@ Stat <- gganimintproto("Stat",
     params <- params[intersect(names(params), self$parameters())]
 
     args <- c(list(data = quote(data), scales = quote(scales)), params)
-    plyr::ddply(data, "PANEL", function(data) {
+    ddply(data, "PANEL", function(data) {
       scales <- panel_scales(panels, data$PANEL[1])
       tryCatch(do.call(self$compute_panel, args), error = function(e) {
         warning("Computation failed in `", snake_class(self), "()`:\n",
@@ -111,7 +111,7 @@ Stat <- gganimintproto("Stat",
       )
     }, stats, groups, SIMPLIFY = FALSE)
 
-    do.call(plyr::rbind.fill, stats)
+    do.call(rbind.fill, stats)
   },
 
   compute_group = function(self, data, scales) {

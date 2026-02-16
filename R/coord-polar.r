@@ -283,9 +283,9 @@ CoordPolar <- gganimintproto("CoordPolar", Coord,
 
 rename_data <- function(coord, data) {
   if (coord$theta == "y") {
-    plyr::rename(data, c("y" = "theta", "x" = "r"), warn_missing = FALSE)
+    rename(data, c("y" = "theta", "x" = "r"), warn_missing = FALSE)
   } else {
-    plyr::rename(data, c("y" = "r", "x" = "theta"), warn_missing = FALSE)
+    rename(data, c("y" = "r", "x" = "theta"), warn_missing = FALSE)
   }
 }
 

@@ -395,7 +395,7 @@ as_labeller <- function(x, default = label_value, multi_line = TRUE) {
 #'
 #' # In the following example, we rename the levels to the long form,
 #' # then apply a wrap labeller to the columns to prevent cropped text
-#' msleep$conservation2 <- plyr::revalue(msleep$conservation,
+#' msleep$conservation2 <- revalue(msleep$conservation,
 #'   conservation_status)
 #'
 #' p2 %+% msleep + facet_grid(vore ~ conservation2)
@@ -505,13 +505,13 @@ g_build_strip <- function(panel, label_df, labeller, theme, side = "right", swit
   name <- paste("strip", side, sep = "-")
   if (horizontal) {
     # Each row is as high as the highest and as a wide as the panel
-    row_height <- function(row) max(plyr::laply(row, height_cm))
+    row_height <- function(row) max(laply(row, height_cm))
     grobs <- t(grobs)
     heights <- unit(apply(grobs, 1, row_height), "cm")
     widths <- unit(rep(1, ncol(grobs)), "null")
   } else {
     # Each row is wide as the widest and as high as the panel
-    col_width <- function(col) max(plyr::laply(col, width_cm))
+    col_width <- function(col) max(laply(col, width_cm))
     widths <- unit(apply(grobs, 2, col_width), "cm")
     heights <- unit(rep(1, nrow(grobs)), "null")
   }

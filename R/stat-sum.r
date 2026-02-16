@@ -42,8 +42,8 @@ StatSum <- gganimintproto("StatSum", Stat,
 
     group_by <- setdiff(intersect(names(data), .all_aesthetics), "weight")
 
-    counts <- plyr::count(data, group_by, wt_var = "weight")
-    counts <- plyr::rename(counts, c(freq = "n"), warn_missing = FALSE)
+    counts <- count(data, group_by, wt_var = "weight")
+    counts <- rename(counts, c(freq = "n"), warn_missing = FALSE)
     counts$prop <- stats::ave(counts$n, counts$group, FUN = prop.table)
     counts
   }

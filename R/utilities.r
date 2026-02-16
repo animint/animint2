@@ -292,6 +292,7 @@ start_servr <- function(serverDirectory = ".", port = 4848,
   system2("Rscript", c("-e", shQuote(cmd)), wait = FALSE)
 }
 
+
 stop_servr <- function(tmpPath = ".") {
   res <- TRUE
   f <- file.path(tmpPath, "pids.txt")
@@ -306,3 +307,241 @@ stop_servr <- function(tmpPath = ".") {
   }
   res
 }
+
+# Helper to flatten + calls
+flatten_plus <- function(x) {
+  if (is.call(x) && identical(x[[1]], quote(`+`))) {
+    c(flatten_plus(x[[2]]), flatten_plus(x[[3]]))
+  } else {
+    list(x)
+  }
+}
+
+as.quoted <- function(x) {
+  if (is.null(x)) {
+    list()
+  } else if (is.character(x)) {
+    lapply(x, function(x) parse(text = x)[[1]])
+  } else if (inherits(x, "formula")) {
+    # If it's a formula, we likely want the RHS split by +
+    flatten_plus(x[[length(x)]])
+  } else {
+    # Assume it sets of calls/names connected by + or just one
+    flatten_plus(x)
+  }
+}
+
+
+defaults <- function(x, y) {
+  c(x, y[setdiff(names(y), names(x))])    
+}
+
+unrowname <- function(x) {
+  rownames(x) <- NULL
+  x
+}
+
+rename <- function(x, replace, warn_missing = TRUE) {
+  names(x) <- plyr_rename_helper(names(x), replace, warn_missing)
+  x
+}
+
+plyr_rename_helper <- function(nms, replace, warn_missing = TRUE) {
+  if (is.null(replace)) return(nms)
+  missing <- setdiff(names(replace), nms)
+  if (warn_missing && length(missing) > 0) {
+    warning("The following `from` values were not present in `x`: ",
+            paste(missing, collapse = ", "), call. = FALSE)
+  }
+  idx <- match(names(replace), nms)
+  found <- !is.na(idx)
+  nms[idx[found]] <- replace[found]
+  nms
+}
+
+id <- function(x, drop = TRUE) {
+  if (length(x) == 0) return(integer())
+  if (is.data.frame(x) || is.list(x)) {
+    as.integer(do.call(interaction, c(x, list(drop = drop, sep = "\r"))))
+  } else {
+    as.integer(interaction(x, drop = drop, sep = "\r"))
+  }
+}
+
+summarise <- function(.data, ...) {
+  cols <- as.list(substitute(list(...))[-1])
+  .data <- as.list(.data)
+  for (col in names(cols)) {
+    .data[[col]] <- eval(cols[[col]], .data, parent.frame())
+  }
+  quickdf(.data[names(cols)])
+}
+
+
+join.keys <- function(x, y, by) {
+  joint <- rbind(x[by], y[by])
+  keys <- id(joint, drop = TRUE)
+  n_x <- nrow(x)
+  list(x = keys[1:n_x], y = keys[-(1:n_x)])
+}
+
+eval.quoted <- function(exprs, envir = NULL, enclos = NULL, try = FALSE) {
+  if (is.null(envir)) envir <- parent.frame()
+  if (is.null(enclos)) enclos <- if (is.list(envir) || is.pairlist(envir)) parent.frame() else baseenv()
+  
+  if (try) {
+    lapply(exprs, function(expr) {
+      tryCatch(eval(expr, envir, enclos), error = function(e) NULL)
+    })
+  } else {
+    lapply(exprs, function(expr) {
+      eval(expr, envir, enclos)
+    })
+  }
+}
+
+llply <- lapply
+
+ldply <- function(x, fun = NULL, ...) {
+  if (is.null(fun)) return(do.call(rbind, x))
+  do.call(rbind, lapply(x, fun, ...))
+}
+
+laply <- sapply
+
+mlply <- function(data, fun, ..., .progress="none", .inform=FALSE, .parallel=FALSE, .paropts=NULL) {
+  if (is.matrix(data) || is.data.frame(data)) {
+    args <- as.list(data)
+    do.call(mapply, c(FUN = fun, args, MoreArgs = list(...), SIMPLIFY = FALSE))
+  } else {
+    lapply(data, function(args) do.call(fun, c(args, list(...))))
+  }
+}
+
+colwise <- function(fun, vars = NULL) {
+  function(df, ...) {
+    if (!is.null(vars)) df <- df[vars]
+    res <- lapply(df, fun, ...)
+    as.data.frame(res, stringsAsFactors = FALSE)
+  }
+}
+
+ddply <- function(data, variables, fun, ...) {
+  dt <- data.table::as.data.table(data)
+  # Convert char vector variables to symbol list for data.table
+  by_vars <- variables
+  # Check if fun returns data frame or list
+  # We use .SD. But fun might expect 'df'.
+  # Wrapping fun to ensure it works with .SD
+  # data.table's .SD is a data.table.
+  
+  ex <- substitute(fun(.SD, ...))
+  dt[, eval(ex), by = c(variables)]
+}
+
+revalue <- function(x, replace, warn_missing = TRUE) {
+  if (is.factor(x)) {
+    levels(x) <- revalue(levels(x), replace, warn_missing)
+    return(x)
+  }
+  if (!is.character(x)) x <- as.character(x)
+  
+  idx <- match(x, names(replace))
+  found <- !is.na(idx)
+  x[found] <- replace[idx[found]]
+  x
+}
+
+round_any <- function(x, accuracy, f = round) {
+  f(x / accuracy) * accuracy
+}
+
+arrange <- function(data, ...) {
+  if (missing(...)) return(data)
+  ord <- do.call(order, eval(substitute(list(...)), data, parent.frame()))
+  data[ord, , drop = FALSE]
+}
+
+desc <- function(x) {
+  -xtfrm(x)
+}
+
+count <- function(df, vars = NULL, wt_var = NULL) {
+  if (is.vector(df)) {
+    df <- data.frame(x = df)
+    if (is.null(vars)) vars <- "x"
+  }
+  
+  dt <- data.table::as.data.table(df)
+  if (is.null(vars)) vars <- names(dt)
+  
+  if (is.null(wt_var)) {
+    res <- dt[, .(freq = .N), by = vars]
+  } else {
+    res <- dt[, .(freq = sum(get(wt_var))), by = vars]
+  }
+  as.data.frame(res)
+}
+
+mutate <- function(.data, ...) {
+  dt <- data.table::as.data.table(.data)
+  args <- as.list(substitute(list(...)))[-1]
+  for (i in seq_along(args)) {
+    nm <- names(args)[i]
+    expr <- args[[i]]
+    val <- eval(expr, dt, parent.frame())
+    dt[, (nm) := val]
+  }
+  as.data.frame(dt)
+}
+
+join <- function(x, y, by = NULL, type = "left", match = "all") {
+  merge(x, y, by = by, 
+        all.x = (type == "left" || type == "full"),
+        all.y = (type == "right" || type == "full"),
+        sort = FALSE)
+}
+
+quickdf <- function(list) {
+  as.data.frame(list, stringsAsFactors = FALSE)
+}
+
+tryapply <- function(x, fun, ...) {
+  fun <- match.fun(fun)
+  lapply(x, function(el) {
+    tryCatch(fun(el, ...), error = function(e) NULL)
+  })
+}
+
+rbind.fill <- function(...) {
+  dfs <- list(...)
+  if (length(dfs) == 0) return(NULL)
+  if (length(dfs) == 1 && is.list(dfs[[1]]) && !is.data.frame(dfs[[1]])) dfs <- dfs[[1]]
+  
+  # Filter nulls
+  dfs <- dfs[!sapply(dfs, is.null)]
+  if (length(dfs) == 0) return(NULL)
+  
+  as.data.frame(data.table::rbindlist(dfs, fill = TRUE))
+}
+
+dlply <- function(data, variables, fun, ...) {
+  # simplified dlply
+  # split returns list of data.frames
+  if (length(variables) == 1) {
+    pieces <- split(data, data[[variables]])
+  } else {
+    pieces <- split(data, as.list(data[variables]), drop = TRUE)
+  }
+  lapply(pieces, fun, ...) 
+}
+
+rlply <- function(n, expr, .progress = "none") {
+  replicate(n, expr, simplify = FALSE)
+}
+
+
+
+
+
+

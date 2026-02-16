@@ -213,7 +213,7 @@ GeomDotplot <- gganimintproto("GeomDotplot", Geom,
       plyvars <- c(plyvars, "group")
 
     # Within each x, or x+group, set countidx=1,2,3, and set stackpos according to stack function
-    data <- plyr::ddply(data, plyvars, function(xx) {
+    data <- ddply(data, plyvars, function(xx) {
             xx$countidx <- 1:nrow(xx)
             xx$stackpos <- stackdots(xx$countidx)
             xx
@@ -238,7 +238,7 @@ GeomDotplot <- gganimintproto("GeomDotplot", Geom,
       # works. They're just set to the standard x +- width/2 so that dot clusters
       # can be dodged like other geoms.
       # After position code is rewritten, each dot should have its own bounding box.
-      data <- plyr::ddply(data, "group", transform,
+      data <- ddply(data, "group", transform,
             ymin = min(y) - binwidth[1] / 2,
             ymax = max(y) + binwidth[1] / 2)
 

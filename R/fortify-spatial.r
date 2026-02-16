@@ -14,7 +14,7 @@ NULL
 #' @method fortify SpatialPolygonsDataFrame
 fortify.SpatialPolygonsDataFrame <- function(model, data, ...) {
   attr <- as.data.frame(model)
-  coords <- plyr::ldply(model@polygons,fortify)
+  coords <- ldply(model@polygons,fortify)
   message("Regions defined for each Polygons")
   coords
 }
@@ -23,7 +23,7 @@ fortify.SpatialPolygonsDataFrame <- function(model, data, ...) {
 #' @export
 #' @method fortify SpatialPolygons
 fortify.SpatialPolygons <- function(model, data, ...) {
-  plyr::ldply(model@polygons, fortify)
+  ldply(model@polygons, fortify)
 }
 
 #' @rdname fortify.sp
@@ -31,7 +31,7 @@ fortify.SpatialPolygons <- function(model, data, ...) {
 #' @method fortify Polygons
 fortify.Polygons <- function(model, data, ...) {
   subpolys <- model@Polygons
-  pieces <- plyr::ldply(seq_along(subpolys), function(i) {
+  pieces <- ldply(seq_along(subpolys), function(i) {
     df <- fortify(subpolys[[model@plotOrder[i]]])
     df$piece <- i
     df
@@ -59,7 +59,7 @@ fortify.Polygon <- function(model, data, ...) {
 #' @export
 #' @method fortify SpatialLinesDataFrame
 fortify.SpatialLinesDataFrame <- function(model, data, ...) {
-  plyr::ldply(model@lines, fortify)
+  ldply(model@lines, fortify)
 }
 
 #' @rdname fortify.sp
@@ -67,7 +67,7 @@ fortify.SpatialLinesDataFrame <- function(model, data, ...) {
 #' @method fortify Lines
 fortify.Lines <- function(model, data, ...) {
   lines <- model@Lines
-  pieces <- plyr::ldply(seq_along(lines), function(i) {
+  pieces <- ldply(seq_along(lines), function(i) {
     df <- fortify(lines[[i]])
     df$piece <- i
     df

@@ -41,10 +41,10 @@ collide <- function(data, width = NULL, name, strategy, check.width = TRUE) {
   }
 
   if (!is.null(data$ymax)) {
-    plyr::ddply(data, "xmin", strategy, width = width)
+    ddply(data, "xmin", strategy, width = width)
   } else if (!is.null(data$y)) {
     data$ymax <- data$y
-    data <- plyr::ddply(data, "xmin", strategy, width = width)
+    data <- ddply(data, "xmin", strategy, width = width)
     data$y <- data$ymax
     data
   } else {

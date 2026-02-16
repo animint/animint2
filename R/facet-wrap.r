@@ -279,8 +279,10 @@ facet_render.wrap <- function(facet, panel, coord, theme, geom_grobs) {
     size <- c(3, 4)
   }
 
-  info <- plyr::ldply(locs, find_pos, layout = layout, size = size)
-  names(info)[1] <- "type"
+  info <- do.call(rbind, lapply(names(locs), function(name) {
+    res <- find_pos(layout, locs[[name]], size)
+    data.frame(type = name, res, stringsAsFactors = FALSE)
+  }))
   info$clip <- ifelse(info$type == "panel", "on", "off")
   info$name <- paste(info$type, info$id, sep = "-")
 

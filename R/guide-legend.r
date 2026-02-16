@@ -251,7 +251,7 @@ guide_merge.legend <- function(guide, new_guide) {
 #' @export
 guide_geom.legend <- function(guide, layers, default_mapping) {
   # arrange common data for vertical and horizontal guide
-  guide$geoms <- plyr::llply(layers, function(layer) {
+  guide$geoms <- llply(layers, function(layer) {
     all <- names(c(layer$mapping, if (layer$inherit.aes) default_mapping, layer$stat$default_aes))
     geom <- c(layer$geom$required_aes, names(layer$geom$default_aes))
     matched <- intersect(intersect(all, geom), names(guide$key))

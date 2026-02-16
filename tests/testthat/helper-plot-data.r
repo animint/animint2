@@ -3,11 +3,18 @@ cdata <- function(plot) {
   pieces <- ggplot_build(plot)
 
   lapply(pieces$data, function(d) {
-    plyr::ddply(d, "PANEL", function(panel_data) {
-      scales <- panel_scales(pieces$panel, panel_data$PANEL[1])
+    dt <- data.table::as.data.table(d)
+    dt[, {
+      scales <- panel_scales(pieces$panel, .BY$PANEL)
       details <- plot$coordinates$train(scales)
-      plot$coordinates$transform(panel_data, details)
-    })
+      # .SD excludes the grouping column (PANEL) by default, but transform might need it
+      # or simply passthrough. We emulate ddply behavior by reconstructing it if needed
+      # or leveraging the fact that transform typically operates on params.
+      # To be safe and identical to ddply input:
+      subset_d <- .SD
+      subset_d$PANEL <- .BY$PANEL
+      plot$coordinates$transform(subset_d, details)
+    }, by = PANEL]
   })
 }
 

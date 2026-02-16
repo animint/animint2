@@ -90,7 +90,7 @@ rename_aes <- function(x) {
   full <- match(names(x), .all_aesthetics)
   names(x)[!is.na(full)] <- .all_aesthetics[full[!is.na(full)]]
 
-  plyr::rename(x, .base_to_ggplot, warn_missing = FALSE)
+  rename(x, .base_to_ggplot, warn_missing = FALSE)
 }
 
 # Look up the scale that should be used for a given aesthetic

@@ -101,11 +101,12 @@ StatSummary <- gganimintproto("StatSummary", Stat,
 # @param other arguments passed on to summary function
 # @keyword internal
 summarise_by_x <- function(data, summary, ...) {
-  summary <- plyr::ddply(data, c("group", "x"), summary, ...)
-  unique <- plyr::ddply(data, c("group", "x"), uniquecols)
-  unique$y <- NULL
-
-  merge(summary, unique, by = c("x", "group"), sort = FALSE)
+  dt <- data.table::as.data.table(data)
+  s <- dt[, summary(.SD, ...), by = .(group, x)]
+  u <- dt[, uniquecols(.SD), by = .(group, x)]
+  u$y <- NULL
+  
+  merge(as.data.frame(s), as.data.frame(u), by = c("x", "group"), sort = FALSE)
 }
 
 #' Wrap up a selection of summary functions from Hmisc to make it easy to use
@@ -130,7 +131,7 @@ wrap_hmisc <- function(fun) {
     fun <- getExportedValue("Hmisc", fun)
     result <- do.call(fun, list(x = quote(x), ...))
 
-    plyr::rename(
+    rename(
       data.frame(t(result)),
       c(Median = "y", Mean = "y", Lower = "ymin", Upper = "ymax"),
       warn_missing = FALSE

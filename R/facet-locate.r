@@ -32,8 +32,8 @@ locate_grid <- function(data, panels, rows = NULL, cols = NULL, margins = FALSE)
     data_rep <- rep.int(1:nrow(data), nrow(to_add))
     facet_rep <- rep(1:nrow(to_add), each = nrow(data))
 
-    data <- plyr::unrowname(data[data_rep, , drop = FALSE])
-    facet_vals <- plyr::unrowname(cbind(
+    data <- unrowname(data[data_rep, , drop = FALSE])
+    facet_vals <- unrowname(cbind(
       facet_vals[data_rep, ,  drop = FALSE],
       to_add[facet_rep, , drop = FALSE]))
   }
@@ -46,7 +46,7 @@ locate_grid <- function(data, panels, rows = NULL, cols = NULL, margins = FALSE)
     facet_vals[] <- lapply(facet_vals[], as.factor)
     facet_vals[] <- lapply(facet_vals[], addNA, ifany = TRUE)
 
-    keys <- plyr::join.keys(facet_vals, panels, by = vars)
+    keys <- join.keys(facet_vals, panels, by = vars)
 
     data$PANEL <- panels$PANEL[match(keys$x, keys$y)]
   }
@@ -71,13 +71,13 @@ locate_wrap <- function(data, panels, vars) {
     data_rep <- rep.int(1:nrow(data), nrow(to_add))
     facet_rep <- rep(1:nrow(to_add), each = nrow(data))
 
-    data <- plyr::unrowname(data[data_rep, , drop = FALSE])
-    facet_vals <- plyr::unrowname(cbind(
+    data <- unrowname(data[data_rep, , drop = FALSE])
+    facet_vals <- unrowname(cbind(
       facet_vals[data_rep, ,  drop = FALSE],
       to_add[facet_rep, , drop = FALSE]))
   }
 
-  keys <- plyr::join.keys(facet_vals, panels, by = names(vars))
+  keys <- join.keys(facet_vals, panels, by = names(vars))
 
   data$PANEL <- panels$PANEL[match(keys$x, keys$y)]
   data[order(data$PANEL), ]

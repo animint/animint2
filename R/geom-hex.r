@@ -88,7 +88,7 @@ GeomHex <- gganimintproto("GeomHex", Geom,
     ##   than "one single polygon".
     # CPS (07-24-14) what about this? --
     # http://tdhock.github.io/animint/geoms/polygon/index.html
-    newdata <- plyr::ddply(g.data, "group", function(df){
+    newdata <- ddply(g.data, "group", function(df){
       df$xcenter <- df$x
       df$ycenter <- df$y
       cbind(x=df$x+hex$x, y=df$y+hex$y, df[,-which(names(df)%in%c("x", "y"))])

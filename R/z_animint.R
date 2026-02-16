@@ -4,7 +4,6 @@
 #' @param plot.name name of plot
 #' @return nothing, info is stored in meta.
 #' @export
-#' @import plyr
 #' @importFrom methods is
 parsePlot <- function(meta, plot, plot.name){
   ## adding data and mapping to each layer from base plot, if necessary
@@ -735,7 +734,7 @@ getLegendList <- function(plistextra){
     guides.args[[aes.name]] <- guide.type
   }
   guides.result <- do.call(guides, guides.args)
-  guides.list <- plyr::defaults(plot$guides, guides.result)
+  guides.list <- defaults(plot$guides, guides.result)
   gdefs <- guides_train(scales = scales,
                            theme = theme,
                            guides = guides.list,

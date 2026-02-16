@@ -190,7 +190,7 @@ Layer <- gganimintproto("Layer", NULL,
 
     # Old subsetting method
     if (!is.null(self$subset)) {
-      include <- data.frame(plyr::eval.quoted(self$subset, data, plot$env))
+      include <- data.frame(eval.quoted(self$subset, data, plot$env))
       data <- data[rowSums(include, na.rm = TRUE) == ncol(include), ]
     }
 
@@ -248,7 +248,7 @@ Layer <- gganimintproto("Layer", NULL,
     if (length(new) == 0) return(data)
 
     # Add map stat output to aesthetics
-    stat_data <- plyr::quickdf(lapply(new, eval, data, baseenv()))
+    stat_data <- quickdf(lapply(new, eval, data, baseenv()))
     names(stat_data) <- names(new)
 
     # Add any new scales, if needed

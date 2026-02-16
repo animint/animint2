@@ -1,5 +1,5 @@
 # This needs to be less than 1, to distinguish it from "regular" return values
-# of plyr::id() used by add_group()
+# of id() used by add_group()
 NO_GROUP <- -1L
 
 # Ensure that the data frame contains a grouping variable.
@@ -16,12 +16,12 @@ add_group <- function(data) {
     disc[names(disc) %in% c("label", "PANEL")] <- FALSE
 
     if (any(disc)) {
-      data$group <- plyr::id(data[disc], drop = TRUE)
+      data$group <- id(data[disc], drop = TRUE)
     } else {
       data$group <- NO_GROUP
     }
   } else {
-    data$group <- plyr::id(data["group"], drop = TRUE)
+    data$group <- id(data["group"], drop = TRUE)
   }
 
   data
@@ -33,7 +33,7 @@ add_group <- function(data) {
 has_groups <- function(data) {
   # If no group aesthetic is specified, all values of the group column equal to
   # NO_GROUP. On the other hand, if a group aesthetic is specified, all values
-  # are different from NO_GROUP (since they are a result of plyr::id()). NA is
+  # are different from NO_GROUP (since they are a result of id()). NA is
   # returned for 0-row data frames.
   data$group[1L] != NO_GROUP
 }

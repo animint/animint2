@@ -103,7 +103,7 @@ GeomViolin <- gganimintproto("GeomViolin", Geom,
       params$width %||% (resolution(data$x, FALSE) * 0.9)
 
     # ymin, ymax, xmin, and xmax define the bounding rectangle for each group
-    plyr::ddply(data, "group", transform,
+    ddply(data, "group", transform,
       xmin = x - width / 2,
       xmax = x + width / 2
     )
@@ -118,8 +118,8 @@ GeomViolin <- gganimintproto("GeomViolin", Geom,
 
     # Make sure it's sorted properly to draw the outline
     newdata <- rbind(
-      plyr::arrange(transform(data, x = xminv), y),
-      plyr::arrange(transform(data, x = xmaxv), -y)
+      arrange(transform(data, x = xminv), y),
+      arrange(transform(data, x = xmaxv), -y)
     )
 
     # Close the polygon: set first and last point the same
@@ -158,11 +158,11 @@ GeomViolin <- gganimintproto("GeomViolin", Geom,
   pre_process = function(g, g.data, ...) {
     g.data$xminv <- with(g.data, x - violinwidth * (x - xmin))
     g.data$xmaxv <- with(g.data, x + violinwidth * (xmax - x))
-    newdata <- plyr::ddply(g.data, "group", function(df){
-                  rbind(plyr::arrange(transform(df, x=xminv), y),
-                        plyr::arrange(transform(df, x=xmaxv), -y))
+    newdata <- ddply(g.data, "group", function(df){
+                  rbind(arrange(transform(df, x=xminv), y),
+                        arrange(transform(df, x=xmaxv), -y))
                 })
-    newdata <- plyr::ddply(newdata, "group", function(df) rbind(df, df[1,]))
+    newdata <- ddply(newdata, "group", function(df) rbind(df, df[1,]))
     g.data <- newdata
     g$geom <- "polygon"
     return(list(g = g, g.data = g.data))

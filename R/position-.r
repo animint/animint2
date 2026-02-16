@@ -58,7 +58,7 @@ Position <- gganimintproto("Position",
   },
 
   compute_layer = function(self, data, params, panel) {
-    plyr::ddply(data, "PANEL", function(data) {
+    ddply(data, "PANEL", function(data) {
       if (empty(data)) return(data.frame())
 
       scales <- panel_scales(panel, data$PANEL[1])

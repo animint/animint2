@@ -178,9 +178,9 @@ UStornadoes$state <- factor(UStornadoes$state, levels=stateOrder$state, ordered=
 UStornadoes$weight <- 1/UStornadoes$LandArea
 USpolygons <- map_data("state")
 USpolygons$state = state.abb[match(USpolygons$region, tolower(state.name))]
-library(plyr)
-UStornadoCounts <-
-  ddply(UStornadoes, .(state, year), summarize, count=length(state))
+library(data.table)
+UStornadoesDT <- data.table(UStornadoes)
+UStornadoCounts <- UStornadoesDT[, list(count=length(state)), by=list(state, year)]
 seg.color <- "#55B1F7"
 tornado.lines <- list(
   map=ggplot()+

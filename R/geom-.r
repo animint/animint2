@@ -76,7 +76,7 @@ Geom <- gganimintproto("Geom",
     params <- params[intersect(names(params), self$parameters())]
 
     args <- c(list(quote(data), quote(panel_scales), quote(coord)), params)
-    plyr::dlply(data, "PANEL", function(data) {
+    dlply(data, "PANEL", function(data) {
       if (empty(data)) return(zeroGrob())
 
       panel_scales <- panel$ranges[[data$PANEL[1]]]
@@ -106,7 +106,7 @@ Geom <- gganimintproto("Geom",
     # Fill in missing aesthetics with their defaults
     missing_aes <- setdiff(names(self$default_aes), names(data))
     if (empty(data)) {
-      data <- plyr::quickdf(self$default_aes[missing_aes])
+      data <- quickdf(self$default_aes[missing_aes])
     } else {
       data[missing_aes] <- self$default_aes[missing_aes]
     }

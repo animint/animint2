@@ -29,7 +29,7 @@ build_strip <- function(panel, label_df, labeller, side = "right", ...) {
   side <- match.arg(side, c("top", "left", "bottom", "right"))
   labeller <- match.fun(labeller)
   # No labelling data, so return empty string?
-  if (plyr::empty(label_df)) {
+  if (empty(label_df)) {
     return("")
   }
   # Create matrix of labels
@@ -43,7 +43,7 @@ build_strip <- function(panel, label_df, labeller, side = "right", ...) {
 #' @export
 getStrips.wrap <- function(facet, panel, ...) {
   labels_df <- panel$layout[names(facet$facets)]
-  labels_df[] <- plyr::llply(labels_df, format, justify = "none")
+  labels_df[] <- llply(labels_df, format, justify = "none")
   # facet_wrap labels always go on top
   # we return a list so p_info.strips is always an object (on the JS side)
   strips <- list(top = apply(labels_df, 1, paste, collapse = ", "), right = list(""))
@@ -129,7 +129,7 @@ train_layout <- function(facet, coord, layout, ranges) {
         props.list[[scale.type]] <- uniq.scale.vals
         props.list[[space.type]] <- diffs / sum(diffs)
         props <- do.call(data.frame, props.list)
-        layout <- plyr::join(layout, props, by = scale.type)
+        layout <- join(layout, props, by = scale.type)
       }
       names(layout) <- gsub("SPACE_X", "width_proportion", names(layout), fixed = TRUE)
       names(layout) <- gsub("SPACE_Y", "height_proportion", names(layout), fixed = TRUE)

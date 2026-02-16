@@ -1,5 +1,5 @@
 acontext("save separate chunks")
-library(plyr)
+library(data.table)
 
 data(FluView, package = "animint2")
 # use one season to test
@@ -85,15 +85,12 @@ test_that("save separate chunks for geom_polygon", {
 })
 
 ### test case 2
-USdots <-
-  ddply(FluView$USpolygons, .(region), summarise,
-        mean.lat = mean(lat), 
-        mean.long = mean(long))
+USdots <- data.table(FluView$USpolygons)[, list(mean.lat = mean(lat), mean.long = mean(long)), by = region]
 # add state flu to points.
-flu.points <- ldply(unique(state_flu$WEEKEND), function(we) {
+flu.points <- do.call(rbind, lapply(unique(state_flu$WEEKEND), function(we) {
   df <- subset(state_flu, WEEKEND == we)
   merge(USdots, df, by.x = "region", by.y = "state")
-})
+}))
 
 test_that("save separate chunks for geom_point without specifying group", {
   # the compiler will not break a geom into chunks if any of the resulting 
