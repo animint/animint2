@@ -1,3 +1,7 @@
+# Changes in version 2025.12.4 (PR#277)
+
+- `update_axes`: Fix issue #276 where transition duration was hardcoded to 1000ms. Now it respects the selector's duration.
+
 # Changes in version 2025.12.3 (PR#282)
 
 - URL hash handling: Removed old `window.location.hash` parsing code from `animint.js` (issue #280).
