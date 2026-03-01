@@ -40,6 +40,10 @@
 
 - Improve common chunk detection, output `na_group` and `row_in_group` when there are missing values.
 
+# Changes in version 2025.10.6 (PR#246)
+
+- Added validation for selector names to prevent browser rendering failures. Selector names (from data values used in `clickSelects` and `showSelected`) cannot contain CSS special characters like `#`, `@`, `!`, `$`, etc., as these interfere with JavaScript DOM selectors and cause blank visualizations in the browser. The compiler now stops with a clear error message identifying problematic selector names, helping users fix data issues before attempting to render.
+
 # Changes in version 2025.10.3 (PR#240)
 
 - `guide_legend(override.aes)` works in a plot with both color and fill legends.
