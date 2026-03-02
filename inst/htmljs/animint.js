@@ -1373,8 +1373,20 @@ var animint = function (to_select, json_file) {
       data_to_bind = kv;
       eActions = function (e) {
         e.attr("d", function (d) {
-          return lineThing(keyed_data[d.value]);
-        })
+          var group_data = keyed_data[d.value];
+          if(g_info.data_has_subgroup){
+            var by_subgroup = d3.nest()
+              .key(function(r){ return r["subgroup"]; })
+              .entries(group_data);
+            return by_subgroup.map(function(sg){
+              return lineThing(sg.values) + "Z";
+            }).join(" ");
+          }
+          return lineThing(group_data);
+        });
+        if(g_info.data_has_subgroup){
+          e.style("fill-rule", "evenodd");
+        }
       };
       eAppend = "path";
     }else{
