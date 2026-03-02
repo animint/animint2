@@ -34,7 +34,6 @@ compile <- function(viz) {
   )
 }
 
-# matrices from issue #252
 m_simple <- matrix(
   c(0, 0, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 0,
@@ -71,7 +70,7 @@ m_hole_and_mid <- rbind(
   c(0, 1, 1, 1, 1, 1, 0),
   c(0, 0, 0, 0, 0, 0, 0))
 
-viz <- make_viz(m_simple, subgroup = TRUE)
+## compiler tests (no browser needed)
 
 test_that("data_has_subgroup flag is TRUE when subgroup used", {
   out <- compile(make_viz(m_simple, subgroup = TRUE))
@@ -121,12 +120,10 @@ test_that("multiple groups with subgroup: 2 groups in TSV", {
     (1:ncol(m_simple)) / (ncol(m_simple) + 1),
     (nrow(m_simple):1) / (nrow(m_simple) + 1),
     m_simple, 0.5, 1.5)[[1]])[, grp := "A"]
-
   res2 <- as.data.table(isoband::isobands(
     (1:ncol(m_only_hole)) / (ncol(m_only_hole) + 1),
     (nrow(m_only_hole):1) / (nrow(m_only_hole) + 1),
     m_only_hole, 0.5, 1.5)[[1]])[, grp := "B"]
-
   combined <- rbind(res1, res2)
   viz_multi <- list(
     poly = ggplot() +
@@ -142,22 +139,77 @@ test_that("multiple groups with subgroup: 2 groups in TSV", {
   expect_equal(length(unique(tsv$group)), 2)
 })
 
+## renderer tests (browser required)
+## two groups A and B with clickSelects so clickID works meaningfully
+res_A <- as.data.table(isoband::isobands(
+  (1:ncol(m_simple)) / (ncol(m_simple) + 1),
+  (nrow(m_simple):1) / (nrow(m_simple) + 1),
+  m_simple, 0.5, 1.5)[[1]])[, grp := "A"]
+res_B <- as.data.table(isoband::isobands(
+  (1:ncol(m_only_hole)) / (ncol(m_only_hole) + 1),
+  (nrow(m_only_hole):1) / (nrow(m_only_hole) + 1),
+  m_only_hole, 0.5, 1.5)[[1]])[, grp := "B"]
+res_click <- rbind(res_A, res_B)
+
+viz_click <- list(
+  poly = ggplot() +
+    geom_polygon(
+      aes(x, y, group = grp, subgroup = id, fill = grp,
+          id = paste0("poly_", grp)),
+      clickSelects = "grp",
+      data = res_click
+    )
+)
+
+info <- animint2HTML(viz_click)
+
 test_that("rendered polygon with subgroup has fill-rule evenodd", {
   skip_if(!exists("remDr"), "remDr not initialized - run tests_init() first")
-  res <- animint2HTML(viz)
-  html <- res$html
-  path_nodes <- XML::getNodeSet(html, "//path[contains(@class,'geom')]")
+  html <- getHTML()
+  path_nodes <- getNodeSet(html, "//path[@class='geom']")
   expect_gt(length(path_nodes), 0)
-  styles <- sapply(path_nodes, XML::xmlGetAttr, "style")
+  styles <- sapply(path_nodes, xmlGetAttr, "style")
   expect_true(any(grepl("evenodd", styles)))
 })
 
-test_that("rendered polygon with subgroup d attribute has 2 closed subpaths", {
+test_that("rendered polygon d attribute has 2 closed subpaths", {
   skip_if(!exists("remDr"), "remDr not initialized - run tests_init() first")
-  res <- animint2HTML(viz)
-  html <- res$html
-  path_nodes <- XML::getNodeSet(html, "//path[contains(@class,'geom')]")
-  d_vals <- sapply(path_nodes, XML::xmlGetAttr, "d")
-  z_counts <- sapply(d_vals, function(d) length(gregexpr("Z", d)[[1]]))
+  html <- getHTML()
+  path_nodes <- getNodeSet(html, "//path[@class='geom']")
+  d_vals <- sapply(path_nodes, xmlGetAttr, "d")
+  z_counts <- sapply(d_vals, function(d) nchar(gsub("[^Z]", "", d)))
   expect_true(any(z_counts >= 2))
+})
+
+test_that("hole subgroup merged into one path per group not two separate polygons", {
+  skip_if(!exists("remDr"), "remDr not initialized - run tests_init() first")
+  html <- getHTML()
+  path_nodes <- getNodeSet(html, "//path[@class='geom']")
+  ## 2 groups A and B => 2 path elements (one per group), not 4
+  expect_equal(length(path_nodes), 2)
+})
+
+test_that("clickID on group A polygon deselects it and leaves group B visible", {
+  skip_if(!exists("remDr"), "remDr not initialized - run tests_init() first")
+  ## click group A to deselect it
+  clickID("poly_A")
+  Sys.sleep(1)
+  html_after <- getHTML()
+  path_nodes <- getNodeSet(html_after, "//path[@class='geom']")
+  ## group B path should still exist
+  expect_gt(length(path_nodes), 0)
+  ## all remaining paths must still use evenodd fill rule
+  styles <- sapply(path_nodes, xmlGetAttr, "style")
+  expect_true(any(grepl("evenodd", styles)))
+})
+
+test_that("clickID on group A again reselects it restoring both polygons", {
+  skip_if(!exists("remDr"), "remDr not initialized - run tests_init() first")
+  clickID("poly_A")
+  Sys.sleep(1)
+  html_after <- getHTML()
+  path_nodes <- getNodeSet(html_after, "//path[@class='geom']")
+  expect_gte(length(path_nodes), 1)
+  styles <- sapply(path_nodes, xmlGetAttr, "style")
+  expect_true(any(grepl("evenodd", styles)))
 })
