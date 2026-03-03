@@ -796,62 +796,104 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   ## first_ss_dt <- built[, .SD[1], by=group, .SDcols=chunk.vars]
   ## setkeyv(first_ss_dt, g_chunk)
   ss_count_dt <- group_size_dt[, .(
-    showSelected_values=.N,
-    min_size=min(size),
-    max_size=max(size)
-  ), by=group]
-  groups_in_several_ss <- ss_count_dt[showSelected_values>1]
-  if(nrow(groups_in_several_ss)==0)return(NULL)
-  common_value_dt <- data.table(col.name=col.name.vec)[, {
-    built[, {
-      group_dt <- .SD[, list(value_list=list(get(col.name))), by=chunk.vars]
-      lvec <- sapply(group_dt$value_list, length)
-      value.vec <- unlist(group_dt$value_list)
-      if(all(lvec[1]==lvec)){
-        group.size <- lvec[1]
-        m <- matrix(value.vec, group.size)
-        min.na.vec <- apply(m,1,function(x)x[!is.na(x)][1])
-        if(length(unique(min.na.vec))==1){
-          min.na.vec <- min.na.vec[1]
-        }
-        is.common <- all(m==min.na.vec,na.rm=TRUE)
-        ##if(anyNA(min.na.vec))is.common <- FALSE #TODO maybe could relax?
-        data.table(common=list(min.na.vec), is.common)
-      }else if(length(unique(value.vec))==1){
-        data.table(common=list(value.vec[1]), is.common=TRUE)
-      }else{
-        data.table(common=list(), is.common=FALSE)
+    showSelected_values = .N,
+    min_size = min(size),
+    max_size = max(size)
+  ), by = group]
+  groups_in_several_ss <- ss_count_dt[showSelected_values > 1]
+  if (nrow(groups_in_several_ss) == 0) {
+    return(NULL)
+  }
+  ## ---- Phase 1: Determine which columns are common ----
+  ## Only check groups that appear in multiple chunks (single-chunk
+  ## groups are trivially common and don't constrain the result).
+  multi_grp <- groups_in_several_ss$group
+  built_multi <- built[group %in% multi_grp]
+  ## Pre-join size info so we can access it inside by=group
+  ## without per-group lookups.
+  setkeyv(ss_count_dt, "group")
+  built_multi[ss_count_dt, `:=`(
+    .n_chunks = i.showSelected_values,
+    .min_sz   = i.min_size,
+    .max_sz   = i.max_size
+  ), on = "group"]
+  ## For each column, check commonality using .SDcols (avoids get()).
+  is_common_vec <- vapply(col.name.vec, function(cn) {
+    check <- built_multi[,
+      {
+        vals <- .SD[[1L]]
+        if (.min_sz[1L] == .max_sz[1L]) {
+          cs <- .min_sz[1L]
+          nch <- .n_chunks[1L]
+          m <- matrix(vals, nrow = cs, ncol = nch)
+          ref <- apply(m, 1L, function(x) x[!is.na(x)][1L])
+          all(m == ref, na.rm = TRUE)
+        } else {
+          length(unique(vals[!is.na(vals)])) <= 1L
       }
-    }, by=group]
-  }, keyby=col.name]
-  common_var_dt <- common_value_dt[, .(
-    all.common=all(is.common)
-  ), keyby=col.name]
-  common.cols <- common_var_dt[all.common==TRUE, col.name]
+      },
+      by = group,
+      .SDcols = cn
+    ]
+    all(check$V1)
+  }, logical(1L))
+  common.cols <- col.name.vec[is_common_vec]
   intermediate.common.ok <- (
     1 < length(common.cols)
   )&&(
     length(common.cols) < length(col.name.vec)
   )
   one.common.ok <- (
-    length(common.cols)==1
-  )&&(
-    any(common_value_dt[common.cols, sapply(common, length)]>1)
+    length(common.cols) == 1
+  ) && (
+    groups_in_several_ss[, any(min_size > 1)]
   )
-  if(one.common.ok || intermediate.common.ok){
-    only_common_dt <- common_value_dt[col.name %in% c("group", common.cols)]
-    common_wide <- dcast(only_common_dt, group ~ col.name, value.var="common")
-    common.data <- common_wide[, lapply(.SD, unlist), by=group]
+  if (one.common.ok || intermediate.common.ok) {
+    ## ---- Phase 2: Extract common values (only common cols) ----
+    built[ss_count_dt, `:=`(
+      .n_chunks = i.showSelected_values,
+      .min_sz   = i.min_size,
+      .max_sz   = i.max_size
+    ), on = "group"]
+    cv_list <- lapply(common.cols, function(cn) {
+      built[,
+        {
+          vals <- .SD[[1L]]
+          nch <- .n_chunks[1L]
+          if (.min_sz[1L] == .max_sz[1L]) {
+            cs <- .min_sz[1L]
+            m <- matrix(vals, nrow = cs, ncol = nch)
+            ref <- apply(m, 1L, function(x) x[!is.na(x)][1L])
+            if (length(unique(ref)) == 1L) ref <- ref[1L]
+            data.table(col.name = cn, common = list(ref))
+          } else {
+            uv <- unique(vals[!is.na(vals)])
+            data.table(col.name = cn, common = list(uv[1L]))
+          }
+        },
+        by = group,
+        .SDcols = cn
+      ]
+    })
+    common_value_dt <- rbindlist(cv_list)
+    setkey(common_value_dt, col.name)
+    built[, c(".n_chunks", ".min_sz", ".max_sz") := NULL]
+    common_wide <- dcast(
+      common_value_dt, group ~ col.name,
+      value.var = "common"
+    )
+    common.data <- common_wide[, lapply(.SD, unlist), by = group]
     common.not.na <- na.omit(common.data)
     groups.not.na <- unique(common.not.na[, .(group)])
     built.not.na <- built[groups.not.na]
+    varied.col.names <- col.name.vec[!is_common_vec]
     varied.cols <- intersect(
-      names(built),
-      common_var_dt[all.common==FALSE, c(col.name,sparse.cols)])
+      names(built), c(varied.col.names, sparse.cols)
+    )
     varied.to.split <- na.omit(built.not.na)
     varied.df.list <- split_recursive(varied.to.split, chunk.vars)
     varied.data <- varied.chunk(varied.df.list, c("group", varied.cols))
-    list(common=common.not.na, varied=varied.data)
+    list(common = common.not.na, varied = varied.data)
   }
 }
 
