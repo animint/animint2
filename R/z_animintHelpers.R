@@ -766,8 +766,8 @@ getTextSize <- function(element.name, theme){
 ##' no common data.
 ##' @importFrom stats na.omit
 ##' @import data.table
-getCommonChunk <- function(built, chunk.vars, aes.list){
-  group <- col.name <- group.size <- ok <- all.common <- size <- showSelected_values <- common <- NULL
+getCommonChunk <- function(built, chunk.vars, aes.list) {
+  group <- col.name <- group.size <- ok <- all.common <- size <- showSelected_values <- common <- min_size <- max_size <- .n_chunks <- .min_sz <- .max_sz <- i.showSelected_values <- i.min_size <- i.max_size <- NULL
   ## Above to avoid CRAN NOTE.
   if(length(chunk.vars) == 0){
     return(NULL)
