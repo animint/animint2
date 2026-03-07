@@ -4,19 +4,10 @@ library(XML)
 
 context("k-Fold Cross Validation renderer")
 
-# Start the headless browser
-tests_init()
-
-# In Video I have called this as the Sleeper Function
-# Give the browser an initial 2 seconds pause moment to fully initialize
-Sys.sleep(2)
-
 # Data Setup
 set.seed(42)
 N <- 150
-
 k <- 10
-
 x <- runif(N)
 
 fold_sizes <- rep(N %/% k, k)
@@ -42,8 +33,7 @@ points_data <- do.call(rbind, lapply(1:k, function(i) {
 
 fold_sizes_df <- data.frame(fold = 1:k, size = diff(kf))
 
-# Plot Definitions 
-
+# Plot Definitions
 # 1. Main CV Diagram
 plot_cv <- ggplot() +
   geom_rect(data = fold_rects,
@@ -81,7 +71,6 @@ viz <- list(
 info <- animint2HTML(viz)
 
 # Tests
-
 test_that("both plots rendered as SVG", {
   html <- getHTML()
   expect_gte(length(getNodeSet(html, "//svg")), 2L)
@@ -109,12 +98,12 @@ test_that("plot title rendered as SVG text", {
 })
 
 test_that("Test and Train colors in initial render", {
-  # Fix:- Now using the saveXML to properly convert the XMLInternalDocument pointer to string
+  # Note getHTML() returns a live browser object, not plain text which I previously used.
+  # Fix:- Now using the saveXML to properly convert the XMLInternalDocument pointer to string. 
   html <- getHTML()
   html_text <- saveXML(html)
   has_tomato <- grepl("tomato|#ff6347|rgb\\(255,\\s*99,\\s*71\\)", html_text, ignore.case=TRUE)
   has_steelblue <- grepl("steelblue|#4682b4|rgb\\(70,\\s*130,\\s*180\\)", html_text, ignore.case=TRUE)
-  
   expect_true(has_tomato, info="tomato (Test) color not found in DOM")
   expect_true(has_steelblue, info="steelblue (Train) color not found in DOM")
 })
@@ -144,5 +133,3 @@ test_that("play/pause button present for time variable", {
 test_that("fold selector registered in info object", {
   expect_true("fold" %in% names(info$selectors))
 })
-
-tests_exit()
