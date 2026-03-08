@@ -110,17 +110,10 @@ test_that("Test and Train colors in initial render", {
 
 test_that("clicking fold 3 updates highlighted fold", {
   clickID("plot_folds_fold_variable_3")
-  found <- FALSE
-  for (i in 1:30) {
-    rects <- getNodeSet(getHTML(),
-      '//g[contains(@class,"rect") and contains(@class,"cvplot")]//rect')
-    if (length(rects) > 0) {
-      found <- TRUE
-      break
-    }
-    Sys.sleep(0.1)
-  }
-  expect_true(found, info="highlighted rect did not appear after clicking fold 3")
+  html <- getHTML()
+  rects <- getNodeSet(html,
+    '//g[contains(@class,"rect") and contains(@class,"cvplot")]//rect')
+  expect_gt(length(rects), 0)
 })
 
 test_that("play/pause button present for time variable", {
