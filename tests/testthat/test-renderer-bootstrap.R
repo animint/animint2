@@ -2,10 +2,6 @@ library(testthat)
 library(animint2)
 library(XML)
 
-# Starts the browser for remote testing
-tests_init()
-Sys.sleep(2)
-
 # Setup random seed and parameters
 set.seed(123)
 n <- 30
@@ -58,7 +54,7 @@ combined_df <- rbind(original_df, boot_samples)
 combined_df$iteration <- as.integer(combined_df$iteration)
 boot_means$iteration <- as.integer(boot_means$iteration)
 
-# Building the interactive visualization object
+# Building the visualization object
 viz <- list(
   bootstrapPlot = ggplot() +
     geom_point(
@@ -80,7 +76,6 @@ viz <- list(
     ),
   width = list(bootstrapPlot = 400), 
   height = list(bootstrapPlot = 700),
-  # Seting animation timing
   time = list(variable = "iteration", ms = 1000)
 )
 
