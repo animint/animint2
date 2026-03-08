@@ -1641,10 +1641,7 @@ var animint = function (to_select, json_file) {
           eAppend = "g";
           eActions = function(groups) {
             // Handle transitions seperately due to unique structure of geom_label_aligned
-            var transitionDuration = 0;
-            if (selector_name) {
-              transitionDuration = +Selectors[selector_name].duration || 0;
-            }
+            var transitionDuration = +Selectors[selector_name].duration || 0;
             groups.each(function(d) {
               var group = d3.select(this);
               // Select existing elements (if any)
@@ -1938,10 +1935,8 @@ var animint = function (to_select, json_file) {
           positionTooltip(tooltip, tooltip.html());
         });
     }
-    if(selector_name){
-      var milliseconds = Selectors[selector_name].duration;
-      elements = elements.transition().duration(milliseconds);
-    }
+    var milliseconds = Selectors[selector_name].duration;
+    elements = elements.transition().duration(milliseconds);
     if(g_info.aes.hasOwnProperty("id")){
       elements.attr("id", get_attr("id"));
     }
@@ -2086,7 +2081,7 @@ var animint = function (to_select, json_file) {
     // update existing axis
     var xyaxis_sel = element.select("#"+viz_id+"_"+p_name).select("."+axes+"axis_"+panel_i);
     var milliseconds = 0;
-    if(v_name && Selectors[v_name].hasOwnProperty("duration")){
+    if(Selectors[v_name].hasOwnProperty("duration")){
       milliseconds = Selectors[v_name].duration;
     }
     var xyaxis_g = xyaxis_sel
