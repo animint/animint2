@@ -1,3 +1,7 @@
+# Changes in version 2026.3.8 (PR#311)
+
+-   `geom_dotplot()` is now deprecated and will show a warning. Use `geom_point()` instead for interactive visualizations. (Fixed #289)
+
 # Changes in version 2025.12.3 (PR#282)
 
 - URL hash handling: Removed old `window.location.hash` parsing code from `animint.js` (issue #280).

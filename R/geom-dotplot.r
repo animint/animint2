@@ -130,6 +130,7 @@ geom_dotplot <- function(mapping = NULL, data = NULL,
                          na.rm = FALSE,
                          show.legend = NA,
                          inherit.aes = TRUE) {
+  stop("geom_dotplot() has been removed from animint2. Use geom_point() instead.")
   # If identical(position, "stack") or position is position_stack(), tell them
   # to use stackgroups=TRUE instead. Need to use identical() instead of ==,
   # because == will fail if object is position_stack() or position_dodge()
