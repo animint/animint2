@@ -2,32 +2,26 @@ library(testthat)
 library(animint2)
 library(XML)
 
-# Setup random seed and parameters
+context("Bootstrap Sampling Animation renderer")
+
 set.seed(123)
 n <- 30
 max_iterations <- 10
 
-# Creating the original baseline data
 original_data <- rnorm(n, mean = 10, sd = 2)
-
 original_df <- data.frame(
   id = 1:n,
   val = original_data,
   type = "Original",
-  iteration = 0,
+  iteration = 0L,
   y = 1
 )
 
-# Initializing storage for bootstrap results
 boot_samples <- data.frame()
 boot_means <- data.frame()
 
-# Running the bootstrap resampling loop
 for (i in 1:max_iterations) {
-  
   sample_vals <- sample(original_data, n, replace = TRUE)
-  
-  # Storing individual points for this iteration
   boot_samples <- rbind(
     boot_samples,
     data.frame(
@@ -38,8 +32,6 @@ for (i in 1:max_iterations) {
       y = 1
     )
   )
-  
-  # Storing the mean for this iteration
   boot_means <- rbind(
     boot_means,
     data.frame(
@@ -49,19 +41,20 @@ for (i in 1:max_iterations) {
   )
 }
 
-# Merging datasets and fix data types
+# Here I am combining original and bootstrap points
+
 combined_df <- rbind(original_df, boot_samples)
 combined_df$iteration <- as.integer(combined_df$iteration)
 boot_means$iteration <- as.integer(boot_means$iteration)
 
-# Building the visualization object
 viz <- list(
   bootstrapPlot = ggplot() +
     geom_point(
       data = combined_df,
       aes(x = val, y = y, colour = type),
-      showSelected = "iteration",
-      clickSelects = "type"
+      showSelected = c("iteration", "type"),
+      clickSelects = "type",
+      size = 3
     ) +
     geom_point(
       data = boot_means,
@@ -73,16 +66,18 @@ viz <- list(
     labs(
       title = "Bootstrap Sampling Animation",
       x = "Value", y = "Distribution"
-    ),
-  width = list(bootstrapPlot = 400), 
-  height = list(bootstrapPlot = 700),
-  time = list(variable = "iteration", ms = 1000)
+    ) +
+    theme_animint(width = 700, height = 400),
+  time = list(variable = "iteration", ms = 1000),
+  first = list(
+    iteration = 1,                 
+    type = c("Original", "Bootstrap")   # both types are initially selected
+  )
 )
 
-# Rendering to HTML for testing
 info <- animint2HTML(viz)
 
-# --- Test Suite ---
+# ---- Tests ----
 
 test_that("Render animation correctly", {
   expect_true(!is.null(info))
@@ -98,37 +93,40 @@ test_that("Plot title exists", {
   expect_true(grepl("Bootstrap Sampling Animation", saveXML(page)))
 })
 
-test_that("Points visible initially", {
+test_that("Initial points visible (bootstrap + mean)", {
   page <- getHTML()
   pts <- getNodeSet(
     page,
-    '//g[contains(@class,"geom1_point_bootstrapPlot")]//circle'
+    '//g[starts-with(@class, "geom") and contains(@class, "point")]//circle'
   )
-  expect_gt(length(pts), 0)
+  # n bootstrap points + 1 mean point
+  expect_equal(length(pts), n + 1)
 })
 
-# Verifying that clicking 'Bootstrap' legend works
-test_that("Bootstrap points disappear after click", {
+test_that("Clicking 'Bootstrap' legend hides bootstrap points", {
   clickID("plot_bootstrapPlot_type_variable_Bootstrap")
   Sys.sleep(0.5)
   
-  after_click <- getHTML()
+  page <- getHTML()
   pts <- getNodeSet(
-    after_click,
-    '//g[contains(@class,"geom1_point_bootstrapPlot")]//circle'
+    page,
+    '//g[starts-with(@class, "geom") and contains(@class, "point")]//circle'
   )
-  expect_equal(length(pts), 0)
+  expect_equal(length(pts), 1)
 })
 
-# Verifying that clicking 'Original' legend works
-test_that("Original points disappear after click", {
+test_that("Clicking 'Original' legend does not affect bootstrap points (original not visible)", {
+  clickID("plot_bootstrapPlot_type_variable_Bootstrap")
+  Sys.sleep(0.5)
+  
   clickID("plot_bootstrapPlot_type_variable_Original")
   Sys.sleep(0.5)
   
-  after_click2 <- getHTML()
+  page <- getHTML()
   pts <- getNodeSet(
-    after_click2,
-    '//g[contains(@class,"geom1_point_bootstrapPlot")]//circle'
+    page,
+    '//g[starts-with(@class, "geom") and contains(@class, "point")]//circle'
   )
-  expect_equal(length(pts), 0)
+  #  n bootstrap points + 1 mean point
+  expect_equal(length(pts), n + 1)
 })
