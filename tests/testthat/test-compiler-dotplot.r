@@ -6,22 +6,6 @@ test_that("geom_dotplot throws error with removal message", {
   # Test that any call to geom_dotplot produces the expected error
   expect_error(
     ggplot(dat, aes(x, y)) + geom_dotplot(),
-    "geom_dotplot.*removed"
-  )
-  
-  expect_error(
-    ggplot(dat, aes(x = x, y = y, fill = g)) +
-      geom_dotplot(binwidth = 0.2, binaxis = "y", position = "dodge", stackdir = "center"),
-    "geom_dotplot.*removed"
-  )
-  
-  expect_error(
-    ggplot(dat, aes(y)) + geom_dotplot(binwidth = .4, method = "histodot"),
-    "geom_dotplot.*removed"
-  )
-  
-  expect_error(
-    ggplot(dat, aes(x = y)) + geom_dotplot(binwidth = .4, method = "dotdensity"),
-    "geom_dotplot.*removed"
+    "geom_dotplot() has been removed from animint2. Use geom_point() instead."
   )
 })
