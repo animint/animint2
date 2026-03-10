@@ -1372,8 +1372,8 @@ var animint = function (to_select, json_file) {
       }
       // Create d3.geo.path with null projection once (no geographic
       // reprojection; coordinates are already in pixel space after
-      // applying scales). Used for polygon subgroup holes.
-      var geoPath = d3.geo.path().projection(null);
+      // applying scales). Only needed for polygon subgroup holes.
+      var geoPath = g_info.data_has_subgroup ? d3.geo.path().projection(null) : null;
       data_to_bind = kv;
       eActions = function (e) {
         e.attr("d", function (d) {
