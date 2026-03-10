@@ -2057,7 +2057,7 @@ var animint = function (to_select, json_file) {
             // Once scales are updated, update the axis ticks if needed
             if(draw_axes){
               // Tick values are same as major grid lines
-              update_axes(p_name, xyaxis, panel_i, grid_vals[1]);
+              update_axes(p_name, xyaxis, panel_i, grid_vals[1], v_name);
             }
             // Update major and minor grid lines
             update_grids(p_name, xyaxis, panel_i, grid_vals, scales);
@@ -2069,7 +2069,7 @@ var animint = function (to_select, json_file) {
 
   // Update the axis ticks etc. once plot is zoomed in/out
   // currently called from update_scales.
-  function update_axes(p_name, axes, panel_i, tick_vals){
+  function update_axes(p_name, axes, panel_i, tick_vals, v_name){
     var orientation;
     if(axes == "x"){
       orientation = "bottom";
@@ -2085,9 +2085,13 @@ var animint = function (to_select, json_file) {
           .tickValues(tick_vals);
     // update existing axis
     var xyaxis_sel = element.select("#"+viz_id+"_"+p_name).select("."+axes+"axis_"+panel_i);
+    var milliseconds = 0;
+    if(v_name && Selectors.hasOwnProperty(v_name) && Selectors[v_name].hasOwnProperty("duration")){
+      milliseconds = Selectors[v_name].duration;
+    }
     var xyaxis_g = xyaxis_sel
           .transition()
-          .duration(1000)
+          .duration(milliseconds)
           .call(xyaxis);
     // Fix for issue #273: preserve axis text styling after update
     apply_axis_text_styles(xyaxis_sel, axes, Plots[p_name]);
