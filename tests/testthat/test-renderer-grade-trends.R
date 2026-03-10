@@ -132,17 +132,30 @@ test_that("all 6 subject names appear as x axis labels", {
     }
 })
 
-# test 7 - clickID on Physics updates selected subject in browser
-test_that("clicking Physics bar updates the selected subject", {
-    clickID("Physics")
-    Sys.sleep(1)
-    html_after <- getHTML()
-    # after clicking Physics, circles for Physics should be visible
-    circles_after <- getNodeSet(
-        html_after,
-        '//g[contains(@class,"geom")]//circle'
+# test 7 - clicking Physics legend highlights Physics bar
+test_that("clicking Physics legend toggles Physics selection", {
+    # before - only Mathematics selected
+    html_before <- getHTML()
+    math_label <- getNodeSet(
+        html_before,
+        '//td[@id="plot_subjectComparison_subject_variable_Mathematics_label"]'
     )
-    expect_true(length(circles_after) > 0)
+    before_opacity <- xmlGetAttr(math_label[[1]], "style")
+    
+    # click Physics to add it to selection
+    clickID("plot_subjectComparison_subject_variable_Physics")
+    Sys.sleep(1)
+    
+    # after - Physics label should now be full opacity
+    html_after <- getHTML()
+    physics_label <- getNodeSet(
+        html_after,
+        '//td[@id="plot_subjectComparison_subject_variable_Physics_label"]'
+    )
+    after_opacity <- xmlGetAttr(physics_label[[1]], "style")
+    
+    # Physics opacity changes from 0.5 to 1 after click
+    expect_true(grepl("opacity: 1", after_opacity))
 })
 
 # test 8 - clicking Sem2 option updates bars to show Sem2 data
