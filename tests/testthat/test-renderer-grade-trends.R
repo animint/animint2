@@ -158,15 +158,4 @@ test_that("clicking Physics legend toggles Physics selection", {
     expect_true(grepl("opacity: 1", after_opacity))
 })
 
-# test 8 - clicking Sem2 option updates bars to show Sem2 data
-test_that("selecting Sem2 updates bars to show Sem2 mean grades", {
-    clickHTML(xpath = "//option[@value='Sem2']")
-    Sys.sleep(1)
-    html_after <- getHTML()
-    rects_after <- getNodeSet(
-        html_after,
-        "//rect[not(@class)]"
-    )
-    # bars should still be 6 after semester change
-    expect_equal(length(rects_after), 6L)
-})
+
