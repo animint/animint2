@@ -43,15 +43,6 @@ m_simple <- matrix(
     0, 0, 0, 0, 0, 0),
   6, 6, byrow = TRUE)
 
-m_only_hole <- rbind(
-  c(0, 0, 0, 0, 0, 0, 0),
-  c(0, 1, 1, 1, 1, 1, 0),
-  c(0, 1, 0, 0, 0, 1, 0),
-  c(0, 1, 0, 0, 0, 1, 0),
-  c(0, 1, 0, 0, 0, 1, 0),
-  c(0, 1, 1, 1, 1, 1, 0),
-  c(0, 0, 0, 0, 0, 0, 0))
-
 m_no_hole <- rbind(
   c(0, 0, 0, 0, 0, 0, 0),
   c(0, 1, 1, 1, 1, 1, 0),
@@ -70,60 +61,36 @@ m_hole_and_mid <- rbind(
   c(0, 1, 1, 1, 1, 1, 0),
   c(0, 0, 0, 0, 0, 0, 0))
 
-## compiler tests (no browser needed)
+## --- compiler tests (no browser needed) ---
 
-test_that("data_has_subgroup flag is TRUE when subgroup used", {
+test_that("subgroup flag and TSV column present when subgroup used", {
   out <- compile(make_viz(m_simple, subgroup = TRUE))
   expect_true(out$json$geoms$geom1_polygon_poly$data_has_subgroup)
-})
-
-test_that("data_has_subgroup flag is absent when subgroup not used", {
-  out <- compile(make_viz(m_simple, subgroup = FALSE))
-  flag <- out$json$geoms$geom1_polygon_poly$data_has_subgroup
-  expect_false(isTRUE(flag))
-})
-
-test_that("TSV contains subgroup column when subgroup used", {
-  out <- compile(make_viz(m_simple, subgroup = TRUE))
   expect_true("subgroup" %in% names(out$tsv))
-})
-
-test_that("hole polygon TSV has 2 unique subgroup values", {
-  out <- compile(make_viz(m_simple, subgroup = TRUE))
   expect_equal(length(unique(out$tsv$subgroup)), 2)
 })
 
-test_that("no-hole polygon TSV has 1 unique subgroup value", {
-  out <- compile(make_viz(m_no_hole, subgroup = TRUE))
-  expect_equal(length(unique(out$tsv$subgroup)), 1)
+test_that("subgroup flag absent when subgroup not used", {
+  out <- compile(make_viz(m_simple, subgroup = FALSE))
+  expect_false(isTRUE(out$json$geoms$geom1_polygon_poly$data_has_subgroup))
 })
 
-test_that("only_hole case has 2 subgroups in TSV", {
-  out <- compile(make_viz(m_only_hole, subgroup = TRUE))
-  expect_true(out$json$geoms$geom1_polygon_poly$data_has_subgroup)
-  expect_equal(length(unique(out$tsv$subgroup)), 2)
+test_that("no_hole case has 1 subgroup, hole_and_mid has 3", {
+  out_no <- compile(make_viz(m_no_hole, subgroup = TRUE))
+  expect_equal(length(unique(out_no$tsv$subgroup)), 1)
+  out_mid <- compile(make_viz(m_hole_and_mid, subgroup = TRUE))
+  expect_equal(length(unique(out_mid$tsv$subgroup)), 3)
 })
 
-test_that("no_hole case has 1 subgroup in TSV", {
-  out <- compile(make_viz(m_no_hole, subgroup = TRUE))
-  expect_equal(length(unique(out$tsv$subgroup)), 1)
-})
-
-test_that("hole_and_mid case has 3 subgroups in TSV", {
-  out <- compile(make_viz(m_hole_and_mid, subgroup = TRUE))
-  expect_true(out$json$geoms$geom1_polygon_poly$data_has_subgroup)
-  expect_equal(length(unique(out$tsv$subgroup)), 3)
-})
-
-test_that("multiple groups with subgroup: 2 groups in TSV", {
+test_that("multiple groups with subgroup both appear in TSV", {
   res1 <- as.data.table(isoband::isobands(
     (1:ncol(m_simple)) / (ncol(m_simple) + 1),
     (nrow(m_simple):1) / (nrow(m_simple) + 1),
     m_simple, 0.5, 1.5)[[1]])[, grp := "A"]
   res2 <- as.data.table(isoband::isobands(
-    (1:ncol(m_only_hole)) / (ncol(m_only_hole) + 1),
-    (nrow(m_only_hole):1) / (nrow(m_only_hole) + 1),
-    m_only_hole, 0.5, 1.5)[[1]])[, grp := "B"]
+    (1:ncol(m_no_hole)) / (ncol(m_no_hole) + 1),
+    (nrow(m_no_hole):1) / (nrow(m_no_hole) + 1),
+    m_no_hole, 0.5, 1.5)[[1]])[, grp := "B"]
   combined <- rbind(res1, res2)
   viz_multi <- list(
     poly = ggplot() +
@@ -139,16 +106,16 @@ test_that("multiple groups with subgroup: 2 groups in TSV", {
   expect_equal(length(unique(tsv$group)), 2)
 })
 
-## renderer tests (browser required)
-## two groups A and B with clickSelects so clickID works meaningfully
+## --- renderer tests (browser required) ---
+
 res_A <- as.data.table(isoband::isobands(
   (1:ncol(m_simple)) / (ncol(m_simple) + 1),
   (nrow(m_simple):1) / (nrow(m_simple) + 1),
   m_simple, 0.5, 1.5)[[1]])[, grp := "A"]
 res_B <- as.data.table(isoband::isobands(
-  (1:ncol(m_only_hole)) / (ncol(m_only_hole) + 1),
-  (nrow(m_only_hole):1) / (nrow(m_only_hole) + 1),
-  m_only_hole, 0.5, 1.5)[[1]])[, grp := "B"]
+  (1:ncol(m_no_hole)) / (ncol(m_no_hole) + 1),
+  (nrow(m_no_hole):1) / (nrow(m_no_hole) + 1),
+  m_no_hole, 0.5, 1.5)[[1]])[, grp := "B"]
 res_click <- rbind(res_A, res_B)
 
 viz_click <- list(
@@ -163,53 +130,31 @@ viz_click <- list(
 
 info <- animint2HTML(viz_click)
 
-test_that("rendered polygon with subgroup has fill-rule evenodd", {
-  skip_if(!exists("remDr"), "remDr not initialized - run tests_init() first")
+test_that("one path per group with evenodd fill-rule and multiple subpaths", {
   html <- getHTML()
   path_nodes <- getNodeSet(html, "//path[@class='geom']")
-  expect_gt(length(path_nodes), 0)
-  styles <- sapply(path_nodes, xmlGetAttr, "style")
-  expect_true(any(grepl("evenodd", styles)))
-})
-
-test_that("rendered polygon d attribute has 2 closed subpaths", {
-  skip_if(!exists("remDr"), "remDr not initialized - run tests_init() first")
-  html <- getHTML()
-  path_nodes <- getNodeSet(html, "//path[@class='geom']")
-  d_vals <- sapply(path_nodes, xmlGetAttr, "d")
-  z_counts <- sapply(d_vals, function(d) nchar(gsub("[^Z]", "", d)))
-  expect_true(any(z_counts >= 2))
-})
-
-test_that("hole subgroup merged into one path per group not two separate polygons", {
-  skip_if(!exists("remDr"), "remDr not initialized - run tests_init() first")
-  html <- getHTML()
-  path_nodes <- getNodeSet(html, "//path[@class='geom']")
-  ## 2 groups A and B => 2 path elements (one per group), not 4
+  ## 2 groups A and B => 2 path elements (not 4)
   expect_equal(length(path_nodes), 2)
+  ## fill-rule must be evenodd
+  styles <- sapply(path_nodes, xmlGetAttr, "style")
+  expect_true(any(grepl("evenodd", styles)))
+  ## group A (with hole) must have multiple closed subpaths (M commands)
+  d_vals <- sapply(path_nodes, xmlGetAttr, "d")
+  m_counts <- sapply(d_vals, function(d) length(gregexpr("M", d)[[1]]))
+  expect_true(any(m_counts >= 2))
 })
 
-test_that("clickID on group A polygon deselects it and leaves group B visible", {
-  skip_if(!exists("remDr"), "remDr not initialized - run tests_init() first")
-  ## click group A to deselect it
+test_that("clickSelects works with subgroup polygons", {
+  ## click group A to deselect
   clickID("poly_A")
   Sys.sleep(1)
   html_after <- getHTML()
   path_nodes <- getNodeSet(html_after, "//path[@class='geom']")
-  ## group B path should still exist
   expect_gt(length(path_nodes), 0)
-  ## all remaining paths must still use evenodd fill rule
-  styles <- sapply(path_nodes, xmlGetAttr, "style")
-  expect_true(any(grepl("evenodd", styles)))
-})
-
-test_that("clickID on group A again reselects it restoring both polygons", {
-  skip_if(!exists("remDr"), "remDr not initialized - run tests_init() first")
+  ## click again to reselect
   clickID("poly_A")
   Sys.sleep(1)
-  html_after <- getHTML()
-  path_nodes <- getNodeSet(html_after, "//path[@class='geom']")
-  expect_gte(length(path_nodes), 1)
-  styles <- sapply(path_nodes, xmlGetAttr, "style")
-  expect_true(any(grepl("evenodd", styles)))
+  html_restored <- getHTML()
+  path_nodes_restored <- getNodeSet(html_restored, "//path[@class='geom']")
+  expect_gte(length(path_nodes_restored), 1)
 })

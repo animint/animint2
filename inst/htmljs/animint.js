@@ -1370,17 +1370,28 @@ var animint = function (to_select, json_file) {
         fill = "none";
         fill_off = "none";
       }
+      // Create d3.geo.path with null projection once (no geographic
+      // reprojection; coordinates are already in pixel space after
+      // applying scales). Used for polygon subgroup holes.
+      var geoPath = d3.geo.path().projection(null);
       data_to_bind = kv;
       eActions = function (e) {
         e.attr("d", function (d) {
           var group_data = keyed_data[d.value];
           if(g_info.data_has_subgroup){
+            // Build a GeoJSON Polygon: first ring is exterior,
+            // subsequent rings are holes (as per GeoJSON spec).
             var by_subgroup = d3.nest()
               .key(function(r){ return r["subgroup"]; })
               .entries(group_data);
-            return by_subgroup.map(function(sg){
-              return lineThing(sg.values) + "Z";
-            }).join(" ");
+            var rings = by_subgroup.map(function(sg){
+              var coords = sg.values.map(function(pt){
+                return [scales.x(pt.x), scales.y(pt.y)];
+              });
+              coords.push(coords[0].slice()); // close ring
+              return coords;
+            });
+            return geoPath({ type: "Polygon", coordinates: rings });
           }
           return lineThing(group_data);
         });
