@@ -91,21 +91,14 @@ test_that("10 fold bars rendered in selector plot", {
 })
 
 test_that("plot title rendered as SVG text", {
-  html <- getHTML()
-  text_nodes <- getNodeSet(html, '//text')
-  text_values <- sapply(text_nodes, xmlValue)
-  expect_true(any(grepl("k-Fold Cross Validation", text_values)))
+  html_text <- as.character(getHTML())
+  expect_match(html_text, "k-Fold Cross Validation")
 })
 
 test_that("Test and Train colors in initial render", {
-  # Note getHTML() returns a live browser object, not plain text which I previously used.
-  # Fix:- Now using the saveXML to properly convert the XMLInternalDocument pointer to string. 
   html <- getHTML()
-  html_text <- saveXML(html)
-  has_tomato <- grepl("tomato|#ff6347|rgb\\(255,\\s*99,\\s*71\\)", html_text, ignore.case=TRUE)
-  has_steelblue <- grepl("steelblue|#4682b4|rgb\\(70,\\s*130,\\s*180\\)", html_text, ignore.case=TRUE)
-  expect_true(has_tomato, info="tomato (Test) color not found in DOM")
-  expect_true(has_steelblue, info="steelblue (Train) color not found in DOM")
+  rect_fill <- getStyleValue(html, '//g[contains(@class,"point")]//circle', "fill")
+  expect_color(rect_fill, c("tomato", "steelblue"))
 })
 
 test_that("clicking fold 3 updates highlighted fold", {
@@ -124,5 +117,6 @@ test_that("play/pause button present for time variable", {
 })
 
 test_that("fold selector registered in info object", {
-  expect_true("fold" %in% names(info$selectors))
+  selector_names <- names(info$selectors)
+  expect_match(selector_names, "fold", all = FALSE)
 })
