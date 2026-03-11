@@ -647,10 +647,7 @@ var animint = function (to_select, json_file) {
           var axis_path = xaxis_g.select("path.domain");
           axis_path.remove();
         }
-        xaxis_g.selectAll("text")
-          .style("text-anchor", p_info.xanchor)
-          .style("font-size", p_info.xsize)
-          .attr("transform", "rotate(" + p_info.xangle + " 0 9)");
+        apply_axis_text_styles(xaxis_g, "x", p_info);
       }
       if(draw_y){
         var yaxis = d3.svg.axis()
@@ -669,8 +666,7 @@ var animint = function (to_select, json_file) {
           var axis_path = yaxis_g.select("path.domain");
           axis_path.remove();
         }
-  yaxis_g.selectAll(".tick text")
-    .style("font-size", p_info.ysize);
+        apply_axis_text_styles(yaxis_g, "y", p_info);
       }
 
       if(!axis.xline) {
@@ -1930,6 +1926,20 @@ var animint = function (to_select, json_file) {
       }
     }
   
+  // Helper function to apply axis text styling
+  // Used by both axis initialization and update_axes to ensure consistency
+  function apply_axis_text_styles(axis_g, axes, p_info){
+    if(axes == "x"){
+      axis_g.selectAll("text")
+        .style("text-anchor", p_info.xanchor)
+        .style("font-size", p_info.xsize)
+        .attr("transform", "rotate(" + p_info.xangle + " 0 9)");
+    }else{
+      axis_g.selectAll(".tick text")
+        .style("font-size", p_info.ysize);
+    }
+  }
+
   // update scales for the plots that have update_axes option in
   // theme_animint
   function update_scales(p_name, axes, v_name, value){
@@ -1972,7 +1982,7 @@ var animint = function (to_select, json_file) {
             // Once scales are updated, update the axis ticks if needed
             if(draw_axes){
               // Tick values are same as major grid lines
-              update_axes(p_name, xyaxis, panel_i, grid_vals[1]);
+              update_axes(p_name, xyaxis, panel_i, grid_vals[1], v_name);
             }
             // Update major and minor grid lines
             update_grids(p_name, xyaxis, panel_i, grid_vals, scales);
@@ -1984,7 +1994,7 @@ var animint = function (to_select, json_file) {
 
   // Update the axis ticks etc. once plot is zoomed in/out
   // currently called from update_scales.
-  function update_axes(p_name, axes, panel_i, tick_vals){
+  function update_axes(p_name, axes, panel_i, tick_vals, v_name){
     var orientation;
     if(axes == "x"){
       orientation = "bottom";
@@ -1999,16 +2009,23 @@ var animint = function (to_select, json_file) {
           .orient(orientation)
           .tickValues(tick_vals);
     // update existing axis
-    var xyaxis_g = element.select("#plot_"+p_name).select("."+axes+"axis_"+panel_i)
+    var xyaxis_sel = element.select("#"+viz_id+"_"+p_name).select("."+axes+"axis_"+panel_i);
+    var milliseconds = 0;
+    if(v_name && Selectors.hasOwnProperty(v_name) && Selectors[v_name].hasOwnProperty("duration")){
+      milliseconds = Selectors[v_name].duration;
+    }
+    var xyaxis_g = xyaxis_sel
           .transition()
-          .duration(1000)
+          .duration(milliseconds)
           .call(xyaxis);
+    // Fix for issue #273: preserve axis text styling after update
+    apply_axis_text_styles(xyaxis_sel, axes, Plots[p_name]);
   }
 
   // Update major/minor grids once axes ticks have been updated
   function update_grids(p_name, axes, panel_i, grid_vals, scales){
     // Select panel to update
-    var bgr = element.select("#plot_"+p_name).select(".bgr"+panel_i);
+    var bgr = element.select("#"+viz_id+"_"+p_name).select(".bgr"+panel_i);
     // Update major and minor grid lines
     ["minor", "major"].forEach(function(grid_class, j){
       var lines = bgr.select(".grid_"+grid_class).select("."+axes);
@@ -2737,52 +2754,5 @@ var animint = function (to_select, json_file) {
       status_array=status_array.slice(1)
       return status_array.every(function(elem){ return elem === "displayed"});           
     }
-    if(window.location.hash) {
-      var fragment=window.location.hash;
-      fragment=fragment.slice(1);
-      fragment=decodeURI(fragment)
-      var frag_array=fragment.split(/(.*?})/);
-      frag_array=frag_array.filter(function(x){ return x!=""})
-      frag_array.forEach(function(selector_string){ 
-        var selector_hash=selector_string.split("=");
-        var selector_nam=selector_hash[0];
-        var selector_values=selector_hash[1];
-        var re = /\{(.*?)\}/;
-        selector_values = re.exec(selector_values)[1];
-        var array_values = selector_values.split(',');
-        if(Selectors.hasOwnProperty(selector_nam)){
-          var s_info = Selectors[selector_nam]
-          if(s_info.type=="single"){//TODO fix
-            array_values.forEach(function(element) {
-              wait_until_then(100, check_func, update_selector,selector_nam,element)
-              if(response.time)Animation.pause(true)
-            });   
-          }else{
-            var old_selections = Selectors[selector_nam].selected;
-            // the levels that need to have selections turned on
-            array_values
-              .filter(function(n) {
-                return old_selections.indexOf(n) == -1;
-              })
-              .forEach(function(element) {
-                wait_until_then(100, check_func, update_selector,selector_nam,element)
-                if(response.time){
-                  Animation.pause(true)
-                }
-              });
-            old_selections
-              .filter(function(n) {
-                return array_values.indexOf(n) == -1;
-              })
-              .forEach(function(element) {
-                wait_until_then(100, check_func, update_selector,selector_nam,element)
-                if(response.time){
-                  Animation.pause(true)
-                }
-              });     
-          }//if(single) else multiple selection
-        }//if(Selectors.hasOwnProperty(selector_nam))
-      })//frag_array.forEach
-    }//if(window.location.hash)
   });
 };
