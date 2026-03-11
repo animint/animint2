@@ -760,7 +760,6 @@ getLegendList <- function(plistextra){
     gdefs <- guides_merge(gdefs)
     gdefs <- guides_geom(gdefs, layers, default_mapping)
   } else (zeroGrob())
-  names(gdefs) <- sapply(gdefs, function(i) i$title)
 
   ## adding the variable used to each LegendList
   for(leg in seq_along(gdefs)) {
@@ -840,6 +839,7 @@ getLegendList <- function(plistextra){
     }
   }
   legend.list <- lapply(gdefs, getLegend)
+  names(legend.list) <- sapply(legend.list, function(i) i$class)
   ## Add a flag to specify whether or not there is both a color and a
   ## fill legend to display. If so, we need to draw the interior of
   ## the points in the color legend as the same color.
