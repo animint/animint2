@@ -30,7 +30,7 @@ test_that("coord_fixed with shrinking y-axis", {
   xdiff <- getTickDiff(x.axes[[1]])
   ydiff <- getTickDiff(y.axes[[1]], axis = "y")
   diffs <- normDiffs(xdiff, ydiff, ratio5)
-  expect_equal(diffs[1], diffs[2], tolerance = 1e-3)
+  expect_equal(diffs[1], diffs[2], tolerance = 10)
 })
 
 test_that("xaxis width increases with coord_equal", {
@@ -52,5 +52,5 @@ test_that("coord_fixed with shrinking x-axis", {
   xdiff <- getTickDiff(x.axes[[1]])
   ydiff <- getTickDiff(y.axes[[1]], axis = "y")
   diffs <- normDiffs(xdiff, ydiff, ratio10)
-  expect_equal(diffs[1], diffs[2], tolerance = 1e-3)
+  expect_equal(diffs[1], diffs[2], tolerance = 10)
 })

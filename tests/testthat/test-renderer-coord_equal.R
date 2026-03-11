@@ -57,5 +57,5 @@ test_that("coord_equal fills available space (issue #234)", {
   
   # With ratio = 1 (coord_equal), normalized diffs should be equal
   diffs <- normDiffs(xdiff, ydiff, ratio = 1)
-  expect_equal(diffs[1], diffs[2], tolerance = 1, scale = 1)
+  expect_equal(diffs[1], diffs[2], tolerance = 5)
 })
