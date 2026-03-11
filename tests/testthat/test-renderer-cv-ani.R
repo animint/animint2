@@ -103,8 +103,11 @@ test_that("Test and Train colors in initial render", {
     "fill"
   )
   circle_fill <- circle_fill[!is.na(circle_fill)]
-  expect_match(circle_fill, "tomato", all = FALSE)
-  expect_match(circle_fill, "steelblue", all = FALSE)
+  ## With N=150 and k=10, each fold has exactly 15 points.
+  ## Fold 1 uses indices 1-15 as "Test" (tomato) and 16-150 as "Train" (steelblue).
+  ## We check one circle from each role to confirm both colors are rendered correctly.
+  expect_color(circle_fill[1], "tomato")    # index 1, fold 1 -> Test
+  expect_color(circle_fill[16], "steelblue") # index 16, fold 1 -> Train
 })
 
 test_that("clicking fold 3 updates highlighted fold", {
