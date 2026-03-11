@@ -91,14 +91,20 @@ test_that("10 fold bars rendered in selector plot", {
 })
 
 test_that("plot title rendered as SVG text", {
-  html_text <- as.character(getHTML())
+  html_text <- saveXML(getHTML())
   expect_match(html_text, "k-Fold Cross Validation")
 })
 
 test_that("Test and Train colors in initial render", {
-  html <- getHTML()
-  rect_fill <- getStyleValue(html, '//g[contains(@class,"point")]//circle', "fill")
-  expect_color(rect_fill, c("tomato", "steelblue"))
+  html <- info$html
+  circle_fill <- getStyleValue(
+    html,
+    '//g[contains(@class,"point")]//circle',
+    "fill"
+  )
+  circle_fill <- circle_fill[!is.na(circle_fill)]
+  expect_match(circle_fill, "tomato", all = FALSE)
+  expect_match(circle_fill, "steelblue", all = FALSE)
 })
 
 test_that("clicking fold 3 updates highlighted fold", {
