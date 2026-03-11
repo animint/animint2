@@ -1567,7 +1567,7 @@ var animint = function (to_select, json_file) {
           eActions = function(groups) {
             // Handle transitions seperately due to unique structure of geom_label_aligned
             var transitionDuration = 0;
-            if (selector_name) {
+            if(selector_name && Selectors[selector_name].hasOwnProperty("duration")){
               transitionDuration = +Selectors[selector_name].duration || 0;
             }
             groups.each(function(d) {
@@ -1863,7 +1863,7 @@ var animint = function (to_select, json_file) {
           positionTooltip(tooltip, tooltip.html());
         });
     }
-    if(selector_name){
+    if(selector_name && Selectors[selector_name].hasOwnProperty("duration")){
       var milliseconds = Selectors[selector_name].duration;
       elements = elements.transition().duration(milliseconds);
     }
