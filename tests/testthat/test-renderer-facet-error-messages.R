@@ -7,7 +7,8 @@ test_that("facet_wrap formula with missing variable gives clear error", {
   )
   expect_error(
     animint2dir(viz, out.dir = tempfile(), open.browser = FALSE),
-    "NonExistentColumn"
+    "Facet variable not found in data: NonExistentColumn\nAvailable columns: Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, Species\nUse string notation like facet_wrap(\"var\") instead of formula notation facet_wrap(. ~ var)",
+    fixed = TRUE
   )
 })
 test_that("facet_grid formula with missing variable gives clear error", {
@@ -18,7 +19,8 @@ test_that("facet_grid formula with missing variable gives clear error", {
   )
   expect_error(
     animint2dir(viz, out.dir = tempfile(), open.browser = FALSE),
-    "MissingVar"
+    "Facet variable not found in data: MissingVar\nAvailable columns: Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, Species\nUse string notation like facet_wrap(\"var\") instead of formula notation facet_wrap(. ~ var)",
+    fixed = TRUE
   )
 })
 test_that("facet_wrap string notation works", {

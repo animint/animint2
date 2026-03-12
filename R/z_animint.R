@@ -21,9 +21,6 @@ parsePlot <- function(meta, plot, plot.name){
     }
   }
 
-  ## Validate facet variables before ggplot_build (Issue #168)
-  checkFacetVariables(plot)
-
   built <- ggplot_build(plot)
   plot.info <- list()
 

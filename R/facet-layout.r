@@ -95,6 +95,17 @@ layout_base <- function(data, vars = NULL, drop = TRUE) {
   # variables that appear in the data
   has_all <- unlist(plyr::llply(values, length)) == length(vars)
   if (!any(has_all)) {
+    vars_to_check <- vars[vars != "."]
+    all_data_vars <- unique(unlist(lapply(data, names)))
+    missing_vars <- setdiff(vars_to_check, all_data_vars)
+    if(length(missing_vars) > 0){
+      stop(sprintf(
+        "Facet variable%s not found in data: %s\nAvailable columns: %s\nUse string notation like facet_wrap(\"var\") instead of formula notation facet_wrap(. ~ var)",
+        if(length(missing_vars) > 1) "s" else "",
+        paste(missing_vars, collapse = ", "),
+        paste(all_data_vars, collapse = ", ")
+      ))
+    }
     stop("At least one layer must contain all variables used for facetting")
   }
 
