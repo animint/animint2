@@ -405,7 +405,7 @@ var setMultilineText = function(textElement, text) {
         return measureText(entry, p_info.ysize).width + 5;
       }));
     }
-    var axispaddingx = 15; // distance between tick marks and x axis name (consistent with axispaddingy=5 base, plus ~10px for text cap-height offset).
+    var axispaddingx = 30; // distance between tick marks and x axis name.
     if(p_info.hasOwnProperty("xlabs") && p_info.xlabs.length){
       // TODO: throw warning if text height is large portion of plot height?
       axispaddingx += Math.max.apply(null, p_info.xlabs.map(function(entry){
