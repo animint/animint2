@@ -29,12 +29,23 @@ expect_Capture <- function(L){
 expect_no_Capture <- function(L){
   expect_false(file.exists(file.path(L$local_clone,"Capture.PNG")))
 }
+skip_if_no_org_pat <- function(){
+  if(!identical(Sys.getenv("ANIMINT2_TEST_GHPAGES"), "true")){
+    skip("Skipping GitHub Pages integration tests (set ANIMINT2_TEST_GHPAGES=true to enable).")
+  }
+  token <- Sys.getenv("GITHUB_PAT")
+  token2 <- Sys.getenv("GITHUB_PAT_GITHUB_COM")
+  if(identical(token, "") && identical(token2, "")){
+    skip("Skipping GitHub Pages integration tests (no GitHub token available).")
+  }
+}
 ## The test below requires a github token with repo delete
 ## permission. Read
 ## https://github.com/animint/animint2/wiki/Testing#installation to
 ## see how to set that up on your local computer, or on github
 ## actions.
 reset_test_repo <- function(){
+  skip_if_no_org_pat()
   ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#delete-a-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write) gh api --method DELETE -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/OWNER/REPO
   tryCatch({
     gh::gh("DELETE /repos/animint-test/animint2pages_test_repo")
@@ -124,6 +135,9 @@ test_that("animint2pages raises an error if no GitHub token is present", {
   ## be called to set the env vars/token.
   repo.root <- system("git rev-parse --show-toplevel", intern=TRUE)
   config.file <- file.path(repo.root, ".git", "config")
+  if(file.access(config.file, 2) != 0){
+    skip(sprintf("Skip: can not write %s", config.file))
+  }
   config.old <- file.path(repo.root, ".git", "config.old")
   file.copy(config.file, config.old, overwrite = TRUE)
   cat("[credential]\n\tusername = FOO", file=config.file, append=TRUE)

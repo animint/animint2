@@ -20,6 +20,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.PAT_GITHUB }}
       GH_ACTION: "ENABLED"
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      ANIMINT2_TEST_GHPAGES: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main') }}
     steps:
       - uses: actions/checkout@v3
       - name: install and update texlive
@@ -48,6 +49,10 @@ jobs:
         run: |
           npm install v8-to-istanbul
           echo "Node modules installed"
+
+      - name: Install xvfb (JS_coverage)
+        if: matrix.test-suite == 'JS_coverage'
+        run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt-get install -y xvfb
       
       - name: run tests
         run: |
@@ -55,7 +60,7 @@ jobs:
             bash build.sh
           elif [ "$TEST_SUITE" == "JS_coverage" ]; then
             echo "Running testthat with JS coverage collection..."
-            Rscript -e "source('tests/testthat.R', chdir = TRUE)"
+            xvfb-run -a Rscript -e "source('tests/testthat.R', chdir = TRUE)"
           else
             echo "Running testthat with R coverage collection..."
             Rscript -e 'covr::codecov(quiet = FALSE, type = "tests", test_files = "tests/testthat.R", flags = "r")'
