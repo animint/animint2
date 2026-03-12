@@ -103,11 +103,16 @@ test_that("Test and Train colors in initial render", {
     "fill"
   )
   circle_fill <- circle_fill[!is.na(circle_fill)]
-  ## With N=150 and k=10, each fold has exactly 15 points.
-  ## Fold 1 uses indices 1-15 as "Test" (tomato) and 16-150 as "Train" (steelblue).
-  ## We check one circle from each role to confirm both colors are rendered correctly.
-  expect_color(circle_fill[1], "tomato")    # index 1, fold 1 -> Test
-  expect_color(circle_fill[16], "steelblue") # index 16, fold 1 -> Train
+  ## With N=150 and k=10, each fold has exactly 15 Test points and 135 Train points.
+  ## Animation auto-plays on load, so the active fold at capture time may vary.
+  ## We verify both colors are present by sorting fills by count:
+  ## the minority color (15 occurrences) is always tomato (Test) and
+  ## the majority color (135 occurrences) is always steelblue (Train).
+  fill_counts <- table(circle_fill)
+  expect_equal(length(fill_counts), 2)
+  fill_by_count <- names(sort(fill_counts))
+  expect_color(fill_by_count[1], "tomato")    # minority (15) = Test
+  expect_color(fill_by_count[2], "steelblue") # majority (135) = Train
 })
 
 test_that("clicking fold 3 updates highlighted fold", {
