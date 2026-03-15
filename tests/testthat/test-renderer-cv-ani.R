@@ -2,7 +2,7 @@ library(testthat)
 library(animint2)
 library(XML)
 
-context("k-Fold Cross Validation renderer")
+acontext("k-Fold Cross Validation renderer")
 
 # Data Setup
 set.seed(42)
@@ -96,31 +96,65 @@ test_that("plot title rendered as SVG text", {
 })
 
 test_that("Test and Train colors in initial render", {
+  # Get the HTML elements and check their actual fill properties 
+  # to make sure the dots are painted correctly
   html <- info$html
   circle_fill <- getStyleValue(
     html,
     '//g[contains(@class,"point")]//circle',
     "fill"
   )
+  
   circle_fill <- circle_fill[!is.na(circle_fill)]
-  ## With N=150 and k=10, each fold has exactly 15 Test points and 135 Train points.
-  ## Animation auto-plays on load, so the active fold at capture time may vary.
-  ## We verify both colors are present by sorting fills by count:
-  ## the minority color (15 occurrences) is always tomato (Test) and
-  ## the majority color (135 occurrences) is always steelblue (Train).
   fill_counts <- table(circle_fill)
+  
+  # We expect 2 colors: a lot of blue dots (Train) and fewer red dots (Test)
   expect_equal(length(fill_counts), 2)
+  
   fill_by_count <- names(sort(fill_counts))
-  expect_color(fill_by_count[1], "tomato")    # minority (15) = Test
-  expect_color(fill_by_count[2], "steelblue") # majority (135) = Train
+  expect_color(fill_by_count[1], "tomato")    # Fewer dots = Test points
+  expect_color(fill_by_count[2], "steelblue") # Many dots = Train points
 })
 
 test_that("clicking fold 3 updates highlighted fold", {
+  clickID("play_pause")
+  Sys.sleep(0.5)
+
+  # Set known starting state: fold 1
+  clickID("plot_folds_fold_variable_1")
+  Sys.sleep(1)
+
+  # Use getStyleValue for fill (same as color test — correct way)
+  html_before    <- getHTML()
+  circles_before <- getNodeSet(html_before,
+    '//g[contains(@class,"point") and contains(@class,"cvplot")]//circle')
+  fills_before   <- getStyleValue(html_before,
+    '//g[contains(@class,"point") and contains(@class,"cvplot")]//circle', "fill")
+  cx_before      <- sapply(circles_before, function(n) xmlGetAttr(n, "cx"))
+  tomato_cx_before <- cx_before[!is.na(fills_before) & fills_before == "tomato"]
+
+  # Click fold 3
   clickID("plot_folds_fold_variable_3")
-  html <- getHTML()
-  rects <- getNodeSet(html,
-    '//g[contains(@class,"rect") and contains(@class,"cvplot")]//rect')
-  expect_gt(length(rects), 0)
+  Sys.sleep(1)
+
+  html_after    <- getHTML()
+  circles_after <- getNodeSet(html_after,
+    '//g[contains(@class,"point") and contains(@class,"cvplot")]//circle')
+  fills_after   <- getStyleValue(html_after,
+    '//g[contains(@class,"point") and contains(@class,"cvplot")]//circle', "fill")
+  cx_after      <- sapply(circles_after, function(n) xmlGetAttr(n, "cx"))
+  tomato_cx_after <- cx_after[!is.na(fills_after) & fills_after == "tomato"]
+
+  after_counts <- table(fills_after[!is.na(fills_after)])
+
+  # Exactly 2 colors present
+  expect_equal(length(after_counts), 2)
+
+  # Exactly 15 test points visible (fold 3 size)
+  expect_equal(min(after_counts), 15)
+
+  # Fold 1 and Fold 3 test sets are at DIFFERENT x-positions -> proof click worked
+  expect_false(identical(sort(tomato_cx_before), sort(tomato_cx_after)))
 })
 
 test_that("play/pause button present for time variable", {
@@ -131,6 +165,5 @@ test_that("play/pause button present for time variable", {
 })
 
 test_that("fold selector registered in info object", {
-  selector_names <- names(info$selectors)
-  expect_match(selector_names, "fold", all = FALSE)
+  expect_type(info$selectors$fold, "list")
 })
