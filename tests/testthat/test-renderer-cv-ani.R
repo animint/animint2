@@ -124,37 +124,36 @@ test_that("clicking fold 3 updates highlighted fold", {
   clickID("plot_folds_fold_variable_1")
   Sys.sleep(1)
 
-  # Use getStyleValue for fill (same as color test — correct way)
-  html_before    <- getHTML()
-  circles_before <- getNodeSet(html_before,
-    '//g[contains(@class,"point") and contains(@class,"cvplot")]//circle')
-  fills_before   <- getStyleValue(html_before,
-    '//g[contains(@class,"point") and contains(@class,"cvplot")]//circle', "fill")
-  cx_before      <- sapply(circles_before, function(n) xmlGetAttr(n, "cx"))
-  tomato_cx_before <- cx_before[!is.na(fills_before) & fills_before == "tomato"]
+  # Get fills of all circles on fold 1
+  fills_before <- getStyleValue(
+    getHTML(),
+    '//g[contains(@class,"point") and contains(@class,"cvplot")]//circle',
+    "fill"
+  )
+  fills_before <- fills_before[!is.na(fills_before)]
 
   # Click fold 3
   clickID("plot_folds_fold_variable_3")
   Sys.sleep(1)
 
-  html_after    <- getHTML()
-  circles_after <- getNodeSet(html_after,
-    '//g[contains(@class,"point") and contains(@class,"cvplot")]//circle')
-  fills_after   <- getStyleValue(html_after,
-    '//g[contains(@class,"point") and contains(@class,"cvplot")]//circle', "fill")
-  cx_after      <- sapply(circles_after, function(n) xmlGetAttr(n, "cx"))
-  tomato_cx_after <- cx_after[!is.na(fills_after) & fills_after == "tomato"]
+  # Get fills of all circles on fold 3
+  fills_after <- getStyleValue(
+    getHTML(),
+    '//g[contains(@class,"point") and contains(@class,"cvplot")]//circle',
+    "fill"
+  )
+  fills_after <- fills_after[!is.na(fills_after)]
+  after_counts <- table(fills_after)
 
-  after_counts <- table(fills_after[!is.na(fills_after)])
-
-  # Exactly 2 colors present
+  # 1. Still exactly 2 colors
   expect_equal(length(after_counts), 2)
 
-  # Exactly 15 test points visible (fold 3 size)
+  # 2. Exactly 15 test (tomato) points for fold 3
   expect_equal(min(after_counts), 15)
 
-  # Fold 1 and Fold 3 test sets are at DIFFERENT x-positions -> proof click worked
-  expect_false(identical(sort(tomato_cx_before), sort(tomato_cx_after)))
+  # 3. PROOF: The actual pattern of fills changed
+  #    (different points are tomato on fold1 vs fold3)
+  expect_false(identical(fills_before, fills_after))
 })
 
 test_that("play/pause button present for time variable", {
