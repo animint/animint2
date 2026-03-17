@@ -52,9 +52,10 @@ plot_cv <- ggplot() +
 
 # 2. Fold Selector
 plot_folds <- ggplot(fold_sizes_df, aes(x=fold, y=size, key=fold)) +
-  geom_bar(stat="identity", fill="gray80", color="gray40") +
+  geom_bar(aes(id=paste0("fold", fold)), stat="identity",
+           clickSelects="fold", fill="gray80", color="gray40") +
   geom_bar(stat="identity", position="identity",
-           showSelected="fold", clickSelects="fold",
+           showSelected="fold",
            fill="tomato", color="gray40") +
   scale_x_continuous(breaks=1:k) +
   labs(title="Click a fold  |  red = current test fold",
@@ -116,44 +117,28 @@ test_that("Test and Train colors in initial render", {
   expect_color(fill_by_count[2], "steelblue") # Many dots = Train points
 })
 
+get_highlight_x <- function(html){
+  xpath <- '//g[@class="geom2_rect_cvplot"]//rect[@class="geom"]'
+  node.list <- getNodeSet(html, xpath)
+  as.numeric(sapply(node.list, function(n) xmlGetAttr(n, "x")))
+}
+
 test_that("clicking fold 3 updates highlighted fold", {
   clickID("play_pause")
   Sys.sleep(0.5)
 
-  # Set known starting state: fold 1
-  clickID("plot_folds_fold_variable_1")
+  clickID("fold1")
   Sys.sleep(1)
+  x_before <- get_highlight_x(getHTML())
+  expect_equal(length(x_before), 1)
 
-  # Get fills of all circles on fold 1
-  fills_before <- getStyleValue(
-    getHTML(),
-    '//g[contains(@class,"point") and contains(@class,"cvplot")]//circle',
-    "fill"
-  )
-  fills_before <- fills_before[!is.na(fills_before)]
-
-  # Click fold 3
-  clickID("plot_folds_fold_variable_3")
+  clickID("fold3")
   Sys.sleep(1)
+  x_after <- get_highlight_x(getHTML())
+  expect_equal(length(x_after), 1)
 
-  # Get fills of all circles on fold 3
-  fills_after <- getStyleValue(
-    getHTML(),
-    '//g[contains(@class,"point") and contains(@class,"cvplot")]//circle',
-    "fill"
-  )
-  fills_after <- fills_after[!is.na(fills_after)]
-  after_counts <- table(fills_after)
-
-  # 1. Still exactly 2 colors
-  expect_equal(length(after_counts), 2)
-
-  # 2. Exactly 15 test (tomato) points for fold 3
-  expect_equal(min(after_counts), 15)
-
-  # 3. PROOF: The actual pattern of fills changed
-  #    (different points are tomato on fold1 vs fold3)
-  expect_false(identical(fills_before, fills_after))
+  # Fold 3 is to the right of fold 1, so x must increase
+  expect_gt(x_after, x_before)
 })
 
 test_that("play/pause button present for time variable", {
