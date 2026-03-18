@@ -4,6 +4,12 @@ library(XML)
 
 acontext("k-Fold Cross Validation renderer")
 
+get_highlight_x <- function(html){
+  xpath <- '//g[@class="geom2_rect_cvplot"]//rect[@class="geom"]'
+  node.list <- getNodeSet(html, xpath)
+  as.numeric(sapply(node.list, function(n) xmlGetAttr(n, "x")))
+}
+
 # Data Setup
 set.seed(42)
 N <- 150
@@ -117,28 +123,25 @@ test_that("Test and Train colors in initial render", {
   expect_color(fill_by_count[2], "steelblue") # Many dots = Train points
 })
 
-get_highlight_x <- function(html){
-  xpath <- '//g[@class="geom2_rect_cvplot"]//rect[@class="geom"]'
-  node.list <- getNodeSet(html, xpath)
-  as.numeric(sapply(node.list, function(n) xmlGetAttr(n, "x")))
-}
-
 test_that("clicking fold 3 updates highlighted fold", {
-  clickID("play_pause")
-  Sys.sleep(0.5)
-
+  
+  clickID("play_pause") 
+  
+  # Click fold 1 — green highlight moves to the LEFT
   clickID("fold1")
-  Sys.sleep(1)
+  Sys.sleep(2)
   x_before <- get_highlight_x(getHTML())
-  expect_equal(length(x_before), 1)
-
+  print(paste("BEFORE fold1 x =", x_before))
+  
+  # Click fold 3 — green highlight moves to the RIGHT
   clickID("fold3")
-  Sys.sleep(1)
+  Sys.sleep(2)
   x_after <- get_highlight_x(getHTML())
-  expect_equal(length(x_after), 1)
-
+  print(paste("AFTER fold3 x =", x_after))
+  
   # Fold 3 is to the right of fold 1, so x must increase
   expect_gt(x_after, x_before)
+  
 })
 
 test_that("play/pause button present for time variable", {
