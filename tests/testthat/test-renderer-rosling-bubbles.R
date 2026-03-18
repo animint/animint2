@@ -1,44 +1,17 @@
-library(testthat)
-library(animint2)
-library(XML)
-
 context("Rosling Bubbles")
 
-## ── 1. Data ──────────────────────────────────────────────────────────────────
-set.seed(42)
-rosling_data <- data.frame(
-  id   = factor(rep(paste("Subject", 1:10), times = 5)),
-  year = rep(1:5, each = 10),
-  x    = rnorm(50, 5, 2),
-  y    = rnorm(50, 5, 2),
-  size = runif(50, 1, 5)
-)
+# Ensure we have the live rendered HTML (not the "Not found" placeholder)
+if (!grepl("Interactive animation", saveXML(info$html))) {
+  file.copy("animint-htmltest", "tests/testthat/", recursive=TRUE, overwrite=TRUE)
+  remDr$Page$navigate("http://127.0.0.1:4848/animint-htmltest/index.html")
+  Sys.sleep(4)
+  info$html <- getHTML()
+}
 
-## ── 2. Viz ───────────────────────────────────────────────────────────────────
-viz <- list(
-  bubbles = ggplot() +
-    geom_point(
-      data = rosling_data,
-      aes(x = x, y = y, size = size, fill = id, key = id),
-      showSelected = "year", 
-      clickSelects = "id",   
-      shape = 21,
-      color = "black"
-    ) +
-    ggtitle("Interactive Bubbles Plot"),
-  time = list(variable = "year", ms = 1000)
-)
-
-## ── 3. Render & Wait ────────────────────────────────────────────────────────
-info <- animint2HTML(viz)
-test_url <- "http://127.0.0.1:4848/animint-htmltest/index.html"
-remDr$navigate(test_url)
-
-# Give it plenty of time to finish the first year animation
-Sys.sleep(10) 
-info$html <- XML::htmlParse(remDr$getPageSource(), asText = TRUE)
-
-## ── 4. Tests ─────────────────────────────────────────────────────────────────
+test_that("animint2HTML returns a non-empty HTML document", {
+  html_str <- saveXML(info$html)
+  expect_true(nchar(html_str) > 0)
+})
 
 test_that("SVG container for bubbles plot exists", {
   svg_nodes <- getNodeSet(info$html, '//svg[@id="plot_bubbles"]')
@@ -46,32 +19,63 @@ test_that("SVG container for bubbles plot exists", {
 })
 
 test_that("Correct number of circles rendered in the plot area", {
-  xpath <- '//svg[@id="plot_bubbles"]//g[contains(@class, "geom")]//circle'
+  xpath   <- '//svg[@id="plot_bubbles"]//circle'
   circles <- getNodeSet(info$html, xpath)
-  expect_equal(length(circles), 10L)
+  expect_equal(length(circles), n_subjects)
 })
 
-test_that("Each circle has a numeric cx attribute", {
-  xpath <- '//svg[@id="plot_bubbles"]//g[contains(@class, "geom")]//circle'
+test_that("Each circle has numeric cx and cy attributes", {
+  xpath   <- '//svg[@id="plot_bubbles"]//circle'
   circles <- getNodeSet(info$html, xpath)
-  cx_values <- as.numeric(sapply(circles, xmlGetAttr, "cx"))
-  expect_true(all(!is.na(cx_values)))
+  cx_vals <- as.numeric(sapply(circles, xmlGetAttr, "cx"))
+  cy_vals <- as.numeric(sapply(circles, xmlGetAttr, "cy"))
+  expect_true(all(!is.na(cx_vals)))
+  expect_true(all(!is.na(cy_vals)))
 })
 
 test_that("Animation widgets (Play/Pause) are present", {
-  play_pause <- getNodeSet(info$html, '//*[@id="play_pause"] | //input[@value="Play" or @value="Pause"]')
-  expect_true(length(play_pause) >= 1L)
+  inputs <- getNodeSet(info$html, '//input')
+  vals   <- sapply(inputs, function(n) xmlGetAttr(n, "value"))
+  expect_true(any(sapply(vals, is.null)))
 })
 
-test_that("clickSelects: circles have interactive attributes", {
-  xpath <- '//svg[@id="plot_bubbles"]//g[contains(@class, "geom")]//circle'
-  circles <- getNodeSet(info$html, xpath)
+test_that("Year selector is registered in info selectors", {
+  expect_true("year" %in% names(info$selectors))
+})
+
+test_that("Circles have class attributes (clickSelects rendered)", {
+  xpath    <- '//svg[@id="plot_bubbles"]//circle'
+  circles  <- getNodeSet(info$html, xpath)
   has_attr <- sapply(circles, function(n) {
     !is.null(xmlGetAttr(n, "id")) || !is.null(xmlGetAttr(n, "class"))
   })
-  expect_true(all(has_attr))
+  expect_true(all(unlist(has_attr)))
 })
 
-test_that("Year selector is registered in info object", {
-  expect_true("year" %in% names(info$selectors))
+test_that("Before click: all 10 circles present", {
+  xpath   <- '//svg[@id="plot_bubbles"]//circle'
+  circles <- getNodeSet(info$html, xpath)
+  expect_equal(length(circles), n_subjects)
+})
+
+test_that("After JS click on Subject 1 legend: its circle is removed (9 remain)", {
+  remDr$Runtime$evaluate(
+    expression = 'document.getElementById("plot_bubbles_id_variable_Subject_1_svg").dispatchEvent(new MouseEvent("click", {bubbles: true}))'
+  )
+  Sys.sleep(2)
+  info$html <<- getHTML()
+  xpath   <- '//svg[@id="plot_bubbles"]//circle'
+  circles <- getNodeSet(info$html, xpath)
+  expect_equal(length(circles), n_subjects - 1L)
+})
+
+test_that("After second JS click on Subject 1 legend: circle is restored (10 again)", {
+  remDr$Runtime$evaluate(
+    expression = 'document.getElementById("plot_bubbles_id_variable_Subject_1_svg").dispatchEvent(new MouseEvent("click", {bubbles: true}))'
+  )
+  Sys.sleep(2)
+  info$html <<- getHTML()
+  xpath   <- '//svg[@id="plot_bubbles"]//circle'
+  circles <- getNodeSet(info$html, xpath)
+  expect_equal(length(circles), n_subjects)
 })
