@@ -60,6 +60,7 @@ Please submit your first PR from your fork. In PRs from forks, it is normal to s
 * use `sprintf("some %s strings",value)` instead of `paste("some",value,"strings")`, see [Writing good messages in potools developrs vignette](https://cran.r-project.org/web/packages/potools/vignettes/developers.html).
 * for internal functions, please do not write documentation, and please avoid code for checking types of arguments.
 * only use `return()` in R code for early exit (avoid using at end of function for normal return).
+* in tests, avoid `expect_true()`, and please use another more specific `expect_*()` if possible.
 
 ### JavaScript
 
