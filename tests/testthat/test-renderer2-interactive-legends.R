@@ -273,7 +273,6 @@ test_that("legend click updates selection while opted-out layer does not auto-fi
   ))
   expect_equal(points.before, 10)
   expect_equal(segments.before, 2)
-
   clickID("plot_mixed_comparison_variable_control")
   html.after.one.click <- getHTML()
   points.after.one.click <- length(getNodeSet(
@@ -284,12 +283,10 @@ test_that("legend click updates selection while opted-out layer does not auto-fi
     html.after.one.click,
     '//g[@class="geom2_segment_mixed"]//line'
   ))
-
   ## selection changed: one comparison level removed from the point layer
   expect_equal(points.after.one.click, 5)
   ## opted-out segment layer should not be auto-filtered by legend clicks
   expect_equal(segments.after.one.click, segments.before)
-
   clickID("plot_mixed_comparison_variable_control")
   html.after.two.clicks <- getHTML()
   points.after.two.clicks <- length(getNodeSet(
@@ -300,7 +297,6 @@ test_that("legend click updates selection while opted-out layer does not auto-fi
     html.after.two.clicks,
     '//g[@class="geom2_segment_mixed"]//line'
   ))
-
   expect_equal(points.after.two.clicks, points.before)
   expect_equal(segments.after.two.clicks, segments.before)
 })
