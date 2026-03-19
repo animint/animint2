@@ -438,6 +438,9 @@ animint2dir <- function
   ## For a static data viz with no interactive aes, no need to check
   ## for trivial showSelected variables with only 1 level.
   checkSingleShowSelectedValue(meta$selectors)
+  
+  ## Check selector names for CSS compatibility (no special characters like #)
+  checkSelectorNames(meta$selectors)
 
   ## Go through options and add to the list.
   for(v.name in names(meta$duration)){
