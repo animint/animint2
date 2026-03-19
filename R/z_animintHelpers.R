@@ -18,11 +18,6 @@ addShowSelectedForLegend <- function(meta, legend, L){
     layer.has.variable <- s.name %in% names(L$data)
 
     if(is.variable.name && layer.has.variable) {
-      if(user_disabled_showSelected){
-        ## User opted out of auto-showSelected; make legend display-only (#140)
-        legend[[legend.i]]$selector <- NULL
-        next
-      }
       ## if the data is data.table, convert it into data.frame
       if(is.data.table(L$data)){
         L$data <- as.data.frame(L$data)
@@ -39,7 +34,7 @@ addShowSelectedForLegend <- function(meta, legend, L){
         ## only add showSelected aesthetic if the variable is
         ## used by the geom
         type.vec <- one.legend$legend_type
-        if(any(type.vec %in% names(L$mapping))){
+        if((!user_disabled_showSelected) && any(type.vec %in% names(L$mapping))){
           L$extra_params$showSelected <- c(L$extra_params$showSelected, s.name)
         }
       }
@@ -67,7 +62,6 @@ addShowSelectedForLegend <- function(meta, legend, L){
       meta$selectors[[s.name]]$legend <- TRUE
     }#length(s.name)
   }#legend.i
-  L$legend <- legend
   L
 }
 

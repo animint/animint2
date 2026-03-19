@@ -24,14 +24,14 @@ test_that("default: legend with color aesthetic creates selector for interactivi
   legend_info <- info$plots$plot1$legend$comparison
   ## Legend should exist with entries
   expect_false(is.null(legend_info))
-  expect_true(length(legend_info$entries) > 0)
+  expect_gt(length(legend_info$entries), 0)
   ## Selector should be created (current default behavior)
   expect_identical(legend_info$selector, "comparison")
-  expect_true("comparison" %in% names(info$selectors))
+  expect_identical("comparison" %in% names(info$selectors), TRUE)
 })
-test_that("showSelected=character() should allow legend without selector", {
-  ## Proposed API: empty character vector disables auto showSelected from legend
-  ## This is consistent with existing API where showSelected accepts character vectors
+test_that("showSelected=character() keeps legend selector but opts layer out", {
+  ## Proposed API: empty character vector disables auto showSelected injection
+  ## for this layer, but keeps legend interactivity intact.
   viz_no_ss <- list(
     plot1 = ggplot(test_data, aes(x, y, color = comparison)) +
       geom_point(showSelected = character()) +
@@ -41,8 +41,14 @@ test_that("showSelected=character() should allow legend without selector", {
   legend_info <- info$plots$plot1$legend$comparison
   ## Legend should STILL exist and render with entries
   expect_false(is.null(legend_info))
-  expect_true(length(legend_info$entries) > 0)
-  ## But selector should NOT be created - legend is display-only
-  expect_null(legend_info$selector)
-  expect_false("comparison" %in% names(info$selectors))
+  expect_gt(length(legend_info$entries), 0)
+  ## Legend should still be clickable via selector metadata.
+  expect_identical(legend_info$selector, "comparison")
+  expect_identical("comparison" %in% names(info$selectors), TRUE)
+  ## The opted-out layer should not have auto-generated showSelected aesthetics.
+  geom_names <- names(info$geoms)
+  point_geom_name <- geom_names[grepl("_point_plot1$", geom_names)]
+  expect_identical(length(point_geom_name), 1L)
+  show_aes_names <- names(info$geoms[[point_geom_name]]$aes)
+  expect_identical(any(grepl("^showSelected", show_aes_names)), FALSE)
 })
