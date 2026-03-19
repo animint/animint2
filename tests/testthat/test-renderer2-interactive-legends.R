@@ -229,3 +229,78 @@ test_that('aes(color=something), aes(color=something.else) is an error"', {
     info <- animint2HTML(viz)
   }, "need exactly 1 variable name")
 })
+
+legend.opt.out.df <- data.frame(
+  x = c(-10, -8, -6, -4, -2, -10, -8, -6, -4, -2),
+  y = c(0.1, 0.2, 0.15, 0.25, 0.3, 0.05, 0.1, 0.08, 0.12, 0.15),
+  comparison = rep(c("control", "treatment"), each = 5)
+)
+legend.opt.out.segments <- data.frame(
+  comparison = c("control", "treatment"),
+  x = c(-10, -10),
+  y = c(0.35, 0.4),
+  xend = c(-2, -2),
+  yend = c(0.35, 0.4)
+)
+viz <- list(
+  mixed = ggplot() +
+    geom_point(
+      aes(x, y, color = comparison),
+      showSelected = "comparison",
+      data = legend.opt.out.df
+    ) +
+    geom_segment(
+      aes(x, y, xend = xend, yend = yend, color = comparison),
+      showSelected = character(),
+      data = legend.opt.out.segments
+    )
+)
+info <- animint2HTML(viz)
+test_that("legend click updates selection while opted-out layer does not auto-filter", {
+  legend.info <- info$plots$mixed$legend$comparison
+  expect_false(is.null(legend.info))
+  expect_gt(length(legend.info$entries), 0)
+  ## Expected behavior for #140: legend should remain interactive.
+  expect_identical(legend.info$selector, "comparison")
+  expect_identical("comparison" %in% names(info$selectors), TRUE)
+  points.before <- length(getNodeSet(
+    info$html,
+    '//g[@class="geom1_point_mixed"]//circle'
+  ))
+  segments.before <- length(getNodeSet(
+    info$html,
+    '//g[@class="geom2_segment_mixed"]//line'
+  ))
+  expect_equal(points.before, 10)
+  expect_equal(segments.before, 2)
+
+  clickID("plot_mixed_comparison_variable_control")
+  html.after.one.click <- getHTML()
+  points.after.one.click <- length(getNodeSet(
+    html.after.one.click,
+    '//g[@class="geom1_point_mixed"]//circle'
+  ))
+  segments.after.one.click <- length(getNodeSet(
+    html.after.one.click,
+    '//g[@class="geom2_segment_mixed"]//line'
+  ))
+
+  ## selection changed: one comparison level removed from the point layer
+  expect_equal(points.after.one.click, 5)
+  ## opted-out segment layer should not be auto-filtered by legend clicks
+  expect_equal(segments.after.one.click, segments.before)
+
+  clickID("plot_mixed_comparison_variable_control")
+  html.after.two.clicks <- getHTML()
+  points.after.two.clicks <- length(getNodeSet(
+    html.after.two.clicks,
+    '//g[@class="geom1_point_mixed"]//circle'
+  ))
+  segments.after.two.clicks <- length(getNodeSet(
+    html.after.two.clicks,
+    '//g[@class="geom2_segment_mixed"]//line'
+  ))
+
+  expect_equal(points.after.two.clicks, points.before)
+  expect_equal(segments.after.two.clicks, segments.before)
+})
