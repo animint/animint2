@@ -39,8 +39,6 @@ test_that("showSelected=character() keeps legend selector but opts layer out", {
   )
   info <- animint2dir(viz_no_ss, open.browser = FALSE)
   legend_info <- info$plots$plot1$legend$comparison
-  ## Legend should STILL exist and render with entries
-  expect_false(is.null(legend_info))
   expect_gt(length(legend_info$entries), 0)
   ## Legend should still be clickable via selector metadata.
   expect_identical(legend_info$selector, "comparison")
