@@ -118,9 +118,11 @@ test_that("Test and Train colors in initial render", {
   # We expect 2 colors: a lot of blue dots (Train) and fewer red dots (Test)
   expect_equal(length(fill_counts), 2)
   
-  fill_by_count <- names(sort(fill_counts))
-  expect_color(fill_by_count[1], "tomato")    # Fewer dots = Test points
-  expect_color(fill_by_count[2], "steelblue") # Many dots = Train points
+  fill_counts <- table(circle_fill)
+  for(col.name in names(fill_counts)){
+     expect_color(col.name, if(fill_counts[col.name] == min(fill_counts)) "tomato" 
+  else "steelblue")
+}
 })
 
 test_that("clicking fold 3 updates highlighted fold", {
