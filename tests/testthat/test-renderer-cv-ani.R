@@ -103,26 +103,18 @@ test_that("plot title rendered as SVG text", {
 })
 
 test_that("Test and Train colors in initial render", {
-  # Get the HTML elements and check their actual fill properties 
-  # to make sure the dots are painted correctly
   html <- info$html
   circle_fill <- getStyleValue(
     html,
     '//g[contains(@class,"point")]//circle',
     "fill"
   )
-  
   circle_fill <- circle_fill[!is.na(circle_fill)]
-  fill_counts <- table(circle_fill)
-  
-  # We expect 2 colors: a lot of blue dots (Train) and fewer red dots (Test)
+  # Sort colors by count: first = fewest dots (Test), second = most dots (Train)
+  # Then compare entire vector at once, no indices needed
+  fill_counts <- sort(table(circle_fill))
   expect_equal(length(fill_counts), 2)
-  
-  fill_counts <- table(circle_fill)
-  for(col.name in names(fill_counts)){
-     expect_color(col.name, if(fill_counts[col.name] == min(fill_counts)) "tomato" 
-  else "steelblue")
-}
+  expect_color(names(fill_counts), c("tomato", "steelblue"))
 })
 
 test_that("clicking fold 3 updates highlighted fold", {
