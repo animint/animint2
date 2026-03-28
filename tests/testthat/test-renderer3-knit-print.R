@@ -15,7 +15,7 @@ remDr$refresh()
 Sys.sleep(3)
 html <- getHTML()
 
-test_that("knit_print.animint renders five x axis titles", {
+test_that("knit_print.animint renders x axis titles", {
   nodes <- getNodeSet(html, "//text[@class='xtitle']")
   value.vec <- sapply(nodes, xmlValue)
   expected.vec <-
@@ -23,7 +23,8 @@ test_that("knit_print.animint renders five x axis titles", {
       "second plot with color legend",
       "non-interactive plot",
       "position",
-      "segments")
+      "segments",
+      "position")
   expect_identical(value.vec, expected.vec)
 })
 
