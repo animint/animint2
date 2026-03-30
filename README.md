@@ -13,10 +13,12 @@ It supports
 * tooltips, animation, a guided tour, large data sets, and
 * rendering from R code chunks in Rmd files, on GitHub Pages, or on any other web server (no special web server required)
 
-Examples can be seen in the [Gallery](https://animint.github.io/gallery/) and manual, [Animated interactive data visualization using animint2 in R](https://animint-manual-en.netlify.app/).
-Slides in [English](https://docs.google.com/presentation/d/1QDwo9x4OM7UKAXffJrny6nSfeytFR0kO5NB-NQEspcE/edit?usp=sharing) and [French](https://docs.google.com/presentation/d/1WpRZs9qz9wm1yik_MLj8tIJyWuL5-IBPYKLhOHZ9X4Y/edit?usp=sharing) for a 30-60 minute presentation about animint2!
-[Abstract](https://github.com/animint/animint2/wiki/Presentations#30-60-minute-talk),
-[Video of presentation in French at Toulouse-Dataviz](https://www.youtube.com/watch?v=Em6AVJi37zo).
+Examples can be seen in…
+
+|lang|gallery|manual|slides|paper|
+|:--|:--|:--|:--|:--|
+|en| [Gallery](https://animint.github.io/gallery/) | [Animated interactive data visualization using animint2 in R](https://animint-manual-en.netlify.app/) | [Animated, interactive figures with animint2 in R](https://docs.google.com/presentation/d/1QDwo9x4OM7UKAXffJrny6nSfeytFR0kO5NB-NQEspcE/edit?usp=sharing) | [Extending ggplot2 for Linked and Animated Web Graphics](https://amstat.tandfonline.com/doi/full/10.1080/10618600.2018.1513367) |
+|fr| [La galerie](https://animint.github.io/gallery-fr/) | [Visualisation interactive de données dans R avec animint2](https://animint-manual-en.netlify.app/) | [Rajouter l'interactivité à vos ggplots avec animint2](https://docs.google.com/presentation/d/1WpRZs9qz9wm1yik_MLj8tIJyWuL5-IBPYKLhOHZ9X4Y/edit?usp=sharing) [Video](https://www.youtube.com/watch?v=Em6AVJi37zo) | [Abstract](https://github.com/animint/animint2/wiki/Presentations#30-60-minute-talk) |
 
 [![codecov](https://codecov.io/gh/animint/animint2/branch/main/graph/badge.svg)](https://codecov.io/gh/animint/animint2)
 
