@@ -44,6 +44,10 @@
 
 - Improve common chunk detection, output `na_group` and `row_in_group` when there are missing values.
 
+# Changes in version 2025.10.4 (Issue #234)
+
+- Fixed `coord_equal()` and `coord_fixed()` to properly fill available plotting space. Previously, plots with fixed aspect ratios were unnecessarily shrunk due to incorrect normalization in the `fixed_spaces()` function. The fix changes from using `min(z, 1)` to normalizing by the maximum value across both dimensions, ensuring at least one dimension fills the available space while maintaining the correct aspect ratio.
+
 # Changes in version 2025.10.6 (PR#246)
 
 - Added validation for selector names to prevent browser rendering failures. Selector names (from data values used in `clickSelects` and `showSelected`) cannot contain CSS special characters like `#`, `@`, `!`, `$`, etc., as these interfere with JavaScript DOM selectors and cause blank visualizations in the browser. The compiler now stops with a clear error message identifying problematic selector names, helping users fix data issues before attempting to render.
