@@ -580,6 +580,10 @@ Geom <- gganimintproto("Geom",
     if("group" %in% names(g$aes) && g$geom %in% data.object.geoms){
       g$nest_order <- c(g$nest_order, "group")
     }
+    ## If subgroup is specified for polygon, flag it for JS renderer.
+    if("subgroup" %in% names(g$aes) && g$geom == "polygon"){
+      g$data_has_subgroup <- TRUE
+    }
     ## If user did not specify aes(group), then use group=1.
     if(! "group" %in% names(g$aes)){
       g.data$group <- 1
