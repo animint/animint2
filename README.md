@@ -40,18 +40,11 @@ Try interacting with
 * [a more recent version which also includes a world map](https://tdhock.github.io/2025-01-WorldBank-facets-map/), or
 * [its French translation](https://tdhock.github.io/2025-08-BanqueMondiale-facets-map/)!
 
-For more examples, see these galleries, which have screenshots along with links to the interactive data viz, and source code:
-
-* [GitHub Pages animint gallery](https://animint.github.io/gallery) is a newer collection of 50+ animints that have been published using `animint2pages()`.
-* [La galerie en français pour animint2](https://animint.github.io/gallery-fr/) is the French version of the gallery!
-* [NAU rcdata animint gallery](https://rcdata.nau.edu/genomic-ml/animint-gallery/) is a gallery of 50+ older examples dating back to animint's inception in 2014.
-
-To learn how to generate your own interactive data visualizations, go to the official [Animint2 Manual](https://animint-manual-en.netlify.app) (newly rendered using quarto since Sept 2025).
-If you encounter problems, please see the [animint2 wiki](https://github.com/animint/animint2/wiki) or [report them](https://github.com/animint/animint2/issues).
+If you encounter problems, please see the [animint2 wiki FAQ](https://github.com/animint/animint2/wiki/FAQ) or [write us an issue](https://github.com/animint/animint2/issues).
 
 ## Installation
 
-``` r
+```r
 # Install the official package from CRAN.
 # This is the option most people should choose:
 install.packages("animint2")
@@ -63,23 +56,24 @@ devtools::install_github("animint/animint2")
 
 ## Use
 
-Animint2 uses the same implementation of `ggplot2`’s grammar of graphics—with a few additions. If you’re familiar with `ggplot2`, using `animint2` will be easy. If you’re not, no worries. To get started, see the brief [Animint2 Quick Start Guide](https://animint.github.io/animint2/articles/animint2.html) or read the first few chapters of the [Animint2 Manual](https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch00-preface.html).
-
-`animint2` renders and animates data visualizations. It can neither manipulate the datasets you give it nor generate its own data.
-
+`animint2` is a fork of `ggplot2`, with a few additions for interactivity.
+If you’re already familiar with `ggplot2`, then using `animint2` will be easy.
+If you’re not, no worries.
+To get started, see the brief [Animint2 Quick Start Guide](https://animint.github.io/animint2/articles/animint2.html) or read the first few chapters of the [Animint2 Manual](https://animint-manual-en.netlify.app).
 
 ## Similar Packages
 
 `animint2` isn’t the only R package that can create animated or interactive data visualizations.
-
-[animation](https://cran.r-project.org/package=animation) and [gganimate](https://cloud.r-project.org/web/packages/gganimate/index.html) can animate changes between variables over time. The [loon](https://cran.r-project.org/package=loon) package specializes in exploratory data analysis. [plotly](https://cran.r-project.org/package=plotly) is probably most similar to animint2 in terms of functionality.
-
-For comparisons between the aforementioned packages and `animint2`, see [the differences wiki page](https://github.com/animint/animint2/wiki/Differences-with-other-packages).
-
+[animation](https://cran.r-project.org/package=animation) and [gganimate](https://cloud.r-project.org/web/packages/gganimate/index.html) can animate changes between variables over time.
+The [loon](https://cran.r-project.org/package=loon) package specializes in exploratory data analysis.
+[plotly](https://cran.r-project.org/package=plotly) can also create interactive graphics (but without the clickSelects and showSelected keywords).
+For more comparisons, see [the differences wiki page](https://github.com/animint/animint2/wiki/Differences-with-other-packages).
 
 ## Problems?
 
-The `animint2` package is a work in progress. If you spot any bugs or unexpected behaviors, please let us know by [reporting it as an issue on GitHub](https://github.com/animint/animint2/issues). Thanks! Have a great day.
+The `animint2` package is a work in progress.
+If you spot any bugs or unexpected behaviors, please let us know by [reporting it as an issue on GitHub](https://github.com/animint/animint2/issues).
+Thanks! Have a great day.
 
 ## Other galleries
 
@@ -89,6 +83,7 @@ Toby Hocking maintains repositories on specific subjects:
 * [gallery-change-point](https://tdhock.github.io/gallery-change-point) contains data visualizations related to change-point detection algorithms.
 * [gallery-hic](https://tdhock.github.io/gallery-hic) contains data visualizations related to Hi-C data analysis.
 
-[Vatsal-Rajput](https://github.com/Vatsal-Rajput/Vatsal-Animint-Gallery/tree/gh-pages) created a small gallery with a different index.Rmd file.
+Several GSOC contributors have created galleries:
 
-[nhintruong](https://nhintruong.github.io/gallery_repo/) created a gallery with several examples adapted from the animation package, like [the wiki page](https://github.com/tdhock/animint/wiki/Ports-of-animation-examples).
+* [Vatsal-Rajput](https://github.com/Vatsal-Rajput/Vatsal-Animint-Gallery/tree/gh-pages) created a small gallery with a different index.Rmd file.
+* [nhintruong](https://nhintruong.github.io/gallery_repo/) created a gallery with several examples adapted from the animation package, like [the wiki page](https://github.com/tdhock/animint/wiki/Ports-of-animation-examples).
