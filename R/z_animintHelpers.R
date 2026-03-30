@@ -418,6 +418,11 @@ compute_domains <- function(built_data, axes, geom_name,
                    geom_name), call. = FALSE)
     return(NULL)
   }else if(!all(use_cols %in% names(built_data))){
+    missing <- use_cols[!use_cols %in% names(built_data)]
+    warning(paste0(
+    "Cannot compute axis domain for geom_", geom_name,
+    ": column(s) ", paste(missing, collapse=", "),
+    " not found in the pre-stat layer data."), call. = FALSE)
     return(NULL)
   }
   domain_vals <- list()
