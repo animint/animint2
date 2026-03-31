@@ -21,6 +21,7 @@ for (i in 1:nmax) {
   df$iteration <- i
   frames[[i]] <- df
 }
+
 all_frames <- do.call(rbind, frames)
 all_frames$iteration <- as.integer(all_frames$iteration)
 all_frames$sampled <- as.character(all_frames$sampled)
@@ -31,8 +32,12 @@ grid_plot <- ggplot() +
     aes(x = x, y = y, color = sampled, size = sampled, key = id),
     showSelected = "iteration"
   ) +
-  scale_color_manual(values = c("Population" = "steelblue", "Sampled" = "red")) +
-  scale_size_manual(values = c("Population" = 3, "Sampled" = 6)) +
+  scale_color_manual(
+    values = c("Population" = "steelblue", "Sampled" = "red")
+  ) +
+  scale_size_manual(
+    values = c("Population" = 3, "Sampled" = 6)
+  ) +
   ggtitle("Simple Random Sampling") +
   xlab("Column") + ylab("Row") +
   theme_animint(width = 500, height = 500)
@@ -43,9 +48,21 @@ viz_test <- animint(
   title = "Simple Random Sampling Test"
 )
 
-test_that("simple random sampling renders 100 points", {
+test_that("circles render before and after clickID interaction", {
+
   res <- animint2HTML(viz_test)
-  html <- XML::htmlParse(remDr$getPageSource(), asText=TRUE)
-  circles <- XML::getNodeSet(html, "//circle")
-  expect_gte(length(circles), 100)
+
+  # --- BEFORE CLICK: verify initial render ---
+  html_before <- getHTML()
+  circles_before <- XML::getNodeSet(html_before, "//circle")
+  expect_gte(length(circles_before), 100)
+
+  # --- CLICK: advance to next iteration ---
+  clickID("iteration_next")
+  Sys.sleep(1)
+
+  # --- AFTER CLICK: verify state updated ---
+  html_after <- getHTML()
+  circles_after <- XML::getNodeSet(html_after, "//circle")
+  expect_gte(length(circles_after), 100)
 })
