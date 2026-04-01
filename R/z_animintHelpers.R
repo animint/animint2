@@ -849,6 +849,8 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
       names(built),
       common_var_dt[all.common==FALSE, c(col.name,sparse.cols)])
     varied.to.split <- na.omit(built.not.na)
+    ##print(list(v=names(varied.to.split), ch=chunk.vars))
+    ## error when varied.to.split 0 rows, size=NA in built.
     varied.df.list <- split_recursive(varied.to.split, chunk.vars)
     varied.data <- varied.chunk(varied.df.list, c("group", varied.cols))
     list(common=common.not.na, varied=varied.data)
