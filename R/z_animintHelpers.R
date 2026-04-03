@@ -6,6 +6,10 @@
 #' @param L layer of the plot
 #' @return L : Layer with additional mapping to new aesthetic
 addShowSelectedForLegend <- function(meta, legend, L){
+  ## Check if user explicitly disabled showSelected with character()
+  ## If showSelected is character(0), user wants to opt out of auto-showSelected
+  user_disabled_showSelected <- is.character(L$extra_params$showSelected) &&
+    length(L$extra_params$showSelected) == 0
   for(legend.i in seq_along(legend)) {
     one.legend <- legend[[legend.i]]
     ## the name of the selection variable used in this legend.
@@ -30,7 +34,7 @@ addShowSelectedForLegend <- function(meta, legend, L){
         ## only add showSelected aesthetic if the variable is
         ## used by the geom
         type.vec <- one.legend$legend_type
-        if(any(type.vec %in% names(L$mapping))){
+        if((!user_disabled_showSelected) && any(type.vec %in% names(L$mapping))){
           L$extra_params$showSelected <- c(L$extra_params$showSelected, s.name)
         }
       }
@@ -58,7 +62,7 @@ addShowSelectedForLegend <- function(meta, legend, L){
       meta$selectors[[s.name]]$legend <- TRUE
     }#length(s.name)
   }#legend.i
-  return(L)
+  L
 }
 
 

@@ -57,7 +57,8 @@ parsePlot <- function(meta, plot, plot.name){
     L$mapping <- L$orig_mapping
     class(L$mapping) <- "list"
 
-    ## If any legends are specified, add showSelected aesthetic
+    ## If any legends are specified, add showSelected aesthetic.
+    ## showSelected=character() opts this layer out of auto-injection only.
     L <- addShowSelectedForLegend(meta, plot.info$legend, L)
 
     ## Check if showSelected and clickSelects have been used as aesthetics
