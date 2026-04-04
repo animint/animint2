@@ -101,7 +101,7 @@ GeomPolygon <- gganimintproto("GeomPolygon", Geom,
   },
 
   default_aes = aes(colour = "NA", fill = "grey20", size = 0.5, linetype = 1,
-    alpha = NA),
+    alpha = NA , subgroup = NULL),
 
   handle_na = function(data, params) {
     data
