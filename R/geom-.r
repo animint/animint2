@@ -584,6 +584,12 @@ Geom <- gganimintproto("Geom",
     if(! "group" %in% names(g$aes)){
       g.data$group <- 1
     }
+    #  # only run this block for polygon geoms that actually have a subgroup column
+    if(g$geom == "polygon" && "subgroup" %in% names(g.data)){
+      g$data_has_subgroup <- TRUE
+      g.data$subgroup <- as.character(g.data$subgroup)
+      g$types[["subgroup"]] <- "character"
+    }
     ## Some geoms should be split into separate groups if there are NAs.
     setDT(g.data)
     g.data[, let(

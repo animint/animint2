@@ -1371,11 +1371,44 @@ var animint = function (to_select, json_file) {
         fill_off = "none";
       }
       data_to_bind = kv;
-      eActions = function (e) {
-        e.attr("d", function (d) {
-          return lineThing(keyed_data[d.value]);
-        })
-      };
+      // polygon with subgroup aesthetic: use d3.geo.path with evenodd
+      if(g_info.geom === "polygon" && g_info.data_has_subgroup){
+        var geoPath = d3.geo.path().projection(null);
+        eActions = function(e){
+          e.attr("d", function(d){
+            var points = keyed_data[d.value];
+            var rings_map = {};
+            var ring_order = [];
+            points.forEach(function(pt){
+              var sg = pt.subgroup !== undefined ? pt.subgroup : "1";
+              if(!rings_map.hasOwnProperty(sg)){
+                rings_map[sg] = [];
+                ring_order.push(sg);
+              }
+              rings_map[sg].push([scales.x(pt.x), scales.y(pt.y)]);
+            });
+            var coords = ring_order.map(function(sg){
+              var ring = rings_map[sg];
+              if(ring.length > 0){
+                ring = ring.concat([ring[0]]);
+              }
+              return ring;
+            });
+            var geojson = {
+              type: "Polygon",
+              coordinates: coords
+            };
+            return geoPath(geojson);
+          })
+          .style("fill-rule", "evenodd");
+        };
+      } else {
+        eActions = function (e) {
+          e.attr("d", function (d) {
+            return lineThing(keyed_data[d.value]);
+          })
+        };
+      }
       eAppend = "path";
     }else{
       get_one_row = function(d){
