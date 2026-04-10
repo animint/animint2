@@ -1000,6 +1000,110 @@ var animint = function (to_select, json_file) {
     });
   }//download_chunk.
 
+  // Geom class hierarchy for organizing draw_geom logic.
+  // Currently draw_geom is one big function with if/else per geom type.
+  // These classes will eventually replace that with one class per geom,
+  // each defining its own eAppend (SVG tag) and eActions (bindings).
+  // See PR #107 for the original design by @Faye-yufan.
+  class Geom {
+    constructor(g_info, chunk, selector_name, PANEL) {
+      this.g_info = g_info;
+      this.chunk = chunk;
+      this.selector_name = selector_name;
+      this.PANEL = PANEL;
+      this.svg = SVGs[g_info.classed];
+      var g_names = g_info.classed.split("_");
+      this.p_name = g_names[g_names.length - 1];
+      this.scales = Plots[this.p_name].scales[PANEL];
+      this.aes = g_info.aes;
+      this.has_clickSelects = g_info.aes.hasOwnProperty("clickSelects");
+      this.has_clickSelects_variable =
+        g_info.aes.hasOwnProperty("clickSelects.variable");
+    }
+    draw() {
+      // will be filled in once we move logic out of draw_geom.
+    }
+  }
+
+  // Grouped geoms (line, path, polygon, ribbon) where
+  // g_info.data_is_object is true. These need the kv data-bind
+  // trick because there is one SVG path per group, not per row.
+  class GroupGeom extends Geom {
+    constructor(g_info, chunk, selector_name, PANEL) {
+      super(g_info, chunk, selector_name, PANEL);
+    }
+  }
+
+  // Ungrouped geoms (point, segment, rect, text, etc.) where
+  // g_info.data_is_object is false. One SVG element per data row,
+  // so key_fun and id_fun work directly on d rather than group_info.
+  class UngroupGeom extends Geom {
+    constructor(g_info, chunk, selector_name, PANEL) {
+      super(g_info, chunk, selector_name, PANEL);
+    }
+  }
+
+  // Concrete subclasses. Each will define eAppend and eActions
+  // to replace the corresponding if-block in draw_geom.
+  class GeomSegment extends UngroupGeom {
+    constructor(g_info, chunk, selector_name, PANEL) {
+      super(g_info, chunk, selector_name, PANEL);
+    }
+  }
+  class GeomLinerange extends UngroupGeom {
+    constructor(g_info, chunk, selector_name, PANEL) {
+      super(g_info, chunk, selector_name, PANEL);
+    }
+  }
+  class GeomVline extends UngroupGeom {
+    constructor(g_info, chunk, selector_name, PANEL) {
+      super(g_info, chunk, selector_name, PANEL);
+    }
+  }
+  class GeomHline extends UngroupGeom {
+    constructor(g_info, chunk, selector_name, PANEL) {
+      super(g_info, chunk, selector_name, PANEL);
+    }
+  }
+  class GeomText extends UngroupGeom {
+    constructor(g_info, chunk, selector_name, PANEL) {
+      super(g_info, chunk, selector_name, PANEL);
+    }
+  }
+  class GeomPoint extends UngroupGeom {
+    constructor(g_info, chunk, selector_name, PANEL) {
+      super(g_info, chunk, selector_name, PANEL);
+    }
+  }
+  class GeomTallrect extends UngroupGeom {
+    constructor(g_info, chunk, selector_name, PANEL) {
+      super(g_info, chunk, selector_name, PANEL);
+    }
+  }
+  class GeomWiderect extends UngroupGeom {
+    constructor(g_info, chunk, selector_name, PANEL) {
+      super(g_info, chunk, selector_name, PANEL);
+    }
+  }
+  class GeomRect extends UngroupGeom {
+    constructor(g_info, chunk, selector_name, PANEL) {
+      super(g_info, chunk, selector_name, PANEL);
+    }
+  }
+
+  // geom name -> class, so draw_geom can dispatch.
+  var geom_classes = {
+    "segment": GeomSegment,
+    "linerange": GeomLinerange,
+    "vline": GeomVline,
+    "hline": GeomHline,
+    "text": GeomText,
+    "point": GeomPoint,
+    "tallrect": GeomTallrect,
+    "widerect": GeomWiderect,
+    "rect": GeomRect
+  };
+
   // update_geom is responsible for obtaining a chunk of downloaded
   // data, and then calling draw_geom to actually draw it.
   var draw_geom = function(g_info, chunk, selector_name, PANEL){
