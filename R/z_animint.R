@@ -646,7 +646,7 @@ animint2dir <- function
   ## names. This helper converts both so jsonlite output matches RJSONIO.
   convert_for_json <- function(x) {
     if (is.data.frame(x)) {
-      lapply(as.list(x), identity)
+      lapply(as.list(x), I)
     } else if (is.list(x)) {
       lapply(x, convert_for_json)
     } else if (is.atomic(x) && !is.null(names(x))) {
