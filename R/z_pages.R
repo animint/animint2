@@ -208,7 +208,7 @@ update_gallery <- function(gallery_path="~/R/gallery"){
       }
       local.json <- tempfile()
       download.file(viz_url("plot.json"), local.json)
-      jlist <- jsonlite::fromJSON(local.json, simplifyVector = FALSE)
+      jlist <- jsonlite::fromJSON(local.json, simplifyVector = FALSE) # nocov
       to.check <- c(
         source="URL of data viz source code",
         title="string describing the data viz")
