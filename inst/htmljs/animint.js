@@ -2011,7 +2011,7 @@ var animint = function (to_select, json_file) {
     // update existing axis
     var xyaxis_sel = element.select("#"+viz_id+"_"+p_name).select("."+axes+"axis_"+panel_i);
     var milliseconds = 0;
-    if(Selectors[v_name].hasOwnProperty("duration")){
+    if(v_name && Selectors.hasOwnProperty(v_name) && Selectors[v_name].hasOwnProperty("duration")){
       milliseconds = Selectors[v_name].duration;
     }
     var xyaxis_g = xyaxis_sel
