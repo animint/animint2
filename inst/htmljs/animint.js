@@ -9,6 +9,55 @@ var animint = function (to_select, json_file) {
   var default_axis_px = 16;
   var grid_layout = false;
   var grid_layout_table;
+  
+  // Helper function to format numbers with commas (e.g., 4321 -> "4,321")
+  function formatWithCommas(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  
+  // Helper function to format bytes as KiB or MiB with appropriate precision
+  // Uses binary units (1024) consistent with "man du" documentation
+  function formatBytes(bytes) {
+    if (bytes === 0) return "0";
+    var kib = bytes / 1024;
+    if (kib < 1024) {
+      // Less than 1 MiB, show in KiB
+      if (kib < 10) {
+        return kib.toFixed(2) + " KiB";
+      } else if (kib < 100) {
+        return kib.toFixed(1) + " KiB";
+      } else {
+        return Math.round(kib) + " KiB";
+      }
+    } else {
+      // 1 MiB or more, show in MiB
+      var mib = kib / 1024;
+      return mib.toFixed(2) + " MiB";
+    }
+  }
+  
+  // Helper function to apply consistent border and padding styles to table cells
+  function applyCellStyles(cell) {
+    return cell.style("border", "1px solid #ddd").style("padding", "4px");
+  }
+
+  // Helper function to update download status display after a chunk is downloaded
+  // Used by both common chunk and regular chunk download handlers
+  function updateDownloadStatus(g_info, tsv_name) {
+    if(g_info.chunk_info && g_info.chunk_info[tsv_name]){
+      var info = g_info.chunk_info[tsv_name];
+      g_info.total_bytes += info.bytes;
+      g_info.total_rows += info.rows;
+      g_info.downloaded_chunks += 1;
+      // Update display with "downloaded / total" format
+      var downloaded_count = g_info.downloaded_chunks;
+      var total_count = g_info.total_possible_chunks;
+      g_info.td_files.text(downloaded_count + " / " + total_count);
+      g_info.td_disk.text(formatBytes(g_info.total_bytes) + " / " + formatBytes(g_info.possible_bytes));
+      g_info.td_rows.text(formatWithCommas(g_info.total_rows) + " / " + formatWithCommas(g_info.possible_rows));
+    }
+  }
+  
   function wait_until_then(timeout, condFun, readyFun) {
     var args=arguments
     function checkFun() {
@@ -224,11 +273,35 @@ var animint = function (to_select, json_file) {
     }
     // Add a row to the loading table.
     g_info.tr = Widgets["loading"].append("tr");
-    g_info.tr.append("td").text(g_name);
-    g_info.tr.append("td").attr("class", "chunk");
-    g_info.tr.append("td").attr("class", "downloaded").text(0);
-    g_info.tr.append("td").text(g_info.total);
-    g_info.tr.append("td").attr("class", "status").text("initialized");
+    applyCellStyles(g_info.tr.append("td").text(g_name));
+    g_info.td_files = applyCellStyles(g_info.tr.append("td").attr("class", "files").style("text-align", "right"));
+    g_info.td_disk = applyCellStyles(g_info.tr.append("td").attr("class", "disk").style("text-align", "right"));
+    g_info.td_rows = applyCellStyles(g_info.tr.append("td").attr("class", "rows").style("text-align", "right"));
+    // Initialize size tracking
+    g_info.total_bytes = 0;
+    g_info.total_rows = 0;
+    g_info.downloaded_chunks = 0;
+    // Calculate total possible bytes and rows from chunk_info
+    g_info.possible_bytes = 0;
+    g_info.possible_rows = 0;
+    g_info.total_possible_chunks = g_info.total;
+    if(g_info.chunk_info){
+      var tsv_count = 0;
+      for(var chunk_name in g_info.chunk_info){
+        if(chunk_name.endsWith('.tsv')){
+          g_info.possible_bytes += g_info.chunk_info[chunk_name].bytes;
+          g_info.possible_rows += g_info.chunk_info[chunk_name].rows;
+          tsv_count++;
+        }
+      }
+      // chunk_info includes the common chunk, so total_possible_chunks should include it
+      g_info.total_possible_chunks = tsv_count;
+    }
+
+    // Set initial display values
+    g_info.td_files.text("0 / " + g_info.total_possible_chunks);
+    g_info.td_disk.text("0 / " + formatBytes(g_info.possible_bytes));
+    g_info.td_rows.text("0 / " + formatWithCommas(g_info.possible_rows));
 
     // load chunk tsv
     g_info.data = {};
@@ -243,6 +316,8 @@ var animint = function (to_select, json_file) {
       d3.tsv(common_path, function (error, response) {
         var converted = convert_R_types(response, g_info.types);
         g_info.data[common_tsv] = nest_by_group.map(converted);
+        // Track common chunk download for size information
+        updateDownloadStatus(g_info, common_tsv);
       });
     } else {
       g_info.common_tsv = null;
@@ -993,8 +1068,9 @@ var animint = function (to_select, json_file) {
         });
         var chunk = nest.map(response);
         g_info.data[tsv_name] = chunk;
-        g_info.tr.select("td.downloaded").text(d3.keys(g_info.data).length);
         g_info.download_status[tsv_name] = "saved";
+        // Update size information after download
+        updateDownloadStatus(g_info, tsv_name);
         funAfter(chunk);
       });
     });
@@ -1003,7 +1079,6 @@ var animint = function (to_select, json_file) {
   // update_geom is responsible for obtaining a chunk of downloaded
   // data, and then calling draw_geom to actually draw it.
   var draw_geom = function(g_info, chunk, selector_name, PANEL){
-    g_info.tr.select("td.status").text("displayed");
     var svg = SVGs[g_info.classed];
     // derive the plot name from the geometry name
     var g_names = g_info.classed.split("_");
@@ -2385,14 +2460,16 @@ var animint = function (to_select, json_file) {
         }
       });
     var loading = widget_td.append("table")
-      .style("display", "none");
+      .attr("id", viz_id + "_download_status")
+      .style("display", "none")
+      .style("border-collapse", "collapse")
+      .style("border", "1px solid #ddd");
     Widgets["loading"] = loading;
     var tr = loading.append("tr");
-    tr.append("th").text("geom");
-    tr.append("th").attr("class", "chunk").text("selected chunk");
-    tr.append("th").attr("class", "downloaded").text("downloaded");
-    tr.append("th").attr("class", "total").text("total");
-    tr.append("th").attr("class", "status").text("status");
+    applyCellStyles(tr.append("th").text("geom"));
+    applyCellStyles(tr.append("th").attr("class", "files").style("text-align", "right")).text("files");
+    applyCellStyles(tr.append("th").attr("class", "disk").style("text-align", "right")).text("disk");
+    applyCellStyles(tr.append("th").attr("class", "rows").style("text-align", "right")).text("rows");
     
     // Add geoms and construct nest operators.
     for (var g_name in response.geoms) {

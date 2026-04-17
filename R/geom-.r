@@ -632,6 +632,14 @@ Geom <- gganimintproto("Geom",
       data.table::fwrite(
         data.or.null$common, file = tsv.path,
         row.names = FALSE, sep = "\t")
+      # Track common chunk size and rows
+      if(!exists("chunk_info", envir=meta)) {
+        meta$chunk_info <- list()
+      }
+      meta$chunk_info[[tsv.name]] <- list(
+        bytes = file.size(tsv.path),
+        rows = nrow(data.or.null$common)
+      )
       data.or.null$varied
     }
     list(g=g, g.data.varied=g.data.varied, timeValues=AnimationInfo$timeValues)
