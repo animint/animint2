@@ -240,7 +240,7 @@ storeLayer <- function(meta, g, g.data.varied){
 #' @param chromote_height height of chromote window in pixels, default 2000 should be sufficient for most data viz, but can be increased if your data viz screenshot appears cropped too small.
 #' @return invisible list of ggplots in list format.
 #' @export
-#' @import RJSONIO
+#' @import jsonlite
 #' @importFrom utils browseURL head packageVersion str tail
 #'   write.table
 #' @example inst/examples/animint2dir.R
@@ -640,7 +640,23 @@ animint2dir <- function
       export.data[[export.name]] <- meta[[export.name]]
     }
   }
-  json <- RJSONIO::toJSON(export.data)
+  ## Convert R objects for jsonlite compatibility (issue #193).
+  ## RJSONIO serializes data.frames column-wise and named vectors as
+  ## objects; jsonlite serializes data.frames row-wise and drops vector
+  ## names. This helper converts both so jsonlite output matches RJSONIO.
+  convert_for_json <- function(x) {
+    if (is.data.frame(x)) {
+      lapply(as.list(x), I)
+    } else if (is.list(x)) {
+      lapply(x, convert_for_json)
+    } else if (is.atomic(x) && !is.null(names(x))) {
+      as.list(x)
+    } else {
+      x
+    }
+  }
+  export.data <- convert_for_json(export.data)
+  json <- jsonlite::toJSON(export.data, auto_unbox = TRUE, force = TRUE, null = "null")
   cat(json, file = file.path(out.dir, "plot.json"))
   if (open.browser) {
     if (identical(getOption("animint.browser"),"browseURL")) {

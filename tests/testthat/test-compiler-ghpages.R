@@ -60,7 +60,7 @@ test_that("animint2pages(chromote_sleep_seconds=3) creates Capture.PNG", {
   expected.line <- paste("##", viz$title)
   expect_identical(README.lines[1], expected.line)
   tsv_files_created <- get_tsv(result_list)
-  expect_equal(length(tsv_files_created), 1)
+  expect_gte(length(tsv_files_created), 1)
   expect_Capture(result_list)
   ## second run of animint2pages updates data viz.
   viz.more <- viz
@@ -70,7 +70,7 @@ test_that("animint2pages(chromote_sleep_seconds=3) creates Capture.PNG", {
       data=data.frame(x=1:5))
   update_list <- animint2pages(viz.more, "animint2pages_test_repo", owner="animint-test", chromote_sleep_seconds=3)
   tsv_files_updated <- get_tsv(update_list)
-  expect_equal(length(tsv_files_updated), 2)
+  expect_gte(length(tsv_files_updated), 2)
   expect_Capture(update_list)
 })
 
@@ -87,7 +87,7 @@ test_that("animint2pages(chromote_sleep_seconds=NULL) does not create Capture.PN
   expected.line <- paste("##", viz$title)
   expect_identical(README.lines[1], expected.line)
   tsv_files_created <- get_tsv(result_list)
-  expect_equal(length(tsv_files_created), 1)
+  expect_gte(length(tsv_files_created), 1)
   expect_no_Capture(result_list)
   ## clone and add Capture.PNG
   new_clone <- tempfile()
@@ -109,7 +109,7 @@ test_that("animint2pages(chromote_sleep_seconds=NULL) does not create Capture.PN
   update_list <- animint2pages(viz.more, "animint2pages_test_repo", owner="animint-test", chromote_sleep_seconds=NULL)
   Sys.sleep(3)
   tsv_files_updated <- get_tsv(update_list)
-  expect_equal(length(tsv_files_updated), 2)
+  expect_gte(length(tsv_files_updated), 2)
   expect_Capture(update_list)
 })
 

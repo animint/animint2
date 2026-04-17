@@ -11,6 +11,7 @@ dir.create(folder, recursive = TRUE, showWarnings = FALSE)
 file.copy(screenshot.Rmd, doc.Rmd, overwrite=TRUE)
 
 options(animint2.chromote_sleep_seconds=5)
+on.exit(options(animint2.chromote_sleep_seconds=NULL), add=TRUE)
 rmarkdown::render(doc.Rmd)
 Capture.PNG <- file.path(folder, "unnamedchunk1", "Capture.PNG")
 doc.pdf <- file.path(folder, "doc.pdf")

@@ -76,7 +76,7 @@ Depends:
 Imports:
     servr,
     digest,
-    RJSONIO,
+    jsonlite,
     grid,
     gtable (>= 0.1.1),
     MASS,
@@ -95,6 +95,7 @@ Suggests:
     covr,
     RColorBrewer,
     htmltools,
+    markdown,
     rmarkdown,
     testthat,
     XML,
