@@ -1,3 +1,8 @@
+# Changes in version 2026.3.2 (PR#306)
+
+- `animint.js`: Remove unnecessary `Selectors.hasOwnProperty` checks (issue #278).
+  Selector names are always valid when accessed, so membership checks are redundant.
+
 # Changes in version 2025.12.4 (PR#277)
 
 - `update_axes`: Fix issue #276 where transition duration was hardcoded to 1000ms. Now it respects the selector's duration.
