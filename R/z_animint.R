@@ -212,8 +212,21 @@ storeLayer <- function(meta, g, g.data.varied){
   ## Save each variable chunk to a separate tsv file.
   meta$chunk.i <- 1L
   meta$g <- g
+  # Initialize chunk_info only if it doesn't exist (common chunk may have been saved)
+  if(!exists("chunk_info", envir=meta)) {
+    meta$chunk_info <- list()
+  }
   g$chunks <- saveChunks(g.data.varied, meta)
   g$total <- length(unlist(g$chunks))
+  
+  ## Add chunk size information to geom - filter to only this geom's chunks
+  g$chunk_info <- list()
+  geom_prefix <- paste0(g$classed, "_chunk")
+  for(chunk_name in names(meta$chunk_info)) {
+    if(startsWith(chunk_name, geom_prefix)) {
+      g$chunk_info[[chunk_name]] <- meta$chunk_info[[chunk_name]]
+    }
+  }
 
   ## Finally save to the master geom list.
   meta$geoms[[g$classed]] <- g
@@ -747,7 +760,6 @@ getLegendList <- function(plistextra){
     gdefs <- guides_merge(gdefs)
     gdefs <- guides_geom(gdefs, layers, default_mapping)
   } else (zeroGrob())
-  names(gdefs) <- sapply(gdefs, function(i) i$title)
 
   ## adding the variable used to each LegendList
   for(leg in seq_along(gdefs)) {
@@ -827,6 +839,7 @@ getLegendList <- function(plistextra){
     }
   }
   legend.list <- lapply(gdefs, getLegend)
+  names(legend.list) <- sapply(legend.list, function(i) i$class)
   ## Add a flag to specify whether or not there is both a color and a
   ## fill legend to display. If so, we need to draw the interior of
   ## the points in the color legend as the same color.
