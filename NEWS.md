@@ -1,6 +1,6 @@
 # Changes in version 2026.3.8 (PR#311)
 
--   `geom_dotplot()` is now deprecated and will show a warning. Use `geom_point()` instead for interactive visualizations. (Fixed #289)
+- `geom_dotplot()` has been removed. Use `geom_point()` instead for interactive visualizations. (Fixed #289)
 
 # Changes in version 2025.12.4 (PR#277)
 
