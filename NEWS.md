@@ -18,6 +18,10 @@
 
 - Fixed multiline text spacing: plot titles no longer overlap with plot area, and X/Y axis label spacing is now consistent.
 - Fixed axis titles to scale correctly with `theme(text=element_text(size=X))` (issue #64).
+- 
+# Changes in version 2025.12.4 (PR#272)
+
+- Download status table now shows `files`, `disk`, and `rows` columns in "downloaded / total" format. Row counts display with comma separators for readability. Disk sizes show KiB or MiB units (using binary 1024 divisor, consistent with `man du`). Chunk sizes are calculated in R using `file.size()` and exported via plot.json.
 
 # Changes in version 2025.10.31 (PR#271)
 
