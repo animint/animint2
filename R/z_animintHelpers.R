@@ -607,6 +607,22 @@ checkSingleShowSelectedValue <- function(selectors){
 }
 
 
+#' Validate selector names for CSS compatibility
+#' @param selectors selectors to validate
+#' @return \code{NULL}. Throws error if invalid characters found.
+checkSelectorNames <- function(selectors){
+  selector.names <- names(selectors)
+  ## Characters that are invalid in CSS selectors and cause issues in browser
+  ## ] must be first in character class, [ can be anywhere after
+  invalid.pattern <- "[][#!@$%^&*=|/'\"`?<>()\\\\]"
+  has.invalid <- grepl(invalid.pattern, selector.names)
+  if(any(has.invalid)){
+    invalid.names <- selector.names[has.invalid]
+    stop(sprintf("Invalid character(s) in selector name(s).\nSelector names cannot contain special characters that interfere with CSS selectors.\nThe following selector(s) contain invalid characters:\n%s\n\nPlease remove or replace these characters in your variable names.", paste("-", invalid.names, collapse="\n")))
+  }
+}
+
+
 #' Set plot width and height for all plots
 #' @param meta meta object with all information
 #' @param AllPlotsInfo plot info list
@@ -917,9 +933,21 @@ saveChunks <- function(x, meta){
     # fwrite defaults ensure fields are quoted so that embedded
     # newlines or tabs in string fields do not break the TSV format
     # when read by d3.tsv.
+    csv.path <- file.path(meta$out.dir, csv.name)
     data.table::fwrite(
-      na.omit(x), file.path(meta$out.dir, csv.name),
+      na.omit(x), csv.path,
       row.names=FALSE, sep="\t")
+    # Calculate chunk size and row count
+    chunk_bytes <- file.size(csv.path)
+    chunk_rows <- nrow(na.omit(x))
+    # Store chunk info
+    if(!exists("chunk_info", envir=meta)) {
+      meta$chunk_info <- list()
+    }
+    meta$chunk_info[[csv.name]] <- list(
+      bytes = chunk_bytes,
+      rows = chunk_rows
+    )
     meta$chunk.i <- meta$chunk.i + 1L
     this.i
   }else if(is.list(x)){

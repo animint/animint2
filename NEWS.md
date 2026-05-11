@@ -1,3 +1,7 @@
+# Changes in version 2025.12.4 (PR#277)
+
+- `update_axes`: Fix issue #276 where transition duration was hardcoded to 1000ms. Now it respects the selector's duration.
+
 # Changes in version 2025.12.3 (PR#282)
 
 - URL hash handling: Removed old `window.location.hash` parsing code from `animint.js` (issue #280).
@@ -9,6 +13,10 @@
 # Changes in version 2025.11.17 (PR#274)
 
 - `update_axes`: Fixed issue #273 where axis tick text font-size was inconsistent between plots with and without `update_axes`. Previously, plots using `theme_animint(update_axes="x")` would lose `theme(axis.text = element_text(size=...))` styling after axis updates.
+
+# Changes in version 2025.12.4 (PR#272)
+
+- Download status table now shows `files`, `disk`, and `rows` columns in "downloaded / total" format. Row counts display with comma separators for readability. Disk sizes show KiB or MiB units (using binary 1024 divisor, consistent with `man du`). Chunk sizes are calculated in R using `file.size()` and exported via plot.json.
 
 # Changes in version 2025.10.31 (PR#271)
 
@@ -39,6 +47,10 @@
 # Changes in version 2025.10.9 (PR#242)
 
 - Improve common chunk detection, output `na_group` and `row_in_group` when there are missing values.
+
+# Changes in version 2025.10.6 (PR#246)
+
+- Added validation for selector names to prevent browser rendering failures. Selector names (from data values used in `clickSelects` and `showSelected`) cannot contain CSS special characters like `#`, `@`, `!`, `$`, etc., as these interfere with JavaScript DOM selectors and cause blank visualizations in the browser. The compiler now stops with a clear error message identifying problematic selector names, helping users fix data issues before attempting to render.
 
 # Changes in version 2025.10.3 (PR#240)
 
