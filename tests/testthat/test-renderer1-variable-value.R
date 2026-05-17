@@ -269,8 +269,10 @@ test_that("Widgets for regular selectors", {
 
 chunk.counts <- function(html=getHTML()){
   node.set <-
-    getNodeSet(html, '//td[@class="downloaded"]')
-  as.integer(sapply(node.set, xmlValue))
+    getNodeSet(html, '//td[@class="files"]')
+  text.vec <- sapply(node.set, xmlValue)
+  downloaded.vec <- sapply(strsplit(text.vec, " / "), "[[", 1)
+  as.integer(downloaded.vec)
 }
 
 test_that("counts of chunks downloaded or not at first", {
