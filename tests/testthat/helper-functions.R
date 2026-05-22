@@ -417,6 +417,16 @@ get_element_bbox <- function(selector) {
   runtime_evaluate(script)
 }
 
+tooltipID <- function(id){
+  selector <- paste0("#", id)
+  mouseMoved(selector)
+  html <- getHTML()
+  tooltip.xpath <- '//div[@class="animint-tooltip"]'
+  tooltip_div <- getNodeSet(html, tooltip.xpath)
+  list(
+    opacity=as.numeric(getStyleValue(html, tooltip.xpath, "opacity")),
+    value=xmlValue(tooltip_div))
+}
 mouseMoved <- function(selector=NULL, ...)mouseEvent(selector, "mouseMoved", ...)
 mousePressed <- function(selector=NULL, ...)mouseEvent(selector, "mousePressed", ...)
 mouseReleased <- function(selector=NULL, ...)mouseEvent(selector, "mouseReleased", ...)

@@ -37,17 +37,6 @@ viz.simple <- animint(
       fill="red"))
 info <- animint2HTML(viz.simple)
 
-tooltipID <- function(id){
-  selector <- paste0("#", id)
-  mouseMoved(selector)
-  html <- getHTML()
-  tooltip.xpath <- '//div[@class="animint-tooltip"]'
-  tooltip_div <- getNodeSet(html, tooltip.xpath)
-  list(
-    opacity=as.numeric(getStyleValue(html, tooltip.xpath, "opacity")),
-    value=xmlValue(tooltip_div))
-}
-
 test_that("point3_3 is in hole (no polygon tooltip)", {
   computed <- tooltipID("point3_3")
   expect_identical(computed$opacity, 0)
