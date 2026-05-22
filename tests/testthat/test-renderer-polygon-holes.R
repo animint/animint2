@@ -31,11 +31,9 @@ viz.simple <- animint(
       col, row, label=id),
       data=simple.point.dt)+
     geom_polygon(
-      aes(x, y, group=group, subgroup=subgroup),
+      aes(x, y, group=group, subgroup=subgroup, tooltip=paste("group", group)),
       data=simple.polygon.dt,
       alpha=0.5,
-      clickSelects="group",
-      showSelected="group",
       fill="red"))
 info <- animint2HTML(viz.simple)
 
@@ -138,7 +136,7 @@ test_that("island_mid is in polygon (yes polygon tooltip)", {
   expect_identical(computed$value, "island")
 })
 
-test_that("island_hole is not in polygon (no polygon tooltip)", {
+test_that("island_hole is in hole (no polygon tooltip)", {
   computed <- tooltipID("island_hole")
   expect_identical(computed$opacity, 0)
 })
@@ -149,17 +147,17 @@ test_that("island_ring is in polygon (yes polygon tooltip)", {
   expect_identical(computed$value, "island")
 })
 
-test_that("island_out is not in polygon (no polygon tooltip)", {
+test_that("island_out is outside (no polygon tooltip)", {
   computed <- tooltipID("island_out")
   expect_identical(computed$opacity, 0)
 })
 
-test_that("hole_mid is not in polygon (no polygon tooltip)", {
+test_that("hole_mid is in hole (no polygon tooltip)", {
   computed <- tooltipID("hole_mid")
   expect_identical(computed$opacity, 0)
 })
 
-test_that("hole_hole is not in polygon (no polygon tooltip)", {
+test_that("hole_hole is in hole (no polygon tooltip)", {
   computed <- tooltipID("hole_hole")
   expect_identical(computed$opacity, 0)
 })
@@ -170,7 +168,7 @@ test_that("hole_ring is in polygon (yes polygon tooltip)", {
   expect_identical(computed$value, "hole")
 })
 
-test_that("hole_out is not in polygon (no polygon tooltip)", {
+test_that("hole_out is outside (no polygon tooltip)", {
   computed <- tooltipID("hole_out")
   expect_identical(computed$opacity, 0)
 })
@@ -193,7 +191,7 @@ test_that("filled_ring is in polygon (yes polygon tooltip)", {
   expect_identical(computed$value, "filled")
 })
 
-test_that("filled_out is not in polygon (no polygon tooltip)", {
+test_that("filled_out is outside (no polygon tooltip)", {
   computed <- tooltipID("filled_out")
   expect_identical(computed$opacity, 0)
 })
