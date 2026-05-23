@@ -47,6 +47,13 @@ reset_test_repo <- function(){
   gh::gh("POST /orgs/animint-test/repos", name="animint2pages_test_repo")
   Sys.sleep(3)
 }
+test_that("ghpages test repo name is unique per CI job", {
+  name_r <- sprintf("animint2pages_test_repo_%s", tolower("R_coverage"))
+  name_js <- sprintf("animint2pages_test_repo_%s", tolower("JS_coverage"))
+  expect_false(identical(name_r, name_js))
+  expect_identical(test_repo_name, sprintf("animint2pages_test_repo_%s", tolower(Sys.getenv("TEST_SUITE", unset = "local"))))
+  expect_false(identical(test_repo_name, "animint2pages_test_repo"))
+})
 test_that("animint2pages(chromote_sleep_seconds=3) creates Capture.PNG", {
   reset_test_repo()
   ## first run of animint2pages creates new data viz.
