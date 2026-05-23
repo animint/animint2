@@ -82,7 +82,7 @@ m.list <- list(
 poly.list  <- list()
 point.list <- list()
 for(grp.i in seq_along(m.list)){
-  offset <- grp.i * 6
+  offset <- grp.i * 7
   group <- names(m.list)[[grp.i]]
   m <- m.list[[grp.i]]
   clines <- contourLines(
@@ -93,9 +93,11 @@ for(grp.i in seq_along(m.list)){
     group, x=x+offset, y
   )), by=subgroup]
   point.list[[grp.i]] <- data.table(
-    x = offset+4,
-    y = 4:7,
-    id = paste0(group, "_", c("mid","hole","ring","out")))
+    row=as.integer(row(m)),
+    col=as.integer(col(m))+offset,
+    num=as.numeric(m),
+    group
+  )[, id := sprintf("%s_%d_%d", group, col, row)][]
 }
 poly.dt <- do.call(rbind, poly.list)
 point.dt <- do.call(rbind, point.list)
@@ -103,14 +105,9 @@ point.dt <- do.call(rbind, point.list)
 viz.full <- animint(
   poly=ggplot()+
     geom_point(aes(
-      x, y, id=id),
+      col, row, fill=num, id=id),
       data=point.dt,
       color="red", size=3)+
-    geom_text(aes(
-      x, y, label=id),
-      data=point.dt,
-      hjust=0,
-      color="red", size=20)+
     geom_polygon(aes(
       x, y, group=group, subgroup=subgroup, tooltip=group),
       data=poly.dt,
@@ -120,67 +117,16 @@ viz.full <- animint(
 info.full <- animint2HTML(viz.full)
 
 test_that("island_mid is in polygon (yes polygon tooltip)", {
-  computed <- tooltipID("island_mid")
-  expect_identical(computed$opacity, 0.7)
-  expect_identical(computed$value, "island")
-})
-
-test_that("island_hole is in hole (no polygon tooltip)", {
-  computed <- tooltipID("island_hole")
-  expect_identical(computed$opacity, 0)
-})
-
-test_that("island_ring is in polygon (yes polygon tooltip)", {
-  computed <- tooltipID("island_ring")
-  expect_identical(computed$opacity, 0.7)
-  expect_identical(computed$value, "island")
-})
-
-test_that("island_out is outside (no polygon tooltip)", {
-  computed <- tooltipID("island_out")
-  expect_identical(computed$opacity, 0)
-})
-
-test_that("hole_mid is in hole (no polygon tooltip)", {
-  computed <- tooltipID("hole_mid")
-  expect_identical(computed$opacity, 0)
-})
-
-test_that("hole_hole is in hole (no polygon tooltip)", {
-  computed <- tooltipID("hole_hole")
-  expect_identical(computed$opacity, 0)
-})
-
-test_that("hole_ring is in polygon (yes polygon tooltip)", {
-  computed <- tooltipID("hole_ring")
-  expect_identical(computed$opacity, 0.7)
-  expect_identical(computed$value, "hole")
-})
-
-test_that("hole_out is outside (no polygon tooltip)", {
-  computed <- tooltipID("hole_out")
-  expect_identical(computed$opacity, 0)
-})
-
-test_that("filled_mid is in polygon (yes polygon tooltip)", {
-  computed <- tooltipID("filled_mid")
-  expect_identical(computed$opacity, 0.7)
-  expect_identical(computed$value, "filled")
-})
-
-test_that("filled_hole is in polygon (yes polygon tooltip)", {
-  computed <- tooltipID("filled_hole")
-  expect_identical(computed$opacity, 0.7)
-  expect_identical(computed$value, "filled")
-})
-
-test_that("filled_ring is in polygon (yes polygon tooltip)", {
-  computed <- tooltipID("filled_ring")
-  expect_identical(computed$opacity, 0.7)
-  expect_identical(computed$value, "filled")
-})
-
-test_that("filled_out is outside (no polygon tooltip)", {
-  computed <- tooltipID("filled_out")
-  expect_identical(computed$opacity, 0)
+  computed.dt.list <- list()
+  for(point.i in 1:nrow(point.dt)){
+    point.row <- point.dt[point.i]
+    computed <- tooltipID(point.row$id)
+    computed.dt.list[[point.i]] <- data.table(
+      point.row, as.data.table(computed))
+  }
+  computed.dt <- rbindlist(computed.dt.list)[
+  , expected := ifelse(num==0, 0, 0.7)
+  ][]
+  computed.dt[, expect_equal(opacity, expected)]
+  computed.dt[num==1, expect_equal(value, group)]
 })

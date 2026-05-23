@@ -453,7 +453,7 @@ mouseEvent <- function(selector=NULL, type, ...){
     y = position$center_y,
     ...
   )
-  Sys.sleep(0.3)
+  Sys.sleep(0.1)
   position
 }
 
