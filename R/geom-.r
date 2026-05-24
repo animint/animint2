@@ -584,6 +584,12 @@ Geom <- gganimintproto("Geom",
     if(! "group" %in% names(g$aes)){
       g.data$group <- 1
     }
+    #  # only run this block for polygon geoms that actually have a subgroup column
+    if(g$geom == "polygon" && "subgroup" %in% names(g.data)){
+      g$data_has_subgroup <- TRUE
+      g.data$subgroup <- as.character(g.data$subgroup)
+      g$types[["subgroup"]] <- "character"
+    }
     ## Some geoms should be split into separate groups if there are NAs.
     setDT(g.data)
     g.data[, let(
@@ -632,14 +638,6 @@ Geom <- gganimintproto("Geom",
       data.table::fwrite(
         data.or.null$common, file = tsv.path,
         row.names = FALSE, sep = "\t")
-      # Track common chunk size and rows
-      if(!exists("chunk_info", envir=meta)) {
-        meta$chunk_info <- list()
-      }
-      meta$chunk_info[[tsv.name]] <- list(
-        bytes = file.size(tsv.path),
-        rows = nrow(data.or.null$common)
-      )
       data.or.null$varied
     }
     list(g=g, g.data.varied=g.data.varied, timeValues=AnimationInfo$timeValues)
