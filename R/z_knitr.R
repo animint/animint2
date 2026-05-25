@@ -12,6 +12,7 @@ knit_print.animint <- function(x, options, ...) {
   viz_id <- gsub("[^[:alnum:]]", "", options$label)
   out.dir <- file.path(output.dir, viz_id)
   animint2dir(x, out.dir = out.dir, open.browser = FALSE)
+  copy_quarto_animint_dir(out.dir, viz_id)
   res <- if(knitr::is_latex_output())sprintf(
     "\\IfFileExists{%s/Capture.PNG}{\\includegraphics[width=\\textwidth]{%s/Capture.PNG}}{}", out.dir, out.dir
   ) else sprintf(
@@ -34,6 +35,33 @@ knit_print.animint <- function(x, options, ...) {
 %s', viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, res)
   }
   knitr::asis_output(res, meta = list(animint = structure("", class = "animint")))
+}
+
+quarto_output_dir <- function(project.root) {
+  quarto.yml <- file.path(project.root, "_quarto.yml")
+  if (!file.exists(quarto.yml)) return(NULL)
+
+  yml.lines <- readLines(quarto.yml, warn = FALSE)
+  output.line <- grep("^[[:space:]]+output-dir:", yml.lines, value = TRUE)
+  if (!length(output.line)) return("_site")
+
+  sub("^[[:space:]]+output-dir:[[:space:]]*", "", output.line[[1]])
+}
+
+copy_quarto_animint_dir <- function(out.dir, viz_id) {
+  project.root <- Sys.getenv("QUARTO_PROJECT_ROOT")
+  if (project.root == "") return(invisible(FALSE))
+
+  output.dir <- quarto_output_dir(project.root)
+  if (is.null(output.dir)) return(invisible(FALSE))
+
+  site.dir <- file.path(project.root, output.dir)
+  if (!dir.exists(site.dir)) return(invisible(FALSE))
+
+  to.dir <- file.path(site.dir, viz_id)
+  if (dir.exists(to.dir)) unlink(to.dir, recursive = TRUE)
+
+  file.copy(out.dir, site.dir, recursive = TRUE)
 }
 
 #' Shiny ui output function
