@@ -1094,5 +1094,3 @@ selectSSandCS <- function(aesthetics_list){
   ## TODO: how to handle showSelected$ignored in prev animint code??
   return(aes.list)
 }
-
-

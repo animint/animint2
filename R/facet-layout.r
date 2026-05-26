@@ -105,6 +105,10 @@ if (!any(has_all)) {
       paste(all_data_vars, collapse = ", ")
     ))
   }
+  # Reached when all facet variables exist somewhere in the data, but no
+  # single layer has all of them together. For example, facet_grid(X ~ Y)
+  # where layer 1 only has column X and layer 2 only has column Y — neither
+  # layer alone satisfies all facetting variables, so has_all is FALSE for every layer.
   stop("At least one layer must contain all variables used for facetting")
 }
 
