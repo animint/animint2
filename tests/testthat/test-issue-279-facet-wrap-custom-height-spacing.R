@@ -1,42 +1,28 @@
-acontext("Issue #279: facet_grid spacing with custom height")
-
-test_that("facet_grid SVG height is proportional to theme_animint height, no excess space (#279)", {
+test_that("facet_wrap SVG height is proportional to theme_animint height, no excess space (#279)", {
   skip_on_cran()
-
   task_data <- data.frame(
     x = rep(1:5, 5),
     y = rep(1:5, 5),
     task_id = rep(c("sonar", "spam", "vowel", "waveform", "zip"), each = 5)
   )
-
-  viz_default <- list(
-    plot = ggplot() +
-      geom_point(aes(x, y), data = task_data) +
-      facet_grid(task_id ~ .) +
-      theme_bw()
+  n_facets <- length(unique(task_data$task_id))
+  base_plot <- ggplot() +
+    geom_point(aes(x, y), data = task_data) +
+    facet_wrap(~ task_id, ncol = 1) +
+    theme_bw()
+  viz_list <- list(
+    default = list(plot = base_plot),
+    custom  = list(plot = base_plot + theme_animint(height = 600))
   )
-
-  viz_custom <- list(
-    plot = ggplot() +
-      geom_point(aes(x, y), data = task_data) +
-      facet_grid(task_id ~ .) +
-      theme_bw() +
-      theme_animint(height = 600)
-  )
-
-  info_default <- animint2HTML(viz_default)
-  info_custom  <- animint2HTML(viz_custom)
-
-  svg_default <- XML::getNodeSet(info_default$html, "//svg[contains(@id,'plot_plot')]")
-  expect_equal(length(svg_default), 1L)
-  h_default <- as.numeric(XML::xmlAttrs(svg_default[[1]])[["height"]])
-  expect_lt(h_default, 400 * 2)
-
-  svg_custom <- XML::getNodeSet(info_custom$html, "//svg[contains(@id,'plot_plot')]")
-  expect_equal(length(svg_custom), 1L)
-  h_custom <- as.numeric(XML::xmlAttrs(svg_custom[[1]])[["height"]])
-
-  expect_lt(h_custom, 600 * 2,
+  info_list <- lapply(viz_list, animint2HTML)
+  h_list <- lapply(info_list, function(info) {
+    svg_node <- XML::getNodeSet(info$html, "//svg[contains(@id,'plot_plot')]")
+    expect_equal(length(svg_node), 1L)
+    as.numeric(XML::xmlAttrs(svg_node[[1]])[["height"]])
+  })
+  # SVG height must not scale as height * n_facets (regression from issue #279)
+  expect_lt(h_list$default, 400 * n_facets)
+  expect_lt(h_list$custom, 600 * n_facets,
             label = "SVG height should not be 600*num_facets — regression from issue #279")
-  expect_gt(h_custom, h_default)
+  expect_gt(h_list$custom, h_list$default)
 })
