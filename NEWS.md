@@ -8,8 +8,7 @@
 
 # Changes in version 2026.3.2 (PR#306)
 
-- `animint.js`: Remove unnecessary `Selectors.hasOwnProperty` checks (issue #278).
-  Selector names are always valid when accessed, so membership checks are redundant.
+- `animint.js`: Remove redundant `Selectors.hasOwnProperty` checks and use a shared `selector_has_duration()` helper (issue #278, PR#306).
 
 # Changes in version 2025.12.4 (PR#277)
 

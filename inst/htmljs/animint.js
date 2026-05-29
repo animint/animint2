@@ -101,10 +101,10 @@ var animint = function (to_select, json_file) {
     return safe_name(selector_name) + "_variable";
   }
 
+  // selector_name can be null for geoms without a selector (initial render via update_geom(g, null)).
   function selector_has_duration(name) {
-    return !!(name &&
-      Selectors.hasOwnProperty(name) &&
-      Selectors[name].hasOwnProperty("duration"));
+    return name &&
+      Selectors[name].hasOwnProperty("duration");
   }
 
   function is_interactive_aes(v_name){
