@@ -9,6 +9,6 @@ test.list <- atime::atime_test_list(
         showSelected=1:2)
     },
     seconds.limit=1,
-    Slow="352f7e10040cb9de6ddd16416d342e9746c14c7a", # Parent of the first commit (https://github.com/animint/animint2/commit/121a11399e7d6ca6c822cd22472886c6d4d8cf10) of the PR (https://github.com/animint/animint2/pull/238/commits).
-    Fast="30950779702e6c8aeecd24aeb737c9fa5ce898e0") # Last commit in the PR (https://github.com/animint/animint2/pull/238/commits).
+    Slow="a4220dfe02214969964f97d69f1516d75b9d961a", # master before coord_equal fix; installable on R 4.6 (352f7e fails Rd build in atime CI).
+    Fast="109e061a6e6d5f6d9eee9406697308b890e236f7") # test-coord_equal branch head (PR #253).
 )
