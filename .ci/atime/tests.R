@@ -9,6 +9,6 @@ test.list <- atime::atime_test_list(
         showSelected=1:2)
     },
     seconds.limit=1,
-    Slow="a4220dfe02214969964f97d69f1516d75b9d961a", # master before coord_equal fix; installable on R 4.6 (352f7e fails Rd build in atime CI).
-    Fast="109e061a6e6d5f6d9eee9406697308b890e236f7") # test-coord_equal branch head (PR #253).
+    Slow="e32921ce2d884f3543658997fd8c157036ba49ca", # Before #238 getCommonChunk refactor (split/loop); installable on R 4.6. Intended parent 352f7e fails atime CI (geom_dotplot Rd build).
+    Fast="30950779702e6c8aeecd24aeb737c9fa5ce898e0") # Last commit of PR #238 (data.table getCommonChunk + na.rm=TRUE).
 )
