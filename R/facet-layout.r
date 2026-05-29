@@ -93,24 +93,24 @@ layout_base <- function(data, vars = NULL, drop = TRUE) {
 
   # Form the base data frame which contains all combinations of facetting
   # variables that appear in the data
-has_all <- unlist(plyr::llply(values, length)) == length(vars)
-if (!any(has_all)) {
-  all_data_vars <- unique(unlist(lapply(data, names)))
-  missing_vars <- setdiff(names(vars)[names(vars) != "."], all_data_vars)
-  if (length(missing_vars) > 0) {
-    stop(sprintf(
-      "Facet variable%s not found in data: %s\nAvailable columns: %s\nUse string notation like facet_wrap(\"var\") instead of formula notation facet_wrap(. ~ var)",
-      if (length(missing_vars) > 1) "s" else "",
-      paste(missing_vars, collapse = ", "),
-      paste(all_data_vars, collapse = ", ")
-    ))
+  has_all <- unlist(lapply(values, length)) == length(vars)
+  if (!any(has_all)) {
+    all_data_vars <- unique(unlist(lapply(data, names)))
+    missing_vars <- setdiff(names(vars)[names(vars) != "."], all_data_vars)
+    if (length(missing_vars) > 0) {
+      stop(sprintf(
+        "Facet variable%s not found in data: %s\nAvailable columns: %s\nUse string notation like facet_wrap(\"var\") instead of formula notation facet_wrap(. ~ var)",
+        if (length(missing_vars) > 1) "s" else "",
+        paste(missing_vars, collapse = ", "),
+        paste(all_data_vars, collapse = ", ")
+      ))
+    }
+    # Reached when all facet variables exist somewhere in the data, but no
+    # single layer has all of them together. For example, facet_grid(X ~ Y)
+    # where layer 1 only has column X and layer 2 only has column Y — neither
+    # layer alone satisfies all facetting variables, so has_all is FALSE for every layer.
+    stop("At least one layer must contain all variables used for facetting")
   }
-  # Reached when all facet variables exist somewhere in the data, but no
-  # single layer has all of them together. For example, facet_grid(X ~ Y)
-  # where layer 1 only has column X and layer 2 only has column Y — neither
-  # layer alone satisfies all facetting variables, so has_all is FALSE for every layer.
-  stop("At least one layer must contain all variables used for facetting")
-}
 
   base <- unique(plyr::ldply(values[has_all]))
   if (!drop) {
