@@ -1,4 +1,4 @@
-# Changes in version 2026.4.17 (PR#286)
+# Changes in version 2026.5.29 (PR#286)
 
 - Added regression tests for `panel.margin` with positive values (issue #180), covering vertical/horizontal `facet_grid` and `facet_wrap`.
 
