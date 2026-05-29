@@ -2,6 +2,10 @@
 
 - Added regression tests for `panel.margin` with positive values (issue #180), covering vertical/horizontal `facet_grid` and `facet_wrap`.
 
+# Changes in version 2026.4.28 (PR#292)
+
+- `geom(showSelected=character())` means to opt-out of interactive legends. Thanks @ANAMASGARD.
+
 # Changes in version 2026.3.8 (PR#311)
 
 - `geom_dotplot()` has been removed. Use `geom_point()` instead for interactive visualizations. (Fixed #289)
