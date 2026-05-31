@@ -12,17 +12,17 @@ knit_print.animint <- function(x, options, ...) {
   viz_id <- gsub("[^[:alnum:]]", "", options$label)
   out.dir <- file.path(output.dir, viz_id)
   animint2dir(x, out.dir = out.dir, open.browser = FALSE)
-  copy_quarto_animint_dir(out.dir, viz_id)
-  res <- if(knitr::is_latex_output())sprintf(
-    "\\IfFileExists{%s/Capture.PNG}{\\includegraphics[width=\\textwidth]{%s/Capture.PNG}}{}", out.dir, out.dir
-  ) else sprintf(
+  if(knitr::is_latex_output()){
+    res <- sprintf(
+      "\\IfFileExists{%s/Capture.PNG}{\\includegraphics[width=\\textwidth]{%s/Capture.PNG}}{}", out.dir, out.dir)
+  }else{
+    res <- sprintf(
     ## <div id="Ch01vizKeeling"></div><script>var Ch01vizKeeling = new animint("#Ch01vizKeeling","Ch01vizKeeling/plot.json");</script>
-    '<div id="%s"></div>\n<script>var %s = new animint("#%s","%s/plot.json");</script>', viz_id, viz_id, viz_id, viz_id
-  )
-  # if this is the first plot, place scripts just before the plot
-  # there has to be a better way to do this, but this will do for now -- http://stackoverflow.com/questions/14308240/how-to-add-javascript-in-the-head-of-a-html-knitr-document
-  if (length(knitr::knit_meta(class = "animint", clean = FALSE)) == 0) {
-    res <- sprintf('
+      '<div id="%s"></div>\n<script>var %s = new animint("#%s","%s/plot.json");</script>', viz_id, viz_id, viz_id, viz_id)
+    # if this is the first plot, place scripts just before the plot
+    # there has to be a better way to do this, but this will do for now -- http://stackoverflow.com/questions/14308240/how-to-add-javascript-in-the-head-of-a-html-knitr-document
+    if (length(knitr::knit_meta(class = "animint", clean = FALSE)) == 0) {
+      res <- sprintf('
 <script type="text/javascript" src="%s/vendor/d3.v3.js"></script>
 <script type="text/javascript" src="%s/animint.js"></script>
 <script type="text/javascript" src="%s/vendor/quadprog.js"></script>
@@ -33,35 +33,20 @@ knit_print.animint <- function(x, options, ...) {
 <script type="text/javascript" src="%s/vendor/driver.js.iife.js"></script>
 <link rel="stylesheet" href="%s/vendor/driver.css" />
 %s', viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, res)
+    }
+    res <- paste(res, animint_resources(out.dir, viz_id), sep = "\n")
   }
   knitr::asis_output(res, meta = list(animint = structure("", class = "animint")))
 }
 
-quarto_output_dir <- function(project.root) {
-  quarto.yml <- file.path(project.root, "_quarto.yml")
-  if (!file.exists(quarto.yml)) return(NULL)
-
-  yml.lines <- readLines(quarto.yml, warn = FALSE)
-  output.line <- grep("^[[:space:]]+output-dir:", yml.lines, value = TRUE)
-  if (!length(output.line)) return("_site")
-
-  sub("^[[:space:]]+output-dir:[[:space:]]*", "", output.line[[1]])
-}
-
-copy_quarto_animint_dir <- function(out.dir, viz_id) {
-  project.root <- Sys.getenv("QUARTO_PROJECT_ROOT")
-  if (project.root == "") return(invisible(FALSE))
-
-  output.dir <- quarto_output_dir(project.root)
-  if (is.null(output.dir)) return(invisible(FALSE))
-
-  site.dir <- file.path(project.root, output.dir)
-  if (!dir.exists(site.dir)) return(invisible(FALSE))
-
-  to.dir <- file.path(site.dir, viz_id)
-  if (dir.exists(to.dir)) unlink(to.dir, recursive = TRUE)
-
-  file.copy(out.dir, site.dir, recursive = TRUE)
+animint_resources <- function(out.dir, viz_id) {
+  files <- list.files(out.dir, recursive = TRUE, all.files = TRUE, no.. = TRUE)
+  files <- files[!dir.exists(file.path(out.dir, files))]
+  if(!length(files))return("")
+  hrefs <- file.path(viz_id, files)
+  hrefs <- gsub("\\\\", "/", hrefs)
+  links <- sprintf('<a href="%s"></a>', hrefs)
+  paste0('<div style="display:none">', paste(links, collapse = "\n"), '</div>')
 }
 
 #' Shiny ui output function

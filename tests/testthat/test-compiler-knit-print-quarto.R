@@ -33,4 +33,5 @@ test_that("quarto website output includes animint directory", {
   quarto::quarto_render("index.qmd", quiet = TRUE)
 
   expect_true(file.exists(file.path(temp.dir, "_site", "myplot", "plot.json")))
+  expect_true(file.exists(file.path(temp.dir, "_site", "myplot", "animint.js")))
 })
