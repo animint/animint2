@@ -1446,11 +1446,42 @@ var animint = function (to_select, json_file) {
         fill_off = "none";
       }
       data_to_bind = kv;
-      eActions = function (e) {
-        e.attr("d", function (d) {
-          return lineThing(keyed_data[d.value]);
-        })
-      };
+      
+      // polygon with subgroup aesthetic: use d3.geo.path with GeoJSON + evenodd fill rule
+      if(g_info.geom === "polygon" && g_info.data_has_subgroup){
+        var geoPath = d3.geo.path().projection(null);
+        eActions = function(e){
+          e.attr("d", function(d){
+            var points = keyed_data[d.value];
+            var nested = d3.nest()
+              .key(function(pt){ return pt.subgroup; })
+              .entries(points);
+            var coords = nested.map(function(group){
+              var ring = group.values.map(function(pt){
+                return [scales.x(pt.x), scales.y(pt.y)];
+              });
+              if(ring.length > 0){
+                ring = ring.concat([ring[0]]);
+              }
+              return ring;
+            });
+
+            var geojson = {
+              type: "Polygon",
+              coordinates: coords
+            };
+            return geoPath(geojson);
+          })
+          .style("fill-rule", "evenodd");
+        };
+
+      } else {
+        eActions = function(e){
+          e.attr("d", function(d){
+            return lineThing(keyed_data[d.value]);
+          })
+        };
+      }
       eAppend = "path";
     }else{
       get_one_row = function(d){
