@@ -1,6 +1,18 @@
 # Changes in version 2026.5.29 (PR#286)
 
-- Added regression tests for `panel.margin` with positive values (issue #180), covering vertical/horizontal `facet_grid` and `facet_wrap`.
+- Added regression tests for `panel.margin` with positive values (issue #180),
+  covering vertical/horizontal `facet_grid` and `facet_wrap`. Thanks @ANAMASGARD.
+
+  **Supported units:** The renderer uses `panel_margin_lines` (via `pt.to.lines()`
+  in `parsePlot()`). Use **`"lines"`** for predictable spacing (`grid::unit(n,
+  "lines")` → `n` line-heights in the browser). **`"pt"`** / **`"points"`** are
+  converted with the ggplot2 default scale (~5.5 pt → 0.25 lines). Other units
+  (`"cm"`, `"mm"`, etc.) pass through as a numeric value interpreted as a line
+  count, not a physical conversion. Pixels are not used directly.
+
+  **Example (horizontal spacing between facet columns):** see
+  `inst/examples/panel-margin-issue-180.R` (`facet_grid(. ~ Species)`, compare
+  `panel.margin = unit(0, "lines")` vs `unit(2, "lines")`).
 
 # Changes in version 2026.4.28 (PR#292)
 
