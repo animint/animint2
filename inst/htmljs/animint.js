@@ -1447,34 +1447,26 @@ var animint = function (to_select, json_file) {
       }
       data_to_bind = kv;
       
-      // polygon with subgroup aesthetic: use d3.geo.path with GeoJSON + evenodd fill rule
+      // polygon with subgroup aesthetic: build multi-ring SVG path with evenodd fill rule
       if(g_info.geom === "polygon" && g_info.data_has_subgroup){
-        var geoPath = d3.geo.path().projection(null);
         eActions = function(e){
           e.attr("d", function(d){
             var points = keyed_data[d.value];
             var nested = d3.nest()
               .key(function(pt){ return pt.subgroup; })
               .entries(points);
-            var coords = nested.map(function(group){
-              var ring = group.values.map(function(pt){
-                return [scales.x(pt.x), scales.y(pt.y)];
-              });
-              if(ring.length > 0){
-                ring = ring.concat([ring[0]]);
+            return nested.map(function(subgroup_data){
+              var ring = subgroup_data.values;
+              if(ring.length === 0) return "";
+              var pathStr = "M" + scales.x(ring[0].x) + "," + scales.y(ring[0].y);
+              for(var i = 1; i < ring.length; i++){
+                pathStr += "L" + scales.x(ring[i].x) + "," + scales.y(ring[i].y);
               }
-              return ring;
-            });
-
-            var geojson = {
-              type: "Polygon",
-              coordinates: coords
-            };
-            return geoPath(geojson);
+              return pathStr + "Z";
+            }).join(" ");
           })
           .style("fill-rule", "evenodd");
         };
-
       } else {
         eActions = function(e){
           e.attr("d", function(d){
