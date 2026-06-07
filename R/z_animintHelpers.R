@@ -10,6 +10,7 @@ addShowSelectedForLegend <- function(meta, legend, L){
   ## If showSelected is character(0), user wants to opt out of auto-showSelected
   user_disabled_showSelected <- is.character(L$extra_params$showSelected) &&
     length(L$extra_params$showSelected) == 0
+  user_disabled_legend_showSelected <- isFALSE(L$extra_params$showSelected.legend)
   for(legend.i in seq_along(legend)) {
     one.legend <- legend[[legend.i]]
     ## the name of the selection variable used in this legend.
@@ -34,7 +35,9 @@ addShowSelectedForLegend <- function(meta, legend, L){
         ## only add showSelected aesthetic if the variable is
         ## used by the geom
         type.vec <- one.legend$legend_type
-        if((!user_disabled_showSelected) && any(type.vec %in% names(L$mapping))){
+        if((!user_disabled_showSelected) &&
+           (!user_disabled_legend_showSelected) &&
+           any(type.vec %in% names(L$mapping))){
           L$extra_params$showSelected <- c(L$extra_params$showSelected, s.name)
         }
       }
@@ -189,7 +192,10 @@ hjust2anchor <- function(hjust){
 error_for_showSelected_variants <- function(params) {
   if (is.null(names(params))) return(NULL)
   # Match any parameter that starts with "showSelected" but is not exactly "showSelected"
-  invalid_showSelected <- grep("^showSelected.+", names(params), value = TRUE)
+  invalid_showSelected <- setdiff(
+    grep("^showSelected.+", names(params), value = TRUE),
+    "showSelected.legend"
+  )
   if (length(invalid_showSelected) > 0) {
     stop(sprintf("Invalid parameter(s): %s. Please use geom(showSelected = character_vector_of_variable_names)",
         paste(invalid_showSelected, collapse = ", ")
@@ -206,6 +212,7 @@ error_for_showSelected_variants <- function(params) {
 getLayerParams <- function(l){
   params <- c(l$geom_params, l$stat_params, l$aes_params, l$extra_params)
   error_for_showSelected_variants(params)
+  params$showSelected.legend <- NULL
   if("chunk_vars" %in% names(params) && is.null(params[["chunk_vars"]])){
     params[["chunk_vars"]] <- character()
   }

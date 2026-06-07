@@ -1,3 +1,7 @@
+# Changes in version 2026.6.5 (PR#336)
+
+- `geom(showSelected.legend=FALSE)` opts a layer out of auto-added legend showSelected while keeping explicit showSelected variables. (Fixed #333)
+
 # Changes in version 2026.4.28 (PR#292)
 
 - `geom(showSelected=character())` means to opt-out of interactive legends. Thanks @ANAMASGARD.
