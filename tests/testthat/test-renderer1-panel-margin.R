@@ -1,59 +1,15 @@
 acontext("panel.margin positive values - Issue #180 - renderer")
 library(XML)
-panel_x <- function(node_list) {
-  attrs <- sapply(node_list, xmlAttrs)
-  as.numeric(attrs["x", ])
+panel_attr <- function(node_list, name) {
+  as.numeric(sapply(node_list, xmlAttrs)[name, ])
 }
-panel_w <- function(node_list) {
-  attrs <- sapply(node_list, xmlAttrs)
-  as.numeric(attrs["width", ])
-}
-panel_y <- function(node_list) {
-  attrs <- sapply(node_list, xmlAttrs)
-  as.numeric(attrs["y", ])
-}
-panel_h <- function(node_list) {
-  attrs <- sapply(node_list, xmlAttrs)
-  as.numeric(attrs["height", ])
-}
-gap_between_panels_y <- function(node_list) {
-  y <- sort(panel_y(node_list))
-  h <- panel_h(node_list)[order(panel_y(node_list))]
-  y[2] - (y[1] + h[1])
-}
-gap_between_panels_x <- function(node_list) {
-  ord <- order(panel_x(node_list))
-  x <- panel_x(node_list)[ord]
-  w <- panel_w(node_list)[ord]
-  x[2] - (x[1] + w[1])
-}
-vertical_gap_between_wrap_rows <- function(node_list) {
-  ys <- panel_y(node_list)
-  hs <- panel_h(node_list)
-  uy <- sort(unique(ys))
-  if (length(uy) < 2) {
-    return(NA_real_)
-  }
+gap_between_positions <- function(positions, sizes) {
+  u <- sort(unique(positions))
+  if (length(u) < 2) return(NA_real_)
   tol <- 1e-4
-  i1 <- abs(ys - uy[1]) < tol
-  bottom1 <- max(ys[i1] + hs[i1])
-  i2 <- abs(ys - uy[2]) < tol
-  top2 <- min(ys[i2])
-  top2 - bottom1
-}
-horizontal_gap_between_wrap_cols <- function(node_list) {
-  xs <- panel_x(node_list)
-  ws <- panel_w(node_list)
-  ux <- sort(unique(xs))
-  if (length(ux) < 2) {
-    return(NA_real_)
-  }
-  tol <- 1e-4
-  i1 <- abs(xs - ux[1]) < tol
-  right1 <- max(xs[i1] + ws[i1])
-  i2 <- abs(xs - ux[2]) < tol
-  left2 <- min(xs[i2])
-  left2 - right1
+  i1 <- abs(positions - u[1]) < tol
+  i2 <- abs(positions - u[2]) < tol
+  min(positions[i2]) - max(positions[i1] + sizes[i1])
 }
 
 viz.zero <- list(
@@ -85,12 +41,12 @@ test_that("three panels rendered with positive panel.margin", {
   expect_equal(length(bg.positive), 3)
 })
 test_that("panel y-positions are strictly increasing (vertically stacked)", {
-  y.vals <- sort(panel_y(bg.positive))
+  y.vals <- sort(panel_attr(bg.positive, "y"))
   expect_true(all(diff(y.vals) > 0))
 })
 test_that("positive panel.margin produces larger inter-panel gap than zero margin", {
-  gap.zero <- gap_between_panels_y(bg.zero)
-  gap.positive <- gap_between_panels_y(bg.positive)
+  gap.zero <- gap_between_positions(panel_attr(bg.zero, "y"), panel_attr(bg.zero, "height"))
+  gap.positive <- gap_between_positions(panel_attr(bg.positive, "y"), panel_attr(bg.positive, "height"))
   expect_gt(gap.positive, 0)
   expect_gt(gap.positive, gap.zero)
 })
@@ -124,12 +80,12 @@ test_that("facet_grid columns: three panels with positive panel.margin", {
   expect_equal(length(bg.positive.h), 3)
 })
 test_that("facet_grid columns: x-positions strictly increasing", {
-  x.vals <- sort(panel_x(bg.positive.h))
+  x.vals <- sort(panel_attr(bg.positive.h, "x"))
   expect_true(all(diff(x.vals) > 0))
 })
 test_that("facet_grid columns: positive margin widens horizontal gap", {
-  gap.zero <- gap_between_panels_x(bg.zero.h)
-  gap.positive <- gap_between_panels_x(bg.positive.h)
+  gap.zero <- gap_between_positions(panel_attr(bg.zero.h, "x"), panel_attr(bg.zero.h, "width"))
+  gap.positive <- gap_between_positions(panel_attr(bg.positive.h, "x"), panel_attr(bg.positive.h, "width"))
   expect_gt(gap.positive, 0)
   expect_gt(gap.positive, gap.zero)
 })
@@ -163,16 +119,16 @@ test_that("facet_wrap: three panels with positive panel.margin", {
   expect_equal(length(bg.positive.w), 3)
 })
 test_that("facet_wrap: positive margin widens horizontal gap between columns", {
-  g0 <- horizontal_gap_between_wrap_cols(bg.zero.w)
-  g1 <- horizontal_gap_between_wrap_cols(bg.positive.w)
+  g0 <- gap_between_positions(panel_attr(bg.zero.w, "x"), panel_attr(bg.zero.w, "width"))
+  g1 <- gap_between_positions(panel_attr(bg.positive.w, "x"), panel_attr(bg.positive.w, "width"))
   expect_false(is.na(g0))
   expect_false(is.na(g1))
   expect_gt(g1, 0)
   expect_gt(g1, g0)
 })
 test_that("facet_wrap: positive margin widens vertical gap between rows", {
-  g0 <- vertical_gap_between_wrap_rows(bg.zero.w)
-  g1 <- vertical_gap_between_wrap_rows(bg.positive.w)
+  g0 <- gap_between_positions(panel_attr(bg.zero.w, "y"), panel_attr(bg.zero.w, "height"))
+  g1 <- gap_between_positions(panel_attr(bg.positive.w, "y"), panel_attr(bg.positive.w, "height"))
   expect_false(is.na(g0))
   expect_false(is.na(g1))
   expect_gt(g1, 0)
