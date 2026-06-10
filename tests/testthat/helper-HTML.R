@@ -17,6 +17,7 @@ animint2HTML <- function(plotList) {
 getHTML <- function(){
   XML::htmlParse(remDr$getPageSource(), asText = TRUE)
 }
+CHROMOTE_PAGE_TIMEOUT <- 30
 #' Initiate external processes necessary for running tests.
 #'
 #' Initiates a local file server and remote driver.
@@ -43,6 +44,7 @@ tests_init <- function(dir = ".", ...) {
   unlink(testDir, recursive = TRUE)
   options(chromote.timeout = 120)
   chrome.session <- chromote::ChromoteSession$new()
+  chrome.session$default_timeout <- CHROMOTE_PAGE_TIMEOUT
   # Enable required DevTools domains for coverage
   chrome.session$Runtime$enable()
   chrome.session$Profiler$enable()
@@ -50,6 +52,7 @@ tests_init <- function(dir = ".", ...) {
   chrome.session$view()
   chrome.session$refresh <- function(){
     ## from https://github.com/rstudio/chromote?tab=readme-ov-file#loading-a-page-reliably
+    chrome.session$default_timeout <- CHROMOTE_PAGE_TIMEOUT
     prom <- chrome.session$Page$loadEventFired(wait_ = FALSE)  # Get the promise for the loadEventFired
     chrome.session$Page$reload()
     # Block until p resolves
