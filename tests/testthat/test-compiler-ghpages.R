@@ -56,7 +56,11 @@ test_that("ghpages integration skipped when ANIMINT2_TEST_GHPAGES unset", {
   env.old <- Sys.getenv(env.names, unset = NA)
   on.exit({
     for (n in env.names) {
-      if (is.na(env.old[n])) Sys.unsetenv(n) else Sys.setenv(setNames(env.old[n], n))
+      if (is.na(env.old[[n]])) {
+        Sys.unsetenv(n)
+      } else {
+        do.call(Sys.setenv, setNames(list(env.old[[n]]), n))
+      }
     }
   })
   Sys.unsetenv("ANIMINT2_TEST_GHPAGES")
