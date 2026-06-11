@@ -29,12 +29,10 @@ test_that("default: legend with color aesthetic creates selector for interactivi
   expect_identical(legend_info$selector, "comparison")
   expect_identical("comparison" %in% names(info$selectors), TRUE)
 })
-test_that("showSelected=character() keeps legend selector but opts layer out", {
-  ## Proposed API: empty character vector disables auto showSelected injection
-  ## for this layer, but keeps legend interactivity intact.
+test_that("showSelected.legend=FALSE keeps legend selector but opts layer out", {
   viz_no_ss <- list(
     plot1 = ggplot(test_data, aes(x, y, color = comparison)) +
-      geom_point(showSelected = character()) +
+      geom_point(showSelected.legend = FALSE) +
       facet_wrap(~facet_var)
   )
   info <- animint2dir(viz_no_ss, open.browser = FALSE)
@@ -49,4 +47,17 @@ test_that("showSelected=character() keeps legend selector but opts layer out", {
   expect_identical(length(point_geom_name), 1L)
   show_aes_names <- names(info$geoms[[point_geom_name]]$aes)
   expect_identical(any(grepl("^showSelected", show_aes_names)), FALSE)
+})
+test_that("showSelected=character() no longer opts layer out of legend injection", {
+  viz_char_ss <- list(
+    plot1 = ggplot(test_data, aes(x, y, color = comparison)) +
+      geom_point(showSelected = character()) +
+      facet_wrap(~facet_var)
+  )
+  info <- animint2dir(viz_char_ss, open.browser = FALSE)
+  geom_names <- names(info$geoms)
+  point_geom_name <- geom_names[grepl("_point_plot1$", geom_names)]
+  expect_identical(length(point_geom_name), 1L)
+  show_aes_names <- names(info$geoms[[point_geom_name]]$aes)
+  expect_identical(any(grepl("^showSelected", show_aes_names)), TRUE)
 })

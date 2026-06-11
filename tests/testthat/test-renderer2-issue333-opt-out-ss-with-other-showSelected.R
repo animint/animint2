@@ -1,8 +1,7 @@
 acontext("opt out of showSelected legend but keep showSelected variable")
 ## Issue #333 https://github.com/animint/animint2/issues/333
-## showSelected=character() (PR #292) turns off all legend showSelected for a layer.
-## Here we want the opposite mix: keep showSelected="year" for filtering, but do not
-## auto-add region from colour=region when the legend is shown. API: showSelected.legend=FALSE.
+## Issue #333: keep showSelected="year" for filtering, but do not auto-add region from
+## colour=region when the legend is shown. API: showSelected.legend=FALSE.
 data(WorldBank, package = "animint2")
 issue333_viz <- function() {
   list(

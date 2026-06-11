@@ -251,7 +251,7 @@ viz <- list(
     ) +
     geom_segment(
       aes(x, y, xend = xend, yend = yend, color = comparison),
-      showSelected = character(),
+      showSelected.legend = FALSE,
       data = legend.opt.out.segments
     )
 )
