@@ -52,7 +52,6 @@ tests_init <- function(dir = ".", ...) {
   chrome.session$view()
   chrome.session$refresh <- function(){
     ## from https://github.com/rstudio/chromote?tab=readme-ov-file#loading-a-page-reliably
-    chrome.session$default_timeout <- CHROMOTE_PAGE_TIMEOUT
     prom <- chrome.session$Page$loadEventFired(wait_ = FALSE)  # Get the promise for the loadEventFired
     chrome.session$Page$reload()
     # Block until p resolves
