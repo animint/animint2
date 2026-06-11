@@ -44,18 +44,6 @@ test_that("coord_equal fills available space (issue #234)", {
   # Both dimensions should be positive
   expect_gt(svg.width, 0)
   expect_gt(svg.height, 0)
-  
-  # Verify aspect ratio is maintained (ratio = 1 for coord_equal)
-  x.axes <- getNodeSet(info$html, '//svg[@id="plot_plot1"]//g[contains(@class, "xaxis")]')
-  y.axes <- getNodeSet(info$html, '//svg[@id="plot_plot1"]//g[contains(@class, "yaxis")]')
-  
-  expect_equal(length(x.axes), 1)
-  expect_equal(length(y.axes), 1)
-  
-  xdiff <- getTickDiff(x.axes[[1]])
-  ydiff <- getTickDiff(y.axes[[1]], axis = "y")
-  
-  # With ratio = 1 (coord_equal), normalized diffs should be equal
-  diffs <- normDiffs(xdiff, ydiff, ratio = 1)
-  expect_equal(diffs[1], diffs[2], tolerance = 1, scale = 1)
+  # Issue #234 acceptance: fill available space. Aspect-ratio math is covered by
+  # test-compiler-coord-equal-fix.R and test-renderer1-coord.R (normDiffs).
 })
