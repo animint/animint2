@@ -51,6 +51,22 @@ reset_test_repo <- function(){
   gh::gh("POST /orgs/animint-test/repos", name = test_repo_name)
   Sys.sleep(3)
 }
+## Skip API integration tests when ANIMINT2_TEST_GHPAGES or token env vars are missing.
+ghpages_tests_should_skip <- function() {
+  FALSE
+}
+test_that("ghpages integration skipped when ANIMINT2_TEST_GHPAGES unset", {
+  env.names <- c("ANIMINT2_TEST_GHPAGES", "GITHUB_PAT")
+  env.old <- Sys.getenv(env.names, unset = NA)
+  on.exit({
+    for (n in env.names) {
+      if (is.na(env.old[n])) Sys.unsetenv(n) else Sys.setenv(setNames(env.old[n], n))
+    }
+  })
+  Sys.unsetenv("ANIMINT2_TEST_GHPAGES")
+  Sys.setenv(GITHUB_PAT = "dummy-token")
+  expect_equal(ghpages_tests_should_skip(), TRUE)
+})
 test_that("animint2pages(chromote_sleep_seconds=3) creates Capture.PNG", {
   reset_test_repo()
   ## first run of animint2pages creates new data viz.
