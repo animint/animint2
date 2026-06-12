@@ -1,3 +1,7 @@
+# Changes in development (PR#XXX)
+
+- Multi-line facet strip labels: `facet_grid()` and `facet_wrap()` now render each facet variable on its own line, matching ggplot2 (issue #262).
+
 # Changes in version 2026.4.28 (PR#292)
 
 - `geom(showSelected=character())` means to opt-out of interactive legends. Thanks @ANAMASGARD.

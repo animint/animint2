@@ -40,11 +40,11 @@ test_that("facet_grid() strip labels are placed correctly", {
 
 test_that("facet_wrap() strip labels are placed correctly", {
   info <- animint2HTML(wrapViz)
-  top <- getNodeSet(info$html, "//g[@class='topStrip']")
-  kids <- xmlChildren(top[[1]])
-  labs <- as.character(sapply(kids, xmlValue))
-  expect_equal(labs, c("4, 0", "4, 1", "6, 0", 
-                       "6, 1", "8, 0", "8, 1"))
+  nodes <- getNodeSet(info$html, "//g[@class='topStrip']//tspan")
+  labs <- as.character(sapply(nodes, xmlValue))
+  expect_equal(labs[1:2], c("4", "0"))
+  expect_equal(length(labs), 12)
+  expect_equal(sum(grepl(", ", labs)), 0)
 })
 
 test_that("strip pos sensible for wrap(nrow=1)", {
