@@ -121,7 +121,6 @@
 #' mg + facet_grid(vs + am ~ gear, margins = "gear")
 #' mg + facet_grid(vs + am ~ gear, margins = c("gear", "am"))
 #' }
-#' @importFrom plyr as.quoted
 facet_grid <- function(facets, margins = FALSE, scales = "fixed", space = "fixed", shrink = TRUE, labeller = "label_value", as.table = TRUE, switch = NULL, drop = TRUE) {
   scales <- match.arg(scales, c("fixed", "free_x", "free_y", "free"))
   free <- list(
