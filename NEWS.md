@@ -1,3 +1,12 @@
+# Changes in version 2026.5.29 (PR#286)
+
+- Added regression tests for `panel.margin` with positive values (issue #180),
+  covering vertical/horizontal `facet_grid` and `facet_wrap`. Thanks @ANAMASGARD.
+
+  **Example (horizontal spacing between facet columns):** see
+  `inst/examples/panel-margin-issue-180.R` (`facet_grid(. ~ Species)`, compare
+  `panel.margin = unit(0, "lines")` vs `unit(2, "lines")`).
+
 # Changes in version 2026.4.28 (PR#292)
 
 - `geom(showSelected=character())` means to opt-out of interactive legends. Thanks @ANAMASGARD.
