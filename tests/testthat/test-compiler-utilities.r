@@ -27,3 +27,16 @@ test_that("add_group", {
   expect_true(has_groups(add_group(data[1:3])))  # discrete column
   expect_false(has_groups(add_group(data[2:3]))) # no group or discrete column
 })
+
+test_that("find_subclass resolves animint2 geom classes", {
+  expect_s3_class(find_subclass("Geom", "point"), "GeomPoint")
+  expect_error(find_subclass("Geom", "does_not_exist"), "No geom called GeomDoesNotExist")
+})
+
+test_that("rd_aesthetics returns roxygen lines for eval", {
+  point_lines <- rd_aesthetics("geom", "point")
+  expect_identical(point_lines[1], "@section Aesthetics:")
+  expect_match(point_lines[3], "geom_point", fixed=TRUE)
+  expect_match(point_lines[5], "\\itemize", fixed=TRUE)
+  expect_match(point_lines[6], "\\strong{x}", fixed=TRUE)
+})
