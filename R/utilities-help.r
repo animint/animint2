@@ -24,10 +24,14 @@ rd_aesthetics <- function(type, name) {
     stat = find_subclass("Stat", name)
   )
   aes <- aesthetics(obj)
-
-  paste("\\code{", type, "_", name, "} ",
-    "understands the following aesthetics (required aesthetics are in bold):\n\n",
-    "\\itemize{\n",
-    paste("  \\item ", aes, collapse = "\n", sep = ""),
-    "\n}\n", sep = "")
+  c(
+    "@section Aesthetics:",
+    "",
+    paste0("\\code{", type, "_", name, "} understands the following aesthetics ",
+           "(required aesthetics are in bold):"),
+    "",
+    "\\itemize{",
+    paste0("  \\item ", aes),
+    "}"
+  )
 }

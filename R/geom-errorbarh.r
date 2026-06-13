@@ -1,7 +1,6 @@
 #' Horizontal error bars
 #'
-#' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "errorbarh")}
+#' @eval rd_aesthetics("geom", "errorbarh")
 #'
 #' @seealso \code{\link{geom_errorbar}}: vertical error bars
 #' @inheritParams layer

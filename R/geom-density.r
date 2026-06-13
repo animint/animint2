@@ -3,8 +3,7 @@
 #' A kernel density estimate, useful for display the distribution of variables
 #' with underlying smoothness.
 #'
-#' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "density")}
+#' @eval rd_aesthetics("geom", "density")
 #'
 #' @seealso See \code{\link{geom_histogram}}, \code{\link{geom_freqpoly}} for
 #'   other methods of displaying continuous distribution.

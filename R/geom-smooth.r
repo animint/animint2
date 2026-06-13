@@ -12,8 +12,7 @@
 #' \code{glm} where the normal confidence interval is constructed on the link
 #' scale, and then back-transformed to the response scale.
 #'
-#' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "smooth")}
+#' @eval rd_aesthetics("geom", "smooth")
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point

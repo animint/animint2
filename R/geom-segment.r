@@ -3,8 +3,7 @@
 #' \code{geom_segment} draws a straight line between points (x1, y1) and
 #' (x2, y2). \code{geom_curve} draws a curved line.
 #'
-#' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "segment")}
+#' @eval rd_aesthetics("geom", "segment")
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point

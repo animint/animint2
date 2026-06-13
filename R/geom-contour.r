@@ -1,7 +1,6 @@
 #' Display contours of a 3d surface in 2d.
 #'
-#' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "contour")}
+#' @eval rd_aesthetics("geom", "contour")
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point

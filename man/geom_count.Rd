@@ -77,7 +77,19 @@ useful when you have discrete data.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "point")}
+
+\code{geom_point} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{x}
+  \item \strong{y}
+  \item alpha
+  \item colour
+  \item fill
+  \item shape
+  \item size
+  \item stroke
+}
 }
 
 \section{Computed variables}{

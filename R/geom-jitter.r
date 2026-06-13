@@ -4,8 +4,7 @@
 #' 'jitter'. It's a useful way of handling overplotting caused by discreteness
 #' in smaller datasets.
 #'
-#' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "point")}
+#' @eval rd_aesthetics("geom", "point")
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point

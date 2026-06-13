@@ -122,7 +122,19 @@ scale, and then back-transformed to the response scale.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "smooth")}
+
+\code{geom_smooth} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{x}
+  \item \strong{y}
+  \item alpha
+  \item colour
+  \item fill
+  \item linetype
+  \item size
+  \item weight
+}
 }
 
 \section{Computed variables}{

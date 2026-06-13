@@ -17,8 +17,7 @@
 #' \code{\link{position_fill}} shows relative proportions at each x by stacking
 #' the bars and then stretching or squashing to the same height.
 #'
-#' @section Aesthetics:
-#'   \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "bar")}
+#' @eval rd_aesthetics("geom", "bar")
 #'
 #' @seealso \code{\link{geom_histogram}} for continuous data,
 #'   \code{\link{position_dodge}} for creating side-by-side barcharts.

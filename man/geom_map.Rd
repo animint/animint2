@@ -65,7 +65,17 @@ Does not affect position scales.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "map")}
+
+\code{geom_map} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{map_id}
+  \item alpha
+  \item colour
+  \item fill
+  \item linetype
+  \item size
+}
 }
 
 \examples{

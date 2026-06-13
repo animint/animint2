@@ -83,7 +83,14 @@ Calculation for quantile-quantile plot.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "qq")}
+
+\code{stat_qq} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{sample}
+  \item x
+  \item y
+}
 }
 
 \section{Computed variables}{

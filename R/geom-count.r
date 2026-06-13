@@ -4,8 +4,7 @@
 #' observations at each location, then maps the count to point size. It
 #' useful when you have discrete data.
 #'
-#' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "point")}
+#' @eval rd_aesthetics("geom", "point")
 #' @param geom,stat Use to override the default connection between
 #'   \code{geom_count} and \code{stat_sum}.
 #' @inheritParams layer

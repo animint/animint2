@@ -5,8 +5,7 @@
 #' x axis. \code{geom_step()} creates a stairstep plot, highlighting exactly
 #' when changes occur.
 #'
-#' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "path")}
+#' @eval rd_aesthetics("geom", "path")
 #'
 #' @inheritParams layer
 #' @inheritParams geom_point

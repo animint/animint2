@@ -64,7 +64,19 @@ A line segment parameterised by location, direction and distance.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "spoke")}
+
+\code{geom_spoke} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{angle}
+  \item \strong{radius}
+  \item \strong{x}
+  \item \strong{y}
+  \item alpha
+  \item colour
+  \item linetype
+  \item size
+}
 }
 
 \examples{

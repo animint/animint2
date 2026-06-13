@@ -86,7 +86,18 @@ Display contours of a 3d surface in 2d.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "contour")}
+
+\code{geom_contour} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{x}
+  \item \strong{y}
+  \item alpha
+  \item colour
+  \item linetype
+  \item size
+  \item weight
+}
 }
 
 \section{Computed variables}{

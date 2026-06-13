@@ -10,8 +10,7 @@
 #' space they occupy on that plot is not constant in data units: when you
 #' resize a plot, labels stay the same size, but the size of the axes changes.
 #'
-#' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "text")}
+#' @eval rd_aesthetics("geom", "text")
 #'
 #' @section \code{geom_label}:
 #' Currently \code{geom_label} does not support the \code{rot} parameter and

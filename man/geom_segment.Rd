@@ -100,7 +100,19 @@ the default plot specification, e.g. \code{\link{borders}}.}
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "segment")}
+
+\code{geom_segment} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{x}
+  \item \strong{xend}
+  \item \strong{y}
+  \item \strong{yend}
+  \item alpha
+  \item colour
+  \item linetype
+  \item size
+}
 }
 
 \examples{

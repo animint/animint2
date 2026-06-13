@@ -10,8 +10,7 @@
 #' components is stacked is very important, as it becomes increasing hard to
 #' see the individual pattern as you move up the stack.
 #'
-#' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "ribbon")}
+#' @eval rd_aesthetics("geom", "ribbon")
 #'
 #' @seealso
 #'   \code{\link{geom_bar}} for discrete intervals (bars),

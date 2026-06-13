@@ -22,8 +22,7 @@
 #' way, using \code{\link{stat_sum}}. Another technique is to use transparent
 #' points, e.g. \code{geom_point(alpha = 0.05)}.
 #'
-#' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "point")}
+#' @eval rd_aesthetics("geom", "point")
 #'
 #' @seealso \code{\link{scale_size}} to see scale area of points, instead of
 #'   radius, \code{\link{geom_jitter}} to jitter points to reduce (mild)

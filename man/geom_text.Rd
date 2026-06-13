@@ -109,7 +109,23 @@ resize a plot, labels stay the same size, but the size of the axes changes.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "text")}
+
+\code{geom_text} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{label}
+  \item \strong{x}
+  \item \strong{y}
+  \item alpha
+  \item angle
+  \item colour
+  \item family
+  \item fontface
+  \item hjust
+  \item lineheight
+  \item size
+  \item vjust
+}
 }
 
 \section{\code{geom_label}}{

@@ -100,7 +100,17 @@ the bars and then stretching or squashing to the same height.
 }
 \section{Aesthetics}{
 
-  \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "bar")}
+
+\code{geom_bar} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{x}
+  \item alpha
+  \item colour
+  \item fill
+  \item linetype
+  \item size
+}
 }
 
 \section{Computed variables}{

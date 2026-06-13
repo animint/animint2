@@ -87,7 +87,14 @@ Add heatmap of 2d bin counts.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "bin2d")}
+
+\code{stat_bin2d} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{x}
+  \item \strong{y}
+  \item fill
+}
 }
 
 \examples{

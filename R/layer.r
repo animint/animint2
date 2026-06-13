@@ -307,14 +307,13 @@ is.layer <- function(x) inherits(x, "Layer")
 
 find_subclass <- function(super, class) {
   name <- paste0(super, camelize(class, first = TRUE))
-  if (!exists(name)) {
+  pkg_env <- getNamespace(.packageName)
+  if (!exists(name, envir = pkg_env, inherits = FALSE)) {
     stop("No ", tolower(super), " called ", name, ".", call. = FALSE)
   }
-
-  obj <- get(name)
+  obj <- get(name, envir = pkg_env, inherits = FALSE)
   if (!inherits(obj, super)) {
     stop("Found object is not a ", tolower(super), ".", call. = FALSE)
   }
-
   obj
 }

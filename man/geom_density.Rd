@@ -96,7 +96,19 @@ with underlying smoothness.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "density")}
+
+\code{geom_density} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{x}
+  \item \strong{y}
+  \item alpha
+  \item colour
+  \item fill
+  \item linetype
+  \item size
+  \item weight
+}
 }
 
 \section{Computed variables}{

@@ -98,7 +98,17 @@ results with contours. This can be useful for dealing with overplotting.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "density_2d")}
+
+\code{geom_density_2d} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{x}
+  \item \strong{y}
+  \item alpha
+  \item colour
+  \item linetype
+  \item size
+}
 }
 
 \section{Computed variables}{

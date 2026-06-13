@@ -84,7 +84,19 @@ points, e.g. \code{geom_point(alpha = 0.05)}.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "point")}
+
+\code{geom_point} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{x}
+  \item \strong{y}
+  \item alpha
+  \item colour
+  \item fill
+  \item shape
+  \item size
+  \item stroke
+}
 }
 
 \examples{

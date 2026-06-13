@@ -84,7 +84,19 @@ see the individual pattern as you move up the stack.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "ribbon")}
+
+\code{geom_ribbon} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item \strong{x}
+  \item \strong{ymax}
+  \item \strong{ymin}
+  \item alpha
+  \item colour
+  \item fill
+  \item linetype
+  \item size
+}
 }
 
 \examples{

@@ -68,7 +68,15 @@ Marginal rug plots.
 }
 \section{Aesthetics}{
 
-\Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("geom", "rug")}
+
+\code{geom_rug} understands the following aesthetics (required aesthetics are in bold):
+
+\itemize{
+  \item alpha
+  \item colour
+  \item linetype
+  \item size
+}
 }
 
 \examples{

@@ -1,7 +1,6 @@
 #' Calculation for quantile-quantile plot.
 #'
-#' @section Aesthetics:
-#' \Sexpr[results=rd,stage=build]{animint2:::rd_aesthetics("stat", "qq")}
+#' @eval rd_aesthetics("stat", "qq")
 #'
 #' @param distribution Distribution function to use, if x not specified
 #' @param dparams Additional parameters passed on to \code{distribution}
