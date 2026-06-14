@@ -47,7 +47,6 @@ wb.facets <-
        selector.types=list(country="multiple"),
        title="World Bank data (multiple selection, facets)")
 
-remDr$default_timeout <- 1
 info <- animint2HTML(wb.facets)
 
 test_that("if group is in nest_order, it is last", {
