@@ -1447,7 +1447,7 @@ var animint = function (to_select, json_file) {
       }
       data_to_bind = kv;
       
-      // polygon with subgroup aesthetic: build multi-ring SVG path with evenodd fill rule
+      // polygon with subgroup aesthetic: build multi-ring SVG path string with evenodd fill rule
       if(g_info.geom === "polygon" && g_info.data_has_subgroup){
         eActions = function(e){
           e.attr("d", function(d){
@@ -1455,17 +1455,24 @@ var animint = function (to_select, json_file) {
             var nested = d3.nest()
               .key(function(pt){ return pt.subgroup; })
               .entries(points);
-            return nested.map(function(subgroup_data){
-              var ring = subgroup_data.values;
-              if(ring.length === 0) return "";
-              var pathStr = "M" + scales.x(ring[0].x) + "," + scales.y(ring[0].y);
-              for(var i = 1; i < ring.length; i++){
-                pathStr += "L" + scales.x(ring[i].x) + "," + scales.y(ring[i].y);
+            var coords = nested.map(function(group){
+              var ring = group.values.map(function(pt){
+                return [scales.x(pt.x), scales.y(pt.y)];
+              });
+              if(ring.length > 0){
+                var first = ring[0];
+                var last = ring[ring.length - 1];
+                if(first[0] !== last[0] || first[1] !== last[1]){
+                  ring = ring.concat([first]);
+                }
               }
-              return pathStr + "Z";
+              return ring;
+            });
+            return coords.map(function(r){
+              return "M" + r.map(function(p){ return p[0] + "," + p[1]; }).join("L") + "Z";
             }).join(" ");
           })
-          .style("fill-rule", "evenodd");
+          .attr("fill-rule", "evenodd");
         };
       } else {
         eActions = function(e){
