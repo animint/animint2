@@ -10,6 +10,8 @@ data sets.
 }
 \usage{data(prior)}
 \format{
+TODO add codebook
+
 List of 2 data.frames: accuracy contains the mean and standard error of
 the performance measures (sqErr and accuracy), data.set.info contains
 meta-data about the dimension and number of positive and negative

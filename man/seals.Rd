@@ -11,6 +11,8 @@ A data frame with 1155 rows and 4 variables
 seals
 }
 \description{
+TODO add codebook
+
 This vector field was produced from the data described in Brillinger, D.R.,
 Preisler, H.K., Ager, A.A. and Kie, J.G. "An exploratory data analysis
 (EDA) of the paths of moving animals". J. Statistical Planning and
