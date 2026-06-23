@@ -1447,32 +1447,37 @@ var animint = function (to_select, json_file) {
       }
       data_to_bind = kv;
       
-      // polygon with subgroup aesthetic: build multi-ring SVG path string with evenodd fill rule
+      // polygon with subgroup aesthetic: build multi-ring SVG path with evenodd fill rule
       if(g_info.geom === "polygon" && g_info.data_has_subgroup){
         eActions = function(e){
+          var geoPath = (typeof d3.geo !== "undefined" && typeof d3.geo.path === "function") ?
+            d3.geo.path().projection(null) : null;
           e.attr("d", function(d){
             var points = keyed_data[d.value];
             var nested = d3.nest()
               .key(function(pt){ return pt.subgroup; })
               .entries(points);
-            var coords = nested.map(function(group){
-              var ring = group.values.map(function(pt){
-                return [scales.x(pt.x), scales.y(pt.y)];
+            var coords = nested.map(function(subgroup_data){
+              var ring = subgroup_data.values;
+              if(ring.length === 0) return [];
+              var ring_coords = ring.map(function(pt){
+                return [ +scales.x(pt.x), +scales.y(pt.y) ];
               });
-              if(ring.length > 0){
-                var first = ring[0];
-                var last = ring[ring.length - 1];
-                if(first[0] !== last[0] || first[1] !== last[1]){
-                  ring = ring.concat([first]);
-                }
+              var first = ring_coords[0];
+              var last = ring_coords[ring_coords.length - 1];
+              if(first[0] !== last[0] || first[1] !== last[1]){
+                ring_coords.push([first[0], first[1]]);
               }
-              return ring;
-            });
+              return ring_coords;
+            }).filter(function(r){ return r.length > 0; });
+            if(geoPath){
+              return geoPath({ type: "Polygon", coordinates: coords });
+            }
             return coords.map(function(r){
               return "M" + r.map(function(p){ return p[0] + "," + p[1]; }).join("L") + "Z";
             }).join(" ");
           })
-          .attr("fill-rule", "evenodd");
+          .style("fill-rule", "evenodd");
         };
       } else {
         eActions = function(e){
