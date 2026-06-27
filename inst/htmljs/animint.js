@@ -1450,8 +1450,7 @@ var animint = function (to_select, json_file) {
       // polygon with subgroup aesthetic: build multi-ring SVG path with evenodd fill rule
       if(g_info.geom === "polygon" && g_info.data_has_subgroup){
         eActions = function(e){
-          var geoPath = (typeof d3.geo !== "undefined" && typeof d3.geo.path === "function") ?
-            d3.geo.path().projection(null) : null;
+          var geoPath = d3.geo.path().projection(null);
           e.attr("d", function(d){
             var points = keyed_data[d.value];
             var nested = d3.nest()
@@ -1461,21 +1460,20 @@ var animint = function (to_select, json_file) {
               var ring = subgroup_data.values;
               if(ring.length === 0) return [];
               var ring_coords = ring.map(function(pt){
-                return [ +scales.x(pt.x), +scales.y(pt.y) ];
+                return [ scales.x(pt.x), scales.y(pt.y) ];
               });
-              var first = ring_coords[0];
-              var last = ring_coords[ring_coords.length - 1];
-              if(first[0] !== last[0] || first[1] !== last[1]){
-                ring_coords.push([first[0], first[1]]);
+              if(ring_coords.length === 0) return [];
+              if(ring_coords[0][0] !== ring_coords[ring_coords.length - 1][0] ||
+                 ring_coords[0][1] !== ring_coords[ring_coords.length - 1][1]){
+                ring_coords.push([ring_coords[0][0], ring_coords[0][1]]);
               }
               return ring_coords;
             }).filter(function(r){ return r.length > 0; });
-            if(geoPath){
-              return geoPath({ type: "Polygon", coordinates: coords });
-            }
-            return coords.map(function(r){
-              return "M" + r.map(function(p){ return p[0] + "," + p[1]; }).join("L") + "Z";
-            }).join(" ");
+            var geojson = {
+              type: "Polygon",
+              coordinates: coords
+            };
+            return geoPath(geojson);
           })
           .style("fill-rule", "evenodd");
         };
