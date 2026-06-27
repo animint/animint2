@@ -1447,28 +1447,25 @@ var animint = function (to_select, json_file) {
       }
       data_to_bind = kv;
       
-      // polygon with subgroup aesthetic: build multi-ring SVG path with evenodd fill rule
+      // polygon with subgroup aesthetic: use d3.geo.path with GeoJSON + evenodd fill rule
       if(g_info.geom === "polygon" && g_info.data_has_subgroup){
+        var geoPath = d3.geo.path().projection(null);
         eActions = function(e){
-          var geoPath = d3.geo.path().projection(null);
           e.attr("d", function(d){
             var points = keyed_data[d.value];
             var nested = d3.nest()
               .key(function(pt){ return pt.subgroup; })
               .entries(points);
-            var coords = nested.map(function(subgroup_data){
-              var ring = subgroup_data.values;
-              if(ring.length === 0) return [];
-              var ring_coords = ring.map(function(pt){
-                return [ scales.x(pt.x), scales.y(pt.y) ];
+            var coords = nested.map(function(group){
+              var ring = group.values.map(function(pt){
+                return [scales.x(pt.x), scales.y(pt.y)];
               });
-              if(ring_coords.length === 0) return [];
-              if(ring_coords[0][0] !== ring_coords[ring_coords.length - 1][0] ||
-                 ring_coords[0][1] !== ring_coords[ring_coords.length - 1][1]){
-                ring_coords.push([ring_coords[0][0], ring_coords[0][1]]);
+              if(ring.length > 0){
+                ring = ring.concat([ring[0]]);
               }
-              return ring_coords;
-            }).filter(function(r){ return r.length > 0; });
+              return ring;
+            });
+
             var geojson = {
               type: "Polygon",
               coordinates: coords
@@ -1477,6 +1474,7 @@ var animint = function (to_select, json_file) {
           })
           .style("fill-rule", "evenodd");
         };
+
       } else {
         eActions = function(e){
           e.attr("d", function(d){
