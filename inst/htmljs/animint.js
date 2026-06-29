@@ -198,6 +198,36 @@ var animint = function (to_select, json_file) {
     return {height: bbox.height, width: bbox.width};
   };
 
+  var measureMultilineText = function(pText, pFontSize, pAngle, pStyle) {
+    if (pText === undefined || pText === null || pText.length === 0) {
+      return {height: 0, width: 0};
+    }
+    var lines = pText.split("\n");
+    if (lines.length === 1) {
+      return measureText(pText, pFontSize, pAngle, pStyle);
+    }
+    var fontSize = parseFloat(pFontSize);
+    var sizes = lines.map(function(line) {
+      return measureText(line, pFontSize, pAngle, pStyle);
+    });
+    return {
+      height: (lines.length - 1) * fontSize * 1.2 +
+        d3.max(sizes, function(s) { return s.height; }),
+      width: d3.max(sizes, function(s) { return s.width; })
+    };
+  };
+
+  var setMultilineText = function(textSelection, label) {
+    var lines = label.split("\n");
+    textSelection.text("");
+    lines.forEach(function(line, i) {
+      textSelection.append("tspan")
+        .attr("x", 0)
+        .attr("dy", i === 0 ? "0em" : "1.2em")
+        .text(line);
+    });
+  };
+
   var nest_by_group = d3.nest().key(function(d){ return d.group; });
   var dirs = json_file.split("/");
   dirs.pop(); //if a directory path exists, remove the JSON file from dirs
@@ -449,10 +479,10 @@ var animint = function (to_select, json_file) {
     plotdim.margin = margin;
     
     var strip_heights = p_info.strips.top.map(function(entry){ 
-      return measureText(entry, p_info.strip_text_xsize).height;
+      return measureMultilineText(entry, p_info.strip_text_xsize).height;
     });
     var strip_widths = p_info.strips.right.map(function(entry){ 
-      return measureText(entry, p_info.strip_text_ysize).height; 
+      return measureMultilineText(entry, p_info.strip_text_ysize).height; 
     });
 
     // compute the number of x/y axes, max strip height per row, and
@@ -690,10 +720,8 @@ var animint = function (to_select, json_file) {
           .append("text")
           .style("text-anchor", "middle")
           .style("font-size", p_info[strip_text_size])
-          .text(function(d) { return d; })
-        // NOTE: there could be multiple strips per panel
-        // TODO: is there a better way to manage spacing?
           .attr("transform", trans_text + rot_text)
+          .each(function(d) { setMultilineText(d3.select(this), d); })
         ;
       }
       draw_strip([p_info.strips.top[layout_i]], "top");
