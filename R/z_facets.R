@@ -145,5 +145,9 @@ fixed_spaces <- function(ranges, ratio = 1) {
                    function(z) diff(z$y.range) / diff(z$x.range) * ratio)
   spaces <- list(y = aspect)
   spaces$x <- 1/spaces$y
-  lapply(spaces, function(z) min(z, 1))
+  # FIX for issue #234: Normalize so the maximum value across both dimensions 
+  # is 1, allowing the plot to fill the available space while maintaining the 
+  # aspect ratio. Previously used min(z, 1) which caused excessive shrinking.
+  max_val <- max(unlist(spaces))
+  lapply(spaces, function(z) z / max_val)
 }

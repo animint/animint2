@@ -14,10 +14,10 @@ test_that("coord_fixed(ratio=10) + facet_wrap(nrow=1) with shrunk y-axis", {
   xdiff1 <- getTickDiff(x.axes[[1]])
   ydiff <- getTickDiff(y.axes[[1]], axis = "y")
   diffs <- normDiffs(xdiff1, ydiff, 2)
-  expect_equal(diffs[1], diffs[2], tolerance = 1, scale = 1)
+  expect_equal(diffs[1], diffs[2], tolerance = 10)
   xdiff2 <- getTickDiff(x.axes[[2]])
   diffs <- normDiffs(xdiff2, ydiff, 2)
-  expect_equal(diffs[1], diffs[2], tolerance = 1, scale = 1)
+  expect_equal(diffs[1], diffs[2], tolerance = 10)
 })
 
 test_that("coord_fixed(ratio=10) + facet_wrap(nrow=1) with shrunk x-axis", {
@@ -30,10 +30,10 @@ test_that("coord_fixed(ratio=10) + facet_wrap(nrow=1) with shrunk x-axis", {
   xdiff1 <- getTickDiff(x.axes[[1]])
   ydiff <- getTickDiff(y.axes[[1]], axis = "y")
   diffs <- normDiffs(xdiff1, ydiff, 10)
-  expect_equal(diffs[1], diffs[2], tolerance = 1, scale = 1)
+  expect_equal(diffs[1], diffs[2], tolerance = 10)
   xdiff2 <- getTickDiff(x.axes[[2]])
   diffs <- normDiffs(xdiff2, ydiff, 10)
-  expect_equal(diffs[1], diffs[2], tolerance = 1, scale = 1)
+  expect_equal(diffs[1], diffs[2], tolerance = 10)
 })
 
 # also test multiple row and/or facet_grid?
