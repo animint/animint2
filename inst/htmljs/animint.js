@@ -101,6 +101,12 @@ var animint = function (to_select, json_file) {
     return safe_name(selector_name) + "_variable";
   }
 
+  // selector_name can be null for geoms without a selector (initial render via update_geom(g, null)).
+  function selector_has_duration(name) {
+    return name &&
+      Selectors[name].hasOwnProperty("duration");
+  }
+
   function is_interactive_aes(v_name){
     if(v_name.indexOf("clickSelects") > -1){
       return true;
@@ -1651,7 +1657,7 @@ var animint = function (to_select, json_file) {
           eActions = function(groups) {
             // Handle transitions seperately due to unique structure of geom_label_aligned
             var transitionDuration = 0;
-            if (Selectors.hasOwnProperty(selector_name)) {
+            if(selector_has_duration(selector_name)){
               transitionDuration = +Selectors[selector_name].duration || 0;
             }
             groups.each(function(d) {
@@ -1947,7 +1953,7 @@ var animint = function (to_select, json_file) {
           positionTooltip(tooltip, tooltip.html());
         });
     }
-    if(Selectors.hasOwnProperty(selector_name)){
+    if(selector_has_duration(selector_name)){
       var milliseconds = Selectors[selector_name].duration;
       elements = elements.transition().duration(milliseconds);
     }
@@ -2095,7 +2101,7 @@ var animint = function (to_select, json_file) {
     // update existing axis
     var xyaxis_sel = element.select("#"+viz_id+"_"+p_name).select("."+axes+"axis_"+panel_i);
     var milliseconds = 0;
-    if(v_name && Selectors.hasOwnProperty(v_name) && Selectors[v_name].hasOwnProperty("duration")){
+    if(selector_has_duration(v_name)){
       milliseconds = Selectors[v_name].duration;
     }
     var xyaxis_g = xyaxis_sel
@@ -2172,9 +2178,6 @@ var animint = function (to_select, json_file) {
   }
 
   var update_selector = function (v_name, value) {
-    if(!Selectors.hasOwnProperty(v_name)){
-      return;
-    }
     value = value + "";
     var s_info = Selectors[v_name];
     if(s_info.type == "single"){
