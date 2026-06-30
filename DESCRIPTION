@@ -67,7 +67,11 @@ Authors@R: c(
      comment="Remove unused css.file parameter; fix issue #233 selector values; fix issue #273 update_axes tick font-size; fix issue #276 update_axes transition duration"),
     person("Nandani", "Aggarwal",
      role="ctb",
-     comment="Removed geom_dotplot and replaced with error"))
+     comment="Removed geom_dotplot and replaced with error")
+    person("Nishita", "Shah",
+     role="ctb",
+     comment="Animint2 GSoC 2026: polygon hole rendering via subgroup aesthetic in geom_polygon() (issue #252, PR#328)"))
+    
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
  on a web page. The 2018 Journal of Computational and 
