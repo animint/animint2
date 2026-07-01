@@ -1445,8 +1445,7 @@ var animint = function (to_select, json_file) {
         fill = "none";
         fill_off = "none";
       }
-      data_to_bind = kv;
-      
+      data_to_bind = kv;      
       // polygon with subgroup aesthetic: use d3.geo.path with GeoJSON + evenodd fill rule
       if(g_info.geom === "polygon" && g_info.data_has_subgroup){
         var geoPath = d3.geo.path().projection(null);
@@ -1473,7 +1472,6 @@ var animint = function (to_select, json_file) {
           })
           .style("fill-rule", "evenodd");
         };
-
       } else {
         eActions = function(e){
           e.attr("d", function(d){
