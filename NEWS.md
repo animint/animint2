@@ -2,6 +2,13 @@
 
 - `geom(showSelected=character())` means to opt-out of interactive legends. Thanks @ANAMASGARD.
 
+# Changes in version TBD (issue #258)
+
+- `getCommonChunk()` uses `detect_common_value_dt()` with a C++ fast path and per-column R fallback instead of the old nested per-column scan.
+- `common_value_for_group_subset_cpp()` in C++ accelerates the inner compare in `getCommonChunk()`; R handles grouping; R fallback when unavailable.
+- New unit tests in `test-compiler-getCommonChunk.R`.
+- New atime benchmark for post-#242 NA common-chunk workload. Thanks @nishita-shah1
+
 # Changes in version 2026.3.8 (PR#311)
 
 - `geom_dotplot()` has been removed. Use `geom_point()` instead for interactive visualizations. (Fixed #289)
