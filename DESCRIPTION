@@ -89,7 +89,8 @@ Imports:
     stats,
     knitr (>= 1.5.33),
     data.table (>= 1.9.8),
-    methods
+    methods,
+    Rcpp
 Suggests:
     gert, gitcreds, gh,
     sp,
@@ -117,6 +118,7 @@ Suggests:
     chromote,
     magick
 License: GPL-3
+LinkingTo: Rcpp
 Encoding: UTF-8
 LazyData: true
 Collate:
@@ -229,6 +231,7 @@ Collate:
     'position-stack.r'
     'quick-plot.r'
     'range.r'
+    'RcppExports.R'
     'save.r'
     'scale-.r'
     'scale-alpha.r'

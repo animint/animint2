@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="animint2 contributors" />
+
+<meta name="date" content="2026-07-01" />
+
+<title>get_common_chunk.cpp: C++ common chunk detection</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">get_common_chunk.cpp: C++ common chunk
+detection</h1>
+<h4 class="author">animint2 contributors</h4>
+<h4 class="date">2026-07-01</h4>
+
+
+
+<p>Guide to the issue <a href="https://github.com/animint/animint2/issues/258">#258</a> C++ work
+for <code>getCommonChunk()</code>: what each file does, how the code
+fits together, and how to test it.</p>
+<div id="problem" class="section level2">
+<h2>Problem</h2>
+<p>Interactive plots split geom data into multiple chunk TSV files (one
+per selector value). Often <code>x</code>, <code>y</code>, and
+<code>group</code> are identical across chunks; only <code>fill</code>
+(or similar) changes.</p>
+<pre><code>geom1_polygon_chunk_common.tsv  -&gt; x, y, group   (written once)
+geom1_polygon_chunk1.tsv        -&gt; fill, group
+geom1_polygon_chunk2.tsv        -&gt; fill, group</code></pre>
+<p><code>getCommonChunk()</code> detects shared columns at compile time
+and splits output into a common TSV plus smaller varied TSVs. The
+browser merges them with <code>copy_chunk()</code> in
+<code>inst/htmljs/animint.js</code>.</p>
+</div>
+<div id="architecture-current" class="section level2">
+<h2>Architecture (current)</h2>
+<p>C++ handles <strong>inner compare only</strong> (~154 lines). R
+handles grouping, assembly, and file I/O.</p>
+<pre><code>geom-.r
+  └─ getCommonChunk()                         [R/z_animintHelpers.R]
+       └─ detect_common_value_dt()            [R: per-column grouping loop]
+            └─ common_value_for_group_subset()
+                 ├─ common_value_for_group_subset_cpp()  [src/get_common_chunk.cpp]
+                 └─ R fallback
+       └─ dcast, split_recursive, varied.chunk
+  └─ fwrite *_chunk_common.tsv                  [geom-.r]
+  └─ saveChunks() -&gt; *_chunkN.tsv               [R/z_animintHelpers.R]
+
+Browser: copy_chunk() in inst/htmljs/animint.js</code></pre>
+</div>
+<div id="files-changed-for-issue-258" class="section level2">
+<h2>Files changed for issue #258</h2>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>src/get_common_chunk.cpp</code></td>
+<td>C++ inner compare
+(<code>common_value_for_group_subset_cpp</code>)</td>
+</tr>
+<tr class="even">
+<td><code>src/RcppExports.cpp</code></td>
+<td>Auto-generated <code>.Call</code> registration</td>
+</tr>
+<tr class="odd">
+<td><code>R/RcppExports.R</code></td>
+<td>R wrapper calling C++</td>
+</tr>
+<tr class="even">
+<td><code>R/z_animintHelpers.R</code></td>
+<td><code>common_value_for_group_subset()</code>,
+<code>detect_common_value_dt()</code>,
+<code>getCommonChunk()</code></td>
+</tr>
+<tr class="odd">
+<td><code>R/geom-.r</code></td>
+<td>Calls <code>getCommonChunk()</code>; adds <code>na_group</code>,
+<code>row_in_group</code> (unchanged API)</td>
+</tr>
+<tr class="even">
+<td><code>DESCRIPTION</code></td>
+<td><code>Imports: Rcpp</code>, <code>LinkingTo: Rcpp</code></td>
+</tr>
+<tr class="odd">
+<td><code>NAMESPACE</code></td>
+<td><code>useDynLib(animint2, .registration = TRUE)</code></td>
+</tr>
+<tr class="even">
+<td><code>tests/testthat/test-compiler-getCommonChunk.R</code></td>
+<td>11 unit tests</td>
+</tr>
+<tr class="odd">
+<td><code>.ci/atime/tests.R</code></td>
+<td>Performance benchmark for post-#242 NA workload</td>
+</tr>
+<tr class="even">
+<td><code>NEWS.md</code></td>
+<td>Changelog entry</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="file-srcget_common_chunk.cpp" class="section level2">
+<h2>File: <code>src/get_common_chunk.cpp</code></h2>
+<p><strong>Exported function:</strong>
+<code>common_value_for_group_subset_cpp(List value_lists)</code></p>
+<p><strong>Input:</strong> list of atomic vectors, one per chunk subset
+(e.g. each <code>showSelected</code> level) for one
+<code>(column, group)</code>.</p>
+<p><strong>Output:</strong> named list:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">list</span>(<span class="at">common =</span> <span class="fu">list</span>(...), <span class="at">is.common =</span> <span class="cn">TRUE</span><span class="sc">/</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<p>Must match R shape: <code>common</code> is a list of length 1 whose
+element is an atomic vector (or scalar). Use <code>wrap_common()</code>
+in C++ so data.table does not duplicate rows.</p>
+<div id="internal-helpers" class="section level3">
+<h3>Internal helpers</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Lines (approx)</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>is_na_at(v, i)</code></td>
+<td>9-17</td>
+<td>NA test on vector element</td>
+</tr>
+<tr class="even">
+<td><code>eq_at(a, ia, b, ib)</code></td>
+<td>19-39</td>
+<td>Equal with NA = NA</td>
+</tr>
+<tr class="odd">
+<td><code>scalar_at(v, i)</code></td>
+<td>41-49</td>
+<td>One cell as SEXP via <code>Rf_Scalar*</code></td>
+</tr>
+<tr class="even">
+<td><code>all_same(xs)</code></td>
+<td>51-57</td>
+<td>All scalars equal</td>
+</tr>
+<tr class="odd">
+<td><code>scalars_to_vector(xs)</code></td>
+<td>59-86</td>
+<td>Build atomic vector for R <code>common</code></td>
+</tr>
+<tr class="even">
+<td><code>wrap_common(x)</code></td>
+<td>88-90</td>
+<td><code>list(x)</code> wrapper</td>
+</tr>
+<tr class="odd">
+<td><code>common_value_for_group_subset_cpp</code></td>
+<td>94-153</td>
+<td>Exported entry point</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="algorithm-mirrors-r-common_value_for_group_subset" class="section level3">
+<h3>Algorithm (mirrors R
+<code>common_value_for_group_subset()</code>)</h3>
+<ol style="list-style-type: decimal">
+<li>If all chunk vectors have equal length: build matrix,
+<code>min_na</code> per row, NA-tolerant compare (PR #242).</li>
+<li>Else if one unique value across all elements: scalar common.</li>
+<li>Else: not common (<code>common = list()</code>,
+<code>is.common = FALSE</code>).</li>
+</ol>
+</div>
+<div id="design" class="section level3">
+<h3>Design</h3>
+<ul>
+<li>R groups; C++ compares (small review surface).</li>
+<li>No file I/O in C++.</li>
+<li><code>Rf_Scalar*</code> required on Windows / R 4.5+.</li>
+<li>SEXP types preserve mixed column types (numeric, character,
+etc.).</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="file-rz_animinthelpers.r" class="section level2">
+<h2>File: <code>R/z_animintHelpers.R</code></h2>
+<div id="common_value_for_group_subsetvalue_lists" class="section level3">
+<h3><code>common_value_for_group_subset(value_lists)</code></h3>
+<p>~20 lines. Core R logic. Calls C++ when compiled:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">isTRUE</span>(<span class="fu">getOption</span>(<span class="st">&quot;animint2.use.cpp&quot;</span>, <span class="cn">TRUE</span>))) {</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  cpp_out <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="fu">common_value_for_group_subset_cpp</span>(value_lists),</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NULL</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  )</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(cpp_out)) <span class="fu">return</span>(cpp_out)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>}</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co"># R fallback: matrix + min.na.vec + all(..., na.rm = TRUE)</span></span></code></pre></div>
+</div>
+<div id="detect_common_value_dtbuilt-col.name.vec-chunk.vars" class="section level3">
+<h3><code>detect_common_value_dt(built, col.name.vec, chunk.vars)</code></h3>
+<p>Loops columns. For each column, groups by <code>group</code>, splits
+by <code>chunk.vars</code>, calls
+<code>common_value_for_group_subset()</code> on each group’s chunk
+vectors.</p>
+<p>Per-column loop (not <code>melt()</code>) keeps mixed column types
+correct.</p>
+</div>
+<div id="getcommonchunkbuilt-chunk.vars-aes.list" class="section level3">
+<h3><code>getCommonChunk(built, chunk.vars, aes.list)</code></h3>
+<p>Public entry used from <code>geom-.r</code>:</p>
+<ol style="list-style-type: decimal">
+<li>Early exits (no chunk vars, one subset, no group in multiple
+subsets).</li>
+<li><code>detect_common_value_dt()</code> to find common columns.</li>
+<li>If 2+ common columns (partial) or 1 common column with multi-row
+group (#255): build <code>common</code> data.frame and
+<code>varied</code> nested list via <code>split_recursive()</code> /
+<code>varied.chunk()</code>.</li>
+<li>Return <code>list(common = ..., varied = ...)</code> or
+<code>NULL</code>.</li>
+</ol>
+<hr />
+</div>
+</div>
+<div id="file-rrcppexports.r" class="section level2">
+<h2>File: <code>R/RcppExports.R</code></h2>
+<p>Auto-generated by <code>Rcpp::compileAttributes()</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>common_value_for_group_subset_cpp <span class="ot">&lt;-</span> <span class="cf">function</span>(value_lists) {</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">.Call</span>(<span class="st">`</span><span class="at">_animint2_common_value_for_group_subset_cpp</span><span class="st">`</span>, value_lists)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>}</span></code></pre></div>
+<hr />
+</div>
+<div id="file-rgeom-.r" class="section level2">
+<h2>File: <code>R/geom-.r</code></h2>
+<p>Before <code>getCommonChunk()</code>:</p>
+<ul>
+<li>Sets default <code>group = 1</code> when user omits
+<code>aes(group)</code> (#255).</li>
+<li>Adds <code>na_group</code> and <code>row_in_group</code> for NA path
+handling (#242).</li>
+</ul>
+<p>Then:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>data.or.null <span class="ot">&lt;-</span> <span class="fu">getCommonChunk</span>(g.data, chunk.cols, g<span class="sc">$</span>aes)</span></code></pre></div>
+<p>If non-NULL, writes <code>*_chunk_common.tsv</code> and passes
+<code>varied</code> to <code>saveChunks()</code>.</p>
+<hr />
+</div>
+<div id="file-insthtmljsanimint.js" class="section level2">
+<h2>File: <code>inst/htmljs/animint.js</code></h2>
+<p><code>copy_chunk(g_info, varied_chunk)</code> merges downloaded
+varied TSV rows with cached common TSV rows. When NAs split paths,
+<code>row_in_group</code> picks the matching common row.</p>
+<hr />
+</div>
+<div id="why-sexp" class="section level2">
+<h2>Why SEXP?</h2>
+<p><strong>SEXP</strong> = <strong>S EXpression</strong>, R’s universal
+C type. Comparisons use R NA rules across numeric, integer, logical, and
+character columns.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>is_na_at(v, i)</code></td>
+<td>Is row <code>i</code> of vector <code>v</code> NA?</td>
+</tr>
+<tr class="even">
+<td><code>eq_at(a, ia, b, ib)</code></td>
+<td>Equal with NA = NA?</td>
+</tr>
+<tr class="odd">
+<td><code>scalar_at(v, i)</code></td>
+<td>One cell as length-1 SEXP</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="worked-example" class="section level2">
+<h2>Worked example</h2>
+<table>
+<thead>
+<tr class="header">
+<th>row</th>
+<th>group</th>
+<th>showSelected</th>
+<th>x</th>
+<th>y</th>
+<th>fill</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>1</td>
+<td>a</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>20</td>
+<td>1</td>
+<td>a</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>10</td>
+<td>2</td>
+<td>b</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1</td>
+<td>2</td>
+<td>20</td>
+<td>2</td>
+<td>b</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>2</td>
+<td>1</td>
+<td>30</td>
+<td>1</td>
+<td>c</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>2</td>
+<td>1</td>
+<td>40</td>
+<td>1</td>
+<td>c</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>2</td>
+<td>2</td>
+<td>30</td>
+<td>2</td>
+<td>d</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>2</td>
+<td>2</td>
+<td>40</td>
+<td>2</td>
+<td>d</td>
+</tr>
+</tbody>
+</table>
+<p>For group 1, column <code>x</code>: chunks <code>[10, 20]</code> and
+<code>[10, 20]</code> -&gt; common. Column <code>fill</code>:
+<code>[a, a]</code> vs <code>[b, b]</code> -&gt; not common.</p>
+<p>Result: common TSV has <code>x</code>, <code>y</code>,
+<code>group</code>; varied chunks have <code>fill</code> only.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">library</span>(animint2)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>built <span class="ot">&lt;-</span> <span class="fu">data.table</span>(</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">each =</span> <span class="dv">4</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="at">showSelected =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>), <span class="dv">2</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>), <span class="at">each =</span> <span class="dv">4</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">each =</span> <span class="dv">4</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  <span class="at">fill =</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>, <span class="st">&quot;d&quot;</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>)</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="fu">setkeyv</span>(built, <span class="fu">c</span>(<span class="st">&quot;group&quot;</span>, <span class="st">&quot;showSelected&quot;</span>))</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>dt <span class="ot">&lt;-</span> animint2<span class="sc">:::</span><span class="fu">detect_common_value_dt</span>(built, <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>, <span class="st">&quot;fill&quot;</span>), <span class="st">&quot;showSelected&quot;</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>dt[, .(col.name, group, is.common)]</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>result <span class="ot">&lt;-</span> animint2<span class="sc">:::</span><span class="fu">getCommonChunk</span>(built, <span class="st">&quot;showSelected&quot;</span>, <span class="fu">list</span>(<span class="at">group =</span> <span class="st">&quot;group&quot;</span>))</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="fu">names</span>(result<span class="sc">$</span>common)</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>result<span class="sc">$</span>varied</span></code></pre></div>
+<p>During development use <code>devtools::load_all()</code> instead of
+<code>library(animint2)</code>.</p>
+</div>
+<div id="na-example-pr-242" class="section level2">
+<h2>NA example (PR #242)</h2>
+<table>
+<thead>
+<tr class="header">
+<th>group</th>
+<th>showSelected</th>
+<th>x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>NA</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>2</td>
+<td>NA</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>2</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>Chunks <code>[NA, 2]</code> vs <code>[NA, 2]</code>: row 1 NA
+skipped, row 2 matches -&gt; <code>x</code> is common.</p>
+<hr />
+</div>
+<div id="tests" class="section level2">
+<h2>Tests</h2>
+<p><strong>File:</strong>
+<code>tests/testthat/test-compiler-getCommonChunk.R</code></p>
+<p>Pure unit tests: no browser, no <code>tests_init()</code>, no port
+4848 server.</p>
+<table>
+<colgroup>
+<col width="27%" />
+<col width="72%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>What it checks</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>NULL when chunk.vars empty</code></td>
+<td>Early exit</td>
+</tr>
+<tr class="even">
+<td><code>NULL when only one chunk subset</code></td>
+<td>Early exit</td>
+</tr>
+<tr class="odd">
+<td><code>NULL when no group appears in multiple subsets</code></td>
+<td>Early exit</td>
+</tr>
+<tr class="even">
+<td><code>polygon-like data splits x,y into common chunk</code></td>
+<td>Typical map/polygon case</td>
+</tr>
+<tr class="odd">
+<td><code>colour common but xy varied</code></td>
+<td>Partial common (2+ common cols)</td>
+</tr>
+<tr class="even">
+<td><code>xy common but colour varied</code></td>
+<td>Partial common</td>
+</tr>
+<tr class="odd">
+<td><code>single common column with multi-row group is allowed (#255)</code></td>
+<td>One common col OK</td>
+</tr>
+<tr class="even">
+<td><code>single common column with one row per group returns NULL</code></td>
+<td>One common col rejected</td>
+</tr>
+<tr class="odd">
+<td><code>NA paths keep na_group and row_in_group in varied data</code></td>
+<td>PR #242 sparse cols</td>
+</tr>
+<tr class="even">
+<td><code>factors are treated as character</code></td>
+<td>Factor coercion</td>
+</tr>
+<tr class="odd">
+<td><code>C++ and R detect_common_value_dt agree</code></td>
+<td>C++ vs R fallback match</td>
+</tr>
+</tbody>
+</table>
+<div id="run-tests-fast" class="section level3">
+<h3>Run tests (fast)</h3>
+<p>From package root:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">library</span>(devtools)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">load_all</span>()</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>testthat<span class="sc">::</span><span class="fu">test_file</span>(<span class="st">&quot;tests/testthat/test-compiler-getCommonChunk.R&quot;</span>)</span></code></pre></div>
+<p>Expected: <code>[ FAIL 0 | WARN 0 | SKIP 0 | PASS 38 ]</code> (11
+tests, 38 expectations).</p>
+<p>Skip <code>tests_init()</code> and <code>helper-HTML.R</code> for
+this file; they are only for renderer tests.</p>
+</div>
+<div id="compare-c-vs-r-manually" class="section level3">
+<h3>Compare C++ vs R manually</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">animint2.use.cpp =</span> <span class="cn">FALSE</span>)  <span class="co"># R inner compare only</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>r_result <span class="ot">&lt;-</span> animint2<span class="sc">:::</span><span class="fu">getCommonChunk</span>(built, <span class="st">&quot;showSelected&quot;</span>, <span class="fu">list</span>(<span class="at">group =</span> <span class="st">&quot;group&quot;</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="fu">options</span>(<span class="at">animint2.use.cpp =</span> <span class="cn">TRUE</span>)   <span class="co"># C++ inner compare (default)</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>cpp_result <span class="ot">&lt;-</span> animint2<span class="sc">:::</span><span class="fu">getCommonChunk</span>(built, <span class="st">&quot;showSelected&quot;</span>, <span class="fu">list</span>(<span class="at">group =</span> <span class="st">&quot;group&quot;</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="fu">identical</span>(r_result, cpp_result)</span></code></pre></div>
+</div>
+<div id="existing-integration-tests-should-still-pass" class="section level3">
+<h3>Existing integration tests (should still pass)</h3>
+<p>After changing <code>getCommonChunk()</code> code, also run:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="st">&quot;test-compiler-save-separate-chunks.R&quot;</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="st">&quot;test-renderer1-chunk-vars.R&quot;</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  <span class="st">&quot;test-renderer3-chunk-NA-separate-lines.R&quot;</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="st">&quot;test-renderer1-chunk-WorldBank-NA.R&quot;</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="st">&quot;test-renderer2-VariantModels.R&quot;</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>)</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="cf">for</span> (f <span class="cf">in</span> files) {</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>  testthat<span class="sc">::</span><span class="fu">test_file</span>(<span class="fu">file.path</span>(<span class="st">&quot;tests/testthat&quot;</span>, f))</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>}</span></code></pre></div>
+<p>Integration tests need <code>tests_init()</code> (browser + servr on
+port 4848).</p>
+</div>
+<div id="performance-benchmark" class="section level3">
+<h3>Performance benchmark</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;atime&quot;</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;.ci/atime/tests.R&quot;</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>atime<span class="sc">::</span><span class="fu">atime</span>(<span class="at">test.list =</span> test.list)</span></code></pre></div>
+<p>Benchmarks: <code>getCommonChunk improved in #238</code> and
+<code>getCommonChunk post-#242 NA workload</code>.</p>
+</div>
+<div id="windows-setup" class="section level3">
+<h3>Windows setup</h3>
+<p>C++ requires Rtools matching your R version. If
+<code>devtools::load_all()</code> fails:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>winget install RProject<span class="op">.</span><span class="fu">Rtools</span> <span class="op">--</span>accept-package-agreements <span class="op">--</span>accept-source-agreements</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="va">$env</span><span class="op">:</span><span class="va">Path</span> <span class="op">=</span> <span class="st">&quot;C:\rtools45\usr\bin;C:\rtools45\mingw64\bin;&quot;</span> <span class="op">+</span> <span class="va">$env</span><span class="op">:</span><span class="va">Path</span></span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="debug-options" class="section level2">
+<h2>Debug options</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">animint2.use.cpp =</span> <span class="cn">FALSE</span>)  <span class="co"># force R inner compare</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">options</span>(<span class="at">animint2.use.cpp =</span> <span class="cn">TRUE</span>)   <span class="co"># restore default</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co"># verify C++ compiled</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="st">&quot;common_value_for_group_subset_cpp&quot;</span> <span class="sc">%in%</span> <span class="fu">ls</span>(<span class="fu">asNamespace</span>(<span class="st">&quot;animint2&quot;</span>), <span class="at">all =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<hr />
+</div>
+<div id="issue-history-brief" class="section level2">
+<h2>Issue history (brief)</h2>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>PR</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://github.com/animint/animint2/pull/238">#238</a></td>
+<td>Vectorized R; faster but incomplete</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/animint/animint2/pull/242">#242</a></td>
+<td>NA matrix logic, <code>na_group</code>,
+<code>row_in_group</code></td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/animint/animint2/pull/255">#255</a></td>
+<td><code>group = 1</code> default, single common column, points</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/animint/animint2/issues/258">#258</a></td>
+<td>C++ inner compare; R grouping unchanged</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="c-to-r-mapping" class="section level2">
+<h2>C++ to R mapping</h2>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="84%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>C++</th>
+<th>R (<code>R/z_animintHelpers.R</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>common_value_for_group_subset_cpp</code></td>
+<td><code>common_value_for_group_subset()</code></td>
+</tr>
+<tr class="even">
+<td>matrix + NA loop</td>
+<td><code>all(m == min.na.vec, na.rm = TRUE)</code></td>
+</tr>
+<tr class="odd">
+<td><code>is_na_at</code> / <code>eq_at</code></td>
+<td><code>is.na</code> / <code>==</code> with <code>na.rm</code></td>
+</tr>
+<tr class="even">
+<td>(grouping)</td>
+<td><code>detect_common_value_dt()</code> per-column loop</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<ul>
+<li><a href="https://github.com/animint/animint2/issues/258">Issue
+#258</a></li>
+<li><a href="https://github.com/animint/animint2/pull/238">PR
+#238</a></li>
+<li><a href="https://github.com/animint/animint2/pull/242">PR
+#242</a></li>
+<li><a href="https://github.com/animint/animint2/pull/255">PR
+#255</a></li>
+<li><code>tests/testthat/test-compiler-getCommonChunk.R</code></li>
+</ul>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
