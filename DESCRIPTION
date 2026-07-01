@@ -1,6 +1,6 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2026.4.28
+Version: 2026.6.28
 URL: https://animint.github.io/animint2
 BugReports: https://github.com/animint/animint2/issues
 Authors@R: c(
@@ -67,7 +67,10 @@ Authors@R: c(
      comment="GSOC 2026"),
     person("Nandani", "Aggarwal",
      role="ctb",
-     comment="Removed geom_dotplot and replaced with error"))
+     comment="Removed geom_dotplot and replaced with error")
+    person("Nishita", "Shah",
+     role="ctb",
+     comment="Animint2 GSoC 2026)"))    
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
  on a web page. The 2018 Journal of Computational and 
