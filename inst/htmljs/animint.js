@@ -1465,7 +1465,6 @@ var animint = function (to_select, json_file) {
               }
               return ring;
             });
-
             var geojson = {
               type: "Polygon",
               coordinates: coords

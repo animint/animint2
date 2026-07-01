@@ -70,8 +70,7 @@ Authors@R: c(
      comment="Removed geom_dotplot and replaced with error")
     person("Nishita", "Shah",
      role="ctb",
-     comment="Animint2 GSoC 2026)"))
-    
+     comment="Animint2 GSoC 2026)"))    
 Description: Functions are provided for defining animated,
  interactive data visualizations in R code, and rendering
  on a web page. The 2018 Journal of Computational and 
