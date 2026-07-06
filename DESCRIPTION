@@ -122,6 +122,7 @@ LinkingTo: Rcpp
 Encoding: UTF-8
 LazyData: true
 Collate:
+    'RcppExports.R'
     'gganimintproto.r'
     'aaa-.r'
     'aes-calculated.r'
@@ -231,7 +232,7 @@ Collate:
     'position-stack.r'
     'quick-plot.r'
     'range.r'
-    'RcppExports.R'
+    'rcpp-dynlib.R'
     'save.r'
     'scale-.r'
     'scale-alpha.r'
