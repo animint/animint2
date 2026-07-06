@@ -1,0 +1,383 @@
+---
+title: "get_common_chunk.cpp: C++ common chunk detection"
+author: "animint2 contributors"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{get_common_chunk.cpp: C++ common chunk detection}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+Guide to the issue [#258](https://github.com/animint/animint2/issues/258) C++ work for
+`getCommonChunk()`: what each file does, how the code fits together, and how to test it.
+
+## Problem
+
+Interactive plots split geom data into multiple chunk TSV files (one per selector value).
+Often `x`, `y`, and `group` are identical across chunks; only `fill` (or similar) changes.
+
+```
+geom1_polygon_chunk_common.tsv  -> x, y, group   (written once)
+geom1_polygon_chunk1.tsv        -> fill, group
+geom1_polygon_chunk2.tsv        -> fill, group
+```
+
+`getCommonChunk()` detects shared columns at compile time and splits output into a
+common TSV plus smaller varied TSVs. The browser merges them with `copy_chunk()` in
+`inst/htmljs/animint.js`.
+
+## Architecture (current)
+
+C++ handles **inner compare only** (~154 lines). R handles grouping, assembly, and file I/O.
+
+```
+geom-.r
+  └─ getCommonChunk()                         [R/z_animintHelpers.R]
+       └─ detect_common_value_dt()            [R: per-column grouping loop]
+            └─ common_value_for_group_subset()
+                 ├─ common_value_for_group_subset_cpp()  [src/get_common_chunk.cpp]
+                 └─ R fallback
+       └─ dcast, split_recursive, varied.chunk
+  └─ fwrite *_chunk_common.tsv                  [geom-.r]
+  └─ saveChunks() -> *_chunkN.tsv               [R/z_animintHelpers.R]
+
+Browser: copy_chunk() in inst/htmljs/animint.js
+```
+
+## Files changed for issue #258
+
+| File | Role |
+|------|------|
+| `src/get_common_chunk.cpp` | C++ inner compare (`common_value_for_group_subset_cpp`) |
+| `src/RcppExports.cpp` | Auto-generated `.Call` registration |
+| `R/RcppExports.R` | R wrapper calling C++ |
+| `R/z_animintHelpers.R` | `common_value_for_group_subset()`, `detect_common_value_dt()`, `getCommonChunk()` |
+| `R/geom-.r` | Calls `getCommonChunk()`; adds `na_group`, `row_in_group` (unchanged API) |
+| `DESCRIPTION` | `Imports: Rcpp`, `LinkingTo: Rcpp` |
+| `NAMESPACE` | `useDynLib(animint2, .registration = TRUE)` |
+| `tests/testthat/test-compiler-getCommonChunk.R` | 11 unit tests |
+| `.ci/atime/tests.R` | Performance benchmark for post-#242 NA workload |
+| `NEWS.md` | Changelog entry |
+
+
+---
+
+## File: `src/get_common_chunk.cpp`
+
+**Exported function:** `common_value_for_group_subset_cpp(List value_lists)`
+
+**Input:** list of atomic vectors, one per chunk subset (e.g. each `showSelected` level)
+for one `(column, group)`.
+
+**Output:** named list:
+
+```r
+list(common = list(...), is.common = TRUE/FALSE)
+```
+
+Must match R shape: `common` is a list of length 1 whose element is an atomic vector
+(or scalar). Use `wrap_common()` in C++ so data.table does not duplicate rows.
+
+### Internal helpers
+
+| Function | Lines (approx) | Role |
+|----------|----------------|------|
+| `is_na_at(v, i)` | 9-17 | NA test on vector element |
+| `eq_at(a, ia, b, ib)` | 19-39 | Equal with NA = NA |
+| `scalar_at(v, i)` | 41-49 | One cell as SEXP via `Rf_Scalar*` |
+| `all_same(xs)` | 51-57 | All scalars equal |
+| `scalars_to_vector(xs)` | 59-86 | Build atomic vector for R `common` |
+| `wrap_common(x)` | 88-90 | `list(x)` wrapper |
+| `common_value_for_group_subset_cpp` | 94-153 | Exported entry point |
+
+### Algorithm (mirrors R `common_value_for_group_subset()`)
+
+1. If all chunk vectors have equal length: build matrix, `min_na` per row, NA-tolerant
+   compare (PR #242).
+2. Else if one unique value across all elements: scalar common.
+3. Else: not common (`common = list()`, `is.common = FALSE`).
+
+### Design
+
+- R groups; C++ compares (small review surface).
+- No file I/O in C++.
+- `Rf_Scalar*` required on Windows / R 4.5+.
+- SEXP types preserve mixed column types (numeric, character, etc.).
+
+---
+
+## File: `R/z_animintHelpers.R`
+
+### `common_value_for_group_subset(value_lists)`
+
+~20 lines. Core R logic. Calls C++ when compiled:
+
+```r
+if (isTRUE(getOption("animint2.use.cpp", TRUE))) {
+  cpp_out <- tryCatch(
+    common_value_for_group_subset_cpp(value_lists),
+    error = function(e) NULL
+  )
+  if (!is.null(cpp_out)) return(cpp_out)
+}
+# R fallback: matrix + min.na.vec + all(..., na.rm = TRUE)
+```
+
+### `detect_common_value_dt(built, col.name.vec, chunk.vars)`
+
+Loops columns. For each column, groups by `group`, splits by `chunk.vars`, calls
+`common_value_for_group_subset()` on each group's chunk vectors.
+
+Per-column loop (not `melt()`) keeps mixed column types correct.
+
+### `getCommonChunk(built, chunk.vars, aes.list)`
+
+Public entry used from `geom-.r`:
+
+1. Early exits (no chunk vars, one subset, no group in multiple subsets).
+2. `detect_common_value_dt()` to find common columns.
+3. If 2+ common columns (partial) or 1 common column with multi-row group (#255):
+   build `common` data.frame and `varied` nested list via `split_recursive()` /
+   `varied.chunk()`.
+4. Return `list(common = ..., varied = ...)` or `NULL`.
+
+---
+
+## File: `R/RcppExports.R`
+
+Auto-generated by `Rcpp::compileAttributes()`:
+
+```r
+common_value_for_group_subset_cpp <- function(value_lists) {
+  .Call(`_animint2_common_value_for_group_subset_cpp`, value_lists)
+}
+```
+
+---
+
+## File: `R/geom-.r`
+
+Before `getCommonChunk()`:
+
+- Sets default `group = 1` when user omits `aes(group)` (#255).
+- Adds `na_group` and `row_in_group` for NA path handling (#242).
+
+Then:
+
+```r
+data.or.null <- getCommonChunk(g.data, chunk.cols, g$aes)
+```
+
+If non-NULL, writes `*_chunk_common.tsv` and passes `varied` to `saveChunks()`.
+
+---
+
+## File: `inst/htmljs/animint.js`
+
+`copy_chunk(g_info, varied_chunk)` merges downloaded varied TSV rows with cached
+common TSV rows. When NAs split paths, `row_in_group` picks the matching common row.
+
+---
+
+## Why SEXP?
+
+**SEXP** = **S EXpression**, R's universal C type. Comparisons use R NA rules across
+numeric, integer, logical, and character columns.
+
+| Name | Meaning |
+|------|---------|
+| `is_na_at(v, i)` | Is row `i` of vector `v` NA? |
+| `eq_at(a, ia, b, ib)` | Equal with NA = NA? |
+| `scalar_at(v, i)` | One cell as length-1 SEXP |
+
+---
+
+## Worked example
+
+| row | group | showSelected | x | y | fill |
+|-----|-------|--------------|---|---|------|
+| 0 | 1 | 1 | 10 | 1 | a |
+| 1 | 1 | 1 | 20 | 1 | a |
+| 2 | 1 | 2 | 10 | 2 | b |
+| 3 | 1 | 2 | 20 | 2 | b |
+| 4 | 2 | 1 | 30 | 1 | c |
+| 5 | 2 | 1 | 40 | 1 | c |
+| 6 | 2 | 2 | 30 | 2 | d |
+| 7 | 2 | 2 | 40 | 2 | d |
+
+For group 1, column `x`: chunks `[10, 20]` and `[10, 20]` -> common.
+Column `fill`: `[a, a]` vs `[b, b]` -> not common.
+
+Result: common TSV has `x`, `y`, `group`; varied chunks have `fill` only.
+
+```{r quick-example, eval=FALSE}
+library(animint2)
+library(data.table)
+
+built <- data.table(
+  group = rep(1:2, each = 4),
+  showSelected = rep(c(1, 1, 2, 2), 2),
+  x = rep(c(10, 20), each = 4),
+  y = rep(c(1, 2), each = 4),
+  fill = c("a", "a", "b", "b", "c", "c", "d", "d")
+)
+setkeyv(built, c("group", "showSelected"))
+
+dt <- animint2:::detect_common_value_dt(built, c("x", "y", "fill"), "showSelected")
+dt[, .(col.name, group, is.common)]
+
+result <- animint2:::getCommonChunk(built, "showSelected", list(group = "group"))
+names(result$common)
+result$varied
+```
+
+During development use `devtools::load_all()` instead of `library(animint2)`.
+
+## NA example (PR #242)
+
+| group | showSelected | x |
+|-------|--------------|---|
+| 1 | 1 | NA |
+| 1 | 1 | 2 |
+| 1 | 2 | NA |
+| 1 | 2 | 2 |
+
+Chunks `[NA, 2]` vs `[NA, 2]`: row 1 NA skipped, row 2 matches -> `x` is common.
+
+---
+
+## Tests
+
+**File:** `tests/testthat/test-compiler-getCommonChunk.R`
+
+Pure unit tests: no browser, no `tests_init()`, no port 4848 server.
+
+| Test | What it checks |
+|------|----------------|
+| `NULL when chunk.vars empty` | Early exit |
+| `NULL when only one chunk subset` | Early exit |
+| `NULL when no group appears in multiple subsets` | Early exit |
+| `polygon-like data splits x,y into common chunk` | Typical map/polygon case |
+| `colour common but xy varied` | Partial common (2+ common cols) |
+| `xy common but colour varied` | Partial common |
+| `single common column with multi-row group is allowed (#255)` | One common col OK |
+| `single common column with one row per group returns NULL` | One common col rejected |
+| `NA paths keep na_group and row_in_group in varied data` | PR #242 sparse cols |
+| `factors are treated as character` | Factor coercion |
+| `C++ and R detect_common_value_dt agree` | C++ vs R fallback match |
+
+### Run tests (fast)
+
+From package root:
+
+```{r run-tests, eval=FALSE}
+library(devtools)
+load_all()
+library(testthat)
+library(data.table)
+
+testthat::test_file("tests/testthat/test-compiler-getCommonChunk.R")
+```
+
+Expected: `[ FAIL 0 | WARN 0 | SKIP 0 | PASS 38 ]` (11 tests, 38 expectations).
+
+Skip `tests_init()` and `helper-HTML.R` for this file; they are only for renderer tests.
+
+### Compare C++ vs R manually
+
+```{r compare-cpp-r, eval=FALSE}
+options(animint2.use.cpp = FALSE)  # R inner compare only
+r_result <- animint2:::getCommonChunk(built, "showSelected", list(group = "group"))
+
+options(animint2.use.cpp = TRUE)   # C++ inner compare (default)
+cpp_result <- animint2:::getCommonChunk(built, "showSelected", list(group = "group"))
+
+identical(r_result, cpp_result)
+```
+
+### Existing integration tests (should still pass)
+
+After changing `getCommonChunk()` code, also run:
+
+```{r integration-tests, eval=FALSE}
+files <- c(
+  "test-compiler-save-separate-chunks.R",
+  "test-renderer1-chunk-vars.R",
+  "test-renderer3-chunk-NA-separate-lines.R",
+  "test-renderer1-chunk-WorldBank-NA.R",
+  "test-renderer2-VariantModels.R"
+)
+for (f in files) {
+  testthat::test_file(file.path("tests/testthat", f))
+}
+```
+
+Integration tests need `tests_init()` (browser + servr on port 4848).
+
+### Performance benchmark
+
+```{r atime, eval=FALSE}
+install.packages("atime")
+source(".ci/atime/tests.R")
+atime::atime(test.list = test.list)
+```
+
+Benchmarks: `getCommonChunk improved in #238` and `getCommonChunk post-#242 NA workload`.
+
+### Windows setup
+
+C++ requires Rtools matching your R version. If `devtools::load_all()` fails:
+
+```powershell
+winget install RProject.Rtools --accept-package-agreements --accept-source-agreements
+$env:Path = "C:\rtools45\usr\bin;C:\rtools45\mingw64\bin;" + $env:Path
+```
+
+---
+
+## Debug options
+
+```{r debug, eval=FALSE}
+options(animint2.use.cpp = FALSE)  # force R inner compare
+options(animint2.use.cpp = TRUE)   # restore default
+
+# verify C++ compiled
+"common_value_for_group_subset_cpp" %in% ls(asNamespace("animint2"), all = TRUE)
+```
+
+---
+
+## Issue history (brief)
+
+| PR | Change |
+|----|--------|
+| [#238](https://github.com/animint/animint2/pull/238) | Vectorized R; faster but incomplete |
+| [#242](https://github.com/animint/animint2/pull/242) | NA matrix logic, `na_group`, `row_in_group` |
+| [#255](https://github.com/animint/animint2/pull/255) | `group = 1` default, single common column, points |
+| [#258](https://github.com/animint/animint2/issues/258) | C++ inner compare; R grouping unchanged |
+
+---
+
+## C++ to R mapping
+
+| C++ | R (`R/z_animintHelpers.R`) |
+|-----|----------------------------|
+| `common_value_for_group_subset_cpp` | `common_value_for_group_subset()` |
+| matrix + NA loop | `all(m == min.na.vec, na.rm = TRUE)` |
+| `is_na_at` / `eq_at` | `is.na` / `==` with `na.rm` |
+| (grouping) | `detect_common_value_dt()` per-column loop |
+
+---
+
+## References
+
+- [Issue #258](https://github.com/animint/animint2/issues/258)
+- [PR #238](https://github.com/animint/animint2/pull/238)
+- [PR #242](https://github.com/animint/animint2/pull/242)
+- [PR #255](https://github.com/animint/animint2/pull/255)
+- `tests/testthat/test-compiler-getCommonChunk.R`
