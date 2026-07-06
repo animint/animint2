@@ -831,7 +831,7 @@ detect_common_value_dt <- function(built, col.name.vec, chunk.vars){
 ##' @importFrom stats na.omit
 ##' @import data.table
 getCommonChunk <- function(built, chunk.vars, aes.list){
-  group <- col.name <- group.size <- ok <- all.common <- size <- showSelected_values <- common <- NULL
+  group <- col.name <- group.size <- ok <- all.common <- size <- showSelected_values <- common <- is.common <- NULL
   ## Above to avoid CRAN NOTE.
   if(length(chunk.vars) == 0){
     return(NULL)
