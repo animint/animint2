@@ -198,25 +198,6 @@ var animint = function (to_select, json_file) {
     return {height: bbox.height, width: bbox.width};
   };
 
-  var measureMultilineText = function(pText, pFontSize, pAngle, pStyle) {
-    if (pText === undefined || pText === null || pText.length === 0) {
-      return {height: 0, width: 0};
-    }
-    var lines = pText.split("\n");
-    if (lines.length === 1) {
-      return measureText(pText, pFontSize, pAngle, pStyle);
-    }
-    var fontSize = parseFloat(pFontSize);
-    var sizes = lines.map(function(line) {
-      return measureText(line, pFontSize, pAngle, pStyle);
-    });
-    return {
-      height: (lines.length - 1) * fontSize * 1.2 +
-        d3.max(sizes, function(s) { return s.height; }),
-      width: d3.max(sizes, function(s) { return s.width; })
-    };
-  };
-
   var setMultilineText = function(textSelection, label) {
     var lines = label.split("\n");
     textSelection.text("");
@@ -226,6 +207,29 @@ var animint = function (to_select, json_file) {
         .attr("dy", i === 0 ? "0em" : "1.2em")
         .text(line);
     });
+  };
+
+  // Measure the same tspan layout that setMultilineText paints so
+  // reserved strip size matches browser em/pt metrics.
+  var measureMultilineText = function(pText, pFontSize, pAngle, pStyle) {
+    if (pText === undefined || pText === null || pText.length === 0) {
+      return {height: 0, width: 0};
+    }
+    var lines = pText.split("\n");
+    if (lines.length === 1) {
+      return measureText(pText, pFontSize, pAngle, pStyle);
+    }
+    if (pAngle === null || isNaN(pAngle)) pAngle = 0;
+    var container = element.append("svg");
+    var textSel = container.append("text")
+      .attr({x: -1000, y: -1000})
+      .attr("transform", "rotate(" + pAngle + ")")
+      .attr("style", pStyle)
+      .attr("font-size", pFontSize);
+    setMultilineText(textSel, pText);
+    var bbox = container.node().getBBox();
+    container.remove();
+    return {height: bbox.height, width: bbox.width};
   };
 
   var nest_by_group = d3.nest().key(function(d){ return d.group; });
@@ -698,21 +702,31 @@ var animint = function (to_select, json_file) {
         }
         var x, y, rotate, stripElement, strip_text_xy;
         if (side == "right") {
-          x = plotdim.xend;
-          y = (plotdim.ystart + plotdim.yend) / 2;
-          rotate = 90;
           stripElement = rightStrip;
           strip_text_xy = "y";
         }else{ //top
-          x = (plotdim.xstart + plotdim.xend) / 2;
-          y = plotdim.ystart;
-          rotate = 0;
           stripElement = topStrip;
           strip_text_xy = "x";
         }
+        var strip_text_size = "strip_text_"+strip_text_xy+"size";
+        var label = strip[0];
+        var firstLine = label.split("\n")[0];
+        var stripSize = side == "right"
+          ? strip_widths[layout_i]
+          : strip_heights[layout_i];
+        var oneLineSize = measureText(firstLine, p_info[strip_text_size]).height;
+        var extra = Math.max(0, stripSize - oneLineSize);
+        if (side == "right") {
+          x = plotdim.xend + extra;
+          y = (plotdim.ystart + plotdim.yend) / 2;
+          rotate = 90;
+        }else{ //top
+          x = (plotdim.xstart + plotdim.xend) / 2;
+          y = plotdim.ystart - extra;
+          rotate = 0;
+        }
         var trans_text = "translate(" + x + "," + y + ")";
         var rot_text = "rotate(" + rotate + ")";
-        var strip_text_size = "strip_text_"+strip_text_xy+"size";
         stripElement
           .selectAll("." + side + "Strips")
           .data(strip)
