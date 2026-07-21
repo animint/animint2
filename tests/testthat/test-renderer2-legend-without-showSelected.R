@@ -47,16 +47,17 @@ test_that("showSelected.legend=FALSE keeps legend selector but opts layer out", 
   expect_identical(length(point_geom_name), 1L)
   show_aes_names <- names(info$geoms[[point_geom_name]]$aes)
   expect_identical(any(grepl("^showSelected", show_aes_names)), FALSE)
+  expect_false("showSelected.legend" %in% names(info$geoms[[point_geom_name]]$params))
 })
 test_that("showSelected=character() no longer opts layer out of legend injection", {
   viz_char_ss <- list(
-    plot1 = ggplot(test_data, aes(x, y, color = comparison)) +
+    legendInjectionPlot = ggplot(test_data, aes(x, y, color = comparison)) +
       geom_point(showSelected = character()) +
       facet_wrap(~facet_var)
   )
   info <- animint2dir(viz_char_ss, open.browser = FALSE)
   geom_names <- names(info$geoms)
-  point_geom_name <- geom_names[grepl("_point_plot1$", geom_names)]
+  point_geom_name <- geom_names[grepl("_point_legendInjectionPlot$", geom_names)]
   expect_identical(length(point_geom_name), 1L)
   show_aes_names <- names(info$geoms[[point_geom_name]]$aes)
   expect_identical(any(grepl("^showSelected", show_aes_names)), TRUE)
