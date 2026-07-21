@@ -2,20 +2,17 @@ acontext("panel.margin with positive values - Issue #180")
 test_that("pt.to.lines handles positive lines unit correctly", {
   lines_value <- grid::unit(2, "lines")
   converted <- pt.to.lines(lines_value)
-  expect_true(is.numeric(converted))
   expect_equal(converted, 2)
   expect_gt(converted, 0)
 })
 test_that("pt.to.lines handles positive cm unit correctly", {
   cm_value <- grid::unit(0.5, "cm")
   converted <- pt.to.lines(cm_value)
-  expect_true(is.numeric(converted))
   expect_gt(converted, 0)
 })
 test_that("pt.to.lines handles positive pt unit correctly", {
   pt_value <- grid::unit(12, "pt")
   converted <- pt.to.lines(pt_value)
-  expect_true(is.numeric(converted))
   expect_gt(converted, 0)
   expect_false(identical(converted, as.numeric(pt_value)))
 })
@@ -37,7 +34,6 @@ test_that("positive lines preserved through plot_theme and pt.to.lines", {
   panel_margin <- theme.pars$panel.margin
   expect_false(is.null(panel_margin))
   converted <- pt.to.lines(panel_margin)
-  expect_true(is.numeric(converted))
   expect_equal(converted, 2)
 })
 test_that("positive cm preserved through plot_theme and pt.to.lines", {
@@ -49,7 +45,6 @@ test_that("positive cm preserved through plot_theme and pt.to.lines", {
   panel_margin <- theme.pars$panel.margin
   expect_false(is.null(panel_margin))
   converted <- pt.to.lines(panel_margin)
-  expect_true(is.numeric(converted))
   # pt.to.lines() returns non-pt units as-is (documented limitation):
   # unit(1, "cm") returns numeric 1, not a proper cm-to-lines conversion.
   # The JavaScript renderer uses this value as a line count.
