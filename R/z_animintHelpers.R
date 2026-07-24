@@ -32,7 +32,7 @@ addShowSelectedForLegend <- function(meta, legend, L){
         ## used by the geom
         type.vec <- one.legend$legend_type
         if(!legend_auto_ss_disabled && any(type.vec %in% names(L$mapping))){
-          L$extra_params$showSelected <- c(L$extra_params$showSelected, s.name)
+          L$extra_params[["showSelected"]] <- c(L$extra_params[["showSelected"]], s.name)
         }
       }
       ## if selector.types has not been specified, create it
