@@ -30,7 +30,8 @@ test_that("coord_fixed with shrinking y-axis", {
   xdiff <- getTickDiff(x.axes[[1]])
   ydiff <- getTickDiff(y.axes[[1]], axis = "y")
   diffs <- normDiffs(xdiff, ydiff, ratio5)
-  expect_equal(diffs[1], diffs[2], tolerance = 10)
+  ## Round to drop SVG sub-pixel float noise (~1e-6); aspect should match.
+  expect_equal(round(diffs[1], 3), round(diffs[2], 3))
 })
 
 test_that("xaxis width increases with coord_equal", {
@@ -43,6 +44,17 @@ test_that("xaxis width increases with coord_equal", {
   expect_gt(ratio, 2)
 })
 
+test_that("coord_equal preserves aspect on non-square viewport", {
+  viz <- p + coord_equal() + theme_animint(width=800, height=400)
+  info <- animint2HTML(list(plot = viz))
+  x.axes <- getNodeSet(info$html, "//g[contains(@class, 'xaxis')]")
+  y.axes <- getNodeSet(info$html, "//g[contains(@class, 'yaxis')]")
+  xdiff <- getTickDiff(x.axes[[1]])
+  ydiff <- getTickDiff(y.axes[[1]], axis = "y")
+  diffs <- normDiffs(xdiff, ydiff, 1)
+  expect_equal(round(diffs[1], 3), round(diffs[2], 3))
+})
+
 test_that("coord_fixed with shrinking x-axis", {
   ratio10 <- 10
   viz2 <- p + coord_fixed(ratio10)
@@ -52,5 +64,6 @@ test_that("coord_fixed with shrinking x-axis", {
   xdiff <- getTickDiff(x.axes[[1]])
   ydiff <- getTickDiff(y.axes[[1]], axis = "y")
   diffs <- normDiffs(xdiff, ydiff, ratio10)
-  expect_equal(diffs[1], diffs[2], tolerance = 10)
+  ## Round to drop SVG sub-pixel float noise (~1e-6); aspect should match.
+  expect_equal(round(diffs[1], 3), round(diffs[2], 3))
 })

@@ -62,7 +62,7 @@
 
 # Changes in version 2025.10.4 (Issue #234)
 
-- Fixed `coord_equal()` and `coord_fixed()` to properly fill available plotting space. Previously, plots with fixed aspect ratios were unnecessarily shrunk due to incorrect normalization in the `fixed_spaces()` function. The fix changes from using `min(z, 1)` to normalizing by the maximum value across both dimensions, ensuring at least one dimension fills the available space while maintaining the correct aspect ratio.
+- Fixed `coord_equal()` and `coord_fixed()` to properly fill available plotting space. Previously, the JavaScript renderer applied `Math.min(1, aspect)` independently to width and height proportions, which shrunk both axes when the graph pixel aspect did not match the data aspect. The renderer now adjusts panel proportions for non-square graph cells and scale-to-fits so at least one dimension fills the available space while preserving the data aspect ratio.
 
 # Changes in version 2025.10.6 (PR#246)
 
