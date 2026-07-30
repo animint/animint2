@@ -16,11 +16,9 @@ test_that("facet_wrap string missing variable gives clear error", {
       facet_wrap("MissingVar") +
       geom_point(aes(Sepal.Length, Petal.Length), data = iris)
   )
-  expect_error(
-    animint2dir(viz, out.dir = tempfile(), open.browser = FALSE),
-    missing_var_string_error,
-    fixed = TRUE
-  )
+  expect_error({
+    animint2dir(viz)
+  }, missing_var_string_error, fixed = TRUE)
 })
 test_that("facet_wrap formula with missing variable gives clear error", {
   viz <- list(
@@ -28,11 +26,9 @@ test_that("facet_wrap formula with missing variable gives clear error", {
       facet_wrap(. ~ NonExistentColumn) +
       geom_point(aes(Sepal.Length, Petal.Length), data = iris)
   )
-  expect_error(
-    animint2dir(viz, out.dir = tempfile(), open.browser = FALSE),
-    missing_var_error,
-    fixed = TRUE
-  )
+  expect_error({
+    animint2dir(viz)
+  }, missing_var_error, fixed = TRUE)
 })
 test_that("facet_wrap bad notation when variable exists gives clear error", {
   viz <- list(
@@ -40,11 +36,9 @@ test_that("facet_wrap bad notation when variable exists gives clear error", {
       facet_wrap(. ~ Species) +
       geom_point(aes(Sepal.Length, Petal.Length), data = iris)
   )
-  expect_error(
-    animint2dir(viz, out.dir = tempfile(), open.browser = FALSE),
-    bad_notation_error,
-    fixed = TRUE
-  )
+  expect_error({
+    animint2dir(viz)
+  }, bad_notation_error, fixed = TRUE)
 })
 test_that("facet_grid missing variable gives clear error", {
   viz <- list(
@@ -52,11 +46,9 @@ test_that("facet_grid missing variable gives clear error", {
       facet_grid(. ~ MissingVar) +
       geom_point(aes(Sepal.Length, Petal.Length), data = iris)
   )
-  expect_error(
-    animint2dir(viz, out.dir = tempfile(), open.browser = FALSE),
-    missing_var_string_error,
-    fixed = TRUE
-  )
+  expect_error({
+    animint2dir(viz)
+  }, missing_var_string_error, fixed = TRUE)
 })
 test_that("facet_wrap tilde notation works", {
   viz <- list(
@@ -64,7 +56,7 @@ test_that("facet_wrap tilde notation works", {
       facet_wrap(~Species) +
       geom_point(aes(Sepal.Length, Petal.Length), data = iris)
   )
-  info <- animint2dir(viz, out.dir = tempfile(), open.browser = FALSE)
+  info <- animint2dir(viz, open.browser = FALSE)
   expect_true(file.exists(file.path(info$out.dir, "index.html")))
 })
 test_that("facet_wrap string notation works", {
@@ -73,7 +65,7 @@ test_that("facet_wrap string notation works", {
       facet_wrap("Species") +
       geom_point(aes(Sepal.Length, Petal.Length), data = iris)
   )
-  info <- animint2dir(viz, out.dir = tempfile(), open.browser = FALSE)
+  info <- animint2dir(viz, open.browser = FALSE)
   expect_true(file.exists(file.path(info$out.dir, "index.html")))
 })
 test_that("facet_grid formula notation works", {
@@ -82,6 +74,6 @@ test_that("facet_grid formula notation works", {
       facet_grid(. ~ Species) +
       geom_point(aes(Sepal.Length, Petal.Length), data = iris)
   )
-  info <- animint2dir(viz, out.dir = tempfile(), open.browser = FALSE)
+  info <- animint2dir(viz, open.browser = FALSE)
   expect_true(file.exists(file.path(info$out.dir, "index.html")))
 })
