@@ -1,8 +1,12 @@
+# Changes in version 2026.7.29 (PR#261)
+
+- Multi-line text support (issue #221): `\n` now works in plot titles, axis titles, legend titles, and `geom_text()` labels. R compiler converts newlines to `<br/>` via `R/z_multiline.R`; JavaScript renderer converts `<br/>` to SVG `<tspan>` elements.
+- Fixed multiline text spacing: plot titles no longer overlap the plot area, and X/Y axis title spacing is consistent with single-line titles.
+- Fixed axis titles to scale correctly with `theme(text=element_text(size=X))` (issue #64).
+
 # Changes in version 2026.5.29 (PR#286)
 
-- Positive `panel.margin` values in `"lines"` are supported for vertical and
-  horizontal `facet_grid` layouts and for `facet_wrap`. See
-  `inst/examples/panel-margin-issue-180.R`. Thanks @ANAMASGARD.
+- Positive `panel.margin` values in `"lines"` are supported for vertical and horizontal `facet_grid` layouts and for `facet_wrap`. See `inst/examples/panel-margin-issue-180.R`. Thanks @ANAMASGARD.
 
 # Changes in version 2026.4.28 (PR#292)
 
