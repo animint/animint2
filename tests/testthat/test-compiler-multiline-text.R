@@ -8,9 +8,8 @@ test_that("plot title supports multi-line text", {
       ggtitle("Title Line 1\nTitle Line 2")
   )
   info <- animint2dir(viz, "test-title-multiline", open.browser = FALSE)
-  json <- RJSONIO::fromJSON(file.path(info$out.dir, "plot.json"))
-  expect_true(grepl("<br/>", json$plots$plot1$title, fixed = TRUE))
-  expect_equal(json$plots$plot1$title, "Title Line 1<br/>Title Line 2")
+  expect_match(info$plots$plot1$title, "<br/>", fixed = TRUE)
+  expect_equal(info$plots$plot1$title, "Title Line 1<br/>Title Line 2")
 })
 
 test_that("x-axis title supports multi-line text", {
@@ -21,9 +20,8 @@ test_that("x-axis title supports multi-line text", {
       xlab("X Axis\nLine 2")
   )
   info <- animint2dir(viz, "test-xaxis-multiline", open.browser = FALSE)
-  json <- RJSONIO::fromJSON(file.path(info$out.dir, "plot.json"))
-  expect_true(grepl("<br/>", json$plots$plot1$xtitle, fixed = TRUE))
-  expect_equal(json$plots$plot1$xtitle, "X Axis<br/>Line 2")
+  expect_match(info$plots$plot1$xtitle, "<br/>", fixed = TRUE)
+  expect_equal(info$plots$plot1$xtitle, "X Axis<br/>Line 2")
 })
 
 test_that("y-axis title supports multi-line text", {
@@ -34,9 +32,8 @@ test_that("y-axis title supports multi-line text", {
       ylab("Y Axis\nLine 2")
   )
   info <- animint2dir(viz, "test-yaxis-multiline", open.browser = FALSE)
-  json <- RJSONIO::fromJSON(file.path(info$out.dir, "plot.json"))
-  expect_true(grepl("<br/>", json$plots$plot1$ytitle, fixed = TRUE))
-  expect_equal(json$plots$plot1$ytitle, "Y Axis<br/>Line 2")
+  expect_match(info$plots$plot1$ytitle, "<br/>", fixed = TRUE)
+  expect_equal(info$plots$plot1$ytitle, "Y Axis<br/>Line 2")
 })
 
 test_that("geom_text labels support multi-line text", {
@@ -65,13 +62,12 @@ test_that("legend title supports multi-line text", {
       scale_color_discrete(name = "Category\nName")
   )
   info <- animint2dir(viz, "test-legend-multiline", open.browser = FALSE)
-  json <- RJSONIO::fromJSON(file.path(info$out.dir, "plot.json"))
-  expect_true("legend" %in% names(json$plots$plot1))
-  legend_keys <- names(json$plots$plot1$legend)
+  expect_true("legend" %in% names(info$plots$plot1))
+  legend_keys <- names(info$plots$plot1$legend)
   expect_true(length(legend_keys) > 0)
   has_multiline_title <- FALSE
   for (key in legend_keys) {
-    legend_title <- json$plots$plot1$legend[[key]]$title
+    legend_title <- info$plots$plot1$legend[[key]]$title
     if (!is.null(legend_title) && grepl("<br/>", legend_title, fixed = TRUE)) {
       has_multiline_title <- TRUE
       expect_equal(legend_title, "Category<br/>Name")
