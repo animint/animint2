@@ -44,6 +44,20 @@ test_that("xaxis width increases with coord_equal", {
   expect_gt(ratio, 2)
 })
 
+test_that("yaxis height increases with coord_fixed", {
+  p_fixed <- p + coord_fixed(10)
+  info_default <- animint2HTML(list(plot = p_fixed))
+  y.axes <- getNodeSet(info_default$html, "//g[contains(@class, 'yaxis')]")
+  ydiff_default <- getTickDiff(y.axes[[1]], axis = "y")
+  info_tall <- animint2HTML(list(plot = p_fixed + theme_animint(height = 1000)))
+  y.axes <- getNodeSet(info_tall$html, "//g[contains(@class, 'yaxis')]")
+  ydiff_tall <- getTickDiff(y.axes[[1]], axis = "y")
+  ratio <- ydiff_tall / ydiff_default
+  ## Height is the filling dimension for ratio=10; tick spacing should grow
+  ## substantially (width test uses expect_gt(ratio, 2) for coord_equal).
+  expect_gt(ratio, 1.8)
+})
+
 test_that("coord_equal preserves aspect on non-square viewport", {
   viz <- p + coord_equal() + theme_animint(width=800, height=400)
   info <- animint2HTML(list(plot = viz))

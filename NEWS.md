@@ -1,3 +1,7 @@
+# Changes in version 2026.7.29 (PR#253)
+
+- Fixed `coord_equal()` and `coord_fixed()` to properly fill available plotting space. Issue #234 showed the problem when increasing plot width (800 vs default 400); the same JavaScript bug also affected tall viewports when height should fill. Previously `Math.min(1, aspect)` was applied independently to width and height proportions, shrinking both when the graph pixel aspect did not match the data aspect. The renderer now adjusts panel proportions for non-square graph cells and scale-to-fits so at least one dimension fills the available space while preserving the data aspect ratio.
+
 # Changes in version 2026.5.29 (PR#286)
 
 - Positive `panel.margin` values in `"lines"` are supported for vertical and
@@ -65,10 +69,6 @@
 # Changes in version 2025.10.9 (PR#242)
 
 - Improve common chunk detection, output `na_group` and `row_in_group` when there are missing values.
-
-# Changes in version 2025.10.4 (Issue #234)
-
-- Fixed `coord_equal()` and `coord_fixed()` to properly fill available plotting space. Previously, the JavaScript renderer applied `Math.min(1, aspect)` independently to width and height proportions, which shrunk both axes when the graph pixel aspect did not match the data aspect. The renderer now adjusts panel proportions for non-square graph cells and scale-to-fits so at least one dimension fills the available space while preserving the data aspect ratio.
 
 # Changes in version 2025.10.6 (PR#246)
 
