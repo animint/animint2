@@ -4,6 +4,12 @@
 - New renderer test for polygon holes using the subgroup aesthetic in geom_polygon(), verifying that tooltips appear inside filled regions and not inside holes (issue #252).
 - geom_polygon() gains subgroup aesthetic for drawing polygons with holes, rendered via d3.geo.path() with fill-rule evenodd (issue #252). Thanks @nishita-shah1
 
+# Changes in version 2026.5.29 (PR#286)
+
+- Positive `panel.margin` values in `"lines"` are supported for vertical and
+  horizontal `facet_grid` layouts and for `facet_wrap`. See
+  `inst/examples/panel-margin-issue-180.R`. Thanks @ANAMASGARD.
+
 # Changes in version 2026.4.28 (PR#292)
 
 - `geom(showSelected=character())` means to opt-out of interactive legends. Thanks @ANAMASGARD.
@@ -11,6 +17,10 @@
 # Changes in version 2026.3.8 (PR#311)
 
 - `geom_dotplot()` has been removed. Use `geom_point()` instead for interactive visualizations. (Fixed #289)
+
+# Changes in version 2026.3.2 (PR#306)
+
+- `animint.js`: Remove redundant `Selectors.hasOwnProperty` checks and use a shared `selector_has_duration()` helper (issue #278, PR#306).
 
 # Changes in version 2025.12.4 (PR#277)
 
