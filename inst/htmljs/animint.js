@@ -508,17 +508,45 @@ var animint = function (to_select, json_file) {
     // proportions calculated by the compiler. This has to be done on the
     // rendering side since the precomputed proportions apply to the *graph*
     // and the graph size depends upon results of measureText()
+    //
+    // R fixed_spaces() gives proportions for a square panel cell. Available
+    // cells may be non-square; aspect is cell_height/cell_width in pixels.
+    // Dividing heights by aspect makes panel pixel aspect match the data
+    // aspect (issue #234). Then scale so the largest row/column still fits.
     if (p_info.layout.coord_fixed[0]) {
       var aspect = (graph_height / nrows) / (graph_width / ncols);
     } else {
       var aspect = 1;
     }
-    var wp = p_info.layout.width_proportion.map(function(x){
-      return x * Math.min(1, aspect);
-    })
-    var hp = p_info.layout.height_proportion.map(function(x){
-      return x * Math.min(1, 1/aspect);
-    })
+    var wp = p_info.layout.width_proportion.slice();
+    var hp = p_info.layout.height_proportion.map(function(y){
+      return y / aspect;
+    });
+    var max_row_sum = 0;
+    for (var row_i = 1; row_i <= nrows; row_i++) {
+      var row_sum = 0;
+      for (var layout_j = 0; layout_j < npanels; layout_j++) {
+        if (p_info.layout.ROW[layout_j] == row_i) {
+          row_sum += wp[layout_j];
+        }
+      }
+      max_row_sum = Math.max(max_row_sum, row_sum);
+    }
+    var max_col_sum = 0;
+    for (var col_i = 1; col_i <= ncols; col_i++) {
+      var col_sum = 0;
+      for (var layout_k = 0; layout_k < npanels; layout_k++) {
+        if (p_info.layout.COL[layout_k] == col_i) {
+          col_sum += hp[layout_k];
+        }
+      }
+      max_col_sum = Math.max(max_col_sum, col_sum);
+    }
+    var fit_prop = Math.max(max_row_sum, max_col_sum);
+    if (fit_prop > 0) {
+      wp = wp.map(function(x) { return x / fit_prop; });
+      hp = hp.map(function(y) { return y / fit_prop; });
+    }
 
     // track the proportion of the graph that should be 'blank'
     // this is mainly used to implement coord_fixed()
