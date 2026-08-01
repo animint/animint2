@@ -1,18 +1,12 @@
 test.list <- atime::atime_test_list(
-  ## Adapted from https://github.com/animint/animint2/issues/235#issuecomment-3342083861
-  "getCommonChunk improved in #238"=atime::atime_test(
-    expr=animint2:::getCommonChunk(built, "showSelected", list(group="group")),
-    setup={
-      built <- data.table(
-        x=1:N,
-        group=rep(seq(1,N/2), each=2),
-        showSelected=1:2)
-    },
-    seconds.limit=1,
-    Slow="352f7e10040cb9de6ddd16416d342e9746c14c7a", # Parent of the first commit (https://github.com/animint/animint2/commit/121a11399e7d6ca6c822cd22472886c6d4d8cf10) of the PR (https://github.com/animint/animint2/pull/238/commits).
-    Fast="30950779702e6c8aeecd24aeb737c9fa5ce898e0"), # Last commit in the PR (https://github.com/animint/animint2/pull/238/commits).
-  ## Issue #258: C++ inner compare vs pre-C++ master (PR #342).
-  ## Slow = before first C++ commit.
+  ## Historical #238 Slow/Fast commits fail `R CMD INSTALL` on current CI:
+  ## old man/geom_dotplot.Rd still has build-stage \Sexpr that looks up
+  ## GeomDotplot, which errors with "No geom called GeomDotplot".
+  ## Keep only the #258 C++ comparison for PR
+  ## https://github.com/animint/animint2/pull/342
+  ##
+  ## Issue #258: C++ inner compare vs pre-C++ master.
+  ## Slow = before first C++ commit on PR #342.
   ## Fast = C++ + GC-safe rewrite (common_value_for_group_subset_cpp).
   "getCommonChunk C++ #258"=atime::atime_test(
     expr=animint2:::getCommonChunk(built, "showSelected", list(group="group")),
