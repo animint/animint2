@@ -23,6 +23,7 @@ rm animint2-release/tests/testthat/helper-HTML.R
 rm animint2-release/tests/testthat/test-compiler-chunk-vars.R
 rm animint2-release/tests/testthat/test-compiler-ghpages.R
 rm animint2-release/vignettes/animint2.Rmd #to save disk space
+rm animint2-release/vignettes/get-common-chunk-cpp.Rmd # CRAN release has no VignetteBuilder
 cat <<EOF > animint2-release/tests/testthat.R 
 library(testthat)
 data.table::setDTthreads(1)

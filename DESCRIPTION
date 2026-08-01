@@ -1,6 +1,6 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2026.5.29
+Version: 2026.8.1
 URL: https://animint.github.io/animint2
 BugReports: https://github.com/animint/animint2/issues
 Authors@R: c(
@@ -89,7 +89,8 @@ Imports:
     stats,
     knitr (>= 1.5.33),
     data.table (>= 1.9.8),
-    methods
+    methods,
+    Rcpp
 Suggests:
     gert, gitcreds, gh,
     sp,
@@ -117,9 +118,11 @@ Suggests:
     chromote,
     magick
 License: GPL-3
+LinkingTo: Rcpp
 Encoding: UTF-8
 LazyData: true
 Collate:
+    'RcppExports.R'
     'gganimintproto.r'
     'aaa-.r'
     'aes-calculated.r'
@@ -229,6 +232,7 @@ Collate:
     'position-stack.r'
     'quick-plot.r'
     'range.r'
+    'rcpp-dynlib.R'
     'save.r'
     'scale-.r'
     'scale-alpha.r'

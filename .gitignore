@@ -12,3 +12,12 @@
 *~
 .vscode/settings.json
 /node_modules
+*.o
+*.so
+*.dll
+src/*.o
+src/*.so
+src/*.dll
+vignettes/*.html
+vignettes/*.knit.md
+vignettes/*.utf8.md
