@@ -137,10 +137,12 @@ test_that("C++ and R detect_common_value_dt agree", {
   chunk.vars <- "showSelected"
   col.name.vec <- c("x", "y", "colour")
   setkeyv(built, c("group", chunk.vars))
-  r_dt <- with(
-    options(animint2.use.cpp = FALSE),
-    animint2:::detect_common_value_dt(built, col.name.vec, chunk.vars)
-  )
+  ## Do not use with(options(...), ...): options() sets globally and
+  ## with() does not restore. Capture/restore so R and C++ paths differ.
+  old.opt <- options(animint2.use.cpp = FALSE)
+  on.exit(options(old.opt), add = TRUE)
+  r_dt <- animint2:::detect_common_value_dt(built, col.name.vec, chunk.vars)
+  options(animint2.use.cpp = TRUE)
   if(exists("common_value_for_group_subset_cpp", where = asNamespace("animint2"), mode = "function")){
     cpp_dt <- animint2:::detect_common_value_dt(built, col.name.vec, chunk.vars)
     setorder(r_dt, col.name, group)
