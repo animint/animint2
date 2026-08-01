@@ -10,24 +10,27 @@ test.list <- atime::atime_test_list(
     },
     seconds.limit=1,
     Slow="352f7e10040cb9de6ddd16416d342e9746c14c7a", # Parent of the first commit (https://github.com/animint/animint2/commit/121a11399e7d6ca6c822cd22472886c6d4d8cf10) of the PR (https://github.com/animint/animint2/pull/238/commits).
-    Fast="188cb3422ee0c87d9a71c06ab42a67b9dccb4be0"), # Last commit in the PR (https://github.com/animint/animint2/pull/238/commits).
-  ## Post-#242 workload with NA groups and multiple common columns (#258).
-  ## Slow = master before C++ (parent of first C++ commit on PR #342).
-  ## Fast = tip of PR #342 with common_value_for_group_subset_cpp().
+    Fast="30950779702e6c8aeecd24aeb737c9fa5ce898e0"), # Last commit in the PR (https://github.com/animint/animint2/pull/238/commits).
+  ## Issue #258: C++ inner compare vs pre-C++ master (PR #342).
+  ## Slow = before first C++ commit.
+  ## Fast = C++ + GC-safe rewrite (common_value_for_group_subset_cpp).
   "getCommonChunk C++ #258"=atime::atime_test(
     expr=animint2:::getCommonChunk(built, "showSelected", list(group="group")),
     setup={
+      ## atime supplies N; keep row count divisible by 4 for this workload.
+      n <- 4L * as.integer(N / 4L)
+      if(n < 4L) n <- 4L
       built <- data.table(
-        x=rep(1:5, length.out=N),
-        y=rnorm(N),
+        x=rep(1:5, length.out=n),
+        y=rnorm(n),
         colour="foo",
-        group=rep(seq_len(N/4), each=4),
-        showSelected=rep(1:2, each=N/2),
-        na_group=rep(c(0,0,1,0), length.out=N),
-        row_in_group=rep(1:4, length.out=N)
+        group=rep(seq_len(n/4L), each=4L),
+        showSelected=rep(1:2, each=n/2L),
+        na_group=rep(c(0,0,1,0), length.out=n),
+        row_in_group=rep(1:4, length.out=n)
       )
     },
     seconds.limit=2,
     Slow="9dce8611495357d4441793b9494bbce11fcc1a9f", # Parent of first C++ commit https://github.com/animint/animint2/commit/623545cb
-    Fast="188cb3422ee0c87d9a71c06ab42a67b9dccb4be0") # CRAN-NOTES fix on PR https://github.com/animint/animint2/pull/342
+    Fast="188cb3422ee0c87d9a71c06ab42a67b9dccb4be0") # Review fixes with GC-safe C++ on PR https://github.com/animint/animint2/pull/342
 )
