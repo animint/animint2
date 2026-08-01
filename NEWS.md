@@ -8,7 +8,7 @@
 
 - `geom(showSelected=character())` means to opt-out of interactive legends. Thanks @ANAMASGARD.
 
-# Changes in version TBD (issue #258)
+# Changes in version 2026.8.1 (issue #258)
 
 - `getCommonChunk()` uses `detect_common_value_dt()` with a C++ fast path and per-column R fallback instead of the old nested per-column scan.
 - `common_value_for_group_subset_cpp()` in C++ accelerates the inner compare in `getCommonChunk()`; R handles grouping; R fallback when unavailable.
