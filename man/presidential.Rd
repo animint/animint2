@@ -5,6 +5,8 @@
 \alias{presidential}
 \title{Terms of 11 presidents from Eisenhower to Obama.}
 \format{
+TODO add codebook
+
 A data frame with 11 rows and 4 variables
 }
 \usage{
