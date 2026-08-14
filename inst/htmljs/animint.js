@@ -1901,7 +1901,7 @@ var setMultilineText = function(textElement, text) {
       "stroke": get_colour_off,
       "fill": get_fill_off
     };
-       // TODO cleanup.
+    // TODO cleanup.
     var select_style_default = ["opacity","stroke","fill"];
     g_info.select_style = select_style_default.filter(
       X => g_info.style_list.includes(X));
