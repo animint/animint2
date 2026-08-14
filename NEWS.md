@@ -4,6 +4,12 @@
 - Fixed multiline text spacing: plot titles no longer overlap the plot area, and X/Y axis title spacing is consistent with single-line titles.
 - Fixed axis titles to scale correctly with `theme(text=element_text(size=X))` (issue #64).
 
+# Changes in version 2026.6.28 (PR#328)
+
+- New tooltipID(), mouseMoved(), mousePressed(), mouseReleased() helper functions in tests/testthat/helper-functions.R for simulating mouse events and checking tooltip elements in renderer tests.
+- New renderer test for polygon holes using the subgroup aesthetic in geom_polygon(), verifying that tooltips appear inside filled regions and not inside holes (issue #252).
+- geom_polygon() gains subgroup aesthetic for drawing polygons with holes, rendered via d3.geo.path() with fill-rule evenodd (issue #252). Thanks @nishita-shah1
+
 # Changes in version 2026.5.29 (PR#286)
 
 - Positive `panel.margin` values in `"lines"` are supported for vertical and horizontal `facet_grid` layouts and for `facet_wrap`. See `inst/examples/panel-margin-issue-180.R`. Thanks @ANAMASGARD.
