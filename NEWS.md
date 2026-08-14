@@ -2,6 +2,12 @@
 
 - Fixed `coord_equal()` and `coord_fixed()` to properly fill available plotting space. Issue #234 showed the problem when increasing plot width (800 vs default 400); the same JavaScript bug also affected tall viewports when height should fill. Previously `Math.min(1, aspect)` was applied independently to width and height proportions, shrinking both when the graph pixel aspect did not match the data aspect. The renderer now adjusts panel proportions for non-square graph cells and scale-to-fits so at least one dimension fills the available space while preserving the data aspect ratio.
 
+# Changes in version 2026.6.28 (PR#328)
+
+- New tooltipID(), mouseMoved(), mousePressed(), mouseReleased() helper functions in tests/testthat/helper-functions.R for simulating mouse events and checking tooltip elements in renderer tests.
+- New renderer test for polygon holes using the subgroup aesthetic in geom_polygon(), verifying that tooltips appear inside filled regions and not inside holes (issue #252).
+- geom_polygon() gains subgroup aesthetic for drawing polygons with holes, rendered via d3.geo.path() with fill-rule evenodd (issue #252). Thanks @nishita-shah1
+
 # Changes in version 2026.5.29 (PR#286)
 
 - Positive `panel.margin` values in `"lines"` are supported for vertical and
