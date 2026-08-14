@@ -63,7 +63,7 @@ test_that("showSelected.legend=TRUE keeps default legend injection", {
   point_geom_name <- geom_names[grepl("_point_plot1$", geom_names)]
   expect_identical(length(point_geom_name), 1L)
   show_aes_names <- names(info$geoms[[point_geom_name]]$aes)
-  expect_identical(any(grepl("^showSelected", show_aes_names)), TRUE)
+  expect_match(show_aes_names, "^showSelected", all=FALSE)
   expect_false("showSelected.legend" %in% names(info$geoms[[point_geom_name]]$params))
 })
 test_that("showSelected=character() no longer opts layer out of legend injection", {
@@ -77,5 +77,5 @@ test_that("showSelected=character() no longer opts layer out of legend injection
   point_geom_name <- geom_names[grepl("_point_legendInjectionPlot$", geom_names)]
   expect_identical(length(point_geom_name), 1L)
   show_aes_names <- names(info$geoms[[point_geom_name]]$aes)
-  expect_identical(any(grepl("^showSelected", show_aes_names)), TRUE)
+  expect_match(show_aes_names, "^showSelected", all=FALSE)
 })

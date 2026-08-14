@@ -37,7 +37,6 @@ test_that("explicit showSelected=year without legend-injected region", {
 })
 test_that("colour legend for region is still compiled", {
   legend.info <- info$plots$scatter$legend$region
-  expect_false(is.null(legend.info))
   expect_gt(length(legend.info$entries), 0L)
   expect_identical(legend.info$selector, "region")
 })
