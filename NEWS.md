@@ -1,3 +1,7 @@
+# Changes in version 2026.8.18 (issue #254)
+
+- Codecov now uploads R and JavaScript coverage together, and only after both coverage jobs succeed, so a failed JS (or R) job cannot become an incomplete project-coverage baseline.
+
 # Changes in version 2026.6.28 (PR#328)
 
 - New tooltipID(), mouseMoved(), mousePressed(), mouseReleased() helper functions in tests/testthat/helper-functions.R for simulating mouse events and checking tooltip elements in renderer tests.
