@@ -21,9 +21,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// detect_common_value_dt_cpp
+List detect_common_value_dt_cpp(DataFrame built, CharacterVector col_name_vec, CharacterVector chunk_vars);
+RcppExport SEXP _animint2_detect_common_value_dt_cpp(SEXP builtSEXP, SEXP col_name_vecSEXP, SEXP chunk_varsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< DataFrame >::type built(builtSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type col_name_vec(col_name_vecSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type chunk_vars(chunk_varsSEXP);
+    rcpp_result_gen = Rcpp::wrap(detect_common_value_dt_cpp(built, col_name_vec, chunk_vars));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_animint2_common_value_for_group_subset_cpp", (DL_FUNC) &_animint2_common_value_for_group_subset_cpp, 1},
+    {"_animint2_detect_common_value_dt_cpp", (DL_FUNC) &_animint2_detect_common_value_dt_cpp, 3},
     {NULL, NULL, 0}
 };
 

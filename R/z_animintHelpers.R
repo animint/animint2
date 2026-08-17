@@ -794,8 +794,8 @@ common_value_for_group_subset <- function(value_lists){
 }
 
 ##' Detect common column values for each group.
-##' Grouping stays in R; inner compare may use C++ via
-##' common_value_for_group_subset().
+##' Prefer C++ column/group scan (issue #258); fall back to R
+##' data.table by= loop + common_value_for_group_subset().
 ##' @param built data.table keyed by group and chunk.vars.
 ##' @param col.name.vec candidate column names.
 ##' @param chunk.vars chunk variable names.
@@ -810,6 +810,24 @@ detect_common_value_dt <- function(built, col.name.vec, chunk.vars){
       common=list(),
       is.common=logical()
     ))
+  }
+  if(isTRUE(getOption("animint2.use.cpp", TRUE))){
+    cpp_out <- tryCatch(
+      detect_common_value_dt_cpp(built, col.name.vec, chunk.vars),
+      error=function(e) NULL
+    )
+    if(!is.null(cpp_out)){
+      dt <- as.data.table(cpp_out)
+      ## Match R data.table by= shape: list(value) unwraps to value so
+      ## sapply(common, length) is the vector length (needed for #255).
+      dt[, common := lapply(common, function(x) {
+        if(is.null(x)) list()
+        else if(!is.list(x)) x
+        else if(length(x) == 1L) x[[1]]
+        else x
+      })]
+      return(dt)
+    }
   }
   chunk.cols <- chunk.vars
   rbindlist(lapply(col.name.vec, function(cn) {

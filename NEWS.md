@@ -10,8 +10,8 @@
 
 # Changes in version 2026.8.1 (issue #258)
 
-- `getCommonChunk()` uses `detect_common_value_dt()` with a C++ fast path and per-column R fallback instead of the old nested per-column scan.
-- `common_value_for_group_subset_cpp()` in C++ accelerates the inner compare in `getCommonChunk()`; R handles grouping; R fallback when unavailable.
+- `getCommonChunk()` uses `detect_common_value_dt()` with a C++ column/group scan (`detect_common_value_dt_cpp`) and R data.table fallback (issue #258).
+- `common_value_for_group_subset_cpp()` remains available for the inner compare; R fallback when C++ is unavailable.
 - New unit tests in `test-compiler-getCommonChunk.R`.
 - New atime benchmark for post-#242 NA common-chunk workload. Thanks @nishita-shah1
 

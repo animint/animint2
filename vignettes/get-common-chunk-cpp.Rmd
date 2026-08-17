@@ -38,9 +38,10 @@ C++ handles **inner compare only** (~154 lines). R handles grouping, assembly, a
 ```
 geom-.r
   └─ getCommonChunk()                         [R/z_animintHelpers.R]
-       └─ detect_common_value_dt()            [R: per-column grouping loop]
-            └─ common_value_for_group_subset()
-                 ├─ common_value_for_group_subset_cpp()  [src/get_common_chunk.cpp]
+       └─ detect_common_value_dt()
+            ├─ detect_common_value_dt_cpp()   [src/get_common_chunk.cpp]
+            └─ R fallback: by= grouping + common_value_for_group_subset()
+                 └─ common_value_for_group_subset_cpp()  [inner compare]
                  └─ R fallback
        └─ dcast, split_recursive, varied.chunk
   └─ fwrite *_chunk_common.tsv                  [geom-.r]
@@ -53,7 +54,7 @@ Browser: copy_chunk() in inst/htmljs/animint.js
 
 | File | Role |
 |------|------|
-| `src/get_common_chunk.cpp` | C++ inner compare (`common_value_for_group_subset_cpp`) |
+| `src/get_common_chunk.cpp` | C++ column/group scan + inner compare |
 | `src/RcppExports.cpp` | Auto-generated `.Call` registration |
 | `R/RcppExports.R` | R wrapper calling C++ |
 | `R/z_animintHelpers.R` | `common_value_for_group_subset()`, `detect_common_value_dt()`, `getCommonChunk()` |

@@ -143,7 +143,7 @@ test_that("C++ and R detect_common_value_dt agree", {
   on.exit(options(old.opt), add = TRUE)
   r_dt <- animint2:::detect_common_value_dt(built, col.name.vec, chunk.vars)
   options(animint2.use.cpp = TRUE)
-  if(exists("common_value_for_group_subset_cpp", where = asNamespace("animint2"), mode = "function")){
+  if(exists("detect_common_value_dt_cpp", where = asNamespace("animint2"), mode = "function")){
     cpp_dt <- animint2:::detect_common_value_dt(built, col.name.vec, chunk.vars)
     setorder(r_dt, col.name, group)
     setorder(cpp_dt, col.name, group)

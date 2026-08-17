@@ -3,8 +3,8 @@
 \name{detect_common_value_dt}
 \alias{detect_common_value_dt}
 \title{Detect common column values for each group.
-Grouping stays in R; inner compare may use C++ via
-common_value_for_group_subset().}
+Prefer C++ column/group scan (issue #258); fall back to R
+data.table by= loop + common_value_for_group_subset().}
 \usage{
 detect_common_value_dt(built, col.name.vec, chunk.vars)
 }
@@ -20,7 +20,7 @@ data.table with col.name, group, common, is.common.
 }
 \description{
 Detect common column values for each group.
-Grouping stays in R; inner compare may use C++ via
-common_value_for_group_subset().
+Prefer C++ column/group scan (issue #258); fall back to R
+data.table by= loop + common_value_for_group_subset().
 }
 \keyword{internal}

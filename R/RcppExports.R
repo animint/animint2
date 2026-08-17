@@ -5,3 +5,7 @@ common_value_for_group_subset_cpp <- function(value_lists) {
     .Call(`_animint2_common_value_for_group_subset_cpp`, value_lists)
 }
 
+detect_common_value_dt_cpp <- function(built, col_name_vec, chunk_vars) {
+    .Call(`_animint2_detect_common_value_dt_cpp`, built, col_name_vec, chunk_vars)
+}
+
