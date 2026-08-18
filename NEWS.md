@@ -1,3 +1,16 @@
+# Changes in version 2026.8.1 (issue #258)
+
+- `getCommonChunk()` uses `detect_common_value_dt()` with a C++ column/group scan (`detect_common_value_dt_cpp`) and R data.table fallback (issue #258).
+- `common_value_for_group_subset_cpp()` remains available for the inner compare; R fallback when C++ is unavailable.
+- New unit tests in `test-compiler-getCommonChunk.R`.
+- New atime benchmark for post-#242 NA common-chunk workload. Thanks @nishita-shah1
+
+# Changes in version 2026.6.28 (PR#328)
+
+- New tooltipID(), mouseMoved(), mousePressed(), mouseReleased() helper functions in tests/testthat/helper-functions.R for simulating mouse events and checking tooltip elements in renderer tests.
+- New renderer test for polygon holes using the subgroup aesthetic in geom_polygon(), verifying that tooltips appear inside filled regions and not inside holes (issue #252).
+- geom_polygon() gains subgroup aesthetic for drawing polygons with holes, rendered via d3.geo.path() with fill-rule evenodd (issue #252). Thanks @nishita-shah1
+
 # Changes in version 2026.5.29 (PR#286)
 
 - Positive `panel.margin` values in `"lines"` are supported for vertical and
@@ -7,13 +20,6 @@
 # Changes in version 2026.4.28 (PR#292)
 
 - `geom(showSelected=character())` means to opt-out of interactive legends. Thanks @ANAMASGARD.
-
-# Changes in version 2026.8.1 (issue #258)
-
-- `getCommonChunk()` uses `detect_common_value_dt()` with a C++ column/group scan (`detect_common_value_dt_cpp`) and R data.table fallback (issue #258).
-- `common_value_for_group_subset_cpp()` remains available for the inner compare; R fallback when C++ is unavailable.
-- New unit tests in `test-compiler-getCommonChunk.R`.
-- New atime benchmark for post-#242 NA common-chunk workload. Thanks @nishita-shah1
 
 # Changes in version 2026.3.8 (PR#311)
 
