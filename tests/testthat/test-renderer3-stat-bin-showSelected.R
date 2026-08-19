@@ -12,7 +12,7 @@ df <- rbind(
 )
 
 rect_xpath <- function(panel=1){
-  sprintf('//g[@class="PANEL%d"]//g[contains(@class,"geom1_bar_plot")]//rect', panel)
+  sprintf('//g[contains(@class,"geom1_bar_plot")]//g[@class="PANEL%d"]//rect', panel)
 }
 
 get_rect_heights <- function(html, panel=1){
@@ -22,7 +22,7 @@ get_rect_heights <- function(html, panel=1){
 max_height_by_fill <- function(html, panel=1){
   fills <- getStyleValue(html, rect_xpath(panel), "fill")
   heights <- get_rect_heights(html, panel)
-  stats::tapply(heights, fills, max)
+  tapply(heights, fills, max)
 }
 
 get_rect_x_width <- function(html, panel=1){
@@ -33,10 +33,11 @@ get_rect_x_width <- function(html, panel=1){
 }
 
 select_facet <- function(facet){
-  runtime_evaluate(script='document.getElementsByClassName("facet_variable_selector_widget")[0].getElementsByClassName("selectize-input")[0].dispatchEvent(new CustomEvent("click"));')
-  sendKey("Backspace")
-  remDr$Input$insertText(text=as.character(facet))
-  sendKey("Enter")
+  facet_id <- sprintf("facet___%s", facet)
+  runtime_evaluate(script=sprintf(
+    '$("select.facet_variable_input")[0].selectize.setValue("%s");',
+    facet_id
+  ))
   Sys.sleep(0.5)
 }
 
@@ -60,9 +61,8 @@ stat_bin_showSelected_viz <- function(){
 }
 
 test_that("stat_bin with showSelected recalculates after selection", {
-  info <- NULL
   expect_no_warning({
-    info <<- animint2HTML(stat_bin_showSelected_viz())
+    info <- animint2HTML(stat_bin_showSelected_viz())
   })
   initial_heights <- max_height_by_fill(info$html, 1)
   expect_length(initial_heights, 2)

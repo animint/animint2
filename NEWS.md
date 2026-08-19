@@ -1,3 +1,7 @@
+# Changes in version 2026.8.19 (PR#158 PoC)
+
+- `stat_bin` with `showSelected` now recomputes histogram counts in the browser after selection changes, while keeping panel bin boundaries fixed. Proof-of-concept for issue #158. Thanks @ANAMASGARD.
+
 # Changes in version 2026.6.28 (PR#328)
 
 - New tooltipID(), mouseMoved(), mousePressed(), mouseReleased() helper functions in tests/testthat/helper-functions.R for simulating mouse events and checking tooltip elements in renderer tests.
