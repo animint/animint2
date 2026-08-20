@@ -1,3 +1,7 @@
+# Changes in version 2026.8.19 (PR#158 PoC)
+
+- `stat_bin` with `showSelected` now recomputes histogram counts in the browser after selection changes, while keeping panel bin boundaries fixed. Proof-of-concept for issue #158. Thanks @ANAMASGARD.
+
 # Changes in version 2026.7.29 (PR#261)
 
 - Multi-line text support (issue #221): `\n` now works in plot titles, axis titles, legend titles, and `geom_text()` labels. R compiler converts newlines to `<br/>` via `R/z_multiline.R`; JavaScript renderer converts `<br/>` to SVG `<tspan>` elements.

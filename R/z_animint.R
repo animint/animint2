@@ -378,7 +378,24 @@ animint2dir <- function
     ggplot.info <- ggplot.list[[p.name]]
     for(layer.i in seq_along(ggplot.info$ggplot$layers)){
       L <- ggplot.info$ggplot$layers[[layer.i]]
-      df <- ggplot.info$built$data[[layer.i]]
+      if(identical(class(L$stat)[[1]], "StatBin") && layer_has_showSelected(L)){
+        validate_js_stat_bin_params(L)
+        pre_stat <- get_pre_stat_layer_data(ggplot.info$ggplot)
+        df <- pre_stat[[layer.i]]
+        npscales <- ggplot.info$ggplot$scales$non_position_scales()
+        if(npscales$n() > 0) {
+          scales_train_df(df, scales = npscales)
+          df <- scales_map_df(df, scales = npscales)
+        }
+        panel_ids <- ggplot.info$built$panel$layout$PANEL
+        df <- js_stat_bin_all_panels(df, panel_ids)
+        L$js_stat <- "bin"
+        L$stat_params$x_breaks <- js_stat_bin_x_breaks(
+          ggplot.info$built, L$stat_params$binwidth)
+        ggplot.info$ggplot$layers[[layer.i]] <- L
+      }else{
+        df <- ggplot.info$built$data[[layer.i]]
+      }
       ## Data now contains columns with fill, alpha, colour etc.
       ## Remove from data if they have a single unique value and
       ## are NOT used in mapping to reduce tsv file size
