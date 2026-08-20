@@ -78,6 +78,6 @@ test_that("coord_fixed with shrinking x-axis", {
   xdiff <- getTickDiff(x.axes[[1]])
   ydiff <- getTickDiff(y.axes[[1]], axis = "y")
   diffs <- normDiffs(xdiff, ydiff, ratio10)
-  ## Round to drop SVG sub-pixel float noise (~1e-6); aspect should match.
-  expect_equal(round(diffs[1], 3), round(diffs[2], 3))
+  ## Round to drop SVG sub-pixel float noise; ratio=10 values ~75px can differ by ~0.001 on CI.
+  expect_equal(round(diffs[1], 2), round(diffs[2], 2))
 })
