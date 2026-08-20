@@ -37,17 +37,22 @@ build_strip <- function(panel, label_df, labeller, side = "right", ...) {
   labels <- lapply(labeller(label_df), cbind)
   labels <- do.call("cbind", labels)
   # unlike ggplot2, we collapse "layers" of strips into 1 layer
-  apply(labels, 1, paste, collapse = "; ")
+  apply(labels, 1, paste, collapse = "\n")
 }
 
 #' @export
 getStrips.wrap <- function(facet, panel, ...) {
   labels_df <- panel$layout[names(facet$facets)]
-  labels_df[] <- plyr::llply(labels_df, format, justify = "none")
-  # facet_wrap labels always go on top
-  # we return a list so p_info.strips is always an object (on the JS side)
-  strips <- list(top = apply(labels_df, 1, paste, collapse = ", "), right = list(""))
-  # strips <- strips[!identical(strips$top, rep("", nrow(panel$layout)))]
+  attr(labels_df, "facet") <- "wrap"
+  if (is.null(facet$switch) || facet$switch == "x") {
+    attr(labels_df, "type") <- "rows"
+  } else {
+    attr(labels_df, "type") <- "cols"
+  }
+  strips <- list(
+    top = as.list(build_strip(panel, labels_df, facet$labeller, side = "top", ...)),
+    right = list("")
+  )
   strips$n <- list(top = max(panel$layout$ROW), right = 0)
   strips
 }
