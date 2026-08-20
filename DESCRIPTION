@@ -1,6 +1,6 @@
 Package: animint2
 Title: Animated Interactive Grammar of Graphics
-Version: 2026.6.28
+Version: 2026.7.29
 URL: https://animint.github.io/animint2
 BugReports: https://github.com/animint/animint2/issues
 Authors@R: c(
@@ -287,6 +287,7 @@ Collate:
     'uu_zzz.r'
     'z_animint.R'
     'z_animintHelpers.R'
+    'z_multiline.R'
     'z_facets.R'
     'z_geoms.R'
     'z_helperFunctions.R'
