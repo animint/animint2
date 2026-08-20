@@ -557,17 +557,32 @@ var setMultilineText = function(textElement, text) {
     // proportions calculated by the compiler. This has to be done on the
     // rendering side since the precomputed proportions apply to the *graph*
     // and the graph size depends upon results of measureText()
+    //
+    // R fixed_spaces() gives proportions for a square panel cell. Available
+    // cells may be non-square; aspect is cell_height/cell_width in pixels.
+    // Dividing heights by aspect makes panel pixel aspect match the data
+    // aspect (issue #234). Then scale so the largest row/column still fits.
     if (p_info.layout.coord_fixed[0]) {
       var aspect = (graph_height / nrows) / (graph_width / ncols);
     } else {
       var aspect = 1;
     }
-    var wp = p_info.layout.width_proportion.map(function(x){
-      return x * Math.min(1, aspect);
-    })
-    var hp = p_info.layout.height_proportion.map(function(x){
-      return x * Math.min(1, 1/aspect);
-    })
+    var wp = p_info.layout.width_proportion.slice();
+    var hp = p_info.layout.height_proportion.map(function(y){
+      return y / aspect;
+    });
+    var row_sums = [], col_sums = [];
+    for (var layout_i = 0; layout_i < npanels; layout_i++) {
+      var row = p_info.layout.ROW[layout_i] - 1;
+      var col = p_info.layout.COL[layout_i] - 1;
+      row_sums[row] = (row_sums[row] || 0) + wp[layout_i];
+      col_sums[col] = (col_sums[col] || 0) + hp[layout_i];
+    }
+    var fit_prop = Math.max(d3.max(row_sums) || 0, d3.max(col_sums) || 0);
+    if (fit_prop > 0) {
+      wp = wp.map(function(x) { return x / fit_prop; });
+      hp = hp.map(function(y) { return y / fit_prop; });
+    }
 
     // track the proportion of the graph that should be 'blank'
     // this is mainly used to implement coord_fixed()

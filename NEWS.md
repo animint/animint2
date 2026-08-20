@@ -1,3 +1,7 @@
+# Changes in version 2026.7.29 (PR#253)
+
+- Fixed `coord_equal()` and `coord_fixed()` to properly fill available plotting space. Issue #234 showed the problem when increasing plot width (800 vs default 400); the same JavaScript bug also affected tall viewports when height should fill. Previously `Math.min(1, aspect)` was applied independently to width and height proportions, shrinking both when the graph pixel aspect did not match the data aspect. The renderer now adjusts panel proportions for non-square graph cells and scale-to-fits so at least one dimension fills the available space while preserving the data aspect ratio.
+
 # Changes in version 2026.7.29 (PR#261)
 
 - Multi-line text support (issue #221): `\n` now works in plot titles, axis titles, legend titles, and `geom_text()` labels. R compiler converts newlines to `<br/>` via `R/z_multiline.R`; JavaScript renderer converts `<br/>` to SVG `<tspan>` elements.
