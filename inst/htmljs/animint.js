@@ -571,27 +571,14 @@ var setMultilineText = function(textElement, text) {
     var hp = p_info.layout.height_proportion.map(function(y){
       return y / aspect;
     });
-    var max_row_sum = 0;
-    for (var row_i = 1; row_i <= nrows; row_i++) {
-      var row_sum = 0;
-      for (var layout_j = 0; layout_j < npanels; layout_j++) {
-        if (p_info.layout.ROW[layout_j] == row_i) {
-          row_sum += wp[layout_j];
-        }
-      }
-      max_row_sum = Math.max(max_row_sum, row_sum);
+    var row_sums = [], col_sums = [];
+    for (var layout_i = 0; layout_i < npanels; layout_i++) {
+      var row = p_info.layout.ROW[layout_i] - 1;
+      var col = p_info.layout.COL[layout_i] - 1;
+      row_sums[row] = (row_sums[row] || 0) + wp[layout_i];
+      col_sums[col] = (col_sums[col] || 0) + hp[layout_i];
     }
-    var max_col_sum = 0;
-    for (var col_i = 1; col_i <= ncols; col_i++) {
-      var col_sum = 0;
-      for (var layout_k = 0; layout_k < npanels; layout_k++) {
-        if (p_info.layout.COL[layout_k] == col_i) {
-          col_sum += hp[layout_k];
-        }
-      }
-      max_col_sum = Math.max(max_col_sum, col_sum);
-    }
-    var fit_prop = Math.max(max_row_sum, max_col_sum);
+    var fit_prop = Math.max(d3.max(row_sums) || 0, d3.max(col_sums) || 0);
     if (fit_prop > 0) {
       wp = wp.map(function(x) { return x / fit_prop; });
       hp = hp.map(function(y) { return y / fit_prop; });
