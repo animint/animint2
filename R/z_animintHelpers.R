@@ -769,6 +769,84 @@ getTextSize <- function(element.name, theme){
   paste(input.size, "pt", sep="")
 }
 
+##' Common values for one (column, group) across chunk.vars subsets.
+##' @param value_lists list of atomic vectors, one per chunk.vars level.
+##' @return list with common (list of length 1) and is.common (logical).
+##' @keywords internal
+common_value_for_group_subset <- function(value_lists){
+  if(isTRUE(getOption("animint2.use.cpp", TRUE))){
+    cpp_out <- tryCatch(
+      common_value_for_group_subset_cpp(value_lists),
+      error=function(e) NULL
+    )
+    if(!is.null(cpp_out)) return(cpp_out)
+  }
+  lvec <- vapply(value_lists, length, integer(1))
+  value.vec <- unlist(value_lists, use.names=FALSE)
+  if(length(lvec) > 0 && all(lvec[1] == lvec)){
+    group.size <- lvec[1]
+    m <- matrix(value.vec, group.size)
+    min.na.vec <- apply(m, 1, function(x) x[!is.na(x)][1])
+    if(length(unique(min.na.vec)) == 1){
+      min.na.vec <- min.na.vec[1]
+    }
+    list(
+      common=list(min.na.vec),
+      is.common=all(m == min.na.vec, na.rm=TRUE)
+    )
+  }else if(length(unique(value.vec)) == 1){
+    list(common=list(value.vec[1]), is.common=TRUE)
+  }else{
+    list(common=list(), is.common=FALSE)
+  }
+}
+
+##' Detect common column values for each group.
+##' Prefer C++ column/group scan (issue #258); fall back to R
+##' data.table by= loop + common_value_for_group_subset().
+##' @param built data.table keyed by group and chunk.vars.
+##' @param col.name.vec candidate column names.
+##' @param chunk.vars chunk variable names.
+##' @return data.table with col.name, group, common, is.common.
+##' @keywords internal
+detect_common_value_dt <- function(built, col.name.vec, chunk.vars){
+  group <- col.name <- value <- common <- is.common <- NULL
+  if(length(col.name.vec) == 0){
+    return(data.table(
+      col.name=character(),
+      group=integer(),
+      common=list(),
+      is.common=logical()
+    ))
+  }
+  if(isTRUE(getOption("animint2.use.cpp", TRUE))){
+    cpp_out <- tryCatch(
+      detect_common_value_dt_cpp(built, col.name.vec, chunk.vars),
+      error=function(e) NULL
+    )
+    if(!is.null(cpp_out)){
+      dt <- as.data.table(cpp_out)
+      ## Match R data.table by= shape: list(value) unwraps to value so
+      ## sapply(common, length) is the vector length (needed for #255).
+      dt[, common := lapply(common, function(x) {
+        if(is.null(x)) list()
+        else if(!is.list(x)) x
+        else if(length(x) == 1L) x[[1]]
+        else x
+      })]
+      return(dt)
+    }
+  }
+  chunk.cols <- chunk.vars
+  rbindlist(lapply(col.name.vec, function(cn) {
+    built[, {
+      group_dt <- .SD[, list(value_list = list(get(cn))), by = chunk.cols]
+      cv <- common_value_for_group_subset(group_dt$value_list)
+      list(common = cv$common, is.common = cv$is.common)
+    }, by = group][, col.name := cn]
+  }))
+}
+
 ##' Save the common columns for each tsv to one chunk
 ##' @param built data.frame of built data.
 ##' @param chunk.vars which variables to chunk on.
@@ -779,7 +857,7 @@ getTextSize <- function(element.name, theme){
 ##' @importFrom stats na.omit
 ##' @import data.table
 getCommonChunk <- function(built, chunk.vars, aes.list){
-  group <- col.name <- group.size <- ok <- all.common <- size <- showSelected_values <- common <- NULL
+  group <- col.name <- group.size <- ok <- all.common <- size <- showSelected_values <- common <- is.common <- NULL
   ## Above to avoid CRAN NOTE.
   if(length(chunk.vars) == 0){
     return(NULL)
@@ -805,8 +883,6 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   g_chunk <- c("group", chunk.vars)
   setkeyv(built, g_chunk)
   group_size_dt <- built[, .(size=.N), by=c("group",chunk.vars)]
-  ## first_ss_dt <- built[, .SD[1], by=group, .SDcols=chunk.vars]
-  ## setkeyv(first_ss_dt, g_chunk)
   ss_count_dt <- group_size_dt[, .(
     showSelected_values=.N,
     min_size=min(size),
@@ -814,28 +890,8 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   ), by=group]
   groups_in_several_ss <- ss_count_dt[showSelected_values>1]
   if(nrow(groups_in_several_ss)==0)return(NULL)
-  common_value_dt <- data.table(col.name=col.name.vec)[, {
-    built[, {
-      group_dt <- .SD[, list(value_list=list(get(col.name))), by=chunk.vars]
-      lvec <- sapply(group_dt$value_list, length)
-      value.vec <- unlist(group_dt$value_list)
-      if(all(lvec[1]==lvec)){
-        group.size <- lvec[1]
-        m <- matrix(value.vec, group.size)
-        min.na.vec <- apply(m,1,function(x)x[!is.na(x)][1])
-        if(length(unique(min.na.vec))==1){
-          min.na.vec <- min.na.vec[1]
-        }
-        is.common <- all(m==min.na.vec,na.rm=TRUE)
-        ##if(anyNA(min.na.vec))is.common <- FALSE #TODO maybe could relax?
-        data.table(common=list(min.na.vec), is.common)
-      }else if(length(unique(value.vec))==1){
-        data.table(common=list(value.vec[1]), is.common=TRUE)
-      }else{
-        data.table(common=list(), is.common=FALSE)
-      }
-    }, by=group]
-  }, keyby=col.name]
+  common_value_dt <- detect_common_value_dt(built, col.name.vec, chunk.vars)
+  setkeyv(common_value_dt, "col.name")
   common_var_dt <- common_value_dt[, .(
     all.common=all(is.common)
   ), keyby=col.name]

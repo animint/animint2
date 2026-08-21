@@ -1,3 +1,10 @@
+# Changes in version 2026.8.1 (issue #258)
+
+- `getCommonChunk()` uses `detect_common_value_dt()` with a C++ column/group scan (`detect_common_value_dt_cpp`) and R data.table fallback (issue #258).
+- `common_value_for_group_subset_cpp()` remains available for the inner compare; R fallback when C++ is unavailable.
+- New unit tests in `test-compiler-getCommonChunk.R`.
+- New atime benchmark for post-#242 NA common-chunk workload. Thanks @nishita-shah1
+
 # Changes in version 2026.7.29 (PR#261)
 
 - Multi-line text support (issue #221): `\n` now works in plot titles, axis titles, legend titles, and `geom_text()` labels. R compiler converts newlines to `<br/>` via `R/z_multiline.R`; JavaScript renderer converts `<br/>` to SVG `<tspan>` elements.
