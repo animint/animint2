@@ -401,7 +401,8 @@ var setMultilineText = function(textElement, text) {
     var svg = tdLeft.append("svg")
       .attr("id", p_info.plot_id)
       .attr("height", p_info.options.height)
-      .attr("width", p_info.options.width);
+      .attr("width", p_info.options.width)
+      .style("display", "block");
     
     // divvy up width/height based on the panel layout
     var nrows = Math.max.apply(null, p_info.layout.ROW);
