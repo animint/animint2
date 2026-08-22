@@ -57,7 +57,8 @@ parsePlot <- function(meta, plot, plot.name){
     L$mapping <- L$orig_mapping
     class(L$mapping) <- "list"
 
-    ## If any legends are specified, add showSelected aesthetic
+    ## If any legends are specified, add showSelected aesthetic.
+    ## showSelected=character() opts this layer out of auto-injection only.
     L <- addShowSelectedForLegend(meta, plot.info$legend, L)
 
     ## Check if showSelected and clickSelects have been used as aesthetics
@@ -130,7 +131,7 @@ parsePlot <- function(meta, plot, plot.name){
   for (xy in c("x", "y")) {
     s <- function(tmp) sprintf(tmp, xy)
     # one axis name per plot (ie, a xtitle/ytitle is shared across panels)
-    plot.info[[s("%stitle")]] <- if(is.blank(s("axis.title.%s"))){
+    axis_title_raw <- if(is.blank(s("axis.title.%s"))){
       ""
     } else {
       scale.i <- which(plot$scales$find(xy))
@@ -143,6 +144,10 @@ parsePlot <- function(meta, plot, plot.name){
         lab.or.null
       }
     }
+    # Convert newlines to <br/> for multi-line axis titles (Issue #221)
+    plot.info[[s("%stitle")]] <- convertNewlinesToBreaks(axis_title_raw)
+    ## axis title size.
+    plot.info[[s("%stitle_size")]] <- getTextSize(s("axis.title.%s"), theme.pars)
     ## panel text size.
     plot.info[[s("strip_text_%ssize")]] <- getTextSize(
       s("strip.text.%s"), theme.pars)
@@ -187,12 +192,13 @@ parsePlot <- function(meta, plot, plot.name){
   # grab the unique axis labels (makes rendering simpler)
   plot.info <- getUniqueAxisLabels(plot.info)
 
-  # grab plot title if present
-  plot.info$title <- if(is(theme.pars$plot.title, "blank")){
+  # grab plot title if present and convert newlines (Issue #221)
+  plot_title_raw <- if(is(theme.pars$plot.title, "blank")){
     ""
   }else{
     plot$labels$title
   }
+  plot.info$title <- convertNewlinesToBreaks(plot_title_raw)
   plot.info$title_size <- getTextSize("plot.title", theme.pars)
 
   ## Set plot width and height from animint.* options if they are
@@ -212,8 +218,21 @@ storeLayer <- function(meta, g, g.data.varied){
   ## Save each variable chunk to a separate tsv file.
   meta$chunk.i <- 1L
   meta$g <- g
+  # Initialize chunk_info only if it doesn't exist (common chunk may have been saved)
+  if(!exists("chunk_info", envir=meta)) {
+    meta$chunk_info <- list()
+  }
   g$chunks <- saveChunks(g.data.varied, meta)
   g$total <- length(unlist(g$chunks))
+  
+  ## Add chunk size information to geom - filter to only this geom's chunks
+  g$chunk_info <- list()
+  geom_prefix <- paste0(g$classed, "_chunk")
+  for(chunk_name in names(meta$chunk_info)) {
+    if(startsWith(chunk_name, geom_prefix)) {
+      g$chunk_info[[chunk_name]] <- meta$chunk_info[[chunk_name]]
+    }
+  }
 
   ## Finally save to the master geom list.
   meta$geoms[[g$classed]] <- g
@@ -747,7 +766,6 @@ getLegendList <- function(plistextra){
     gdefs <- guides_merge(gdefs)
     gdefs <- guides_geom(gdefs, layers, default_mapping)
   } else (zeroGrob())
-  names(gdefs) <- sapply(gdefs, function(i) i$title)
 
   ## adding the variable used to each LegendList
   for(leg in seq_along(gdefs)) {
@@ -827,6 +845,9 @@ getLegendList <- function(plistextra){
     }
   }
   legend.list <- lapply(gdefs, getLegend)
+  # Use the 'class' field from getLegend output for legend key names (Issue #221)
+  # This ensures JSON keys don't contain newlines or other special characters
+  names(legend.list) <- sapply(legend.list, function(i) i$class)
   ## Add a flag to specify whether or not there is both a color and a
   ## fill legend to display. If so, we need to draw the interior of
   ## the points in the color legend as the same color.

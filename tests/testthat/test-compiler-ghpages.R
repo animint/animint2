@@ -1,5 +1,9 @@
 acontext("GitHub Pages")
 library(animint2)
+test_repo_name <- sprintf(
+  "animint2pages_test_repo_%s",
+  tolower(Sys.getenv("TEST_SUITE", unset = "local"))
+)
 viz <- animint(
   title="one to ten",
   source="https://github.com/animint/animint2/tree/master/tests/testthat/test-compiler-ghpages.R",
@@ -37,24 +41,24 @@ expect_no_Capture <- function(L){
 reset_test_repo <- function(){
   ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#delete-a-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write) gh api --method DELETE -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/OWNER/REPO
   tryCatch({
-    gh::gh("DELETE /repos/animint-test/animint2pages_test_repo")
+    gh::gh(sprintf("DELETE /repos/animint-test/%s", test_repo_name))
   }, http_error_404=function(e){
     print(e) #in case it is already deleted.
     ##<github_error/http_error_404/rlang_error/error/condition>
-    ##Error in `gh::gh("DELETE /repos/animint-test/animint2pages_test_repo")`: GitHub API error (404): Not Found
+    ##Error in gh::gh(DELETE .../REPO): GitHub API error (404): Not Found
   })
   ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-an-organization-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write)
-  gh::gh("POST /orgs/animint-test/repos", name="animint2pages_test_repo")
+  gh::gh("POST /orgs/animint-test/repos", name = test_repo_name)
   Sys.sleep(3)
 }
 test_that("animint2pages(chromote_sleep_seconds=3) creates Capture.PNG", {
   reset_test_repo()
   ## first run of animint2pages creates new data viz.
-  result_list <- animint2pages(viz, "animint2pages_test_repo", owner="animint-test", chromote_sleep_seconds=3)
+  result_list <- animint2pages(viz, test_repo_name, owner="animint-test", chromote_sleep_seconds=3)
   result_list
-  expect_match(result_list$owner_repo, "animint2pages_test_repo")
-  expect_match(result_list$viz_url, "github.io/animint2pages_test_repo")
-  expect_match(result_list$gh_pages_url, "animint2pages_test_repo/tree/gh-pages")
+  expect_match(result_list$owner_repo, test_repo_name, fixed = TRUE)
+  expect_match(result_list$viz_url, sprintf("github.io/%s", test_repo_name), fixed = TRUE)
+  expect_match(result_list$gh_pages_url, sprintf("%s/tree/gh-pages", test_repo_name), fixed = TRUE)
   README.md <- file.path(result_list$local_clone, "README.md")
   README.lines <- readLines(README.md)
   expected.line <- paste("##", viz$title)
@@ -68,7 +72,7 @@ test_that("animint2pages(chromote_sleep_seconds=3) creates Capture.PNG", {
     geom_point(aes(
       x, x),
       data=data.frame(x=1:5))
-  update_list <- animint2pages(viz.more, "animint2pages_test_repo", owner="animint-test", chromote_sleep_seconds=3)
+  update_list <- animint2pages(viz.more, test_repo_name, owner="animint-test", chromote_sleep_seconds=3)
   tsv_files_updated <- get_tsv(update_list)
   expect_equal(length(tsv_files_updated), 2)
   expect_Capture(update_list)
@@ -77,11 +81,11 @@ test_that("animint2pages(chromote_sleep_seconds=3) creates Capture.PNG", {
 test_that("animint2pages(chromote_sleep_seconds=NULL) does not create Capture.PNG", {
   reset_test_repo()
   Sys.sleep(3)
-  result_list <- animint2pages(viz, "animint2pages_test_repo", owner="animint-test", chromote_sleep_seconds=NULL)
+  result_list <- animint2pages(viz, test_repo_name, owner="animint-test", chromote_sleep_seconds=NULL)
   Sys.sleep(3)
-  expect_match(result_list$owner_repo, "animint2pages_test_repo")
-  expect_match(result_list$viz_url, "github.io/animint2pages_test_repo")
-  expect_match(result_list$gh_pages_url, "animint2pages_test_repo/tree/gh-pages")
+  expect_match(result_list$owner_repo, test_repo_name, fixed = TRUE)
+  expect_match(result_list$viz_url, sprintf("github.io/%s", test_repo_name), fixed = TRUE)
+  expect_match(result_list$gh_pages_url, sprintf("%s/tree/gh-pages", test_repo_name), fixed = TRUE)
   README.md <- file.path(result_list$local_clone, "README.md")
   README.lines <- readLines(README.md)
   expected.line <- paste("##", viz$title)
@@ -106,7 +110,7 @@ test_that("animint2pages(chromote_sleep_seconds=NULL) does not create Capture.PN
       x, x),
       data=data.frame(x=1:5))
   Sys.sleep(3)
-  update_list <- animint2pages(viz.more, "animint2pages_test_repo", owner="animint-test", chromote_sleep_seconds=NULL)
+  update_list <- animint2pages(viz.more, test_repo_name, owner="animint-test", chromote_sleep_seconds=NULL)
   Sys.sleep(3)
   tsv_files_updated <- get_tsv(update_list)
   expect_equal(length(tsv_files_updated), 2)
