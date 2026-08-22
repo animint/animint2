@@ -1,4 +1,5 @@
 acontext("render animint in pdf")
+skip_if_not(nzchar(Sys.which("pdflatex")), "pdflatex not available")
 knitr::knit_meta() #clear knitr 'metadata'
 screenshot.Rmd <- system.file(
   "examples", "test_knit_print_screenshot.Rmd",
