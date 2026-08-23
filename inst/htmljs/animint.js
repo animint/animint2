@@ -205,39 +205,6 @@ var animint = function (to_select, json_file) {
     return {height: bbox.height, width: bbox.width};
   };
 
-  var setMultilineText = function(textSelection, label) {
-    var lines = label.split("\n");
-    textSelection.text("");
-    lines.forEach(function(line, i) {
-      textSelection.append("tspan")
-        .attr("x", 0)
-        .attr("dy", i === 0 ? "0em" : "1.2em")
-        .text(line);
-    });
-  };
-
-  // Measure the same tspan layout that setMultilineText paints so
-  // reserved strip size matches browser em/pt metrics.
-  var measureMultilineText = function(pText, pFontSize, pAngle, pStyle) {
-    if (pText === undefined || pText === null || pText.length === 0) {
-      return {height: 0, width: 0};
-    }
-    var lines = pText.split("\n");
-    if (lines.length === 1) {
-      return measureText(pText, pFontSize, pAngle, pStyle);
-    }
-    if (pAngle === null || isNaN(pAngle)) pAngle = 0;
-    var container = element.append("svg");
-    var textSel = container.append("text")
-      .attr({x: -1000, y: -1000})
-      .attr("transform", "rotate(" + pAngle + ")")
-      .attr("style", pStyle)
-      .attr("font-size", pFontSize);
-    setMultilineText(textSel, pText);
-    var bbox = container.node().getBBox();
-    container.remove();
-    return {height: bbox.height, width: bbox.width};
-  };
 // Set multi-line text on SVG text elements.
 // Converts <br/> tags to <tspan> elements for proper SVG rendering.
 var setMultilineText = function(textElement, text) {
@@ -531,10 +498,10 @@ var setMultilineText = function(textElement, text) {
     plotdim.margin = margin;
     
     var strip_heights = p_info.strips.top.map(function(entry){ 
-      return measureMultilineText(entry, p_info.strip_text_xsize).height;
+      return measureText(entry, p_info.strip_text_xsize).height;
     });
     var strip_widths = p_info.strips.right.map(function(entry){ 
-      return measureMultilineText(entry, p_info.strip_text_ysize).height; 
+      return measureText(entry, p_info.strip_text_ysize).height; 
     });
 
     // compute the number of x/y axes, max strip height per row, and
@@ -758,7 +725,7 @@ var setMultilineText = function(textElement, text) {
         }
         var strip_text_size = "strip_text_"+strip_text_xy+"size";
         var label = strip[0];
-        var firstLine = label.split("\n")[0];
+        var firstLine = label.split("<br/>")[0];
         var stripSize = side == "right"
           ? strip_widths[layout_i]
           : strip_heights[layout_i];

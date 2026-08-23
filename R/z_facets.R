@@ -37,7 +37,7 @@ build_strip <- function(panel, label_df, labeller, side = "right", ...) {
   labels <- lapply(labeller(label_df), cbind)
   labels <- do.call("cbind", labels)
   # unlike ggplot2, we collapse "layers" of strips into 1 layer
-  apply(labels, 1, paste, collapse = "\n")
+  convertNewlinesToBreaks(apply(labels, 1, paste, collapse = "\n"))
 }
 
 #' @export
