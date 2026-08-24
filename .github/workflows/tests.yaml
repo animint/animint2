@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: r-coverage
-          path: r-coverage.xml
+          path: r-coverage.json
           if-no-files-found: error
           retention-days: 1
 
@@ -109,14 +109,14 @@ jobs:
 
       - name: Verify both coverage reports exist
         run: |
-          test -f r-coverage.xml
-          test -f coverage-istanbul.json
+          test -s r-coverage.json
+          test -s coverage-istanbul.json
 
       - name: Upload R and JS coverage together
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: r-coverage.xml,coverage-istanbul.json
+          files: r-coverage.json,coverage-istanbul.json
           disable_search: true
           fail_ci_if_error: true
           verbose: true
@@ -144,6 +144,9 @@ jobs:
 
       - name: git config user.email
         run: git config --global user.email toby.hocking@r-project.org
+
+      - name: run PDF renderer test
+        run: Rscript -e 'testthat::test_file("tests/testthat/test-renderer3-knit-print-pdf.R")'
 
       - name: run CRAN build
         run: bash build.sh
