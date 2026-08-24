@@ -140,5 +140,8 @@ jobs:
       - name: run PDF renderer test
         run: Rscript -e 'testthat::test_file("tests/testthat/test-renderer3-knit-print-pdf.R")'
 
+      - name: run PDF renderer test
+        run: Rscript -e 'testthat::test_file("tests/testthat/test-renderer3-knit-print-pdf.R")'
+
       - name: run CRAN build
         run: bash build.sh
