@@ -99,14 +99,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: r-coverage
-          path: ./
-
-      - name: Download JS coverage artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: js-coverage
-          path: ./
-
       - name: Verify both coverage reports exist
         run: |
           test -s r-coverage.json
