@@ -14,13 +14,18 @@
 - New renderer test for polygon holes using the subgroup aesthetic in geom_polygon(), verifying that tooltips appear inside filled regions and not inside holes (issue #252).
 - geom_polygon() gains subgroup aesthetic for drawing polygons with holes, rendered via d3.geo.path() with fill-rule evenodd (issue #252). Thanks @nishita-shah1
 
+# Changes in version 2026.6.5 (PR#336)
+
+- `geom(showSelected.legend=FALSE)` is the canonical opt-out for legend-driven auto-injection of showSelected, including while keeping explicit showSelected variables. (Fixed #333)
+- Breaking API cleanup: PR #292 `geom(showSelected=character())` no longer opts out; use `showSelected.legend=FALSE` instead.
+
 # Changes in version 2026.5.29 (PR#286)
 
 - Positive `panel.margin` values in `"lines"` are supported for vertical and horizontal `facet_grid` layouts and for `facet_wrap`. See `inst/examples/panel-margin-issue-180.R`. Thanks @ANAMASGARD.
 
 # Changes in version 2026.4.28 (PR#292)
 
-- `geom(showSelected=character())` means to opt-out of interactive legends. Thanks @ANAMASGARD.
+- `geom(showSelected=character())` opted a layer out of auto-added legend showSelected (superseded by `showSelected.legend=FALSE` in PR#336). Thanks @ANAMASGARD.
 
 # Changes in version 2026.3.8 (PR#311)
 
