@@ -1,4 +1,4 @@
-# Changes in version 2026.8.18 (issue #254)
+# Changes in version 2026.8.18 (PR#344)
 
 - Codecov now uploads R and JavaScript coverage together, and only after both coverage jobs succeed, so a failed JS (or R) job cannot become an incomplete project-coverage baseline.
 
