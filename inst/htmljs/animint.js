@@ -2667,6 +2667,11 @@ var setMultilineText = function(textElement, text) {
       .attr("class", "table_selector_widgets")
     ;
     var selector_first_tr = selector_table.append("tr");
+    setTimeout(() => {
+      const selector_height = selector_table[0][0].clientHeight;
+      selector_table
+        .style('height', `${selector_height}px`);
+    }, 0);
     selector_first_tr
       .append("th")
       .text("Variable")
