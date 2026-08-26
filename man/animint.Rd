@@ -15,7 +15,7 @@ list of class animint
 \description{
 Create an animated, interactive data visualization. The easiest
 way to get started is by reading the Animint2 Manual,
-https://rcdata.nau.edu/genomic-ml/animint2-manual/Ch02-ggplot2.html
+https://animint-manual-en.netlify.app
 }
 \details{
 This function creates a list with the items in ... and
@@ -30,7 +30,6 @@ This function creates a list with the items in ... and
   data for the currently selected year.
 }
 \examples{
-
 if(require('data.table'))setDTthreads(1)#for CRAN.
 library(animint2)
 ## Simple hello world example (1 selector: word).
@@ -39,26 +38,30 @@ animint(ggplot()+geom_text(aes(
   data=data.frame(word=c("Hello","world!"))))
 
 ## More complex Hello World (2 selectors: number, language).
-hello_df = data.frame(
+hello_df <- data.frame(
   language=c("en","en","fr","fr"),
   word=c("Hello","world!","Bonjour","monde !"),
   number=factor(c(1,2,1,2)))
-animint(ggplot()+geom_text(aes(
-  number, "message", label=word, color=number),
-  showSelected="language", data=hello_df)+
-geom_text(aes(
-  number, "select language", label=language),
-  clickSelects="language",
-  data=data.frame(number=factor(1:2), language=c("en","fr"))))
+lang_df <- data.frame(number=factor(1:2), language=c("en","fr"))
+animint(
+  ggplot()+
+    geom_text(aes(
+      number, "message", label=word, color=number),
+      showSelected="language", data=hello_df)+
+    geom_text(aes(
+      number, "select language", label=language),
+      clickSelects="language",
+      data=lang_df))
 
 ## More complex World Bank example (3 selectors: country, region, year).
 data(WorldBank, package="animint2")
+WorldBank$Region <- sub(" (all income levels)", "", WorldBank$region, fixed=TRUE)
 years <- unique(WorldBank[, "year", drop=FALSE])
 y1960 <- subset(WorldBank, year==1960)
 animint(
   title="Linked scatterplot and time series", #web page title.
   time=list(variable="year",ms=3000), #variable and time delay used for animation.
-  duration=list(year=1000), #smooth transition duration in milliseconds.
+  duration=list(country=1000, year=1000), #smooth transition duration in milliseconds.
   selector.types=list(country="multiple"), #single/multiple selection for each variable.
   first=list( #selected values to show when viz is first rendered.
     country=c("Canada", "Japan"),
@@ -66,24 +69,31 @@ animint(
   ## ggplots are rendered together for an interactive data viz.
   ts=ggplot()+
     theme_animint(width=500)+
+    theme(legend.position="none")+
     make_tallrect(WorldBank, "year")+
-    geom_text(aes(
-      year, life.expectancy, label=country),
-      showSelected="country",
+    geom_label_aligned(aes(
+      year, life.expectancy,
+      key=country,
+      color=Region,
+      label=country),
+      showSelected=c("country","Region"),
       clickSelects="country",
       hjust=1,
       data=y1960)+
-    scale_x_continuous(limits=c(1950, NA))+
+    scale_x_continuous(
+      breaks=seq(1960, 2010, by=10),
+      limits=c(1940, NA))+
     geom_line(aes(
-      year, life.expectancy, group=country, color=region),
+      year, life.expectancy, group=country, color=Region),
       clickSelects="country",
+      showSelected="Region",
       data=WorldBank,
       size=4,
       alpha=0.55),
   scatter=ggplot()+
     geom_point(aes(
       fertility.rate, life.expectancy,
-      key=country, colour=region, size=population),
+      key=country, colour=Region, size=population),
       chunk_vars=character(),
       showSelected="year",
       clickSelects="country",
@@ -99,6 +109,7 @@ animint(
       5, 80, key=1, label=paste("year =", year)),
       showSelected="year",
       data=years)+
+    scale_x_continuous(breaks=1:9)+
     scale_size_animint(pixel.range=c(2,20), breaks=10^(4:9)))
 }
 \author{

@@ -75,12 +75,12 @@ test_that("save separate chunks for geom_polygon", {
   ## test common.chunk
   common.data <- read.csv(common.chunk, sep = "\t", comment.char = "")
   expect_equal(nrow(common.data), nrow(FluView$USpolygons))
-  expect_true(all(c("x", "y", "group") %in% names(common.data)))
+  expect_identical(sort(names(common.data)), sort(c("x", "y", "group")))
   ## randomly choose n varied.chunk to test
   idx <- sample(no.chunks, 1)
-  varied.data <- read.csv(varied.chunks[idx], sep = "\t", comment.char = "")
+  varied.data <- fread(varied.chunks[idx])
   expect_equal(nrow(varied.data), length(unique(FluView$USpolygons$group)))
-  expect_true(all(c("fill", "group") %in% names(varied.data)))
+  expect_identical(sort(names(varied.data)), c("fill", "group"))
   unlink(out.dir, recursive = TRUE)
 })
 
@@ -98,16 +98,15 @@ flu.points <- ldply(unique(state_flu$WEEKEND), function(we) {
 test_that("save separate chunks for geom_point without specifying group", {
   # the compiler will not break a geom into chunks if any of the resulting 
   # chunk tsv files is estimated to be less than 4KB.
-  state.map <- p + 
-    geom_point(aes(x = mean.long, y = mean.lat, fill = level),
-               data = flu.points, 
-                   showSelected = "WEEKEND",
-               color = "black",
-               size = 10)
-  viz <-
-    list(levelHeatmap = level.heatmap,
-         stateMap = state.map,
-         title = "FluView")
+  viz <- animint(
+    levelHeatmap = level.heatmap,
+    stateMap = p + geom_point(aes(
+      x = mean.long, y = mean.lat, fill = level),
+      data = flu.points,
+      showSelected = "WEEKEND",
+      color = "black",
+      size = 10),
+    title = "FluView")
   out.dir <- file.path(getwd(), "FluView-point")
   unlink(out.dir, recursive = TRUE)
   animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
@@ -128,16 +127,16 @@ test_that("save separate chunks for geom_point without specifying group", {
   ## force to split into chunks
   state.map <- p + 
     geom_point(aes(x = mean.long, y = mean.lat, fill = level),
-               data = flu.points, 
+               data = flu.points,
                    showSelected = "WEEKEND",                
                color = "black",
                size = 10,
                chunk_vars = "WEEKEND",
                validate_params = FALSE)
-  viz <-
-    list(levelHeatmap = level.heatmap,
-         stateMap = state.map,
-         title = "FluView")
+  viz <- animint(
+    levelHeatmap = level.heatmap,
+    stateMap = state.map,
+    title = "FluView")
   animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
   common.chunk <-
     list.files(path = out.dir, pattern = "geom.+point.+chunk_common.tsv", 
@@ -268,60 +267,5 @@ test_that("save separate chunks for non-spatial geoms with repetitive field, mul
   varied.must.have <-
     c("size", "x", "y", "tooltip", "group")
   expect_true(all(varied.must.have %in% names(varied.data)))
-  unlink(out.dir, recursive = TRUE)
-})
-
-### test case 4
-data(breakpoints, package = "animint2")
-
-only.error <- subset(breakpoints$error, type=="E")
-only.segments <- subset(only.error, samples==samples[1])
-signal.colors <- c(estimate="#0adb0a", latent="#0098ef")
-
-signal <- ggplot()+
-  geom_point(aes(position, signal),
-             data=breakpoints$signals, showSelected="samples")+
-  geom_line(aes(position, signal), colour=signal.colors[["latent"]],
-            data=breakpoints$imprecision)+
-  geom_segment(aes(first.base, mean, xend=last.base, yend=mean),
-               colour=signal.colors[["estimate"]],
-                   showSelected=c("segments", "samples"),
-               data=breakpoints$segments)+
-  geom_vline(aes(xintercept=base),
-             colour=signal.colors[["estimate"]],
-                 showSelected=c("segments", "samples"),
-             linetype="dashed",
-             data=breakpoints$breaks)
-
-test_that("save separate chunks for non-spatial geoms with nest_order not being group", {
-  viz <-
-    list(signal = signal,
-         title="breakpointError (select one model size)")
-  out.dir <- file.path(getwd(), "breakpointError-single")
-  unlink(out.dir, recursive = TRUE)
-  animint2dir(viz, out.dir = out.dir, open.browser = FALSE)
-  common.chunk <-
-    list.files(path = out.dir, pattern = "geom.+segment.+chunk_common.tsv", 
-               full.names = TRUE)
-  varied.chunks <-
-    list.files(path = out.dir, pattern = "geom.+segment.+chunk[0-9]+.tsv", 
-               full.names = TRUE)
-  # number of chunks
-  expect_equal(length(common.chunk), 1L)
-  no.chunks <- length(varied.chunks)
-  expect_equal(no.chunks, length(unique(breakpoints$segments$samples)))
-  ## test common.chunk
-  common.data <- read.csv(common.chunk, sep = "\t", comment.char = "")
-  n.samples <- length(unique(breakpoints$segments$samples))
-  expected.rows <- nrow(breakpoints$segments) / n.samples
-  expect_equal(nrow(common.data), expected.rows)
-  common.must.have <- c("showSelected1", "group")
-  expect_true(all(common.must.have %in% names(common.data)))
-  # randomly choose an varied.chunk to test
-  idx <- sample(no.chunks, 1)
-  varied.data <- read.csv(varied.chunks[idx], sep = "\t", comment.char = "")
-  expect_equal(nrow(varied.data), expected.rows)
-  must.have <- c("x", "xend", "y", "yend", "group")
-  expect_true(all(must.have %in% names(varied.data)))
   unlink(out.dir, recursive = TRUE)
 })

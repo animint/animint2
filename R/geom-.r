@@ -158,7 +158,7 @@ Geom <- gganimintproto("Geom",
   ## AnimationInfo- animation list
   ## ID- number starting from 1
   ## returns- list representing a layer, with corresponding aesthetics, ranges, and groups.
-  export_animint = function(l, d, meta, layer_name, ggplot, built, AnimationInfo) {
+  export_animint = function(l, g.data, meta, layer_name, ggplot, built, AnimationInfo) {
     xminv <- y <- xmaxv <- chunks.for <- NULL
     ## above to avoid NOTE on CRAN check.
     g <- list(geom=strsplit(layer_name, "_")[[1]][2])
@@ -219,13 +219,6 @@ Geom <- gganimintproto("Geom",
     s.aes <- selectSSandCS(g$aes)
     meta$selector.aes[[g$classed]] <- s.aes
 
-    ## Do not copy group unless it is specified in aes, and do not copy
-    ## showSelected variables which are specified multiple times.
-    do.not.copy <- colsNotToCopy(g, s.aes)
-    copy.cols <- ! names(d) %in% do.not.copy
-
-    g.data <- d[copy.cols]
-
     is.ss <- names(g$aes) %in% s.aes$showSelected$one
     show.vars <- g$aes[is.ss]
     pre.subset.order <- as.list(names(show.vars))
@@ -259,9 +252,24 @@ Geom <- gganimintproto("Geom",
         sel.row <- selector.df[sel.i,]
         value.col <- paste(sel.row$value.col)
         selector.name <- paste(sel.row$selector.name)
-        ## If this selector was defined by .variable .value aes, then we
-        ## will not generate selectize widgets.
-        meta$selectors[[selector.name]]$is.variable.value <- is.variable.value
+        ## If this selector was defined by .variable .value aes for ALL
+        ## geoms that reference it, then we will not generate selectize
+        ## widgets. Previously we overwrote this flag for each geom,
+        ## causing ordering-dependent behavior. Here we conservatively
+        ## set it to TRUE only when all seen geoms set it to TRUE (AND
+        ## across geoms). If this is the first geom seen for this
+        ## selector, record its value.
+        if(is.null(meta$selectors[[selector.name]])){
+          meta$selectors[[selector.name]] <- list()
+        }
+        prev_flag <- meta$selectors[[selector.name]]$is.variable.value
+        if(is.null(prev_flag)){
+          meta$selectors[[selector.name]]$is.variable.value <- is.variable.value
+        }else{
+          meta$selectors[[selector.name]]$is.variable.value <- (
+            is.logical(prev_flag) && prev_flag && is.variable.value
+          )
+        }
         ## If this selector has no defined type yet, we define it once
         ## and for all here, so we can use it later for chunk
         ## separation.
@@ -283,7 +291,15 @@ Geom <- gganimintproto("Geom",
         ## We also store all the values of this selector in this layer,
         ## so we can accurately set levels after all geoms have been
         ## compiled.
-        value.vec <- unique(g.data[[value.col]])
+        ## For .variable/.value selectors, filter data to only rows
+        ## matching the current selector name before extracting values.
+        data.for.values <- if(is.variable.value){
+          variable.col <- paste(aes.row$variable)
+          g.data[g.data[[variable.col]] == selector.name, ]
+        }else{
+          g.data
+        }
+        value.vec <- unique(data.for.values[[value.col]])
         key <- paste(g$classed, row.i, sel.i)
         meta$selector.values[[selector.name]][[key]] <-
           list(values=paste(value.vec), update=g$classed)
@@ -454,9 +470,8 @@ Geom <- gganimintproto("Geom",
         ## chunks if there are any that are too small.
         tmp <- tempfile()
         some.lines <- rbind(head(g.data), tail(g.data))
-        write.table(some.lines, tmp,
-                    col.names=FALSE,
-                    quote=FALSE, row.names=FALSE, sep="\t")
+        data.table::fwrite(some.lines, file=tmp,
+                    col.names=FALSE,row.names=FALSE, sep="\t")
         bytes <- file.info(tmp)$size
         bytes.per.line <- bytes/nrow(some.lines)
         bad.chunk <- function(){
@@ -565,28 +580,23 @@ Geom <- gganimintproto("Geom",
     if("group" %in% names(g$aes) && g$geom %in% data.object.geoms){
       g$nest_order <- c(g$nest_order, "group")
     }
-
-    ## Some geoms should be split into separate groups if there are NAs.
-    if(any(is.na(g.data)) && "group" %in% names(g$aes)){
-      sp.cols <- unlist(c(chunk.cols, g$nest_order))
-      order.args <- list()
-      for(sp.col in sp.cols){
-        order.args[[sp.col]] <- g.data[[sp.col]]
-      }
-      ord <- do.call(order, order.args)
-      g.data <- g.data[ord,]
-      is.missing <- apply(is.na(g.data), 1, any)
-      diff.vec <- diff(is.missing)
-      new.group.vec <- c(FALSE, diff.vec == 1)
-      for(chunk.col in sp.cols){
-        one.col <- g.data[[chunk.col]]
-        is.diff <- c(FALSE, one.col[-1] != one.col[-length(one.col)])
-        new.group.vec[is.diff] <- TRUE
-      }
-      subgroup.vec <- cumsum(new.group.vec)
-      g.data$group <- subgroup.vec
+    ## If user did not specify aes(group), then use group=1.
+    if(! "group" %in% names(g$aes)){
+      g.data$group <- 1
     }
-
+    ## only run this block for polygon geoms that actually have a subgroup column
+    if(g$geom == "polygon" && "subgroup" %in% names(g.data)){
+      g$data_has_subgroup <- TRUE
+      g.data$subgroup <- as.character(g.data$subgroup)
+      g$types[["subgroup"]] <- "character"
+    }
+    ## Some geoms should be split into separate groups if there are NAs.
+    setDT(g.data)
+    g.data[, let(
+      row_in_group = 1:.N,
+      na_group = cumsum(apply(is.na(.SD), 1, any))
+    ), by=c("group",chunk.cols)]
+    setDF(g.data)
     ## Find infinite values and replace with range min/max.
     for(xy in c("x", "y")){
       range.name <- paste0(xy, ".range")
@@ -619,17 +629,25 @@ Geom <- gganimintproto("Geom",
     ## separately to reduce disk usage.
     data.or.null <- getCommonChunk(g.data, chunk.cols, g$aes)
     g.data.varied <- if(is.null(data.or.null)){
+      if(length(unique(g.data$group))==1)g.data$group <- NULL
       split_recursive(na.omit(g.data), chunk.cols)
     }else{
       g$columns$common <- as.list(names(data.or.null$common))
       tsv.name <- sprintf("%s_chunk_common.tsv", g$classed)
       tsv.path <- file.path(meta$out.dir, tsv.name)
-      write.table(data.or.null$common, tsv.path,
-                  quote = FALSE, row.names = FALSE,
-                  sep = "\t")
+      data.table::fwrite(
+        data.or.null$common, file = tsv.path,
+        row.names = FALSE, sep = "\t")
+      # Track common chunk size and rows
+      if(!exists("chunk_info", envir=meta)) {
+        meta$chunk_info <- list()
+      }
+      meta$chunk_info[[tsv.name]] <- list(
+        bytes = file.size(tsv.path),
+        rows = nrow(data.or.null$common)
+      )
       data.or.null$varied
     }
-
     list(g=g, g.data.varied=g.data.varied, timeValues=AnimationInfo$timeValues)
   }
 )

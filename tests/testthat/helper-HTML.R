@@ -17,6 +17,7 @@ animint2HTML <- function(plotList) {
 getHTML <- function(){
   XML::htmlParse(remDr$getPageSource(), asText = TRUE)
 }
+TIMEOUT_SECONDS <- 30
 #' Initiate external processes necessary for running tests.
 #'
 #' Initiates a local file server and remote driver.
@@ -43,6 +44,7 @@ tests_init <- function(dir = ".", ...) {
   unlink(testDir, recursive = TRUE)
   options(chromote.timeout = 120)
   chrome.session <- chromote::ChromoteSession$new()
+  chrome.session$default_timeout <- TIMEOUT_SECONDS
   # Enable required DevTools domains for coverage
   chrome.session$Runtime$enable()
   chrome.session$Profiler$enable()

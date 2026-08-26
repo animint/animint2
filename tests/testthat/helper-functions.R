@@ -454,6 +454,46 @@ get_element_bbox <- function(selector) {
   runtime_evaluate(script)
 }
 
+tooltipID <- function(id){
+  selector <- paste0("#", id)
+  mouseMoved(selector)
+  html <- getHTML()
+  tooltip.xpath <- '//div[@class="animint-tooltip"]'
+  tooltip_div <- getNodeSet(html, tooltip.xpath)
+  list(
+    opacity=as.numeric(getStyleValue(html, tooltip.xpath, "opacity")),
+    value=xmlValue(tooltip_div))
+}
+mouseMoved <- function(selector=NULL, ...)mouseEvent(selector, "mouseMoved", ...)
+mousePressed <- function(selector=NULL, ...)mouseEvent(selector, "mousePressed", ...)
+mouseReleased <- function(selector=NULL, ...)mouseEvent(selector, "mouseReleased", ...)
+clickIDpos <- function(id){
+  ## this clicks at the position in the middle of the ID specified, so
+  ## if it in the background, the click event will actually go to the
+  ## other element in front.
+  selector <- paste0("#", id)
+  mousePressed(selector, clickCount=1, button="left")
+  mouseReleased(selector, clickCount=1, button="left")
+}
+mouseEvent <- function(selector=NULL, type, ...){
+  position <- if(is.null(selector)){
+    list(center_x=0, center_y=0)
+  }else if(is.list(selector)){
+    selector
+  }else if(is.character(selector)){
+    get_element_bbox(selector)
+  }else stop("unrecognized selector")
+  ## https://chromedevtools.github.io/devtools-protocol/tot/Input/#method-dispatchMouseEvent
+  remDr$Input$dispatchMouseEvent(
+    type = type,
+    x = position$center_x,
+    y = position$center_y,
+    ...
+  )
+  Sys.sleep(0.1)
+  position
+}
+
 driverjs_click_class <- function(class_name,list_num=0){
   runtime_evaluate_helper(
     class_name = class_name,

@@ -9,9 +9,9 @@
 \arguments{
 \item{x}{named list of ggplots and option lists to pass to \code{animint2dir}.}
 
-\item{options}{knitr options.}
+\item{options}{knitr chunk options.}
 
-\item{...}{placeholder.}
+\item{...}{ignored.}
 }
 \description{
 Insert an interactive animation into an R markdown document using a customized print method.

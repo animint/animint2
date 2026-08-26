@@ -95,6 +95,10 @@ geom_point <- function(mapping = NULL, data = NULL,
                        na.rm = FALSE,
                        show.legend = NA,
                        inherit.aes = TRUE) {
+  shape <- list(...)$shape
+  if(isTRUE(shape != 21)){
+    warning("animint2 web rendering only supports shape=21")
+  }
   layer(
     data = data,
     mapping = mapping,
@@ -118,7 +122,7 @@ GeomPoint <- gganimintproto("GeomPoint", Geom,
   required_aes = c("x", "y"),
   non_missing_aes = c("size", "shape"),
   default_aes = aes(
-    shape = 19, colour = "black", size = 1.5, fill = NA,
+    shape = 21, colour = "black", size = 1.5, fill = NA,
     alpha = NA, stroke = 0.5
   ),
 

@@ -1,22 +1,155 @@
+# Changes in version 2026.6.5 (PR#336)
+
+- `geom(showSelected.legend=FALSE)` is the canonical opt-out for legend-driven auto-injection of showSelected, including while keeping explicit showSelected variables. (Fixed #333)
+- Breaking API cleanup: PR #292 `geom(showSelected=character())` no longer opts out; use `showSelected.legend=FALSE` instead.
+
+# Changes in version 2026.7.29 (PR#261)
+
+- Multi-line text support (issue #221): `\n` now works in plot titles, axis titles, legend titles, and `geom_text()` labels. R compiler converts newlines to `<br/>` via `R/z_multiline.R`; JavaScript renderer converts `<br/>` to SVG `<tspan>` elements.
+- Fixed multiline text spacing: plot titles no longer overlap the plot area, and X/Y axis title spacing is consistent with single-line titles.
+- Fixed axis titles to scale correctly with `theme(text=element_text(size=X))` (issue #64).
+
+# Changes in version 2026.6.28 (PR#328)
+
+- New tooltipID(), mouseMoved(), mousePressed(), mouseReleased() helper functions in tests/testthat/helper-functions.R for simulating mouse events and checking tooltip elements in renderer tests.
+- New renderer test for polygon holes using the subgroup aesthetic in geom_polygon(), verifying that tooltips appear inside filled regions and not inside holes (issue #252).
+- geom_polygon() gains subgroup aesthetic for drawing polygons with holes, rendered via d3.geo.path() with fill-rule evenodd (issue #252). Thanks @nishita-shah1
+
+# Changes in version 2026.5.29 (PR#286)
+
+- Positive `panel.margin` values in `"lines"` are supported for vertical and horizontal `facet_grid` layouts and for `facet_wrap`. See `inst/examples/panel-margin-issue-180.R`. Thanks @ANAMASGARD.
+
+# Changes in version 2026.4.28 (PR#292)
+
+- `geom(showSelected=character())` opted a layer out of auto-added legend showSelected (superseded by `showSelected.legend=FALSE` in PR#336). Thanks @ANAMASGARD.
+
+# Changes in version 2026.3.8 (PR#311)
+
+- `geom_dotplot()` has been removed. Use `geom_point()` instead for interactive visualizations. (Fixed #289)
+
+# Changes in version 2026.3.2 (PR#306)
+
+- `animint.js`: Remove redundant `Selectors.hasOwnProperty` checks and use a shared `selector_has_duration()` helper (issue #278, PR#306).
+
+# Changes in version 2025.12.4 (PR#277)
+
+- `update_axes`: Fix issue #276 where transition duration was hardcoded to 1000ms. Now it respects the selector's duration.
+
+# Changes in version 2025.12.3 (PR#282)
+
+- URL hash handling: Removed old `window.location.hash` parsing code from `animint.js` (issue #280).
+
+# Changes in version 2025.12.2 (PR#283)
+
+- `update_axes`: Fixed issue #281 where plots did not render in Rmd.
+
+# Changes in version 2025.11.17 (PR#274)
+
+- `update_axes`: Fixed issue #273 where axis tick text font-size was inconsistent between plots with and without `update_axes`. Previously, plots using `theme_animint(update_axes="x")` would lose `theme(axis.text = element_text(size=...))` styling after axis updates.
+
+# Changes in version 2025.12.4 (PR#272)
+
+- Download status table now shows `files`, `disk`, and `rows` columns in "downloaded / total" format. Row counts display with comma separators for readability. Disk sizes show KiB or MiB units (using binary 1024 divisor, consistent with `man du`). Chunk sizes are calculated in R using `file.size()` and exported via plot.json.
+
+# Changes in version 2025.10.31 (PR#271)
+
+- `geom_point()` now warns when shape parameter is set to a value other than 21, since animint2 web rendering only supports shape=21 for proper display of both color and fill aesthetics.
+
+# Changes in version 2025.10.27 (PR#269)
+
+- `geom_point()` default shape changed from 19 to 21 to enable both color and fill aesthetics for more consistent static rendering.
+
+# Changes in version 2025.10.23 (PR#233)
+
+- When using named clickSelects or showSelected, selectize menus no longer display too many values.
+
+# Changes in version 2025.10.22 (PR#266)
+
+- `geom_text(vjust!=0)` warning mentions vjust support in `geom_label_aligned()`.
+
+# Changes in version 2025.10.17 (PR#255)
+
+- `getCommonChunk()` uses default group=1 (previously 1:N which was slower).
+- `getCommonChunk()` works for `geom_point()` and other geoms which do not use `aes(group)` for display (previously common data was only returned for geoms path/polygon/ribbon).
+- `getCommonChunk()` returns common data if there is only one common variable, as long as it has at least one group with more than one row (previously at least two common variables were required).
+
+# Changes in version 2025.10.10 (PR#251)
+
+-  `animint2dir()` no longer has `css.file` argument which was never tested. Style customizations should be done using `theme()`.
+
+# Changes in version 2025.10.9 (PR#242)
+
+- Improve common chunk detection, output `na_group` and `row_in_group` when there are missing values.
+
+# Changes in version 2025.10.6 (PR#246)
+
+- Added validation for selector names to prevent browser rendering failures. Selector names (from data values used in `clickSelects` and `showSelected`) cannot contain CSS special characters like `#`, `@`, `!`, `$`, etc., as these interfere with JavaScript DOM selectors and cause blank visualizations in the browser. The compiler now stops with a clear error message identifying problematic selector names, helping users fix data issues before attempting to render.
+
+# Changes in version 2025.10.3 (PR#240)
+
+- `guide_legend(override.aes)` works in a plot with both color and fill legends.
+
+# Changes in version 2025.9.30 (PR#239)
+
+- `getCommonChunk()` has new atime performance test.
+
+# Changes in version 2025.9.27 (PR#238)
+
+- Remove `checkCommon()` internal function, which was too slow for computing common chunk tsv file, when there were a large number of groups. Now using data table by group, which is faster and prints progress.
+
+# Changes in version 2025.9.26 (PR#236)
+
+- `animint2pages()` arguments `chromote_*` move to `animint2dir()` so that we can create `Capture.PNG` in the context of `knit_print.animint()`, for pdf output.
+
+# Changes in version 2025.9.16
+
+- `animint2pages()` gains arguments `chromote_width` and `chromote_height`, both dimensions in pixels of browser window used to create `Capture.PNG`, new defaults 3000x2000 should be large enough to handle most typical data viz (previous default width was not on Ubuntu).
+- `update_gallery()` uses `method="curl"` when downloading `Capture.PNG` (this fixes previous default method which resulted in PNG with errors).
+
+# Changes in version 2025.9.12 (PR#226)
+
+- Tooltip is hidden after clicking to de-select.
+
+# Changes in version 2025.9.11 (PR#224)
+
+- Bugfix when `meke_tallrect()` is last geom, now selection menu renders. Thanks @suhaani-agarwal for the PR.
+
+# Changes in version 2025.9.10 (PR#223)
+
+- `geom_label_aligned()` and `aes(tooltip)` now work in Rmd docs rendered to HTML.
+
+# Changes in version 2025.9.9 (PR#153)
+
+- Multiple ggplots may now be arranged on the page via `theme_animint()` options `colspan=2`, `rowspan=2`, `last_in_row=TRUE` (meaning next ggplot occurs in next row). Backwards-compatible since old arrangement code is used when none of these options is present. Thanks to @biplab-sutradhar for contributions to the PR.
+
+# Changes in version 2025.9.6 (PR#220)
+
+- `aes(tooltip)`: Fixed an issue where tooltips containing newline characters (e.g. `"two\nlines"`) caused rendering failures when combined with other aesthetics such as `aes(color=...)`. The problem was due to TSV export with `quote=FALSE`, which broke parsing when fields contained newlines. The TSV writer now uses `quote="auto"`, ensuring fields with `\n` are preserved correctly. On the rendering side, newline characters in tooltips are converted to `<br/>`, so multi-line tooltips are now properly supported. Thanks @suhaani-agarwal for the PR.
+
 # Changes in version 2025.8.16 (PR#214)
 
-- `geom_abline()`: Fixed an issue where lines extended beyond plot boundaries when update_axes was called. The clipping logic has now been moved from the pre_process function on the R side to the renderer side, ensuring that geom_abline lines are correctly clipped to the plot boundaries during update_axes.
+- `geom_abline()`: Fixed an issue where lines extended beyond plot boundaries when `update_axes()` was called. The clipping logic has now been moved from `pre_process()` on the R side to the renderer side, ensuring that `<line>` elements are correctly clipped to the plot boundaries during `update_axes()`. Thanks @suhaani-agarwal for the PR.
 
 # Changes in version 2025.7.21 (PR#203)
 
-- Added `geom_label_aligned`, a new geom that plots text labels with non-overlapping positioning along a specified alignment axis ("horizontal" or "vertical"). It uses quadratic programming to optimize label placement and includes options for spacing (min_distance), alignment, rounded background rectangles (label_r), disabling the background rectangle (background_rect = FALSE), etc.
+- Added `geom_label_aligned()`, a new geom that plots text labels with non-overlapping positioning along a specified alignment axis ("horizontal" or "vertical"). It uses quadratic programming to optimize label placement and includes options for spacing (`min_distance`), alignment, rounded background rectangles (`label_r`), disabling the background rectangle (`background_rect = FALSE`), etc. Thanks @suhaani-agarwal for the PR.
+
+# Changes in version 2025.7.18 (PR#201)
+
+- `animint2pages()` default branch is gh-pages instead of main.
+- `update_gallery()` creates repos/* directories and removes errors.csv file if necessary.
 
 # Changes in version 2025.7.10 (PR#208)
 
-- Added Codecov integration for both R and JavaScript tests; coverage reports now available at https://app.codecov.io/github/animint/animint2
+- Added Codecov integration for both R and JavaScript tests; [coverage reports now available](https://app.codecov.io/github/animint/animint2). Thanks @suhaani-agarwal for the PR.
 
 # Changes in version 2025.6.28 (PR#204) 
 
-- The geom_raster implementation has been removed.
+- `geom_raster()` has been removed. Thanks to @biplab-sutradhar for the PR.
 
 # Changes in version 2025.6.4 (PR#197)
 
-- `aes(tooltip = "...")` now renders fast, lightweight tooltips using D3.
+- `aes(tooltip = "...")` now renders fast, lightweight tooltips using D3. Thanks @suhaani-agarwal for the PR.
 
 # Changes in version 2025.1.28
 

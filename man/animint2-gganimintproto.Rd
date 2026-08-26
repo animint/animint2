@@ -6,7 +6,7 @@
 %   R/stat-.r, R/geom-abline.r, R/geom-rect.r, R/geom-bar.r, R/geom-bin2d.r,
 %   R/geom-blank.r, R/geom-path.r, R/geom-contour.r, R/geom-crossbar.r,
 %   R/geom-segment.r, R/geom-curve.r, R/geom-ribbon.r, R/geom-density.r,
-%   R/geom-density2d.r, R/geom-dotplot.r, R/geom-errorbar.r, R/geom-errorbarh.r,
+%   R/geom-density2d.r, R/geom-errorbar.r, R/geom-errorbarh.r,
 %   R/geom-freqpoly.r, R/geom-hex.r, R/geom-hline.r, R/geom-label-aligned.R,
 %   R/geom-label.R, R/geom-linerange.r, R/geom-point.r, R/geom-pointrange.r,
 %   R/geom-rug.r, R/geom-smooth.r, R/geom-spoke.r, R/geom-text.r,
@@ -55,7 +55,6 @@
 \alias{GeomArea}
 \alias{GeomDensity}
 \alias{GeomDensity2d}
-\alias{GeomDotplot}
 \alias{GeomErrorbar}
 \alias{GeomErrorbarh}
 \alias{GeomFreqpoly}

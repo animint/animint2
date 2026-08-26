@@ -9,6 +9,7 @@ gh.action <- Sys.getenv("GH_ACTION")
 is_js_coverage <- Sys.getenv("TEST_SUITE") == "JS_coverage"
 message(gh.action)
 tests_init()
+
 # Start coverage if enabled
 coverage_active <- FALSE
 if(is_js_coverage) {
@@ -17,11 +18,7 @@ if(is_js_coverage) {
     message("JS coverage collection started")
   }
 }
-# Run tests
-message("\n=== Running COMPILER tests ===")
-tests_run(filter = "compiler")
-message("\n=== Running RENDERER tests ===")
-tests_run(filter = "renderer")
+tests_run()
 # Save coverage and cleanup
 if(coverage_active) {
   stop_js_coverage()

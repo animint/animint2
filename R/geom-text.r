@@ -188,7 +188,7 @@ GeomText <- gganimintproto("GeomText", Geom,
       rot = data$angle,
       gp = gpar(
         col = alpha(data$colour, data$alpha),
-        fontsize = data$size * .pt,
+        fontsize = data$size,
         fontfamily = data$family,
         fontface = data$fontface,
         lineheight = data$lineheight
@@ -207,7 +207,7 @@ GeomText <- gganimintproto("GeomText", Geom,
       if(any(not.supported)){
         bad.vjust <- unique(vjust.vec[not.supported])
         print(bad.vjust)
-        warning("animint only supports vjust=0")
+        warning("geom_text currently only supports vjust=0, but you may want to try geom_label_aligned, which supports vjust values 0, 0.5, and 1")
       }
     }
     if ("hjust" %in% names(g$params)) {

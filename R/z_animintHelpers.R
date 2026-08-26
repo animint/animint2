@@ -6,6 +6,7 @@
 #' @param L layer of the plot
 #' @return L : Layer with additional mapping to new aesthetic
 addShowSelectedForLegend <- function(meta, legend, L){
+  legend_auto_ss_disabled <- isFALSE(L$extra_params$showSelected.legend)
   for(legend.i in seq_along(legend)) {
     one.legend <- legend[[legend.i]]
     ## the name of the selection variable used in this legend.
@@ -30,8 +31,8 @@ addShowSelectedForLegend <- function(meta, legend, L){
         ## only add showSelected aesthetic if the variable is
         ## used by the geom
         type.vec <- one.legend$legend_type
-        if(any(type.vec %in% names(L$mapping))){
-          L$extra_params$showSelected <- c(L$extra_params$showSelected, s.name)
+        if(!legend_auto_ss_disabled && any(type.vec %in% names(L$mapping))){
+          L$extra_params[["showSelected"]] <- c(L$extra_params[["showSelected"]], s.name)
         }
       }
       ## if selector.types has not been specified, create it
@@ -58,7 +59,7 @@ addShowSelectedForLegend <- function(meta, legend, L){
       meta$selectors[[s.name]]$legend <- TRUE
     }#length(s.name)
   }#legend.i
-  return(L)
+  L
 }
 
 
@@ -131,20 +132,29 @@ getUniqueAxisLabels <- function(plot.meta){
   return(plot.meta)
 }
 
-
-getWidthAndHeight <- function(theme){
+getThemeOptions <- function(theme, ...) {
+  defaults <- list(...)
+  keys <- names(defaults)
   options_list <- list()
-  for(wh in c("width", "height")){
-    awh <- paste0("animint.", wh)
-    options_list[[wh]] <- if(awh %in% names(theme)){
-      theme[[awh]]
-    }else{
-      400
+  for (i in seq_along(keys)) {
+    key <- keys[i]
+    attr_name <- paste0("animint.", key)
+    options_list[[key]] <- if (attr_name %in% names(theme)) {
+      theme[[attr_name]]
+    } else {
+      defaults[[i]]
     }
   }
   options_list
 }
 
+getWidthAndHeight <- function(theme) {
+  getThemeOptions(theme, width=400, height=400)
+}
+
+get_span <- function(theme) {
+  getThemeOptions(theme, rowspan=NA, colspan=NA, last_in_row=NA)
+}
 
 setUpdateAxes <- function(theme, options_list){
   update_axes <- "animint.update_axes"
@@ -173,8 +183,6 @@ hjust2anchor <- function(hjust){
   }
 }
 
-#' @param params Named list of layer parameters
-#' @return NULL if valid, stops with error if invalid showSelected variant found
 error_for_showSelected_variants <- function(params) {
   if (is.null(names(params))) return(NULL)
   # Match any parameter that starts with "showSelected" but is not exactly "showSelected"
@@ -194,6 +202,7 @@ error_for_showSelected_variants <- function(params) {
 #' @return All parameters in the layer
 getLayerParams <- function(l){
   params <- c(l$geom_params, l$stat_params, l$aes_params, l$extra_params)
+  params$showSelected.legend <- NULL
   error_for_showSelected_variants(params)
   if("chunk_vars" %in% names(params) && is.null(params[["chunk_vars"]])){
     params[["chunk_vars"]] <- character()
@@ -208,37 +217,6 @@ getLayerParams <- function(l){
   params
 }
 
-
-#' Filter out columns that do not need to be copied
-#'
-#' @param g Geom with columns
-#' @param s.aes Selector aesthetics
-#' @return Character vector of columns not to be copied
-colsNotToCopy <- function(g, s.aes){
-  group.not.specified <- ! "group" %in% names(g$aes)
-  n.groups <- length(unique(NULL))
-  need.group <- c("violin", "step", "hex")
-  group.meaningless <- g$geom %in% c(
-    "abline", "blank",
-    ##"crossbar", "pointrange", #documented as unsupported
-    ## "rug", "dotplot", "quantile", "smooth", "boxplot",
-    ## "bin2d", "map"
-    "errorbar", "errorbarh",
-    ##"bar", "histogram", #?
-    "hline", "vline",
-    "jitter", "linerange",
-    "point",
-    "rect", "segment")
-  dont.need.group <- ! g$geom %in% need.group
-  remove.group <- group.meaningless ||
-    group.not.specified && 1 < n.groups && dont.need.group
-  do.not.copy <- c(
-    if(remove.group)"group")
-
-  do.not.copy
-}
-
-
 ## Generate error for non-Identity Stat + showSelected
 checkForNonIdentityAndSS <- function(stat.type, has.show, is.show, l,
                                      g_classed, g_data_names,
@@ -247,7 +225,6 @@ checkForNonIdentityAndSS <- function(stat.type, has.show, is.show, l,
     show.names <- aes_names[is.show]
     data.has.show <- show.names %in% g_data_names
     signal <- if(all(data.has.show))warning else stop
-    print(l)
     signal(
       "showSelected does not work with ",
       stat.type,
@@ -632,6 +609,22 @@ checkSingleShowSelectedValue <- function(selectors){
 }
 
 
+#' Validate selector names for CSS compatibility
+#' @param selectors selectors to validate
+#' @return \code{NULL}. Throws error if invalid characters found.
+checkSelectorNames <- function(selectors){
+  selector.names <- names(selectors)
+  ## Characters that are invalid in CSS selectors and cause issues in browser
+  ## ] must be first in character class, [ can be anywhere after
+  invalid.pattern <- "[][#!@$%^&*=|/'\"`?<>()\\\\]"
+  has.invalid <- grepl(invalid.pattern, selector.names)
+  if(any(has.invalid)){
+    invalid.names <- selector.names[has.invalid]
+    stop(sprintf("Invalid character(s) in selector name(s).\nSelector names cannot contain special characters that interfere with CSS selectors.\nThe following selector(s) contain invalid characters:\n%s\n\nPlease remove or replace these characters in your variable names.", paste("-", invalid.names, collapse="\n")))
+  }
+}
+
+
 #' Set plot width and height for all plots
 #' @param meta meta object with all information
 #' @param AllPlotsInfo plot info list
@@ -711,6 +704,8 @@ getLegend <- function(mb){
     names(data) <- paste0(geom, names(data))# aesthetics by geom
     names(data) <- gsub(paste0(geom, "."), "", names(data), fixed=TRUE) # label isn't geom-specific
     data$label <- paste(data$label) # otherwise it is AsIs.
+    # Convert newlines to <br/> for multi-line legend labels (Issue #221)
+    data$label <- convertNewlinesToBreaks(data$label)
     data
   }
   dataframes <- mapply(function(i, j) cleanData(i$data, mb$key, j, i$params),
@@ -735,10 +730,16 @@ getLegend <- function(mb){
   if(guidetype=="none"){
     NULL
   }else{
+    # Convert newlines to <br/> for multi-line legend title (Issue #221)
+    legend_title <- convertNewlinesToBreaks(mb$title)
+    # For the 'class' field (used as JSON key), sanitize newlines to spaces
+    # to avoid JSON parsing issues with control characters (Issue #221)
+    safe_title <- gsub("\n", " ", mb$title, fixed = TRUE)
+    legend_class <- if(mb$is.discrete) mb$selector else safe_title
     list(guide = guidetype,
          geoms = unlist(mb$geom.legend.list),
-         title = mb$title,
-         class = if(mb$is.discrete)mb$selector else mb$title,
+         title = legend_title,
+         class = legend_class,
          selector = mb$selector,
          is_discrete= mb$is.discrete,
          legend_type = mb$legend_type,
@@ -776,156 +777,104 @@ getTextSize <- function(element.name, theme){
 ##' @importFrom stats na.omit
 ##' @import data.table
 getCommonChunk <- function(built, chunk.vars, aes.list){
-  group <- NULL
+  group <- col.name <- group.size <- ok <- all.common <- size <- showSelected_values <- common <- NULL
   ## Above to avoid CRAN NOTE.
   if(length(chunk.vars) == 0){
     return(NULL)
   }
-  if(! "group" %in% names(aes.list)){
-    ## user did not specify group, so do not use any ggplot2-computed
-    ## group for deciding common data.
-    built$group <- NULL
-  }
-
   ## Remove columns with all NA values
   ## so that common.not.na is not empty
   ## due to the plot's alpha, stroke or other columns
   built <- as.data.table(built)
-  ## convert 'built' from df to dt to improve speed
-  built <- built[, lapply(.SD, function(x) {
-    if (all(is.na(x))) {
-      NULL
-    } else {
-        x
-    }
-  })]
-
   ## Treat factors as characters, to avoid having them be coerced to
   ## integer later.
   changeCols <- names(Filter(is.factor, built))
   if(length(changeCols)){
     built <- built[, (changeCols) := lapply(.SD, as.character), .SDcols = changeCols]
   }
-
   ## If there is only one chunk, then there is no point of making a
   ## common data file.
   chunk.rows.tab <- built[, .N, by = chunk.vars]
   if(nrow(chunk.rows.tab) == 1) return(NULL)
-
-  ## If there is no group column, and all the chunks are the same
-  ## size, then add one based on the row number.
-  if(! "group" %in% names(built)){
-    chunk.rows <- chunk.rows.tab[1]$N
-    same.size <- chunk.rows == chunk.rows.tab$N
-    built <- data.table::setorderv(built, chunk.vars)
-    if(all(same.size)){
-      built <- built[, group := rep(1:chunk.rows, length.out = .N)]
-    }else{
-      ## do not save a common chunk file.
-      return(NULL)
-    }
-  }
-
-  setDF(built)
-  built.by.group <- split(built, built$group)
-  group.tab <- table(built[, c("group", chunk.vars)])
-  each.group.same.size <- apply(group.tab, 1, function(group.size.vec){
-    group.size <- group.size.vec[1]
-    if(all(group.size == group.size.vec)){
-      ## groups are all this size.
-      group.size
-    }else{
-      ## groups not the same size.
-      0
-    }
-  })
-
-  checkCommon <- function(col.name){
-    for(group.name in names(built.by.group)){
-      data.vec <- built.by.group[[group.name]][[col.name]]
-      if(group.size <- each.group.same.size[[group.name]]){
-        not.same.value <- data.vec != data.vec[1:group.size]
-        if(any(not.same.value, na.rm=TRUE)){
-          ## if any data values are different, then this is not a
-          ## common column.
-          return(FALSE)
-        }
-      }else{
-        ## this group has different sizes in different chunks, so the
-        ## only way that we can make common data is if there is only
-        ## value.
-        value.tab <- table(data.vec)
-        if(length(value.tab) != 1){
-          return(FALSE)
-        }
-      }
-    }
-    TRUE
-  }
-
   all.col.names <- names(built)
-  col.name.vec <- all.col.names[!all.col.names %in% chunk.vars]
-  is.common <- sapply(col.name.vec, checkCommon)
-
-  ## TODO: another criterion could be used to save disk space even if
-  ## there is only 1 chunk.
-  n.common <- sum(is.common)
-  if(is.common[["group"]] && 2 <= n.common && n.common < length(is.common)){
-    common.cols <- names(is.common)[is.common]
-    group.info.list <- list()
-    for(group.name in names(built.by.group)){
-      one.group <- built.by.group[[group.name]]
-      group.size <- each.group.same.size[[group.name]]
-      if(group.size == 0){
-        group.size <- 1
+  sparse.cols <- c("na_group","row_in_group")
+  never.in.common <- c("group",sparse.cols,chunk.vars)
+  col.name.vec <- setdiff(all.col.names,never.in.common)
+  g_chunk <- c("group", chunk.vars)
+  setkeyv(built, g_chunk)
+  group_size_dt <- built[, .(size=.N), by=c("group",chunk.vars)]
+  ## first_ss_dt <- built[, .SD[1], by=group, .SDcols=chunk.vars]
+  ## setkeyv(first_ss_dt, g_chunk)
+  ss_count_dt <- group_size_dt[, .(
+    showSelected_values=.N,
+    min_size=min(size),
+    max_size=max(size)
+  ), by=group]
+  groups_in_several_ss <- ss_count_dt[showSelected_values>1]
+  if(nrow(groups_in_several_ss)==0)return(NULL)
+  common_value_dt <- data.table(col.name=col.name.vec)[, {
+    built[, {
+      group_dt <- .SD[, list(value_list=list(get(col.name))), by=chunk.vars]
+      lvec <- sapply(group_dt$value_list, length)
+      value.vec <- unlist(group_dt$value_list)
+      if(all(lvec[1]==lvec)){
+        group.size <- lvec[1]
+        m <- matrix(value.vec, group.size)
+        min.na.vec <- apply(m,1,function(x)x[!is.na(x)][1])
+        if(length(unique(min.na.vec))==1){
+          min.na.vec <- min.na.vec[1]
+        }
+        is.common <- all(m==min.na.vec,na.rm=TRUE)
+        ##if(anyNA(min.na.vec))is.common <- FALSE #TODO maybe could relax?
+        data.table(common=list(min.na.vec), is.common)
+      }else if(length(unique(value.vec))==1){
+        data.table(common=list(value.vec[1]), is.common=TRUE)
+      }else{
+        data.table(common=list(), is.common=FALSE)
       }
-      group.common <- one.group[, common.cols]
-      ## Instead of just taking the first chunk for this group (which
-      ## may have NA), look for the chunk which has the fewest NA.
-      is.na.vec <- apply(is.na(group.common), 1, any)
-      is.na.mat <- matrix(is.na.vec, group.size)
-      group.i <- which.min(colSums(is.na.mat))
-      offset <- (group.i-1)*group.size
-      group.info.list[[group.name]] <- group.common[(1:group.size)+offset, ]
-    }
-    group.info.common <- do.call(rbind, group.info.list)
-    common.unique <- unique(group.info.common)
-    ## For geom_polygon and geom_path we may have two rows that should
-    ## both be kept (the start and the end of each group may be the
-    ## same if the shape is closed), so we define common.data as all
-    ## of the rows (common.not.na) in that case, and just the unique
-    ## data per group (common.unique) in the other case.
-    data.per.group <- table(common.unique$group)
-    common.data <- if(all(data.per.group == 1)){
-      common.unique
-    }else{
-      group.info.common
-    }
-    varied.df.list <- split_recursive(na.omit(built), chunk.vars)
-    varied.cols <- c("group", names(is.common)[!is.common])
-    varied.data <- varied.chunk(varied.df.list, varied.cols)
-    return(list(common=na.omit(common.data),
-                varied=varied.data))
+    }, by=group]
+  }, keyby=col.name]
+  common_var_dt <- common_value_dt[, .(
+    all.common=all(is.common)
+  ), keyby=col.name]
+  common.cols <- common_var_dt[all.common==TRUE, col.name]
+  intermediate.common.ok <- (
+    1 < length(common.cols)
+  )&&(
+    length(common.cols) < length(col.name.vec)
+  )
+  one.common.ok <- (
+    length(common.cols)==1
+  )&&(
+    any(common_value_dt[common.cols, sapply(common, length)]>1)
+  )
+  if(one.common.ok || intermediate.common.ok){
+    only_common_dt <- common_value_dt[col.name %in% c("group", common.cols)]
+    common_wide <- dcast(only_common_dt, group ~ col.name, value.var="common")
+    common.data <- common_wide[, lapply(.SD, unlist), by=group]
+    common.not.na <- na.omit(common.data)
+    groups.not.na <- unique(common.not.na[, .(group)])
+    built.not.na <- built[groups.not.na]
+    varied.cols <- intersect(
+      names(built),
+      common_var_dt[all.common==FALSE, c(col.name,sparse.cols)])
+    varied.to.split <- na.omit(built.not.na)
+    varied.df.list <- split_recursive(varied.to.split, chunk.vars)
+    varied.data <- varied.chunk(varied.df.list, c("group", varied.cols))
+    list(common=common.not.na, varied=varied.data)
   }
 }
-
 
 ##' Extract subset for each data.frame in a list of data.frame
 ##' @param dt.or.list a data.table or a list of data.table.
 ##' @param cols cols that each data.frame would keep.
 ##' @return list of data.frame.
 varied.chunk <- function(dt.or.list, cols){
-  group <- NULL
+  group <- row_in_group <- NULL
   ## Above to avoid CRAN NOTE.
   if(is.data.table(dt.or.list)){
-    dt <- dt.or.list[, cols, with=FALSE, drop=FALSE]
-    u.dt <- unique(dt)
-    group.counts <- u.dt[, .N, by = group]
-    setDF(if(all(group.counts$N == 1)){
-      u.dt
-    }else{
-      dt
-    })
+    keep <- intersect(cols, names(dt.or.list))
+    dt.or.list[, keep, with=FALSE, drop=FALSE]
   } else{
     lapply(dt.or.list, varied.chunk, cols)
   }
@@ -939,7 +888,6 @@ varied.chunk <- function(dt.or.list, cols){
 split_recursive <- function(x, vars){
   if(length(vars)==0)return(x)
   if(is.data.frame(x)){
-
     ## Remove columns with all NA values
     ## so that x is not empty due to
     ## the plot's alpha, stroke or other columns
@@ -951,9 +899,6 @@ split_recursive <- function(x, vars){
         x
       }
     })]
-
-    # rows with NA should not be saved
-    x <- na.omit(x)
     if(length(vars) == 1){
       split(x, by = vars, keep.by = FALSE, drop = TRUE)
     }else{
@@ -978,10 +923,45 @@ split_recursive <- function(x, vars){
 ##' @author Toby Dylan Hocking
 saveChunks <- function(x, meta){
   if(is.data.frame(x)){
+    # Convert newlines to <br/> in label column for multi-line text (Issue #221)
+    if("label" %in% names(x)){
+      x$label <- convertNewlinesToBreaks(x$label)
+    }
     this.i <- meta$chunk.i
     csv.name <- sprintf("%s_chunk%d.tsv", meta$g$classed, this.i)
-    data.table::fwrite(x, file.path(meta$out.dir, csv.name), quote=FALSE,
-                row.names=FALSE, sep="\t")
+    ## Some geoms should be split into separate groups if there are NAs.
+    setDT(x)
+    if("na_group" %in% names(x) && all(x$na_group==0))x[, let(
+      na_group = NULL, row_in_group=NULL)]
+    check.constant <- setdiff(names(x), c("group","na_group"))
+    if("group" %in% names(x)){
+      ## simplify if possible.
+      x <- x[, {
+        is.constant <- sapply(check.constant, function(name){
+          value <- .SD[[name]]
+          all(value==value[1])
+        })
+        if(all(is.constant)).SD[1] else .SD
+      }, by="group"]
+    }
+    # fwrite defaults ensure fields are quoted so that embedded
+    # newlines or tabs in string fields do not break the TSV format
+    # when read by d3.tsv.
+    csv.path <- file.path(meta$out.dir, csv.name)
+    data.table::fwrite(
+      na.omit(x), csv.path,
+      row.names=FALSE, sep="\t")
+    # Calculate chunk size and row count
+    chunk_bytes <- file.size(csv.path)
+    chunk_rows <- nrow(na.omit(x))
+    # Store chunk info
+    if(!exists("chunk_info", envir=meta)) {
+      meta$chunk_info <- list()
+    }
+    meta$chunk_info[[csv.name]] <- list(
+      bytes = chunk_bytes,
+      rows = chunk_rows
+    )
     meta$chunk.i <- meta$chunk.i + 1L
     this.i
   }else if(is.list(x)){

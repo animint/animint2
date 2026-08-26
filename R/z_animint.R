@@ -57,7 +57,8 @@ parsePlot <- function(meta, plot, plot.name){
     L$mapping <- L$orig_mapping
     class(L$mapping) <- "list"
 
-    ## If any legends are specified, add showSelected aesthetic
+    ## If any legends are specified, add showSelected aesthetic.
+    ## showSelected.legend=FALSE opts this layer out of legend auto-injection only.
     L <- addShowSelectedForLegend(meta, plot.info$legend, L)
 
     ## Check if showSelected and clickSelects have been used as aesthetics
@@ -130,7 +131,7 @@ parsePlot <- function(meta, plot, plot.name){
   for (xy in c("x", "y")) {
     s <- function(tmp) sprintf(tmp, xy)
     # one axis name per plot (ie, a xtitle/ytitle is shared across panels)
-    plot.info[[s("%stitle")]] <- if(is.blank(s("axis.title.%s"))){
+    axis_title_raw <- if(is.blank(s("axis.title.%s"))){
       ""
     } else {
       scale.i <- which(plot$scales$find(xy))
@@ -143,6 +144,10 @@ parsePlot <- function(meta, plot, plot.name){
         lab.or.null
       }
     }
+    # Convert newlines to <br/> for multi-line axis titles (Issue #221)
+    plot.info[[s("%stitle")]] <- convertNewlinesToBreaks(axis_title_raw)
+    ## axis title size.
+    plot.info[[s("%stitle_size")]] <- getTextSize(s("axis.title.%s"), theme.pars)
     ## panel text size.
     plot.info[[s("strip_text_%ssize")]] <- getTextSize(
       s("strip.text.%s"), theme.pars)
@@ -187,12 +192,13 @@ parsePlot <- function(meta, plot, plot.name){
   # grab the unique axis labels (makes rendering simpler)
   plot.info <- getUniqueAxisLabels(plot.info)
 
-  # grab plot title if present
-  plot.info$title <- if(is(theme.pars$plot.title, "blank")){
+  # grab plot title if present and convert newlines (Issue #221)
+  plot_title_raw <- if(is(theme.pars$plot.title, "blank")){
     ""
   }else{
     plot$labels$title
   }
+  plot.info$title <- convertNewlinesToBreaks(plot_title_raw)
   plot.info$title_size <- getTextSize("plot.title", theme.pars)
 
   ## Set plot width and height from animint.* options if they are
@@ -200,7 +206,7 @@ parsePlot <- function(meta, plot, plot.name){
   options_list <- getWidthAndHeight(plot$theme)
   options_list <- setUpdateAxes(plot$theme, options_list)
   plot.info$options <- options_list
-
+  plot.info$span <- get_span(plot$theme)
   list(
     plot.info=plot.info,
     ggplot=plot,
@@ -212,8 +218,21 @@ storeLayer <- function(meta, g, g.data.varied){
   ## Save each variable chunk to a separate tsv file.
   meta$chunk.i <- 1L
   meta$g <- g
+  # Initialize chunk_info only if it doesn't exist (common chunk may have been saved)
+  if(!exists("chunk_info", envir=meta)) {
+    meta$chunk_info <- list()
+  }
   g$chunks <- saveChunks(g.data.varied, meta)
   g$total <- length(unlist(g$chunks))
+  
+  ## Add chunk size information to geom - filter to only this geom's chunks
+  g$chunk_info <- list()
+  geom_prefix <- paste0(g$classed, "_chunk")
+  for(chunk_name in names(meta$chunk_info)) {
+    if(startsWith(chunk_name, geom_prefix)) {
+      g$chunk_info[[chunk_name]] <- meta$chunk_info[[chunk_name]]
+    }
+  }
 
   ## Finally save to the master geom list.
   meta$geoms[[g$classed]] <- g
@@ -229,26 +248,27 @@ storeLayer <- function(meta, g, g.data.varied){
 #' @param out.dir directory to store html/js/csv files. If it exists
 #'   already, it will be removed before writing the new
 #'   directory/files.
-#' @param json.file character string that names the JSON file with
-#'   metadata associated with the plot.
 #' @param open.browser logical (default TRUE if interactive), should R
 #'   open a browser? If TRUE, we look at the animint.browser option to
 #'   determine how. If it is set to "browseURL" then we use a file URL
 #'   (be sure to configure your browser to allow access to local
 #'   files, as some browsers block this by default). Otherwise
 #'   (default) we use \code{servr::httd(out.dir)}.
-#' @param css.file character string for non-empty css file to
-#'   include. Provided file will be copied to the output directory as
-#'   styles.css
+#' @param chromote_sleep_seconds if numeric, chromote will be used to take a screenshot of the data viz, pausing this number of seconds to wait for rendering (experimental). Defaults to option \code{animint2.chromote_sleep_seconds}.
+#' @param chromote_width width of chromote window in pixels, default 3000 should be sufficient for most data viz, but can be increased if your data viz screenshot appears cropped too small.
+#' @param chromote_height height of chromote window in pixels, default 2000 should be sufficient for most data viz, but can be increased if your data viz screenshot appears cropped too small.
 #' @return invisible list of ggplots in list format.
 #' @export
 #' @import RJSONIO
 #' @importFrom utils browseURL head packageVersion str tail
 #'   write.table
 #' @example inst/examples/animint2dir.R
-animint2dir <- function(plot.list, out.dir = NULL,
-                        json.file = "plot.json", open.browser = interactive(),
-                        css.file = "") {
+animint2dir <- function
+(plot.list, out.dir = NULL,
+  open.browser = interactive(),
+  chromote_sleep_seconds=getOption("animint2.chromote_sleep_seconds"),
+  chromote_width=3000, chromote_height=2000
+){
   if(is.null(out.dir)){
     out.dir <- tempfile()
   }
@@ -269,21 +289,6 @@ animint2dir <- function(plot.list, out.dir = NULL,
   ## First, copy html/js/json files to out.dir.
   src.dir <- system.file("htmljs",package="animint2")
   to.copy <- Sys.glob(file.path(src.dir, "*"))
-  if(file.exists(paste0(out.dir, "styles.css")) | css.file != "default.file"){
-    to.copy <- to.copy[!grepl("styles.css", to.copy, fixed=TRUE)]
-  }
-  if(css.file!=""){
-    # if css filename is provided, copy that file to the out directory as "styles.css"
-    to.copy <- to.copy[!grepl("styles.css", to.copy, fixed=TRUE)]
-    if(!file.exists(css.file)){
-      stop(paste("css.file", css.file, "does not exist. Please check that the file name and path are specified correctly."))
-    } else {
-      file.copy(css.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
-    }
-  } else {
-    style.file <- system.file("htmljs", "styles.css", package = "animint2")
-    file.copy(style.file, file.path(out.dir, "styles.css"), overwrite=TRUE)
-  }
   file.copy(to.copy, out.dir, overwrite=TRUE, recursive=TRUE)
 
   ## Store the animation information (time, var, ms) in a separate list
@@ -452,6 +457,9 @@ animint2dir <- function(plot.list, out.dir = NULL,
   ## For a static data viz with no interactive aes, no need to check
   ## for trivial showSelected variables with only 1 level.
   checkSingleShowSelectedValue(meta$selectors)
+  
+  ## Check selector names for CSS compatibility (no special characters like #)
+  checkSelectorNames(meta$selectors)
 
   ## Go through options and add to the list.
   for(v.name in names(meta$duration)){
@@ -652,7 +660,7 @@ animint2dir <- function(plot.list, out.dir = NULL,
     }
   }
   json <- RJSONIO::toJSON(export.data)
-  cat(json, file = file.path(out.dir, json.file))
+  cat(json, file = file.path(out.dir, "plot.json"))
   if (open.browser) {
     if (identical(getOption("animint.browser"),"browseURL")) {
       u <- normalizePath(file.path(out.dir, "index.html"))
@@ -672,6 +680,26 @@ animint2dir <- function(plot.list, out.dir = NULL,
       plot_i$ggplot$layers[[layer_i]]$mapping <-
         plot_i$ggplot$layers[[layer_i]]$orig_mapping
     }
+  }
+  if(is.numeric(chromote_sleep_seconds) && requireNamespace("chromote", quietly=TRUE) && requireNamespace("magick", quietly=TRUE)) {
+    chrome.session <- chromote::ChromoteSession$new(
+      width=chromote_width, height=chromote_height)
+    portNum <- servr::random_port()
+    normDir <- normalizePath(out.dir, winslash = "/", mustWork = TRUE)
+    start_servr(serverDirectory = normDir, port = portNum, tmpPath = normDir)
+    Sys.sleep(chromote_sleep_seconds)
+    url <- sprintf("http://localhost:%d", portNum)
+    chrome.session$Page$navigate(url)
+    screenshot_path <- file.path(out.dir, "Capture.PNG")
+    screenshot_full <- file.path(out.dir, "Capture_full.PNG")
+    Sys.sleep(chromote_sleep_seconds)
+    chrome.session$screenshot(screenshot_full, selector = ".plot_content")
+    image_raw <- magick::image_read(screenshot_full)
+    image_trimmed <- magick::image_trim(image_raw)
+    magick::image_write(image_trimmed, screenshot_path)
+    unlink(screenshot_full)
+    chrome.session$close()
+    stop_servr(normDir)
   }
   invisible(meta)
   ### An invisible copy of the R list that was exported to JSON.
@@ -725,7 +753,7 @@ getLegendList <- function(plistextra){
     }else{
       "legend"
     }
-    if(guide.type=="colourbar")guide.type <- "legend"
+    if(identical(guide.type,"colourbar"))guide.type <- "legend"
     guides.args[[aes.name]] <- guide.type
   }
   guides.result <- do.call(guides, guides.args)
@@ -738,7 +766,6 @@ getLegendList <- function(plistextra){
     gdefs <- guides_merge(gdefs)
     gdefs <- guides_geom(gdefs, layers, default_mapping)
   } else (zeroGrob())
-  names(gdefs) <- sapply(gdefs, function(i) i$title)
 
   ## adding the variable used to each LegendList
   for(leg in seq_along(gdefs)) {
@@ -818,6 +845,9 @@ getLegendList <- function(plistextra){
     }
   }
   legend.list <- lapply(gdefs, getLegend)
+  # Use the 'class' field from getLegend output for legend key names (Issue #221)
+  # This ensures JSON keys don't contain newlines or other special characters
+  names(legend.list) <- sapply(legend.list, function(i) i$class)
   ## Add a flag to specify whether or not there is both a color and a
   ## fill legend to display. If so, we need to draw the interior of
   ## the points in the color legend as the same color.

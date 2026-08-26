@@ -7,9 +7,10 @@
 animint2dir(
   plot.list,
   out.dir = NULL,
-  json.file = "plot.json",
   open.browser = interactive(),
-  css.file = ""
+  chromote_sleep_seconds = getOption("animint2.chromote_sleep_seconds"),
+  chromote_width = 3000,
+  chromote_height = 2000
 )
 }
 \arguments{
@@ -19,9 +20,6 @@ animint2dir(
 already, it will be removed before writing the new
 directory/files.}
 
-\item{json.file}{character string that names the JSON file with
-metadata associated with the plot.}
-
 \item{open.browser}{logical (default TRUE if interactive), should R
 open a browser? If TRUE, we look at the animint.browser option to
 determine how. If it is set to "browseURL" then we use a file URL
@@ -29,9 +27,11 @@ determine how. If it is set to "browseURL" then we use a file URL
 files, as some browsers block this by default). Otherwise
 (default) we use \code{servr::httd(out.dir)}.}
 
-\item{css.file}{character string for non-empty css file to
-include. Provided file will be copied to the output directory as
-styles.css}
+\item{chromote_sleep_seconds}{if numeric, chromote will be used to take a screenshot of the data viz, pausing this number of seconds to wait for rendering (experimental). Defaults to option \code{animint2.chromote_sleep_seconds}.}
+
+\item{chromote_width}{width of chromote window in pixels, default 3000 should be sufficient for most data viz, but can be increased if your data viz screenshot appears cropped too small.}
+
+\item{chromote_height}{height of chromote window in pixels, default 2000 should be sufficient for most data viz, but can be increased if your data viz screenshot appears cropped too small.}
 }
 \value{
 invisible list of ggplots in list format.

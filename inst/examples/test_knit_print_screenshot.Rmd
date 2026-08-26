@@ -1,0 +1,13 @@
+---
+output:
+  pdf_document:
+    keep_tex: true
+---
+
+```{r}
+animint(
+  ggplot()+
+    geom_point(aes(
+      x, x),
+      data=data.frame(x=1)))
+```
