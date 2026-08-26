@@ -39,6 +39,10 @@ expect_no_Capture <- function(L){
 ## see how to set that up on your local computer, or on github
 ## actions.
 reset_test_repo <- function(){
+  github_pat <- Sys.getenv("GITHUB_PAT", unset = Sys.getenv("GITHUB_PAT_GITHUB_COM", unset = ""))
+  if (identical(github_pat, "")) {
+    testthat::skip("Skipping GitHub Pages integration tests: no GitHub token available")
+  }
   ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#delete-a-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write) gh api --method DELETE -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/OWNER/REPO
   tryCatch({
     gh::gh(sprintf("DELETE /repos/animint-test/%s", test_repo_name))
@@ -48,7 +52,14 @@ reset_test_repo <- function(){
     ##Error in gh::gh(DELETE .../REPO): GitHub API error (404): Not Found
   })
   ## https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-an-organization-repository says The fine-grained token must have the following permission set: "Administration" repository permissions (write)
-  gh::gh("POST /orgs/animint-test/repos", name = test_repo_name)
+  tryCatch({
+    gh::gh("POST /orgs/animint-test/repos", name = test_repo_name)
+  }, error = function(e) {
+    testthat::skip(sprintf(
+      "Skipping GitHub Pages integration tests: unable to create test repository (%s)",
+      conditionMessage(e)
+    ))
+  })
   Sys.sleep(3)
 }
 test_that("animint2pages(chromote_sleep_seconds=3) creates Capture.PNG", {
