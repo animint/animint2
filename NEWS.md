@@ -1,3 +1,7 @@
+# Changes in development (PR#339)
+
+- Multi-line facet strip labels: `facet_grid()` and `facet_wrap()` now render each facet variable on its own line, matching ggplot2 (issue #262).
+
 # Changes in version 2026.6.5 (PR#336)
 
 - `geom(showSelected.legend=FALSE)` is the canonical opt-out for legend-driven auto-injection of showSelected, including while keeping explicit showSelected variables. (Fixed #333)
