@@ -150,5 +150,8 @@ fixed_spaces <- function(ranges, ratio = 1) {
                    function(z) diff(z$y.range) / diff(z$x.range) * ratio)
   spaces <- list(y = aspect)
   spaces$x <- 1/spaces$y
+  # Clamp each proportion to at most 1. Desired data aspect is spaces$y/spaces$x;
+  # the JS renderer then scale-to-fits these proportions into the available
+  # (possibly non-square) graph pixel space so at least one side fills.
   lapply(spaces, function(z) min(z, 1))
 }

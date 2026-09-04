@@ -1,8 +1,16 @@
 acontext("GitHub Pages")
 library(animint2)
+test_suite <- tolower(Sys.getenv("TEST_SUITE", unset = "local"))
+github_run_id <- Sys.getenv("GITHUB_RUN_ID", unset = "")
+github_run_attempt <- Sys.getenv("GITHUB_RUN_ATTEMPT", unset = "")
+test_repo_suffix <- if (test_suite == "js_coverage" && nzchar(github_run_id) && nzchar(github_run_attempt)) {
+  sprintf("%s_%s_%s", test_suite, github_run_id, github_run_attempt)
+} else {
+  test_suite
+}
 test_repo_name <- sprintf(
   "animint2pages_test_repo_%s",
-  tolower(Sys.getenv("TEST_SUITE", unset = "local"))
+  test_repo_suffix
 )
 viz <- animint(
   title="one to ten",

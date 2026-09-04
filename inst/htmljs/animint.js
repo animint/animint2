@@ -538,6 +538,14 @@ var setMultilineText = function(textElement, text) {
       }
       return cumsum;
     }
+    function max_group_sum(group, values){
+      var sums = [];
+      for(var i=0; i<values.length; i++){
+        var g = group[i] - 1;
+        sums[g] = (sums[g] || 0) + values[i];
+      }
+      return d3.max(sums) || 0;
+    }
     var cum_height_per_row = cumsum_array(row_strip_heights);
     var cum_width_per_col = cumsum_array(col_strip_widths);
     var strip_width = d3.max(cum_width_per_col);
@@ -557,17 +565,28 @@ var setMultilineText = function(textElement, text) {
     // proportions calculated by the compiler. This has to be done on the
     // rendering side since the precomputed proportions apply to the *graph*
     // and the graph size depends upon results of measureText()
+    //
+    // R fixed_spaces() gives proportions for a square panel cell. Available
+    // cells may be non-square; aspect is cell_height/cell_width in pixels.
+    // Dividing heights by aspect makes panel pixel aspect match the data
+    // aspect (issue #234). Then scale so the largest row/column still fits.
     if (p_info.layout.coord_fixed[0]) {
       var aspect = (graph_height / nrows) / (graph_width / ncols);
     } else {
       var aspect = 1;
     }
-    var wp = p_info.layout.width_proportion.map(function(x){
-      return x * Math.min(1, aspect);
-    })
-    var hp = p_info.layout.height_proportion.map(function(x){
-      return x * Math.min(1, 1/aspect);
-    })
+    var wp = p_info.layout.width_proportion.slice();
+    var hp = p_info.layout.height_proportion.map(function(y){
+      return y / aspect;
+    });
+    var fit_prop = Math.max(
+      max_group_sum(p_info.layout.ROW, wp),
+      max_group_sum(p_info.layout.COL, hp)
+    );
+    if (fit_prop > 0) {
+      wp = wp.map(function(x) { return x / fit_prop; });
+      hp = hp.map(function(y) { return y / fit_prop; });
+    }
 
     // track the proportion of the graph that should be 'blank'
     // this is mainly used to implement coord_fixed()
