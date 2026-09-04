@@ -181,6 +181,7 @@ click_center <- function(id){
     ## https://github.com/rstudio/chromote/issues/32
     do.call(remDr$Input$dispatchMouseEvent, L)
   }
+  Sys.sleep(1)
 }
 
 djs.init.list <- driverjs_get(html)

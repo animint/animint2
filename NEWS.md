@@ -1,3 +1,7 @@
+# Changes in version 2026.9.4 (PR#285)
+
+- Clearer facet error messages when a facet variable is missing from the data, or when `facet_wrap(. ~ var)` uses invalid notation (issue #168).
+
 # Changes in development (PR#339)
 
 - Multi-line facet strip labels: `facet_grid()` and `facet_wrap()` now render each facet variable on its own line, matching ggplot2 (issue #262).
