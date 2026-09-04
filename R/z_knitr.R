@@ -23,6 +23,7 @@ knit_print.animint <- function(x, options, ...) {
   if (length(knitr::knit_meta(class = "animint", clean = FALSE)) == 0) {
     res <- sprintf('
 <script type="text/javascript" src="%s/vendor/d3.v3.js"></script>
+<script type="text/javascript" src="%s/stat-bin.js"></script>
 <script type="text/javascript" src="%s/animint.js"></script>
 <script type="text/javascript" src="%s/vendor/quadprog.js"></script>
 <link rel="stylesheet" type="text/css" href="%s/animint.css" />
@@ -31,7 +32,7 @@ knit_print.animint <- function(x, options, ...) {
 <link rel="stylesheet" type="text/css" href="%s/vendor/selectize.css" />
 <script type="text/javascript" src="%s/vendor/driver.js.iife.js"></script>
 <link rel="stylesheet" href="%s/vendor/driver.css" />
-%s', viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, res)
+%s', viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, viz_id, res)
   }
   knitr::asis_output(res, meta = list(animint = structure("", class = "animint")))
 }
@@ -101,7 +102,7 @@ html_dependency_animint <- function() {
   htmltools::htmlDependency(name = "animint",
                  version = packageVersion("animint2"),
                  src = system.file("htmljs", package = "animint2"),
-                 script = "animint.js")
+                 script = c("stat-bin.js", "animint.js"))
 }
 
 html_dependency_shinyAnimint <- function() {

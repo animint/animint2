@@ -1,3 +1,7 @@
+# Changes in version 2026.8.19 (PR#158 PoC)
+
+- `stat_bin` with `showSelected` now recomputes histogram counts in the browser after selection changes, while keeping panel bin boundaries fixed. Proof-of-concept for issue #158. Thanks @ANAMASGARD.
+
 # Changes in development (PR#339)
 
 - Multi-line facet strip labels: `facet_grid()` and `facet_wrap()` now render each facet variable on its own line, matching ggplot2 (issue #262).

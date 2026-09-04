@@ -15,7 +15,7 @@ df <- rbind(
   make(4, 1, 2)
 )
 
-test_that("error for stat=bin and showSelected", {
+test_that("stat=bin with showSelected compiles and renders", {
   gg <- ggplot() +
     theme_bw()+
     theme(panel.margin=grid::unit(0, "lines"))+
@@ -26,14 +26,18 @@ test_that("error for stat=bin and showSelected", {
       data = df,
       stat = "bin",
       position="identity"
-    )
-  gg+facet_grid(facet~.)
-  complicated <- list(
-    plot = gg
-  )
-  expect_error({
-    animint2HTML(complicated)
-  }, "showSelected does not work with StatBin, problem: geom1_bar_plot")
+    )+
+    facet_grid(facet~.)
+  complicated <- list(plot = gg)
+  expect_no_warning({
+    info <- animint2HTML(complicated)
+  })
+  for(panel in 1:2){
+    xpath <- sprintf('//g[@class="PANEL%d"]//rect', panel)
+    style.vec <- getStyleValue(info$html, xpath, "fill")
+    fill.counts <- table(style.vec)
+    expect_equal(length(fill.counts), 2)
+  }
 })
 
 test_that("no warning for stat=bin without showSelected", {
