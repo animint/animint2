@@ -538,6 +538,14 @@ var setMultilineText = function(textElement, text) {
       }
       return cumsum;
     }
+    function max_group_sum(group, values){
+      var sums = [];
+      for(var i=0; i<values.length; i++){
+        var g = group[i] - 1;
+        sums[g] = (sums[g] || 0) + values[i];
+      }
+      return d3.max(sums) || 0;
+    }
     var cum_height_per_row = cumsum_array(row_strip_heights);
     var cum_width_per_col = cumsum_array(col_strip_widths);
     var strip_width = d3.max(cum_width_per_col);
@@ -571,14 +579,10 @@ var setMultilineText = function(textElement, text) {
     var hp = p_info.layout.height_proportion.map(function(y){
       return y / aspect;
     });
-    var row_sums = [], col_sums = [];
-    for (var layout_i = 0; layout_i < npanels; layout_i++) {
-      var row = p_info.layout.ROW[layout_i] - 1;
-      var col = p_info.layout.COL[layout_i] - 1;
-      row_sums[row] = (row_sums[row] || 0) + wp[layout_i];
-      col_sums[col] = (col_sums[col] || 0) + hp[layout_i];
-    }
-    var fit_prop = Math.max(d3.max(row_sums) || 0, d3.max(col_sums) || 0);
+    var fit_prop = Math.max(
+      max_group_sum(p_info.layout.ROW, wp),
+      max_group_sum(p_info.layout.COL, hp)
+    );
     if (fit_prop > 0) {
       wp = wp.map(function(x) { return x / fit_prop; });
       hp = hp.map(function(y) { return y / fit_prop; });
