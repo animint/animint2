@@ -44,10 +44,9 @@ test_that("segments and breakpoints are rendered", {
 })
 
 test_that("svg id property is unique", {
-  svg.list <- getNodeSet(html, "//svg")
-  attr.mat <- sapply(svg.list, xmlAttrs)
-  id.counts <- table(attr.mat["id",])
-  expect_true(all(id.counts==1))
+  id.vec <- getPropertyValue(html, "//svg", "id")
+  id.counts <- table(id.vec)
+  expect_equal(max(id.counts), 1L)
 })
 
 all.list <- getNodeSet(html, "//*")
