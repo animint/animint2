@@ -732,21 +732,31 @@ var setMultilineText = function(textElement, text) {
         }
         var x, y, rotate, stripElement, strip_text_xy;
         if (side == "right") {
-          x = plotdim.xend;
-          y = (plotdim.ystart + plotdim.yend) / 2;
-          rotate = 90;
           stripElement = rightStrip;
           strip_text_xy = "y";
         }else{ //top
-          x = (plotdim.xstart + plotdim.xend) / 2;
-          y = plotdim.ystart;
-          rotate = 0;
           stripElement = topStrip;
           strip_text_xy = "x";
         }
+        var strip_text_size = "strip_text_"+strip_text_xy+"size";
+        var label = strip[0];
+        var firstLine = label.split("<br/>")[0];
+        var stripSize = side == "right"
+          ? strip_widths[layout_i]
+          : strip_heights[layout_i];
+        var oneLineSize = measureText(firstLine, p_info[strip_text_size]).height;
+        var extra = Math.max(0, stripSize - oneLineSize);
+        if (side == "right") {
+          x = plotdim.xend + extra;
+          y = (plotdim.ystart + plotdim.yend) / 2;
+          rotate = 90;
+        }else{ //top
+          x = (plotdim.xstart + plotdim.xend) / 2;
+          y = plotdim.ystart - extra;
+          rotate = 0;
+        }
         var trans_text = "translate(" + x + "," + y + ")";
         var rot_text = "rotate(" + rotate + ")";
-        var strip_text_size = "strip_text_"+strip_text_xy+"size";
         stripElement
           .selectAll("." + side + "Strips")
           .data(strip)
@@ -754,10 +764,8 @@ var setMultilineText = function(textElement, text) {
           .append("text")
           .style("text-anchor", "middle")
           .style("font-size", p_info[strip_text_size])
-          .text(function(d) { return d; })
-        // NOTE: there could be multiple strips per panel
-        // TODO: is there a better way to manage spacing?
           .attr("transform", trans_text + rot_text)
+          .each(function(d) { setMultilineText(d3.select(this), d); })
         ;
       }
       draw_strip([p_info.strips.top[layout_i]], "top");

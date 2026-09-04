@@ -2,6 +2,10 @@
 
 - Fixed `coord_equal()` and `coord_fixed()` to properly fill available plotting space. Issue #234 showed the problem when increasing plot width (800 vs default 400); the same JavaScript bug also affected tall viewports when height should fill. Previously `Math.min(1, aspect)` was applied independently to width and height proportions, shrinking both when the graph pixel aspect did not match the data aspect. The renderer now adjusts panel proportions for non-square graph cells and scale-to-fits so at least one dimension fills the available space while preserving the data aspect ratio.
 
+# Changes in development (PR#339)
+
+- Multi-line facet strip labels: `facet_grid()` and `facet_wrap()` now render each facet variable on its own line, matching ggplot2 (issue #262).
+
 # Changes in version 2026.6.5 (PR#336)
 
 - `geom(showSelected.legend=FALSE)` is the canonical opt-out for legend-driven auto-injection of showSelected, including while keeping explicit showSelected variables. (Fixed #333)
