@@ -402,6 +402,7 @@ var setMultilineText = function(textElement, text) {
       .attr("id", p_info.plot_id)
       .attr("height", p_info.options.height)
       .attr("width", p_info.options.width)
+      // block avoids inline SVG baseline/descender gap below the plot (issue #279)
       .style("display", "block");
     
     // divvy up width/height based on the panel layout

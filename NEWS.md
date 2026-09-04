@@ -1,3 +1,7 @@
+# Changes in version 2026.9.4 (PR#288)
+
+- Plot SVGs use `display: block` so browsers do not leave baseline whitespace below the plot (issue #279). Thanks @ANAMASGARD.
+
 # Changes in development (PR#339)
 
 - Multi-line facet strip labels: `facet_grid()` and `facet_wrap()` now render each facet variable on its own line, matching ggplot2 (issue #262).
