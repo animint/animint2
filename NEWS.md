@@ -2,6 +2,10 @@
 
 - Codecov now uploads R and JavaScript coverage together, and only after both coverage jobs succeed, so a failed JS (or R) job cannot become an incomplete project-coverage baseline.
 
+# Changes in development (PR#339)
+
+- Multi-line facet strip labels: `facet_grid()` and `facet_wrap()` now render each facet variable on its own line, matching ggplot2 (issue #262).
+
 # Changes in version 2026.7.29 (PR#261)
 
 - Multi-line text support (issue #221): `\n` now works in plot titles, axis titles, legend titles, and `geom_text()` labels. R compiler converts newlines to `<br/>` via `R/z_multiline.R`; JavaScript renderer converts `<br/>` to SVG `<tspan>` elements.
