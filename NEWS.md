@@ -1,10 +1,14 @@
+# Changes in version 2026.9.5
+
+- geom_text() renders with .text(), instead of setMultilineText(), fixing interactive updates.
+
+# Changes in version 2026.8.23 (PR#339)
+
+- Multi-line facet strip labels: `facet_grid()` and `facet_wrap()` now render each facet variable on its own line, matching ggplot2 (issue #262).
+
 # Changes in version 2026.8.18 (PR#344)
 
 - Codecov now uploads R and JavaScript coverage together, and only after both coverage jobs succeed, so a failed JS (or R) job cannot become an incomplete project-coverage baseline.
-
-# Changes in development (PR#339)
-
-- Multi-line facet strip labels: `facet_grid()` and `facet_wrap()` now render each facet variable on its own line, matching ggplot2 (issue #262).
 
 # Changes in version 2026.7.29 (PR#261)
 
