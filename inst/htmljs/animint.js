@@ -1659,12 +1659,13 @@ var setMultilineText = function(textElement, text) {
             .attr("y", toXY("y", "y"))
             .attr("font-size", get_size)
             .style("text-anchor", get_text_anchor)
+            .text(function(d){return d.label;})
             .attr("transform", get_rotate);
-          // Use multi-line text helper for geom_text labels (Issue #221)
-          setMultilineText(e, function (d) {
-            return d.label;
-          })
-          ;
+          // multi-line text breaks geom updates
+          //setMultilineText(e, function (d) {
+          //  return d.label;
+          //})
+          //;
         };
         eAppend = "text";
       }
