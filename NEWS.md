@@ -6,10 +6,9 @@
 
 - Multi-line facet strip labels: `facet_grid()` and `facet_wrap()` now render each facet variable on its own line, matching ggplot2 (issue #262).
 
-# Changes in version 2026.6.5 (PR#336)
+# Changes in version 2026.8.18 (PR#344)
 
-- `geom(showSelected.legend=FALSE)` is the canonical opt-out for legend-driven auto-injection of showSelected, including while keeping explicit showSelected variables. (Fixed #333)
-- Breaking API cleanup: PR #292 `geom(showSelected=character())` no longer opts out; use `showSelected.legend=FALSE` instead.
+- Codecov now uploads R and JavaScript coverage together, and only after both coverage jobs succeed, so a failed JS (or R) job cannot become an incomplete project-coverage baseline.
 
 # Changes in version 2026.7.29 (PR#261)
 
@@ -22,6 +21,11 @@
 - New tooltipID(), mouseMoved(), mousePressed(), mouseReleased() helper functions in tests/testthat/helper-functions.R for simulating mouse events and checking tooltip elements in renderer tests.
 - New renderer test for polygon holes using the subgroup aesthetic in geom_polygon(), verifying that tooltips appear inside filled regions and not inside holes (issue #252).
 - geom_polygon() gains subgroup aesthetic for drawing polygons with holes, rendered via d3.geo.path() with fill-rule evenodd (issue #252). Thanks @nishita-shah1
+
+# Changes in version 2026.6.5 (PR#336)
+
+- `geom(showSelected.legend=FALSE)` is the canonical opt-out for legend-driven auto-injection of showSelected, including while keeping explicit showSelected variables. (Fixed #333)
+- Breaking API cleanup: PR #292 `geom(showSelected=character())` no longer opts out; use `showSelected.legend=FALSE` instead.
 
 # Changes in version 2026.5.29 (PR#286)
 

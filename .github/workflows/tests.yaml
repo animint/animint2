@@ -6,32 +6,28 @@ on:
     branches: [main, master]
 
 jobs:
-  R-CMD-check:
+  coverage-tests:
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        test-suite: [ R_coverage, JS_coverage, CRAN ]
+        test-suite: [ R_coverage, JS_coverage ]
 
     name: ${{ matrix.test-suite }}
-    env: 
+    env:
       TEST_SUITE: ${{ matrix.test-suite }}
       GITHUB_PAT: ${{ secrets.PAT_GITHUB }}
       GH_ACTION: "ENABLED"
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
-      - uses: actions/checkout@v3
-      - name: install and update texlive
-        run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt update -y -qq
-      - run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt install tidy texlive texlive-fonts-extra -y
+      - uses: actions/checkout@v4
       - uses: r-lib/actions/setup-r@v2
       - uses: r-lib/actions/setup-r-dependencies@v2
 
       - name: install package
         run: R CMD INSTALL .
 
-      - name: git config user.name 
+      - name: git config user.name
         run: git config --global user.name "GitHub Actions"
 
       - name: git config user.email
@@ -42,44 +38,115 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-        
+
       - name: Install Node.js dependencies
         if: matrix.test-suite == 'JS_coverage'
         run: |
           npm install v8-to-istanbul
           echo "Node modules installed"
-      
-      - name: run tests
+
+      - name: Run R tests and save coverage
+        if: matrix.test-suite == 'R_coverage'
+        run: Rscript .github/scripts/save-r-coverage.R
+
+      - name: Upload R coverage artifact
+        if: matrix.test-suite == 'R_coverage'
+        uses: actions/upload-artifact@v4
+        with:
+          name: r-coverage
+          path: r-coverage.json
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Run JS tests
+        if: matrix.test-suite == 'JS_coverage'
         run: |
-          if [ "$TEST_SUITE" == "CRAN" ]; then
-            bash build.sh
-          elif [ "$TEST_SUITE" == "JS_coverage" ]; then
-            echo "Running testthat with JS coverage collection..."
-            Rscript -e "source('tests/testthat.R', chdir = TRUE)"
-          else
-            echo "Running testthat with R coverage collection..."
-            Rscript -e 'covr::codecov(quiet = FALSE, type = "tests", test_files = "tests/testthat.R", flags = "r")'
-          fi
+          echo "Running testthat with JS coverage collection..."
+          Rscript -e "source('tests/testthat.R', chdir = TRUE)"
 
       - name: Convert JS coverage to Istanbul format
         if: matrix.test-suite == 'JS_coverage'
         run: |
           if [ -f "tests/testthat/js-coverage.json" ]; then
-            echo "Converting JS coverage to LCOV format..."
+            echo "Converting JS coverage to Istanbul format..."
             node v8-to-istanbul.js
           else
             echo "No JS coverage file found"
             exit 1
           fi
 
-      - name: Upload JS coverage to Codecov
+      - name: Upload JS coverage artifact
         if: matrix.test-suite == 'JS_coverage'
+        uses: actions/upload-artifact@v4
+        with:
+          name: js-coverage
+          path: coverage-istanbul.json
+          if-no-files-found: error
+          retention-days: 1
+
+  upload-coverage:
+    runs-on: ubuntu-latest
+    name: Upload combined coverage to Codecov
+    needs: coverage-tests
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download R coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: r-coverage
+          path: ./
+
+      - name: Download JS coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: js-coverage
+          path: ./
+
+      - name: Verify both coverage reports exist
         run: |
-          if [ -f "coverage-istanbul.json" ]; then
-            curl -Os https://uploader.codecov.io/latest/linux/codecov
-            chmod +x codecov
-            ./codecov -f coverage-istanbul.json -t ${{ secrets.CODECOV_TOKEN }} --flags javascript
-          else
-            echo "No coverage file found"
-            exit 1
-          fi
+          test -s r-coverage.json
+          test -s coverage-istanbul.json
+
+      - name: Upload R and JS coverage together
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: r-coverage.json,coverage-istanbul.json
+          disable_search: true
+          fail_ci_if_error: true
+          verbose: true
+
+  CRAN:
+    runs-on: ubuntu-latest
+    name: CRAN
+    env:
+      TEST_SUITE: CRAN
+      GITHUB_PAT: ${{ secrets.PAT_GITHUB }}
+      GH_ACTION: "ENABLED"
+    steps:
+      - uses: actions/checkout@v4
+      - name: install and update texlive
+        run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt update -y -qq
+      - run: /usr/bin/sudo DEBIAN_FRONTEND=noninteractive apt install tidy texlive texlive-fonts-extra -y
+      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
+
+      - name: install package
+        run: R CMD INSTALL .
+
+      - name: git config user.name
+        run: git config --global user.name "GitHub Actions"
+
+      - name: git config user.email
+        run: git config --global user.email toby.hocking@r-project.org
+
+      - name: run PDF renderer test
+        run: Rscript -e 'library(testthat); library(animint2); library(XML); test_file("tests/testthat/test-renderer3-knit-print-pdf.R")'
+
+      - name: run CRAN build
+        run: bash build.sh
