@@ -1,15 +1,17 @@
 acontext("animation")
 
-if(require(maps) && require(plyr)){
+library(data.table)
+library(animint2)
+if(require(maps)){
   data(UStornadoes, package = "animint2")
   stateOrder <- data.frame(state = unique(UStornadoes$state)[order(unique(UStornadoes$TornadoesSqMile), decreasing=T)], rank = 1:49) # order states by tornadoes per square mile
   UStornadoes$state <- factor(UStornadoes$state, levels=stateOrder$state, ordered=TRUE)
   UStornadoes$weight <- 1/UStornadoes$LandArea
   # useful for stat_bin, etc.
   USpolygons <- map_data("state")
-  USpolygons$state = state.abb[match(USpolygons$region, tolower(state.name))]
-  UStornadoCounts <-
-    ddply(UStornadoes, .(state, year), summarize, count=length(state))
+  USpolygons$state <- state.abb[match(USpolygons$region, tolower(state.name))]
+  UStornadoes_dt <- data.table(UStornadoes)
+  UStornadoCounts <- UStornadoes_dt[, .(count = .N), by = .(state, year)]
   tornado.anim <- list(
     map=ggplot()+
       geom_polygon(aes(
