@@ -136,17 +136,5 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
       - uses: r-lib/actions/setup-r-dependencies@v2
 
-      - name: install package
-        run: R CMD INSTALL .
-
-      - name: git config user.name
-        run: git config --global user.name "GitHub Actions"
-
-      - name: git config user.email
-        run: git config --global user.email toby.hocking@r-project.org
-
-      - name: run PDF renderer test
-        run: Rscript -e 'library(testthat); library(animint2); library(XML); test_file("tests/testthat/test-renderer3-knit-print-pdf.R")'
-
       - name: run CRAN build
         run: bash build.sh

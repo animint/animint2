@@ -8,7 +8,7 @@
 
 # Changes in version 2026.8.18 (PR#344)
 
-- Codecov now uploads R and JavaScript coverage together, and only after both coverage jobs succeed, so a failed JS (or R) job cannot become an incomplete project-coverage baseline.
+- `.github/workflows/tests.yaml` now defines three jobs: `R_coverage` and `JS_coverage` collect reports as artifacts, and a new `upload-coverage` job depends on both (`needs: coverage-tests`) and uploads them to Codecov together only after both succeed. A separate `CRAN` job still runs `build.sh`. This prevents a failed JS (or R) job from becoming an incomplete project-coverage baseline (issue #254).
 
 # Changes in version 2026.7.29 (PR#261)
 
