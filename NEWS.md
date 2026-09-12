@@ -1,3 +1,9 @@
+# Changes in version 2026.8.19 (PR#158 PoC)
+
+- `stat_bin` with `showSelected` now recomputes histogram counts in the browser after selection changes, while keeping panel bin boundaries fixed. Proof-of-concept for issue #158. Thanks @ANAMASGARD.
+
+# Changes in development (PR#339)
+
 # Changes in version 2026.9.5
 
 - geom_text() renders with .text(), instead of setMultilineText(), fixing interactive updates.

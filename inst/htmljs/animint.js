@@ -1226,6 +1226,9 @@ var setMultilineText = function(textElement, text) {
         data = data.concat(some_data);
       }
     });
+    if (g_info.js_stat === "bin") {
+        data = compute_stat_bin(data, g_info.params, PANEL);
+    }
     var aes = g_info.aes;
     var toXY = function (xy, a) {
       return function (d) {
