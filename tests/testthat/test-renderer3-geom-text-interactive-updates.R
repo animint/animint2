@@ -1,5 +1,16 @@
-acontext("geom_text interactive updates - issue #345")
+acontext("geom_text rendering - issue #345")
 library(animint2)
+multiline.df <- data.frame(x = 1, y = 1, label = "line1\nline2")
+multiline.viz <- list(
+  multiline = ggplot(multiline.df, aes(x, y, label = label)) + geom_text())
+multiline.info <- animint2HTML(multiline.viz)
+get_geom_text_tspan_labels <- function(html = multiline.info$html) {
+  nodes <- getNodeSet(html, "//g[@class='geom1_text_multiline']//tspan")
+  as.character(sapply(nodes, xmlValue))
+}
+test_that("geom_text renders multiline labels", {
+  expect_equal(get_geom_text_tspan_labels(), c("line1", "line2"))
+})
 text.df <- data.frame(
   item = c("a", "b"),
   x = c(1, 9),
