@@ -1,3 +1,9 @@
+# Changes in version 2026.9.4 (PR#288)
+
+- Plot SVGs use `display: block` so browsers do not leave baseline whitespace below the plot (issue #279). Thanks @ANAMASGARD.
+
+# Changes in development (PR#339)
+
 # Changes in version 2026.9.5
 
 - geom_text() renders with .text(), instead of setMultilineText(), fixing interactive updates.
