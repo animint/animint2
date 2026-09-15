@@ -48,6 +48,20 @@ layout_wrap <- function(data, vars = NULL, nrow = NULL, ncol = NULL,
   vars <- as.quoted(vars)
   if (length(vars) == 0) return(layout_null())
 
+  # Notation error only when real vars exist; otherwise layout_base reports missing columns.
+  if ("." %in% names(vars)) {
+    real_vars <- names(vars)[names(vars) != "."]
+    all_data_vars <- unique(unlist(lapply(data, names)))
+    missing_vars <- setdiff(real_vars, all_data_vars)
+    if (length(missing_vars) == 0) {
+      stop(sprintf(
+        "Invalid facet_wrap formula (. ~ var). Use facet_wrap(~%s) or facet_wrap(\"%s\")",
+        paste(real_vars, collapse = " + "),
+        paste(real_vars, collapse = "\", \"")
+      ), call. = FALSE)
+    }
+  }
+
   base <- plyr::unrowname(layout_base(data, vars, drop = drop))
 
   id <- plyr::id(base, drop = TRUE)
@@ -93,8 +107,22 @@ layout_base <- function(data, vars = NULL, drop = TRUE) {
 
   # Form the base data frame which contains all combinations of facetting
   # variables that appear in the data
-  has_all <- unlist(plyr::llply(values, length)) == length(vars)
+  has_all <- unlist(lapply(values, length)) == length(vars)
   if (!any(has_all)) {
+    all_data_vars <- unique(unlist(lapply(data, names)))
+    missing_vars <- setdiff(names(vars)[names(vars) != "."], all_data_vars)
+    if (length(missing_vars) > 0) {
+      stop(sprintf(
+        "Facet variable%s not found in data: %s\nAvailable columns: %s",
+        if (length(missing_vars) > 1) "s" else "",
+        paste(missing_vars, collapse = ", "),
+        paste(all_data_vars, collapse = ", ")
+      ))
+    }
+    # Reached when all facet variables exist somewhere in the data, but no
+    # single layer has all of them together. For example, facet_grid(X ~ Y)
+    # where layer 1 only has column X and layer 2 only has column Y — neither
+    # layer alone satisfies all facetting variables, so has_all is FALSE for every layer.
     stop("At least one layer must contain all variables used for facetting")
   }
 
