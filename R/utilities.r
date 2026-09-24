@@ -43,13 +43,9 @@ clist <- function(l) {
 }
 
 try_require <- function(package, fun) {
-  if (requireNamespace(package, quietly = TRUE)) {
-    library(package, character.only = TRUE)
-    return(invisible())
+  if (!requireNamespace(package, quietly = TRUE)) {
+    stop(sprintf("Package %s required for %s, so please run install.packages('%s') and try again", package, fun, package), call. = FALSE)
   }
-
-  stop("Package `", package, "` required for `", fun , "`.\n",
-    "Please install and try again.", call. = FALSE)
 }
 
 # Return unique columns
