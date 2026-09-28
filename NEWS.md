@@ -1,8 +1,6 @@
-# Changes in version 2026.9.4 (PR#285)
+# Changes in version 2026.9.28 (PR#285)
 
 - Clearer facet error messages when a facet variable is missing from the data, or when `facet_wrap(. ~ var)` uses invalid notation (issue #168).
-
-# Changes in development (PR#339)
 
 # Changes in version 2026.9.5
 
