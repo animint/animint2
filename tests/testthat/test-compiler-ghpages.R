@@ -51,6 +51,28 @@ reset_test_repo <- function(){
   gh::gh("POST /orgs/animint-test/repos", name = test_repo_name)
   Sys.sleep(3)
 }
+clone_test_repo <- function(github_url, new_clone){
+  max_attempts <- 5
+  wait_seconds <- 3
+  last_error <- NULL
+  for (attempt in seq_len(max_attempts)) {
+    result <- tryCatch({
+      clone <- gert::git_clone(github_url, new_clone)
+      last_error <- NULL
+      clone
+    }, error = function(err){
+      last_error <<- err
+      NULL
+    })
+    if (is.null(last_error)) return(result)
+    if (!grepl("status code: 404", conditionMessage(last_error), fixed = TRUE)) {
+      stop(last_error)
+    }
+    unlink(new_clone, recursive = TRUE, force = TRUE)
+    if (attempt < max_attempts) Sys.sleep(wait_seconds)
+  }
+  stop(last_error)
+}
 test_that("animint2pages(chromote_sleep_seconds=3) creates Capture.PNG", {
   reset_test_repo()
   ## first run of animint2pages creates new data viz.
@@ -96,7 +118,7 @@ test_that("animint2pages(chromote_sleep_seconds=NULL) does not create Capture.PN
   ## clone and add Capture.PNG
   new_clone <- tempfile()
   github_url <- paste0("https://github.com/", result_list$owner_repo, ".git")
-  gert::git_clone(github_url, new_clone)
+  clone_test_repo(github_url, new_clone)
   branch_name <- gert::git_branch(new_clone)
   expect_identical(branch_name, "gh-pages", info=paste(branch_name, "should be gh-pages"))
   cat("FOO", file=file.path(new_clone, "Capture.PNG"))
