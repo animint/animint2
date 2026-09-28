@@ -1,3 +1,7 @@
+# Changes in version 2026.9.29 (PR#288)
+
+- Plot SVGs use `display: block` (issue #279). Each ggplot is one SVG. Browsers treat an SVG as inline and leave space under it for text descenders, which is the extra whitespace below a facet_wrap plot. That gap is under the SVG, not between facet panels. This is required; without it the rendered gap is about 5px. Thanks @ANAMASGARD.
+
 # Changes in version 2026.9.28 (PR#285)
 
 - Clearer facet error messages when a facet variable is missing from the data, or when `facet_wrap(. ~ var)` uses invalid notation (issue #168).
