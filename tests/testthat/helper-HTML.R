@@ -5,6 +5,7 @@ animint2HTML <- function(plotList) {
   unlink("animint-htmltest", recursive=TRUE)
   res <- animint2dir(plotList, out.dir = "animint-htmltest",
                      open.browser = FALSE)
+  snapshot_js_coverage()
   remDr$refresh()
   Sys.sleep(2)
   res$html <- getHTML()
@@ -112,34 +113,48 @@ getClassBound <- function(geom.class, position){
 }
 
 # JS Coverage collection functions
+append_js_coverage <- function() {
+  cov <- remDr$Profiler$takePreciseCoverage()
+  remDr$js_coverage_snapshots <- c(remDr$js_coverage_snapshots, list(cov$result))
+}
+
+snapshot_js_coverage <- function() {
+  if(!identical(Sys.getenv("TEST_SUITE"), "JS_coverage")) return(invisible(NULL))
+  if(is.null(remDr$js_coverage_snapshots)) return(invisible(NULL))
+  tryCatch({
+    append_js_coverage()
+    remDr$Profiler$startPreciseCoverage(callCount = TRUE, detailed = TRUE)
+  }, error = function(e) {
+    warning(sprintf("Failed to snapshot JS coverage: %s", e$message))
+  })
+  invisible(NULL)
+}
+
 start_js_coverage <- function() {
   tryCatch({
     remDr$Profiler$enable()
-    remDr$Profiler$startPreciseCoverage(
-      callCount = TRUE,
-      detailed = TRUE
-    )
+    remDr$js_coverage_snapshots <- list()
+    remDr$Profiler$startPreciseCoverage(callCount = TRUE, detailed = TRUE)
     TRUE
   }, error = function(e) {
-    warning("Failed to start JS coverage: ", e$message)
+    warning(sprintf("Failed to start JS coverage: %s", e$message))
     FALSE
   })
 }
 
 stop_js_coverage <- function() {
   tryCatch({
-    cov <- remDr$Profiler$takePreciseCoverage()
+    append_js_coverage()
     outfile <- "js-coverage.json"
-    # Ensure the format matches what v8-to-istanbul expects
     coverage_data <- list(
-      result = cov$result,
+      result = do.call(c, remDr$js_coverage_snapshots),
       url = "http://localhost:4848/animint-htmltest/animint.js"
     )
     jsonlite::write_json(coverage_data, outfile, auto_unbox = TRUE)
-    message("JS coverage saved to ", normalizePath(outfile))
+    message(sprintf("JS coverage saved to %s", normalizePath(outfile)))
     TRUE
   }, error = function(e) {
-    warning("Failed to save JS coverage: ", e$message)
+    warning(sprintf("Failed to save JS coverage: %s", e$message))
     FALSE
   })
 }

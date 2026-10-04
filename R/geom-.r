@@ -314,8 +314,14 @@ Geom <- gganimintproto("Geom",
     ## sense with clickSelects/showSelected, since two
     ## clickSelects/showSelected values may show up in the same bin.
     stat.type <- class(l$stat)[[1]]
-    checkForNonIdentityAndSS(stat.type, has.show, is.show, l,
-                            g$classed, names(g.data), names(g$aes))
+    js_stat_bin <- identical(l$js_stat, "bin")
+    if(!(js_stat_bin && stat.type == "StatBin")){
+      checkForNonIdentityAndSS(stat.type, has.show, is.show, l,
+                              g$classed, names(g.data), names(g$aes))
+    }
+    if(js_stat_bin){
+      g$js_stat <- "bin"
+    }
 
     ## Warn if non-identity position is used with animint aes.
     position.type <- class(l$position)[[1]]
@@ -331,9 +337,13 @@ Geom <- gganimintproto("Geom",
     ## special cases of basic geoms. In ggplot2, this processing is done
     ## in the draw method of the geoms.
 
-    processed_values <- l$geom$pre_process(g, g.data, ranges)
-    g <- processed_values$g
-    g.data <- processed_values$g.data
+    if(js_stat_bin){
+      g$geom <- "rect"
+    }else{
+      processed_values <- l$geom$pre_process(g, g.data, ranges)
+      g <- processed_values$g
+      g.data <- processed_values$g.data
+    }
     ## Check g.data for color/fill - convert to hexadecimal so JS can parse correctly.
     for(color.var in c("colour", "color", "fill", "colour_off", "color_off", "fill_off")){
       if(color.var %in% names(g.data)){

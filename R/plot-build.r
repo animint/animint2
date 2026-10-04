@@ -296,3 +296,79 @@ ggplot_gtable <- function(data) {
 ggplotGrob <- function(x) {
   ggplot_gtable(ggplot_build(x))
 }
+
+layer_has_showSelected <- function(l) {
+  ep <- l$extra_params
+  is.character(ep$showSelected) && length(ep$showSelected) > 0
+}
+
+validate_js_stat_bin_params <- function(l) {
+  params <- l$stat_params
+  if(is.null(params$binwidth)){
+    stop("JS stat_bin requires binwidth to be set explicitly.", call.=FALSE)
+  }
+  if(!is.null(params$bins)){
+    stop("JS stat_bin does not support bins=; use binwidth= instead.", call.=FALSE)
+  }
+  if(!is.null(params$boundary)){
+    stop("JS stat_bin does not support boundary=.", call.=FALSE)
+  }
+  if(!is.null(params$center)){
+    stop("JS stat_bin does not support center=.", call.=FALSE)
+  }
+  if(isTRUE(params$pad)){
+    stop("JS stat_bin does not support pad=TRUE.", call.=FALSE)
+  }
+  closed <- params$closed
+  if(!is.null(closed) && !identical(closed, "right")){
+    stop("JS stat_bin only supports closed=\"right\".", call.=FALSE)
+  }
+  if(class(l$position)[[1]] != "PositionIdentity"){
+    stop("JS stat_bin requires position=identity.", call.=FALSE)
+  }
+}
+
+get_pre_stat_layer_data <- function(plot) {
+  plot <- a_plot_clone(plot)
+  if(length(plot$layers) == 0) {
+    plot <- plot + geom_blank()
+  }
+  layers <- plot$layers
+  layer_data <- lapply(layers, function(y) y$layer_data(plot$data))
+  scales <- plot$scales
+  panel <- new_panel()
+  panel <- g_train_layout(panel, plot$facet, layer_data, plot$data)
+  data <- map_layout(panel, plot$facet, layer_data)
+  by_layer <- function(f) {
+    out <- vector("list", length(data))
+    for(i in seq_along(data)) {
+      out[[i]] <- f(l = layers[[i]], d = data[[i]])
+    }
+    out
+  }
+  data <- by_layer(function(l, d) l$compute_aesthetics(d, plot))
+  data <- lapply(data, scales_transform_df, scales = scales)
+  scale_x <- function() scales$get_scales("x")
+  scale_y <- function() scales$get_scales("y")
+  panel <- train_position(panel, data, scale_x(), scale_y())
+  map_position(panel, data, scale_x(), scale_y())
+}
+
+js_stat_bin_x_breaks <- function(built, binwidth) {
+  layout <- built$panel$layout
+  breaks_list <- list()
+  for(panel_i in layout$PANEL) {
+    scales <- panel_scales(built$panel, panel_i)
+    bins <- bin_breaks_width(scales$x$dimension(), binwidth)
+    breaks_list[[as.character(panel_i)]] <- bins$breaks
+  }
+  breaks_list
+}
+
+js_stat_bin_all_panels <- function(df, panel_ids) {
+  do.call(rbind, lapply(panel_ids, function(panel_i) {
+    out <- df
+    out$PANEL <- panel_i
+    out
+  }))
+}
