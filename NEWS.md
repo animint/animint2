@@ -4,6 +4,14 @@
 
 # Changes in development (PR#339)
 
+# Changes in version 2026.9.29 (PR#288)
+
+- Plot SVGs use `display: block` (issue #279). Each ggplot is one SVG. Browsers treat an SVG as inline and leave space under it for text descenders, which is the extra whitespace below a facet_wrap plot. That gap is under the SVG, not between facet panels. This is required; without it the rendered gap is about 5px. Thanks @ANAMASGARD.
+
+# Changes in version 2026.9.28 (PR#285)
+
+- Clearer facet error messages when a facet variable is missing from the data, or when `facet_wrap(. ~ var)` uses invalid notation (issue #168).
+
 # Changes in version 2026.9.5
 
 - geom_text() renders with .text(), instead of setMultilineText(), fixing interactive updates.
@@ -12,10 +20,9 @@
 
 - Multi-line facet strip labels: `facet_grid()` and `facet_wrap()` now render each facet variable on its own line, matching ggplot2 (issue #262).
 
-# Changes in version 2026.6.5 (PR#336)
+# Changes in version 2026.8.18 (PR#344)
 
-- `geom(showSelected.legend=FALSE)` is the canonical opt-out for legend-driven auto-injection of showSelected, including while keeping explicit showSelected variables. (Fixed #333)
-- Breaking API cleanup: PR #292 `geom(showSelected=character())` no longer opts out; use `showSelected.legend=FALSE` instead.
+- `.github/workflows/tests.yaml` now defines three jobs: `R_coverage` and `JS_coverage` collect reports as artifacts, and a new `upload-coverage` job depends on both (`needs: coverage-tests`) and uploads them to Codecov together only after both succeed. A separate `CRAN` job still runs `build.sh`. This prevents a failed JS (or R) job from becoming an incomplete project-coverage baseline (issue #254).
 
 # Changes in version 2026.7.29 (PR#261)
 
@@ -28,6 +35,11 @@
 - New tooltipID(), mouseMoved(), mousePressed(), mouseReleased() helper functions in tests/testthat/helper-functions.R for simulating mouse events and checking tooltip elements in renderer tests.
 - New renderer test for polygon holes using the subgroup aesthetic in geom_polygon(), verifying that tooltips appear inside filled regions and not inside holes (issue #252).
 - geom_polygon() gains subgroup aesthetic for drawing polygons with holes, rendered via d3.geo.path() with fill-rule evenodd (issue #252). Thanks @nishita-shah1
+
+# Changes in version 2026.6.5 (PR#336)
+
+- `geom(showSelected.legend=FALSE)` is the canonical opt-out for legend-driven auto-injection of showSelected, including while keeping explicit showSelected variables. (Fixed #333)
+- Breaking API cleanup: PR #292 `geom(showSelected=character())` no longer opts out; use `showSelected.legend=FALSE` instead.
 
 # Changes in version 2026.5.29 (PR#286)
 
