@@ -1,13 +1,51 @@
 library(shiny)
 library(animint2)
+library(maps)
 data(WorldBank)
 WorldBank$literacy <- WorldBank[["15.to.25.yr.female.literacy"]]
 WorldBank$latitude <- as.numeric(paste(WorldBank$latitude))
 WorldBank$longitude <- as.numeric(paste(WorldBank$longitude))
+# Map data processing (from first code)
+map_df <- animint2::map_data("world")
+country2region <- with(unique(WorldBank[, c("region","country")]), structure(region, names=country))
+map2wb <- c(
+  Antigua="Antigua and Barbuda",
+  Brunei="Brunei Darussalam",
+  Bahamas="Bahamas, The", 
+  "Democratic Republic of the Congo"="Congo, Dem. Rep.",
+  "Republic of Congo"="Congo, Rep.",
+  "Ivory Coast"="Cote d'Ivoire",
+  Egypt="Egypt, Arab Rep.", 
+  Micronesia="Micronesia, Fed. Sts.",
+  UK="United Kingdom",
+  Gambia="Gambia, The",
+  Iran="Iran, Islamic Rep.",
+  Kyrgyzstan="Kyrgyz Republic",
+  "Saint Kitts"="St. Kitts and Nevis", 
+  "North Korea"="Korea, Dem. Rep.",
+  "South Korea"="Korea, Rep.",
+  Laos="Lao PDR",
+  "Saint Lucia"="St. Lucia",
+  "North Macedonia"="Macedonia, FYR", 
+  Palestine="West Bank and Gaza",
+  Russia="Russian Federation", 
+  Slovakia="Slovak Republic",
+  "Saint Martin"="Sint Maarten (Dutch part)",
+  Syria="Syrian Arab Republic", 
+  Trinidad="Trinidad and Tobago",
+  Tobago="Trinidad and Tobago",
+  USA="United States",
+  "Saint Vincent"="St. Vincent and the Grenadines", 
+  Venezuela="Venezuela, RB",
+  "Virgin Islands"="Virgin Islands (U.S.)",
+  Yemen="Yemen, Rep.")
+map_disp <- with(map_df, data.frame(
+  group, country=ifelse(region %in% names(map2wb), map2wb[region], region)))
+map_disp$region <- country2region[map_disp$country]
 is.discrete <- function(x){
   is.factor(x) || is.character(x) || is.logical(x)
 }
-
+# server.R
 shinyServer(function(input, output) {
   
   getViz <- reactive({
@@ -19,6 +57,7 @@ shinyServer(function(input, output) {
     TS <- function(df)BOTH(df, "Years", input$y)
     SCATTER <- function(df)BOTH(df, input$x, input$y)
     TS2 <- function(df)BOTH(df, input$x, "Years")
+    MAP <- function(df)BOTH(df, "Years", "Years")
     y.na <- WorldBank[[input$y]]
     x.na <- WorldBank[[input$x]]
     not.na <- WorldBank[!(is.na(y.na) | is.na(x.na)),]
@@ -37,6 +76,17 @@ shinyServer(function(input, output) {
     data_i <-  SCATTER(not.na)
     data_i$color <- input$color
     
+    # Process map coordinates (from first code)
+    first.year <- min(WorldBank$year, na.rm=TRUE)
+    last.year <- max(WorldBank$year, na.rm=TRUE)
+    map_names <- c(x="long", y="lat")
+    for(new.var in names(map_names)){
+      old.var <- map_names[[new.var]]
+      old.val <- map_df[[old.var]]
+      m <- min(old.val)
+      old.01 <- (old.val-m)/(max(old.val)-m)
+      map_disp[[new.var]] <- old.01*(last.year-first.year)+first.year
+    }
     gg <-
       ggplot()+
         theme_bw()+
@@ -111,6 +161,16 @@ shinyServer(function(input, output) {
           showSelected=c("country","year", "color"),
           clickSelects="country", 
           data=data_i)+
+        # Add world map polygon (from first code)
+        geom_polygon(aes(
+            x, y, group=group, fill=region),
+          title="World map",
+          clickSelects="country",
+          color="black",
+          color_off="transparent",
+          alpha=1,
+          alpha_off=0.3,
+          data=MAP(map_disp))+
         facet_grid(side ~ top, scales="free")+
         geom_text(aes(x, y,
           label=paste0("year = ", year)),
