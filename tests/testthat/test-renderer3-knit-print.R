@@ -44,9 +44,10 @@ test_that("segments and breakpoints are rendered", {
 })
 
 test_that("svg id property is unique", {
-  id.vec <- getPropertyValue(html, "//svg", "id")
-  id.counts <- table(id.vec)
-  expect_equal(max(id.counts), 1L)
+  svg.list <- getNodeSet(html, "//svg")
+  attr.mat <- sapply(svg.list, xmlAttrs)
+  id.counts <- table(attr.mat["id",])
+  expect_true(all(id.counts==1))
 })
 
 all.list <- getNodeSet(html, "//*")
@@ -180,7 +181,6 @@ click_center <- function(id){
     ## https://github.com/rstudio/chromote/issues/32
     do.call(remDr$Input$dispatchMouseEvent, L)
   }
-  Sys.sleep(1)
 }
 
 djs.init.list <- driverjs_get(html)
