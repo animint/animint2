@@ -779,7 +779,7 @@ getTextSize <- function(element.name, theme){
 ##' @useDynLib animint2, .registration = TRUE
 ##' @importFrom Rcpp sourceCpp
 getCommonChunk <- function(built, chunk.vars, aes.list){
-  group <- col.name <- ok <- all.common <- size <- showSelected_values <- common <- NULL
+  group <- col.name <- ok <- all.common <- size <- showSelected_values <- common <- is.common <- NULL
   ## Above to avoid CRAN NOTE.
   if(length(chunk.vars) == 0){
     return(NULL)
