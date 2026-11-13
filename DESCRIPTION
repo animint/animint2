@@ -83,6 +83,7 @@ Imports:
     servr,
     digest,
     RJSONIO,
+    Rcpp,
     grid,
     gtable (>= 0.1.1),
     MASS,
@@ -93,6 +94,8 @@ Imports:
     knitr (>= 1.5.33),
     data.table (>= 1.9.8),
     methods
+LinkingTo:
+    Rcpp
 Suggests:
     gert, gitcreds, gh,
     sp,
@@ -285,6 +288,7 @@ Collate:
     'uu_zxx.r'
     'uu_zzz.r'
     'z_animint.R'
+    'RcppExports.R'
     'z_animintHelpers.R'
     'z_multiline.R'
     'z_facets.R'

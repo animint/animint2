@@ -776,8 +776,10 @@ getTextSize <- function(element.name, theme){
 ##' no common data.
 ##' @importFrom stats na.omit
 ##' @import data.table
+##' @useDynLib animint2, .registration = TRUE
+##' @importFrom Rcpp sourceCpp
 getCommonChunk <- function(built, chunk.vars, aes.list){
-  group <- col.name <- group.size <- ok <- all.common <- size <- showSelected_values <- common <- NULL
+  group <- col.name <- ok <- all.common <- size <- showSelected_values <- common <- NULL
   ## Above to avoid CRAN NOTE.
   if(length(chunk.vars) == 0){
     return(NULL)
@@ -815,23 +817,9 @@ getCommonChunk <- function(built, chunk.vars, aes.list){
   common_value_dt <- data.table(col.name=col.name.vec)[, {
     built[, {
       group_dt <- .SD[, list(value_list=list(get(col.name))), by=chunk.vars]
-      lvec <- sapply(group_dt$value_list, length)
-      value.vec <- unlist(group_dt$value_list)
-      if(all(lvec[1]==lvec)){
-        group.size <- lvec[1]
-        m <- matrix(value.vec, group.size)
-        min.na.vec <- apply(m,1,function(x)x[!is.na(x)][1])
-        if(length(unique(min.na.vec))==1){
-          min.na.vec <- min.na.vec[1]
-        }
-        is.common <- all(m==min.na.vec,na.rm=TRUE)
-        ##if(anyNA(min.na.vec))is.common <- FALSE #TODO maybe could relax?
-        data.table(common=list(min.na.vec), is.common)
-      }else if(length(unique(value.vec))==1){
-        data.table(common=list(value.vec[1]), is.common=TRUE)
-      }else{
-        data.table(common=list(), is.common=FALSE)
-      }
+      ## src/common_value.cpp checks whether those per-chunk vectors match.
+      ans <- common_value_for_chunks(group_dt$value_list)
+      data.table(common=ans$common, is.common=ans$is.common)
     }, by=group]
   }, keyby=col.name]
   common_var_dt <- common_value_dt[, .(
