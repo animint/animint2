@@ -48,6 +48,10 @@ jobs:
           cache-version: ${{ hashFiles('.ci/atime/tests.R') }}
           extra-packages: cran::data.table, any::atime, any::ggplot2, any::directlabels
 
+      - name: Install package
+        shell: bash
+        run: R CMD INSTALL .
+
       - name: Run atime
         shell: bash
         run: |
