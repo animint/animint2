@@ -1,6 +1,8 @@
 test.list <- atime::atime_test_list(
   ## Adapted from https://github.com/animint/animint2/issues/235#issuecomment-3342083861
-  "getCommonChunk improved in #238"=atime::atime_test(
+  ## The #238 SHAs do not install: geom_dotplot.Rd looks up GeomDotplot,
+  ## which was removed in #311. Slow is current master.
+  "getCommonChunk"=atime::atime_test(
     expr=animint2:::getCommonChunk(built, "showSelected", list(group="group")),
     setup={
       built <- data.table(
@@ -9,6 +11,5 @@ test.list <- atime::atime_test_list(
         showSelected=1:2)
     },
     seconds.limit=1,
-    Slow="352f7e10040cb9de6ddd16416d342e9746c14c7a", # Parent of the first commit (https://github.com/animint/animint2/commit/121a11399e7d6ca6c822cd22472886c6d4d8cf10) of the PR (https://github.com/animint/animint2/pull/238/commits).
-    Fast="30950779702e6c8aeecd24aeb737c9fa5ce898e0") # Last commit in the PR (https://github.com/animint/animint2/pull/238/commits).
+    Slow="37b138e684f40b8c765bb1dd8fcf9563f23a2e03")
 )
