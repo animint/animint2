@@ -1,3 +1,7 @@
+# Changes in version 2026.11.13
+
+- The atime GitHub Actions workflow no longer uses the CML container. It follows the data.table performance-tests setup: run `atime::atime_pkg()`, upload the `atime-results` artifact, and post the plot on the pull request. Thanks @nishita-shah1
+
 # Changes in version 2026.9.29 (PR#288)
 
 - Plot SVGs use `display: block` (issue #279). Each ggplot is one SVG. Browsers treat an SVG as inline and leave space under it for text descenders, which is the extra whitespace below a facet_wrap plot. That gap is under the SVG, not between facet panels. This is required; without it the rendered gap is about 5px. Thanks @ANAMASGARD.
