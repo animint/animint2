@@ -8,9 +8,12 @@ runtime: shiny
 [Animint](https://github.com/tdhock/animint) is an R package for creating web-based interactive graphics and animations using ggplot2’s grammar of graphics approach. Now you can embed animint plots inside [shiny apps](http://shiny.rstudio.com/). In the shiny app below, you can change the x/y/color variables and both plots will update.
 
 ```{r embedded}
-library(shiny)
+setwd(normalizePath(file.path("..", "..", "..")))
+if (!dir.exists("inst/examples/shiny")) {
+  stop("Working directory is not the repository root: ", getwd())
+}
 shinyAppDir(
-  system.file("examples/shiny", package = "animint2"),
+  "inst/examples/shiny",
   options = list(width = "100%", height = 500)
 )
 ```
@@ -90,4 +93,3 @@ renderAnimint({
 ```{r sessionInfo}
 sessionInfo()
 ```
-

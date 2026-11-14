@@ -74,7 +74,6 @@ renderAnimint <- function(expr, env = parent.frame(), quoted = FALSE) {
   renderFunc <- function(shinysession, name, ...) {
     val <- func()
     tmp <- tempfile()
-    dir.create(tmp)
     stuff <- animint2dir(val, out.dir = tmp, open.browser = FALSE)
     shiny::addResourcePath("animintAssets", tmp)
     list(jsonFile = "plot.json")
