@@ -9,6 +9,8 @@ Tornadoes in the United States from 1950 to 2012
 }
 \usage{data(UStornadoes)}
 \format{
+  TODO add codebook
+  
   A data frame with 41620 observations on the following 32 variables.
   \describe{
     \item{\code{fips}}{a numeric vector}

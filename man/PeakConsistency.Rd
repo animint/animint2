@@ -10,7 +10,10 @@
   the peak.
 }
 \usage{data("PeakConsistency")}
-\format{A list of four data.frames: model, truth, signal, guess.
+\format{
+TODO add codebook
+
+A list of four data.frames: model, truth, signal, guess.
 }
 \source{
   https://github.com/tdhock/PeakSegJoint-paper/blob/master/figure-consistency.R

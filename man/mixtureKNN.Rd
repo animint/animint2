@@ -9,6 +9,8 @@
 }
 \usage{data("mixtureKNN")}
 \format{
+  TODO add codebook
+  
   Named list of 9 data.frames.
 }
 \source{

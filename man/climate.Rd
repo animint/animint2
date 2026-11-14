@@ -13,6 +13,8 @@ Temperatures are given in degrees celsius (original data had Kelvin).
 }
 \usage{data(climate)}
 \format{
+  TODO add codebook
+  
   A data frame with 41472 observations on the following 16 variables.
   \describe{
     \item{\code{time}}{a numeric vector}

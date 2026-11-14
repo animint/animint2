@@ -9,6 +9,8 @@
 }
 \usage{data("FunctionalPruning")}
 \format{
+  TODO add codebook
+  
   a named list of 4 data.frames
 }
 \source{
