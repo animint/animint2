@@ -1,6 +1,6 @@
 test.list <- atime::atime_test_list(
   ## Adapted from https://github.com/animint/animint2/issues/235#issuecomment-3342083861
-  "getCommonChunk"=atime::atime_test(
+  "getCommonChunk improved in #238"=atime::atime_test(
     expr=animint2:::getCommonChunk(built, "showSelected", list(group="group")),
     setup={
       built <- data.table(
@@ -9,5 +9,6 @@ test.list <- atime::atime_test_list(
         showSelected=1:2)
     },
     seconds.limit=1,
-    Slow="37b138e684f40b8c765bb1dd8fcf9563f23a2e03") # Current master (https://github.com/animint/animint2/commit/37b138e684f40b8c765bb1dd8fcf9563f23a2e03).
+    Slow="352f7e10040cb9de6ddd16416d342e9746c14c7a", # Parent of the first commit (https://github.com/animint/animint2/commit/121a11399e7d6ca6c822cd22472886c6d4d8cf10) of the PR (https://github.com/animint/animint2/pull/238/commits).
+    Fast="fe051f44b61cc9f494387165ff894c14fd4e077c") # Merge commit of the PR (https://github.com/animint/animint2/pull/238).
 )
