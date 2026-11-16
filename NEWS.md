@@ -1,6 +1,6 @@
 # Changes in version 2026.11.13
 
-- The atime GitHub Actions workflow no longer uses the CML container. It follows the data.table performance-tests setup: run `atime::atime_pkg()`, upload the `atime-results` artifact, and post the plot on the pull request. Thanks @nishita-shah1
+- The atime GitHub Actions workflow no longer uses the CML container. It follows the data.table performance-tests setup: run `atime::atime_pkg()`, upload the `atime-results` artifact, and post the plot on the pull request. Plot images are uploaded to picrd using the `PICRD_API_KEY` Actions secret. Thanks @nishita-shah1
 
 # Changes in version 2026.9.29 (PR#288)
 
