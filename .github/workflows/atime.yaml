@@ -46,11 +46,7 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           cache-version: ${{ hashFiles('.ci/atime/tests.R') }}
-          extra-packages: cran::data.table, any::atime, any::ggplot2, any::directlabels
-
-      - name: Install package
-        shell: bash
-        run: R CMD INSTALL .
+          extra-packages: cran::animint2, cran::data.table, any::atime, any::ggplot2, any::directlabels
 
       - name: Run atime
         shell: bash
