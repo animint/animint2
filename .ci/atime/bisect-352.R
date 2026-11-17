@@ -1,3 +1,4 @@
+library(data.table)
 (bisect.dt <- rowwiseDT(
   old=,     new=, label=, expected=, stage=,
   "Slow", "Fast", "", "?", "",
