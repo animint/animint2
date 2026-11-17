@@ -1,6 +1,6 @@
 test.list <- atime::atime_test_list(
   pkg.edit.fun = function(old.Package, new.Package, sha, new.pkg.path) {
-    atime::pkg.edit.default(old.Package, new.Package, sha, new.pkg.path)
+    atime:::pkg.edit.default(old.Package, new.Package, sha, new.pkg.path)
     unlink(file.path(new.pkg.path, "man", "*")) # to avoid broken Sexpr https://github.com/animint/animint2/issues/340
   },
   ## Adapted from https://github.com/animint/animint2/issues/235#issuecomment-3342083861
