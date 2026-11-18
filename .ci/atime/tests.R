@@ -42,7 +42,7 @@ test.list <- atime::atime_test_list(
     Slow="352f7e10040cb9de6ddd16416d342e9746c14c7a", # Parent of the first commit (https://github.com/animint/animint2/commit/121a11399e7d6ca6c822cd22472886c6d4d8cf10) of the PR (https://github.com/animint/animint2/pull/238/commits).
     Fast="fe051f44b61cc9f494387165ff894c14fd4e077c", # Merge commit of the first speed improvement PR (https://github.com/animint/animint2/pull/238) in Sep 2026.
     bisect.commits=c(
-      "fix-legend"="d6e41e69", # 5 Oct 2025 commit with better performance.
+      "FixLegend"="d6e41e69", # 5 Oct 2025 commit with better performance.
       CIfixed="1295c2e4381dedcad8c10d25e7120342666fbd0a") # Merge commit of PR which fixed atime CI in Nov 2026, worse performance.
   )
 )
