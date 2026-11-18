@@ -1,4 +1,7 @@
 library(data.table)
+if(FALSE){
+  atime::atime_versions_remove("animint2")
+}
 (bisect.dt <- rowwiseDT(
   old=,     new=, label=, expected=, stage=,
   "Slow", "Fast", "", "?", "",
