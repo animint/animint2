@@ -20,7 +20,7 @@ test.list <- atime::atime_test_list(
       warn=FALSE)#does not appear if registration used.
     pkg_find_replace(
       file.path("R", "*.R"),
-      "browser()",
+      "browser\\(\\)",
       "",
       warn=FALSE)#only appears in some commits.
     pkg_find_replace(
