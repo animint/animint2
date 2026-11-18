@@ -6,7 +6,7 @@ if(FALSE){
   old=,     new=, label=, expected=, stage=,
   "Slow", "Fast", "", "?", "",
   "Fast", "CIfixed", "", "", "",
-  "fix-legend", "CIfixed", "", "", ""))
+  "FixLegend", "CIfixed", "", "", ""))
 bisect.i <- 3
 for(bisect.i in 1:nrow(bisect.dt)){
   print(bisect.row <- bisect.dt[bisect.i])
