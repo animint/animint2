@@ -306,3 +306,151 @@ stop_servr <- function(tmpPath = ".") {
   }
   res
 }
+
+# Replacement for plyr::as.quoted
+as.quoted <- function(x) {
+  if (is.null(x)) return(list())
+  if (is.quoted(x)) return(x)
+  
+  if (is.character(x)) {
+    return(structure(lapply(x, as.name), class = "quoted"))
+  }
+  if (is.name(x)) {
+    return(structure(list(x), class = "quoted"))
+  }
+  if (is.formula(x)) {
+    return(structure(as.list(parse.formula(x)), class = "quoted"))
+  }
+  if (is.call(x)) {
+    if (identical(x[[1]], as.name("+"))) {
+      # Handle expressions like a + b
+      left <- as.quoted(x[[2]])
+      right <- as.quoted(x[[3]])
+      return(structure(c(left, right), class = "quoted"))
+    }
+    return(structure(list(x), class = "quoted"))
+  }
+  if (is.list(x)) {
+    return(structure(x, class = "quoted"))
+  }
+  
+  structure(list(x), class = "quoted")
+}
+
+# Helper function to check if object is already quoted
+is.quoted <- function(x) {
+  inherits(x, "quoted")
+}
+
+# Helper to parse formula objects
+parse.formula <- function(f) {
+  if (length(f) == 2) {
+    # One-sided formula
+    vars <- f[[2]]
+  } else if (length(f) == 3) {
+    # Two-sided formula
+    vars <- f[[2:3]]
+  } else {
+    stop("Invalid formula")
+  }
+  
+  if (is.call(vars) && identical(vars[[1]], as.name("+"))) {
+    # Handle formulas with multiple variables (e.g., a + b)
+    as.list(vars[-1])
+  } else {
+    list(vars)
+  }
+}
+
+# Evaluation function to replace plyr::eval.quoted
+eval.quoted <- function(exprs, data = NULL, enclos = parent.frame()) {
+  if (!is.quoted(exprs)) exprs <- as.quoted(exprs)
+  
+  if (is.null(data)) {
+    lapply(exprs, eval, envir = enclos)
+  } else {
+    lapply(exprs, eval, envir = data, enclos = enclos)
+  }
+}
+
+# Replacement for plyr::id
+id <- function(x, drop = FALSE) {
+  if (length(x) == 0) return(integer())
+  
+  if (is.data.frame(x)) {
+    # Handle data frames by converting to a list of vectors
+    x <- lapply(x, as.factor)
+  } else {
+    x <- as.factor(x)
+  }
+  
+  # For a single vector, just return the numeric values
+  if (!is.list(x)) {
+    return(as.integer(x))
+  }
+  
+  # For multiple vectors, create unique combinations
+  combs <- do.call(paste, c(x, sep = "\r"))
+  as.integer(factor(combs, levels = unique(combs)))
+}
+
+#' Fill in missing values in a list with values from another list
+#'
+#' This function takes two lists and fills in missing values in the first list
+#' with values from the second list. It's similar to modifyList() but preserves
+#' NULLs and doesn't recursively merge nested lists.
+#'
+#' @param x the list to be modified
+#' @param y the list of defaults to use to fill in missing values
+#' @return a new list with missing values in x filled in from y
+#' @noRd
+defaults <- function(x, y) {
+  if (is.null(x)) return(y)
+  if (is.null(y)) return(x)
+  
+  # Special handling for unit objects
+  if (inherits(x, "unit") || inherits(y, "unit")) {
+    return(x)
+  }
+  # Special handling for theme elements
+  if (inherits(x, "element") || inherits(y, "element")) {
+    return(x)
+  }
+  # Handle unnamed vectors/lists
+  if (is.null(names(x)) && is.null(names(y))) {
+    return(x)
+  }
+  # If x is unnamed but y is named, add names from y
+  if (is.null(names(x)) && !is.null(names(y))) {
+    names(x) <- names(y)[seq_along(x)]
+  }
+  # Get names from both lists
+  nx <- names(x)
+  ny <- names(y)
+  # Find which names in y are missing from x
+  missing <- setdiff(ny, nx)
+  # Add missing elements from y to x
+  if (length(missing) > 0) {
+    # Handle lists specially to preserve attributes
+    if (is.list(x) && is.list(y)) {
+      x[missing] <- y[missing]
+    } else {
+      # For other types, do standard combination
+      x <- c(x, y[missing])
+    }
+  }
+  # Preserve attributes where possible
+  if (!is.null(attributes(y))) {
+    attrs <- attributes(y)
+    # Don't copy over names or class
+    attrs$names <- NULL 
+    attrs$class <- NULL
+    # Copy remaining attributes if they don't already exist
+    for (a in names(attrs)) {
+      if (is.null(attr(x, a))) {
+        attr(x, a) <- attrs[[a]]
+      }
+    }
+  }
+  x
+} 
