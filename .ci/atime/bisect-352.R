@@ -7,7 +7,7 @@ if(FALSE){
   "Slow", "Fast", "", "?", "",
   "Fast", "CIfixed", "", "", "",
   "FixLegend", "CIfixed", "", "", ""))
-bisect.i <- 3
+bisect.i <- 2
 for(bisect.i in 1:nrow(bisect.dt)){
   print(bisect.row <- bisect.dt[bisect.i])
   bisect.row[, atime::bisect(normalizePath("../.."), "getCommonChunk improved in #238", old, new)]
