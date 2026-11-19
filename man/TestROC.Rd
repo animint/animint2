@@ -9,6 +9,8 @@ Five peak detection models were evaluated.
 }
 \usage{data("TestROC")}
 \format{
+  TODO add codebook
+  
   A list of two data frames.
 }
 \source{

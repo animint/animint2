@@ -12,6 +12,8 @@
 \usage{data("ChromHMMiterations")}
 \format{
   Named list of 3 data.frames: metrics, transition, emission.
+  
+  TODO add codebook
   }
 \source{
   https://github.com/tdhock/ChromHMM-viz/blob/master/iterations.R

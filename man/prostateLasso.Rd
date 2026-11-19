@@ -9,6 +9,8 @@
 }
 \usage{data("prostateLasso")}
 \format{
+  TODO add codebook
+  
   A list of 4 data.frames: path for the piecewise linear coefficient
   path, residuals for the prediction error of every model at every data
   point, models with one row per regularization parameter, error for
