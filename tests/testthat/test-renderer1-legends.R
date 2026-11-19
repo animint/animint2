@@ -1,5 +1,4 @@
 acontext("legends")
-
 data(WorldBank, package="animint2")
 breaks <- 10^(4:9)
 viz <-
@@ -69,17 +68,17 @@ test_that('hiding all legends works with theme(legend.position="none")',{
 error.types <-
   data.frame(x=1:3, status=c("correct", "false positive", "false negative"))
 
-gg <- 
+gg <-
   ggplot(error.types)+
     geom_point(aes(x, x))+
     geom_tallrect(aes(xmin=x, xmax=x+0.5, fill=x),
                   color="black")
 
-expected.legend.list <- 
+expected.legend.list <-
   list(increasing=1:3,
        default=seq(3, 1, by=-0.5),
        decreasing=3:1)
-    
+
 test_that("renderer shows legend entries in correct order", {
   viz <-
     list(increasing=gg+
@@ -89,7 +88,7 @@ test_that("renderer shows legend entries in correct order", {
          default=gg)
   info <- animint2HTML(viz)
   ##sapply(info$plots, function(p)sapply(p$legend$x$entries, "[[", "label"))
-  
+
   ## NOTE: it is important to test the renderer here (not the
   ## compiler) since maybe the order specified in the plot.json file
   ## is not the same as the order of appearance on the web page.
@@ -111,4 +110,20 @@ test_that("renderer shows legend entries in correct order", {
     value.num <- as.numeric(value.str)
     expect_equal(value.num, expected.entries)
   }
+})
+
+gg <- ggplot()+
+  geom_line(aes(
+    year, life.expectancy, group=country, colour=region),
+    clickSelects="country",
+    data=WorldBank, size=3, alpha=3/5)
+viz <- list(
+  noLegends=gg+
+    guides(color="none"),
+  zoom=gg+coord_cartesian(xlim=c(1970, 2000), ylim=c(30, 70)))
+test_that("ok to have two plots based on a common plot", {
+  info <- animint2HTML(viz)
+  p1 <- getNodeSet(info$html, '//g[@class="geom1_line_noLegends"]//path')
+  p2 <- getNodeSet(info$html, '//g[@class="geom2_line_zoom"]//path')
+  expect_equal(length(p1), length(p2))
 })
