@@ -25,6 +25,7 @@ viz <- animint(
       xmin=45, xmax=70,
       ymin=8, ymax=10,
       tooltip=paste(countries, "not NA in", year),
+      id=paste0("year_", year),
       key=year),
       alpha=0.5,
       showSelected="year",
@@ -63,31 +64,18 @@ test_that("animint-tooltip div exists with correct initial state", {
 })
 
 test_that("tooltip shows correct content for rect", {
-  mouseMoved('#plot_scatter rect.geom')
-  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
-  tooltip_text <- xmlValue(tooltip_div)
-  # Verify tooltip contains expected content
-  expect_match(tooltip_text, "187 not NA in 1975")
-  # Verify that tooltip opacity is now 1 (tooltip shown)
-  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
-  expect_gt(as.numeric(opacity), 0)
-  # Verify that tooltip hides correctly after mouseout
+  tip <- tooltipID("year_1975")
+  expect_match(tip$value, "187 not NA in 1975")
+  expect_gt(tip$opacity, 0)
   mouseMoved()
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_identical(opacity, "0")
 })
 
 test_that("tooltip shows correct content for point", {
-  # Get circle position on viewport
-  mouseMoved('circle#China')
-  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
-  tooltip_text <- xmlValue(tooltip_div)
-  # Verify tooltip contains expected content
-  expect_match(tooltip_text, "China population 916395000")
-  # Verify that tooltip opacity is now 1 (tooltip shown)
-  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
-  expect_gt(as.numeric(opacity), 0)
-  # Verify that tooltip hides correctly after mouseout
+  tip <- tooltipID("China")
+  expect_match(tip$value, "China population 916395000")
+  expect_gt(tip$opacity, 0)
   mouseMoved()
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_identical(opacity, "0")
@@ -96,16 +84,9 @@ test_that("tooltip shows correct content for point", {
 test_that("tooltip shows correct content for geom_text", {
   clickID('China') # Select the circle corresponding to China for highlighting text
   Sys.sleep(0.2)
-  # Get text position on viewport
-  mouseMoved('text#text_China')
-  tooltip_div <- getNodeSet(getHTML(), tooltip.xpath)[[1]]
-  tooltip_text <- xmlValue(tooltip_div) 
-  # Verify tooltip contains expected content
-  expect_match(tooltip_text, "China")
-  # Verify that tooltip opacity is now 1 (tooltip shown)
-  opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
-  expect_gt(as.numeric(opacity), 0)
-  # Verify that tooltip hides correctly after mouseout
+  tip <- tooltipID("text_China")
+  expect_match(tip$value, "China")
+  expect_gt(tip$opacity, 0)
   mouseMoved()
   opacity <- getStyleValue(getHTML(), tooltip.xpath, "opacity")
   expect_identical(opacity, "0")
