@@ -29,13 +29,15 @@ If your PR does include code from AI code generation software or some other exte
 
 ## Easy to review PRs
 
-To make each PR easy to review, please limit each PR to one minimal set of changes.
+Please start every PR as a draft.
 Before requesting review, please click "Files changed" tab to preview what your PR will look like to a reviewer.
-Make sure there are only changes that are relevant (typically the new feature code, and new test case code).
+Make sure there is only a minimal set of changes (typically the new feature code, new test case code, new docs, version update, news).
+After reading "Files changed" tab, please revise your PR, fixing any obvious mistakes, and removing any diff lines which are not necessary (fewer diff lines means easier to review and accept).
+Finally after revising, click Ready for Review and ask `@animint/developers` for review.
 
 ## Testing
 
-The first commit/push in any branch/PR should ideally be only a new test case which fails using the current master code.
+Usually the first commit/push in any branch/PR should be only a new test case which fails using the current master code.
 Only after that test fails, resulting in red X in the PR, then please push the new code which will make the test pass.
 
 If your first push in the branch was not a test case that fails, but you pushed a test case later, then it is difficult for reviewers to verify that your test case is sufficient for testing the changes/fixes to the code. To make your PR easier to review, please demonstrate that the test case is sufficient, by following these steps:
