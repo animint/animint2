@@ -99,11 +99,9 @@ clickID("arclength174")
 html.click2 <- getHTML()
 
 test_that("tallrect displays correct tooltip", {
-  mouseMoved("g.geom3_tallrect_path rect#arclength101")
-  # Checking tooltip content
-  tooltip_text <- xmlValue(getNodeSet(getHTML(), '//div[@class="animint-tooltip"]')[[1]])
-  expect_match(tooltip_text, "arclength")
-  expect_match(tooltip_text, "\\d+\\.\\d+") # Check for numeric value
+  tip <- tooltipID("arclength101")
+  expect_match(tip$value, "arclength")
+  expect_match(tip$value, "\\d+\\.\\d+") # Check for numeric value
   mouseMoved()
 })
 

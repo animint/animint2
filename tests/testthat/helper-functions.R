@@ -423,9 +423,11 @@ tooltipID <- function(id){
   html <- getHTML()
   tooltip.xpath <- '//div[@class="animint-tooltip"]'
   tooltip_div <- getNodeSet(html, tooltip.xpath)
+  opacity <- as.numeric(getStyleValue(html, tooltip.xpath, "opacity"))
+  shown <- which.max(opacity)
   list(
-    opacity=as.numeric(getStyleValue(html, tooltip.xpath, "opacity")),
-    value=xmlValue(tooltip_div))
+    opacity=opacity[[shown]],
+    value=xmlValue(tooltip_div[[shown]]))
 }
 mouseMoved <- function(selector=NULL, ...)mouseEvent(selector, "mouseMoved", ...)
 mousePressed <- function(selector=NULL, ...)mouseEvent(selector, "mousePressed", ...)
