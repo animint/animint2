@@ -1,3 +1,7 @@
+# Changes in version 2026.11.27
+
+- `aes(href)` is applied to the link directly when a selector has a duration, so the URL is not blended during the animation. A commit SHA opens the commit shown by its label (issue #348). Thanks @nishita-shah1
+
 # Changes in version 2026.11.18
 
 - Renderer tooltip tests hover by element id through `tooltipID()` (issue #329). Thanks @nishita-shah1

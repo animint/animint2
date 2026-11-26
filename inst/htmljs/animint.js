@@ -2033,6 +2033,7 @@ var setMultilineText = function(textElement, text) {
           positionTooltip(tooltip, tooltip.html());
         });
     }
+    var link_elements = elements;
     if(selector_has_duration(selector_name)){
       var milliseconds = Selectors[selector_name].duration;
       elements = elements.transition().duration(milliseconds);
@@ -2044,7 +2045,8 @@ var setMultilineText = function(textElement, text) {
       // elements are <a>, children are e.g. <circle>
       var linked_geoms = elements.select(eAppend);
       doActions(linked_geoms);
-      elements.attr("xlink:href", get_attr("href"))
+      link_elements.attr("xlink:href", get_attr("href"))
+        .attr("href", get_attr("href"))
         .attr("target", "_blank")
         .attr("class", "geom");
     }else{
