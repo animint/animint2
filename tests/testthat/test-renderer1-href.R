@@ -73,3 +73,26 @@ test_that("aes(href) works with geom_polygon", {
   (expected.vec <- unique(USpolygons$href))
   expect_links(info$html, expected.vec)
 })
+
+test_that("href stays exact during a selector duration", {
+  sha.df <- data.frame(
+    commit=c(
+      "1685a3b47d48f323afeae589545f7cbb7717ec28",
+      "263b53e50241914a22f7ba6a139b52162c9d7927"),
+    stringsAsFactors=FALSE)
+  sha.df$href <- paste0(
+    "https://github.com/Rdatatable/data.table/commit/", sha.df$commit)
+  viz <- list(
+    select=ggplot()+
+      geom_point(aes(1, commit, id=commit),
+                 clickSelects="commit", data=sha.df),
+    sha=ggplot()+
+      geom_text(aes(0, 0, label=commit, href=href, key=1),
+                showSelected="commit", data=sha.df),
+    duration=list(commit=3000),
+    first=list(commit=sha.df$commit[[1]]))
+  info <- animint2HTML(viz)
+  expect_links(info$html, sha.df$href[[1]])
+  clickID(sha.df$commit[[2]])
+  expect_links(getHTML(), sha.df$href[[2]])
+})
